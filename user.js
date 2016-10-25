@@ -1,0 +1,321 @@
+ var express = require('express');
+ var app = express();
+ var mongoose = require('mongoose');
+ var jwt = require('jsonwebtoken');
+ var nodemailer = require('nodemailer');
+ var cloudinary = require('cloudinary');
+ var config = require('./config');
+ var bodyParser = require("body-parser");
+ var User = require("./model/user");
+ var createNewPage = require("./model/createNewPage");
+ var cashBrolixSchema = require("./model/sendAndReceiveCashBrolix");
+ var chat = require("./model/chat");
+ var createCoupons = require("./model/createCoupons");
+ var createEvents = require("./model/createEvents");
+ var createNewAds = require("./model/createNewAds");
+ var reportProblem = require("./model/reportProblem");
+ var paypalPayment = require("./model/payment");
+
+ cloudinary.config({
+     cloud_name: 'mobiloitte-in',
+     api_key: '188884977577618',
+     api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
+ });
+ var avoid = {
+        "password":0
+    }
+
+
+ var LocalStrategy = require('passport-local').Strategy;
+ var FacebookStrategy = require('passport-facebook').Strategy;
+ var crypto = require('crypto'),
+     algorithm = 'aes-256-cbc',
+     password = 'abcabcbacbbcabcbbacbbacbabcbabcbac125';
+
+ function encrypt(text) {
+     var cipher = crypto.createCipher(algorithm, password)
+     var crypted = cipher.update(text, 'utf8', 'hex')
+     crypted += cipher.final('hex');
+     return crypted;
+ }
+
+ function decrypt(text) {
+     var decipher = crypto.createDecipher(algorithm, password)
+     var dec = decipher.update(text, 'hex', 'utf8')
+     dec += decipher.final('utf8');
+     return dec;
+ }
+
+ var https = require('https');
+ var http = require('http');
+ store = {
+     "key": "ACTIVE"
+ };
+mongoose.connect('mongodb://localhost/brolix');
+//mongoose.connect('mongodb://akash.bais:Mobiloitte1@ds017636.mlab.com:17636/voice');
+//mongoose.connect('mongodb://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com/voice');
+
+ 
+   function otp (req, res) {
+    var otp = Math.floor(Math.random() * 10000)
+         var data = JSON.stringify({
+               api_key: '71414445',
+               api_secret: '49e5f9fe2864877f',
+               to: '+917417773034',
+               from: '+917417773034',
+               text: 'You have been registerd ' + otp + ' OTP'
+         });
+         var options = {
+             host: 'rest.nexmo.com',
+             path: '/sms/json',
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json',
+                 'Content-Length': Buffer.byteLength(data)
+             }
+         };
+         var request = https.request(options);
+         request.write(data);
+         request.end();
+         var responseData = '';
+         request.on('response', function (req, res) {
+             res.on('data', function (chunk) {
+                 responseData += chunk;
+             });
+             res.on('end', function () {
+                 console.log(JSON.parse(responseData));
+             })
+         })
+         console.log("-------Your OTP------" + otp)
+         res.send({
+             otp, serverStatus: 200, msg: "OTP Found"
+         });
+     }
+
+
+module.exports = {
+
+
+//API for user signUP
+    "signup": function(req, res) {
+        var user = new User(req.body);
+        User.findOne({
+            email: req.body.email
+        }, function(err, result) {
+            if (err) throw err;
+            else if (result) {
+                res.send({
+                    responseCode: 302,
+                    responseMessage: "Email id must be unique."
+                });
+            } else {
+                var details = req.body;
+                if (!(req.body.image === undefined || req.body.image == "")) {
+                    binaryData = req.body.image;
+                    require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {
+                     console.log(err);
+                 });
+
+                 cloudinary.uploader.upload("test.jpeg", function(result) {
+                     req.body.photo = result.url;
+                     var user = new User(details);
+                     user.save(function(err, result) {
+                        if (err) throw err;
+                            var token = jwt.sign(!result, config.secreteKey);
+                                 res.header({
+                                     "appToken": token
+                                 }).send({
+                                    result: result,
+                                    token:token,
+                                    responseCode: 200,
+                                    responseMessage: "You have been registered successfully."
+                                 });
+                            })
+                        });
+
+                }else{
+                user.save(function(err, result) {
+                    if (err){console.log(err)}
+                    var token = jwt.sign(!result, config.secreteKey);
+                         res.header({
+                             "appToken": token
+                         }).send({
+                            result: result,
+                            token:token,
+                            responseCode: 200,
+                            responseMessage: "You have been registered successfully."
+                         });
+                     }) 
+                }              
+            }
+        })
+    },
+
+//API for user Login
+    "login": function(req, res) {
+        User.findOne({
+            email: req.body.email,
+            password: req.body.password
+        },avoid).exec(function(err, result) {
+            if (err) throw err;
+            if (!result) {
+                return res.send({
+                    responseCode: 404,
+                    responseMessage: "Sorry Your Id or Password is Incorrect."
+                });
+            }else {
+             var token = jwt.sign(!result, config.secreteKey);
+             res.header({
+                 "appToken": token
+             }).send({
+                result: result,
+                token:token,
+                responseCode: 200,
+                responseMessage: "Login successfully."
+             });
+             console.log("what is in token-->>>" + token);
+         }
+        })
+    },
+    
+    //API for user Profile
+    "editProfile": function(req, res) {
+         var user = new User(req.body);
+        User.findOne({email: req.body.email}, function(err, result) {
+            if (err) throw err;
+            else if (result) {
+                res.send({
+                    responseCode: 302,
+                    responseMessage: "This email is already register"
+                });
+            }else{
+                User.findByIdAndUpdate(req.params.id, req.body,{new:true}).exec(function(err, result) {
+                if (err) throw err;
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "Profile data show successfully"
+                    });
+                })
+            }
+        })
+    },
+
+    //API for user Details
+    "allUserDetails": function(req, res) {
+        User.find({type:'USER'},avoid).exec(function(err, result) {
+            if (err) throw err;
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Show data successfully"
+            });
+        })
+    },
+
+    //API for user Profile
+    "userProfile": function(req, res) {
+        User.findOne({_id: req.body.userId},avoid).exec(function(err, result) {
+            if (err) throw err;
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Profile data show successfully"
+            });
+        })
+    },
+
+
+    //API for Forgot Password
+     "forgotPassword":function(req, res, next) {
+     User.findOne({email: req.body.email}).exec(function(err, user) {
+         if (err) throw err;
+         if (!user) {
+             res.send({
+                 responseCode: 404,
+                 responseMessage: 'Email id does not exists',
+             });
+         } else {
+             var transporter = nodemailer.createTransport({
+                 service: 'Gmail',
+                 auth: {
+                     user: "dixitjorden@gmail.com",
+                     pass: "8090404689"
+                 }
+             });
+             var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+             var link = "";
+             for (var i = 0; i < 8; i++) link += possible.charAt(Math.floor(Math.random() * possible.length));
+             var to = req.body.email
+             var mailOption = {
+                 from: "testing.mobiloitte@gmail.com",
+                 to: req.body.email,
+                 subject: 'Brolix Change Password ',
+                 text: 'you have a new submission with following details',
+                 html: "Your current Password is :" + link
+             }
+             console.log("data in req" + req.body.email);
+             console.log("Dta in mailOption : " + JSON.stringify(mailOption));
+             transporter.sendMail(mailOption, function(error, info) {
+                 if (error) {
+                     res.send({
+                         responseCode: 400,
+                         responseMessage: 'Internal server error'
+                     })
+                 } else {
+                     console.log("updated password is : " + link);
+                     User.findOneAndUpdate({email: req.body.email},{
+                         $set: {
+                             password: link
+                         }
+                     }, function(err, results) {
+                         res.send({
+                             responseCode: 200,
+                             responseMessage: 'Password successfully sent your mail id'
+                         })
+                     })
+                 }
+             });
+         }
+     });
+ },
+
+    //API for create Page
+    "createPage": function(req, res) {
+        var page = new createNewPage(req.body);
+        page.save(function(err, result) {
+            if (err) throw err;
+                 res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Page create successfully"
+                 });
+             })
+    },
+
+     //API for create Page
+    "showAllPages": function(req, res) {
+        createNewPage.find({}).exec(function(err, result){
+            if(err) throw err;
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "All pages show successfully"
+            })
+        })
+    },
+
+     //API for create Page
+    "showPageDetails": function(req, res) {
+        createNewPage.findOne({_id: req.body.pageId}).exec(function(err, result){
+            if(err) throw err;
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Pages details show successfully"
+            })
+        })
+    }
+}
+
+ 
