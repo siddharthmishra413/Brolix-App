@@ -52,8 +52,6 @@
      "key": "ACTIVE"
  };
 mongoose.connect('mongodb://localhost/brolix');
-//mongoose.connect('mongodb://akash.bais:Mobiloitte1@ds017636.mlab.com:17636/voice');
-//mongoose.connect('mongodb://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com/voice');
 
  
    function otp (req, res) {
