@@ -24,6 +24,10 @@ app.use(express.static('assest'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/');
 });
+app.get('/test', function(res,res){
+
+  res.send("api works on ---->>>"+port);
+})
 
 
 app.all('/*', function(req, res, next) {
@@ -48,6 +52,8 @@ app.put('/editProfile/:id',user.editProfile);
 app.post('/createPage', user.createPage);
 app.get('/showAllPages',user.showAllPages);
 app.post('/showPageDetails',user.showPageDetails);
+app.post('/createAds', user.createAds);
+app.get('/showAllAdsData', user.showAllAdsData);
 //app.post('/otp',user.otp);
 
  
