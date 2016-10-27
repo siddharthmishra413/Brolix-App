@@ -335,7 +335,7 @@ module.exports = {
                for (var i = 0; i < files.file.length; i++) {
                var filePath = files.file[i].path;
                cloudinary.uploader.upload(filePath, function(result) { 
-               console.log("ygyghughuhh",result) 
+               console.log("result---->>>>",result) 
                fileUrl.push(result.url);
                console.log("urls--=-=-=-=-=-=-=-=-=-=-=->>>"+JSON.stringify(fileUrl));
                 console.log("image"+Boolean(files.file));
@@ -351,22 +351,18 @@ module.exports = {
                Ads.save(function(err, result1) {
                if (err) throw err;
                else  callback(null,result1)
-                
              })
               
                },{resource_type: "auto"});
             }
-            
            })
-         
-        }], function (err, result) {
-            console.log("result--------->>>>"+JSON.stringify(result))
-             res.send({
+          }], function (err, result) {
+                 console.log("result--------->>>>"+JSON.stringify(result))
+                 res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Ad created successfully"
                  });
-
         })
     },
 
@@ -383,7 +379,7 @@ module.exports = {
     }
 
     
-    // "showPageDetails": function(req, res) {
+    // "showAdsDetails": function(req, res) {
     //     createNewPage.findOne({_id: req.body.adsId}).exec(function(err, result){
     //         if(err) throw err;
     //         res.send({
@@ -392,7 +388,15 @@ module.exports = {
     //             responseMessage: "Pages details show successfully"
     //         })
     //     })
-    // }
+    // },
+
+    // "followerList": function(req,res){
+
+
+    // },
+
+
 }
+
 
  
