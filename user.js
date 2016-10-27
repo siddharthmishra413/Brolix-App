@@ -461,7 +461,7 @@ module.exports = {
                 responseMessage: "Data Show successfully"
             })
         })
-    }
+    },
 
     
     // "showAdsDetails": function(req, res) {
@@ -479,7 +479,24 @@ module.exports = {
 
 
     // },
+    
+      "followList" : function(req, res){
+        console.log("request---->>>"+JSON.stringify(req.body));
+        User.findOneAndUpdate({ _id :req.body._id},{
+                $push :{followers : req.body.followers}
+                    
+                  },
+                   {new: true}).exec(function(err, results){
+                    console.log("followers----->>>>>"+JSON.stringify(req.body.followers))
 
+                    if(err) return err;
+
+                      res.send({results:results,
+                      responseCode: 200,
+                      responseMessage: "Followed"});
+                    }); 
+
+  }
 
 }
 

@@ -56,7 +56,7 @@ app.post('/showPageDetails',user.showPageDetails);
 app.post('/createAds', user.createAds);
 app.get('/showAllAdsData', user.showAllAdsData);
 //app.get('/showAdsDetails', user.showAdsDetails);
-//app.post('/followerlist', user.followerlist);
+app.post('/followList', user.followList);
 
  
 
