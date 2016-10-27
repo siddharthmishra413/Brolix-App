@@ -78,6 +78,9 @@ var userSchema = new Schema({
     deviceType:{
         type:String
     },
+    otp:{
+        type:Number
+    },
     followers:[],
     notification_status:{
        type: String,
@@ -90,7 +93,7 @@ var userSchema = new Schema({
     },
     status: {
         type: String,
-        default: 'ACTIVE',
+        default: 'inActive',
         trim: true
     }
 
