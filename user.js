@@ -15,6 +15,8 @@
  var createNewAds = require("./model/createNewAds");
  var reportProblem = require("./model/reportProblem");
  var paypalPayment = require("./model/payment");
+ var waterfall = require('async-waterfall');
+ var multiparty = require('multiparty');
 
  cloudinary.config({
      cloud_name: 'mobiloitte-in',
@@ -24,6 +26,11 @@
  var avoid = {
         "password":0
     }
+ cloudinary.config({ 
+  cloud_name: 'demoproject', 
+  api_key: '377656625223734', 
+  api_secret: 'o33QOFnL3lExfEmtRPkvsKL7-q4' 
+    });
 
 
  var LocalStrategy = require('passport-local').Strategy;
@@ -398,7 +405,79 @@ module.exports = {
                 responseMessage: "Pages details show successfully"
             })
         })
+    },
+
+
+     // Api for create Ads
+    "createAds": function(req, res) {
+          waterfall([
+          function(callback){
+           var form = new multiparty.Form();
+           form.multiples = true;
+           form.parse(req, function(err, fields, files) {
+            var fileUrl =[];
+            console.log("files---->>>"+JSON.stringify(files));
+               for (var i = 0; i < files.file.length; i++) {
+               var filePath = files.file[i].path;
+               cloudinary.uploader.upload(filePath, function(result) { 
+               console.log("ygyghughuhh",result) 
+               fileUrl.push(result.url);
+               console.log("urls--=-=-=-=-=-=-=-=-=-=-=->>>"+JSON.stringify(fileUrl));
+                console.log("image"+Boolean(files.file));
+                var fileUrl1 = result.url;
+
+                   var extension = fileUrl1.split('.').pop(); 
+
+                    console.log(extension, extension === 'jpg');
+              if(extension === 'mp4')   req.body.video=result.url;
+               else  req.body.image=result.url;
+              
+              var Ads = new createNewAds(req.body);
+               Ads.save(function(err, result1) {
+               if (err) throw err;
+               else  callback(null,result1)
+                
+             })
+              
+               },{resource_type: "auto"});
+            }
+            
+           })
+         
+        }], function (err, result) {
+            console.log("result--------->>>>"+JSON.stringify(result))
+             res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Ad created successfully"
+                 });
+
+        })
+    },
+
+     // show all ads
+    "showAllAdsData": function(req, res) {
+         createNewAds.find({}).exec(function(err, result){
+            if(err) throw err;
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Data Show successfully"
+            })
+        })
     }
+
+    
+    // "showPageDetails": function(req, res) {
+    //     createNewPage.findOne({_id: req.body.adsId}).exec(function(err, result){
+    //         if(err) throw err;
+    //         res.send({
+    //             result: result,
+    //             responseCode: 200,
+    //             responseMessage: "Pages details show successfully"
+    //         })
+    //     })
+    // }
 }
 
  
