@@ -53,43 +53,57 @@
  };
 mongoose.connect('mongodb://localhost/brolix');
 
- 
-   function otp (req, res) {
+function otp(req, res, mobile) {
     var otp = Math.floor(Math.random() * 10000)
-         var data = JSON.stringify({
-               api_key: '71414445',
-               api_secret: '49e5f9fe2864877f',
-               to: '+917417773034',
-               from: '+917417773034',
-               text: 'You have been registerd ' + otp + ' OTP'
-         });
-         var options = {
-             host: 'rest.nexmo.com',
-             path: '/sms/json',
-             method: 'POST',
-             headers: {
-                 'Content-Type': 'application/json',
-                 'Content-Length': Buffer.byteLength(data)
-             }
-         };
-         var request = https.request(options);
-         request.write(data);
-         request.end();
-         var responseData = '';
-         request.on('response', function (req, res) {
-             res.on('data', function (chunk) {
-                 responseData += chunk;
-             });
-             res.on('end', function () {
-                 console.log(JSON.parse(responseData));
-             })
-         })
-         console.log("-------Your OTP------" + otp)
-         res.send({
-             otp, serverStatus: 200, msg: "OTP Found"
-         });
-     }
+    var data = JSON.stringify({
+        api_key: '71414445',
+        api_secret: '49e5f9fe2864877f',
+        to: '+91' + mobile,
+        from: '+917417773034',
+        text: 'You have been registerd ' + otp + ' OTP'
+    });
+    var options = {
+        host: 'rest.nexmo.com',
+        path: '/sms/json',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(data)
+        }
+    };
+    var request = https.request(options);
+    request.write(data);
+    request.end();
+    return otp;
+    console.log("-------Your OTP------" + otp)
+}
 
+function mail(email, otp) {
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: "dixitjorden@gmail.com",
+            pass: "8090404689"
+        }
+    });
+    var to = email
+    var mailOption = {
+        from: "testing.mobiloitte@gmail.com",
+        to: email,
+        subject: 'Brolix Otp',
+        text: 'you have a new submission with following details',
+        html: "Your otp is :" + otp
+    }
+    console.log("data in req" + email);
+    console.log("Dta in mailOption : " + JSON.stringify(mailOption));
+    transporter.sendMail(mailOption, function(error, info) {
+        if (error) {
+            console.log("internal server error");
+        }
+
+    });
+
+}
 
 module.exports = {
 
@@ -107,15 +121,17 @@ module.exports = {
                     responseMessage: "Email id must be unique."
                 });
             } else {
+                    req.body.otp = otp();
+                    //console.log("opt======>>>"+opt)
                 var details = req.body;
                 if (!(req.body.image === undefined || req.body.image == "")) {
-                    binaryData = req.body.image;
+                    var img_base64 = req.body.image;
+                    binaryData = new Buffer(img_base64, 'base64');
                     require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {
                      console.log(err);
                  });
-
-                 cloudinary.uploader.upload("test.jpeg", function(result) {
-                     req.body.photo = result.url;
+                 cloudinary.uploader.upload("test.jpeg", function(result) {                   
+                     req.body.image = result.url;
                      var user = new User(details);
                      user.save(function(err, result) {
                         if (err) throw err;
@@ -149,6 +165,31 @@ module.exports = {
         })
     },
 
+    //API for verify Otp
+  "verifyOtp": function (req, res, next) {
+                       User.findOne({_id:req.body.userId,otp:req.body.otp}).exec(function (err, results) {
+                        if(!results){
+                          res.send({
+                            responseCode:404,
+                            responseMessage:'Please enter correct otp'                         
+                          }); }
+
+                        else{
+                            User.findByIdAndUpdate(req.body.userId, {
+                                    $set:{
+                                        status:"ACTIVE"
+                                    }
+                                   },{new:true}).exec( function (err, user) {                                      
+                                      res.send({
+                                        responseCode:200,
+                                        responseMessage:'Otp verified successfully',
+                                        result:user
+                                      });                                
+                                  });                        
+                             }                           
+                       });
+                   },
+
 //API for user Login
     "login": function(req, res) {
         User.findOne({
@@ -175,29 +216,71 @@ module.exports = {
          }
         })
     },
-    
-    //API for user Profile
-    "editProfile": function(req, res) {
-         var user = new User(req.body);
-        User.findOne({email: req.body.email}, function(err, result) {
-            if (err) throw err;
-            else if (result) {
-                res.send({
-                    responseCode: 302,
-                    responseMessage: "This email is already register"
+    //API for Edit Profile
+"editProfile": function(req, res) {
+    var otp1;
+    var sendEmail = "",
+        sendMobileOtp = "";
+    User.findOne({
+        _id: req.params.id
+    }, function(err, data) {
+        if (err) return res.status(500).send(err);
+        else {
+            var sendEmail = (!req.body.email) ? "false" : (data.email == req.body.email) ? "exitEmail" : "true";
+            var sendMobileOtp = (req.body.mobileNumber && Boolean(sendEmail)) ? (data.mobileNumber == req.body.mobileNumber) ? "exitMobile" : "true" : "false";
+            if (sendEmail == "exitEmail") return res.status(403).send({
+                responseMessage: "This email is already register"
+            })
+            if (sendMobileOtp == "exitMobile") return res.status(403).send({
+                responseMessage: "This mobile number is already register"
+            })
+            otp1 = sendMobileOtp == "true" ? otp(req.body.mobileNumber) : otp();
+            console.log("otp--->" + otp1)
+            if (sendEmail == "true") {
+                mail(req.body.email, otp1);
+            }
+            if (sendMobileOtp == "exitMobile") {
+                req.body.otp = otp1;
+                req.body.status = "inActive";
+            }
+            if (Boolean(req.body.image)) {
+                var img_base64 = req.body.image;
+                binaryData = new Buffer(img_base64, 'base64');
+                require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {
+                    console.log(err);
                 });
-            }else{
-                User.findByIdAndUpdate(req.params.id, req.body,{new:true}).exec(function(err, result) {
-                if (err) throw err;
+                cloudinary.uploader.upload("test.jpeg", function(result) {
+                    req.body.image = result.url;
+                    User.findByIdAndUpdate(req.params.id, req.body, {
+                        new: true
+                    }).exec(function(err, result) {
+                        if (err) throw err;
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "Profile updated successfully"
+                        });
+                    });
+
+                });
+            } else {
+                req.body.image = req.body.url;
+                User.findByIdAndUpdate(req.params.id, req.body, {
+                    new: true
+                }).exec(function(err, result) {
+                    if (err) throw err;
                     res.send({
                         result: result,
                         responseCode: 200,
-                        responseMessage: "Profile data show successfully"
+                        responseMessage: "Profile updated successfully"
                     });
-                })
+                });
+
             }
-        })
-    },
+        }
+    })
+
+},
 
     //API for user Details
     "allUserDetails": function(req, res) {
@@ -277,6 +360,8 @@ module.exports = {
          }
      });
  },
+
+
 
     //API for create Page
     "createPage": function(req, res) {

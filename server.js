@@ -41,6 +41,7 @@ app.all('/*', function(req, res, next) {
 //authUser.authUser,
 app.post('/signup', user.signup);
 app.post('/login', user.login);
+app.post('/verifyOtp', user.verifyOtp);
 app.post('/forgotPassword',user.forgotPassword);
 app.get('/allUserDetails',user.allUserDetails);
 app.post('/userProfile',user.userProfile);
