@@ -17,7 +17,7 @@ var createCouponsSchema = new Schema({
         type: String,
         trim: true
     },
-    pageName: {
+    couponName: {
         type: String,
         trim: true
     },
@@ -36,11 +36,10 @@ var createCouponsSchema = new Schema({
         type: String
     },
     winners: {
-        type: String
+        type: Number
     },
     coupons: {
-        type: String,
-        trim: true
+        type: Number
     },
     whoWillSeeYourAdd: [{
         country:{type: String},
