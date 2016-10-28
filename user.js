@@ -482,12 +482,12 @@ module.exports = {
     
       "followList" : function(req, res){
         console.log("request---->>>"+JSON.stringify(req.body));
-        User.findOneAndUpdate({ _id :req.body._id},{
+        User.findOneAndUpdate({ _id :req.body.userId},{
                 $push :{followers : req.body.followers}
                     
                   },
                    {new: true}).exec(function(err, results){
-                    console.log("followers----->>>>>"+JSON.stringify(req.body.followers))
+                    console.log("followers----->>>>>"+JSON.stringify(results))
 
                     if(err) return err;
 
@@ -496,7 +496,41 @@ module.exports = {
                       responseMessage: "Followed"});
                     }); 
 
-  }
+  },
+
+  "videoCount": function(req, res){
+     
+      console.log("request---->>>"+JSON.stringify(req.body));
+
+      User.findOne({_id:req.body.userId,viewedAd:req.body.adId}, function(err, result){
+       
+        if(err) res.status(500).send(err);
+        else if(!result){
+          createNewAds.findOneAndUpdate({_id:req.body.adId},{
+            $inc:{count:1 }
+          },function(err,data){
+           if (err) res.status(500).send(err);
+           else{
+               
+               User.findOneAndUpdate({_id:req.body.userId},{
+                $push:{viewedAd:req.body.adId}
+               },function(err,user){
+                res.status(200).send({msg:"success"});
+               })
+
+           }
+
+          })
+
+        }
+        else{
+   res.status(200).send({msg:"allready added adId"});
+
+        }
+       
+
+     })
+    }
 
 }
 

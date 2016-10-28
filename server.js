@@ -57,6 +57,7 @@ app.post('/createAds', user.createAds);
 app.get('/showAllAdsData', user.showAllAdsData);
 //app.get('/showAdsDetails', user.showAdsDetails);
 app.post('/followList', user.followList);
+app.post('/videoCount', user.videoCount);
 
  
 
