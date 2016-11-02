@@ -87,6 +87,7 @@ var userSchema = new Schema({
        default:'on',
        trim:true
    },
+    viewedAd:[],
     createdAt: {
         type: Date,
         default: Date.now

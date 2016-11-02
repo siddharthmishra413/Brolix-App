@@ -498,12 +498,9 @@ module.exports = {
 
   },
 
-  "videoCount": function(req, res){
-     
+      "videoCount": function(req, res){
       console.log("request---->>>"+JSON.stringify(req.body));
-
       User.findOne({_id:req.body.userId,viewedAd:req.body.adId}, function(err, result){
-       
         if(err) res.status(500).send(err);
         else if(!result){
           createNewAds.findOneAndUpdate({_id:req.body.adId},{
@@ -511,24 +508,19 @@ module.exports = {
           },function(err,data){
            if (err) res.status(500).send(err);
            else{
-               
                User.findOneAndUpdate({_id:req.body.userId},{
                 $push:{viewedAd:req.body.adId}
                },function(err,user){
                 res.status(200).send({msg:"success"});
                })
-
            }
 
           })
 
         }
         else{
-   res.status(200).send({msg:"allready added adId"});
-
+        res.status(200).send({msg:"allready Watched"});
         }
-       
-
      })
     }
 

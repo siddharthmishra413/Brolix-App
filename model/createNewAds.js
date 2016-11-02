@@ -55,6 +55,10 @@ var createNewAdsSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    count: {
+      type: Number,
+      default:0
+    },
     status: {
         type: String,
         default: 'ACTIVE',
