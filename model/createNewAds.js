@@ -55,6 +55,8 @@ var createNewAdsSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    raffleCount:[],
+    winners: [],
     count: {
       type: Number,
       default:0

@@ -64,7 +64,8 @@ var userSchema = new Schema({
         type: String
     },
     brolix: {
-        type: String
+       type: Number,
+        default:0
     },    
     coupons: {
         type: String

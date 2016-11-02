@@ -522,7 +522,48 @@ module.exports = {
         res.status(200).send({msg:"allready Watched"});
         }
      })
+    },
+
+    "raffleJoin": function(req, res){
+      console.log("request---->>>"+JSON.stringify(req.body));
+      createNewAds.findOne({_id:req.body.adId,raffleCount:req.body.userId}, function(err, result){
+       
+        if(err) res.status(500).send(err);
+        if(result){res.status(200).send({msg:"allready watched"});}
+        else{
+          User.findOneAndUpdate({_id:req.body.userId},{
+            $inc:{brolix:50 }
+          },function(err,data){
+           if (err) res.status(500).send(err);
+           else{
+               createNewAds.findOneAndUpdate({_id:req.body.adId},{
+                $push:{raffleCount:req.body.userId}
+               },{new:true}).exec(function(err,user){
+                console.log("user------>>>", JSON.stringify(user))
+                 var len = user.raffleCount.length;
+                 if(len>0){
+                  console.log("length--->>>", user.raffleCount.length)
+                 if(len%100 == 0){
+                  var i = len-1;
+                createNewAds.findOneAndUpdate({_id:req.body.adId},{
+                $push:{winners:user.raffleCount[i]}
+               },{new:true}).exec(function(err,result){
+                res.status(300).send({msg:"success",result:result});
+               })
+              }else{
+                console.log("userfdfdf------>>>", JSON.stringify(user))
+                res.status(200).send({msg:"success",user:user});
+               }
+             }
+           })
+          }
+     })
+      
     }
+
+})
+}
+
 
 }
 
