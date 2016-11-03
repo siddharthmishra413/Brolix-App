@@ -16,6 +16,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true,parameterLimit:50000}));
+//app.use(express.bodyParser({limit: '50mb'}));
  
 
 
@@ -50,6 +53,7 @@ app.post('/forgotPassword',user.forgotPassword);
 app.get('/allUserDetails',user.allUserDetails);
 app.post('/userProfile',user.userProfile);
 app.put('/editProfile/:id',user.editProfile);
+app.put('/changePassword/:id',user.changePassword);
 app.post('/createPage', user.createPage);
 app.get('/showAllPages',user.showAllPages);
 app.post('/showPageDetails',user.showPageDetails);
@@ -59,6 +63,11 @@ app.get('/showAllAdsData', user.showAllAdsData);
 app.post('/followList', user.followList);
 app.post('/videoCount', user.videoCount);
 app.post('/raffleJoin', user.raffleJoin);
+app.post('/createCoupons', user.createCoupons);
+app.get('/showAllCoupons',user.showAllCoupons);
+app.post('/showCouponsDetails',user.showCouponsDetails);
+app.post('/couponsSearch',user.couponsSearch);
+//app.post('/otp',user.otp);
 
  
 
@@ -67,16 +76,3 @@ app.post('/raffleJoin', user.raffleJoin);
 app.listen(port);
 
 console.log('http://localhost:' + port);
-
-// Listen application request on port 3000
-
-// var fs = require('fs');
-// var https = require('https');
-// var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
-// var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
-
-// var credentials = {key: privateKey, cert: certificate};
-
-// var httpsServer = https.createServer(credentials, app);
-
-// httpsServer.listen(port);
