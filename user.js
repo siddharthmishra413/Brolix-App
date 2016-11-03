@@ -519,10 +519,7 @@
     }
 
 })
-}
-
-
-}
+},
 
      //API for create Coupons
      "createCoupons": function(req, res) {
@@ -578,4 +575,4 @@
 
 
  }
->>>>>>> akash
+
