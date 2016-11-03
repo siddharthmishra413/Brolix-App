@@ -35,5 +35,5 @@ var reportProblemSchema = new Schema({
         trim: true
     }
 });
-var reportProblem = mongoose.model('reportProblemSchema', reportProblemSchema);
+var reportProblem = mongoose.model('reportProblem', reportProblemSchema);
 module.exports = reportProblem;

@@ -56,6 +56,7 @@ var createNewAdsSchema = new Schema({
         default: Date.now
     },
     raffleCount:[],
+    like:[],
     winners: [],
     count: {
       type: Number,
@@ -67,5 +68,5 @@ var createNewAdsSchema = new Schema({
         trim: true
     }
 });
-var createNewAds = mongoose.model('createNewAdsSchema', createNewAdsSchema);
+var createNewAds = mongoose.model('createNewAds', createNewAdsSchema);
 module.exports = createNewAds;

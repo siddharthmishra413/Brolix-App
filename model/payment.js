@@ -35,5 +35,5 @@ var paypalPaymentSchema = new Schema({
         trim: true
     }
 });
-var paypalPayment = mongoose.model('paypalPaymentSchema', paypalPaymentSchema);
+var paypalPayment = mongoose.model('paypalPayment', paypalPaymentSchema);
 module.exports = paypalPayment;
