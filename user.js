@@ -467,7 +467,7 @@
         console.log("req======>>>"+JSON.stringify(req.body))
         var re = new RegExp(req.body.search, 'i');
 
-    createCoupons.find({status:'ACTIVE'}).or([{ 'country': { $regex: re }},{ 'state': { $regex: re }},{ 'city': { $regex: re }}]).sort({country: -1}).exec(function(err, result) {
+    createCoupons.find({status:'ACTIVE'}).or([{ 'whoWillSeeYourAdd.country': { $regex: re }},{ 'whoWillSeeYourAdd.state': { $regex: re }},{ 'whoWillSeeYourAdd.city': { $regex: re }}]).sort({country: -1}).exec(function(err, result) {
         res.send({
              responseCode: 200,
              responseMessage: "Show coupons successfully.",
