@@ -30,5 +30,5 @@ var cashBrolixSchema = new Schema({
         default: Date.now
     },
 });
-var cashBrolixSchema = mongoose.model('cashBrolixSchema', cashBrolixSchema);
+var cashBrolixSchema = mongoose.model('cashBrolix', cashBrolixSchema);
 module.exports = cashBrolixSchema;

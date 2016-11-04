@@ -64,5 +64,5 @@ var createCouponsSchema = new Schema({
         trim: true
     }
 });
-var createCoupons = mongoose.model('createCouponsSchema', createCouponsSchema);
+var createCoupons = mongoose.model('createCoupons', createCouponsSchema);
 module.exports = createCoupons;
