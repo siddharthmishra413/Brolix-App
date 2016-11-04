@@ -373,33 +373,24 @@
            form.multiples = true;
            form.parse(req, function(err, fields, files) {
             var fileUrl =[];
-            console.log("files---->>>"+JSON.stringify(files));
                for (var i = 0; i < files.file.length; i++) {
                var filePath = files.file[i].path;
                cloudinary.uploader.upload(filePath, function(result) { 
-               console.log("result---->>>>",result) 
                fileUrl.push(result.url);
-               console.log("urls--=-=-=-=-=-=-=-=-=-=-=->>>"+JSON.stringify(fileUrl));
                 console.log("image"+Boolean(files.file));
                 var fileUrl1 = result.url;
-
-                   var extension = fileUrl1.split('.').pop(); 
-
-                    console.log(extension, extension === 'jpg');
-              if(extension === 'mp4')   req.body.video=result.url;
+                var extension = fileUrl1.split('.').pop(); 
+                if(extension === 'mp4')   req.body.video=result.url;
                else  req.body.image=result.url;
-              
               var Ads = new createNewAds(req.body);
                Ads.save(function(err, result1) {
                if (err) throw err;
                else  callback(null,result1)
              })
-              
                },{resource_type: "auto"});
             }
            })
           }], function (err, result) {
-                 console.log("result--------->>>>"+JSON.stringify(result))
                  res.send({
                     result: result,
                     responseCode: 200,
@@ -438,16 +429,12 @@
     // },
     
       "followList" : function(req, res){
-        console.log("request---->>>"+JSON.stringify(req.body));
         User.findOneAndUpdate({ _id :req.body.userId},{
                 $push :{followers : req.body.followers}
                     
                   },
                    {new: true}).exec(function(err, results){
-                    console.log("followers----->>>>>"+JSON.stringify(results))
-
                     if(err) return err;
-
                       res.send({results:results,
                       responseCode: 200,
                       responseMessage: "Followed"});
@@ -456,8 +443,7 @@
   },
 
       "videoCount": function(req, res){
-      console.log("request---->>>"+JSON.stringify(req.body));
-      User.findOne({_id:req.body.userId,viewedAd:req.body.adId}, function(err, result){
+        User.findOne({_id:req.body.userId,viewedAd:req.body.adId}, function(err, result){
         if(err) res.status(500).send(err);
         else if(!result){
           createNewAds.findOneAndUpdate({_id:req.body.adId},{
@@ -468,18 +454,18 @@
                User.findOneAndUpdate({_id:req.body.userId},{
                 $push:{viewedAd:req.body.adId}
                },function(err,user){
-                res.status(200).send({msg:"success"});
+                res.status(200).send({responseMessage:"success"});
                })
            }
-
           })
 
         }
         else{
-        res.status(200).send({msg:"allready Watched"});
+        res.status(200).send({responseMessage:"allready Watched"});
         }
      })
-    },
+
+ },
 
     "raffleJoin": function(req, res){
       console.log("request---->>>"+JSON.stringify(req.body));
@@ -500,10 +486,12 @@
                  var len = user.raffleCount.length;
                  if(len>0){
                   console.log("length--->>>", user.raffleCount.length)
-                 if(len%100 == 0){
-                  var i = len-1;
+                 if(len%100== 0){
+                   var randomIndex = Math.floor( Math.random() * 100 );
+                   console.log("randomIndex---->>>>", randomIndex)
+                  
                 createNewAds.findOneAndUpdate({_id:req.body.adId},{
-                $push:{winners:user.raffleCount[i]}
+                $push:{winners:user.raffleCount[randomIndex]}
                },{new:true}).exec(function(err,result){
                 res.status(300).send({msg:"success",result:result});
                })
@@ -517,8 +505,8 @@
      })
       
     }
+    })
 
-})
 },
 
      //API for create Coupons
