@@ -13,6 +13,10 @@ var createNewAdsSchema = new Schema({
         type: String,
         trim: true
     },
+    adsType: {
+        type: String,
+        trim: true
+    },
     type: {
         type: String,
         trim: true
@@ -45,6 +49,9 @@ var createNewAdsSchema = new Schema({
         type: String
     },
     linkDescription: {
+        type: String
+    },
+    couponCode: {
         type: String
     },
     comments:[{

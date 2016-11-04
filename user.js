@@ -10,13 +10,14 @@
  var createNewPage = require("./model/createNewPage");
  var cashBrolixSchema = require("./model/sendAndReceiveCashBrolix");
  var chat = require("./model/chat");
- var createCoupons = require("./model/createCoupons");
  var createEvents = require("./model/createEvents");
  var createNewAds = require("./model/createNewAds");
  var reportProblem = require("./model/reportProblem");
  var paypalPayment = require("./model/payment");
  var waterfall = require('async-waterfall');
  var multiparty = require('multiparty');
+ var cc = require('coupon-code');
+ var voucher_codes = require('voucher-code-generator');
 
  cloudinary.config({
      cloud_name: 'mobiloitte-in',
@@ -57,7 +58,7 @@
      console.log("-------Your OTP------" + otp)
  }
 
- function mail(email, otp) {
+ function mail(email, massege, otp) {
      var transporter = nodemailer.createTransport({
          service: 'Gmail',
          auth: {
@@ -71,7 +72,8 @@
          to: email,
          subject: 'Brolix Otp',
          text: 'you have a new submission with following details',
-         html: "Your otp is :" + otp
+         html: massege + "-" + otp
+             // "Your otp is :"
      }
      console.log("data in req" + email);
      console.log("Dta in mailOption : " + JSON.stringify(mailOption));
@@ -187,7 +189,8 @@
                  })
                  otp1 = sendMobileOtp == "true" ? otp(req.body.mobileNumber) : otp();
                  if (sendEmail == "true") {
-                     mail(req.body.email, otp1);
+                     var massege = "Your otp is :"
+                     mail(req.body.email, massege, otp1);
                  }
                  if (sendMobileOtp == "exitMobile") {
                      req.body.otp = otp1;
@@ -382,9 +385,7 @@
                              console.log("urls--=-=-=-=-=-=-=-=-=-=-=->>>" + JSON.stringify(fileUrl));
                              console.log("image" + Boolean(files.file));
                              var fileUrl1 = result.url;
-
                              var extension = fileUrl1.split('.').pop();
-
                              console.log(extension, extension === 'jpg');
                              if (extension === 'mp4') req.body.video = result.url;
                              else req.body.image = result.url;
@@ -522,42 +523,6 @@
          })
      },
 
-     //API for create Coupons
-     "createCoupons": function(req, res) {
-         var coupons = new createCoupons(req.body);
-         coupons.save(function(err, result) {
-             if (err) throw err;
-             res.send({
-                 result: result,
-                 responseCode: 200,
-                 responseMessage: "Coupons create successfully."
-             });
-         })
-     },
-
-     //API for Show Coupons
-     "showAllCoupons": function(req, res) {
-         createCoupons.find({}).exec(function(err, result) {
-             if (err) throw err;
-             res.send({
-                 result: result,
-                 responseCode: 200,
-                 responseMessage: "All coupons show successfully."
-             })
-         })
-     },
-
-     //API for Show Coupons Details
-     "showCouponsDetails": function(req, res) {
-         createCoupons.findOne({ _id: req.body.couponId }).exec(function(err, result) {
-             if (err) throw err;
-             res.send({
-                 result: result,
-                 responseCode: 200,
-                 responseMessage: "Coupon details show successfully."
-             })
-         })
-     },
 
      //API for Show Coupons Search
      "couponsSearch": function(req, res) {
@@ -647,17 +612,37 @@
          })
      },
 
+     //API Comment on Ads
      "commentOnAds": function(req, res) {
-         console.log("Request Body" + JSON.stringify(req.body));
          createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
              $push: { "comments": { userId: req.body.userId, comment: req.body.comment } }
          }, { new: true }).exec(function(err, results) {
              if (err) return err;
              res.send({
-                 results,
+                 results: results,
                  responseCode: 200,
                  responseMessage: "Comments save with concerned User details."
              });
+         })
+     },
+
+     //API Comment on Ads
+     "sendCoupon": function(req, res) {
+         User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result) {
+             if (!result) {
+                 res.send({
+                     responseCode: 404,
+                     responseMessage: 'User does not exists.'
+                 });
+             } else {
+                 console.log(result.email)
+                 var massege = "Coupon Code is:-"
+                 mail(result.email, massege, req.body.couponCode);
+                 res.send({
+                     responseCode: 200,
+                     responseMessage: "Send your coupon successfully."
+                 });
+             }
          })
      }
 
