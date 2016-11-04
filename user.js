@@ -88,7 +88,7 @@
 
 
      //API for user signUP
-     "signup": function(req, res) {        
+     "signup": function(req, res) {
          User.findOne({
              email: req.body.email
          }, function(err, result) {
@@ -98,22 +98,22 @@
                      responseCode: 302,
                      responseMessage: "Email id must be unique."
                  });
-             }else{
+             } else {
                  req.body.otp = otp();
-                 var user = User(req.body)                  
-                     user.save(function(err, result) {
-                         if (err) { console.log(err) }
-                         var token = jwt.sign(!result, config.secreteKey);
-                         res.header({
-                             "appToken": token
-                         }).send({
-                             result: result,
-                             token: token,
-                             responseCode: 200,
-                             responseMessage: "You have been registered successfully."
-                         });
-                     })             
-           } 
+                 var user = User(req.body)
+                 user.save(function(err, result) {
+                     if (err) { console.log(err) }
+                     var token = jwt.sign(!result, config.secreteKey);
+                     res.header({
+                         "appToken": token
+                     }).send({
+                         result: result,
+                         token: token,
+                         responseCode: 200,
+                         responseMessage: "You have been registered successfully."
+                     });
+                 })
+             }
          })
      },
 
@@ -194,14 +194,14 @@
                      req.body.status = "inActive";
                  }
                  if (Boolean(req.body.image) || Boolean(req.body.coverImage)) {
-                     var img_base64 = Boolean(req.body.image)==true?req.body.image:req.body.coverImage;
+                     var img_base64 = Boolean(req.body.image) == true ? req.body.image : req.body.coverImage;
                      binaryData = new Buffer(img_base64, 'base64');
                      require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {
                          console.log(err);
                      });
                      cloudinary.uploader.upload("test.jpeg", function(result) {
-                         console.log("new url-->"+JSON.stringify(result));
-                         Boolean(req.body.image)==true?(req.body.image=result.url):(req.body.coverImage=result.url);
+                         console.log("new url-->" + JSON.stringify(result));
+                         Boolean(req.body.image) == true ? (req.body.image = result.url) : (req.body.coverImage = result.url);
                          User.findByIdAndUpdate(req.params.id, req.body, {
                              new: true
                          }).exec(function(err, result) {
@@ -366,160 +366,161 @@
 
 
      // Api for create Ads
-    "createAds": function(req, res) {
-          waterfall([
-          function(callback){
-           var form = new multiparty.Form();
-           form.multiples = true;
-           form.parse(req, function(err, fields, files) {
-            var fileUrl =[];
-            console.log("files---->>>"+JSON.stringify(files));
-               for (var i = 0; i < files.file.length; i++) {
-               var filePath = files.file[i].path;
-               cloudinary.uploader.upload(filePath, function(result) { 
-               console.log("result---->>>>",result) 
-               fileUrl.push(result.url);
-               console.log("urls--=-=-=-=-=-=-=-=-=-=-=->>>"+JSON.stringify(fileUrl));
-                console.log("image"+Boolean(files.file));
-                var fileUrl1 = result.url;
+     "createAds": function(req, res) {
+         waterfall([
+             function(callback) {
+                 var form = new multiparty.Form();
+                 form.multiples = true;
+                 form.parse(req, function(err, fields, files) {
+                     var fileUrl = [];
+                     console.log("files---->>>" + JSON.stringify(files));
+                     for (var i = 0; i < files.file.length; i++) {
+                         var filePath = files.file[i].path;
+                         cloudinary.uploader.upload(filePath, function(result) {
+                             console.log("result---->>>>", result)
+                             fileUrl.push(result.url);
+                             console.log("urls--=-=-=-=-=-=-=-=-=-=-=->>>" + JSON.stringify(fileUrl));
+                             console.log("image" + Boolean(files.file));
+                             var fileUrl1 = result.url;
 
-                   var extension = fileUrl1.split('.').pop(); 
+                             var extension = fileUrl1.split('.').pop();
 
-                    console.log(extension, extension === 'jpg');
-              if(extension === 'mp4')   req.body.video=result.url;
-               else  req.body.image=result.url;
-              
-              var Ads = new createNewAds(req.body);
-               Ads.save(function(err, result1) {
-               if (err) throw err;
-               else  callback(null,result1)
-             })
-              
-               },{resource_type: "auto"});
-            }
-           })
-          }], function (err, result) {
-                 console.log("result--------->>>>"+JSON.stringify(result))
-                 res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Ad created successfully"
-                 });
-        })
-    },
+                             console.log(extension, extension === 'jpg');
+                             if (extension === 'mp4') req.body.video = result.url;
+                             else req.body.image = result.url;
+
+                             var Ads = new createNewAds(req.body);
+                             Ads.save(function(err, result1) {
+                                 if (err) throw err;
+                                 else callback(null, result1)
+                             })
+
+                         }, { resource_type: "auto" });
+                     }
+                 })
+             }
+         ], function(err, result) {
+             console.log("result--------->>>>" + JSON.stringify(result))
+             res.send({
+                 result: result,
+                 responseCode: 200,
+                 responseMessage: "Ad created successfully"
+             });
+         })
+     },
 
      // show all ads
-    "showAllAdsData": function(req, res) {
-         createNewAds.find({}).exec(function(err, result){
-            if(err) throw err;
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Data Show successfully"
-            })
-        })
-    },
+     "showAllAdsData": function(req, res) {
+         createNewAds.find({}).exec(function(err, result) {
+             if (err) throw err;
+             res.send({
+                 result: result,
+                 responseCode: 200,
+                 responseMessage: "Data Show successfully"
+             })
+         })
+     },
 
-    
-    // "showAdsDetails": function(req, res) {
-    //     createNewPage.findOne({_id: req.body.adsId}).exec(function(err, result){
-    //         if(err) throw err;
-    //         res.send({
-    //             result: result,
-    //             responseCode: 200,
-    //             responseMessage: "Pages details show successfully"
-    //         })
-    //     })
-    // },
+     "followList": function(req, res) {
+         if (req.body.follow == "follow") {
+             User.findOneAndUpdate({
+                 _id: req.body.userId
+             }, {
+                 $push: {
+                     followers: req.body.followers
+                 }
+             }, {
+                 new: true
+             }).exec(function(err, results) {
+                 if (err) return err;
+                 res.send({
+                     results: results,
+                     responseCode: 200,
+                     responseMessage: "Followed"
+                 });
+             })
+         } else {
+             User.findOneAndUpdate({
+                 _id: req.body.userId
+             }, {
+                 $pop: {
+                     followers: req.body.followers
+                 }
+             }, {
+                 new: true
+             }).exec(function(err, results) {
+                 if (err) return err;
+                 res.send({
+                     results: results,
+                     responseCode: 200,
+                     responseMessage: "Unfollowed"
+                 });
+             })
+         }
 
-    // "followerList": function(req,res){
+     },
 
+     "videoCount": function(req, res) {
+         console.log("request---->>>" + JSON.stringify(req.body));
+         User.findOne({ _id: req.body.userId, viewedAd: req.body.adId }, function(err, result) {
+             if (err) res.status(500).send(err);
+             else if (!result) {
+                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+                     $inc: { count: 1 }
+                 }, function(err, data) {
+                     if (err) res.status(500).send(err);
+                     else {
+                         User.findOneAndUpdate({ _id: req.body.userId }, {
+                             $push: { viewedAd: req.body.adId }
+                         }, function(err, user) {
+                             res.status(200).send({ responseMessage: "success" });
+                         })
+                     }
 
-    // },
-    
-      "followList" : function(req, res){
-        console.log("request---->>>"+JSON.stringify(req.body));
-        User.findOneAndUpdate({ _id :req.body.userId},{
-                $push :{followers : req.body.followers}
-                    
-                  },
-                   {new: true}).exec(function(err, results){
-                    console.log("followers----->>>>>"+JSON.stringify(results))
+                 })
 
-                    if(err) return err;
-
-                      res.send({results:results,
-                      responseCode: 200,
-                      responseMessage: "Followed"});
-                    }); 
-
-  },
-
-      "videoCount": function(req, res){
-      console.log("request---->>>"+JSON.stringify(req.body));
-      User.findOne({_id:req.body.userId,viewedAd:req.body.adId}, function(err, result){
-        if(err) res.status(500).send(err);
-        else if(!result){
-          createNewAds.findOneAndUpdate({_id:req.body.adId},{
-            $inc:{count:1 }
-          },function(err,data){
-           if (err) res.status(500).send(err);
-           else{
-               User.findOneAndUpdate({_id:req.body.userId},{
-                $push:{viewedAd:req.body.adId}
-               },function(err,user){
-                res.status(200).send({msg:"success"});
-               })
-           }
-
-          })
-
-        }
-        else{
-        res.status(200).send({msg:"allready Watched"});
-        }
-     })
-    },
-
-    "raffleJoin": function(req, res){
-      console.log("request---->>>"+JSON.stringify(req.body));
-      createNewAds.findOne({_id:req.body.adId,raffleCount:req.body.userId}, function(err, result){
-       
-        if(err) res.status(500).send(err);
-        if(result){res.status(200).send({msg:"allready watched"});}
-        else{
-          User.findOneAndUpdate({_id:req.body.userId},{
-            $inc:{brolix:50 }
-          },function(err,data){
-           if (err) res.status(500).send(err);
-           else{
-               createNewAds.findOneAndUpdate({_id:req.body.adId},{
-                $push:{raffleCount:req.body.userId}
-               },{new:true}).exec(function(err,user){
-                console.log("user------>>>", JSON.stringify(user))
-                 var len = user.raffleCount.length;
-                 if(len>0){
-                  console.log("length--->>>", user.raffleCount.length)
-                 if(len%100 == 0){
-                  var i = len-1;
-                createNewAds.findOneAndUpdate({_id:req.body.adId},{
-                $push:{winners:user.raffleCount[i]}
-               },{new:true}).exec(function(err,result){
-                res.status(300).send({msg:"success",result:result});
-               })
-              }else{
-                console.log("userfdfdf------>>>", JSON.stringify(user))
-                res.status(200).send({msg:"success",user:user});
-               }
+             } else {
+                 res.status(200).send({ responseMessage: "allready Watched" });
              }
-           })
-          }
-     })
-      
-    }
+         })
+     },
 
-})
-},
+     "raffleJoin": function(req, res) {
+         console.log("request---->>>" + JSON.stringify(req.body));
+         createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
+
+             if (err) res.status(500).send(err);
+             if (result) { res.status(200).send({ responseMessage: "allready watched" }); } else {
+                 User.findOneAndUpdate({ _id: req.body.userId }, {
+                     $inc: { brolix: 50 }
+                 }, function(err, data) {
+                     if (err) res.status(500).send(err);
+                     else {
+                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+                             $push: { raffleCount: req.body.userId }
+                         }, { new: true }).exec(function(err, user) {
+                             console.log("user------>>>", JSON.stringify(user))
+                             var len = user.raffleCount.length;
+                             if (len > 0) {
+                                 console.log("length--->>>", user.raffleCount.length)
+                                 if (len % 100 == 0) {
+                                     var i = len - 1;
+                                     createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+                                         $push: { winners: user.raffleCount[i] }
+                                     }, { new: true }).exec(function(err, result) {
+                                         res.status(300).send({ responseMessage: "success", result: result });
+                                     })
+                                 } else {
+                                     console.log("userfdfdf------>>>", JSON.stringify(user))
+                                     res.status(200).send({ responseMessage: "success", user: user });
+                                 }
+                             }
+                         })
+                     }
+                 })
+             }
+         })
+     },
 
      //API for create Coupons
      "createCoupons": function(req, res) {
@@ -535,7 +536,7 @@
      },
 
      //API for Show Coupons
-      "showAllCoupons": function(req, res) {
+     "showAllCoupons": function(req, res) {
          createCoupons.find({}).exec(function(err, result) {
              if (err) throw err;
              res.send({
@@ -547,7 +548,7 @@
      },
 
      //API for Show Coupons Details
-      "showCouponsDetails": function(req, res) {
+     "showCouponsDetails": function(req, res) {
          createCoupons.findOne({ _id: req.body.couponId }).exec(function(err, result) {
              if (err) throw err;
              res.send({
@@ -559,20 +560,106 @@
      },
 
      //API for Show Coupons Search
-    "couponsSearch":function(req, res) {
-        console.log("req======>>>"+JSON.stringify(req.body))
-        var re = new RegExp(req.body.search, 'i');
+     "couponsSearch": function(req, res) {
+         console.log("req======>>>" + JSON.stringify(req.body))
+         var re = new RegExp(req.body.search, 'i');
 
-    createCoupons.find({status:'ACTIVE'}).or([{ 'whoWillSeeYourAdd.country': { $regex: re }},{ 'whoWillSeeYourAdd.state': { $regex: re }},{ 'whoWillSeeYourAdd.city': { $regex: re }}]).sort({country: -1}).exec(function(err, result) {
-        res.send({
-             responseCode: 200,
-             responseMessage: "Show coupons successfully.",
-             result: result
-         });
-});
+         createCoupons.find({ status: 'ACTIVE' }).or([{ 'whoWillSeeYourAdd.country': { $regex: re } }, { 'whoWillSeeYourAdd.state': { $regex: re } }, { 'whoWillSeeYourAdd.city': { $regex: re } }]).sort({ country: -1 }).exec(function(err, result) {
+             res.send({
+                 responseCode: 200,
+                 responseMessage: "Show coupons successfully.",
+                 result: result
+             });
+         })
+     },
+
+     //API for Show Search
+     "searchForCoupons": function(req, res) {
+         var data = {
+             'whoWillSeeYourAdd.country': req.body.country,
+             'whoWillSeeYourAdd.state': req.body.state,
+             'whoWillSeeYourAdd.city': req.body.city
+         }
+         for (var key in data) {
+             if (data.hasOwnProperty(key)) {
+                 if (data[key] == "" || data[key] == null || data[key] == undefined) {
+                     delete data[key];
+                 }
+             }
+         }
+         createCoupons.find({ $and: [data] }).exec(function(err, results) {
+             res.send({
+                 results: results,
+                 responseCode: 200,
+                 responseMessage: "All Details Found"
+
+             })
+         })
+     },
+
+     //API for Like And Unlike
+     "likeAndUnlike": function(req, res) {
+         if (req.body.flag == "like") {
+             createNewAds.findOneAndUpdate({
+                 _id: req.body.adId
+             }, {
+                 $push: {
+                     like: req.body.userId
+                 }
+             }, { new: true }).exec(function(err, results) {
+                 if (err) return err;
+                 res.send({
+                     results: results,
+                     responseCode: 200,
+                     responseMessage: "Liked"
+                 });
+             })
+         } else {
+             createNewAds.findOneAndUpdate({
+                 _id: req.body.adId
+             }, {
+                 $pop: {
+                     like: req.body.userId
+                 }
+             }, { new: true }).exec(function(err, results) {
+                 if (err) return err;
+                 res.send({
+                     results: results,
+                     responseCode: 200,
+                     responseMessage: "Unliked"
+                 });
+             })
+
+         }
+
+     },
+
+     //API Report Problem
+     "reportProblem": function(req, res) {
+         var report = new reportProblem(req.body);
+         report.save(function(err, result) {
+             if (err) throw err;
+             res.send({
+                 results: result,
+                 responseCode: 200,
+                 responseMessage: "Report submitted successfully."
+             });
+         })
+     },
+
+     "commentOnAds": function(req, res) {
+         console.log("Request Body" + JSON.stringify(req.body));
+         createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+             $push: { "comments": { userId: req.body.userId, comment: req.body.comment } }
+         }, { new: true }).exec(function(err, results) {
+             if (err) return err;
+             res.send({
+                 results,
+                 responseCode: 200,
+                 responseMessage: "Comments save with concerned User details."
+             });
+         })
+     }
+
 
  }
-
-
- }
-

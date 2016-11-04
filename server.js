@@ -67,6 +67,10 @@ app.post('/createCoupons', user.createCoupons);
 app.get('/showAllCoupons',user.showAllCoupons);
 app.post('/showCouponsDetails',user.showCouponsDetails);
 app.post('/couponsSearch',user.couponsSearch);
+app.post('/searchForCoupons',user.searchForCoupons);
+app.post('/likeAndUnlike',user.likeAndUnlike);
+app.post('/reportProblem',user.reportProblem);
+app.post('/commentOnAds',user.commentOnAds);
 //app.post('/otp',user.otp);
 
  
