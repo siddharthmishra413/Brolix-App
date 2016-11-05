@@ -72,6 +72,7 @@ app.post('/likeAndUnlike',user.likeAndUnlike);
 app.post('/reportProblem',user.reportProblem);
 app.post('/commentOnAds',user.commentOnAds);
 //app.post('/otp',user.otp);
+app.post('/luckCard', user.luckCard);
 
  
 

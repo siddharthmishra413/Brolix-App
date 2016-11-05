@@ -529,21 +529,16 @@
                createNewAds.findOneAndUpdate({_id:req.body.adId},{
                 $push:{raffleCount:req.body.userId}
                },{new:true}).exec(function(err,user){
-                console.log("user------>>>", JSON.stringify(user))
                  var len = user.raffleCount.length;
                  if(len>0){
-                  console.log("length--->>>", user.raffleCount.length)
                  if(len%100== 0){
                    var randomIndex = Math.floor( Math.random() * 100 );
-                   console.log("randomIndex---->>>>", randomIndex)
-                  
                 createNewAds.findOneAndUpdate({_id:req.body.adId},{
                 $push:{winners:user.raffleCount[randomIndex]}
                },{new:true}).exec(function(err,result){
                 res.status(300).send({msg:"success",result:result});
                })
               }else{
-                console.log("userfdfdf------>>>", JSON.stringify(user))
                 res.status(200).send({msg:"success",user:user});
                }
              }
@@ -694,7 +689,59 @@
                  responseMessage: "Comments save with concerned User details."
              });
          })
-     }
+     },
 
+    "luckCard":function(req, res){
+        console.log("request---->>>", JSON.stringify(req.body));
+        var chances;
+        var luckcard = req.body.brolix/50;
+        if(luckcard %5 == 0){
+            chances = luckcard;
+          }
+        createNewAds.findOne({_id:req.body.adId,raffleCount:req.body.userId}, function(err, result){
+             if (err) { res.send({responseCode:500,responseMessage:'Internal server error'});}
+                  if(result){res.status(200).send({msg:"allready watched"});} 
+                       else{
+                                 User.findOneAndUpdate({_id:req.body.userId},{
+                                  $inc:{brolix: - req.body.brolix }
+                                  },function(err,data){
+                                    if (err) res.status(500).send(err);
+                       else{
+
+                               
+                               var userId1 =  [];
+                                for(var i =0; i<chances; i++){
+                                 userId1[i]= req.body.userId;
+                                }
+                                console.log("userId--3333--->>>"+userId1);
+                               createNewAds.findOneAndUpdate({_id:req.body.adId},
+                                {$push:{raffleCount:req.body.userId}},{new:true}).exec(function(err,user){
+                                  //console.length("raffle------>>>>"+ raffleCount)
+                                 var len = user.raffleCount.length;
+                                if(len>0){
+                                 console.log("length--->>>", user.raffleCount.length)
+                                if(len%100== 0){
+                                 var randomIndex = Math.floor( Math.random() * 100 );
+                                  console.log("randomIndex---->>>>", randomIndex)
+                  
+                       createNewAds.findOneAndUpdate({_id:req.body.adId},{
+                        $push:{winners:user.raffleCount[randomIndex]}
+                         },{new:true}).exec(function(err,result){
+                          res.status(300).send({msg:"success",result:result});
+                    })
+                       }else{
+                        console.log("user------>>>", JSON.stringify(user))
+                        res.status(200).send({msg:"success",user:user});
+                    } 
+                }
+             })
+          
+          }
+      })
+      
+      }
+   })
+        
+    }
 
  }
