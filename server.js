@@ -69,6 +69,8 @@ app.post('/likeAndUnlike',user.likeAndUnlike);
 app.post('/reportProblem',user.reportProblem);
 app.post('/commentOnAds',user.commentOnAds);
 app.post('/sendCoupon',user.sendCoupon);
+app.post('/exchangeCoupon',user.exchangeCoupon);
+app.post('/acceptExchangeCouponRequest',user.acceptExchangeCouponRequest);
 //app.post('/otp',user.otp);
 
  
