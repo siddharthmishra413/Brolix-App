@@ -6,10 +6,14 @@ var async = require('async');
 var encrypt = require('mongoose-encryption');
 var Schema = mongoose.Schema;
 
-/* SignUp schema */
+/* Ads schema */
 
 var createNewAdsSchema = new Schema({
     userId: {
+        type: String,
+        trim: true
+    },
+    adsType: {
         type: String,
         trim: true
     },
@@ -23,17 +27,17 @@ var createNewAdsSchema = new Schema({
     },
     video: {
         type: String,
-        thumbnail:[]
+        thumbnail: []
     },
     sildeshow: {
-        type:[]
+        type: []
     },
     googleLink: {
         type: String,
         trim: true
-    },    
-    appStoreLink:{
-        type:String
+    },
+    appStoreLink: {
+        type: String
     },
     windowsStoreLink: {
         type: String
@@ -47,20 +51,42 @@ var createNewAdsSchema = new Schema({
     linkDescription: {
         type: String
     },
-    comments:[{
-        userId:{type: String},
-        comment:{type: String}
+    couponCode: {
+        type: String
+    },
+    whoWillSeeYourAdd: [{
+        country: { type: String },
+        state: { type: String },
+        city: { type: String }
+    }],
+    gender: {
+        type: String,
+        trim: true
+    },
+    age: {
+        type: Number,
+        trim: true
+    },
+    comments: [{
+        userId: { type: String },
+        comment: { type: String }
+    }],
+    raffleCount: [],
+    like: [],
+    winners: [],
+    count: {
+        type: Number,
+        default: 0
+    },
+    couponExchange: [{
+        senderId: { type: String },
+        newCoupon: { type: String },
+        oldCoupon: { type: String },
+        couponExchangeStatus: { type: String, default: 'Pending'},
     }],
     createdAt: {
         type: Date,
         default: Date.now
-    },
-    raffleCount:[],
-    like:[],
-    winners: [],
-    count: {
-      type: Number,
-      default:0
     },
     status: {
         type: String,

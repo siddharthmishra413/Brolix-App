@@ -6,7 +6,7 @@ var async = require('async');
 var encrypt = require('mongoose-encryption');
 var Schema = mongoose.Schema;
 
-/* SignUp schema */
+/* Chat schema */
 
 var chatSchema = new Schema({
 	senderId: {
