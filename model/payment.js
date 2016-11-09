@@ -6,7 +6,7 @@ var async = require('async');
 var encrypt = require('mongoose-encryption');
 var Schema = mongoose.Schema;
 
-/* SignUp schema */
+/* Payment schema */
 
 var paypalPaymentSchema = new Schema({
     userId: {

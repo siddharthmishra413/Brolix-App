@@ -10,13 +10,14 @@
  var createNewPage = require("./model/createNewPage");
  var cashBrolixSchema = require("./model/sendAndReceiveCashBrolix");
  var chat = require("./model/chat");
- var createCoupons = require("./model/createCoupons");
  var createEvents = require("./model/createEvents");
  var createNewAds = require("./model/createNewAds");
  var reportProblem = require("./model/reportProblem");
  var paypalPayment = require("./model/payment");
  var waterfall = require('async-waterfall');
  var multiparty = require('multiparty');
+ var cc = require('coupon-code');
+ var voucher_codes = require('voucher-code-generator');
 
  cloudinary.config({
      cloud_name: 'mobiloitte-in',
@@ -57,7 +58,7 @@
      console.log("-------Your OTP------" + otp)
  }
 
- function mail(email, otp) {
+ function mail(email, massege, otp) {
      var transporter = nodemailer.createTransport({
          service: 'Gmail',
          auth: {
@@ -69,9 +70,10 @@
      var mailOption = {
          from: "testing.mobiloitte@gmail.com",
          to: email,
-         subject: 'Brolix Otp',
+         subject: 'Brolix',
          text: 'you have a new submission with following details',
-         html: "Your otp is :" + otp
+         html: massege + "-" + otp
+             // "Your otp is :"
      }
      console.log("data in req" + email);
      console.log("Dta in mailOption : " + JSON.stringify(mailOption));
@@ -85,7 +87,6 @@
  }
 
  module.exports = {
-
 
      //API for user signUP
      "signup": function(req, res) {
@@ -102,7 +103,7 @@
                  req.body.otp = otp();
                  var user = User(req.body)
                  user.save(function(err, result) {
-                     if (err) { console.log(err) }
+                     if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
                      var token = jwt.sign(!result, config.secreteKey);
                      res.header({
                          "appToken": token
@@ -175,7 +176,7 @@
          User.findOne({
              _id: req.params.id
          }, function(err, data) {
-             if (err) return res.status(500).send(err);
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              else {
                  var sendEmail = (!req.body.email) ? "false" : (data.email == req.body.email) ? "exitEmail" : "true";
                  var sendMobileOtp = (req.body.mobileNumber && Boolean(sendEmail)) ? (data.mobileNumber == req.body.mobileNumber) ? "exitMobile" : "true" : "false";
@@ -187,7 +188,8 @@
                  })
                  otp1 = sendMobileOtp == "true" ? otp(req.body.mobileNumber) : otp();
                  if (sendEmail == "true") {
-                     mail(req.body.email, otp1);
+                     var massege = "Your otp is :"
+                     mail(req.body.email, massege, otp1);
                  }
                  if (sendMobileOtp == "exitMobile") {
                      req.body.otp = otp1;
@@ -205,7 +207,7 @@
                          User.findByIdAndUpdate(req.params.id, req.body, {
                              new: true
                          }).exec(function(err, result) {
-                             if (err) throw err;
+                             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
                              res.send({
                                  result: result,
                                  responseCode: 200,
@@ -218,7 +220,7 @@
                      User.findByIdAndUpdate(req.params.id, req.body, {
                          new: true
                      }).exec(function(err, result) {
-                         if (err) throw err;
+                         if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
                          res.send({
                              result: result,
                              responseCode: 200,
@@ -247,7 +249,7 @@
      //API for user Profile
      "userProfile": function(req, res) {
          User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result) {
-             if (err) throw err;
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              res.send({
                  result: result,
                  responseCode: 200,
@@ -260,7 +262,7 @@
      //API for Forgot Password
      "forgotPassword": function(req, res, next) {
          User.findOne({ email: req.body.email }).exec(function(err, user) {
-             if (err) throw err;
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              if (!user) {
                  res.send({
                      responseCode: 404,
@@ -300,6 +302,7 @@
                                  password: link
                              }
                          }, function(err, results) {
+                            if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
                              res.send({
                                  responseCode: 200,
                                  responseMessage: 'Password successfully sent your mail id.'
@@ -316,14 +319,14 @@
          User.findByIdAndUpdate(req.params.id, req.body, {
              new: true
          }).exec(function(err, result) {
-             if (err) throw err;
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              res.send({
                  result: result,
                  responseCode: 200,
                  responseMessage: "Profile updated successfully."
              });
          });
-     },
+     }, 
 
 
 
@@ -331,7 +334,7 @@
      "createPage": function(req, res) {
          var page = new createNewPage(req.body);
          page.save(function(err, result) {
-             if (err) throw err;
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              res.send({
                  result: result,
                  responseCode: 200,
@@ -343,7 +346,7 @@
      //API for create Page
      "showAllPages": function(req, res) {
          createNewPage.find({}).exec(function(err, result) {
-             if (err) throw err;
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              res.send({
                  result: result,
                  responseCode: 200,
@@ -355,7 +358,7 @@
      //API for create Page
      "showPageDetails": function(req, res) {
          createNewPage.findOne({ _id: req.body.pageId }).exec(function(err, result) {
-             if (err) throw err;
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              res.send({
                  result: result,
                  responseCode: 200,
@@ -364,55 +367,80 @@
          })
      },
 
-
-     // Api for create Ads
-     "createAds": function(req, res) {
-         waterfall([
-             function(callback) {
-                 var form = new multiparty.Form();
-                 form.multiples = true;
-                 form.parse(req, function(err, fields, files) {
-                     var fileUrl = [];
-                     console.log("files---->>>" + JSON.stringify(files));
-                     for (var i = 0; i < files.file.length; i++) {
-                         var filePath = files.file[i].path;
-                         cloudinary.uploader.upload(filePath, function(result) {
-                             console.log("result---->>>>", result)
-                             fileUrl.push(result.url);
-                             console.log("urls--=-=-=-=-=-=-=-=-=-=-=->>>" + JSON.stringify(fileUrl));
-                             console.log("image" + Boolean(files.file));
-                             var fileUrl1 = result.url;
-
-                             var extension = fileUrl1.split('.').pop();
-
-                             console.log(extension, extension === 'jpg');
-                             if (extension === 'mp4') req.body.video = result.url;
-                             else req.body.image = result.url;
-
-                             var Ads = new createNewAds(req.body);
-                             Ads.save(function(err, result1) {
-                                 if (err) throw err;
-                                 else callback(null, result1)
-                             })
-
-                         }, { resource_type: "auto" });
-                     }
-                 })
-             }
-         ], function(err, result) {
-             console.log("result--------->>>>" + JSON.stringify(result))
-             res.send({
-                 result: result,
-                 responseCode: 200,
-                 responseMessage: "Ad created successfully"
-             });
+    // Api for create Ads
+ "createAds": function(req, res) {
+     if (req.body.adsType == "coupon") {
+         var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
+         req.body.couponCode = couponCode;
+          var binaryData = req.body.image;
+         // binaryData = new Buffer(req.body.image,'base64','multipart');
+         require("fs").writeFile("test.jpeg", binaryData, "binary", function(err){});
+         cloudinary.uploader.upload("test.jpeg", function(result){req.body.image = result.url;
+         var Ads = new createNewAds(req.body);
+         Ads.save(function(err, result) {
+             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' });}
+             res.send({result: result,responseCode: 200,responseMessage: "Ad created successfully"});
          })
-     },
+     })
+         
+     } else {
+         var Ads = new createNewAds(req.body);
+         Ads.save(function(err, result) {
+             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' });}
+             res.send({result: result,responseCode: 200,responseMessage: "Ad created successfully"});
+         })
+     }
+
+
+ },
+
+     // // Api for create Ads
+     // "createAds": function(req, res) {
+     //     waterfall([
+     //         function(callback) {
+     //             var form = new multiparty.Form();
+     //             form.multiples = true;
+     //             form.parse(req, function(err, fields, files) {
+     //                 var fileUrl = [];
+     //                 console.log("files---->>>" + JSON.stringify(files));
+     //                 for (var i = 0; i < files.file.length; i++) {
+     //                     var filePath = files.file[i].path;
+     //                     cloudinary.uploader.upload(filePath, function(result) {
+     //                         console.log("result---->>>>", result)
+     //                         fileUrl.push(result.url);
+     //                         console.log("urls--=-=-=-=-=-=-=-=-=-=-=->>>" + JSON.stringify(fileUrl));
+     //                         console.log("image" + Boolean(files.file));
+     //                         var fileUrl1 = result.url;
+     //                         var extension = fileUrl1.split('.').pop();
+     //                         console.log(extension, extension === 'jpg');
+     //                         if (extension === 'mp4') req.body.video = result.url;
+     //                         else req.body.image = result.url;
+
+     //                         var Ads = new createNewAds(req.body);
+     //                         Ads.save(function(err, result1) {
+     //                             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+     //                             else callback(null, result1)
+     //                         })
+
+     //                     }, { resource_type: "auto" });
+     //                 }
+     //             })
+     //         }
+     //     ], function(err, result) {
+     //        if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+     //         console.log("result--------->>>>" + JSON.stringify(result))
+     //         res.send({
+     //             result: result,
+     //             responseCode: 200,
+     //             responseMessage: "Ad created successfully"
+     //         });
+     //     })
+     // },
 
      // show all ads
      "showAllAdsData": function(req, res) {
          createNewAds.find({}).exec(function(err, result) {
-             if (err) throw err;
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              res.send({
                  result: result,
                  responseCode: 200,
@@ -432,7 +460,7 @@
              }, {
                  new: true
              }).exec(function(err, results) {
-                 if (err) return err;
+                 if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
                  res.send({
                      results: results,
                      responseCode: 200,
@@ -449,7 +477,7 @@
              }, {
                  new: true
              }).exec(function(err, results) {
-                 if (err) return err;
+                 if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
                  res.send({
                      results: results,
                      responseCode: 200,
@@ -459,6 +487,24 @@
          }
      },
 
+     /*"videoCount": function(req, res) {
+         console.log("request---->>>" + JSON.stringify(req.body));
+         User.findOne({ _id: req.body.userId, viewedAd: req.body.adId }, function(err, result) {
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+             else if (!result) {
+                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+                     $inc: { count: 1 }
+                 }, function(err, data) {
+                     if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+                     else {
+                         User.findOneAndUpdate({ _id: req.body.userId }, {
+                             $push: { viewedAd: req.body.adId }
+                         }, function(err, user) {
+                             res.status(200).send({ responseMessage: "success" });
+                         })
+                     }
+
+                 })*/
 
      // show all ads
     "showAllAdsData": function(req, res) {
@@ -514,87 +560,51 @@
 
  },
 
-    "raffleJoin": function(req, res){
-      console.log("request---->>>"+JSON.stringify(req.body));
-      createNewAds.findOne({_id:req.body.adId,raffleCount:req.body.userId}, function(err, result){
-       
-        if(err) res.status(500).send(err);
-        if(result){res.status(200).send({msg:"allready watched"});}
-        else{
-          User.findOneAndUpdate({_id:req.body.userId},{
-            $inc:{brolix:50 }
-          },function(err,data){
-           if (err) res.status(500).send(err);
-           else{
-               createNewAds.findOneAndUpdate({_id:req.body.adId},{
-                $push:{raffleCount:req.body.userId}
-               },{new:true}).exec(function(err,user){
-                 var len = user.raffleCount.length;
-                 if(len>0){
-                 if(len%100== 0){
-                   var randomIndex = Math.floor( Math.random() * 100 );
-                createNewAds.findOneAndUpdate({_id:req.body.adId},{
-                $push:{winners:user.raffleCount[randomIndex]}
-               },{new:true}).exec(function(err,result){
-                res.status(300).send({msg:"success",result:result});
-               })
-              }else{
-                res.status(200).send({msg:"success",user:user});
-               }
+     "raffleJoin": function(req, res) {
+         console.log("request---->>>" + JSON.stringify(req.body));
+         createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
+
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+             if (result) { res.status(200).send({ responseMessage: "allready watched" }); } else {
+                 User.findOneAndUpdate({ _id: req.body.userId }, {
+                     $inc: { brolix: 50 }
+                 }, function(err, data) {
+                     if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+                     else {
+                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+                             $push: { raffleCount: req.body.userId }
+                         }, { new: true }).exec(function(err, user) {
+                             console.log("user------>>>", JSON.stringify(user))
+                             var len = user.raffleCount.length;
+                             if (len > 0) {
+                                 console.log("length--->>>", user.raffleCount.length)
+                                 if (len % 100 == 0) {
+                                     var i = len - 1;
+                                     createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+                                         $push: { winners: user.raffleCount[i] }
+                                     }, { new: true }).exec(function(err, result) {
+                                         res.status(300).send({ responseMessage: "success", result: result });
+                                     })
+                                 } else {
+                                     console.log("userfdfdf------>>>", JSON.stringify(user))
+                                     res.status(200).send({ responseMessage: "success", user: user });
+                                 }
+                             }
+                         })
+                     }
+                 })
              }
-           })
-          }
-     })
-      
-    }
-    })
-
-},
-
-
-     //API for create Coupons
-     "createCoupons": function(req, res) {
-         var coupons = new createCoupons(req.body);
-         coupons.save(function(err, result) {
-             if (err) throw err;
-             res.send({
-                 result: result,
-                 responseCode: 200,
-                 responseMessage: "Coupons create successfully."
-             });
          })
      },
 
-     //API for Show Coupons
-     "showAllCoupons": function(req, res) {
-         createCoupons.find({}).exec(function(err, result) {
-             if (err) throw err;
-             res.send({
-                 result: result,
-                 responseCode: 200,
-                 responseMessage: "All coupons show successfully."
-             })
-         })
-     },
-
-     //API for Show Coupons Details
-     "showCouponsDetails": function(req, res) {
-         createCoupons.findOne({ _id: req.body.couponId }).exec(function(err, result) {
-             if (err) throw err;
-             res.send({
-                 result: result,
-                 responseCode: 200,
-                 responseMessage: "Coupon details show successfully."
-             })
-         })
-     },
 
      //API for Show Coupons Search
      "couponsSearch": function(req, res) {
          console.log("req======>>>" + JSON.stringify(req.body))
          var re = new RegExp(req.body.search, 'i');
 
-         createCoupons.find({ status: 'ACTIVE' }).or([{ 'whoWillSeeYourAdd.country': { $regex: re } }, { 'whoWillSeeYourAdd.state': { $regex: re } }, { 'whoWillSeeYourAdd.city': { $regex: re } }]).sort({ country: -1 }).exec(function(err, result) {
+         createNewAds.find({ status: 'ACTIVE' }).or([{ 'whoWillSeeYourAdd.country': { $regex: re } }, { 'whoWillSeeYourAdd.state': { $regex: re } }, { 'whoWillSeeYourAdd.city': { $regex: re } }]).sort({ country: -1 }).exec(function(err, result) {
+            if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              res.send({
                  responseCode: 200,
                  responseMessage: "Show coupons successfully.",
@@ -617,7 +627,8 @@
                  }
              }
          }
-         createCoupons.find({ $and: [data] }).exec(function(err, results) {
+         createNewAds.find({ $and: [data] }).exec(function(err, results) {
+            if (err) { res.send({responseCode:500,responseMessage:'Internal server error'});}
              res.send({
                  results: results,
                  responseCode: 200,
@@ -637,7 +648,7 @@
                      like: req.body.userId
                  }
              }, { new: true }).exec(function(err, results) {
-                 if (err) return err;
+                 if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
                  res.send({
                      results: results,
                      responseCode: 200,
@@ -652,7 +663,7 @@
                      like: req.body.userId
                  }
              }, { new: true }).exec(function(err, results) {
-                 if (err) return err;
+                 if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
                  res.send({
                      results: results,
                      responseCode: 200,
@@ -668,7 +679,7 @@
      "reportProblem": function(req, res) {
          var report = new reportProblem(req.body);
          report.save(function(err, result) {
-             if (err) throw err;
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              res.send({
                  results: result,
                  responseCode: 200,
@@ -677,18 +688,77 @@
          })
      },
 
+     //API Comment on Ads
      "commentOnAds": function(req, res) {
-         console.log("Request Body" + JSON.stringify(req.body));
          createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
              $push: { "comments": { userId: req.body.userId, comment: req.body.comment } }
          }, { new: true }).exec(function(err, results) {
-             if (err) return err;
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
              res.send({
-                 results,
+                 results: results,
                  responseCode: 200,
                  responseMessage: "Comments save with concerned User details."
              });
          })
+     },
+     //API Comment on Ads
+     "sendCoupon": function(req, res) {
+         User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result) {
+             if (!result) {
+                 res.send({
+                     responseCode: 404,
+                     responseMessage: 'User does not exists.'
+                 });
+             } else {
+                 console.log(result.email)
+                 var massege = "Coupon Code is:-"
+                 mail(result.email, massege, req.body.couponCode);
+                 res.send({
+                     responseCode: 200,
+                     responseMessage: "Send your coupon successfully."
+                 });
+             }
+         })
+     },
+
+     //Exchange Coupons Api
+
+     "exchangeCoupon":function(req, res){
+         User.findOne({ _id: req.body.senderId }).exec(function(err, result) {
+             if (!result) {
+                 res.send({
+                     responseCode: 404,
+                     responseMessage: 'User does not exists.'
+                 });
+             } else {
+                createNewAds.findByIdAndUpdate({_id:req.body.adId},{$push:req.body},{new:true} ).exec(function(err, results){
+                    if (err) { res.send({responseCode:500,responseMessage:'Internal server error'})}
+                    console.log(results);
+                    //mail(result.email, req.body.massege, req.body.couponCode);
+                     res.send({
+                        result:results,
+                         responseCode: 200,
+                         responseMessage: "Coupon exchange request sent successfully."
+                     });
+                })
+                 
+             }
+         })
+
+     },
+
+     "acceptExchangeCouponRequest":function(req, req){
+         createNewAds.findByIdAndUpdate({_id:req.body.adId},req.body,{new:true} ).exec(function(err, results){
+                    if (err) { res.send({responseCode:500,responseMessage:'Internal server error'})}
+                    console.log(results);
+                    //mail(result.email, req.body.massege, req.body.couponCode);
+                     res.send({
+                        result:results,
+                         responseCode: 200,
+                         responseMessage: "Coupon exchange request sent successfully."
+                     });
+                })
+
      },
 
     "luckCard":function(req, res){
@@ -706,7 +776,7 @@
              if(err) return res.status(500).err(err);
              else {
              if(Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId==req.body.userId))){
-                 return res.status(403).send({msg:"allready add luckCard"})    }
+                 return res.status(403).send({responseMessage:"allready add luckCard"})    }
                  else callback(null,data)
              }
              })
@@ -727,7 +797,7 @@
             },function(user,callback){
                 var arr1 = user.raffleCount;
                             
-                if(user.raffleCount.length<2) return res.status(403).send({msg:"length minimum 100"});
+                if(user.raffleCount.length<2) return res.status(403).send({responseMessage:"length minimum 100"});
                 else{
                  for(var i=0;i<user.luckCardListObject.length;i++){
                        for(var j=0;j<user.luckCardListObject[i].chances;j++){
@@ -749,7 +819,7 @@
             }
             ],function(err,result){
 
-         res.status(200).send({msg:"success",result:result})
+         res.status(200).send({responseMessage:"success",result:result})
 
 
             })
