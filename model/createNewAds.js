@@ -82,7 +82,7 @@ var createNewAdsSchema = new Schema({
         senderId: { type: String },
         newCoupon: { type: String },
         oldCoupon: { type: String },
-        couponExchangeStatus: { type: String, default: 'Pending'},
+        couponExchangeStatus: { type: String}
     }],
     createdAt: {
         type: Date,
