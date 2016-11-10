@@ -82,7 +82,10 @@ var userSchema = new Schema({
     otp:{
         type:Number
     },
-    followers:[],
+    followers:[{
+        senderId:{type:String},
+        FollowStatus:{type:String, default:'Pending'}
+    }],
     notification_status:{
        type: String,
        default:'on',

@@ -457,14 +457,12 @@
          })
      },
 
-     "followList": function(req, res) {
+     "followUnfollow": function(req, res) {
          if (req.body.follow == "follow") {
              User.findOneAndUpdate({
                  _id: req.body.userId
              }, {
-                 $push: {
-                     followers: req.body.followers
-                 }
+                 $push: { "followers": { senderId: req.body.senderId } }
              }, {
                  new: true
              }).exec(function(err, results) {
@@ -479,20 +477,61 @@
              User.findOneAndUpdate({
                  _id: req.body.userId
              }, {
-                 $pop: {
-                     followers: req.body.followers
-                 }
+                 $pop: { "followers": { senderId: req.body.senderId } }
              }, {
                  new: true
              }).exec(function(err, results) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                 res.send({
-                     results: results,
-                     responseCode: 200,
-                     responseMessage: "Unfollowed"
-                 });
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                     res.send({
+                         results: results,
+                         responseCode: 200,
+                         responseMessage: "Unfollowed"
+                     });
+                 }
              })
          }
+     },
+
+     "followerList": function(req, res) {
+         User.find({ _id: req.body.userId }).exec(function(err, results) {
+             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                 var arr = [];
+                 results[0].followers.forEach(function(result) {
+                     arr.push(result.senderId)
+                 })
+                 User.find({ _id: { $in: arr } }).exec(function(err, newResult) {
+                     for(var i=0;i<newResult.length;i++){
+                        var obj={};
+                        obj.followStatus=results[0].followers[i].FollowStatus;
+                        console.log(obj);
+                        obj.result=newResult[i];
+                        newResult[i]=obj;
+                     }
+                     res.send({
+                         results: newResult,
+                         responseCode: 200,
+                         responseMessage: "Show list all followers."
+                     });
+                 })
+             }
+         })
+     },
+
+     "acceptFollowerRequest": function(req, res) {
+         User.update({ _id: req.body.userId, 'followers.senderId': req.body.senderId }, {
+             $set: {
+                 'followers.$.FollowStatus': "Accepted"
+             }
+         }, { new: true }).exec(function(err, results) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                 res.send({
+                     result: results,
+                     responseCode: 200,
+                     responseMessage: "Accepted successfully."
+                 });
+             }
+         })
+
      },
 
      /*"videoCount": function(req, res) {
@@ -755,146 +794,145 @@
 
      },
 
-    "luckCard":function(req, res){
-        var chances;
-        var luckcard = req.body.brolix/50;
-        if(luckcard %5 == 0){
-            chances = luckcard;
-          }
-          User.findOne({_id:req.body.userId,},function(err,result){
-          if(result.brolix<req.body.brolix) {res.send({responseCode:400,responseMessage:"Insufficient amount of brolix in your account"});}
-          else{
-          waterfall([
-            function(callback){
-           createNewAds.findOne({_id:req.body.adId},function(err,data){
-             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
-             else {
-             if(Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId==req.body.userId))){
-                 return res.status(403).send({responseMessage:"allready add luckCard"})    }
-                 else callback(null,data)
-             }
-             })
+     "luckCard": function(req, res) {
+         var chances;
+         var luckcard = req.body.brolix / 50;
+         if (luckcard % 5 == 0) {
+             chances = luckcard;
+         }
+         User.findOne({ _id: req.body.userId, }, function(err, result) {
+             if (result.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+                 waterfall([
+                     function(callback) {
+                         createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
+                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                 if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
+                                     return res.status(403).send({ responseMessage: "allready add luckCard" })
+                                 } else callback(null, data)
+                             }
+                         })
 
-            },function(data,callback){
-             User.findOneAndUpdate({_id:req.body.userId},{$inc:{brolix:-req.body.brolix}},{new:true}).exec(function(error,update){
-                if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
-                else callback(null,data)
+                     },
+                     function(data, callback) {
+                         User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: -req.body.brolix } }, { new: true }).exec(function(error, update) {
+                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else callback(null, data)
 
-             })
+                         })
 
-            },function(data,callback){
-               createNewAds.findByIdAndUpdate({_id:req.body.adId},
-                  {$push:{"luckCardListObject":{userId:req.body.userId, brolix:req.body.brolix, chances:chances}}},{new:true}).exec(function(err,user){
-                    callback(null,user);
-                     })
+                     },
+                     function(data, callback) {
+                         createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
+                             callback(null, user);
+                         })
 
-            },function(user,callback){
-                var arr1 = user.raffleCount;
-                            
-                if(user.raffleCount.length<100) return res.status(403).send({responseMessage:"length minimum 100"});
-                else{
-                 for(var i=0;i<user.luckCardListObject.length;i++){
-                       for(var j=0;j<user.luckCardListObject[i].chances;j++){
-                         arr1.push(user.luckCardListObject[i].userId);
+                     },
+                     function(user, callback) {
+                         var arr1 = user.raffleCount;
+
+                         if (user.raffleCount.length < 100) return res.status(403).send({ responseMessage: "length minimum 100" });
+                         else {
+                             for (var i = 0; i < user.luckCardListObject.length; i++) {
+                                 for (var j = 0; j < user.luckCardListObject[i].chances; j++) {
+                                     arr1.push(user.luckCardListObject[i].userId);
+                                 }
+                             }
+                             var randomIndex = Math.floor(Math.random() * arr1.length);
+                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+                                 $push: { winners: arr1[randomIndex] }
+                             }, { new: true }).exec(function(err, result1) {
+                                 if (err) return res.status(500).send(err);
+                                 else {
+                                     callback(null, result1)
+                                 }
+                             })
+                         }
+
                      }
-                   } 
-                      var randomIndex = Math.floor( Math.random() * arr1.length );
-                       createNewAds.findOneAndUpdate({_id:req.body.adId},{
-                        $push:{winners:arr1[randomIndex]}
-                         },{new:true}).exec(function(err,result1){
-                          if(err) return res.status(500).send(err);
-                          else{
-                            callback(null,result1)
-                          }
-                     })
-                }
+                 ], function(err, result) {
 
-            }
-            ],function(err,result){
-
-         res.status(200).send({responseMessage:"success",result:result})
+                     res.status(200).send({ responseMessage: "success", result: result })
 
 
-            })
-        }
-        })
+                 })
+             }
+         })
 
-          },
+     },
 
 
 
 
 
 
-    "success":function(req, res){
-     console.log("req data-->" + JSON.stringify(req.body));
-     res.send("Payment transfered successfully.");
-    },
+     "success": function(req, res) {
+         console.log("req data-->" + JSON.stringify(req.body));
+         res.send("Payment transfered successfully.");
+     },
 
 
-    "paynow" : function(req, res){
-     // paypal payment configuration.
-    var payment = {
-    "intent": "sale",
-    "payer": {
-      "payment_method": "paypal"
-    },
-    "redirect_urls": {
-      "return_url": 'http://localhost:1234/success',
-      "cancel_url": app.locals.baseurl+"/cancel"
-    },
-    "transactions": [{
-      "amount": {
-        "total":parseInt(req.body.brolix),
-        "currency": req.body.currency,
-        "transactions_ID": req.body.transactions_ID
-      },
-      "description": req.body.description
-      
-
-    }]
-    };
+     "paynow": function(req, res) {
+         // paypal payment configuration.
+         var payment = {
+             "intent": "sale",
+             "payer": {
+                 "payment_method": "paypal"
+             },
+             "redirect_urls": {
+                 "return_url": 'http://localhost:1234/success',
+                 "cancel_url": app.locals.baseurl + "/cancel"
+             },
+             "transactions": [{
+                 "amount": {
+                     "total": parseInt(req.body.brolix),
+                     "currency": req.body.currency,
+                     "transactions_ID": req.body.transactions_ID
+                 },
+                 "description": req.body.description
 
 
-    paypal.payment.create(payment, function (error, payment) {
-    if (error) {
-      console.log(error);
-    } else {
-      if(payment.payer.payment_method === 'paypal') {
-        req.paymentId = payment.id;
-        var redirectUrl;
-        console.log("payment",payment);
-        console.log("requestbody",JSON.stringify(req.body))
-        console.log("currency",JSON.stringify(req.body.currency))
-        
-          var Rupes = req.body.brolix/100;
-          console.log("brolix-------",Rupes)
-
-          User.findOneAndUpdate({_id:req.body.userId}, {
-                     
-            $inc : {"brolix" : -req.body.brolix}
-           }, {new: true}, function(err, results){
-            console.log("results>"+results);
-            if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
-                
-           });
-        for(var i=0; i < payment.links.length; i++) {
-          var link = payment.links[i];
-          if (link.method === 'REDIRECT') {
-            redirectUrl = link.href;
-          }
-        }
-        console.log("paymentttt",JSON.stringify(payment.transactions));
-         res.redirect(redirectUrl);
+             }]
+         };
 
 
-     // res.send({
-     //          responseCode: 200,     
-     //          responseMessage: "You have successfully added" +" "+ tpoint +" "+ "in your points"
-     //         });
-  }
-}
-});
-}
+         paypal.payment.create(payment, function(error, payment) {
+             if (error) {
+                 console.log(error);
+             } else {
+                 if (payment.payer.payment_method === 'paypal') {
+                     req.paymentId = payment.id;
+                     var redirectUrl;
+                     console.log("payment", payment);
+                     console.log("requestbody", JSON.stringify(req.body))
+                     console.log("currency", JSON.stringify(req.body.currency))
 
-}
+                     var Rupes = req.body.brolix / 100;
+                     console.log("brolix-------", Rupes)
+
+                     User.findOneAndUpdate({ _id: req.body.userId }, {
+
+                         $inc: { "brolix": -req.body.brolix }
+                     }, { new: true }, function(err, results) {
+                         console.log("results>" + results);
+                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+
+                     });
+                     for (var i = 0; i < payment.links.length; i++) {
+                         var link = payment.links[i];
+                         if (link.method === 'REDIRECT') {
+                             redirectUrl = link.href;
+                         }
+                     }
+                     console.log("paymentttt", JSON.stringify(payment.transactions));
+                     res.redirect(redirectUrl);
+
+
+                     // res.send({
+                     //          responseCode: 200,     
+                     //          responseMessage: "You have successfully added" +" "+ tpoint +" "+ "in your points"
+                     //         });
+                 }
+             }
+         });
+     }
+
+ }
