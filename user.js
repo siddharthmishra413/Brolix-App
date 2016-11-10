@@ -563,7 +563,6 @@
                          createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
                              $push: { raffleCount: req.body.userId }
                          }, { new: true }).exec(function(err, user) {
-                             console.log("user------>>>", JSON.stringify(user))
                              var len = user.raffleCount.length;
                              if (len > 0) {
                                  console.log("length--->>>", user.raffleCount.length)
@@ -575,7 +574,6 @@
                                          res.status(300).send({ responseMessage: "success", result: result });
                                      })
                                  } else {
-                                     console.log("userfdfdf------>>>", JSON.stringify(user))
                                      res.status(200).send({ responseMessage: "success", user: user });
                                  }
                              }
@@ -757,55 +755,146 @@
 
      },
 
-     "luckCard": function(req, res) {
-         console.log("request---->>>", JSON.stringify(req.body));
-         var chances;
-         var luckcard = req.body.brolix / 50;
-         if (luckcard % 5 == 0) {
-             chances = luckcard;
-         }
-         createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
-             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-             if (result) { res.status(200).send({ msg: "allready watched" }); } else {
-                 User.findOneAndUpdate({ _id: req.body.userId }, {
-                     $inc: { brolix: -req.body.brolix }
-                 }, function(err, data) {
-                     if (err) res.status(500).send(err);
-                     else {
-
-
-                         var userId1 = [];
-                         for (var i = 0; i < chances; i++) {
-                             userId1[i] = req.body.userId;
-                         }
-                         console.log("userId--3333--->>>" + userId1);
-                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, { new: true }).exec(function(err, user) {
-                             //console.length("raffle------>>>>"+ raffleCount)
-                             var len = user.raffleCount.length;
-                             if (len > 0) {
-                                 console.log("length--->>>", user.raffleCount.length)
-                                 if (len % 100 == 0) {
-                                     var randomIndex = Math.floor(Math.random() * 100);
-                                     console.log("randomIndex---->>>>", randomIndex)
-
-                                     createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
-                                         $push: { winners: user.raffleCount[randomIndex] }
-                                     }, { new: true }).exec(function(err, result) {
-                                         res.status(300).send({ msg: "success", result: result });
-                                     })
-                                 } else {
-                                     console.log("user------>>>", JSON.stringify(user))
-                                     res.status(200).send({ msg: "success", user: user });
-                                 }
-                             }
-                         })
-
-                     }
-                 })
-
+    "luckCard":function(req, res){
+        var chances;
+        var luckcard = req.body.brolix/50;
+        if(luckcard %5 == 0){
+            chances = luckcard;
+          }
+          User.findOne({_id:req.body.userId,},function(err,result){
+          if(result.brolix<req.body.brolix) {res.send({responseCode:400,responseMessage:"Insufficient amount of brolix in your account"});}
+          else{
+          waterfall([
+            function(callback){
+           createNewAds.findOne({_id:req.body.adId},function(err,data){
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+             else {
+             if(Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId==req.body.userId))){
+                 return res.status(403).send({responseMessage:"allready add luckCard"})    }
+                 else callback(null,data)
              }
-         })
+             })
 
-     }
+            },function(data,callback){
+             User.findOneAndUpdate({_id:req.body.userId},{$inc:{brolix:-req.body.brolix}},{new:true}).exec(function(error,update){
+                if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+                else callback(null,data)
 
- }
+             })
+
+            },function(data,callback){
+               createNewAds.findByIdAndUpdate({_id:req.body.adId},
+                  {$push:{"luckCardListObject":{userId:req.body.userId, brolix:req.body.brolix, chances:chances}}},{new:true}).exec(function(err,user){
+                    callback(null,user);
+                     })
+
+            },function(user,callback){
+                var arr1 = user.raffleCount;
+                            
+                if(user.raffleCount.length<100) return res.status(403).send({responseMessage:"length minimum 100"});
+                else{
+                 for(var i=0;i<user.luckCardListObject.length;i++){
+                       for(var j=0;j<user.luckCardListObject[i].chances;j++){
+                         arr1.push(user.luckCardListObject[i].userId);
+                     }
+                   } 
+                      var randomIndex = Math.floor( Math.random() * arr1.length );
+                       createNewAds.findOneAndUpdate({_id:req.body.adId},{
+                        $push:{winners:arr1[randomIndex]}
+                         },{new:true}).exec(function(err,result1){
+                          if(err) return res.status(500).send(err);
+                          else{
+                            callback(null,result1)
+                          }
+                     })
+                }
+
+            }
+            ],function(err,result){
+
+         res.status(200).send({responseMessage:"success",result:result})
+
+
+            })
+        }
+        })
+
+          },
+
+
+
+
+
+
+    "success":function(req, res){
+     console.log("req data-->" + JSON.stringify(req.body));
+     res.send("Payment transfered successfully.");
+    },
+
+
+    "paynow" : function(req, res){
+     // paypal payment configuration.
+    var payment = {
+    "intent": "sale",
+    "payer": {
+      "payment_method": "paypal"
+    },
+    "redirect_urls": {
+      "return_url": 'http://localhost:1234/success',
+      "cancel_url": app.locals.baseurl+"/cancel"
+    },
+    "transactions": [{
+      "amount": {
+        "total":parseInt(req.body.brolix),
+        "currency": req.body.currency,
+        "transactions_ID": req.body.transactions_ID
+      },
+      "description": req.body.description
+      
+
+    }]
+    };
+
+
+    paypal.payment.create(payment, function (error, payment) {
+    if (error) {
+      console.log(error);
+    } else {
+      if(payment.payer.payment_method === 'paypal') {
+        req.paymentId = payment.id;
+        var redirectUrl;
+        console.log("payment",payment);
+        console.log("requestbody",JSON.stringify(req.body))
+        console.log("currency",JSON.stringify(req.body.currency))
+        
+          var Rupes = req.body.brolix/100;
+          console.log("brolix-------",Rupes)
+
+          User.findOneAndUpdate({_id:req.body.userId}, {
+                     
+            $inc : {"brolix" : -req.body.brolix}
+           }, {new: true}, function(err, results){
+            console.log("results>"+results);
+            if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+                
+           });
+        for(var i=0; i < payment.links.length; i++) {
+          var link = payment.links[i];
+          if (link.method === 'REDIRECT') {
+            redirectUrl = link.href;
+          }
+        }
+        console.log("paymentttt",JSON.stringify(payment.transactions));
+         res.redirect(redirectUrl);
+
+
+     // res.send({
+     //          responseCode: 200,     
+     //          responseMessage: "You have successfully added" +" "+ tpoint +" "+ "in your points"
+     //         });
+  }
+}
+});
+}
+
+}

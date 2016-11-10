@@ -66,7 +66,7 @@ var createNewAdsSchema = new Schema({
     age: {
         type: Number,
         trim: true
-    },
+    },  
     comments: [{
         userId: { type: String },
         comment: { type: String }
@@ -74,6 +74,11 @@ var createNewAdsSchema = new Schema({
     raffleCount: [],
     like: [],
     winners: [],
+    luckCardListObject: [{
+        userId:{type:String},
+        brolix:{type:Number},
+        chances:{type: Number}
+    }],
     count: {
         type: Number,
         default: 0
