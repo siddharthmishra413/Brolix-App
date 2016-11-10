@@ -18,12 +18,21 @@
  var multiparty = require('multiparty');
  var cc = require('coupon-code');
  var voucher_codes = require('voucher-code-generator');
+ var paypal = require('paypal-rest-sdk');
 
  cloudinary.config({
      cloud_name: 'mobiloitte-in',
      api_key: '188884977577618',
      api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
  });
+
+ paypal.configure({
+'host': 'api.sandbox.paypal.com',
+'mode': 'sandbox', //sandbox or live
+'client_id': 'AUPnCDpK4dzzqAaNNHrw4bYxkjG0SDWGislalh5-6T1sx2XYn7ZpwX3D1-QO5snuG339SDV3esPyKbBq',
+'client_secret': 'EEaa_8sOwZ9aond0Dta5zNA_xE40zsv-VaUudN3jARkKEMhGBvEXBdu4f29b-TJ0KZ5oq2vZOr-8sFHt'
+});
+ 
  var avoid = {
      "password": 0
  }

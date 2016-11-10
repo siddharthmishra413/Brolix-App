@@ -89,6 +89,12 @@ var userSchema = new Schema({
        trim:true
    },
     viewedAd:[],
+    transferAmountListObject: [{
+        brolix: { type: Number },
+        Date: { type: Date,
+                default: Date.now
+              }
+    }],
     createdAt: {
         type: Date,
         default: Date.now
