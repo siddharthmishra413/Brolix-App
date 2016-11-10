@@ -66,7 +66,7 @@ var createNewAdsSchema = new Schema({
     age: {
         type: Number,
         trim: true
-    },
+    },  
     comments: [{
         userId: { type: String },
         comment: { type: String }
