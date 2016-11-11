@@ -331,7 +331,7 @@
              res.send({
                  result: result,
                  responseCode: 200,
-                 responseMessage: "Profile updated successfully."
+                 responseMessage: "Password updated successfully."
              });
          });
      },
@@ -471,7 +471,7 @@
              User.findOneAndUpdate({
                  _id: req.body.userId
              }, {
-                 $push: { "followers": { senderId: req.body.senderId } }
+                 $push: { "followers": { senderId: req.body.senderId, senderName: req.body.senderName } }
              }, {
                  new: true
              }).exec(function(err, results) {
@@ -541,6 +541,32 @@
              }
          })
 
+     },
+
+     //API for Show Coupons Search
+     "tagFriends": function(req, res) {
+         console.log("req======>>>" + JSON.stringify(req.body))
+         var re = new RegExp(req.body.search, 'i');
+
+         User.aggregate([
+            {$match:{_id:req.body.userId}},
+            {$project: {
+                followers: {$filter:{
+                    input: '$followers',
+                    as: 'item',
+                   cond: {$elemMatch: ['$$item.FollowStatus', 'Accepted']}
+                }
+                }
+            }}
+            ]).exec(function(err, result) {
+             if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
+                 res.send({
+                     responseCode: 200,
+                     responseMessage: "Show Followers successfully.",
+                     result: result
+                 });
+             }
+         })
      },
 
      /*"videoCount": function(req, res) {
@@ -737,6 +763,21 @@
                      results: results,
                      responseCode: 200,
                      responseMessage: "Comments save with concerned User details."
+                 });
+             }
+         })
+     },
+     //API Comment on Ads
+     "rplyOnComment": function(req, res) {
+        console.log(req.body)
+         createNewAds.findOneAndUpdate({_id: req.body.adId, 'comments._id': req.body.commentId }, {
+             $push: { 'comments.$.reply': { userId: req.body.userId, rplyComment: req.body.rplyComment } }
+         }, { new: true }).exec(function(err, results) {
+             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                 res.send({
+                     results: results,
+                     responseCode: 200,
+                     responseMessage: "Comments save successfully."
                  });
              }
          })

@@ -66,18 +66,24 @@ var createNewAdsSchema = new Schema({
     age: {
         type: Number,
         trim: true
-    },  
+    },
     comments: [{
         userId: { type: String },
-        comment: { type: String }
+        comment: { type: String },
+        createdAt: { type: Date, default: Date.now },
+        reply:[{
+            userId:{type:String},
+            rplyComment:{type:String},
+            createdAt: { type: Date, default: Date.now }
+        }]
     }],
     raffleCount: [],
     like: [],
     winners: [],
     luckCardListObject: [{
-        userId:{type:String},
-        brolix:{type:Number},
-        chances:{type: Number}
+        userId: { type: String },
+        brolix: { type: Number },
+        chances: { type: Number }
     }],
     count: {
         type: Number,
@@ -87,7 +93,7 @@ var createNewAdsSchema = new Schema({
         senderId: { type: String },
         newCoupon: { type: String },
         oldCoupon: { type: String },
-        couponExchangeStatus: { type: String, default:'Pending'}
+        couponExchangeStatus: { type: String, default: 'Pending' }
     }],
     createdAt: {
         type: Date,

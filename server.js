@@ -9,7 +9,7 @@ var http = require('http');
 var fs = require('fs');
 var authUser = require('./middlewares/authUser');
 
-var port = process.env.PORT || 9000; // used to create, sign, and verify tokens
+var port = process.env.PORT || 8082; // used to create, sign, and verify tokens
 // use body parser so we can get info from POST and/or URL parameters
 
 app.use(bodyParser.urlencoded({
@@ -63,6 +63,7 @@ app.get('/showAllAdsData', user.showAllAdsData);
 app.post('/followUnfollow', user.followUnfollow);
 app.post('/followerList', user.followerList);
 app.post('/acceptFollowerRequest', user.acceptFollowerRequest);
+app.post('/tagFriends', user.tagFriends);
 app.post('/videoCount', user.videoCount);
 app.post('/raffleJoin', user.raffleJoin);
 app.post('/couponsSearch',user.couponsSearch);
@@ -70,6 +71,7 @@ app.post('/searchForCoupons',user.searchForCoupons);
 app.post('/likeAndUnlike',user.likeAndUnlike);
 app.post('/reportProblem',user.reportProblem);
 app.post('/commentOnAds',user.commentOnAds);
+app.post('/rplyOnComment',user.rplyOnComment);
 app.post('/sendCoupon',user.sendCoupon);
 app.post('/exchangeCoupon',user.exchangeCoupon);
 app.post('/acceptExchangeCouponRequest',user.acceptExchangeCouponRequest);

@@ -84,6 +84,7 @@ var userSchema = new Schema({
     },
     followers:[{
         senderId:{type:String},
+        senderName:{type:String},
         FollowStatus:{type:String, default:'Pending'}
     }],
     notification_status:{
