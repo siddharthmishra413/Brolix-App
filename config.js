@@ -1,7 +1,7 @@
 module.exports = {
 
     'secreteKey': 'brolix',
-    'database':'mongodb://localhost/brolix',
+    'database':'mongodb://127.0.0.1/brolix',
     'encyptsecretkey' : '8_W2KW8<u(J*stCj'
 
 

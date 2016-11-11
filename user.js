@@ -18,12 +18,21 @@
  var multiparty = require('multiparty');
  var cc = require('coupon-code');
  var voucher_codes = require('voucher-code-generator');
+ var paypal = require('paypal-rest-sdk');
 
  cloudinary.config({
      cloud_name: 'mobiloitte-in',
      api_key: '188884977577618',
      api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
  });
+
+     paypal.configure({
+    'host': 'api.sandbox.paypal.com',
+    'mode': 'sandbox', //sandbox or live
+    'client_id': 'AUPnCDpK4dzzqAaNNHrw4bYxkjG0SDWGislalh5-6T1sx2XYn7ZpwX3D1-QO5snuG339SDV3esPyKbBq',
+    'client_secret': 'EEaa_8sOwZ9aond0Dta5zNA_xE40zsv-VaUudN3jARkKEMhGBvEXBdu4f29b-TJ0KZ5oq2vZOr-8sFHt'
+    });
+ 
  var avoid = {
      "password": 0
  }
@@ -862,77 +871,88 @@
 
 
 
+ "success":function(req, res){
+     console.log("req data-->" + JSON.stringify(req.body));
+     res.send("Payment transfered successfully.");
+    },
+
+    "redeemCash" : function(req, res){
+     // paypal payment configuration.
+    var payment = {
+    "intent": "sale",
+    "payer": {
+      "payment_method": "paypal"
+    },
+    "redirect_urls": {
+      "return_url": 'http://localhost:8000/success',
+      "cancel_url": app.locals.baseurl+"/cancel"
+    },
+    "transactions": [{
+      "amount": {
+        "total":parseInt(req.body.brolix),
+        "currency": req.body.currency
+       // "transactions_ID": req.body.transactions_ID
+      },
+      "description": req.body.description
+    }]
+    };
 
 
-     "success": function(req, res) {
-         console.log("req data-->" + JSON.stringify(req.body));
-         res.send("Payment transfered successfully.");
-     },
+    paypal.payment.create(payment, function (error, payment) {
+    if (error) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+     else {
+      if(payment.payer.payment_method === 'paypal') {
+        req.paymentId = payment.id;
+        var redirectUrl;
+        console.log("payment",payment);
+        console.log("requestbody",JSON.stringify(req.body))
+        console.log("currency",JSON.stringify(req.body.currency))
+        
+          var amount = req.body.brolix/100;
+          console.log("Rupees-------",amount)
 
+        User.findOne({_id:req.body.userId}, function(err, result){
+          
+          if(result.brolix<req.body.brolix) {res.send({responseCode:400,responseMessage:"Insufficient amount of brolix in your account"});}
+          else {
+            console.log("result-----"+result)
+        
 
-     "paynow": function(req, res) {
-         // paypal payment configuration.
-         var payment = {
-             "intent": "sale",
-             "payer": {
-                 "payment_method": "paypal"
-             },
-             "redirect_urls": {
-                 "return_url": 'http://localhost:1234/success',
-                 "cancel_url": app.locals.baseurl + "/cancel"
-             },
-             "transactions": [{
-                 "amount": {
-                     "total": parseInt(req.body.brolix),
-                     "currency": req.body.currency,
-                     "transactions_ID": req.body.transactions_ID
-                 },
-                 "description": req.body.description
+          User.findOneAndUpdate({_id:req.body.userId}, {$push:{"transferAmountListObject":{amount:amount}}},{new: true}, function(err, results){
+            console.log("results--------->>>>"+results);
 
+           // if(results.brolix<req.body.brolix) {res.send({responseCode:400,responseMessage:"Insufficient amount of brolix in your account"});}
+             if (err) { res.send({responseCode:409,responseMessage:'Internal server error'});}
+            else if(!results)res.send({responseCode: 404, responseMessage: "please enter correct userId"});
+            else{
+            results.brolix -=req.body.brolix;
+            results.save();
+             for(var i=0; i < payment.links.length; i++) {
+                var link = payment.links[i];
+                if (link.method === 'REDIRECT') {
+                  redirectUrl = link.href;
+                }
+              }
+                console.log("paymentttt",JSON.stringify(payment.transactions));
+         //res.redirect(redirectUrl);
+            res.send({
+                responseCode: 200,     
+                responseMessage: "You have successfully transfer your amount"
+               });
+            }
+                
+           });
+            }
 
-             }]
-         };
+        })
+    }
+         }
+     });
+  },
 
-
-         paypal.payment.create(payment, function(error, payment) {
-             if (error) {
-                 console.log(error);
-             } else {
-                 if (payment.payer.payment_method === 'paypal') {
-                     req.paymentId = payment.id;
-                     var redirectUrl;
-                     console.log("payment", payment);
-                     console.log("requestbody", JSON.stringify(req.body))
-                     console.log("currency", JSON.stringify(req.body.currency))
-
-                     var Rupes = req.body.brolix / 100;
-                     console.log("brolix-------", Rupes)
-
-                     User.findOneAndUpdate({ _id: req.body.userId }, {
-
-                         $inc: { "brolix": -req.body.brolix }
-                     }, { new: true }, function(err, results) {
-                         console.log("results>" + results);
-                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-
-                     });
-                     for (var i = 0; i < payment.links.length; i++) {
-                         var link = payment.links[i];
-                         if (link.method === 'REDIRECT') {
-                             redirectUrl = link.href;
-                         }
-                     }
-                     console.log("paymentttt", JSON.stringify(payment.transactions));
-                     res.redirect(redirectUrl);
-
-
-                     // res.send({
-                     //          responseCode: 200,     
-                     //          responseMessage: "You have successfully added" +" "+ tpoint +" "+ "in your points"
-                     //         });
-                 }
-             }
-         });
-     }
+"cancel" : function(req, res){
+ console.log("req data-->" + JSON.stringify(req.body));
+   res.send("Payment canceled successfully.");
+}
 
  }
