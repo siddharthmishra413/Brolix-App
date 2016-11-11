@@ -73,7 +73,7 @@ app.post('/exchangeCoupon',user.exchangeCoupon);
 app.post('/acceptExchangeCouponRequest',user.acceptExchangeCouponRequest);
 //app.post('/otp',user.otp);
 app.post('/luckCard', user.luckCard);
-app.post('/paynow', user.paynow);
+app.post('/redeemCash', user.redeemCash);
 
  
 
