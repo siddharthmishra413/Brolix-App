@@ -51,6 +51,8 @@ app.post('/login', user.login);
 app.post('/verifyOtp', user.verifyOtp);
 app.post('/forgotPassword',user.forgotPassword);
 app.get('/allUserDetails',user.allUserDetails);
+app.get('/listOfAllAdvertiser',user.listOfAllAdvertiser);
+app.get('/detailsOfAdvertiser/:id',user.detailsOfAdvertiser);
 app.post('/userProfile',user.userProfile);
 app.put('/editProfile/:id',user.editProfile);
 app.put('/changePassword/:id',user.changePassword);
@@ -71,13 +73,14 @@ app.post('/searchForCoupons',user.searchForCoupons);
 app.post('/likeAndUnlike',user.likeAndUnlike);
 app.post('/reportProblem',user.reportProblem);
 app.post('/commentOnAds',user.commentOnAds);
-app.post('/rplyOnComment',user.rplyOnComment);
+app.post('/replyOnComment',user.replyOnComment);
 app.post('/sendCoupon',user.sendCoupon);
 app.post('/exchangeCoupon',user.exchangeCoupon);
 app.post('/acceptExchangeCouponRequest',user.acceptExchangeCouponRequest);
 //app.post('/otp',user.otp);
 app.post('/luckCard', user.luckCard);
 app.post('/redeemCash', user.redeemCash);
+app.post('/rating', user.rating);
 
  
 

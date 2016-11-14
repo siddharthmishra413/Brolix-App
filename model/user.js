@@ -28,7 +28,7 @@ var userSchema = new Schema({
     email: {
         type: String,
         trim: true
-    },    
+    },
     password: {
         type: String
     },
@@ -46,12 +46,12 @@ var userSchema = new Schema({
     city: {
         type: String,
         trim: true
-    },    
+    },
     mobileNumber: {
         type: Number,
         trim: true
     },
-    facebookID:{
+    facebookID: {
         type: String
     },
     image: {
@@ -59,45 +59,41 @@ var userSchema = new Schema({
     },
     coverImage: {
         type: String
-    },    
+    },
     cash: {
         type: String
     },
     brolix: {
-       type: Number,
-        default:0
-    },    
+        type: Number,
+        default: 0
+    },
     coupons: {
         type: String
     },
     luckCard: {
         type: String
     },
-    deviceToken:{
-        type:String
+    deviceToken: {
+        type: String
     },
-    deviceType:{
-        type:String
+    deviceType: {
+        type: String
     },
-    otp:{
-        type:Number
-    },
-    followers:[{
-        senderId:{type:String},
-        senderName:{type:String},
-        FollowStatus:{type:String, default:'Pending'}
+    otp: { type: Number },
+    followers: [{
+        senderId: { type: String },
+        senderName: { type: String },
+        FollowStatus: { type: String, default: 'Pending' }
     }],
-    notification_status:{
-       type: String,
-       default:'on',
-       trim:true
-   },
-    viewedAd:[],
+    notification_status: { type: String, default: 'on', trim: true },
+    viewedAd: [],
+    rating: { type: Number, trim: true, default: 0 },
     transferAmountListObject: [{
         amount: { type: Number },
-        Date: { type: Date,
-                default: Date.now
-              }
+        Date: {
+            type: Date,
+            default: Date.now
+        }
     }],
     createdAt: {
         type: Date,
@@ -112,31 +108,34 @@ var userSchema = new Schema({
 });
 var user = mongoose.model('brolixUser', userSchema);
 module.exports = user;
-function initDB(){
+
+function initDB() {
     async.waterfall([
-        function(callback){
-        user.find({type:'ADMIN'},function(err,result){
-            if(err)throw err;            
-            callback(null,result);
-        })
-    },
-    function(adminUser,callback){
-        if(adminUser.length>0)
-             callback(null,{adminUser:adminUser});
-        else{
-        var defaultUser={
-              email:'admin@admin.com',
-              password: 'admin123',
-              type:'ADMIN',
-              firstname:'ADMIN'             
+        function(callback) {
+            user.find({ type: 'ADMIN' }, function(err, result) {
+                if (err) throw err;
+                callback(null, result);
+            })
+        },
+        function(adminUser, callback) {
+            if (adminUser.length > 0)
+                callback(null, { adminUser: adminUser });
+            else {
+                var defaultUser = {
+                    email: 'admin@admin.com',
+                    password: 'admin123',
+                    type: 'ADMIN',
+                    firstname: 'ADMIN'
+                }
+
+                var adminUser = new user(defaultUser);
+                adminUser.save(function(err, result) {
+                    callback(null, { adminUser: defaultUser });
+                })
             }
-       
-        var adminUser = new user(defaultUser);
-        adminUser.save(function(err,result){
-            callback(null,{adminUser:defaultUser});
-        })
         }
-    }],function(err,result){
-        if(err) throw err;
+    ], function(err, result) {
+        if (err) throw err;
     })
-}initDB();
+}
+initDB();
