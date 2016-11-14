@@ -61,7 +61,8 @@ var userSchema = new Schema({
         type: String
     },
     cash: {
-        type: String
+        type: Number,
+        default:0
     },
     brolix: {
         type: Number,
@@ -90,10 +91,24 @@ var userSchema = new Schema({
     rating: { type: Number, trim: true, default: 0 },
     transferAmountListObject: [{
         amount: { type: Number },
-        Date: {
-            type: Date,
-            default: Date.now
-        }
+        CreatedAt: { type: Date,
+                default: Date.now
+              }
+    }],
+
+    sendBrolixListObject: [{
+        senderId:{type:String},
+        brolix: { type: Number },
+        CreatedAt: { type: Date,
+                default: Date.now
+              }
+    }],
+    sendCashListObject: [{
+        senderId:{type:String},
+        cash: { type: Number },
+        CreatedAt: { type: Date,
+                default: Date.now
+              }
     }],
     createdAt: {
         type: Date,

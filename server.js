@@ -81,6 +81,9 @@ app.post('/acceptExchangeCouponRequest',user.acceptExchangeCouponRequest);
 app.post('/luckCard', user.luckCard);
 app.post('/redeemCash', user.redeemCash);
 app.post('/rating', user.rating);
+app.post('/sendBrolixToFollower', user.sendBrolixToFollower);
+app.post('/sendCashToFollower', user.sendCashToFollower);
+
 
  
 
