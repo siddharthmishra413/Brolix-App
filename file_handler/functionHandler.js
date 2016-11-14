@@ -1,4 +1,5 @@
   var https = require('https');
+  var nodemailer = require('nodemailer');
  module.exports = {
  "otp":function (req, res, mobile) {
      var otp = Math.floor(Math.random() * 10000)
