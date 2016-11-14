@@ -87,6 +87,8 @@ app.post('/sendCashToFollower', user.sendCashToFollower);
 app.post('/createEvent', user.createEvent);
 app.get('/showAllEvents', user.showAllEvents);
 app.get('/showEventDetails/:id',user.showEventDetails);
+app.post('/buyBrolix', user.buyBrolix);
+
 
 
  

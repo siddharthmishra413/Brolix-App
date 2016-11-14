@@ -68,9 +68,7 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
-    coupons: {
-        type: String
-    },
+    coupons:[],
     luckCard: {
         type: String
     },
@@ -110,6 +108,13 @@ var userSchema = new Schema({
                 default: Date.now
               }
     }],
+    buyBrolixListObject: [{
+        brolix: { type: Number },
+        createdAt: { type: Date,
+                default: Date.now
+              }
+    }],
+
     createdAt: {
         type: Date,
         default: Date.now

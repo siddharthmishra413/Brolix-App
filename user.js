@@ -952,7 +952,18 @@
                              }, { new: true }).exec(function(err, result1) {
                                  if (err) return res.status(500).send(err);
                                  else {
-                                     callback(null, result1)
+                                     if (result1.adsType == 'cash') {
+                                         User.findOneAndUpdate({ _id: arr1[randomIndex] }, { $inc: { cash: result1.cash } }).exec(function(err, user) {
+                                             callback(null, user)
+                                         })
+                                     } else {
+
+                                         User.findOneAndUpdate({ _id: arr1[randomIndex] }, { $push: { coupon: result1.coupon } }).exec(function(err, user) {
+                                             callback(null, user)
+                                         })
+                                     }
+
+
                                  }
                              })
                          }
@@ -968,8 +979,6 @@
          })
 
      },
-
-
 
 
      "success": function(req, res) {
@@ -1009,7 +1018,7 @@
                      console.log("currency", JSON.stringify(req.body.currency))
 
                      var amount = req.body.brolix / 100;
-                     console.log("Rupees-------", amount)
+                     console.log("amount-------", amount)
 
                      User.findOne({ _id: req.body.userId }, function(err, result) {
 
@@ -1185,6 +1194,173 @@
              })
          })
      },
+
+     "sendBrolixToFollower": function(req, res) {
+         User.findOne({ _id: req.body.userId }, function(err, result) {
+             if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of Brolix in your account" }); } else {
+                 result.brolix -= req.body.brolix;
+                 result.save();
+
+                 User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } } }, { new: true }, function(err, results) {
+                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                     else {
+                         results.brolix += req.body.brolix;
+                         results.save();
+
+                         res.send({
+                             responseCode: 200,
+                             responseMessage: "You have successfully transfer your Brolix",
+                             result: results
+                         });
+                     }
+                 });
+             }
+         });
+     },
+
+     "sendCashToFollower": function(req, res) {
+         // paypal payment configuration.
+         var payment = {
+             "intent": "sale",
+             "payer": {
+                 "payment_method": "paypal"
+             },
+             "redirect_urls": {
+                 "return_url": 'http://localhost:8000/success',
+                 "cancel_url": app.locals.baseurl + "/cancel"
+             },
+             "transactions": [{
+                 "amount": {
+                     "total": parseInt(req.body.cash),
+                     "currency": req.body.currency
+                         // "transactions_ID": req.body.transactions_ID
+                 },
+                 "description": req.body.description
+             }]
+         };
+
+
+         paypal.payment.create(payment, function(error, payment) {
+             if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                 if (payment.payer.payment_method === 'paypal') {
+                     req.paymentId = payment.id;
+                     var redirectUrl;
+                     console.log("payment", payment);
+                     console.log("requestbody", JSON.stringify(req.body))
+                     console.log("currency", JSON.stringify(req.body.currency))
+
+                     User.findOne({ _id: req.body.userId }, function(err, result) {
+
+                         if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of Cash in your account" }); } else {
+                             result.cash -= req.body.cash;
+                             result.save();
+
+                             User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } } }, { new: true }, function(err, results) {
+                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+
+                                 else {
+                                     results.cash += req.body.cash;
+                                     results.save();
+
+                                     for (var i = 0; i < payment.links.length; i++) {
+                                         var link = payment.links[i];
+                                         if (link.method === 'REDIRECT') {
+                                             redirectUrl = link.href;
+                                         }
+                                     }
+                                     console.log("paymentttt", JSON.stringify(payment.transactions));
+                                     //res.redirect(redirectUrl);
+
+                                     res.send({
+                                         responseCode: 200,
+                                         responseMessage: "You have successfully transfer your Cash",
+                                         result: results
+
+                                     });
+
+                                 }
+                             });
+                         }
+                     });
+
+                 }
+             }
+         });
+     },
+
+     "buyBrolix": function(req, res) {
+         // paypal payment configuration.
+         var payment = {
+             "intent": "sale",
+             "payer": {
+                 "payment_method": "paypal"
+             },
+             "redirect_urls": {
+                 "return_url": 'http://localhost:8000/success',
+                 "cancel_url": app.locals.baseurl + "/cancel"
+             },
+             "transactions": [{
+                 "amount": {
+                     "total": parseInt(req.body.cash),
+                     "currency": req.body.currency
+                         // "transactions_ID": req.body.transactions_ID
+                 },
+                 "description": req.body.description
+             }]
+         };
+
+
+         paypal.payment.create(payment, function(error, payment) {
+             if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                 if (payment.payer.payment_method === 'paypal') {
+                     req.paymentId = payment.id;
+                     var redirectUrl;
+                     console.log("payment", payment);
+                     console.log("requestbody", JSON.stringify(req.body))
+                     console.log("currency", JSON.stringify(req.body.currency))
+
+                     var brolix = req.body.cash * 100;
+                     console.log("amount-------", brolix)
+
+                     User.findOne({ _id: req.body.userId }, function(err, result) {
+                         console.log("result-----" + result)
+                         if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
+                             result.cash -= req.body.cash;
+                             result.save();
+
+                             User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "buyBrolixListObject": { brolix: brolix } } }, { new: true }, function(err, results) {
+
+                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                                 else {
+                                     results.brolix += req.body.brolix;
+                                     results.save();
+                                     for (var i = 0; i < payment.links.length; i++) {
+                                         var link = payment.links[i];
+                                         if (link.method === 'REDIRECT') {
+                                             redirectUrl = link.href;
+                                         }
+                                     }
+                                     console.log("paymentttt", JSON.stringify(payment.transactions));
+                                     //res.redirect(redirectUrl);
+                                     res.send({
+                                         responseCode: 200,
+                                         responseMessage: "You have successfully transfer your Brolix",
+                                         result: results
+
+                                     });
+
+                                     console.log("result------------->>>>>", JSON.stringify(result))
+                                 }
+
+                             });
+                         }
+
+                     })
+                 }
+             }
+         });
+
+     }
 
 
  }
