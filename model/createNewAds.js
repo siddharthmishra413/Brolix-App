@@ -54,6 +54,9 @@ var createNewAdsSchema = new Schema({
     couponCode: {
         type: String
     },
+    couponStatus: {
+        type: String, default:'Pending'
+    },
     whoWillSeeYourAdd: [{
         country: { type: String },
         state: { type: String },

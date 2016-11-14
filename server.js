@@ -60,6 +60,7 @@ app.post('/createPage', user.createPage);
 app.get('/showAllPages',user.showAllPages);
 app.post('/showPageDetails',user.showPageDetails);
 app.post('/createAds', user.createAds);
+app.put('/applyCoupon/:id',user.applyCoupon);
 app.get('/showAllAdsData', user.showAllAdsData);
 //app.get('/showAdsDetails', user.showAdsDetails);
 app.post('/followUnfollow', user.followUnfollow);
@@ -83,6 +84,9 @@ app.post('/redeemCash', user.redeemCash);
 app.post('/rating', user.rating);
 app.post('/sendBrolixToFollower', user.sendBrolixToFollower);
 app.post('/sendCashToFollower', user.sendCashToFollower);
+app.post('/createEvent', user.createEvent);
+app.get('/showAllEvents', user.showAllEvents);
+app.get('/showEventDetails/:id',user.showEventDetails);
 
 
  

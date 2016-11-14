@@ -17,6 +17,10 @@ var createNewPageSchema = new Schema({
         type: String,
         trim: true
     },
+    pageType: {
+        type: String,
+        trim: true
+    },
     pageName: {
         type: String,
         trim: true
