@@ -68,9 +68,7 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
-    coupons: {
-        type: String
-    },
+    coupons:[],
     luckCard: {
         type: String
     },

@@ -1047,7 +1047,18 @@
                              }, { new: true }).exec(function(err, result1) {
                                  if (err) return res.status(500).send(err);
                                  else {
-                                     callback(null, result1)
+                                     if (result1.adsType == 'cash') {
+                                         User.findOneAndUpdate({ _id: arr1[randomIndex] }, { $inc: { cash: result1.cash } }).exec(function(err, user) {
+                                             callback(null, user)
+                                         })
+                                     } else {
+
+                                         User.findOneAndUpdate({ _id: arr1[randomIndex] }, { $push: { coupon: result1.coupon } }).exec(function(err, user) {
+                                             callback(null, user)
+                                         })
+                                     }
+
+
                                  }
                              })
                          }
