@@ -83,6 +83,7 @@ app.post('/redeemCash', user.redeemCash);
 app.post('/rating', user.rating);
 app.post('/sendBrolixToFollower', user.sendBrolixToFollower);
 app.post('/sendCashToFollower', user.sendCashToFollower);
+app.post('/buyBrolix', user.buyBrolix);
 
 
  

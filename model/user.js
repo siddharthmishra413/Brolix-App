@@ -110,6 +110,13 @@ var userSchema = new Schema({
                 default: Date.now
               }
     }],
+    buyBrolixListObject: [{
+        brolix: { type: Number },
+        createdAt: { type: Date,
+                default: Date.now
+              }
+    }],
+
     createdAt: {
         type: Date,
         default: Date.now
