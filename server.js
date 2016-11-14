@@ -1,5 +1,4 @@
 var path = require('path');
-var user = require('./user');
 var express = require('express');
 var app = express();
 var _ = require('underscore');
@@ -8,6 +7,12 @@ var path = require('path');
 var http = require('http');
 var fs = require('fs');
 var authUser = require('./middlewares/authUser');
+var user = require('./routes/user.js');
+var page = require('./routes/page.js');
+var ads = require('./routes/adds.js');
+var event = require('./routes/event.js');
+var reportProblem = require('./routes/reportProblem.js');
+var mongoose = require('mongoose');
 
 var port = process.env.PORT || 8082; // used to create, sign, and verify tokens
 // use body parser so we can get info from POST and/or URL parameters
@@ -21,7 +26,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true,parameterLimit:5000
 //app.use(express.bodyParser({limit: '50mb'}));
  
 
-
+mongoose.connect('mongodb://localhost/brolix');
 app.use(express.static('assest'));
 
 app.get('/', function (req, res) {
@@ -45,51 +50,12 @@ app.all('/*', function(req, res, next) {
     next();
   }
 });
-//authUser.authUser,
-app.post('/signup', user.signup);
-app.post('/login', user.login);
-app.post('/verifyOtp', user.verifyOtp);
-app.post('/forgotPassword',user.forgotPassword);
-app.get('/allUserDetails',user.allUserDetails);
-app.get('/listOfAllAdvertiser',user.listOfAllAdvertiser);
-app.get('/detailsOfAdvertiser/:id',user.detailsOfAdvertiser);
-app.post('/userProfile',user.userProfile);
-app.put('/editProfile/:id',user.editProfile);
-app.put('/changePassword/:id',user.changePassword);
-app.post('/createPage', user.createPage);
-app.get('/showAllPages',user.showAllPages);
-app.post('/showPageDetails',user.showPageDetails);
-app.post('/createAds', user.createAds);
-app.put('/applyCoupon/:id',user.applyCoupon);
-app.get('/showAllAdsData', user.showAllAdsData);
-//app.get('/showAdsDetails', user.showAdsDetails);
-app.post('/followUnfollow', user.followUnfollow);
-app.post('/followerList', user.followerList);
-app.post('/acceptFollowerRequest', user.acceptFollowerRequest);
-app.post('/tagFriends', user.tagFriends);
-app.post('/videoCount', user.videoCount);
-app.post('/raffleJoin', user.raffleJoin);
-app.post('/couponsSearch',user.couponsSearch);
-app.post('/searchForCoupons',user.searchForCoupons);
-app.post('/likeAndUnlike',user.likeAndUnlike);
-app.post('/reportProblem',user.reportProblem);
-app.post('/commentOnAds',user.commentOnAds);
-app.post('/replyOnComment',user.replyOnComment);
-app.post('/sendCoupon',user.sendCoupon);
-app.post('/exchangeCoupon',user.exchangeCoupon);
-app.post('/acceptExchangeCouponRequest',user.acceptExchangeCouponRequest);
-//app.post('/otp',user.otp);
-app.post('/luckCard', user.luckCard);
-app.post('/redeemCash', user.redeemCash);
-app.post('/rating', user.rating);
-app.post('/sendBrolixToFollower', user.sendBrolixToFollower);
-app.post('/sendCashToFollower', user.sendCashToFollower);
-app.post('/createEvent', user.createEvent);
-app.get('/showAllEvents', user.showAllEvents);
-app.get('/showEventDetails/:id',user.showEventDetails);
-app.post('/buyBrolix', user.buyBrolix);
 
-
+app.use('/user', user);  
+app.use('/page', page);
+app.use('/ads', ads);
+app.use('/event', event);  
+app.use('/reportProblem', reportProblem);
 
  
 
