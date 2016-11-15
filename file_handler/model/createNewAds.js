@@ -88,6 +88,10 @@ var createNewAdsSchema = new Schema({
         brolix: { type: Number },
         chances: { type: Number }
     }],
+    socailShareListObject: [{
+        userId:{type:String},
+        link:{type:String}
+    }],
     count: {
         type: Number,
         default: 0

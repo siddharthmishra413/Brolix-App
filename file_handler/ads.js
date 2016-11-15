@@ -290,6 +290,24 @@ var createNewPage = require("./model/createNewAds");
              }
          })
 
+     },
+
+      "socialShare": function(req, res) {
+
+         console.log("request----->>>" + JSON.stringify(req.body))
+
+         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "socailShareListObject": { userId: req.body.userId, link: req.body.link } } }, { new: true }, function(err, result) {
+
+             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+
+                 res.send({
+                     result: result,
+                     responseCode: 200,
+                     responseMessage: "Post saved successfully"
+                 })
+             }
+         })
+
      }
 
 
