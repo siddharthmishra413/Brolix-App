@@ -17,5 +17,6 @@ app.post('/sendCoupon',adsHandler.sendCoupon);
 app.post('/exchangeCoupon',adsHandler.exchangeCoupon);
 app.post('/acceptExchangeCouponRequest',adsHandler.acceptExchangeCouponRequest);
 app.post('/socialShare', adsHandler.socialShare);
+app.get('/winners', adsHandler.winners);
 
 module.exports = app;
