@@ -88,34 +88,50 @@ module.exports = {
 
     "raffleJoin": function(req, res) {
         console.log("request---->>>" + JSON.stringify(req.body));
-        createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
 
+        createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             if (result) { res.status(200).send({ responseMessage: "allready watched" }); } else {
-                User.findOneAndUpdate({ _id: req.body.userId }, {
-                    $inc: { brolix: 50 }
-                }, function(err, data) {
+                User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, function(err, data) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
-                            $push: { raffleCount: req.body.userId }
-                        }, { new: true }).exec(function(err, user) {
-                            var len = user.raffleCount.length;
-                            if (len > 0) {
-                                console.log("length--->>>", user.raffleCount.length)
-                                if (len % 100 == 0) {
-                                    var i = len - 1;
-                                    createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
-                                        $push: { winners: user.raffleCount[i] }
-                                    }, { new: true }).exec(function(err, result) {
-                                        res.status(300).send({ responseMessage: "success", result: result });
-                                    })
-                                } else {
-                                    res.status(200).send({ responseMessage: "success", user: user });
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, { new: true }).exec(function(err, user) {
+                            if (user.raffleCount.length > 8) {
+                                var arr1 = user.raffleCount,
+                                    randomIndex = [],
+                                    a = 0;
+                                for (var i = 0; i < user.luckCardListObject.length; i++) {
+                                    for (var j = 0; j < user.luckCardListObject[i].chances; j++) {
+                                        arr1.push(user.luckCardListObject[i].userId);
+                                    }
                                 }
+                                console.log("arr111----->", arr1);
+                                for (var i = 0; i < 3; i++) {
+                                    var index = Math.floor(Math.random() * arr1.length);
+                                    if (randomIndex.filter(randomIndex => randomIndex != arr1[index])) {
+                                        randomIndex.push(arr1[index])
+                                    }
+                                }
+                                console.log("randomIndex winners id--->" + randomIndex);
+
+                                for (var i = 0; i < 3; i++) {
+                                    createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { winners: randomIndex[i] } }, { new: true }).exec(function(err, result1) {
+                                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                            console.log("value of i--->", i);
+                                            a += 2
+                                            if (a == 2) res.status(200).send({ responseMessage: "winner declared", result1: result1 })
+                                        }
+
+                                    })
+
+                                }
+                            } else {
+                                res.status(200).send({ responseMessage: "successfully joined the raffle" });
+
                             }
                         })
                     }
                 })
+
             }
         })
     },
@@ -307,7 +323,7 @@ module.exports = {
         })
 
     },
-    
+
     "winners": function(req, res) {
         createNewAds.find({}).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
