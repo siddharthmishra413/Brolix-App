@@ -464,11 +464,13 @@ module.exports = {
            else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner allready decided" });
            else {
                User.findOne({ _id: req.body.userId, }, function(err, result) {
-                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                   else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
                    else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
 
                        createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
-                           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                           else {
                                result.brolix -= req.body.brolix;
                                result.save();
                                res.status(200).send({ responseMessage: "successfully used the luck card" });

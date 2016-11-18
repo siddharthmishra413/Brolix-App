@@ -95,6 +95,11 @@ var createNewAdsSchema = new Schema({
         userId:{type:String},
         link:{type:String}
     }],
+    upgradeCardListObject: [{
+        userId:{type:String},
+        brolix:{type:Number},
+        viewers:{type: Number}
+    }],
     count: {
         type: Number,
         default: 0
