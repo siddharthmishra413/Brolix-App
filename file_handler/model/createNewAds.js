@@ -54,6 +54,9 @@ var createNewAdsSchema = new Schema({
     couponCode: {
         type: String
     },
+    adsCash: {
+        type: String
+    },
     couponStatus: {
         type: String, default:'Pending'
     },

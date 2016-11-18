@@ -56,7 +56,7 @@ app.use('/user', user);
 app.use('/page', page);
 app.use('/ads', ads);
 app.use('/event', event);  
-app.use('/reportProblem', reportProblem);
+app.use('/report', reportProblem);
 
  
 

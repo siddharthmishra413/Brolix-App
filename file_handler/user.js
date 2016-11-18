@@ -32,10 +32,7 @@ module.exports = {
 
     //API for user signUP
     "signup": function(req, res) {
-        console.log("chal rhi hai...")
-        User.findOne({
-            email: req.body.email
-        }, function(err, result) {
+        User.findOne({ email: req.body.email }, function(err, result) {
             if (err) throw err;
             else if (result) {
                 res.send({
@@ -376,27 +373,34 @@ module.exports = {
 
     //API for Tag Friends
     "tagFriends": function(req, res) {
-        console.log("req======>>>" + JSON.stringify(req.body))
-        var re = new RegExp(req.body.search, 'i');
-
-        User.aggregate([
-            { $match: { _id: req.body.userId } }, {
-                $project: {
-                    followers: {
-                        $filter: {
-                            input: '$followers',
-                            as: 'item',
-                            cond: { $elemMatch: ['$$item.FollowStatus', 'Accepted'] }
-                        }
-                    }
-                }
+        //console.log("req======>>>" + JSON.stringify(req.body))
+        var text = req.body.search;
+        var senderName = [];
+        var filterData = [];
+        User.findOne({ _id: req.body.userId }, 'followers', function(err, result) {
+            var followers = result.followers;
+            //console.log(followers)
+            if (err) { res.send({ responseCode: 409, responseMessage: err }); }
+            for (var i = 0; i < followers.length; i++) {
+                if (followers[i].FollowStatus == 'Accepted')
+                    senderName.push(followers[i].senderName);
             }
-        ]).exec(function(err, result) {
+            matchFollowers(text);
+
+            function matchFollowers(input) {
+                console.log('function call');
+                var reg = new RegExp(input.split('').join('\\w*').replace(/\W/, ""), 'i');
+                return senderName.filter(function(person) {
+                    if (person.match(reg)) {
+                        filterData.push(person)
+                    }
+                });
+            }
             if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
                 res.send({
                     responseCode: 200,
                     responseMessage: "Show Followers successfully.",
-                    result: result
+                    result: filterData
                 });
             }
         })
@@ -448,38 +452,38 @@ module.exports = {
 
     },
 
-    "luckCard": function(req, res) {
-        var chances;
-        var luckcard = req.body.brolix / 50;
-        if (luckcard % 5 == 0) {
-            chances = luckcard;
-        }
+ "luckCard": function(req, res) {
+       var chances;
+       var luckcard = req.body.brolix / 50;
+       if (luckcard % 5 == 0) {
+           chances = luckcard;
+       }
 
-        createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
-            else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner allready decided" });
-            else {
-                User.findOne({ _id: req.body.userId, }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-                    else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+       createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
+           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
+           else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner allready decided" });
+           else {
+               User.findOne({ _id: req.body.userId, }, function(err, result) {
+                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                   else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
 
-                        createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                result.brolix -= req.body.brolix;
-                                result.save();
-                                res.status(200).send({ responseMessage: "successfully used the luck card" });
-                            }
-                        })
-                    }
+                       createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
+                           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                               result.brolix -= req.body.brolix;
+                               result.save();
+                               res.status(200).send({ responseMessage: "successfully used the luck card" });
+                           }
+                       })
+                   }
 
 
-                })
+               })
 
-            }
-        })
+           }
+       })
 
-    },
-
+   },
+   
     // "success": function(req, res) {
     //     console.log("req data-->" + JSON.stringify(req.body));
     //     res.send("Payment transfered successfully.");
@@ -723,6 +727,31 @@ module.exports = {
             }
         });
 
+    },
+
+    "filterToDateAndFromDate": function(req, res) {
+        User.find({ _id: req.body.userId }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                var arr = [];
+                results[0].followers.forEach(function(result) {
+                    arr.push(result.senderId)
+                })
+                User.find({ _id: { $in: arr }, "createdAt": { "$gte": req.body.toDate, "$lt": req.body.fromDate } }).exec(function(err, newResult) {
+                    for (var i = 0; i < newResult.length; i++) {
+                        var obj = {};
+                        obj.followStatus = results[0].followers[i].FollowStatus;
+                        console.log(obj);
+                        obj.result = newResult[i];
+                        newResult[i] = obj;
+                    }
+                    res.send({
+                        results: newResult,
+                        responseCode: 200,
+                        responseMessage: "Show list all followers."
+                    });
+                })
+            }
+        })
     }
 
 }
