@@ -1,4 +1,16 @@
-var createNewPage = require("./model/createNewAds");
+var createNewAds = require("./model/createNewAds");
+var User = require("./model/user");
+var functions = require("./functionHandler");
+var voucher_codes = require('voucher-code-generator');
+var cloudinary = require('cloudinary');
+cloudinary.config({
+     cloud_name: 'mobiloitte-in',
+     api_key: '188884977577618',
+     api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
+ });
+var avoid = {
+        "password": 0
+    }
  module.exports = {
  	// Api for create Ads
      "createAds": function(req, res) {
@@ -241,7 +253,7 @@ var createNewPage = require("./model/createNewAds");
              } else {
                  console.log(result.email)
                  var massege = "Coupon Code is:-"
-                 mail(result.email, massege, req.body.couponCode);
+                 functions.mail(result.email, massege, req.body.couponCode);
                  res.send({
                      responseCode: 200,
                      responseMessage: "Send your coupon successfully."

@@ -8,7 +8,7 @@ app.put('/applyCoupon/:id',adsHandler.applyCoupon);
 app.get('/showAllAdsData', adsHandler.showAllAdsData);
 app.post('/videoCount', adsHandler.videoCount);
 app.post('/raffleJoin', adsHandler.raffleJoin);
-app.post('/couponsSearch',adsHandler.couponsSearch);
+app.post('/couponsSearch',adsHandler.couponsSearch); //Not in docs
 app.post('/searchForCoupons',adsHandler.searchForCoupons);
 app.post('/likeAndUnlike',adsHandler.likeAndUnlike);
 app.post('/commentOnAds',adsHandler.commentOnAds);
