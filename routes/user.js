@@ -3,7 +3,6 @@ var app = express();
 var userHandler = require('../file_handler/user.js');
 
 
-
 app.post('/signup', userHandler.signup);
 app.post('/login', userHandler.login);
 app.post('/verifyOtp', userHandler.verifyOtp);
@@ -17,13 +16,13 @@ app.get('/listOfAllAdvertiser',userHandler.listOfAllAdvertiser);
 app.post('/followUnfollow', userHandler.followUnfollow);
 app.post('/followerList', userHandler.followerList);
 app.post('/acceptFollowerRequest', userHandler.acceptFollowerRequest);
-app.post('/tagFriends', userHandler.tagFriends);
+app.post('/tagFriends', userHandler.tagFriends); //Not Update in Docs
 app.post('/luckCard', userHandler.luckCard);
 app.post('/redeemCash', userHandler.redeemCash);
 app.post('/sendBrolixToFollower', userHandler.sendBrolixToFollower);
 app.post('/sendCashToFollower', userHandler.sendCashToFollower);
 app.post('/buyBrolix', userHandler.buyBrolix);
 app.post('/rating', userHandler.rating);
-
+app.post('/filterToDateAndFromDate', userHandler.filterToDateAndFromDate);
 
 module.exports = app;	

@@ -1,4 +1,5 @@
 var createNewPage = require("./model/createNewPage");
+var User = require("./model/user");
  module.exports = {
 
      //API for create Page
