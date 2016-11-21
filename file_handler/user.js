@@ -87,7 +87,8 @@ module.exports = {
     "login": function(req, res) {
         User.findOne({
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            status: 'ACTIVE'
         }, avoid).exec(function(err, result) {
             if (err) throw err;
             if (!result) {
@@ -452,38 +453,38 @@ module.exports = {
 
     },
 
- "luckCard": function(req, res) {
-       var chances;
-       var luckcard = req.body.brolix / 50;
-       if (luckcard % 5 == 0) {
-           chances = luckcard;
-       }
+    "luckCard": function(req, res) {
+        var chances;
+        var luckcard = req.body.brolix / 50;
+        if (luckcard % 5 == 0) {
+            chances = luckcard;
+        }
 
-       createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
-           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
-           else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner allready decided" });
-           else {
-               User.findOne({ _id: req.body.userId, }, function(err, result) {
-                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-                   else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+        createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
+            else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner allready decided" });
+            else {
+                User.findOne({ _id: req.body.userId, }, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                    else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
 
-                       createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
-                           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                               result.brolix -= req.body.brolix;
-                               result.save();
-                               res.status(200).send({ responseMessage: "successfully used the luck card" });
-                           }
-                       })
-                   }
+                        createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                result.brolix -= req.body.brolix;
+                                result.save();
+                                res.status(200).send({ responseMessage: "successfully used the luck card" });
+                            }
+                        })
+                    }
 
 
-               })
+                })
 
-           }
-       })
+            }
+        })
 
-   },
-   
+    },
+
     // "success": function(req, res) {
     //     console.log("req data-->" + JSON.stringify(req.body));
     //     res.send("Payment transfered successfully.");

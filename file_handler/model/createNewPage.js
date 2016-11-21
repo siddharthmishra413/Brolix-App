@@ -22,8 +22,7 @@ var createNewPageSchema = new Schema({
         trim: true
     },
     pageName: {
-        type: String,
-        trim: true
+        type: String
     },
     category: {
         type: String,
