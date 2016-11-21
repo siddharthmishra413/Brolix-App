@@ -75,6 +75,7 @@ var avoid = {
          })
      },
 
+      // Api For Video Count
       "videoCount": function(req, res) {
          User.findOne({ _id: req.body.userId, viewedAd: req.body.adId }, function(err, result) {
              if (err) res.status(500).send(err);
@@ -98,7 +99,8 @@ var avoid = {
          })
 
      },
-
+ 
+     // Api For Join A Raffle
      "raffleJoin": function(req, res) {
         console.log("request---->>>" + JSON.stringify(req.body));
 
@@ -229,7 +231,6 @@ var avoid = {
          }
 
      },
-
      //API Comment on Ads
      "commentOnAds": function(req, res) {
          createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
@@ -321,6 +322,7 @@ var avoid = {
 
      },
 
+     // Api for Social Share
       "socialShare": function(req, res) {
 
          console.log("request----->>>" + JSON.stringify(req.body))
@@ -339,6 +341,7 @@ var avoid = {
 
      },
 
+    // Api To Show List Of all Winners
      "winners": function(req, res) {
          createNewAds.find({}).exec(function(err, result) {
              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -351,6 +354,7 @@ var avoid = {
          })
      },
 
+       // Api for upgrade My Card
        "upgradeCard": function(req, res) {
 
          var viewers;
@@ -372,7 +376,7 @@ var avoid = {
                               else {
                                  result.brolix -= req.body.brolix;
                                  result.save();
-                                 res.status(200).send({ responseMessage: "successfully used the luck card" });
+                                 res.status(200).send({ responseMessage: "successfully used the upgrade card" });
                              }
                          })
                      }

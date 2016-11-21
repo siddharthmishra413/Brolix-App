@@ -406,6 +406,7 @@ module.exports = {
         })
     },
 
+    // Api for Rating
     "rating": function(req, res, next) {
         waterfall([
 
@@ -452,10 +453,11 @@ module.exports = {
 
     },
 
- "luckCard": function(req, res) {
-       var chances;
-       var luckcard = req.body.brolix / 50;
-       if (luckcard % 5 == 0) {
+    // Api for Luck Card
+    "luckCard": function(req, res) {
+           var chances;
+           var luckcard = req.body.brolix / 50;
+           if (luckcard % 5 == 0) {
            chances = luckcard;
        }
 
@@ -490,7 +492,8 @@ module.exports = {
     //     console.log("req data-->" + JSON.stringify(req.body));
     //     res.send("Payment transfered successfully.");
     // },
-
+  
+   // Api For Reedem Cash
     "redeemCash": function(req, res) {
         // paypal payment configuration.
         var payment = {
@@ -562,6 +565,7 @@ module.exports = {
     //     res.send("Payment canceled successfully.");
     // },
 
+    // Api for Send brolix To Follower
     "sendBrolixToFollower": function(req, res) {
         User.findOne({ _id: req.body.userId }, function(err, result) {
             if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of Brolix in your account" }); } else {
@@ -586,7 +590,7 @@ module.exports = {
         });
     },
 
-
+     // Api for Send Cash to Follower
     "sendCashToFollower": function(req, res) {
         // paypal payment configuration.
         var payment = {
@@ -657,6 +661,7 @@ module.exports = {
         });
     },
 
+    // Api for Buy Brolix
     "buyBrolix": function(req, res) {
         // paypal payment configuration.
         var payment = {
@@ -754,6 +759,25 @@ module.exports = {
                 })
             }
         })
-    }
+    },
+
+    "blockUser": function(req, res) {
+     console.log("block user exports-->>>" + JSON.stringify(req.body));
+     User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' }}, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else {
+                res.send({
+                   // result: result,
+                    responseCode: 200,
+                    responseMessage: "User Blocked successfully!!"
+                });
+            }
+
+        });
+    },
+
+
+    
+
 
 }

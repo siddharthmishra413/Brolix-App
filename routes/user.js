@@ -24,5 +24,6 @@ app.post('/sendCashToFollower', userHandler.sendCashToFollower);
 app.post('/buyBrolix', userHandler.buyBrolix);
 app.post('/rating', userHandler.rating);
 app.post('/filterToDateAndFromDate', userHandler.filterToDateAndFromDate);
+app.post('/blockUser', userHandler.blockUser);
 
 module.exports = app;	
