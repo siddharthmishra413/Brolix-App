@@ -4,11 +4,12 @@ var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose');
 var async = require('async');
 var encrypt = require('mongoose-encryption');
+var mongoosePaginate = require('mongoose-paginate');
 var Schema = mongoose.Schema;
 
 /* Page schema */
 
-var createNewPageSchema = new Schema({
+var createNewPageSchema = new  mongoose.Schema({
     userId: {
         type: String,
         trim: true
@@ -58,6 +59,10 @@ var createNewPageSchema = new Schema({
         type: String,
         trim: true
     },
+    followers: [{
+        senderId: { type: String },
+        senderName: { type: String }
+    }],
     createdAt: {
         type: Date,
         default: Date.now
@@ -68,5 +73,6 @@ var createNewPageSchema = new Schema({
         trim: true
     }
 });
+createNewPageSchema.plugin(mongoosePaginate);
 var createNewPage = mongoose.model('createNewPage', createNewPageSchema);
 module.exports = createNewPage;

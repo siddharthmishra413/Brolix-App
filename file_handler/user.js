@@ -295,13 +295,7 @@ module.exports = {
     //API for Follow and unfollow
     "followUnfollow": function(req, res) {
         if (req.body.follow == "follow") {
-            User.findOneAndUpdate({
-                _id: req.body.userId
-            }, {
-                $push: { "followers": { senderId: req.body.senderId, senderName: req.body.senderName } }
-            }, {
-                new: true
-            }).exec(function(err, results) {
+            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "followers": { senderId: req.body.senderId, senderName: req.body.senderName } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     results: results,
@@ -310,13 +304,7 @@ module.exports = {
                 });
             })
         } else {
-            User.findOneAndUpdate({
-                _id: req.body.userId
-            }, {
-                $pop: { "followers": { senderId: req.body.senderId } }
-            }, {
-                new: true
-            }).exec(function(err, results) {
+            User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "followers": { senderId: req.body.senderId } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
                         results: results,

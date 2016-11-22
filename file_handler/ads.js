@@ -184,13 +184,7 @@ module.exports = {
     //API for Like And Unlike
     "likeAndUnlike": function(req, res) {
         if (req.body.flag == "like") {
-            createNewAds.findOneAndUpdate({
-                _id: req.body.adId
-            }, {
-                $push: {
-                    like: req.body.userId
-                }
-            }, { new: true }).exec(function(err, results) {
+            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { like: req.body.userId } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
                         results: results,
@@ -200,13 +194,7 @@ module.exports = {
                 }
             })
         } else {
-            createNewAds.findOneAndUpdate({
-                _id: req.body.adId
-            }, {
-                $pop: {
-                    like: req.body.userId
-                }
-            }, { new: true }).exec(function(err, results) {
+            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { like: req.body.userId } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
                         results: results,

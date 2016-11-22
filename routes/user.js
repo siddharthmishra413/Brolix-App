@@ -17,7 +17,7 @@ app.get('/listOfAllAdvertiser',authUser.authUser,userHandler.listOfAllAdvertiser
 app.post('/followUnfollow', authUser.authUser,userHandler.followUnfollow);
 app.post('/followerList', authUser.authUser,userHandler.followerList);
 app.post('/acceptFollowerRequest', authUser.authUser,userHandler.acceptFollowerRequest);
-app.post('/tagFriends', authUser.authUser,userHandler.tagFriends); //Not Update in Docs
+app.post('/tagFriends', authUser.authUser,userHandler.tagFriends);
 app.post('/luckCard', authUser.authUser,userHandler.luckCard);
 app.post('/redeemCash', authUser.authUser,userHandler.redeemCash);
 app.post('/sendBrolixToFollower', authUser.authUser,userHandler.sendBrolixToFollower);
