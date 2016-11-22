@@ -776,6 +776,22 @@ module.exports = {
         });
     },
 
+    "updatePrivacy": function(req, res) {
+
+    User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
+
+        if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+        else {
+
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Privacy updated successfully"
+                });
+            }
+        })
+    }
+
 
     
 
