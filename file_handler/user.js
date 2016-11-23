@@ -172,7 +172,7 @@ module.exports = {
             }
         })
 
-    },
+    },  
 
     //API for user Details
     "allUserDetails": function(req, res) {
@@ -463,11 +463,11 @@ module.exports = {
 
        createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
-           else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner allready decided" });
+           else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner already decided" });
            else {
                User.findOne({ _id: req.body.userId, }, function(err, result) {
                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
-                   else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                   else if (!result) return res.status(404).send({ responseMessage: "Please enter userid" })
                    else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
 
                        createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
@@ -475,7 +475,7 @@ module.exports = {
                            else {
                                result.brolix -= req.body.brolix;
                                result.save();
-                               res.status(200).send({ responseMessage: "successfully used the luck card" });
+                               res.status(200).send({ responseMessage: "Successfully used the luck card" });
                            }
                        })
                    }
@@ -548,7 +548,7 @@ module.exports = {
                                     //res.redirect(redirectUrl);
                                     res.send({
                                         responseCode: 200,
-                                        responseMessage: "You have successfully transfer your amount"
+                                        responseMessage: "You have successfully transferred your amount"
 
                                     });
                                 }
@@ -580,7 +580,7 @@ module.exports = {
 
                         res.send({
                             responseCode: 200,
-                            responseMessage: "You have successfully transfer your Brolix",
+                            responseMessage: "You have successfully transferred your Brolix",
                             result: results
 
                         });
@@ -646,7 +646,7 @@ module.exports = {
 
                                     res.send({
                                         responseCode: 200,
-                                        responseMessage: "You have successfully transfer your Cash",
+                                        responseMessage: "You have successfully transferred your Cash",
                                         result: results
 
                                     });
@@ -718,7 +718,7 @@ module.exports = {
                                     //res.redirect(redirectUrl);
                                     res.send({
                                         responseCode: 200,
-                                        responseMessage: "You have successfully transfer your Brolix",
+                                        responseMessage: "You have successfully transferred your Brolix",
                                         result: results
 
                                     });
