@@ -1,7 +1,7 @@
  var createNewPage = require("./model/reportProblem");
  module.exports = {
 
- //API Report Problem
+     //API Report Problem
      "reportProblem": function(req, res) {
          var report = new reportProblem(req.body);
          report.save(function(err, result) {

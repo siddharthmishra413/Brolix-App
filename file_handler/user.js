@@ -87,7 +87,8 @@ module.exports = {
     "login": function(req, res) {
         User.findOne({
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            status: 'ACTIVE'
         }, avoid).exec(function(err, result) {
             if (err) throw err;
             if (!result) {
@@ -294,13 +295,7 @@ module.exports = {
     //API for Follow and unfollow
     "followUnfollow": function(req, res) {
         if (req.body.follow == "follow") {
-            User.findOneAndUpdate({
-                _id: req.body.userId
-            }, {
-                $push: { "followers": { senderId: req.body.senderId, senderName: req.body.senderName } }
-            }, {
-                new: true
-            }).exec(function(err, results) {
+            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "followers": { senderId: req.body.senderId, senderName: req.body.senderName } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     results: results,
@@ -309,13 +304,7 @@ module.exports = {
                 });
             })
         } else {
-            User.findOneAndUpdate({
-                _id: req.body.userId
-            }, {
-                $pop: { "followers": { senderId: req.body.senderId } }
-            }, {
-                new: true
-            }).exec(function(err, results) {
+            User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "followers": { senderId: req.body.senderId } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
                         results: results,
@@ -455,6 +444,7 @@ module.exports = {
 
     // Api for Luck Card
     "luckCard": function(req, res) {
+
            var chances;
            var luckcard = req.body.brolix / 50;
            if (luckcard % 5 == 0) {
@@ -488,12 +478,15 @@ module.exports = {
 
    },
    
+
+
+
     // "success": function(req, res) {
     //     console.log("req data-->" + JSON.stringify(req.body));
     //     res.send("Payment transfered successfully.");
     // },
-  
-   // Api For Reedem Cash
+
+    // Api For Reedem Cash
     "redeemCash": function(req, res) {
         // paypal payment configuration.
         var payment = {
@@ -590,7 +583,7 @@ module.exports = {
         });
     },
 
-     // Api for Send Cash to Follower
+    // Api for Send Cash to Follower
     "sendCashToFollower": function(req, res) {
         // paypal payment configuration.
         var payment = {
@@ -762,12 +755,11 @@ module.exports = {
     },
 
     "blockUser": function(req, res) {
-     console.log("block user exports-->>>" + JSON.stringify(req.body));
-     User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' }}, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
-            else {
+        console.log("block user exports-->>>" + JSON.stringify(req.body));
+        User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({
-                   // result: result,
+                    // result: result,
                     responseCode: 200,
                     responseMessage: "User Blocked successfully!!"
                 });
@@ -777,23 +769,19 @@ module.exports = {
     },
 
     "updatePrivacy": function(req, res) {
-
-    User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
-
-        if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
-        else {
-
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Privacy updated successfully"
+        User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
+            if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Privacy updated successfully"
                 });
             }
         })
     }
 
 
-    
+
 
 
 }
