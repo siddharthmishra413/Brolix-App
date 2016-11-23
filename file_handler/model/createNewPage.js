@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 
 /* Page schema */
 
-var createNewPageSchema = new  mongoose.Schema({
+var createNewPageSchema = new mongoose.Schema({
     userId: {
         type: String,
         trim: true
@@ -36,7 +36,7 @@ var createNewPageSchema = new  mongoose.Schema({
     pageDiscription: {
         type: String,
         trim: true
-    },    
+    },
     email: {
         type: String
     },
@@ -54,7 +54,7 @@ var createNewPageSchema = new  mongoose.Schema({
     pageImage: {
         type: String,
         trim: true
-    },    
+    },
     coverImage: {
         type: String,
         trim: true
