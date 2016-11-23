@@ -93,7 +93,6 @@ var userSchema = new Schema({
                 default: Date.now
               }
     }],
-
     sendBrolixListObject: [{
         senderId:{type:String},
         brolix: { type: Number },
@@ -114,15 +113,24 @@ var userSchema = new Schema({
                 default: Date.now
               }
     }],
-
     createdAt: {
         type: Date,
         default: Date.now
     },
-    status: {
+    status:{
         type: String,
-        default: 'inActive',
-        trim: true
+        default:'ACTIVE',
+        trim:true
+    },
+    privacy:{
+        sendMessage : {type : String, default : 'public' },
+        sendCash : {type : String, default : 'public' },
+        sendCoupon : {type : String, default : 'public' },
+        follow : {type : String, default : 'public' },
+        ViewFollower : {type : String, default : 'public' },
+        ViewGifts : {type : String, default : 'public' },
+        findMe : {type : String, default : 'public' },
+        exchangeCoupon : {type : String, default : 'public' }
     }
 
 });
