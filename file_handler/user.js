@@ -32,19 +32,27 @@ module.exports = {
 
     //API for user signUP
     "signup": function(req, res) {
-        User.findOne({ email: req.body.email }, function(err, result) {
+        User.findOne({ $or: [{ email: req.body.email }, { mobileNumber: req.body.mobileNumber }] }, function(err, result) {
+            console.log(result)
             if (err) throw err;
-            else if (result) {
-                res.send({
-                    responseCode: 302,
-                    responseMessage: "Email id must be unique."
-                });
+            if (result) {
+                if (result.email == req.body.email) {
+                    res.send({
+                        responseCode: 302,
+                        responseMessage: "Email id must be unique."
+                    });
+                } else if (result.mobileNumber == req.body.mobileNumber) {
+                    res.send({
+                        responseCode: 302,
+                        responseMessage: "Mobille number must be unique."
+                    });
+                }
             } else {
                 req.body.otp = functions.otp();
                 var user = User(req.body)
                 user.save(function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    var token = jwt.sign(!result, config.secreteKey);
+                    var token = jwt.sign(result, config.secreteKey);
                     res.header({
                         "appToken": token
                     }).send({
@@ -97,7 +105,7 @@ module.exports = {
                     responseMessage: "Sorry Your Id or Password is Incorrect."
                 });
             } else {
-                var token = jwt.sign(!result, config.secreteKey);
+                var token = jwt.sign(result, config.secreteKey);
                 res.header({
                     "appToken": token
                 }).send({
@@ -122,10 +130,10 @@ module.exports = {
                 var sendEmail = (!req.body.email) ? "false" : (data.email == req.body.email) ? "exitEmail" : "true";
                 var sendMobileOtp = (req.body.mobileNumber && Boolean(sendEmail)) ? (data.mobileNumber == req.body.mobileNumber) ? "exitMobile" : "true" : "false";
                 if (sendEmail == "exitEmail") return res.status(403).send({
-                    responseMessage: "This email is already register"
+                    responseMessage: "This email is already register."
                 })
                 if (sendMobileOtp == "exitMobile") return res.status(403).send({
-                    responseMessage: "This mobile number is already register"
+                    responseMessage: "This mobile number is already register."
                 })
                 otp1 = sendMobileOtp == "true" ? functions.otp(req.body.mobileNumber) : functions.otp();
                 if (sendEmail == "true") {

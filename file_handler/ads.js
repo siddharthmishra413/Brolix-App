@@ -2,6 +2,7 @@ var createNewAds = require("./model/createNewAds");
 var User = require("./model/user");
 var functions = require("./functionHandler");
 var voucher_codes = require('voucher-code-generator');
+var CronJob = require('cron').CronJob;
 var cloudinary = require('cloudinary');
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -13,35 +14,33 @@ var avoid = {
 }
 module.exports = {
     // Api for create Ads
-    "createAds": function(req, res) {
+    "createAds": function(req, res) {        
         if (req.body.adsType == "coupon") {
             var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
             req.body.couponCode = couponCode;
-            // var binaryData = req.body.image;
-            // binaryData = new Buffer(req.body.image,'base64','multipart');
-            if (Boolean(req.body.image) || Boolean(req.body.video)) {
-                var img_base64 = Boolean(req.body.image) == true ? req.body.image : req.body.video;
-                binaryData = new Buffer(img_base64, 'base64');
-                require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {
-                    console.log(err);
-                });
-                cloudinary.uploader.upload("test.jpeg", function(result) {
-                    console.log("new url-->" + JSON.stringify(result));
-                    Boolean(req.body.image) == true ? (req.body.image = result.url) : (req.body.video = result.url);
-                    req.body.image = result.url;
-                    var Ads = new createNewAds(req.body);
-                    Ads.save(function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                        res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
-                    })
-                })
-            } else {
-                var Ads = new createNewAds(req.body);
-                Ads.save(function(err, result) {
+            req.body.couponTypeWinnersLenght = 100;
+            var Ads = new createNewAds(req.body);
+            Ads.save(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+            })
+        } else {
+            User.findOne({ _id: req.body.userId }).exec(function(err, result) {
+                if(result.cash == null || result.cash==0 || result.cash=== undefined || result.cash<=req.body.adsCash){
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
-                })
-            }
+                            res.send({ responseCode: 200, responseMessage: "Insufficient Cash" });
+                }else{
+                    User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.adsCash } }, { new: true }).exec(function(err, result) {
+                        req.body.cashTypeWinnersLenght = 1000;
+                        var Ads = new createNewAds(req.body);
+                        Ads.save(function(err, result) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                            res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+                        })
+                    })
+                }
+            })
+            
         }
     },
 
@@ -95,12 +94,12 @@ module.exports = {
     "raffleJoin": function(req, res) {
         console.log("request---->>>" + JSON.stringify(req.body));
         createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 1' }); }
             if (result) { res.status(200).send({ responseMessage: "allready watched" }); } else {
                 User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, function(err, data) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, { new: true }).exec(function(err, user) {
-                            if (user.raffleCount.length > 8) {
+                            if (user.raffleCount.length > 3) {
                                 var arr1 = user.raffleCount,
                                     randomIndex = [],
                                     a = 0;
@@ -119,7 +118,7 @@ module.exports = {
                                 console.log("randomIndex winners id--->" + randomIndex);
                                 for (var i = 0; i < 3; i++) {
                                     createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { winners: randomIndex[i] } }, { new: true }).exec(function(err, result1) {
-                                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 3' }); } else {
                                             console.log("value of i--->", i);
                                             a += 2
                                             if (a == 2) res.status(200).send({ responseMessage: "winner declared", result1: result1 })
@@ -345,3 +344,8 @@ module.exports = {
 
 
 }
+new CronJob('0 0 0 * * *', function() {  
+var id = "5836cd3dca5b1304c0124a0a"  
+    createNewAds.find({status: 'ACTIVE'}, function(err, result) {console.log(result);})
+    
+}, null, true, 'America/Los_Angeles');

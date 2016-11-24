@@ -62,13 +62,13 @@ var userSchema = new Schema({
     },
     cash: {
         type: Number,
-        default:0
+        default: 0
     },
     brolix: {
         type: Number,
         default: 0
     },
-    coupons:[],
+    coupons: [],
     luckCard: {
         type: String
     },
@@ -89,54 +89,54 @@ var userSchema = new Schema({
     rating: { type: Number, trim: true, default: 0 },
     transferAmountListObject: [{
         amount: { type: Number },
-        CreatedAt: { type: Date,
-                default: Date.now
-              }
+        CreatedAt: {
+            type: Date,
+            default: Date.now
+        }
     }],
     sendBrolixListObject: [{
-        senderId:{type:String},
+        senderId: { type: String },
         brolix: { type: Number },
-        CreatedAt: { type: Date,
-                default: Date.now
-              }
+        CreatedAt: {
+            type: Date,
+            default: Date.now
+        }
     }],
     sendCashListObject: [{
-        senderId:{type:String},
+        senderId: { type: String },
         cash: { type: Number },
-        CreatedAt: { type: Date,
-                default: Date.now
-              }
+        CreatedAt: {
+            type: Date,
+            default: Date.now
+        }
     }],
     buyBrolixListObject: [{
         brolix: { type: Number },
-        createdAt: { type: Date,
-                default: Date.now
-              }
+        createdAt: { type: Date, default: Date.now }
     }],
     createdAt: {
         type: Date,
         default: Date.now
     },
-    status:{
+    status: {
         type: String,
-        default:'ACTIVE',
-        trim:true
+        default: 'ACTIVE',
+        trim: true
     },
-    privacy:{
-        sendMessage : {type : String, default : 'public' },
-        sendCash : {type : String, default : 'public' },
-        sendCoupon : {type : String, default : 'public' },
-        follow : {type : String, default : 'public' },
-        ViewFollower : {type : String, default : 'public' },
-        ViewGifts : {type : String, default : 'public' },
-        findMe : {type : String, default : 'public' },
-        exchangeCoupon : {type : String, default : 'public' }
+    privacy: {
+        sendMessage: { type: String, default: 'public' },
+        sendCash: { type: String, default: 'public' },
+        sendCoupon: { type: String, default: 'public' },
+        follow: { type: String, default: 'public' },
+        ViewFollower: { type: String, default: 'public' },
+        ViewGifts: { type: String, default: 'public' },
+        findMe: { type: String, default: 'public' },
+        exchangeCoupon: { type: String, default: 'public' }
     }
 
 });
 var user = mongoose.model('brolixUser', userSchema);
 module.exports = user;
-
 function initDB() {
     async.waterfall([
         function(callback) {

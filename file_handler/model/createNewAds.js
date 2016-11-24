@@ -33,8 +33,7 @@ var createNewAdsSchema = new Schema({
         type: []
     },
     googleLink: {
-        type: String,
-        trim: true
+        type: String
     },
     appStoreLink: {
         type: String
@@ -55,10 +54,11 @@ var createNewAdsSchema = new Schema({
         type: String
     },
     adsCash: {
-        type: String
+        type: Number
     },
     couponStatus: {
-        type: String, default:'Pending'
+        type: String,
+        default: 'Pending'
     },
     whoWillSeeYourAdd: [{
         country: { type: String },
@@ -77,28 +77,30 @@ var createNewAdsSchema = new Schema({
         userId: { type: String },
         comment: { type: String },
         createdAt: { type: Date, default: Date.now },
-        reply:[{
-            userId:{type:String},
-            rplyComment:{type:String},
+        reply: [{
+            userId: { type: String },
+            rplyComment: { type: String },
             createdAt: { type: Date, default: Date.now }
         }]
     }],
     raffleCount: [],
     like: [],
     winners: [],
+    cashTypeWinnersLenght: { type: Number },
+    couponTypeWinnersLenght: { type: Number },
     luckCardListObject: [{
         userId: { type: String },
         brolix: { type: Number },
         chances: { type: Number }
     }],
     socailShareListObject: [{
-        userId:{type:String},
-        link:{type:String}
+        userId: { type: String },
+        link: { type: String }
     }],
     upgradeCardListObject: [{
-        userId:{type:String},
-        brolix:{type:Number},
-        viewers:{type: Number}
+        userId: { type: String },
+        brolix: { type: Number },
+        viewers: { type: Number }
     }],
     count: {
         type: Number,

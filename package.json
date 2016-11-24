@@ -9,6 +9,7 @@
     "body-parser": "^1.15.1",
     "cloudinary": "^1.4.3",
     "coupon-code": "^0.4.4",
+    "cron": "^1.1.1",
     "express": "^4.13.4",
     "fcm-push": "^1.0.7",
     "fresh": "^0.3.0",
