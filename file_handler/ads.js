@@ -69,71 +69,160 @@ module.exports = {
         })
     },
     // Api For Video Count
-    "videoCount": function(req, res) {
-        User.findOne({ _id: req.body.userId, viewedAd: req.body.adId }, function(err, result) {
-            if (err) res.status(500).send(err);
-            else if (!result) {
-                createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
-                    $inc: { count: 1 }
-                }, function(err, data) {
-                    if (err) res.status(500).send(err);
-                    else {
-                        User.findOneAndUpdate({ _id: req.body.userId }, {
-                            $push: { viewedAd: req.body.adId }
-                        }, function(err, user) {
-                            res.status(200).send({ responseMessage: "success" });
+    // "videoCount": function(req, res) {
+    //     User.findOne({ _id: req.body.userId, viewedAd: req.body.adId }, function(err, result) {
+    //         if (err) res.status(500).send(err);
+    //         else if (!result) {
+    //             createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+    //                 $inc: { count: 1 }
+    //             }, function(err, data) {
+    //                 if (err) res.status(500).send(err);
+    //                 else {
+    //                     User.findOneAndUpdate({ _id: req.body.userId }, {
+    //                         $push: { viewedAd: req.body.adId }
+    //                     }, function(err, user) {
+    //                         res.status(200).send({ responseMessage: "success" });
+    //                     })
+    //                 }
+    //             })
+    //         } else {
+    //             res.status(200).send({ responseMessage: "allready Watched" });
+    //         }
+    //     })
+    // },
+    // // Api For Join A Raffle
+    // "raffleJoin": function(req, res) {
+    //     console.log("request---->>>" + JSON.stringify(req.body));
+    //     createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
+    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+    //         if (result) { res.status(200).send({ responseMessage: "allready watched" }); } else {
+    //             User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, function(err, data) {
+    //                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+    //                     createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, { new: true }).exec(function(err, user) {
+    //                         if (user.raffleCount.length > 8) {
+    //                             var arr1 = user.raffleCount,
+    //                                 randomIndex = [],
+    //                                 a = 0;
+    //                             for (var i = 0; i < user.luckCardListObject.length; i++) {
+    //                                 for (var j = 0; j < user.luckCardListObject[i].chances; j++) {
+    //                                     arr1.push(user.luckCardListObject[i].userId);
+    //                                 }
+    //                             }
+    //                             console.log("arr111----->", arr1);
+    //                             for (var i = 0; i < 3; i++) {
+    //                                 var index = Math.floor(Math.random() * arr1.length);
+    //                                 if (randomIndex.filter(randomIndex => randomIndex != arr1[index])) {
+    //                                     randomIndex.push(arr1[index])
+    //                                 }
+    //                             }
+    //                             console.log("randomIndex winners id--->" + randomIndex);
+    //                             for (var i = 0; i < 3; i++) {
+    //                                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { winners: randomIndex[i] } }, { new: true }).exec(function(err, result1) {
+    //                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+    //                                         console.log("value of i--->", i);
+    //                                         a += 2
+    //                                         if (a == 2) res.status(200).send({ responseMessage: "winner declared", result1: result1 })
+    //                                     }
+    //                                 })
+    //                             }
+    //                         } else {
+    //                             res.status(200).send({ responseMessage: "successfully joined the raffle" });
+    //                         }
+    //                     })
+    //                 }
+    //             })
+    //         }
+    //     })
+    // },
+
+       // Api for raffle join
+      "videoRaffleJoin": function(req, res) {
+        waterfall([
+            function(callback) {
+
+                User.findOne({ _id: req.body.userId, viewedAd: req.body.adId }, function(err, result) {
+
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+                            $inc: { count: 1 }
+                        }, function(err, data) {
+                            if (err) res.status(500).send(err);
+                            else {
+
+                                User.findOneAndUpdate({ _id: req.body.userId }, {
+                                    $push: { viewedAd: req.body.adId }
+                                }, function(err, user) {
+                                    //res.status(200).send({ msg: "success" });
+                                    callback(null)
+                                })
+
+                            }
+
                         })
+
+                    } else {
+                        res.status(200).send({ msg: "Already watched ad" });
                     }
                 })
-            } else {
-                res.status(200).send({ responseMessage: "allready Watched" });
-            }
-        })
-    },
-    // Api For Join A Raffle
-    "raffleJoin": function(req, res) {
-        console.log("request---->>>" + JSON.stringify(req.body));
-        createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            if (result) { res.status(200).send({ responseMessage: "allready watched" }); } else {
-                User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, function(err, data) {
+
+
+            },
+            function(callback) {
+
+                createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, { new: true }).exec(function(err, user) {
-                            if (user.raffleCount.length > 8) {
-                                var arr1 = user.raffleCount,
-                                    randomIndex = [],
-                                    a = 0;
-                                for (var i = 0; i < user.luckCardListObject.length; i++) {
-                                    for (var j = 0; j < user.luckCardListObject[i].chances; j++) {
-                                        arr1.push(user.luckCardListObject[i].userId);
-                                    }
-                                }
-                                console.log("arr111----->", arr1);
-                                for (var i = 0; i < 3; i++) {
-                                    var index = Math.floor(Math.random() * arr1.length);
-                                    if (randomIndex.filter(randomIndex => randomIndex != arr1[index])) {
-                                        randomIndex.push(arr1[index])
-                                    }
-                                }
-                                console.log("randomIndex winners id--->" + randomIndex);
-                                for (var i = 0; i < 3; i++) {
-                                    createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { winners: randomIndex[i] } }, { new: true }).exec(function(err, result1) {
-                                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                            console.log("value of i--->", i);
-                                            a += 2
-                                            if (a == 2) res.status(200).send({ responseMessage: "winner declared", result1: result1 })
+                        User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, function(err, data) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, { new: true }).exec(function(err, user) {
+                                    if (user.raffleCount.length >= user.viewerLenght) {
+                                        var arr1 = user.raffleCount,
+                                            randomIndex = [],
+                                            a = 0;
+                                        for (var i = 0; i < user.luckCardListObject.length; i++) {
+                                            for (var j = 0; j < user.luckCardListObject[i].chances; j++) {
+                                                arr1.push(user.luckCardListObject[i].userId);
+                                            }
                                         }
-                                    })
-                                }
-                            } else {
-                                res.status(200).send({ responseMessage: "successfully joined the raffle" });
+                                        console.log("arr111----->", arr1);
+                                        for (var i = 0; i < user.numberOfWinners; i++) {
+                                            var index = Math.floor(Math.random() * arr1.length);
+                                            if (randomIndex.filter(randomIndex => randomIndex != arr1[index])) {
+                                                randomIndex.push(arr1[index])
+                                            }
+                                        }
+                                        console.log("randomIndex winners id--->" + randomIndex);
+
+                                        for (var i = 0; i < user.numberOfWinners; i++) {
+                                            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { winners: randomIndex[i] } }, { new: true }).exec(function(err, result1) {
+                                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                                    console.log("value of i--->", i);
+                                                    a += user.numberOfWinners - 1
+                                                    if (a == user.numberOfWinners - 1) //res.status(200).send({ responseMessage: "winner declared", result1: result1 })
+                                                        callback(null, result1)
+                                                }
+
+                                            })
+
+                                        }
+                                    } else {
+                                        res.status(200).send({ responseMessage: "Successfully joined the raffle" });
+
+                                    }
+                                })
                             }
                         })
+
                     }
                 })
-            }
-        })
-    },
+
+                }
+
+            ], function(err, result) {
+
+                res.status(200).send({ responseMessage: "Winner declared", result: result })
+
+            })
+        },
 
 
     //API for Show Coupons Search
