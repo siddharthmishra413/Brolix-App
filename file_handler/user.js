@@ -460,11 +460,13 @@ module.exports = {
         
 
         createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
             else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner already decided" });
             else {
                 User.findOne({ _id: req.body.userId, }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Please enter userid" })
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                    else if (!result) return res.status(404).send({ responseMessage: "Please enter userid" })
                     else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
 
                         createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
@@ -625,13 +627,16 @@ module.exports = {
                     console.log("currency", JSON.stringify(req.body.currency))
 
                     User.findOne({ _id: req.body.userId }, function(err, result) {
+                       if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+                       else if (! result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } 
 
-                        if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of Cash in your account" }); } else {
+                       else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
                             result.cash -= req.body.cash;
                             result.save();
 
                             User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } } }, { new: true }, function(err, results) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                                else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
 
                                 else {
                                     results.cash += req.body.cash;
@@ -699,8 +704,9 @@ module.exports = {
                     console.log("amount-------", brolix)
 
                     User.findOne({ _id: req.body.userId }, function(err, result) {
-                        console.log("result-----" + result)
-                        if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+                       else if (! result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } 
+                        else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
                             result.cash -= req.body.cash;
                             result.save();
 
@@ -766,7 +772,9 @@ module.exports = {
     "blockUser": function(req, res) {
         console.log("block user exports-->>>" + JSON.stringify(req.body));
         User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+           if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+           else if (! result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } 
+            else {
                 res.send({
                     // result: result,
                     responseCode: 200,
@@ -779,7 +787,8 @@ module.exports = {
 
     "updatePrivacy": function(req, res) {
         User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
-            if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+            if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+             else if (! result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -794,7 +803,9 @@ module.exports = {
 
         User.findOne({ _id: req.body.userId }, function(err, result) {
 
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.privacy.exchangeCoupon == "onlyMe") return res.status(400).send({ responseMessage: "you are not allowed" })
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else if (! result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); }
+            else if (result.privacy.exchangeCoupon == "onlyMe") return res.status(400).send({ responseMessage: "you are not allowed" })
             else if (result.privacy.exchangeCoupon == "friends") {
 
                 var flag = result.followers.find(followers => followers == req.body.followerId)
@@ -813,11 +824,6 @@ module.exports = {
             }
         })
 
-
-    },
-
-
-
-
-
+    }
+    
 }

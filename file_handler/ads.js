@@ -142,29 +142,22 @@ module.exports = {
 
                 User.findOne({ _id: req.body.userId, viewedAd: req.body.adId }, function(err, result) {
 
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
-                            $inc: { count: 1 }
-                        }, function(err, data) {
-                            if (err) res.status(500).send(err);
-                            else {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } 
+             else if (!result) { createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $inc: { count: 1 }}, function(err, data) {
+                     if (err) res.status(500).send(err);
+                     else {
+                         User.findOneAndUpdate({ _id: req.body.userId }, { $push: { viewedAd: req.body.adId }}, function(err, user) {
+                             //res.status(200).send({ msg: "success" });
+                             callback(null)
+                         })
+                     }
 
-                                User.findOneAndUpdate({ _id: req.body.userId }, {
-                                    $push: { viewedAd: req.body.adId }
-                                }, function(err, user) {
-                                    //res.status(200).send({ msg: "success" });
-                                    callback(null)
-                                })
-
-                            }
-
-                        })
-
+                 })
                     } else {
                         res.status(200).send({ msg: "Already watched ad" });
                     }
                 })
-
 
             },
             function(callback) {

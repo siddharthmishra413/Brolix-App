@@ -85,7 +85,8 @@ var createNewAdsSchema = new Schema({
     }],
     raffleCount: [],
     like: [],
-    winners: [],viewerLenght: { type: Number },
+    winners: [],
+    viewerLenght: { type: Number },
     luckCardListObject: [{
         userId: { type: String },
         brolix: { type: Number },
