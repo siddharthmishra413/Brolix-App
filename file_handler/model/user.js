@@ -64,6 +64,10 @@ var userSchema = new Schema({
         type: Number,
         default:0
     },
+    gift :{
+        type : Number,
+        default : 0
+    },
     brolix: {
         type: Number,
         default: 0
@@ -113,15 +117,6 @@ var userSchema = new Schema({
                 default: Date.now
               }
     }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    status:{
-        type: String,
-        default:'ACTIVE',
-        trim:true
-    },
     privacy:{
         sendMessage : {type : String, default : 'public' },
         sendCash : {type : String, default : 'public' },
@@ -130,7 +125,21 @@ var userSchema = new Schema({
         ViewFollower : {type : String, default : 'public' },
         ViewGifts : {type : String, default : 'public' },
         findMe : {type : String, default : 'public' },
-        exchangeCoupon : {type : String, default : 'public' }
+        exchangeCoupon : {type : String, default : 'public' },
+        viewLocation : { type : String, default : 'public'}
+    },
+    gifts :{
+        type : Number,
+        default : 0
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    status:{
+        type: String,
+        default:'ACTIVE',
+        trim:true
     }
 
 });

@@ -25,7 +25,7 @@ var avoid = {
         "password": 0
     }
     //var createNewPage = require("./model/createNewAds");
-
+    // http://172.16.6.171
 
 
 module.exports = {
@@ -251,18 +251,49 @@ module.exports = {
     },
 
     //API for Change Password
-    "changePassword": function(req, res) {
-        User.findByIdAndUpdate(req.params.id, req.body, {
-            new: true
-        }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Password updated successfully."
-            });
-        });
-    },
+    // "changePassword": function(req, res) {
+    //     User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
+    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+    //         res.send({
+    //             result: result,
+    //             responseCode: 200,
+    //             responseMessage: "Password updated successfully."
+    //         });
+    //     });
+    // },
+
+         //API for Change Password
+        "changePassword": function(req, res) {
+         User.findOne({ _id: req.body.userId }, function(err, result) {
+             console.log("ddd---" + JSON.stringify(result));
+             if (!result) {
+                 res.send({
+                     responseCode: 400,
+                     responseMessage: "user dosn't exist"
+                 });
+             } else {
+                 var oldpassword = (req.body.oldpass);
+                 if (result.password != oldpassword) {
+                     res.send({
+                         responseCode: 401,
+                         responseMessage: "Old password doesn't match"
+                     });
+                 } else {
+
+                     var password = (req.body.newpass);
+                     User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) {
+                         res.send({
+                             // result: user,
+                             responseCode: 200,
+                             responseMessage: "Password successfully changed"
+                         });
+                     })
+                 }
+             }
+         })
+
+     },
+
 
     //API for user Profile
     "userProfile": function(req, res) {
@@ -824,6 +855,20 @@ module.exports = {
             }
         })
 
-    }
+    },
+
+    "showPrivacy": function(req, res) {
+         User.findOne({_id : req.body.userId},'privacy').exec(function(err, result) {
+             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+             else if (! result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); }
+             else {
+                 res.send({
+                     result: result,
+                     responseCode: 200,
+                     responseMessage: "User details show successfully"
+                 })
+             }
+         })
+     },
     
 }
