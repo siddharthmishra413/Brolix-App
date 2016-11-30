@@ -154,4 +154,8 @@ module.exports = {
             }
         })
     },
+
+    "editBusinessPage" : function(req, res){
+        
+    }
 }

@@ -14,5 +14,6 @@ app.put('/editPage/:id',authUser.authUser,pageHandler.editPage);
 app.post('/deletePage',authUser.authUser,pageHandler.deletePage);
 app.post('/pagesSearch',authUser.authUser,pageHandler.pagesSearch); //Not Update in Docs
 app.post('/pageFollowUnfollow',authUser.authUser,pageHandler.pageFollowUnfollow); //Not Update in Docs
+app.post('/editBusinessPage',authUser.authUser,pageHandler.editBusinessPage);
 
 module.exports = app;

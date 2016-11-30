@@ -64,7 +64,7 @@ var userSchema = new Schema({
         type: Number,
         default:0
     },
-    gift :{
+    gifts :{
         type : Number,
         default : 0
     },
@@ -127,10 +127,6 @@ var userSchema = new Schema({
         findMe : {type : String, default : 'public' },
         exchangeCoupon : {type : String, default : 'public' },
         viewLocation : { type : String, default : 'public'}
-    },
-    gifts :{
-        type : Number,
-        default : 0
     },
     createdAt: {
         type: Date,

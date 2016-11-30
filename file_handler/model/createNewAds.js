@@ -111,13 +111,13 @@ var createNewAdsSchema = new Schema({
         oldCoupon: { type: String },
         couponExchangeStatus: { type: String, default: 'Pending' }
     }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
     numberOfWinners :{
         type : Number,
         default : 1
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
     status: {
         type: String,
