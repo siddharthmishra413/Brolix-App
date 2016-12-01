@@ -384,18 +384,6 @@ module.exports = {
         })
     },
 
-    "winners": function(req, res) {
-        createNewAds.find({}).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Winners details show successfully"
-                })
-            }
-        })
-    },
-
     "upgradeCard": function(req, res) {
         var viewers;
         var upgrade = req.body.brolix / 5;
@@ -420,7 +408,20 @@ module.exports = {
                 })
             }
         })
-    }
+    },
+
+    
+    "winners": function(req, res) {
+        createNewAds.find({},'winners').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Winners details show successfully"
+                })
+            }
+        })
+    },
 
 
 }
