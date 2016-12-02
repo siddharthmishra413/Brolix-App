@@ -29,7 +29,7 @@ app.post('/filterToDateAndFromDate', authUser.authUser,userHandler.filterToDateA
 app.post('/blockUser', authUser.authUser,userHandler.blockUser);
 app.post('/updatePrivacy', authUser.authUser,userHandler.updatePrivacy);
 app.post('/showPrivacy',authUser.authUser, userHandler.showPrivacy);
-//app.post('/sendCash',authUser.authUser, userHandler.sendCash);
+app.get('/showAllBlockUser',authUser.authUser, userHandler.showAllBlockUser);
 
 
 module.exports = app;	

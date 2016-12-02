@@ -21,6 +21,8 @@ app.post('/socialShare', authUser.authUser, adsHandler.socialShare);
 app.get('/winners', authUser.authUser, adsHandler.winners);
 app.post('/upgradeCard', authUser.authUser, adsHandler.upgradeCard);
 app.post('/raffleJoin', authUser.authUser, adsHandler.raffleJoin);
+app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
+app.post('/listOfAllAds', authUser.authUser, adsHandler.listOfAllAds);
 
 
 module.exports = app;

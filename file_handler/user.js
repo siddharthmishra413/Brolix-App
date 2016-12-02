@@ -8,6 +8,9 @@ var voucher_codes = require('voucher-code-generator');
 var paypal = require('paypal-rest-sdk');
 var waterfall = require('async-waterfall');
 var cloudinary = require('cloudinary');
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
+
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
     api_key: '188884977577618',
@@ -122,7 +125,7 @@ module.exports = {
         User.findOne({
             _id: req.params.id
         }, function(err, data) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 var sendEmail = (!req.body.email) ? "false" : (data.email == req.body.email) ? "exitEmail" : "true";
                 var sendMobileOtp = (req.body.mobileNumber && Boolean(sendEmail)) ? (data.mobileNumber == req.body.mobileNumber) ? "exitMobile" : "true" : "false";
                 if (sendEmail == "exitEmail") return res.status(403).send({
@@ -152,7 +155,7 @@ module.exports = {
                         User.findByIdAndUpdate(req.params.id, req.body, {
                             new: true
                         }).exec(function(err, result) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                             res.send({
                                 result: result,
                                 responseCode: 200,
@@ -165,7 +168,7 @@ module.exports = {
                     User.findByIdAndUpdate(req.params.id, req.body, {
                         new: true
                     }).exec(function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                         res.send({
                             result: result,
                             responseCode: 200,
@@ -487,8 +490,12 @@ module.exports = {
 
 
             createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                 else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
                 else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner already decided" });
+                else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
+                                     return res.status(403).send({ responseMessage: "Already used luckCard" })}
+
                 else {
                     User.findOne({ _id: req.body.userId, }, function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Please enter userid" })
@@ -788,20 +795,7 @@ module.exports = {
         })
     },
 
-    "blockUser": function(req, res) {
-        console.log("block user exports-->>>" + JSON.stringify(req.body));
-        User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else {
-                res.send({
-                    // result: result,
-                    responseCode: 200,
-                    responseMessage: "User Blocked successfully!!"
-                });
-            }
-
-        });
-    },
-
+   
     "updatePrivacy": function(req, res) {
         User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
             if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User does not found' }); } else {
@@ -819,8 +813,10 @@ module.exports = {
 
         User.findOne({ _id: req.body.userId }, function(err, result) {
 
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else if (result.privacy.exchangeCoupon == "Me") return res.status(400).send({ responseMessage: "you are not allowed" })
-            else if (result.privacy.exchangeCoupon == "Followers") {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+             else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); }
+              else if (result.privacy.exchangeCoupon == "me") return res.status(400).send({ responseMessage: "you are not allowed" })
+            else if (result.privacy.exchangeCoupon == "followers") {
 
                 var flag = result.followers.find(followers => followers == req.body.followerId)
                 if (flag === undefined) return res.status(400).send({ responseMessage: "you are not friend" })
@@ -850,6 +846,37 @@ module.exports = {
                 })
             }
         })
-    }
+    },
 
+
+     "blockUser": function(req, res) {
+        console.log("block user exports-->>>" + JSON.stringify(req.body));
+        User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else {
+                res.send({
+                    // result: result,
+                    responseCode: 200,
+                    responseMessage: "User Blocked successfully!!"
+                });
+            }
+
+        });
+    },
+
+
+      "showAllBlockUser": function(req, res) {
+         User.find({}, 'status').exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                 res.send({
+                     result: result,
+                     responseCode: 200,
+                     responseMessage: "All blocked user show successfully!!"
+                 });
+             }
+
+     });
+ }
+
+
+   
 }

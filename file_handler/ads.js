@@ -3,6 +3,9 @@ var User = require("./model/user");
 var functions = require("./functionHandler");
 var voucher_codes = require('voucher-code-generator');
 var cloudinary = require('cloudinary');
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
+
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
     api_key: '188884977577618',
@@ -391,7 +394,11 @@ module.exports = {
             viewers = upgrade;
         }
         createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" });
+            else if (Boolean(data.upgradeCardListObjectupgradeCardListObject.find(upgradeCardListObject => upgradeCardListObject.userId == req.body.userId))) {
+                                     return res.status(403).send({ responseMessage: "Already used upgradeCard" })}
+
             else {
                 User.findOne({ _id: req.body.userId, }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
@@ -422,6 +429,43 @@ module.exports = {
             }
         })
     },
+
+    "listOfAds": function(req, res){
+
+        createNewAds.find({userId : req.body.userId}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else {
+                var couponType = result.filter(result=>result.adsType=="coupon");
+                var cashType = result.filter(result=>result.adsType=="cash");
+                res.send({
+                    couponType: couponType,
+                    cashType:cashType,
+                    responseCode: 200,
+                    responseMessage: "List of ads show successfully!!"
+                });
+            }
+
+        });
+    },
+
+
+    "listOfAllAds": function(req, res){   // for a single user
+
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else {
+                var couponType = result.filter(result=>result.adsType=="coupon");
+                var cashType = result.filter(result=>result.adsType=="cash");
+                res.send({
+                    couponType: couponType,
+                    cashType:cashType,
+                    responseCode: 200,
+                    responseMessage: "All blocked user show successfully!!"
+                });
+            }
+
+        });
+    }
 
 
 }
