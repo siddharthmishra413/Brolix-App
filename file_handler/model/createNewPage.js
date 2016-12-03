@@ -59,10 +59,6 @@ var createNewPageSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    followers: [{
-        senderId: { type: String },
-        senderName: { type: String }
-    }],
     createdAt: {
         type: Date,
         default: Date.now

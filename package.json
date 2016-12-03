@@ -9,6 +9,7 @@
     "body-parser": "^1.15.1",
     "cloudinary": "^1.4.3",
     "coupon-code": "^0.4.4",
+    "cron": "^1.1.1",
     "express": "^4.13.4",
     "fcm-push": "^1.0.7",
     "fresh": "^0.3.0",
@@ -24,7 +25,8 @@
     "push-notification": "^0.1.8",
     "underscore": "^1.8.3",
     "voucher-code-generator": "^1.1.0",
-    "multer":"1.2.0"
+    "multer":"1.2.0",
+    "validator": "^6.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.10.2"
