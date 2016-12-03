@@ -7,23 +7,43 @@
     "async": "^2.1.2",
     "async-waterfall": "^0.1.5",
     "bcrypt-nodejs": "0.0.3",
+<<<<<<< HEAD
     "body-parser": "^1.15.2",
     "cloudinary": "^1.4.4",
     "coupon-code": "^0.4.5",
     "express": "^4.14.0",
+=======
+    "body-parser": "^1.15.1",
+    "cloudinary": "^1.4.3",
+    "coupon-code": "^0.4.4",
+    "cron": "^1.1.1",
+    "express": "^4.13.4",
+>>>>>>> akash
     "fcm-push": "^1.0.7",
     "fresh": "^0.3.0",
     "json-web-token": "^2.0.2",
     "jsonwebtoken": "^7.1.9",
     "jwt-simple": "^0.5.0",
+<<<<<<< HEAD
     "mongoose": "^4.6.8",
     "mongoose-encryption": "^1.3.2",
+=======
+    "mongoose": "^4.4.19",
+    "mongoose-encryption": "^1.3.1",
+    "mongoose-paginate": "^5.0.3",
+>>>>>>> akash
     "nodemailer": "^2.6.4",
     "nodemon": "^1.9.2",
     "paypal-rest-sdk": "^1.7.0",
     "push-notification": "^0.1.8",
     "underscore": "^1.8.3",
+<<<<<<< HEAD
     "voucher-code-generator": "^1.1.1"
+=======
+    "voucher-code-generator": "^1.1.0",
+    "multer":"1.2.0",
+    "validator": "^6.1.0"
+>>>>>>> akash
   },
   "devDependencies": {
     "nodemon": "^1.10.2"

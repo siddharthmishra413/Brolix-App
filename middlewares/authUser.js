@@ -1,10 +1,10 @@
 var jwt = require("jsonwebtoken");
 var config = require("../config");
-module.exports.authUser = function (req, res, next) {
+module.exports.authUser = function(req, res, next) {
     var token = req.headers.servertoken;
     if (token) {
 
-        jwt.verify(token, config.secreteKey, function (err, decoded) {
+        jwt.verify(token, config.secreteKey, function(err, decoded) {
             if (err) {
                 return res.json({
                     success: false,

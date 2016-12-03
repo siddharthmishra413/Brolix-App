@@ -62,13 +62,21 @@ var userSchema = new Schema({
     },
     cash: {
         type: Number,
-        default:0
+        default: 0
+    },
+    gifts: {
+        type: Number,
+        default: 0
+    },
+    gifts :{
+        type : Number,
+        default : 0
     },
     brolix: {
         type: Number,
         default: 0
     },
-    coupons:[],
+    coupons: [],
     luckCard: {
         type: String
     },
@@ -84,45 +92,59 @@ var userSchema = new Schema({
         senderName: { type: String },
         FollowStatus: { type: String, default: 'Pending' }
     }],
+    pageFollowers: [{
+        pageId: { type: String },
+        pageName: { type: String }
+    }],
     notification_status: { type: String, default: 'on', trim: true },
     viewedAd: [],
     rating: { type: Number, trim: true, default: 0 },
     transferAmountListObject: [{
         amount: { type: Number },
-        CreatedAt: { type: Date,
-                default: Date.now
-              }
+        CreatedAt: {
+            type: Date,
+            default: Date.now
+        }
     }],
-
     sendBrolixListObject: [{
-        senderId:{type:String},
+        senderId: { type: String },
         brolix: { type: Number },
-        CreatedAt: { type: Date,
-                default: Date.now
-              }
+        CreatedAt: {
+            type: Date,
+            default: Date.now
+        }
     }],
     sendCashListObject: [{
-        senderId:{type:String},
+        senderId: { type: String },
         cash: { type: Number },
-        CreatedAt: { type: Date,
-                default: Date.now
-              }
+        CreatedAt: {
+            type: Date,
+            default: Date.now
+        }
     }],
     buyBrolixListObject: [{
         brolix: { type: Number },
-        createdAt: { type: Date,
-                default: Date.now
-              }
+        createdAt: { type: Date, default: Date.now }
     }],
-
+    privacy: {
+        sendMessage: { type: String, default: 'public' },
+        sendCash: { type: String, default: 'public' },
+        sendCoupon: { type: String, default: 'public' },
+        follow: { type: String, default: 'public' },
+        ViewFollower: { type: String, default: 'public' },
+        ViewGifts: { type: String, default: 'public' },
+        findMe: { type: String, default: 'public' },
+        exchangeCoupon: { type: String, default: 'public' },
+        viewLocation: { type: String, default: 'public' }
+    },
     createdAt: {
         type: Date,
         default: Date.now
     },
-    status: {
+    status:{
         type: String,
-        default: 'inActive',
-        trim: true
+        default:'ACTIVE',
+        trim:true
     }
 
 });
