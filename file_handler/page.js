@@ -6,30 +6,6 @@ module.exports = {
     //API for create Page
     "createPage": function(req, res) {
         createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result) {
-<<<<<<< HEAD
-            if (err) throw err;
-            else if (result) {
-                res.send({
-                    responseCode: 302,
-                    responseMessage: "Page name must be unique."
-                });
-            } else {
-                var page = new createNewPage(req.body);
-                page.save(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        User.findByIdAndUpdate({ _id: req.body.userId }, {
-                            $set: {
-                                type: "Advertiser"
-                            }
-                        }, { new: true }).exec(function(err, result) {})
-                        res.send({
-                            result: result,
-                            responseCode: 200,
-                            responseMessage: "Page create successfully."
-                        });
-                    }
-                })
-=======
             if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
             } else {
@@ -49,7 +25,6 @@ module.exports = {
                         }
                     })
                 }
->>>>>>> akash
             }
         })
     },
@@ -77,11 +52,7 @@ module.exports = {
     },
     //API for Business Type
     "showPageBusinessType": function(req, res) {
-<<<<<<< HEAD
-        createNewPage.find({ pageType: 'Business', status: "ACTIVE" }).exec(function(err, result) {
-=======
         createNewPage.find({ userId:req.params.id,pageType: 'Business', status: "ACTIVE" }).exec(function(err, result) {
->>>>>>> akash
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,
@@ -92,15 +63,6 @@ module.exports = {
     },
     //API for Favourite Type
     "showPageFavouriteType": function(req, res) {
-<<<<<<< HEAD
-        createNewPage.find({ pageType: 'Business', status: "ACTIVE" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Pages details show successfully."
-            })
-=======
          User.find({ _id: req.params.id }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var arr = [];
@@ -115,7 +77,6 @@ module.exports = {
                     });
                 })
             }
->>>>>>> akash
         })
     },
     //API for Edit Page
@@ -163,11 +124,7 @@ module.exports = {
     //API for Follow and unfollow
     "pageFollowUnfollow": function(req, res) {
         if (req.body.follow == "follow") {
-<<<<<<< HEAD
-            createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "followers": { senderId: req.body.senderId, senderName: req.body.senderName } } }, { new: true }).exec(function(err, results) {
-=======
             User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: req.body.pageId, pageName: req.body.pageName } } }, { new: true }).exec(function(err, results) {
->>>>>>> akash
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     results: results,
@@ -176,11 +133,7 @@ module.exports = {
                 });
             })
         } else {
-<<<<<<< HEAD
-            createNewPage.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "followers": { senderId: req.body.senderId } } }, { new: true }).exec(function(err, results) {
-=======
             User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "pageFollowers": { pageId: req.body.pageId } } }, { new: true }).exec(function(err, results) {
->>>>>>> akash
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
                         results: results,
@@ -193,11 +146,7 @@ module.exports = {
     },
     //API for Show Page Search
     "pagesSearch": function(req, res) {
-<<<<<<< HEAD
-        console.log("req======>>>" + JSON.stringify(req.body))
-=======
         //console.log("req======>>>" + JSON.stringify(req.body))
->>>>>>> akash
         var re = new RegExp(req.body.search, 'i');
         createNewPage.find({ status: 'ACTIVE' }).or([{ 'pageName': { $regex: re } }]).sort({ pageName: -1 }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -208,11 +157,5 @@ module.exports = {
                 });
             }
         })
-<<<<<<< HEAD
-    },
-}
-=======
     }
-    
-   }
->>>>>>> akash
+}

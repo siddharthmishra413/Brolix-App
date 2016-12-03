@@ -7,9 +7,6 @@ var authUser = require('../middlewares/authUser');
 app.post('/createEvent', authUser.authUser,eventHandler.createEvent);
 app.get('/showAllEvents', authUser.authUser,eventHandler.showAllEvents);
 app.get('/showEventDetails/:id',authUser.authUser,eventHandler.showEventDetails);
-<<<<<<< HEAD
-=======
 app.put('/editEvent/:id',authUser.authUser,eventHandler.editEvent); //Not Update in Docs
->>>>>>> akash
 
 module.exports = app;
