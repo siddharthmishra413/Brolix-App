@@ -53,7 +53,7 @@ var createNewAdsSchema = new Schema({
     couponCode: {
         type: String
     },
-    adsCash: {
+    cashAdPrize: {
         type: Number
     },
     couponStatus: {
@@ -86,8 +86,7 @@ var createNewAdsSchema = new Schema({
     raffleCount: [],
     like: [],
     winners: [],
-    cashTypeWinnersLenght: { type: Number },
-    couponTypeWinnersLenght: { type: Number },
+    viewerLenght: { type: Number },
     luckCardListObject: [{
         userId: { type: String },
         brolix: { type: Number },
@@ -112,6 +111,10 @@ var createNewAdsSchema = new Schema({
         oldCoupon: { type: String },
         couponExchangeStatus: { type: String, default: 'Pending' }
     }],
+    numberOfWinners: {
+        type: Number,
+        default: 1
+    },
     createdAt: {
         type: Date,
         default: Date.now

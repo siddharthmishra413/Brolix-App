@@ -7,6 +7,7 @@ var cc = require('coupon-code');
 var voucher_codes = require('voucher-code-generator');
 var paypal = require('paypal-rest-sdk');
 var waterfall = require('async-waterfall');
+var validator = require('validator');
 var cloudinary = require('cloudinary');
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -32,38 +33,38 @@ module.exports = {
 
     //API for user signUP
     "signup": function(req, res) {
-        User.findOne({ $or: [{ email: req.body.email }, { mobileNumber: req.body.mobileNumber }] }, function(err, result) {
-            console.log(result)
-            if (err) throw err;
-            if (result) {
-                if (result.email == req.body.email) {
-                    res.send({
-                        responseCode: 302,
-                        responseMessage: "Email id must be unique."
-                    });
-                } else if (result.mobileNumber == req.body.mobileNumber) {
-                    res.send({
-                        responseCode: 302,
-                        responseMessage: "Mobille number must be unique."
-                    });
+        console.log(req.body)
+        if (!req.body.email) res.send({ responseCode: 403, responseMessage: 'Email required' });
+        else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        else {
+            User.findOne({ email: req.body.email }, function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 401, responseMessage: "Email id must be unique." }); } else {
+                    if (!req.body.mobileNumber) res.send({ responseCode: 403, responseMessage: 'Mobile number required' });
+                    else {
+                        if (!validator.isNumeric((req.body.mobileNumber).toString())) return res.status(403).send({ msg: "Mobile number must be numeric" });
+                        if (!validator.isLength((req.body.mobileNumber).toString(), { min: 10, max: 12 })) return res.status(403).send({ msg: "Mobile number length must be 10 to 12." });
+                        User.findOne({ mobileNumber: req.body.mobileNumber }, function(err, result1) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
+                                req.body.otp = functions.otp();
+                                var user = User(req.body)
+                                user.save(function(err, result) {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                    var token = jwt.sign(result, config.secreteKey);
+                                    res.header({
+                                        "appToken": token
+                                    }).send({
+                                        result: result,
+                                        token: token,
+                                        responseCode: 200,
+                                        responseMessage: "You have been registered successfully."
+                                    });
+                                })
+                            }
+                        })
+                    }
                 }
-            } else {
-                req.body.otp = functions.otp();
-                var user = User(req.body)
-                user.save(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    var token = jwt.sign(result, config.secreteKey);
-                    res.header({
-                        "appToken": token
-                    }).send({
-                        result: result,
-                        token: token,
-                        responseCode: 200,
-                        responseMessage: "You have been registered successfully."
-                    });
-                })
-            }
-        })
+            })
+        }
     },
 
 
@@ -72,7 +73,7 @@ module.exports = {
         User.findOne({ _id: req.body.userId, otp: req.body.otp }).exec(function(err, results) {
             if (!results) {
                 res.send({
-                    responseCode: 404,
+                    responseCode: 406,
                     responseMessage: 'Please enter correct otp.'
                 });
             } else {
@@ -93,28 +94,32 @@ module.exports = {
 
     //API for user Login
     "login": function(req, res) {
-        User.findOne({
-            email: req.body.email,
-            password: req.body.password,
-            status: 'ACTIVE'
-        }, avoid).exec(function(err, result) {
-            if (err) throw err;
+        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        User.findOne({ email: req.body.email, password: req.body.password, status: 'ACTIVE' }, avoid).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!result) {
                 return res.send({
                     responseCode: 404,
-                    responseMessage: "Sorry Your Id or Password is Incorrect."
+                    responseMessage: "Sorry your id or password is incorrect."
                 });
             } else {
-                var token = jwt.sign(result, config.secreteKey);
-                res.header({
-                    "appToken": token
-                }).send({
-                    result: result,
-                    token: token,
-                    responseCode: 200,
-                    responseMessage: "Login successfully."
-                });
-                console.log("what is in token-->>>" + token);
+                User.findOneAndUpdate({ email: req.body.email}, {
+                    $set: {
+                        deviceType: req.body.deviceType,
+                        deviceToken: req.body.deviceToken
+                    }
+                }, { new: true }).exec(function(err, user) {
+                    var token = jwt.sign(result, config.secreteKey);
+                    res.header({
+                        "appToken": token
+                    }).send({
+                        result: user,
+                        token: token,
+                        responseCode: 200,
+                        responseMessage: "Login successfully."
+                    });
+                    //console.log("what is in token-->>>" + token);
+                })
             }
         })
     },
@@ -123,9 +128,7 @@ module.exports = {
         var otp1;
         var sendEmail = "",
             sendMobileOtp = "";
-        User.findOne({
-            _id: req.params.id
-        }, function(err, data) {
+        User.findOne({ _id: req.params.id }, function(err, data) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var sendEmail = (!req.body.email) ? "false" : (data.email == req.body.email) ? "exitEmail" : "true";
                 var sendMobileOtp = (req.body.mobileNumber && Boolean(sendEmail)) ? (data.mobileNumber == req.body.mobileNumber) ? "exitMobile" : "true" : "false";
@@ -365,7 +368,6 @@ module.exports = {
                 });
             }
         })
-
     },
 
     //API for Tag Friends
@@ -445,9 +447,7 @@ module.exports = {
             function(err, results) {
 
             }
-
         ])
-
     },
 
     // Api for Luck Card
@@ -456,30 +456,32 @@ module.exports = {
         var luckcard = req.body.brolix / 50;
         if (luckcard % 5 == 0) {
             chances = luckcard;
+
+            createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                 else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
+                else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner already decided" });
+                else {
+                    User.findOne({ _id: req.body.userId, }, function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                        else if (!result) return res.status(404).send({ responseMessage: "Please enter userId" })
+                        else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+
+                            createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
+                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                    result.brolix -= req.body.brolix;
+                                    result.save();
+                                    res.status(200).send({ responseMessage: "Successfully used the luck card" });
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        } else {
+
+            res.status(200).send({ responseMessage: "Enter the proper number of brolix" });
         }
-
-        createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
-            else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner allready decided" });
-            else {
-                User.findOne({ _id: req.body.userId, }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-                    else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
-
-                        createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                result.brolix -= req.body.brolix;
-                                result.save();
-                                res.status(200).send({ responseMessage: "successfully used the luck card" });
-                            }
-                        })
-                    }
-
-
-                })
-
-            }
-        })
 
     },
     // "success": function(req, res) {
@@ -508,8 +510,6 @@ module.exports = {
                 "description": req.body.description
             }]
         };
-
-
         paypal.payment.create(payment, function(error, payment) {
             if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 if (payment.payer.payment_method === 'paypal') {
@@ -521,14 +521,13 @@ module.exports = {
 
                     var amount = req.body.brolix / 100;
                     console.log("amount-------", amount)
-
                     User.findOne({ _id: req.body.userId }, function(err, result) {
-
-                        if (result.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
-
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                        else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                        else if (result.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
                             User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "transferAmountListObject": { amount: amount } } }, { new: true }, function(err, results) {
-
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                                 else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
                                 else {
                                     results.brolix -= req.body.brolix;
                                     results.save();
@@ -542,7 +541,7 @@ module.exports = {
                                     //res.redirect(redirectUrl);
                                     res.send({
                                         responseCode: 200,
-                                        responseMessage: "You have successfully transfer your amount"
+                                        responseMessage: "You have successfully transferred your amount"
 
                                     });
                                 }
@@ -562,19 +561,19 @@ module.exports = {
     // Api for Send brolix To Follower
     "sendBrolixToFollower": function(req, res) {
         User.findOne({ _id: req.body.userId }, function(err, result) {
-            if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of Brolix in your account" }); } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+            else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of Brolix in your account" }); } else {
                 result.brolix -= req.body.brolix;
                 result.save();
-
                 User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } } }, { new: true }, function(err, results) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
                     else {
                         results.brolix += req.body.brolix;
                         results.save();
-
                         res.send({
                             responseCode: 200,
-                            responseMessage: "You have successfully transfer your Brolix",
+                            responseMessage: "You have successfully transferred your Brolix",
                             result: results
 
                         });
@@ -617,13 +616,15 @@ module.exports = {
                     console.log("currency", JSON.stringify(req.body.currency))
 
                     User.findOne({ _id: req.body.userId }, function(err, result) {
+                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                        else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
 
-                        if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of Cash in your account" }); } else {
+                        else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
                             result.cash -= req.body.cash;
                             result.save();
 
                             User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } } }, { new: true }, function(err, results) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
 
                                 else {
                                     results.cash += req.body.cash;
@@ -640,7 +641,7 @@ module.exports = {
 
                                     res.send({
                                         responseCode: 200,
-                                        responseMessage: "You have successfully transfer your Cash",
+                                        responseMessage: "You have successfully transfer your cash",
                                         result: results
 
                                     });
@@ -691,14 +692,16 @@ module.exports = {
                     console.log("amount-------", brolix)
 
                     User.findOne({ _id: req.body.userId }, function(err, result) {
-                        console.log("result-----" + result)
-                        if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
+                       if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                        else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+
+                        else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
                             result.cash -= req.body.cash;
                             result.save();
 
                             User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "buyBrolixListObject": { brolix: brolix } } }, { new: true }, function(err, results) {
 
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
                                 else {
                                     results.brolix += req.body.brolix;
                                     results.save();
@@ -712,7 +715,7 @@ module.exports = {
                                     //res.redirect(redirectUrl);
                                     res.send({
                                         responseCode: 200,
-                                        responseMessage: "You have successfully transfer your Brolix",
+                                        responseMessage: "You have successfully transferred your Brolix",
                                         result: results
 
                                     });
@@ -754,32 +757,60 @@ module.exports = {
             }
         })
     },
+    
+"updatePrivacy": function(req, res) {
+    User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
+        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
+        else {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Privacy updated successfully"
+            });
+        }
+    })
+},
+
+   "showPrivacy": function(req, res) {
+       User.findOne({ _id: req.body.userId }, 'privacy').exec(function(err, result) {
+           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User does not found' }); } else {
+               res.send({
+                   result: result,
+                   responseCode: 200,
+                   responseMessage: "User details show successfully"
+               })
+           }
+       })
+   },
+
 
     "blockUser": function(req, res) {
-        console.log("block user exports-->>>" + JSON.stringify(req.body));
-        User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    // result: result,
-                    responseCode: 200,
-                    responseMessage: "User Blocked successfully!!"
-                });
-            }
+       console.log("block user exports-->>>" + JSON.stringify(req.body));
+       User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
+           if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else {
+               res.send({
+                   // result: result,
+                   responseCode: 200,
+                   responseMessage: "User Blocked successfully!!"
+               });
+           }
 
-        });
-    },
+       });
+   },
 
-    "updatePrivacy": function(req, res) {
-        User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
-            if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+
+     "showAllBlockUser": function(req, res) {
+        User.find({}, 'status').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Privacy updated successfully"
+                    responseMessage: "All blocked user show successfully!!"
                 });
             }
-        })
-    }
+
+    });
+}
 
 
 

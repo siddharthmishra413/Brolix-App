@@ -7,8 +7,8 @@ var authUser = require('../middlewares/authUser');
 app.post('/createAds', authUser.authUser,adsHandler.createAds);
 app.put('/applyCoupon/:id',authUser.authUser,adsHandler.applyCoupon);
 app.get('/showAllAdsData', authUser.authUser,adsHandler.showAllAdsData);
-app.post('/videoCount', authUser.authUser,adsHandler.videoCount);
-app.post('/raffleJoin', authUser.authUser,adsHandler.raffleJoin);
+// app.post('/videoCount', authUser.authUser,adsHandler.videoCount);
+// app.post('/raffleJoin', authUser.authUser,adsHandler.raffleJoin);
 app.post('/couponsSearch',authUser.authUser,adsHandler.couponsSearch); //Not in docs
 app.post('/searchForCoupons',authUser.authUser,adsHandler.searchForCoupons);
 app.post('/likeAndUnlike',authUser.authUser,adsHandler.likeAndUnlike);
@@ -20,5 +20,9 @@ app.post('/acceptExchangeCouponRequest',authUser.authUser,adsHandler.acceptExcha
 app.post('/socialShare', authUser.authUser,adsHandler.socialShare);
 app.get('/winners', authUser.authUser,adsHandler.winners);
 app.post('/upgradeCard',authUser.authUser,adsHandler.upgradeCard);
+app.post('/raffleJoin',authUser.authUser,adsHandler.raffleJoin);
+app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
+app.post('/listOfAllAds', authUser.authUser, adsHandler.listOfAllAds);
+
 
 module.exports = app;

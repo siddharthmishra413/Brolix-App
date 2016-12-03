@@ -2,12 +2,17 @@
   var nodemailer = require('nodemailer');
   module.exports = {
       "otp": function(req, res, mobile) {
+        var possible = "0123456789";
+        var otp="";
+       for (var i = 0; i < 4; i++){
+       otp+=  possible.charAt(Math.floor(Math.random() * possible.length)); console.log(otp);
+        }
           var otp = Math.floor(Math.random() * 10000)
           var data = JSON.stringify({
-              api_key: '71414445',
-              api_secret: '49e5f9fe2864877f',
+              api_key: '0ec05def',
+              api_secret: '48fbcc6a6fedbcaa',
               to: '+91' + mobile,
-              from: '+917417773034',
+              from: '917011911324',
               text: 'You have been registerd ' + otp + ' OTP'
           });
           var options = {

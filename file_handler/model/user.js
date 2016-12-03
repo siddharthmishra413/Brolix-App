@@ -64,6 +64,10 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
+    gifts: {
+        type: Number,
+        default: 0
+    },
     brolix: {
         type: Number,
         default: 0
@@ -83,6 +87,10 @@ var userSchema = new Schema({
         senderId: { type: String },
         senderName: { type: String },
         FollowStatus: { type: String, default: 'Pending' }
+    }],
+    pageFollowers: [{
+        pageId: { type: String },
+        pageName: { type: String }
     }],
     notification_status: { type: String, default: 'on', trim: true },
     viewedAd: [],
@@ -114,15 +122,6 @@ var userSchema = new Schema({
         brolix: { type: Number },
         createdAt: { type: Date, default: Date.now }
     }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    status: {
-        type: String,
-        default: 'ACTIVE',
-        trim: true
-    },
     privacy: {
         sendMessage: { type: String, default: 'public' },
         sendCash: { type: String, default: 'public' },
@@ -131,12 +130,23 @@ var userSchema = new Schema({
         ViewFollower: { type: String, default: 'public' },
         ViewGifts: { type: String, default: 'public' },
         findMe: { type: String, default: 'public' },
-        exchangeCoupon: { type: String, default: 'public' }
+        exchangeCoupon: { type: String, default: 'public' },
+        viewLocation: { type: String, default: 'public' }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    status: {
+        type: String,
+        default: 'ACTIVE',
+        trim: true
     }
 
 });
 var user = mongoose.model('brolixUser', userSchema);
 module.exports = user;
+
 function initDB() {
     async.waterfall([
         function(callback) {
