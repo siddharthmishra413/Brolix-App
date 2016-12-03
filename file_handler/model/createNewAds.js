@@ -53,7 +53,7 @@ var createNewAdsSchema = new Schema({
     couponCode: {
         type: String
     },
-    adsCash: {
+    cashAdPrize: {
         type: Number
     },
     couponStatus: {

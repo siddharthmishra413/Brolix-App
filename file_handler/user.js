@@ -8,7 +8,7 @@ var voucher_codes = require('voucher-code-generator');
 var paypal = require('paypal-rest-sdk');
 var waterfall = require('async-waterfall');
 var cloudinary = require('cloudinary');
-var multer  = require('multer')
+var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
 
 cloudinary.config({
@@ -35,18 +35,22 @@ module.exports = {
 
     //API for user signUP
     "signup": function(req, res) {
+        console.log(req.body)
         if (!req.body.email) res.send({ responseCode: 403, responseMessage: 'Email required' });
+        else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
             User.findOne({ email: req.body.email }, function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 302, responseMessage: "Email id must be unique." }); } else {
-                    if (!req.body.mobileNumber) res.send({ responseCode: 403, responseMessage: 'mobileNumber required' });
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 401, responseMessage: "Email id must be unique." }); } else {
+                    if (!req.body.mobileNumber) res.send({ responseCode: 403, responseMessage: 'Mobile number required' });
                     else {
+                        if (!validator.isNumeric((req.body.mobileNumber).toString())) return res.status(403).send({ msg: "Mobile number must be numeric" });
+                        if (!validator.isLength((req.body.mobileNumber).toString(), { min: 10, max: 12 })) return res.status(403).send({ msg: "Mobile number length must be 10 to 12." });
                         User.findOne({ mobileNumber: req.body.mobileNumber }, function(err, result1) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 302, responseMessage: "mobileNumber must be unique" }) } else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
                                 req.body.otp = functions.otp();
                                 var user = User(req.body)
                                 user.save(function(err, result) {
-                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                                     var token = jwt.sign(result, config.secreteKey);
                                     res.header({
                                         "appToken": token
@@ -57,7 +61,6 @@ module.exports = {
                                         responseMessage: "You have been registered successfully."
                                     });
                                 })
-
                             }
                         })
                     }
@@ -490,13 +493,11 @@ module.exports = {
 
 
             createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                 else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
                 else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner already decided" });
                 else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
-                                     return res.status(403).send({ responseMessage: "Already used luckCard" })}
-
-                else {
+                    return res.status(403).send({ responseMessage: "Already used luckCard" })
+                } else {
                     User.findOne({ _id: req.body.userId, }, function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Please enter userid" })
                         else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
@@ -795,7 +796,7 @@ module.exports = {
         })
     },
 
-   
+
     "updatePrivacy": function(req, res) {
         User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
             if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User does not found' }); } else {
@@ -808,33 +809,6 @@ module.exports = {
         })
     },
 
-
-    "privacy": function(req, res) {
-
-        User.findOne({ _id: req.body.userId }, function(err, result) {
-
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-             else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); }
-              else if (result.privacy.exchangeCoupon == "me") return res.status(400).send({ responseMessage: "you are not allowed" })
-            else if (result.privacy.exchangeCoupon == "followers") {
-
-                var flag = result.followers.find(followers => followers == req.body.followerId)
-                if (flag === undefined) return res.status(400).send({ responseMessage: "you are not friend" })
-                else {
-
-                }
-
-            } else {
-
-                res.send({
-                    responseCode: 200,
-                    responseMessage: "user data",
-                    result: result
-                })
-            }
-        })
-
-    },
 
     "showPrivacy": function(req, res) {
         User.findOne({ _id: req.body.userId }, 'privacy').exec(function(err, result) {
@@ -849,7 +823,7 @@ module.exports = {
     },
 
 
-     "blockUser": function(req, res) {
+    "blockUser": function(req, res) {
         console.log("block user exports-->>>" + JSON.stringify(req.body));
         User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else {
@@ -864,19 +838,19 @@ module.exports = {
     },
 
 
-      "showAllBlockUser": function(req, res) {
-         User.find({}, 'status').exec(function(err, result) {
-             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                 res.send({
-                     result: result,
-                     responseCode: 200,
-                     responseMessage: "All blocked user show successfully!!"
-                 });
-             }
+    "showAllBlockUser": function(req, res) {
+        User.find({}, 'status').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All blocked user show successfully!!"
+                });
+            }
 
-     });
- }
+        });
+    }
 
 
-   
+
 }
