@@ -828,9 +828,31 @@ module.exports = {
                     responseMessage: "All blocked user show successfully!!"
                 });
             }
+        });
+      },
 
-    });
-}
+      "privacy": function(req, res) {
+         User.findOne({ _id: req.body.userId }, function(err, result) {
+             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.privacy.exchangeCoupon == "onlyMe") return res.status(400).send({ responseMessage: "you are not allowed" })
+             else if (result.privacy.exchangeCoupon == "friends") {
+                 var flag = result.followers.find(followers => followers == req.body.followerId)
+                 if (flag === undefined) return res.status(400).send({ responseMessage: "you are not friend" })
+                 else {
+
+                 }
+
+             } else {
+
+                 res.send({
+                     responseCode: 200,
+                     responseMessage: "user data",
+                     result: result
+                 })
+             }
+         })
+
+
+     }
 
 
 }

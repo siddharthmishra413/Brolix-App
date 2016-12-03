@@ -29,6 +29,7 @@ app.post('/blockUser', authUser.authUser,userHandler.blockUser);
 app.post('/updatePrivacy', authUser.authUser,userHandler.updatePrivacy);
 app.post('/showPrivacy',authUser.authUser, userHandler.showPrivacy);
 app.get('/showAllBlockUser',authUser.authUser, userHandler.showAllBlockUser);
+app.post('/privacy',authUser.authUser, userHandler.privacy);
 
 
 module.exports = app;	
