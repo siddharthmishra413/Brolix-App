@@ -1,33 +1,34 @@
 {
- "name": "brolix",
- "description": "Brolix",
- "version": "0.0.1",
- "main": "server.js",
- "dependencies": {
-   "async": "^2.1.2",
-   "bcrypt-nodejs": "0.0.3",
-   "body-parser": "^1.15.1",
-   "cloudinary": "^1.4.3",
-   "coupon-code": "^0.4.4",
-   "cron": "^1.1.1",
-   "express": "^4.13.4",
-   "fcm-push": "^1.0.7",
-   "fresh": "^0.3.0",
-   "json-web-token": "^2.0.2",
-   "jsonwebtoken": "^7.1.9",
-   "jwt-simple": "^0.5.0",
-   "mongoose": "^4.4.19",
-   "mongoose-encryption": "^1.3.1",
-   "mongoose-paginate": "^5.0.3",
-   "nodemailer": "^2.6.4",
-   "nodemon": "^1.9.2",
-   "paypal-rest-sdk": "^1.7.0",
-   "push-notification": "^0.1.8",
-   "underscore": "^1.8.3",
-   "validator": "^6.1.0",
-   "voucher-code-generator": "^1.1.0"
- },
- "devDependencies": {
-   "nodemon": "^1.10.2"
- }
+  "name": "brolix",
+  "description": "Brolix",
+  "version": "0.0.1",
+  "main": "server.js",
+  "dependencies": {
+    "async": "^2.1.2",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.1",
+    "cloudinary": "^1.4.3",
+    "coupon-code": "^0.4.4",
+    "cron": "^1.1.1",
+    "express": "^4.13.4",
+    "fcm-push": "^1.0.7",
+    "fresh": "^0.3.0",
+    "json-web-token": "^2.0.2",
+    "jsonwebtoken": "^7.1.9",
+    "jwt-simple": "^0.5.0",
+    "mongoose": "^4.4.19",
+    "mongoose-encryption": "^1.3.1",
+    "mongoose-paginate": "^5.0.3",
+    "multiparty": "^4.1.2",
+    "nodemailer": "^2.6.4",
+    "nodemon": "^1.9.2",
+    "paypal-rest-sdk": "^1.7.0",
+    "push-notification": "^0.1.8",
+    "underscore": "^1.8.3",
+    "validator": "^6.1.0",
+    "voucher-code-generator": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.10.2"
+  }
 }

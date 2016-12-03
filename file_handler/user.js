@@ -149,28 +149,7 @@ module.exports = {
                     req.body.otp = otp1;
                     req.body.status = "inActive";
                 }
-                if (Boolean(req.body.image) || Boolean(req.body.coverImage)) {
-                    var img_base64 = Boolean(req.body.image) == true ? req.body.image : req.body.coverImage;
-                    binaryData = new Buffer(img_base64, 'base64');
-                    require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {
-                        console.log(err);
-                    });
-                    cloudinary.uploader.upload("test.jpeg", function(result) {
-                        console.log("new url-->" + JSON.stringify(result));
-                        Boolean(req.body.image) == true ? (req.body.image = result.url) : (req.body.coverImage = result.url);
-                        User.findByIdAndUpdate(req.params.id, req.body, {
-                            new: true
-                        }).exec(function(err, result) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                            res.send({
-                                result: result,
-                                responseCode: 200,
-                                responseMessage: "Profile updated successfully."
-                            });
-                        });
-
-                    });
-                } else {
+                else {
                     User.findByIdAndUpdate(req.params.id, req.body, {
                         new: true
                     }).exec(function(err, result) {
@@ -181,11 +160,9 @@ module.exports = {
                             responseMessage: "Profile updated successfully."
                         });
                     });
-
                 }
             }
         })
-
     },
 
     //API for user Details

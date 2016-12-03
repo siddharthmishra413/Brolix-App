@@ -29,9 +29,7 @@ var createNewAdsSchema = new Schema({
         type: String,
         thumbnail: []
     },
-    sildeshow: {
-        type: []
-    },
+    sildeshow:[],
     googleLink: {
         type: String
     },
