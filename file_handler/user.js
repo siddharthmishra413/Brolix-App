@@ -35,7 +35,7 @@ module.exports = {
 
     //API for user signUP
     "signup": function(req, res) {
-        console.log(req.body)
+        console.log("request------>>>"+JSON.stringify(req.body));
         if (!req.body.email) res.send({ responseCode: 403, responseMessage: 'Email required' });
         else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
