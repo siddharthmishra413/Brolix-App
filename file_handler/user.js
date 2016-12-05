@@ -393,6 +393,7 @@ module.exports = {
                     senderName.push(followers[i].senderName);
             }
             matchFollowers(text);
+
             function matchFollowers(input) {
                 console.log('function call');
                 var reg = new RegExp(input.split('').join('\\w*').replace(/\W/, ""), 'i');
@@ -415,7 +416,6 @@ module.exports = {
     // Api for Rating
     "rating": function(req, res, next) {
         waterfall([
-
             function(callback) {
                 User.findOne({ _id: req.body.userId }).exec(function(err, result) {
                     var pre_book_rating = result.rating;
@@ -810,6 +810,24 @@ module.exports = {
             }
 
         });
+    },
+
+    "logout": function(req, res) {
+        User.findOneAndUpdate({ _id: req.body.userId }, {
+            $set: {
+                deviceType: '',
+                deviceToken: ''
+            }
+        },{new:true}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    // result:result,
+                    responseCode: 200,
+                    responseMessage: "logout successfully."
+                });
+            }
+        });
+
     }
 
 

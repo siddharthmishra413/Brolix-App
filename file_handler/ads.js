@@ -62,7 +62,7 @@ module.exports = {
         },
         // show all ads
         "showAllAdsData": function(req, res) {
-            createNewAds.find({}).exec(function(err, result) {
+            createNewAds.paginate({ status: "ACTIVE" },{ page: req.params.pageNumber, limit: 8 },function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,

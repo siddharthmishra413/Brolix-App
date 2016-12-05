@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose');
 var async = require('async');
 var encrypt = require('mongoose-encryption');
+var mongoosePaginate = require('mongoose-paginate');
 var Schema = mongoose.Schema;
 
 /* Ads schema */
@@ -123,5 +124,6 @@ var createNewAdsSchema = new Schema({
         trim: true
     }
 });
+createNewAdsSchema.plugin(mongoosePaginate);
 var createNewAds = mongoose.model('createNewAds', createNewAdsSchema);
 module.exports = createNewAds;
