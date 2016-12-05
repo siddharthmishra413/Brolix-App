@@ -29,7 +29,7 @@ module.exports = {
                 })
             } else {
                 User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-                    if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash <= req.body.adsCash) {
+                    if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash <= req.body.cashAdPrize) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                         res.send({ responseCode: 200, responseMessage: "Insufficient cash" });
                     } else {
@@ -93,6 +93,8 @@ module.exports = {
         //         }
         //     })
         // },
+
+
         // Api For Join A Raffle
         // "raffleJoin": function(req, res) {
         //     console.log("request---->>>" + JSON.stringify(req.body));
@@ -137,6 +139,8 @@ module.exports = {
         //         }
         //     })
         // },
+
+
         "raffleJoin": function(req, res) {
             waterfall([
                 function(callback) {
@@ -410,6 +414,7 @@ module.exports = {
                 }
             })
         },
+
         "winners": function(req, res) {
             createNewAds.find({}, 'winners').exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -421,6 +426,7 @@ module.exports = {
                 }
             })
         },
+        
         "listOfAds": function(req, res) {
             createNewAds.find({ userId: req.body.userId }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {

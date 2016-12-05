@@ -29,9 +29,7 @@ var createNewAdsSchema = new Schema({
         type: String,
         thumbnail: []
     },
-    sildeshow: {
-        type: []
-    },
+    sildeShow: [],
     googleLink: {
         type: String
     },
@@ -114,6 +112,12 @@ var createNewAdsSchema = new Schema({
     numberOfWinners: {
         type: Number,
         default: 1
+    },
+    couponExpiryDate:{
+        type : Date
+    },
+    couponLength:{
+        type : Number
     },
     createdAt: {
         type: Date,

@@ -40,7 +40,8 @@ module.exports = {
         else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
             User.findOne({ email: req.body.email }, function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 401, responseMessage: "Email id must be unique." }); } else {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+                else if (result) { res.send({ responseCode: 401, responseMessage: "Email id must be unique." }); } else {
                     if (!req.body.mobileNumber) res.send({ responseCode: 403, responseMessage: 'Mobile number required' });
                     else {
                         if (!validator.isNumeric((req.body.mobileNumber).toString())) return res.status(403).send({ msg: "Mobile number must be numeric" });
@@ -68,7 +69,6 @@ module.exports = {
             })
         }
     },
-
 
     //API for verify Otp
     "verifyOtp": function(req, res, next) {
@@ -125,68 +125,69 @@ module.exports = {
             }
         })
     },
+
     //API for Edit Profile
     "editProfile": function(req, res) {
-        var otp1;
-        var sendEmail = "",
-            sendMobileOtp = "";
-        User.findOne({ _id: req.params.id }, function(err, data) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                var sendEmail = (!req.body.email) ? "false" : (data.email == req.body.email) ? "exitEmail" : "true";
-                var sendMobileOtp = (req.body.mobileNumber && Boolean(sendEmail)) ? (data.mobileNumber == req.body.mobileNumber) ? "exitMobile" : "true" : "false";
-                if (sendEmail == "exitEmail") return res.status(403).send({
-                    responseMessage: "This email is already register."
-                })
-                if (sendMobileOtp == "exitMobile") return res.status(403).send({
-                    responseMessage: "This mobile number is already register."
-                })
-                otp1 = sendMobileOtp == "true" ? functions.otp(req.body.mobileNumber) : functions.otp();
-                if (sendEmail == "true") {
-                    var massege = "Your otp is :"
-                    functions.mail(req.body.email, massege, otp1);
-                }
-                if (sendMobileOtp == "exitMobile") {
-                    req.body.otp = otp1;
-                    req.body.status = "inActive";
-                }
-                if (Boolean(req.body.image) || Boolean(req.body.coverImage)) {
-                    var img_base64 = Boolean(req.body.image) == true ? req.body.image : req.body.coverImage;
-                    binaryData = new Buffer(img_base64, 'base64');
-                    require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {
-                        console.log(err);
-                    });
-                    cloudinary.uploader.upload("test.jpeg", function(result) {
-                        console.log("new url-->" + JSON.stringify(result));
-                        Boolean(req.body.image) == true ? (req.body.image = result.url) : (req.body.coverImage = result.url);
-                        User.findByIdAndUpdate(req.params.id, req.body, {
-                            new: true
-                        }).exec(function(err, result) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                            res.send({
-                                result: result,
-                                responseCode: 200,
-                                responseMessage: "Profile updated successfully."
-                            });
-                        });
+     var otp1;
+     var sendEmail = "",
+         sendMobileOtp = "";
+     User.findOne({ _id: req.params.id }, function(err, data) {
+         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+             var sendEmail = (!req.body.email) ? "false" : (data.email == req.body.email) ? "exitEmail" : "true";
+             var sendMobileOtp = (req.body.mobileNumber && Boolean(sendEmail)) ? (data.mobileNumber == req.body.mobileNumber) ? "exitMobile" : "true" : "false";
+             if (sendEmail == "exitEmail") return res.status(403).send({
+                 responseMessage: "This email is already register."
+             })
+             if (sendMobileOtp == "exitMobile") return res.status(403).send({
+                 responseMessage: "This mobile number is already register."
+             })
+             otp1 = sendMobileOtp == "true" ? functions.otp(req.body.mobileNumber) : functions.otp();
+             if (sendEmail == "true") {
+                 var massege = "Your otp is :"
+                 functions.mail(req.body.email, massege, otp1);
+             }
+             if (sendMobileOtp == "exitMobile") {
+                 req.body.otp = otp1;
+                 req.body.status = "inActive";
+             }
+             if (Boolean(req.body.image) || Boolean(req.body.coverImage)) {
+                 var img_base64 = Boolean(req.body.image) == true ? req.body.image : req.body.coverImage;
+                 binaryData = new Buffer(img_base64, 'base64');
+                 require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {
+                     console.log(err);
+                 });
+                 cloudinary.uploader.upload("test.jpeg", function(result) {
+                     console.log("new url-->" + JSON.stringify(result));
+                     Boolean(req.body.image) == true ? (req.body.image = result.url) : (req.body.coverImage = result.url);
+                     User.findByIdAndUpdate(req.params.id, req.body, {
+                         new: true
+                     }).exec(function(err, result) {
+                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                         res.send({
+                             result: result,
+                             responseCode: 200,
+                             responseMessage: "Profile updated successfully."
+                         });
+                     });
 
-                    });
-                } else {
-                    User.findByIdAndUpdate(req.params.id, req.body, {
-                        new: true
-                    }).exec(function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                        res.send({
-                            result: result,
-                            responseCode: 200,
-                            responseMessage: "Profile updated successfully."
-                        });
-                    });
+                 });
+             } else {
+                 User.findByIdAndUpdate(req.params.id, req.body, {
+                     new: true
+                 }).exec(function(err, result) {
+                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                     res.send({
+                         result: result,
+                         responseCode: 200,
+                         responseMessage: "Profile updated successfully."
+                     });
+                 });
 
-                }
-            }
-        })
+                 }
+             }
+         })
 
-    },
+     },
 
     //API for user Details
     "allUserDetails": function(req, res) {
@@ -504,10 +505,11 @@ module.exports = {
         }
 
     },
-    // "success": function(req, res) {
-    //     console.log("req data-->" + JSON.stringify(req.body));
-    //     res.send("Payment transfered successfully.");
-    // },
+
+    "success": function(req, res) {
+        console.log("req data-->" + JSON.stringify(req.body));
+        res.send("Payment transfered successfully.");
+    },
 
     // Api For Reedem Cash
     "redeemCash": function(req, res) {
@@ -573,10 +575,10 @@ module.exports = {
         });
     },
 
-    // "cancel": function(req, res) {
-    //     console.log("req data-->" + JSON.stringify(req.body));
-    //     res.send("Payment canceled successfully.");
-    // },
+    "cancel": function(req, res) {
+        console.log("req data-->" + JSON.stringify(req.body));
+        res.send("Payment canceled successfully.");
+    },
 
     // Api for Send brolix To Follower
     "sendBrolixToFollower": function(req, res) {
@@ -778,33 +780,33 @@ module.exports = {
         })
     },
 
-"updatePrivacy": function(req, res) {
-    User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
-        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
-        else {
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Privacy updated successfully"
-            });
-        }
-    })
-},
+        "updatePrivacy": function(req, res) {
+            User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
+                else {
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "Privacy updated successfully"
+                    });
+                }
+            })
+        },
 
-   "showPrivacy": function(req, res) {
-       User.findOne({ _id: req.body.userId }, 'privacy').exec(function(err, result) {
-           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User does not found' }); } else {
-               res.send({
-                   result: result,
-                   responseCode: 200,
-                   responseMessage: "User details show successfully"
-               })
-           }
-       })
-   },
+       "showPrivacy": function(req, res) {
+           User.findOne({ _id: req.body.userId }, 'privacy').exec(function(err, result) {
+               if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User does not found' }); } else {
+                   res.send({
+                       result: result,
+                       responseCode: 200,
+                       responseMessage: "User details show successfully"
+                   })
+               }
+           })
+       },
 
 
-    "blockUser": function(req, res) {
+     "blockUser": function(req, res) {
        console.log("block user exports-->>>" + JSON.stringify(req.body));
        User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else {
@@ -851,8 +853,28 @@ module.exports = {
              }
          })
 
+     },
 
-     }
+
+      "logout": function(req, res) {
+       User.findOneAndUpdate({ _id: req.body.userId }, {
+           $set: {
+               deviceType: '',
+               deviceToken: ''
+           }
+       },{new:true}).exec(function(err, result) {
+           if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+               res.send({
+                   // result:result,
+                   responseCode: 200,
+                   responseMessage: "logout successfully."
+               });
+           }
+       });
+
+   }
+
+
 
 
 }
