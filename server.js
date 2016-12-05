@@ -11,6 +11,7 @@ var user = require('./routes/user.js');
 var page = require('./routes/page.js');
 var ads = require('./routes/adds.js');
 var event = require('./routes/event.js');
+var admin = require('./routes/admin.js');
 var reportProblem = require('./routes/reportProblem.js');
 var mongoose = require('mongoose');
 var nodemailer = require('nodemailer');
@@ -57,6 +58,7 @@ app.use('/page', page);
 app.use('/ads', ads);
 app.use('/event', event);  
 app.use('/report', reportProblem);
+app.use('/admin', admin);
 
  
 
