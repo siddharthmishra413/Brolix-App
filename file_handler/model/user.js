@@ -137,6 +137,14 @@ var userSchema = new Schema({
         exchangeCoupon: { type: String, default: 'public' },
         viewLocation: { type: String, default: 'public' }
     },
+    luckCardObject: [{
+        brolix: { type: Number },
+        chances: { type: Number }
+    }],
+    upgradeCardObject: [{
+        brolix: { type: Number },
+        viewers: { type: Number }
+    }],
     createdAt: {
         type: Date,
         default: Date.now

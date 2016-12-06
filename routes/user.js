@@ -31,6 +31,9 @@ app.post('/showPrivacy',authUser.authUser, userHandler.showPrivacy);
 app.get('/showAllBlockUser',authUser.authUser, userHandler.showAllBlockUser);
 app.post('/privacy',authUser.authUser, userHandler.privacy);
 app.post('/logout',authUser.authUser, userHandler.logout);
-
+app.post('/purchaseUpgradeCard', authUser.authUser, userHandler.purchaseUpgradeCard);
+app.post('/purchaseLuckCard', authUser.authUser, userHandler.purchaseLuckCard);
+app.post('/showUpgradeCard',authUser.authUser, userHandler.showUpgradeCard);
+app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
 
 module.exports = app;	

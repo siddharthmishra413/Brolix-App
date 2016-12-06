@@ -286,7 +286,7 @@ module.exports = {
          }
      })
 
- },
+   },
 
     //API for user Profile
     "userProfile": function(req, res) {
@@ -871,10 +871,91 @@ module.exports = {
                });
            }
        });
+   },
 
-   }
+
+    "showUpgradeCard":function(req, res){
+        createNewAds.find({_id:req.body.adId},'upgradeCardListObject').populate('upgradeCardListObject.userId').exec(function(err, result) {
+        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else {                
+                res.send({                    
+                    result:result,
+                    responseCode: 200,
+                    responseMessage: "List of all upgradeCardListObject show successfully!!"
+                    });
+                }
+         })
+
+       },
 
 
+   "showLuckCard":function(req, res){
+         createNewAds.find({_id:req.body.adId},'luckCardListObject').populate('luckCardListObject.userId').exec(function(err, result) {
+        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else {                
+                res.send({                    
+                    result:result,
+                    responseCode: 200,
+                    responseMessage: "List of all luckCardListObject show successfully!!"
+                    });
+                }
+         })
+     },
+
+
+
+   "purchaseUpgradeCard": function(req, res) {
+         var viewers;
+         var upgrade = req.body.brolix / 5;
+         if (upgrade % 50 == 0) {
+             viewers = upgrade;      
+            User.findOne({ _id: req.body.userId, }, function(err, result) {
+                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                  else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                  else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+                   User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": { brolix: req.body.brolix, viewers: viewers } } },  { new: true }).exec(function(err, user) {
+                      if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+                        else {
+                              result.brolix -= req.body.brolix;
+                              result.save();
+                              res.status(200).send({result:user, responseMessage: "successfully used the upgrade card" });
+                                 }
+                             })
+                         }
+                     }) 
+               }
+
+          else {
+                 res.status(400).send({ responseMessage: "Use proper no of brolix for upgrade card" });
+             }
+        },
+
+     "purchaseLuckCard": function(req, res) {
+         var chances;
+         var luckcard = req.body.brolix / 50;
+         if (luckcard % 5 == 0) {
+             chances = luckcard;      
+        User.findOne({ _id: req.body.userId, }, function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+             else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+                  User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": { brolix: req.body.brolix, chances: chances } } },  { new: true }).exec(function(err, user) {
+                   if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+                     else {
+                          result.brolix -= req.body.brolix;
+                          result.save();
+                          res.status(200).send({result:user, responseMessage: "successfully used the upgrade card" });
+                                 }
+                             })
+                         }
+                     }) 
+               }
+
+          else {
+                 res.status(400).send({ responseMessage: "Use proper no of brolix for upgrade card" });
+             }
+     }
+    
 
 
 }
