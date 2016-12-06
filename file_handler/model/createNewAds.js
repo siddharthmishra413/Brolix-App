@@ -42,9 +42,6 @@ var createNewAdsSchema = new Schema({
     appIcon: {
         type: String
     },
-    image: {
-        type: String
-    },
     linkDescription: {
         type: String
     },
