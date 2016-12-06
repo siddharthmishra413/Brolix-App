@@ -30,7 +30,7 @@ var createNewAdsSchema = new Schema({
         type: String,
         thumbnail: []
     },
-    sildeshow:[],
+    sildeShow: [],
     googleLink: {
         type: String
     },
@@ -41,9 +41,6 @@ var createNewAdsSchema = new Schema({
         type: String
     },
     appIcon: {
-        type: String
-    },
-    image: {
         type: String
     },
     linkDescription: {
@@ -114,6 +111,19 @@ var createNewAdsSchema = new Schema({
         type: Number,
         default: 1
     },
+    couponExpiryDate: {
+        type: Date
+    },
+    couponLength: {
+        type: Number
+    },
+    ageFrom: {
+        type: Date
+    },
+    ageTo: {
+        type: Date
+    },
+    hiddenGifts: [],
     createdAt: {
         type: Date,
         default: Date.now
