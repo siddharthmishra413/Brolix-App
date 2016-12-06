@@ -52,7 +52,7 @@ module.exports = {
     },
     //API for Business Type
     "showPageBusinessType": function(req, res) {
-        createNewPage.find({ userId:req.params.id,pageType: 'Business', status: "ACTIVE" }).exec(function(err, result) {
+        createNewPage.paginate({ userId:req.params.id, pageType: 'Business', status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,

@@ -25,8 +25,9 @@ module.exports = {
                 req.body.viewerLenght = 100;
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+                    if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
+                        res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+                    }
                 })
             } else {
                 User.findOne({ _id: req.body.userId }).exec(function(err, result) {
@@ -62,7 +63,7 @@ module.exports = {
         },
         // show all ads
         "showAllAdsData": function(req, res) {
-            createNewAds.paginate({ status: "ACTIVE" },{ page: req.params.pageNumber, limit: 8 },function(err, result) {
+            createNewAds.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -370,7 +371,6 @@ module.exports = {
 
 
         "listOfAllAds": function(req, res) { // for a single user
-
             createNewAds.find({}).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                     var couponType = result.filter(result => result.adsType == "coupon");
@@ -387,24 +387,24 @@ module.exports = {
         },
 
         "uploads": function(req, res) {
-                console.log(req.body.images)
+            console.log(req.body.images)
             var form = new multiparty.Form();
             form.parse(req, function(err, fields, files) {
-                //  res.send("name:"+fields.name);
+                console.log("img.path",files)
                 var img = files.images[0];
                 var fileName = files.images[0].originalFilename;
                 console.log(img.path)
                 cloudinary.uploader.upload(img.path, function(result) {
-                        console.log("new url-->" + JSON.stringify(result.url));
-                        res.send({
-                                result: result.url,
-                                responseCode: 200,
-                                responseMessage: "File uploaded successfully."
-                            });
-                    },{
-                 resource_type: "auto",
-                 chunk_size: 6000000
-             });
+                    console.log("new url-->" + JSON.stringify(result.url));
+                    res.send({
+                        result: result.url,
+                        responseCode: 200,
+                        responseMessage: "File uploaded successfully."
+                    });
+                }, {
+                    resource_type: "auto",
+                    chunk_size: 6000000
+                });
             })
         }
 

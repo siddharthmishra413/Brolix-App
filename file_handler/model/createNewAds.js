@@ -14,6 +14,10 @@ var createNewAdsSchema = new Schema({
         type: String,
         trim: true
     },
+    pageId: {
+        type: String,
+        trim: true
+    },
     adsType: {
         type: String,
         trim: true
@@ -112,16 +116,16 @@ var createNewAdsSchema = new Schema({
         default: 1
     },
     couponExpiryDate: {
-        type: Date
+        type: String
     },
     couponLength: {
         type: Number
     },
     ageFrom: {
-        type: Date
+        type: Number
     },
     ageTo: {
-        type: Date
+        type: Number
     },
     hiddenGifts: [],
     createdAt: {

@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose');
 var async = require('async');
 var encrypt = require('mongoose-encryption');
+var mongoosePaginate = require('mongoose-paginate');
 var Schema = mongoose.Schema;
 
 /* User schema */
@@ -68,9 +69,9 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
-    gifts :{
-        type : Number,
-        default : 0
+    gifts: {
+        type: Number,
+        default: 0
     },
     brolix: {
         type: Number,
@@ -137,17 +138,26 @@ var userSchema = new Schema({
         exchangeCoupon: { type: String, default: 'public' },
         viewLocation: { type: String, default: 'public' }
     },
+    luckCardObject: [{
+        brolix: { type: Number },
+        chances: { type: Number }
+    }],
+    upgradeCardObject: [{
+        brolix: { type: Number },
+        viewers: { type: Number }
+    }],
     createdAt: {
         type: Date,
         default: Date.now
     },
-    status:{
+    status: {
         type: String,
-        default:'ACTIVE',
-        trim:true
+        default: 'ACTIVE',
+        trim: true
     }
 
 });
+userSchema.plugin(mongoosePaginate);
 var user = mongoose.model('brolixUser', userSchema);
 module.exports = user;
 
