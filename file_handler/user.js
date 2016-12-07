@@ -874,34 +874,31 @@ module.exports = {
    },
 
 
-    "showUpgradeCard":function(req, res){
-        createNewAds.find({_id:req.body.adId},'upgradeCardListObject').populate('upgradeCardListObject.userId').exec(function(err, result) {
-        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-             else {                
-                res.send({                    
-                    result:result,
+   
+     "showUpgradeCard": function(req, res) {
+            User.find({ _id: req.body.userId }, 'upgradeCardObject').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result[0],
                     responseCode: 200,
-                    responseMessage: "List of all upgradeCardListObject show successfully!!"
+                    responseMessage: "List of all upgrade Card show successfully!!"
                     });
                 }
-         })
+            })
+        },
 
-       },
 
-
-   "showLuckCard":function(req, res){
-         createNewAds.find({_id:req.body.adId},'luckCardListObject').populate('luckCardListObject.userId').exec(function(err, result) {
-        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-             else {                
-                res.send({                    
-                    result:result,
+    "showLuckCard": function(req, res) {
+        User.find({ _id: req.body.userId }, 'luckCardObject').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result[0],
                     responseCode: 200,
-                    responseMessage: "List of all luckCardListObject show successfully!!"
-                    });
-                }
-         })
-     },
-
+                    responseMessage: "List of all luck Card show successfully!!"
+                });
+            }
+        })
+    },
 
 
    "purchaseUpgradeCard": function(req, res) {
@@ -945,8 +942,8 @@ module.exports = {
                           result.brolix -= req.body.brolix;
                           result.save();
                           res.status(200).send({result:user, responseMessage: "successfully used the upgrade card" });
-                                 }
-                             })
+                           }
+                        })
                          }
                      }) 
                }
