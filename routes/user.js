@@ -32,6 +32,8 @@ app.get('/showAllBlockUser',authUser.authUser, userHandler.showAllBlockUser);
 app.post('/logout',authUser.authUser, userHandler.logout);
 app.post('/purchaseUpgradeCard', authUser.authUser, userHandler.purchaseUpgradeCard);
 app.post('/purchaseLuckCard', authUser.authUser, userHandler.purchaseLuckCard);
+app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
+app.post('/showUpgradeCard', authUser.authUser, userHandler.showUpgradeCard);
 
 
 module.exports = app;	
