@@ -27,8 +27,8 @@ module.exports = {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                     res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
                 })
-            } else {
-                User.findOne({ _id: req.body.userId }).exec(function(err, result) {
+            }  else {
+                   User.findOne({ _id: req.body.userId }).exec(function(err, result) {
                     if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash <= req.body.cashAdPrize) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                         res.send({ responseCode: 200, responseMessage: "Insufficient cash" });
@@ -37,7 +37,7 @@ module.exports = {
                             req.body.viewerLenght = 1000;
                             var Ads = new createNewAds(req.body);
                             Ads.save(function(err, result) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                 res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
                             })
                         })
@@ -213,9 +213,7 @@ module.exports = {
                 }
 
             ], function(err, result) {
-
                 res.status(200).send({ responseMessage: "Winner declared", result: result })
-
             })
         },
 
