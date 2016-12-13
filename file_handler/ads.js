@@ -72,8 +72,7 @@ module.exports = {
                 })
             })
         },
-<<<<<<< HEAD
-=======
+
         // Api For Video Count
         // "videoCount": function(req, res) {
         //     User.findOne({ _id: req.body.userId, viewedAd: req.body.adId }, function(err, result) {
@@ -143,8 +142,6 @@ module.exports = {
         //     })
         // },
 
-
->>>>>>> deepak
         "raffleJoin": function(req, res) {
             waterfall([
                 function(callback) {
