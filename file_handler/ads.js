@@ -372,7 +372,6 @@ module.exports = {
             });
         },
 
-
         "listOfAllAds": function(req, res) { // for a single user
 
             createNewAds.find({}).exec(function(err, result) {
@@ -388,10 +387,29 @@ module.exports = {
                 }
 
             });
+        },
+
+        "uploads": function(req, res) {
+            console.log(req.body.images)
+            var form = new multiparty.Form();
+            form.parse(req, function(err, fields, files) {
+                console.log("img.path", files)
+                var img = files.images[0];
+                var fileName = files.images[0].originalFilename;
+                console.log(img.path)
+                cloudinary.uploader.upload(img.path, function(result) {
+                    console.log("new url-->" + JSON.stringify(result.url));
+                    res.send({
+                        result: result.url,
+                        responseCode: 200,
+                        responseMessage: "File uploaded successfully."
+                    });
+                }, {
+                    resource_type: "auto",
+                    chunk_size: 6000000
+                });
+            })
         }
-
-
-
 
     }
     // new CronJob('* * * * * *', function() {  

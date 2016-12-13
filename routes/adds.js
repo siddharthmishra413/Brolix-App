@@ -21,6 +21,7 @@ app.post('/upgradeCard',authUser.authUser,adsHandler.upgradeCard);
 app.post('/raffleJoin',authUser.authUser,adsHandler.raffleJoin);
 app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
 app.get('/listOfAllAds', authUser.authUser, adsHandler.listOfAllAds);
+app.get('/uploads', authUser.authUser, adsHandler.uploads);
 
 
 module.exports = app;
