@@ -805,7 +805,6 @@ module.exports = {
            })
        },
 
-
      "blockUser": function(req, res) {
        console.log("block user exports-->>>" + JSON.stringify(req.body));
        User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
@@ -820,8 +819,7 @@ module.exports = {
        });
    },
 
-
-     "showAllBlockUser": function(req, res) {
+    "showAllBlockUser": function(req, res) {
         User.find({}, 'status').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
@@ -844,7 +842,6 @@ module.exports = {
                  }
 
              } else {
-
                  res.send({
                      responseCode: 200,
                      responseMessage: "user data",
@@ -873,9 +870,8 @@ module.exports = {
        });
    },
 
-
    
-     "showUpgradeCard": function(req, res) {
+    "showUpgradeCard": function(req, res) {
             User.find({ _id: req.body.userId }, 'upgradeCardObject').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
@@ -886,7 +882,6 @@ module.exports = {
                 }
             })
         },
-
 
     "showLuckCard": function(req, res) {
         User.find({ _id: req.body.userId }, 'luckCardObject').exec(function(err, result) {
