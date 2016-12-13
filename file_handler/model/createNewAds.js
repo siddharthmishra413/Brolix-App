@@ -115,6 +115,7 @@ var createNewAdsSchema = new Schema({
         type: Number,
         default: 1
     },
+<<<<<<< HEAD
     couponExpiryDate: {
         type: String
     },
@@ -128,6 +129,14 @@ var createNewAdsSchema = new Schema({
         type: Number
     },
     hiddenGifts: [],
+=======
+    couponExpiryDate:{
+        type : Date
+    },
+    couponLength:{
+        type : Number
+    },
+>>>>>>> deepak
     createdAt: {
         type: Date,
         default: Date.now

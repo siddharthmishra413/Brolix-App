@@ -29,11 +29,20 @@ app.post('/blockUser', authUser.authUser,userHandler.blockUser);
 app.post('/updatePrivacy', authUser.authUser,userHandler.updatePrivacy);
 app.post('/showPrivacy',authUser.authUser, userHandler.showPrivacy);
 app.get('/showAllBlockUser',authUser.authUser, userHandler.showAllBlockUser);
+<<<<<<< HEAD
 app.post('/logout',authUser.authUser, userHandler.logout);
 app.post('/purchaseUpgradeCard', authUser.authUser, userHandler.purchaseUpgradeCard);
 app.post('/purchaseLuckCard', authUser.authUser, userHandler.purchaseLuckCard);
 app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
 app.post('/showUpgradeCard', authUser.authUser, userHandler.showUpgradeCard);
 
+=======
+app.post('/privacy',authUser.authUser, userHandler.privacy);
+app.post('/logout',authUser.authUser, userHandler.logout);
+app.post('/purchaseUpgradeCard', authUser.authUser, userHandler.purchaseUpgradeCard);
+app.post('/purchaseLuckCard', authUser.authUser, userHandler.purchaseLuckCard);
+app.post('/showUpgradeCard',authUser.authUser, userHandler.showUpgradeCard);
+app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
+>>>>>>> deepak
 
 module.exports = app;	
