@@ -1,7 +1,7 @@
   var https = require('https');
   var nodemailer = require('nodemailer');
   var FCM = require('fcm-push');
-  //var apn = require('apn');
+  var apn = require('apn');
   module.exports = {
       "otp": function(req, res, mobile) {
           var possible = "0123456789";
