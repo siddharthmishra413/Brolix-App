@@ -1,13 +1,14 @@
-var app = angular.module('MyApp', ['ui.router','ngCookies','blockUI','angularUtils.directives.dirPagination'])
+'use strict';
+var app = angular.module('MyApp', ['ui.router'])
 
 
 app.config(function ($stateProvider, $urlRouterProvider,$httpProvider) {
     //$httpProvider.interceptors.push('httpModifier');
     $stateProvider
-    .state('menu', {
-        url: '/menu',
-        controller: 'menuCtrl',
-        templateUrl: 'templates/menu.html'        
+    .state('header', {
+        url: '/header',
+        controller: 'headerCtrl',
+        templateUrl: 'templates/header.html'        
     })
 
     .state('login', {
@@ -64,7 +65,7 @@ app.config(function ($stateProvider, $urlRouterProvider,$httpProvider) {
         templateUrl: 'templates/managePayments.html'        
     })
 
-    .state('manageUsers', {
+    .state('header.manageUsers', {
         url: '/manageUsers',
         controller: 'manageUsersCtrl',
         templateUrl: 'templates/manageUsers.html'        

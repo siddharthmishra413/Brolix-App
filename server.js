@@ -34,10 +34,11 @@ app.use(express.static('assest'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/');
 });
-app.get('/test', function(res,res){
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + '/index.html');
+});
 
-  res.send("api works on ---->>>"+port);
-})
+app.use(express.static(path.join(__dirname, 'assest')));
 
 
 app.all('/*', function(req, res, next) {
