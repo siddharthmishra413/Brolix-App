@@ -8,7 +8,8 @@ app.config(function ($stateProvider, $urlRouterProvider,$httpProvider) {
     .state('header', {
         url: '/header',
         controller: 'headerCtrl',
-        templateUrl: 'templates/header.html'        
+        templateUrl: 'templates/header.html',
+        abstract: true        
     })
 
     .state('login', {
@@ -17,19 +18,25 @@ app.config(function ($stateProvider, $urlRouterProvider,$httpProvider) {
         templateUrl: 'templates/login.html'        
     })
 
-    .state('manageAdminTools', {
-        url: '/manageAdminTools',
-        controller: 'manageAdminToolsCtrl',
-        templateUrl: 'templates/manageAdminTools.html'        
+    .state('header.manageUsers', {
+        url: '/manageUsers',
+        controller: 'manageUsersCtrl',
+        templateUrl: 'templates/manageUsers.html'        
     })
 
-    .state('manageAds', {
+    .state('header.managePages', {
+        url: '/managePages',
+        controller: 'managePagesCtrl',
+        templateUrl: 'templates/managePages.html'        
+    })
+
+    .state('header.manageAds', {
         url: '/manageAds',
         controller: 'manageAdsCtrl',
         templateUrl: 'templates/manageAds.html'        
     })
 
-    .state('createAds', {
+    .state('header.createAds', {
         url: '/createAds',
         controller: 'createAdsCtrl',
         templateUrl: 'templates/createAds.html'        
@@ -41,34 +48,28 @@ app.config(function ($stateProvider, $urlRouterProvider,$httpProvider) {
         templateUrl: 'templates/editAds.html'        
     })
 
-    .state('manageCards', {
+    .state('header.manageCards', {
         url: '/manageCards',
         controller: 'manageCardsCtrl',
         templateUrl: 'templates/manageCards.html'        
     })
 
-    .state('manageGifts', {
+    .state('header.manageGifts', {
         url: '/manageGifts',
         controller: 'manageGiftsCtrl',
         templateUrl: 'templates/manageGifts.html'        
     })
 
-    .state('managePages', {
-        url: '/managePages',
-        controller: 'managePagesCtrl',
-        templateUrl: 'templates/managePages.html'        
-    })
-
-    .state('managePayments', {
+    .state('header.managePayments', {
         url: '/managePayments',
-        controller: 'managePaymentsCtrl',
-        templateUrl: 'templates/managePayments.html'        
+        controller: 'managePaymentCtrl',
+        templateUrl: 'templates/managePayment.html'        
     })
 
-    .state('header.manageUsers', {
-        url: '/manageUsers',
-        controller: 'manageUsersCtrl',
-        templateUrl: 'templates/manageUsers.html'        
+    .state('manageAdminTools', {
+        url: '/manageAdminTools',
+        controller: 'manageAdminToolsCtrl',
+        templateUrl: 'templates/manageAdminTools.html'        
     })
 
 
