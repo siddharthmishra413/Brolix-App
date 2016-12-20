@@ -50,14 +50,13 @@ module.exports = {
     },
 
     "blockUser": function(req, res) {
-       User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
-        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-        else if (!result) return res.status(404).send({ responseMessage: "please enter correct adId" })
-        else {
-            res.send({
-                // result: result,
-                responseCode: 200,
-                responseMessage: "User Blocked successfully!!"
+        User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct adId" })
+            else {
+                res.send({
+                    // result: result,
+                    responseCode: 200,
+                    responseMessage: "User Blocked successfully!!"
                 });
             }
 
@@ -77,6 +76,50 @@ module.exports = {
             }
 
         });
+    },
+
+    "showAllAds": function(req, res) { // all ads cash and coupon type
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "All ads show successfully"
+            })
+        })
+    },
+
+    "listOfAds": function(req, res) { // for a single user based on cash and coupon category
+        createNewAds.find({ userId: req.body.userId }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No ad found from this User' }); } else {
+                var couponType = result.filter(result => result.adsType == "coupon");
+                var cashType = result.filter(result => result.adsType == "cash");
+                res.send({
+                    couponType: couponType,
+                    cashType: cashType,
+                    responseCode: 200,
+                    responseMessage: "List of ads show successfully!!"
+                });
+            }
+
+        });
+
+    },
+
+    "listOfAllAds": function(req, res) { // for all users based on cash and coupon category
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                var couponType = result.filter(result => result.adsType == "coupon");
+                var cashType = result.filter(result => result.adsType == "cash");
+                res.send({
+                    couponType: couponType,
+                    cashType: cashType,
+                    responseCode: 200,
+                    responseMessage: "List of all ads show successfully!!"
+                });
+            }
+        });
+
     }
 
 
