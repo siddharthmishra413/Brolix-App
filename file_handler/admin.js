@@ -47,6 +47,36 @@ module.exports = {
                 });
             }
         });
+    },
+
+    "blockUser": function(req, res) {
+       User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
+        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+        else if (!result) return res.status(404).send({ responseMessage: "please enter correct adId" })
+        else {
+            res.send({
+                // result: result,
+                responseCode: 200,
+                responseMessage: "User Blocked successfully!!"
+                });
+            }
+
+        });
+    },
+
+
+    "showAllBlockUser": function(req, res) {
+        User.find({ status: "BLOCK" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No block user found' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All blocked user shows successfully!!"
+                });
+            }
+
+        });
     }
 
 
