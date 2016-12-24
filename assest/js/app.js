@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('MyApp', ['ui.router'])
+var app = angular.module('MyApp', ['ui.router','ngCookies'])
 
 
 app.config(function ($stateProvider, $urlRouterProvider,$httpProvider) {

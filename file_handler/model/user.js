@@ -177,7 +177,9 @@ function initDB() {
                     email: 'admin@admin.com',
                     password: 'admin123',
                     type: 'ADMIN',
-                    firstname: 'ADMIN'
+                    firstName: 'AKASH',
+                    lastName: 'BAIS',
+                    image: 'http://res.cloudinary.com/mobiloitte-in/image/upload/v1482579253/IMG_0768_f9b0nw.jpg'
                 }
 
                 var adminUser = new user(defaultUser);

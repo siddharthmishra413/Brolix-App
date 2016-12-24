@@ -15,6 +15,7 @@ var admin = require('./routes/admin.js');
 var reportProblem = require('./routes/reportProblem.js');
 var mongoose = require('mongoose');
 var nodemailer = require('nodemailer');
+var session = require('client-sessions');
 
 var port = process.env.PORT || 8082; // used to create, sign, and verify tokens
 // use body parser so we can get info from POST and/or URL parameters
@@ -37,7 +38,12 @@ app.get('/', function (req, res) {
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-
+app.use(session({
+  cookieName: 'session',
+  secret: 'random_string_goes_here',
+  duration: 1 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
 app.use(express.static(path.join(__dirname, 'assest')));
 
 
