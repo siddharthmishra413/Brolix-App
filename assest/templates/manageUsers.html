@@ -6,10 +6,10 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Total Users</div>
-                            <div class="total-amt">30,000</div>
+                            <div class="total-amt">{{totalUser.length}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='totalUsers'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
@@ -118,7 +118,7 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Total Winners</div>
-                            <div class="total-amt">19,000</div>
+                            <div class="total-amt">{{totalWinners.length}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage">
@@ -346,8 +346,8 @@
             </form>
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="row table-responsive cus-table">
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalUsers">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -360,38 +360,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="x in totalUser">
                         <td>
-                            <input id="o" name="" value="" checked="" type="radio">
+                            <input id="" name="" value="" checked="" type="radio">
                         </td>
-                        <td class="skyblue-text">Yazan</td>
-                        <td class="skyblue-text">AL-Baw</td>
-                        <td class="skyblue-text">0799435020</td>
-                        <td class="skyblue-text">Yazan@ctc-jo.com</td>
-                        <td class="skyblue-text">5</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="o" name="" value="" checked="" type="radio">
-                        </td>
-                        <td class="skyblue-text">Yazan</td>
-                        <td class="skyblue-text">AL-Baw</td>
-                        <td class="skyblue-text">0799435020</td>
-                        <td class="skyblue-text">Yazan@ctc-jo.com</td>
-                        <td class="skyblue-text">5</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="o" name="" value="" checked="" type="radio">
-                        </td>
-                        <td class="skyblue-text">Yazan</td>
-                        <td class="skyblue-text">AL-Baw</td>
-                        <td class="skyblue-text">0799435020</td>
-                        <td class="skyblue-text">Yazan@ctc-jo.com</td>
+                        <td class="skyblue-text">{{x.firstName}}</td>
+                        <td class="skyblue-text">{{x.lastName}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.email}}</td>
                         <td class="skyblue-text">5</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
+    </div>  
 </div>

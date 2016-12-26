@@ -15,6 +15,12 @@ app.service('userService',function($http){
     },
     adminProfile: function() {
       return $http.get('/admin/adminProfile');
+    },
+    totalUser: function() {
+      return $http.get('/admin/showAllUser');
+    },
+    totalWinners: function() {
+      return $http.get('/admin/winners');
     }
 
 	}

@@ -5,7 +5,9 @@ var mongoose = require('mongoose');
 var async = require('async');
 var encrypt = require('mongoose-encryption');
 var mongoosePaginate = require('mongoose-paginate');
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schema,
+ObjectId = Schema.ObjectId;
+var autopopulate = require('mongoose-autopopulate');
 
 /* Ads schema */
 
@@ -85,7 +87,7 @@ var createNewAdsSchema = new Schema({
     }],
     raffleCount: [],
     like: [],
-    winners: [],
+    winners: [{ type: ObjectId, ref: 'brolixUser'}],
     viewerLenght: { type: Number },
     luckCardListObject: [{
         userId: { type: String },
@@ -138,6 +140,7 @@ var createNewAdsSchema = new Schema({
         trim: true
     }
 });
+//createNewAdsSchema.plugin(autopopulate);
 createNewAdsSchema.plugin(mongoosePaginate);
 var createNewAds = mongoose.model('createNewAds', createNewAdsSchema);
 module.exports = createNewAds;

@@ -48,27 +48,37 @@ module.exports = {
     },
 
     "showAllUser": function(req, res) {
-        User.find({}, function(err, result) {
+        User.find({ $or: [{ type: "USER" }, { type: "Advertiser" }] }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.status(200).send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "successfully purchased the upgrade card"
                 });
-
             }
-
         })
     },
 
     "winners": function(req, res) {
         createNewAds.find({}, 'winners').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Winners details show successfully"
+                var arr = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].winners.length >= 1) {
+                        for (var j = 0; j < result[i].winners.length; j++) {
+                            arr.push(result[i].winners[j]);
+
+                        }
+                    }
+                }
+                User.find({ _id: { $in: arr } }).exec(function(err, newResult) {
+                    res.send({
+                        result: newResult,
+                        responseCode: 200,
+                        responseMessage: "Winners details show successfully"
+                    })
                 })
+
             }
         })
     },
