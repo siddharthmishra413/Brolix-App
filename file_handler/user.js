@@ -786,7 +786,7 @@ module.exports = {
 
     "blockUser": function(req, res) {
         console.log("block user exports-->>>" + JSON.stringify(req.body));
-        User.findByIdAndUpdate({ _id: req.body.userId }, { '$set': { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
+        User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct adId" })
             else {
                 res.send({

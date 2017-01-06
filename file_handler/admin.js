@@ -120,7 +120,7 @@ module.exports = {
     "showAllBlockUser": function(req, res) {
         User.find({ status: "BLOCK" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No block user found' }); } else {
+            if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No blocked user found' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,

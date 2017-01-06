@@ -146,6 +146,8 @@ var userSchema = new Schema({
         brolix: { type: Number },
         viewers: { type: Number }
     }],
+    usedLuckCard:[],
+    userUpgradeCard:[],
     createdAt: {
         type: Date,
         default: Date.now
