@@ -172,7 +172,54 @@ module.exports = {
                 });
             }
         });
+    },
+
+    "allUpgradeCardFromStore": function(req, res){
+        Store.find({},'upgradeCardListObject').exec(function(err, result){
+           if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+           else {
+             var count = 0;
+            for(i=0;i<result.length;i++)
+            {
+                for(j=0;j<result[i].upgradeCardListObject.length;j++)
+                {
+                  count++;
+                }
+            }
+                 res.status(200).send({
+                     result: result,
+                     count:count,
+                     responseCode: 200,
+                     responseMessage: "successfully show list of upgrade card"
+                 });
+             }
+        })
+    },
+
+    "allLuckCardFromStore": function(req, res){
+        Store.find({}, 'luckCardListObject').exec(function(err, result){
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+           else {
+             var count = 0;
+            for(i=0;i<result.length;i++)
+            {
+                for(j=0;j<result[i].luckCardListObject.length;j++)
+                {
+                  count++;
+                }
+            }
+            console.log("count",count);
+                 res.status(200).send({
+                     result: result,
+                     count:count,
+                     responseCode: 200,
+                     responseMessage: "successfully show list of luck card"
+                 });
+             }
+
+        })
     }
+
 
 
 }

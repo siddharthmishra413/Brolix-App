@@ -13,5 +13,7 @@ app.post('/blockUser',  adminHandler.blockUser);
 app.get('/showAllAds',  adminHandler.showAllAds);
 app.post('/listOfAds',  adminHandler.listOfAds);
 app.get('/listOfAllAds',  adminHandler.listOfAllAds);
+app.get('/allUpgradeCardFromStore', adminHandler.allUpgradeCardFromStore);
+app.get('/allLuckCardFromStore', adminHandler.allLuckCardFromStore);
 
 module.exports = app;

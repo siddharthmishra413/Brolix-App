@@ -854,65 +854,106 @@ module.exports = {
     },
 
     "purchaseUpgradeCard": function(req, res) {
-        var viewers;
-        var upgrade = req.body.brolix / 5;
-        if (upgrade % 50 == 0) {
-            viewers = upgrade;
-            User.findOne({ _id: req.body.userId, }, function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-                else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
-                    User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": { brolix: req.body.brolix, viewers: viewers } } }, { new: true }).exec(function(err, user) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            result.brolix -= req.body.brolix;
-                            result.save();
-                            res.status(200).send({ responseMessage: "successfully purchased the upgrade card" });
-                        }
-                    })
-                }
-            })
-        } else {
-            res.status(400).send({ responseMessage: "Use proper no of brolix to purchase upgrade card" });
-        }
-    },
+         var viewers;
+         var upgrade = req.body.brolix / 5;
+         if (upgrade % 50 == 0) {
+             viewers = upgrade;
+             User.findOne({ _id: req.body.userId, }, function(err, result) {
+                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                 else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": { brolix: req.body.brolix, viewers: viewers } } }, { new: true }).exec(function(err, user) {
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                             result.brolix -= req.body.brolix;
+                             result.save();
+                              Store.findOneAndUpdate({ userId: req.body.userId }, { $push: { "upgradeCardListObject": { brolix: req.body.brolix, userId: req.body.userId } } }, { new: true }).exec(function(err, results) {
+                              
+                              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                              if (results == null) {
+                                  obj = { userId: req.body.userId, upgradeCardListObject: { brolix: req.body.brolix, userId: req.body.userId } }
+                                  data = new Store(obj);
+                                  data.save();
+                                  res.send({
+                                      // result:results,
+                                      responseCode: 200,
+                                      responseMessage: "successfully purchased the upgrade card."
+                                  });
+                              } else {
+                                  res.send({
+                                      result: results,
+                                      responseCode: 200,
+                                      responseMessage: "successfully purchased the upgrade card"
+                                  });
+                              }
+                          });
+                         }
+                     })
+                 }
+             })
+         } else {
+             res.status(400).send({ responseMessage: "Use proper no of brolix to purchase upgrade card" });
+         }
+     },
 
     "purchaseLuckCard": function(req, res) {
-        var chances;
-        var luckcard = req.body.brolix / 50;
-        if (luckcard % 5 == 0) {
-            chances = luckcard;
-            User.findOne({ _id: req.body.userId, }, function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-                else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
-                    User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": { brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            result.brolix -= req.body.brolix;
-                            result.save();
-                            res.status(200).send({ responseMessage: "successfully purchased the luck card" });
-                        }
-                    })
-                }
-            })
-        } else {
-            res.status(400).send({ responseMessage: "Use proper no of brolix to purchase luck card" });
-        }
-    },
+          var chances;
+          var luckcard = req.body.brolix / 50;
+          if (luckcard % 5 == 0) {
+          chances = luckcard;
+          User.findOne({ _id: req.body.userId }, function(err, result) {
+              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+              else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+                  User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": { brolix: req.body.brolix, chances: chances } } }, { new: true }).exec(function(err, user) {
+                      console.log("user-----" + JSON.stringify(user))
+                      if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                          result.brolix -= req.body.brolix;
+                          result.save();
 
-    "useLuckCard": function(req, res) {
-        User.findOne({ _id: req.body.userId }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-            else {
-                User.findOne({ 'luckCardObject._id': req.body.luckId, 'luckCardObject.status': "INACTIVE" }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                    // else if (Boolean(result.luckCardObject.find(luckCardObject => luckCardObject.status == 'ACTIVE'))) {
-                    //       return res.status(403).send({ responseMessage: "you can use luckCard luckCard" })}
-                    else {
-                        return res.status(403).send({ result2: result1, responseMessage: "Already used luckCard" })
-                    }
-                    console.log("result------>>>" + JSON.stringify(rersult2))
-                });
-            }
-        })
+                          Store.findOneAndUpdate({ userId: req.body.userId }, { $push: { "luckCardListObject": { brolix: req.body.brolix, userId: req.body.userId } } }, { new: true }).exec(function(err, results) {
+                              console.log(results);
+                              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                              if (results == null) {
+                                  obj = { userId: req.body.userId, luckCardListObject: { brolix: req.body.brolix, userId: req.body.userId } }
+                                  data = new Store(obj);
+                                  data.save();
+                                  res.send({
+                                      // result:results,
+                                      responseCode: 200,
+                                      responseMessage: "successfully purchased the luck card."
+                                  });
+                              } else {
+                                  res.send({
+                                      result: results,
+                                      responseCode: 200,
+                                      responseMessage: "successfully purchased the luck card"
+                                  });
+                              }
+                          });
+                      }
+                  })
+              }
+          })
 
-    }
+      } else {
+          res.status(400).send({ responseMessage: "Use proper no of brolix to purchase luck card" });
+      }
+  },
+
+    // "useLuckCard": function(req, res) {
+    //     User.findOne({ _id: req.body.userId }, function(err, result) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+    //         else {
+    //             User.findOne({ 'luckCardObject._id': req.body.luckId, 'luckCardObject.status': "INACTIVE" }, function(err, result1) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+    //                 // else if (Boolean(result.luckCardObject.find(luckCardObject => luckCardObject.status == 'ACTIVE'))) {
+    //                 //       return res.status(403).send({ responseMessage: "you can use luckCard luckCard" })}
+    //                 else {
+    //                     return res.status(403).send({ result2: result1, responseMessage: "Already used luckCard" })
+    //                 }
+    //                 console.log("result------>>>" + JSON.stringify(rersult2))
+    //             });
+    //         }
+    //     })
+
+    // }
 
 }

@@ -9,6 +9,7 @@
     "async": "^2.1.2",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.1",
+    "client-sessions": "^0.7.0",
     "cloudinary": "^1.4.3",
     "coupon-code": "^0.4.4",
     "cron": "^1.1.1",

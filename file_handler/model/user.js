@@ -69,10 +69,6 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
-    gifts: {
-        type: Number,
-        default: 0
-    },
     brolix: {
         type: Number,
         default: 0
