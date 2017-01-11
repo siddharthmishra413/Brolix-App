@@ -47,6 +47,25 @@ module.exports = {
         }
     },
 
+    "addNewUser": function(req, res) {
+        User.findOne({ email: req.body.pageName }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result) {
+                res.send({ responseCode: 401, responseMessage: "Email should be unique." });
+            } else {
+                    var user = new User(req.body);
+                    user.save(function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                res.send({
+                                    result: result,
+                                    responseCode: 200,
+                                    responseMessage: "User create successfully."
+                                });
+                            }
+                        })
+                }
+            })
+    },
+
     "showAllUser": function(req, res) {
         User.find({ $or: [{ type: "USER" }, { type: "Advertiser" }] }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {

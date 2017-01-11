@@ -16,6 +16,9 @@ app.service('userService',function($http){
     adminProfile: function() {
       return $http.get('/admin/adminProfile');
     },
+    addUser: function(data) {
+      return $http.post('/admin/addNewUser', data);
+    },
     totalUser: function() {
       return $http.get('/admin/showAllUser');
     },

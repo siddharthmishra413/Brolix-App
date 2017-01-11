@@ -362,7 +362,7 @@
                 <tbody>
                     <tr ng-repeat="x in totalUser">
                         <td>
-                            <input id="" name="" value="" checked="" type="radio">
+                            <input id="" name="" value="x._id" ng-click="getValue(x._id)" type="radio">
                         </td>
                         <td class="skyblue-text">{{x.firstName}}</td>
                         <td class="skyblue-text">{{x.lastName}}</td>

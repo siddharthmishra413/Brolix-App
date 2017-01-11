@@ -1,0 +1,152 @@
+<!-- <div class="top-header">
+        <a href="#" class="brand-logo">Brolix</a>
+    </div>
+ -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add New User</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
+                            <form class="form-block" role="form" name="userFrom">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">First Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="firstName" ng-model="myFrom.firstName" placeholder="First Name" required>
+                                                <span style="color:red;" ng-show="userFrom.firstName.$dirty && userFrom.firstName.$invalid">
+                                                <span ng-show="userFrom.firstName.$error.required">First name is required.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Last Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="lastName" ng-model="myFrom.lastName" placeholder="Last Name" required> 
+                                                <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid">
+                                                <span ng-show="userFrom.lastName.$error.required">Last name is required.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Date of Birth</label>
+                                            <div class="col-md-9">
+                                                <input type="date" class="form-control" name="dob" ng-model="myFrom.dob" placeholder="Date of Birth"> 
+                                                <span style="color:red;" ng-show="userFrom.dob.$dirty && userFrom.dob.$invalid">
+                                                <span ng-show="userFrom.dob.$error.required">Date of birth is required.</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Email</label>
+                                            <div class="col-md-9">
+                                                <input type="email" class="form-control" name="email" ng-model="myFrom.email" placeholder="Email" required>
+                                                <span style="color:red;" ng-show="userFrom.email.$dirty && userFrom.email.$invalid">
+                                                <span ng-show="userFrom.email.$error.required">Email is required.</span>
+                                                <span ng-show="userFrom.email.$error.email">Invalid email address.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Password</label>
+                                            <div class="col-md-9">
+                                                <input type="password" class="form-control" ng-model="myFrom.password" placeholder="Password"> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Confirm Password</label>
+                                            <div class="col-md-9">
+                                                <input type="password" class="form-control" ng-model="myFrom.Cpassword" placeholder="Confirm Password"> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Gender</label>
+                                            <div class="col-md-9">
+                                                <div class="radio-btn">
+                                                    <label>
+                                                        <input type="radio"> Male
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio"> Female
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Mobile No</label>
+                                            <div class="col-md-9">
+                                                <input type="tel" class="form-control" name="mobileNumber" ng-model="myFrom.mobileNumber" placeholder="Mobile No" required> 
+                                                <span style="color:red;" ng-show="userFrom.mobileNumber.$dirty && userFrom.mobileNumber.$invalid">
+                                                <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required.</span>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Country</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="country" ng-model="myFrom.country" placeholder="Country" required>
+                                                <span style="color:red;" ng-show="userFrom.country.$dirty && userFrom.country.$invalid">
+                                                <span ng-show="userFrom.country.$error.required">Country is required.</span>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">State</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="state" ng-model="myFrom.state" placeholder="State" required> 
+                                                <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid">
+                                                <span ng-show="userFrom.state.$error.required">State is required.</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">City</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="city" ng-model="myFrom.city" placeholder="City" required> 
+                                                <span style="color:red;" ng-show="userFrom.city.$dirty && userFrom.city.$invalid">
+                                                <span ng-show="userFrom.city.$error.required">City is required.</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Pincode</label>
+                                            <div class="col-md-9">
+                                                <input type="tel" class="form-control" name="pincode" ng-model="myFrom.pincode" placeholder="Pincode" required> 
+                                                <span style="color:red;" ng-show="userFrom.pincode.$dirty && userFrom.pincode.$invalid">
+                                                <span ng-show="userFrom.pincode.$error.required">Pincode is required.</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <div class="btn2 text-center">
+                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid" ng-click="addUser()">Add</a>
+                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid" ng-click="cancel()">Cancel</a>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
