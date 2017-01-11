@@ -13,7 +13,9 @@ app.post('/blockUser',  adminHandler.blockUser);
 app.get('/showAllAds',  adminHandler.showAllAds);
 app.post('/listOfAds',  adminHandler.listOfAds);
 app.get('/listOfAllAds',  adminHandler.listOfAllAds);
-app.get('/allUpgradeCardFromStore', adminHandler.allUpgradeCardFromStore);
-app.get('/allLuckCardFromStore', adminHandler.allLuckCardFromStore);
+app.get('/totalUpgradeCardFromStore', adminHandler.totalUpgradeCardFromStore);
+app.get('/totalLuckCardFromStore', adminHandler.totalLuckCardFromStore);
+app.get('/totalIncomeInBrolixFromLuckCard', adminHandler.totalIncomeInBrolixFromLuckCard);
+app.get('/totalIncomeInBrolixFromupgradeCard', adminHandler.totalIncomeInBrolixFromupgradeCard);
 
 module.exports = app;

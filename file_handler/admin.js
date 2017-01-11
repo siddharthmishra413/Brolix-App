@@ -174,7 +174,7 @@ module.exports = {
         });
     },
 
-    "allUpgradeCardFromStore": function(req, res){
+    "totalUpgradeCardFromStore": function(req, res){
         Store.find({},'upgradeCardListObject').exec(function(err, result){
            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
            else {
@@ -196,7 +196,7 @@ module.exports = {
         })
     },
 
-    "allLuckCardFromStore": function(req, res){
+    "totalLuckCardFromStore": function(req, res){
         Store.find({}, 'luckCardListObject').exec(function(err, result){
              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
            else {
@@ -218,7 +218,50 @@ module.exports = {
              }
 
         })
+    },
+
+    "totalIncomeInBrolixFromLuckCard": function(req, res) {
+     Store.aggregate({ $unwind: "$luckCardListObject" }).exec(function(err, results) {
+         console.log("result------>>>" + JSON.stringify(results))
+         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+         if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+             var arr = [];
+             for (i = 0; i < results.length; i++) {
+                 console.log("data--->>>>", results[i].luckCardListObject.brolix, i);
+                 arr.push(parseInt(results[i].luckCardListObject.brolix));
+             }
+             var sum = arr.reduce((a, b) => a + b, 0);
+             console.log("arrrrr", sum);
+             res.status(200).send({
+                 result: results,
+                 responseCode: 200,
+                 responseMessage: "Total Brolix Shows successfully."
+                 });
+             }
+         });
+    },
+
+    "totalIncomeInBrolixFromupgradeCard": function(req, res) {
+     Store.aggregate({ $unwind: "$upgradeCardListObject" }).exec(function(err, results) {
+         console.log("result------>>>" + JSON.stringify(results))
+         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+         if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+             var arr = [];
+             for (i = 0; i < results.length; i++) {
+                 console.log("data--->>>>", results[i].upgradeCardListObject.brolix, i);
+                 arr.push(parseInt(results[i].upgradeCardListObject.brolix));
+             }
+             var sum = arr.reduce((a, b) => a + b, 0);
+             console.log("arrrrr", sum);
+             res.status(200).send({
+                 result: results,
+                 responseCode: 200,
+                 responseMessage: "Total Brolix Shows successfully."
+                 });
+             }
+         });
     }
+
 
 
 
