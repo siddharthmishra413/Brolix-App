@@ -10,12 +10,12 @@ app.get('/winners',  adminHandler.winners);
 app.post('/sendBrolix',  adminHandler.sendBrolix);
 app.get('/showAllBlockUser',  adminHandler.showAllBlockUser);
 app.post('/blockUser',  adminHandler.blockUser);
-app.get('/showAllAds',  adminHandler.showAllAds);
+app.get('/totalAds',  adminHandler.totalAds);
 app.post('/listOfAds',  adminHandler.listOfAds);
 app.get('/listOfAllAds',  adminHandler.listOfAllAds);
-app.get('/totalUpgradeCardFromStore', adminHandler.totalUpgradeCardFromStore);
-app.get('/totalLuckCardFromStore', adminHandler.totalLuckCardFromStore);
+app.get('/totalSoldUpgradeCard', adminHandler.totalSoldUpgradeCard);
+app.get('/totalSoldLuckCard', adminHandler.totalSoldLuckCard);
 app.get('/totalIncomeInBrolixFromLuckCard', adminHandler.totalIncomeInBrolixFromLuckCard);
-app.get('/totalIncomeInBrolixFromupgradeCard', adminHandler.totalIncomeInBrolixFromupgradeCard);
+app.get('/totalIncomeInBrolixFromUpgradeCard', adminHandler.totalIncomeInBrolixFromUpgradeCard);
 
 module.exports = app;
