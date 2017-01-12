@@ -52,6 +52,37 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'addNewPagesCtrl',
             templateUrl: 'templates/pageImageUpload.html'
         })
+        .state('header.pageSocialMedia', {
+            url: '/pageSocialMedia',
+            controller: 'addNewPagesCtrl',
+            templateUrl: 'templates/pageSocialMedia.html'
+        })
+        .state('header.pageAdmins', {
+            url: '/pageAdmins',
+            controller: 'addNewPagesCtrl',
+            templateUrl: 'templates/pageAdmins.html'
+        })
+
+     .state('header.editPage', {
+            url: '/editPage',
+            //controller: 'editPagesCtrl',
+            templateUrl: 'templates/editPage.html'
+        })
+        .state('header.editPageSocialMedia', {
+            url: '/editPageSocialMedia',
+            //controller: 'editpageSocialMediaCtrl',
+            templateUrl: 'templates/editPageSocialMedia.html'
+        })
+        .state('header.editPageAdmins', {
+            url: '/editPageAdmins',
+            //controller: 'editPagesCtrl',
+            templateUrl: 'templates/editPageAdmins.html'
+        })
+        .state('header.editPageUpload', {
+            url: '/editPageUpload',
+            //controller: 'editPagesCtrl',
+            templateUrl: 'templates/editPageUpload.html'
+        })
 
     .state('header.manageAds', {
         url: '/manageAds',
