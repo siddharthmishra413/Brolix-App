@@ -1,5 +1,5 @@
-<div id="wrapper">
-<div class="container">
+<!-- <div id="wrapper"> -->
+<!-- <div class="container">
     	<div class="row">
 			<div class="col-md-6 col-md-offset-2">
 				<div class="panel panel-login">
@@ -26,10 +26,6 @@
 										<span style="color:red;" ng-show="loginForm.password.$error.minlength">Your password should contain atleast 8 characters</span>
           								<span style="color:red;" ng-show="loginForm.password.$error.maxlength">Your password should contain atleast 12 characters</span>
 									</div>
-									<!-- <div class="form-group text-center">
-										<input type="checkbox" tabindex="3" class="" ng-model="isRemember" name="remember" id="remember">
-										<label for="remember"> Remember Me</label>
-									</div> -->
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
@@ -52,5 +48,63 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		</div> -->
+		<div class="top-header">
+        <a href="#" class="brand-logo">Brolix</a>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Sign In</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
+                            <form class="form-block" role="form" name="loginForm">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                        <span class="input-group-addon" name="email" id="basic-addon1"><i class="fa fa-envelope-o"></i></span>
+								        <input type="email" name="email" ng-model="myFrom.email" class="form-control" placeholder="Email" aria-describedby="basic-addon1" required>
+								        <span style="color:red;" ng-show="loginForm.email.$dirty && loginForm.email.$invalid">
+								        <span ng-show="loginForm.email.$error.required">Email is required.</span>
+								        <span ng-show="loginForm.email.$error.email">Invalid email address.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-lock"></i></span>
+                                          <input type="password" name="password" ng-model="myFrom.password" aria-describedby="basic-addon1" class="form-control" placeholder="Password" required>
+                                          	<span style="color:red;" ng-show="loginForm.password.$dirty && loginForm.password.$invalid">
+											<span ng-show="loginForm.password.$error.required">Password is required.</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="forgot-remember">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <div class="checkbox m-0">
+                                                    <label>
+                                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6 text-right">
+                                                <a class="green-link" ui-sref="forgotPassword">Forgot Password</a>
+                                            </div>
+                                        
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <a class="btn btn-lg btn-green btn-block" ng-disabled="loginForm.$invalid" ng-click="login(user,isRemember)">Login</a>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<!-- </div> -->

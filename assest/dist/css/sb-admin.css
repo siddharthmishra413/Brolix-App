@@ -252,14 +252,12 @@ ul.alert-dropdown {
 .box-block{float:left; width:19%; margin:5px;min-height: 180px;}
 .box-block .widget{padding:10px;}
 .box-block .top-box{padding: 1em 0 1em 1em;}
-
 .top-box .total-add{color: #ffffff; font-size:12px;  font-weight: 700;}
 .top-box .total-amt{color: #ffffff;  font-size: 2em;  font-weight: 700;  margin: -5px 0 0;}
 .box-block .bottom-box{display: block;  float: left; padding: 1em 0 1em 1em;width:100%;}
 .bottom-box .btn-manage a{border: 2px solid rgba(0, 0, 0, 0.2); border-radius: 2px;  color: #ffffff;   float: left;
     font-size: 10px;  font-weight: 600;  padding: 4px 10px;  text-transform: uppercase;}
 .bottom-box .btn-manage{clear: both;  display: block;  float: left;  margin: 0 0 5px;  width: 100%;}
-
 .blk-blue{background:#00aeef;}
 .blk-drakgreen{background:#00b288;}
 .blk-red{background:#ed1c24;}
@@ -271,33 +269,26 @@ ul.alert-dropdown {
 .blk-drkpink{background:#9e0039;}
 .blk-drkyello{background:#aba000;}
 .blk-drkgren{background:#00b288;}
-.nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:hover
-{border:0; color:#00b288;}
-.nav-tabs.nav-justified > li > a{background:none;  border: 0 none;  color: #636363;  font-size: 19px;   font-weight: 600;
-    text-transform: uppercase; border-radius:0;  padding: 10px 30px;}
+.nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:hover {border:0; color:#00b288;}
+.nav-tabs.nav-justified > li > a{background:none;  border: 0 none;  color: #636363;  font-size: 19px;   font-weight: 600; text-transform: uppercase; border-radius:0;  padding: 10px 30px;}
 .nav-tabs.nav-justified > li > a:hover{border:0;  background:none; color:#00b288;}
 .nav-tabs.nav-justified > li > a > span:after{content: "|";  position: absolute;  left:90%; color: #636363;}
 .nav-tabs.nav-justified > li.last > a > span:after{content: "";  position: absolute;  right: 0;}
 .nav-tabs.nav-justified > li{position:relative;}
 .tab-content{border-top: 1px solid #636363;  margin:10px 0 0;  padding:30px 0 0;}
-
-.cus-select select.form-control{border: 1px solid #eaeaea;border-radius: 0;-webkit-appearance: none;-moz-appearance:none;
-    appearance:none;background: #eaeaea url(../image/arrow-bottom.png) no-repeat 94% 50%;border-radius: 4px;height:40px;}
+.cus-select select.form-control{border: 1px solid #eaeaea;border-radius: 0;-webkit-appearance: none;-moz-appearance:none;  appearance:none;background: #eaeaea url(../image/arrow-bottom.png) no-repeat 94% 50%;border-radius: 4px;height:40px;}
 .cus-select select.form-control:focus{box-shadow: none;}
 .Dashboard-filter-text{color: #00b288;font-size:19px;font-weight: bold;margin: 5px 0 25px;}
-.tab-content .cus-table th{background: #c7c8ca;  border: 6px solid #ffffff !important;  color: #00b288;  font-size: 12px;
-    text-align: center;}
-.tab-content .cus-table td{background: #e6e7e8;text-align: center;border: 6px solid #ffffff;color: #636363;font-size: 12px;font-weight:700;}
+.tab-content .cus-table th{background: #c7c8ca;  border: 6px solid #ffffff !important;  color: #00b288;  font-size: 12px;  text-align: center;}
+.tab-content .cus-table td{background: #e6e7e8;text-align: center;border: 6px solid #ffffff;color: #636363;font-size: 12px; font-weight:700;}
 .tab-content .cus-table td.skyblue-text{color: #22b2ef;}
 
-
-.search-bar-cus .input-group-addon {background: #ff5063 none repeat scroll 0 0;color: #ffffff;border:1px solid #ff5063;}
+.search-bar-cus .input-group-addon {background:#ff5063; color:#ffffff; border:1px solid #ff5063;}
 .search-bar-cus .form-control{border:1px solid #ff5063;font-size: 12px;}
 .search-bar-cus .input-group{width:100%;}
 .search-bar-cus .form-inline .form-group{width:100%;}
-
 .row-search ul{padding-left: 0;}
-.row-search ul li{list-style-type: none; display: inline-block;  margin-right:10px;}
+.row-search ul li{list-style-type: none; display: inline-block;  margin-right:10px; vertical-align: top;}
 .row-search ul li:after{content:"|";padding-left:10px;}
 .row-search ul li.last:after{content:"";}
 .row-search ul li a{color: #636363;  font-size: 12px;  font-weight: 700;  letter-spacing: 0.5px;  text-transform: uppercase;}
@@ -312,21 +303,19 @@ ul.alert-dropdown {
 .nav-tabs.nav-justified > li > a{ text-align:left;}
 .nav-tabs.nav-justified > li.first > a{padding-left:0;}
 
-
-
-
-
 .bottom-box .btn-manage .dropdown{display:block;}
-.bottom-box .btn-manage .dropdown  .dropdown-toggle{background:none;border: 2px solid rgba(0, 0, 0, 0.2);     border-radius: 2px;     color: #ffffff;     float: left;     font-size: 10px;     font-weight: 600;     padding: 4px 10px;     text-transform: uppercase;display:block;}
-
-.bottom-box .btn-manage .dropdown  .dropdown-toggle + .dropdown-menu{background:#00b288;top:26px;min-width:132px;}
-.bottom-box .btn-manage .dropdown  .dropdown-toggle + .dropdown-menu li a{background:none;border:0;}
-
+.bottom-box .btn-manage .dropdown  .dropdown-toggle{background:none;border: 2px solid rgba(0, 0, 0, 0.2);     border-radius: 2px;   color: #ffffff;   float:left;  font-size:10px;    font-weight:600;     padding:4px 10px;     text-transform: uppercase; display:block;}
+.bottom-box .btn-manage .dropdown  .dropdown-toggle + .dropdown-menu{background:#00b288; top:26px; min-width:132px;}
+.bottom-box .btn-manage .dropdown  .dropdown-toggle + .dropdown-menu li a{background:none; border:0;}
 .blnk-bg{background:none;}
 .green-box{ background: #00b288;  border-radius: 50%;  color: #ffffff; font-size: 18px; font-weight: 700; height:135px; line-height:135px; margin: 0 auto; text-align: center; width: 135px;} 
 .bottom-box .btn-manage.show-btn{text-align:center;}
 .bottom-box .btn-manage.show-btn a{color:#00b288;float: none; border: 2px solid #00b288;  padding: 5px 20px;}
 
+.wd100{width: 100% !important;}
+.col-p{padding: 0 5px;}
+.m-t-0{margin-top: 0;}
+.bdr-0{border: 0;}
 
 @media only screen and (max-width:767px) {
 .box-block {width:100%;}
@@ -343,6 +332,7 @@ ul.alert-dropdown {
   
   .nav > li > a { font-size:12px!important; padding: 10px 15px;}
   .box-block {width:100%;}
+  .ipad-50{width: 48% !important;}
 }
 
 @media screen 

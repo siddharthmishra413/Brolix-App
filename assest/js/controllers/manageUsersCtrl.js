@@ -17,10 +17,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state)
 
     userService.totalUser().success(function(res) {
         $scope.totalUser = res.result;
-        console.log(JSON.stringify($scope.totalUser[0]))
+        //console.log(JSON.stringify($scope.totalUser[0]))
     })
 
-    $scope.showdetails = function(){
+    $scope.getValue = function(x){
+       console.log(JSON.stringify(x));
     }
 
     userService.totalWinners().success(function(res) {

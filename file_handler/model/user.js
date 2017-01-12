@@ -52,6 +52,10 @@ var userSchema = new Schema({
         type: Number,
         trim: true
     },
+    pincode: {
+        type: Number,
+        trim: true
+    },
     facebookID: {
         type: String
     },
