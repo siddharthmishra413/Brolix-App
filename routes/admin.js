@@ -18,5 +18,8 @@ app.get('/totalSoldUpgradeCard', adminHandler.totalSoldUpgradeCard);
 app.get('/totalSoldLuckCard', adminHandler.totalSoldLuckCard);
 app.get('/totalIncomeInBrolixFromLuckCard', adminHandler.totalIncomeInBrolixFromLuckCard);
 app.get('/totalIncomeInBrolixFromUpgradeCard', adminHandler.totalIncomeInBrolixFromUpgradeCard);
+app.get('/countrys', adminHandler.countrys);
+app.get('/getAllStates/:name/:code', adminHandler.getAllStates);
+app.get('/userProfile/:id', adminHandler.userProfile);
 
 module.exports = app;

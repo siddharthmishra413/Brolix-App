@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('MyApp', ['ui.router', 'ngCookies'])
+var app = angular.module('MyApp', ['ui.router', 'ngCookies', 'toastr'])
 
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -24,17 +24,22 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: 'templates/forgotPassword.html'
     })
 
-    .state('header.addUser', {
-        url: '/addUser',
-        controller: 'addUserCtrl',
-        templateUrl: 'templates/addUser.html'
-    })
-
     .state('header.manageUsers', {
         url: '/manageUsers',
         controller: 'manageUsersCtrl',
         templateUrl: 'templates/manageUsers.html'
     })
+
+    .state('header.addUser', {
+            url: '/addUser',
+            controller: 'addUserCtrl',
+            templateUrl: 'templates/addUser.html'
+        })
+        .state('header.viewUserProfile', {
+            url: '/viewUserProfile/:id',
+            controller: 'viewUserProfileCtrl',
+            templateUrl: 'templates/viewUserProfile.html'
+        })
 
     .state('header.managePages', {
         url: '/managePages',
@@ -63,7 +68,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'templates/pageAdmins.html'
         })
 
-     .state('header.editPage', {
+    .state('header.editPage', {
             url: '/editPage',
             //controller: 'editPagesCtrl',
             templateUrl: 'templates/editPage.html'

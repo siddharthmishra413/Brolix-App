@@ -11,6 +11,7 @@
     "body-parser": "^1.15.1",
     "client-sessions": "^0.7.0",
     "cloudinary": "^1.4.3",
+    "countryjs": "^1.6.0",
     "coupon-code": "^0.4.4",
     "cron": "^1.1.1",
     "express": "^4.13.4",

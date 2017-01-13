@@ -310,7 +310,7 @@
         <div class="row-search">
             <ul>
                 <li class="active">
-                    <a data-toggle="tab">View Profile</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab">Remove Ad</a>
@@ -362,7 +362,7 @@
                 <tbody>
                     <tr ng-repeat="x in totalUser">
                         <td>
-                            <input id="" name="" value="x._id" ng-click="getValue(x._id)" type="radio">
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
                         <td class="skyblue-text">{{x.firstName}}</td>
                         <td class="skyblue-text">{{x.lastName}}</td>
