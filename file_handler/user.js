@@ -804,8 +804,13 @@ module.exports = {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No blocked user found' }); }
              else {
+                var count = 0;
+                for(var i = 0; i<result.length; i++ ){
+                    count++;
+                }
                 res.send({
                     result: result,
+                    count:count,
                     responseCode: 200,
                     responseMessage: "All blocked user show successfully!!"
                 });
@@ -842,9 +847,19 @@ module.exports = {
 
     "showLuckCard": function(req, res) {
         User.find({ _id: req.body.userId }, 'luckCardObject').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else {
+                 var count = 0;
+                for(i=0;i<result.length;i++)
+                {
+                    for(j=0;j<result[i].luckCardObject.length;j++)
+                    {
+                      count++;
+                    }
+                }
                 res.send({
                     result: result[0],
+                    count:count,
                     responseCode: 200,
                     responseMessage: "List of all luck Card show successfully!!"
                 });

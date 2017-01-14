@@ -59,6 +59,7 @@ var createNewPageSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    permissions:[],
     createdAt: {
         type: Date,
         default: Date.now

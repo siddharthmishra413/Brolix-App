@@ -148,6 +148,7 @@ var userSchema = new Schema({
     }],
     usedLuckCard:[],
     userUpgradeCard:[],
+    permissions:[],
     createdAt: {
         type: Date,
         default: Date.now

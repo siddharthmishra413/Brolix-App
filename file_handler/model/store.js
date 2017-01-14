@@ -17,14 +17,7 @@ var storeSchema = new Schema({
         cash: { type: String, default: 0 },
         brolix: { type: String, default: 0 },
     }],
-    totalIncomeIn$: {
-        type: Number,
-        default: 0
-    },
-    totalIncomeInBrolix: {
-        type: Number,
-        default: 0
-    },
+   permissions:[],
     createdAt: {
         type: Date,
         default: Date.now

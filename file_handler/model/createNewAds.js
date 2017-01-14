@@ -130,6 +130,7 @@ var createNewAdsSchema = new Schema({
         type: Number
     },
     hiddenGifts: [],
+    permissions:[],
     createdAt: {
         type: Date,
         default: Date.now
