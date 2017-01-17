@@ -296,93 +296,121 @@ module.exports = {
 
 
     "createSystemUser": function(req, res) {
-        waterfall([
-        function(callback) {
-            var obj = {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: req.body.password
-            };
-            User.findOne({ email: req.body.email }, function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                // else if (result) res.status(401).send({msg:"Email id must be unique"});
-                else {
-                    var objuser = new User(obj);
-                    objuser.save(function(err, result) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                        //  else return res.status(200).send(result)
-                        else {
-                            callback(null, result)
-                        }
-                    })
-                }
-            })
+     waterfall([
+         function(callback) {
+             var obj = {
+                 firstName: req.body.firstName,
+                 lastName: req.body.lastName,
+                 email: req.body.email,
+                 password: req.body.password
+             };
+             User.findOne({ email: req.body.email }, function(err, result) {
+                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                 // else if (result) res.status(401).send({msg:"Email id must be unique"});
+                 else {
+                     var objuser = new User(obj);
+                     objuser.save(function(err, result) {
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                         //  else return res.status(200).send(result)
+                         else {
+                             callback(null, result)
+                         }
+                     })
+                 }
+             })
 
-        },
-        function(result, callback) {
-            console.log("result---->>>>" + JSON.stringify(result))
-            User.findOneAndUpdate({ type: 'ADMIN' }, { $push: { permissions: result._id } }).exec(function(err, result1) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else { callback(null, result) }
-            })
-        },
-        function(result, callback) {
-            var i = 0;
+         },
+         function(result, callback) {
+             console.log("result---->>>>" + JSON.stringify(result))
+             User.findOneAndUpdate({ type: 'ADMIN' }, { $push: { permissions: result._id } }).exec(function(err, result1) {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else { callback(null, result) }
+             })
+         },
+         function(result, callback) {
+             console.log("permissions--->>" + result)
+             for (var i = 0; i < req.body.permissions.length; i++) {
+                 console.log("i--->>>", i)
+                 switch (req.body.permissions[i]) {
 
-            if (req.body.manageUser == true) {
-                User.update({}, { $push: { permissions: result._id } }, { upsert: true }, { multi: true }).exec(function(err, result8) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else i++
-                        //return res.status(200).send(result)
-                })
-            } else i++;
-            if (req.body.managePages == true) {
-                createNewPage.update({}, { $push: { permissions: result._id } }, { upsert: true }, { multi: true }).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else i++
-                })
-            } else i++;
-            if (req.body.manageAds == true) {
-                createNewAds.update({}, { $push: { permissions: result._id } }, { upsert: true }, { multi: true }).exec(function(err, result3) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else i++
-                })
+                     case "manageUser":
+                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result1) {
+                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                 console.log("1")
 
-            } else i++;
-            if (req.body.manageCards == true) {
-                User.update({}, { $push: { permissions: result._id } }, { upsert: true }, { multi: true }).exec(function(err, result4) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else i++
-                })
-            } else i++;
-            if (req.body.manageGifts == true) {
-                User.update({}, { $push: { permissions: result._id } }, { upsert: true }, { multi: true }).exec(function(err, result5) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else i++
-                })
+                             }
+                         })
+                         break;
 
-            } else i++;
-            if (req.body.managePayments == true) {
-                User.update({}, { $push: { permissions: result._id } }, { upsert: true }, { multi: true }).exec(function(err, result6) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else i++
-                })
+                     case "managePages":
+                         createNewPage.update({}, { $push: { permissions: result._id } }).exec(function(err, result1) {
+                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                 console.log("2")
+                             }
+                         })
+                         break;
 
-            } else i++;
-            if (req.body.adminTool == true) {
-                User.update({}, { $push: { permissions: result._id } }, { upsert: true }, { multi: true }).exec(function(err, result7) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else i++
-                })
-            } else i++;
+                     case "manageAds":
+                         createNewAds.update({}, { $push: { permissions: result._id } }).exec(function(err, result3) {
+                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                 console.log("3")
+                             }
+                         })
 
-            if (i == 7) {
-                callback(null, "success");
-            }
+                         break;
 
-        }
-    ], function(err, result) {
-        res.send({
-            result: result,
-            responseCode: 200,
-            responseMessage: "System user successfully created"
-        });
-    })
+                     case "manageCards":
+                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result4) {
+                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                 console.log("4")
+                             }
+                         })
+                         break;
 
-}
+                     case "manageGifts":
+                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result4) {
+                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                 console.log("5")
+                             }
+                         })
+                         break;
+
+                     case "managePayments":
+                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result4) {
+                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                 console.log("6")
+                             }
+                         })
+                         break;
+
+                     case "adminTool":
+                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result4) {
+                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                 console.log("7")
+                             }
+                         })
+                         break;
+
+
+                 }
+                 if (i == req.body.permissions.length - 1) {
+                     callback(null)
+                 }
+
+             }
+
+
+         }
+     ], function(err, result) {
+         res.send({
+             result: result,
+             responseCode: 200,
+             responseMessage: "System user successfully created"
+         });
+     })
+
+ }
+
+
 
 
 
