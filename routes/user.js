@@ -34,5 +34,7 @@ app.post('/purchaseUpgradeCard', authUser.authUser, userHandler.purchaseUpgradeC
 app.post('/purchaseLuckCard', authUser.authUser, userHandler.purchaseLuckCard);
 app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
 app.post('/showUpgradeCard', authUser.authUser, userHandler.showUpgradeCard);
+app.post('/useLuckCard', authUser.authUser, userHandler.useLuckCard);
+
 
 module.exports = app;	

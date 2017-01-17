@@ -72,7 +72,7 @@ module.exports = {
                 res.status(200).send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "successfully purchased the upgrade card"
+                    responseMessage: "Users show successfully."
                 });
             }
         })
@@ -94,7 +94,7 @@ module.exports = {
                     res.send({
                         result: newResult,
                         responseCode: 200,
-                        responseMessage: "Winners details show successfully"
+                        responseMessage: "Winners details show successfully."
                     })
                 })
 
@@ -112,8 +112,8 @@ module.exports = {
                         results.save();
                         res.send({
                             responseCode: 200,
-                            responseMessage: "You have successfully transfer your Brolix",
-                            result: results
+                            result: results,
+                            responseMessage: "You have successfully transfer your brolix."
                         });
                     }
                 });
@@ -128,7 +128,7 @@ module.exports = {
                 res.send({
                     // result: result,
                     responseCode: 200,
-                    responseMessage: "User Blocked successfully!!"
+                    responseMessage: "User Blocked successfully."
                 });
             }
 
@@ -148,7 +148,7 @@ module.exports = {
                     result: result,
                     count:count,
                     responseCode: 200,
-                    responseMessage: "All blocked user shows successfully!!"
+                    responseMessage: "All blocked user shows successfully."
                 });
             }
 
@@ -167,7 +167,7 @@ module.exports = {
                 result: result,
                 count:count,
                 responseCode: 200,
-                responseMessage: "All ads show successfully"
+                responseMessage: "All ads show successfully."
             })
            }
         })
@@ -175,14 +175,15 @@ module.exports = {
 
     "listOfAds": function(req, res) { // for a single user based on cash and coupon category
         createNewAds.find({ userId: req.body.userId }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No ad found from this User' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No ad found from this User' }); } else {
                 var couponType = result.filter(result => result.adsType == "coupon");
                 var cashType = result.filter(result => result.adsType == "cash");
                 res.send({
                     couponType: couponType,
                     cashType: cashType,
                     responseCode: 200,
-                    responseMessage: "List of ads show successfully!!"
+                    responseMessage: "List of ads show successfully."
                 });
             }
 
@@ -221,7 +222,7 @@ module.exports = {
                      result: result,
                      count:count,
                      responseCode: 200,
-                     responseMessage: "successfully show list of upgrade card"
+                     responseMessage: "Successfully show sold upgrade card."
                  });
              }
         })
@@ -244,7 +245,7 @@ module.exports = {
                      result: result,
                      count:count,
                      responseCode: 200,
-                     responseMessage: "successfully show list of luck card"
+                     responseMessage: "Successfully show sold luck card."
                  });
              }
 
@@ -255,7 +256,7 @@ module.exports = {
      Store.aggregate({ $unwind: "$luckCardListObject" }).exec(function(err, results) {
          console.log("result------>>>" + JSON.stringify(results))
          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-         if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+         if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "User doesn't exist." }); } else {
              var arr = [];
              for (i = 0; i < results.length; i++) {
                  console.log("data--->>>>", results[i].luckCardListObject.brolix, i);
@@ -266,7 +267,7 @@ module.exports = {
              res.send({
                  result: results,
                  responseCode: 200,
-                 responseMessage: "Total Brolix Shows successfully."
+                 responseMessage: "Total brolix Shows successfully."
                  });
              }
          });
@@ -287,7 +288,7 @@ module.exports = {
              res.send({
                  result: results,
                  responseCode: 200,
-                 responseMessage: "Total Brolix Shows successfully."
+                 responseMessage: "Total brolix Shows successfully."
                  });
              }
          });
