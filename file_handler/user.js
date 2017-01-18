@@ -833,40 +833,51 @@ module.exports = {
     },
 
     "showUpgradeCard": function(req, res) {
-        User.find({ _id: req.body.userId }, 'upgradeCardObject').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: result[0],
-                    responseCode: 200,
-                    responseMessage: "List of all upgrade card show successfully."
-                });
+        User.find({ _id: req.body.userId, 'upgradeCardObject.status': "ACTIVE" }).exec(function(err, result) {
+        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+            var count = 0;
+            for (i = 0; i < result.length; i++) {
+                for (j = 0; j < result[i].upgradeCardObject.length; j++) {
+                    if (result[i].upgradeCardObject[j].status == "ACTIVE") {
+                        count++;
+                    }
+                }
+            }
+            var obj = result[0].upgradeCardObject;
+            var data = obj.filter(obj => obj.status == "ACTIVE");
+            res.send({
+                result: data,
+                count: count,
+                responseCode: 200,
+                responseMessage: "List of all upgrade Card show successfully!!"
+            });
             }
         })
-
     },
 
     "showLuckCard": function(req, res) {
-        User.find({ _id: req.body.userId }, 'luckCardObject').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-             else {
-                 var count = 0;
-                for(i=0;i<result.length;i++)
-                {
-                    for(j=0;j<result[i].luckCardObject.length;j++)
-                    {
-                      count++;
+        User.find({ _id: req.body.userId, 'luckCardObject.status': "ACTIVE" }).exec(function(err, result) {
+          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+            var count = 0;
+            for (i = 0; i < result.length; i++) {
+                for (j = 0; j < result[i].luckCardObject.length; j++) {
+                    if (result[i].luckCardObject[j].status == "ACTIVE") {
+                        count++;
                     }
                 }
-                res.send({
-                    result: result[0],
-                    count:count,
-                    responseCode: 200,
-                    responseMessage: "List of all luck card show successfully."
-                });
+            }
+            var obj = result[0].luckCardObject;
+            var data = obj.filter(obj => obj.status == "ACTIVE");
+            res.send({
+                result: data,
+                count: count,
+                responseCode: 200,
+                responseMessage: "All luck Card show successfully."
+            });
             }
         })
-
     },
+
 
     "purchaseUpgradeCard": function(req, res) {
          var viewers;
@@ -894,7 +905,7 @@ module.exports = {
                                   });
                               } else {
                                   res.send({
-                                      result: results,
+                                      result: results[0].upgradeCardListObject,
                                       responseCode: 200,
                                       responseMessage: "Successfully purchased the upgrade card."
                                   });
