@@ -2,15 +2,25 @@ app.controller('loginCtrl', function($scope, $window, $state, userService, $cook
     $(window).scrollTop(0, 0);
     console.log("loginCtrl");
     $scope.myFrom = {};
-
-    $scope.login = function(user, rem) {
-        if (rem) {
-            localStorage.setItem('isRemeber', true);
-            $cookieStore.put('Credential', user);
-
+    $scope.myFrom.email = $cookieStore.get('Email');
+    $scope.myFrom.password = $cookieStore.get('Password');
+    if ($scope.myFrom.email == '' || $scope.myFrom.email == null || $scope.myFrom.email === undefined) {
+        $scope.myFrom.rebMe = false;
+    } else {
+        $scope.myFrom.rebMe = true;
+    }
+    $scope.rebMe = function() {
+        if ($scope.myFrom.rebMe == true) {
+            $cookieStore.put("Email", $scope.myFrom.email);
+            $cookieStore.put("Password", $scope.myFrom.password);
+            $scope.myFrom.rebMe = true;
         } else {
-            localStorage.setItem('isRemeber', false);
+            $cookieStore.remove('Email');
+            $cookieStore.remove('Password');
         }
+    }
+
+    $scope.login = function() {
         userService.login($scope.myFrom).success(function(res) {
             if (res.responseCode == 200) {
                 console.log("Login successfully" + JSON.stringify(res))

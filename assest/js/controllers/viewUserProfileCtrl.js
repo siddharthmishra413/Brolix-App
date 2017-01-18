@@ -3,19 +3,21 @@ app.controller('viewUserProfileCtrl', function($scope, $window, userService, $st
     $scope.class = true;
     $scope.$emit('headerStatus', 'Manage User');
     $scope.$emit('SideMenu', 'Manage User');
-    console.log("viewUserProfileCtrl");
     $scope.myForm = {};
     var id = $stateParams.id;
-  console.log("Id====>>>"+id)
-
-
+    console.log("Id====>>>"+id)
+    if(id == ''){
+       toastr.error("Please select user.")
+       $state.go('header.manageUsers')
+   }else {
     userService.userProfile(id).success(function(res) {
         if (res.responseCode == 200) {
             $scope.viewUserProfile = res.result;
         } else {
             toastr.error(res.responseMessage)
         }
-})
+    })
+}
 
 
 })

@@ -313,7 +313,7 @@
                     <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
                 </li>
                 <li class="">
-                    <a data-toggle="tab">Remove Ad</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">Edit Profile</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab">View Coupon</a>
@@ -339,7 +339,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search By Name or Mobile">
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -360,7 +360,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalUser">
+                    <tr ng-repeat="x in totalUser |filter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
