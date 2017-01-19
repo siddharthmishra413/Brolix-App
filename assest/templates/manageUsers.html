@@ -310,10 +310,10 @@
         <div class="row-search">
             <ul>
                 <li class="active">
-                    <a data-toggle="tab">View Profile</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
                 </li>
-                <li class="">
-                    <a data-toggle="tab">Remove Ad</a>
+                <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab">View Coupon</a>
@@ -339,7 +339,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search By Name or Mobile">
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -360,15 +360,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalUser">
+                    <tr ng-repeat="x in totalUser |filter:test">
                         <td>
-                            <input id="" name="" value="x._id" ng-click="getValue(x._id)" type="radio">
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
                         <td class="skyblue-text">{{x.firstName}}</td>
                         <td class="skyblue-text">{{x.lastName}}</td>
                         <td class="skyblue-text">{{x.mobileNumber}}</td>
                         <td class="skyblue-text">{{x.email}}</td>
-                        <td class="skyblue-text">5</td>
+                        <td class="skyblue-text">{{x.pageCount}}</td>
                     </tr>
                 </tbody>
             </table>

@@ -22,5 +22,9 @@ app.get('/usedLuckCard', adminHandler.usedLuckCard);
 app.get('/unUsedLuckCard', adminHandler.unUsedLuckCard);
 app.get('/usedUpgradeCard', adminHandler.usedUpgradeCard);
 app.get('/unUsedUpgradeCard', adminHandler.unUsedUpgradeCard);
+app.get('/countrys', adminHandler.countrys);
+app.get('/getAllStates/:name/:code', adminHandler.getAllStates);
+app.get('/userProfile/:id', adminHandler.userProfile);
+app.put('/editUserProfile/:id',adminHandler.editUserProfile);
 
 module.exports = app;

@@ -5,8 +5,8 @@ module.exports = {
 
     //API for create Page
     "createPage": function(req, res) {
-        createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result) {
+        createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
             } else {
                 if (!req.body.category || !req.body.subCategory) {
@@ -15,12 +15,14 @@ module.exports = {
                     var page = new createNewPage(req.body);
                     page.save(function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { type: "Advertiser" } }, { new: true }).exec(function(err, result1) {
-                                res.send({
-                                    result: result,
-                                    responseCode: 200,
-                                    responseMessage: "Page create successfully."
-                                });
+                            User.findByIdAndUpdate({ _id: req.body.userId },{$inc:{pageCount : 1},$set: { type: "Advertiser" } }).exec(function(err, result1) {
+                                if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
+                                    res.send({
+                                        result: result,
+                                        responseCode: 200,
+                                        responseMessage: "Page create successfully."
+                                    });
+                                }
                             })
                         }
                     })
@@ -63,22 +65,22 @@ module.exports = {
     },
     //API for Favourite Type
     "showPageFavouriteType": function(req, res) {
-         User.find({ _id: req.params.id }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                var arr = [];
-                results[0].pageFollowers.forEach(function(result) {
-                    arr.push(result.pageId)
-                })
-                createNewPage.find({ _id: { $in: arr } }).exec(function(err, newResult) {
-                    res.send({
-                        results: newResult,
-                        responseCode: 200,
-                        responseMessage: "Show list all follow pages."
-                    });
-                })
-            }
-        })
-    },
+       User.find({ _id: req.params.id }).exec(function(err, results) {
+        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+            var arr = [];
+            results[0].pageFollowers.forEach(function(result) {
+                arr.push(result.pageId)
+            })
+            createNewPage.find({ _id: { $in: arr } }).exec(function(err, newResult) {
+                res.send({
+                    results: newResult,
+                    responseCode: 200,
+                    responseMessage: "Show list all follow pages."
+                });
+            })
+        }
+    })
+   },
     //API for Edit Page
     "editPage": function(req, res) {
         createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result) {

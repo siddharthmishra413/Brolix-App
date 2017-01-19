@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('MyApp', ['ui.router', 'ngCookies'])
+var app = angular.module('MyApp', ['ui.router', 'ngCookies', 'toastr'])
 
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -24,17 +24,27 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: 'templates/forgotPassword.html'
     })
 
-    .state('header.addUser', {
-        url: '/addUser',
-        controller: 'addUserCtrl',
-        templateUrl: 'templates/addUser.html'
-    })
-
     .state('header.manageUsers', {
         url: '/manageUsers',
         controller: 'manageUsersCtrl',
         templateUrl: 'templates/manageUsers.html'
     })
+
+    .state('header.addUser', {
+            url: '/addUser',
+            controller: 'addUserCtrl',
+            templateUrl: 'templates/addUser.html'
+        })
+        .state('header.viewUserProfile', {
+            url: '/viewUserProfile/:id',
+            controller: 'viewUserProfileCtrl',
+            templateUrl: 'templates/viewUserProfile.html'
+        })
+        .state('header.editUserProfile', {
+            url: '/editUserProfile/:id',
+            controller: 'editUserProfileCtrl',
+            templateUrl: 'templates/editUserProfile.html'
+        })
 
     .state('header.managePages', {
         url: '/managePages',
@@ -51,6 +61,37 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             url: '/pageImageUpload',
             controller: 'addNewPagesCtrl',
             templateUrl: 'templates/pageImageUpload.html'
+        })
+        .state('header.pageSocialMedia', {
+            url: '/pageSocialMedia',
+            controller: 'addNewPagesCtrl',
+            templateUrl: 'templates/pageSocialMedia.html'
+        })
+        .state('header.pageAdmins', {
+            url: '/pageAdmins',
+            controller: 'addNewPagesCtrl',
+            templateUrl: 'templates/pageAdmins.html'
+        })
+
+    .state('header.editPage', {
+            url: '/editPage',
+            //controller: 'editPagesCtrl',
+            templateUrl: 'templates/editPage.html'
+        })
+        .state('header.editPageSocialMedia', {
+            url: '/editPageSocialMedia',
+            //controller: 'editpageSocialMediaCtrl',
+            templateUrl: 'templates/editPageSocialMedia.html'
+        })
+        .state('header.editPageAdmins', {
+            url: '/editPageAdmins',
+            //controller: 'editPagesCtrl',
+            templateUrl: 'templates/editPageAdmins.html'
+        })
+        .state('header.editPageUpload', {
+            url: '/editPageUpload',
+            //controller: 'editPagesCtrl',
+            templateUrl: 'templates/editPageUpload.html'
         })
 
     .state('header.manageAds', {

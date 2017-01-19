@@ -5,7 +5,7 @@ var authUser = require('../middlewares/authUser');
 
 
 
-app.post('/createPage', authUser.authUser,pageHandler.createPage);
+app.post('/createPage',pageHandler.createPage);
 app.get('/showAllPages/:pageNumber',authUser.authUser,pageHandler.showAllPages);
 app.post('/showPageDetails',authUser.authUser,pageHandler.showPageDetails);
 app.get('/showPageFavouriteType',authUser.authUser,pageHandler.showPageFavouriteType);

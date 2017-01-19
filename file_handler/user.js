@@ -238,7 +238,7 @@ module.exports = {
             if (!result) {
                 res.send({
                     response_code: 400,
-                    response_message: "User dosn't exist."
+                    response_message: "User doesn't exist."
                 });
             } else {
                 var oldpassword = (req.body.oldpass);
@@ -251,9 +251,8 @@ module.exports = {
                     var password = (req.body.newpass);
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) {
                         res.send({
-                            // result: user,
-                            response_code: 200,
-                            response_message: "Password successfully changed."
+                            responseCode: 200,
+                            responseMessage: "Password changed."
                         });
                     })
                 }
@@ -992,7 +991,7 @@ module.exports = {
                          })
                      }
              })
-        },
+        }
 
 
 }

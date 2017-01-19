@@ -28,6 +28,10 @@ var createNewAdsSchema = new Schema({
         type: String,
         trim: true
     },
+    couponCoverIamge: {
+        type: String,
+        trim: true
+    },
     adsDate: {
         type: String,
         trim: true

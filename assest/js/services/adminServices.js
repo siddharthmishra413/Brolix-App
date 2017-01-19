@@ -24,6 +24,15 @@ app.service('userService',function($http){
     },
     totalWinners: function() {
       return $http.get('/admin/winners');
+    },
+    countrys: function() {
+      return $http.get('/admin/countrys');
+    },
+    userProfile: function(id) {
+      return $http.get('/admin/userProfile/'+id);
+    },
+    editUserProfile: function(id, data) {
+      return $http.put('/admin/editUserProfile/'+id, data);
     }
 
 	}
