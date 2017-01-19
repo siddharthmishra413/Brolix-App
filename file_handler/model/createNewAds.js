@@ -135,6 +135,7 @@ var createNewAdsSchema = new Schema({
     },
     hiddenGifts: [],
     permissions:[],
+    adContentType: { type : String},
     createdAt: {
         type: Date,
         default: Date.now
