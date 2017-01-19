@@ -18,5 +18,7 @@ app.get('/totalSoldUpgradeCard', adminHandler.totalSoldUpgradeCard);
 app.get('/totalSoldLuckCard', adminHandler.totalSoldLuckCard);
 app.get('/totalIncomeInBrolixFromLuckCard', adminHandler.totalIncomeInBrolixFromLuckCard);
 app.get('/totalIncomeInBrolixFromUpgradeCard', adminHandler.totalIncomeInBrolixFromUpgradeCard);
+app.get('/usedLuckCard', adminHandler.usedLuckCard);
+app.get('/unUsedLuckCard', adminHandler.unUsedLuckCard);
 
 module.exports = app;

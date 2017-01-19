@@ -294,122 +294,47 @@ module.exports = {
          });
     },
 
+    "usedLuckCard": function(req, res){        
+             User.aggregate({ $unwind: "$luckCardObject" },{ $match: {'luckCardObject.status':"ACTIVE" }}).exec(function(err, result) {
+                console.log("rseult=-=-=-=-=->>"+JSON.stringify(result))
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } 
+             else {
+                var count = 0;
+                for(var i = 0; i<result.length; i++){
+                      count++;
+                }
+                 res.status(200).send({
+                     result: result,
+                     count:count,
+                     responseCode: 200,
+                     responseMessage: "Total Brolix Shows successfully."
+                   });
+              }
+        }); 
 
-    "createSystemUser": function(req, res) {
-     waterfall([
-         function(callback) {
-             var obj = {
-                 firstName: req.body.firstName,
-                 lastName: req.body.lastName,
-                 email: req.body.email,
-                 password: req.body.password
-             };
-             User.findOne({ email: req.body.email }, function(err, result) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                 // else if (result) res.status(401).send({msg:"Email id must be unique"});
-                 else {
-                     var objuser = new User(obj);
-                     objuser.save(function(err, result) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                         //  else return res.status(200).send(result)
-                         else {
-                             callback(null, result)
-                         }
-                     })
-                 }
-             })
+    },
 
-         },
-         function(result, callback) {
-             console.log("result---->>>>" + JSON.stringify(result))
-             User.findOneAndUpdate({ type: 'ADMIN' }, { $push: { permissions: result._id } }).exec(function(err, result1) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else { callback(null, result) }
-             })
-         },
-         function(result, callback) {
-             console.log("permissions--->>" + result)
-             for (var i = 0; i < req.body.permissions.length; i++) {
-                 console.log("i--->>>", i)
-                 switch (req.body.permissions[i]) {
-
-                     case "manageUser":
-                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result1) {
-                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                 console.log("1")
-
-                             }
-                         })
-                         break;
-
-                     case "managePages":
-                         createNewPage.update({}, { $push: { permissions: result._id } }).exec(function(err, result1) {
-                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                 console.log("2")
-                             }
-                         })
-                         break;
-
-                     case "manageAds":
-                         createNewAds.update({}, { $push: { permissions: result._id } }).exec(function(err, result3) {
-                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                 console.log("3")
-                             }
-                         })
-
-                         break;
-
-                     case "manageCards":
-                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result4) {
-                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                 console.log("4")
-                             }
-                         })
-                         break;
-
-                     case "manageGifts":
-                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result4) {
-                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                 console.log("5")
-                             }
-                         })
-                         break;
-
-                     case "managePayments":
-                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result4) {
-                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                 console.log("6")
-                             }
-                         })
-                         break;
-
-                     case "adminTool":
-                         User.update({}, { $push: { permissions: result._id } }).exec(function(err, result4) {
-                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                 console.log("7")
-                             }
-                         })
-                         break;
-
-
-                 }
-                 if (i == req.body.permissions.length - 1) {
-                     callback(null)
-                 }
-
+    "unUsedLuckCard": function(req, res){        
+         User.aggregate({ $unwind: "$luckCardObject" },{ $match: {'luckCardObject.status':"INACTIVE" }}).exec(function(err, result) {
+            console.log("rseult=-=-=-=-=->>"+JSON.stringify(result))
+         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+         if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } 
+         else {
+            var count = 0;
+            for(var i = 0; i<result.length; i++){
+                  count++;
+            }
+             res.status(200).send({
+                 result: result,
+                 count:count,
+                 responseCode: 200,
+                 responseMessage: "Total Brolix Shows successfully."
+               });
              }
+        }); 
 
-
-         }
-     ], function(err, result) {
-         res.send({
-             result: result,
-             responseCode: 200,
-             responseMessage: "System user successfully created"
-         });
-     })
-
- }
-
+    },
 
 
 
