@@ -147,6 +147,10 @@ var userSchema = new Schema({
         viewers: { type: Number }
     }],
     usedLuckCard:[],
+    pageCount:{
+        type:Number,
+        default: 0
+    },
     userUpgradeCard:[],
     createdAt: {
         type: Date,

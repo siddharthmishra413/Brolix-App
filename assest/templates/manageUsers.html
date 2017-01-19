@@ -312,8 +312,8 @@
                 <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
                 </li>
-                <li class="">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab">View Coupon</a>
@@ -368,7 +368,7 @@
                         <td class="skyblue-text">{{x.lastName}}</td>
                         <td class="skyblue-text">{{x.mobileNumber}}</td>
                         <td class="skyblue-text">{{x.email}}</td>
-                        <td class="skyblue-text">5</td>
+                        <td class="skyblue-text">{{x.pageCount}}</td>
                     </tr>
                 </tbody>
             </table>

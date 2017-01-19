@@ -40,6 +40,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'viewUserProfileCtrl',
             templateUrl: 'templates/viewUserProfile.html'
         })
+        .state('header.editUserProfile', {
+            url: '/editUserProfile/:id',
+            controller: 'editUserProfileCtrl',
+            templateUrl: 'templates/editUserProfile.html'
+        })
 
     .state('header.managePages', {
         url: '/managePages',

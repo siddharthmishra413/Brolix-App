@@ -13,6 +13,7 @@ app.controller('viewUserProfileCtrl', function($scope, $window, userService, $st
     userService.userProfile(id).success(function(res) {
         if (res.responseCode == 200) {
             $scope.viewUserProfile = res.result;
+            console.log(JSON.stringify($scope.viewUserProfile));
         } else {
             toastr.error(res.responseMessage)
         }

@@ -21,5 +21,6 @@ app.get('/totalIncomeInBrolixFromUpgradeCard', adminHandler.totalIncomeInBrolixF
 app.get('/countrys', adminHandler.countrys);
 app.get('/getAllStates/:name/:code', adminHandler.getAllStates);
 app.get('/userProfile/:id', adminHandler.userProfile);
+app.put('/editUserProfile/:id',adminHandler.editUserProfile);
 
 module.exports = app;

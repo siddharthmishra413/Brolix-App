@@ -30,6 +30,9 @@ app.service('userService',function($http){
     },
     userProfile: function(id) {
       return $http.get('/admin/userProfile/'+id);
+    },
+    editUserProfile: function(id, data) {
+      return $http.put('/admin/editUserProfile/'+id, data);
     }
 
 	}

@@ -20,6 +20,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     //*******************Total User****************
     userService.totalUser().success(function(res) {
         $scope.totalUser = res.result;
+        console.log(JSON.stringify(res));
     })
 
 
