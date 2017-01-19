@@ -20,5 +20,7 @@ app.get('/totalIncomeInBrolixFromLuckCard', adminHandler.totalIncomeInBrolixFrom
 app.get('/totalIncomeInBrolixFromUpgradeCard', adminHandler.totalIncomeInBrolixFromUpgradeCard);
 app.get('/usedLuckCard', adminHandler.usedLuckCard);
 app.get('/unUsedLuckCard', adminHandler.unUsedLuckCard);
+app.get('/usedUpgradeCard', adminHandler.usedUpgradeCard);
+app.get('/unUsedUpgradeCard', adminHandler.unUsedUpgradeCard);
 
 module.exports = app;
