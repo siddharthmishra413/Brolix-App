@@ -388,27 +388,116 @@ module.exports = {
             });
         },
 
-       "uploads": function(req, res) {
-           console.log(req.body.images)
-           var form = new multiparty.Form();
-           form.parse(req, function(err, fields, files) {
-               console.log("img.path",files)
-               var img = files.images[0];
-               var fileName = files.images[0].originalFilename;
-               console.log(img.path)
-               cloudinary.uploader.upload(img.path, function(result) {
-                   console.log("new url-->" + JSON.stringify(result.url));
-                   res.send({
-                       result: result.url,
-                       responseCode: 200,
-                       responseMessage: "File uploaded successfully."
-                   });
-               }, {
-                   resource_type: "auto",
-                   chunk_size: 6000000
-               });
-           })
-       }
+        "uploads": function(req, res) {
+            console.log(req.body.images)
+            var form = new multiparty.Form();
+            form.parse(req, function(err, fields, files) {
+                console.log("img.path", files)
+                var img = files.images[0];
+                var fileName = files.images[0].originalFilename;
+                console.log(img.path)
+                cloudinary.uploader.upload(img.path, function(result) {
+                    console.log("new url-->" + JSON.stringify(result.url));
+                    res.send({
+                        result: result.url,
+                        responseCode: 200,
+                        responseMessage: "File uploaded successfully."
+                    });
+                }, {
+                    resource_type: "auto",
+                    chunk_size: 6000000
+                });
+            })
+        },
+
+
+        "viewAd": function(req, res) { //req.body.userId, adId
+            var userId = req.body.userId;
+            waterfall([
+                function(callback) {
+                    createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
+                        if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); }
+                        var randomIndex = [];
+                        var raffleCount = result.raffleCount;
+                        var viewerLenght = result.viewerLenght;
+                        var luckUsers = result.luckCardListObject;
+                        var numberOfWinners = result.numberOfWinners;
+
+                        var mySet = new Set(raffleCount);
+                        var has = mySet.has(userId)
+                        if (has) {
+                            res.send({
+                                responseCode: 302,
+                                responseMessage: "You have already join the raffle."
+                            })
+                        }
+                        // else if (!has) raffleCount.push(userId);
+                        else if (!has) {
+                            raffleCount.push(userId);
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, { new: true }, function(err, result) {
+                                console.log("raffleCount--->>>" + raffleCount);
+                            })
+
+                            if (raffleCount.length == viewerLenght) {
+                                for (var n = 0; n < luckUsers.length; n++) {
+                                    for (var m = 0; m < luckUsers[n].chances; m++) {
+                                        raffleCount.push(luckUsers[n].userId)
+                                    }
+                                }
+                                for (var i = 0; i < numberOfWinners; i++) {
+                                    var index = Math.floor(Math.random() * raffleCount.length);
+                                    if (randomIndex.filter(randomIndex => randomIndex != raffleCount[index])) {
+                                        randomIndex.push(raffleCount[index])
+                                    }
+                                }
+                                callback(null, randomIndex, result.cashAdPrize, result.couponCode)
+                            } else {
+
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
+                                        res.send({
+                                            responseCode: 302,
+                                            responseMessage: "You have successfully join the raffle."
+                                        })
+                                    }
+                                });
+                                // }
+                            }
+                        }
+                    })
+                },
+                function(winners, cashPrize, couponCode, callback) {
+                    console.log("winners--->>" + typeof winners)
+                    createNewAds.update({ _id: req.body.adId }, { $push: { winners: winners } }, function(err, result) {
+                        if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
+                            // res.send({
+                            //   responseCode: 200,
+                            //   responseMessage: "Raffle is over winner decided.",
+                            //  // result: result{ $inc: { brolix: 50 } },
+                            //  })
+                            if (result.adsType == "cash") {
+                                User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize } }, { multi: true }, function(err, result) {
+                                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
+                                        res.send({ responseCode: 200, responseMessage: "Record updated successfully.", result: result })
+                                    }
+                                })
+                            } else {
+
+                                User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
+                                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
+                                        res.send({ responseCode: 200, responseMessage: "Record updated successfully.", result: result })
+                                    }
+                                })
+                            }
+
+
+
+                        }
+
+                    })
+                }
+            ])
+        },
 
     }
     // new CronJob('* * * * * *', function() {  

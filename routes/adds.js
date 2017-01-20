@@ -22,5 +22,6 @@ app.post('/raffleJoin',authUser.authUser,adsHandler.raffleJoin);
 app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
 app.get('/listOfAllAds', authUser.authUser, adsHandler.listOfAllAds);
 app.post('/uploads', authUser.authUser, adsHandler.uploads);
+app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
 
 module.exports = app;
