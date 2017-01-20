@@ -166,7 +166,7 @@ module.exports = {
 
     //API for user Details
     "allUserDetails": function(req, res) {
-        User.find({ type: 'USER' }, avoid).exec(function(err, result) {
+        User.find({ $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
             if (err) throw err;
             res.send({
                 result: result,
@@ -300,7 +300,7 @@ module.exports = {
     //API for Follow and unfollow
     "followUnfollow": function(req, res) {
         if (req.body.follow == "follow") {
-            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "followers": { senderId: req.body.senderId, senderName: req.body.senderName } } }, { new: true }).exec(function(err, result) {
+            User.findOneAndUpdate({ _id: req.body.senderId }, { $push: { "followers": { senderId: req.body.userId, senderName: req.body.senderName } } }, { new: true }).exec(function(err, result) {
                 User.findOne({ _id: req.body.senderId }).exec(function(err, results) {
                     if (results.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
                         var message = "req.body.message";
@@ -321,7 +321,7 @@ module.exports = {
                 })
             })
         } else {
-            User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "followers": { senderId: req.body.senderId } } }, { new: true }).exec(function(err, results) {
+            User.findOneAndUpdate({ _id: req.body.senderId }, { $pop: { "followers": { senderId: req.body.userId } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
                         results: results,
@@ -335,19 +335,19 @@ module.exports = {
 
     //API for Follower List
     "followerList": function(req, res) {
-        User.find({ _id: req.body.userId }).exec(function(err, results) {
+        User.findOne({ _id: req.body.userId }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var arr = [];
-                results[0].followers.forEach(function(result) {
+                results.followers.forEach(function(result) {
                     arr.push(result.senderId)
                 })
-                User.find({ _id: { $in: arr } }).exec(function(err, newResult) {
+                User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                     for (var i = 0; i < newResult.length; i++) {
                         var obj = {};
-                        obj.followStatus = results[0].followers[i].FollowStatus;
-                        console.log(obj);
-                        obj.result = newResult[i];
-                        newResult[i] = obj;
+                        newResult[i].followStatus = results.followers[i].FollowStatus;
+                        // console.log(obj);
+                        // obj.result = newResult[i];
+                        // newResult[i] = obj;
                     }
                     res.send({
                         results: newResult,
@@ -363,7 +363,7 @@ module.exports = {
     "acceptFollowerRequest": function(req, res) {
         User.update({ _id: req.body.userId, 'followers.senderId': req.body.senderId }, {
             $set: {
-                'followers.$.FollowStatus': "Accepted"
+                'followers.$.FollowStatus': req.body.status
             }
         }, { new: true }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {

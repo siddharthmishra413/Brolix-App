@@ -7,6 +7,8 @@ app.post('/login', adminHandler.login);
 app.get('/adminProfile', adminHandler.adminProfile);
 app.post('/addNewUser',  adminHandler.addNewUser);
 app.get('/showAllUser',  adminHandler.showAllUser);
+app.get('/showAllPersonalUser',  adminHandler.showAllPersonalUser);
+app.get('/showAllBusinessUser',  adminHandler.showAllBusinessUser);
 app.get('/winners',  adminHandler.winners);
 app.post('/sendBrolix',  adminHandler.sendBrolix);
 app.get('/showAllBlockUser',  adminHandler.showAllBlockUser);

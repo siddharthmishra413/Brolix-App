@@ -19,8 +19,29 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     })
     //*******************Total User****************
     userService.totalUser().success(function(res) {
-        $scope.totalUser = res.result;
-        console.log(JSON.stringify(res));
+        if (res.responseCode == 200){
+            $scope.totalUser = res.result;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+        
+    })
+    //*******************Personal User****************
+    userService.showAllPersonalUser().success(function(res) {        
+        if (res.responseCode == 200){
+            $scope.personalUser = res.result;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+
+    //*******************Business User****************
+    userService.showAllBusinessUser().success(function(res) {        
+        if (res.responseCode == 200){
+            $scope.businessUser = res.result;
+        } else {
+            toastr.error(res.responseMessage);
+        }
     })
 
 

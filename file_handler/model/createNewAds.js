@@ -6,7 +6,7 @@ var async = require('async');
 var encrypt = require('mongoose-encryption');
 var mongoosePaginate = require('mongoose-paginate');
 var Schema = mongoose.Schema,
-ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId;
 var autopopulate = require('mongoose-autopopulate');
 
 /* Ads schema */
@@ -28,7 +28,11 @@ var createNewAdsSchema = new Schema({
         type: String,
         trim: true
     },
-    couponCoverIamge: {
+    coverImage: {
+        type: String,
+        trim: true
+    },
+    couponCoverImage: {
         type: String,
         trim: true
     },
@@ -40,7 +44,7 @@ var createNewAdsSchema = new Schema({
         type: String,
         thumbnail: []
     },
-    sildeShow: [],
+    slideShow: [],
     googleLink: {
         type: String
     },
@@ -66,6 +70,11 @@ var createNewAdsSchema = new Schema({
         type: String,
         default: 'Pending'
     },
+    adContentType: { type: String },
+    musicFileName: { type: String },
+    couponSellPrice: { type: String },
+    couponSellViewers: { type: String },
+    dawnloadPagePhoto: [],
     whoWillSeeYourAdd: [{
         country: { type: String },
         state: { type: String },
@@ -91,7 +100,7 @@ var createNewAdsSchema = new Schema({
     }],
     raffleCount: [],
     like: [],
-    winners: [{ type: ObjectId, ref: 'brolixUser'}],
+    winners: [{ type: ObjectId, ref: 'brolixUser' }],
     viewerLenght: { type: Number },
     luckCardListObject: [{
         userId: { type: String },
@@ -124,6 +133,9 @@ var createNewAdsSchema = new Schema({
     couponExpiryDate: {
         type: String
     },
+    giftDescription: {
+        type: String
+    },
     couponLength: {
         type: Number
     },
@@ -134,8 +146,6 @@ var createNewAdsSchema = new Schema({
         type: Number
     },
     hiddenGifts: [],
-    permissions:[],
-    adContentType: { type : String},
     createdAt: {
         type: Date,
         default: Date.now
