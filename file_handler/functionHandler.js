@@ -4,13 +4,13 @@
   // var apn = require('apn');
   module.exports = {
       "otp": function(req, res, mobile) {
-          var possible = "0123456789";
+          var possible = "123456789";
           var otp = "";
           for (var i = 0; i < 4; i++) {
               otp += possible.charAt(Math.floor(Math.random() * possible.length));
               console.log(otp);
           }
-          var otp = Math.floor(Math.random() * 10000)
+          //var otp = Math.floor(Math.random() * 10000)
           var data = JSON.stringify({
               api_key: '0ec05def',
               api_secret: '48fbcc6a6fedbcaa',

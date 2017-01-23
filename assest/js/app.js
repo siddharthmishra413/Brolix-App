@@ -72,6 +72,17 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'addNewPagesCtrl',
             templateUrl: 'templates/pageAdmins.html'
         })
+     .state('header.viewPage', {
+            url: '/viewPage/:id',
+            controller: 'viewPageCtrl',
+            templateUrl: 'templates/viewPage.html'
+        })  
+
+     .state('header.viewImageUpload', {
+            url: '/viewImageUpload/:id',
+            controller: 'viewPageCtrl',
+            templateUrl: 'templates/viewImageUpload.html'
+        })  
 
     .state('header.editPage', {
             url: '/editPage',

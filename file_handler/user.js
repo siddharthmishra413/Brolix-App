@@ -35,7 +35,6 @@ module.exports = {
 
     //API for user signUP
     "signup": function(req, res) {
-        console.log("request------>>>" + JSON.stringify(req.body));
         if (!req.body.email) res.send({ responseCode: 403, responseMessage: 'Email required' });
         else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
@@ -316,7 +315,7 @@ module.exports = {
                     res.send({
                         results: result,
                         responseCode: 200,
-                        responseMessage: "Followed"
+                        responseMessage: "Followed."
                     });
                 })
             })
@@ -345,6 +344,7 @@ module.exports = {
                     for (var i = 0; i < newResult.length; i++) {
                         var obj = {};
                         newResult[i].followStatus = results.followers[i].FollowStatus;
+                        console.log(results.followers[i].FollowStatus);
                         // console.log(obj);
                         // obj.result = newResult[i];
                         // newResult[i] = obj;
@@ -361,7 +361,7 @@ module.exports = {
 
     //API for Accept Follower Request
     "acceptFollowerRequest": function(req, res) {
-        User.update({ _id: req.body.userId, 'followers.senderId': req.body.senderId }, {
+        User.findOneAndUpdate({ _id: req.body.userId, 'followers.senderId': req.body.senderId }, {
             $set: {
                 'followers.$.FollowStatus': req.body.status
             }
@@ -799,18 +799,24 @@ module.exports = {
     },
 
     "showAllBlockUser": function(req, res) {
-        User.find({ status: "BLOCK" }).exec(function(err, result) {
+        User.find({ _id: req.params.id }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No blocked user found' }); } else {
-                var count = 0;
+                var arr = [];
                 for (var i = 0; i < result.length; i++) {
-                    count++;
+                    if (result[i].followers.length >= 1) {
+                        for (var j = 0; j < result[i].followers.length; j++) {
+                            if (result[i].followers[j].FollowStatus == "block")
+                                arr.push(result[i].followers[j].senderId);
+                        }
+                    }
                 }
-                res.send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "All blocked user show successfully."
-                });
+                User.find({ _id: { $in: arr } }).exec(function(err, newResult) {
+                    res.send({
+                        result: newResult,
+                        responseCode: 200,
+                        responseMessage: "Blocked users."
+                    })
+                })
             }
 
         });
@@ -980,7 +986,7 @@ module.exports = {
                 })
             }
         })
-    },
+    }
 
 
 }

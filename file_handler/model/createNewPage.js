@@ -12,7 +12,8 @@ var Schema = mongoose.Schema;
 var createNewPageSchema = new mongoose.Schema({
     userId: {
         type: String,
-        trim: true
+        trim: true,
+        ref:'brolixUser'
     },
     type: {
         type: String,

@@ -20,7 +20,15 @@ var createNewAdsSchema = new Schema({
         type: String,
         trim: true
     },
+    pageName: {
+        type: String,
+        trim: true
+    },
     adsType: {
+        type: String,
+        trim: true
+    },
+    brolixFees: {
         type: String,
         trim: true
     },

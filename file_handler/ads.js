@@ -33,10 +33,10 @@ module.exports = {
                 User.findOne({ _id: req.body.userId }).exec(function(err, result) {
                     if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash <= req.body.cashAdPrize) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                        res.send({ responseCode: 200, responseMessage: "Insufficient cash" });
+                        res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                     } else {
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.adsCash } }, { new: true }).exec(function(err, result) {
-                            req.body.viewerLenght = 1000;
+                            //req.body.viewerLenght = 1000;
                             var Ads = new createNewAds(req.body);
                             Ads.save(function(err, result) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -62,8 +62,20 @@ module.exports = {
             });
         },
         // show all ads
-        "showAllAdsData": function(req, res) {
-            createNewAds.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        "showAllAdsCouponType": function(req, res) {
+            createNewAds.paginate({ status: "ACTIVE", adsType:"coupon" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Data Show successfully"
+                })
+            })
+        },
+
+        // show all ads
+        "showAllAdsCashType": function(req, res) {
+            createNewAds.paginate({ status: "ACTIVE", adsType:"cash" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
