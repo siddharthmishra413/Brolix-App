@@ -1,6 +1,7 @@
 var validator = require('validator');
 var User = require("./model/user");
 var createNewAds = require("./model/createNewAds");
+var createNewPage = require("./model/createNewPage");
 var country = require('countryjs');
 
 module.exports = {
@@ -151,7 +152,7 @@ module.exports = {
         })
     },
 
-    
+
     "showAllBusinessUser": function(req, res) {
         User.find({ type: "Advertiser" }, function(err, result) {
             if (err) {
@@ -588,7 +589,48 @@ module.exports = {
                 responseMessage: "Profile update successfully."
             });
         })
-    }
+    },
+
+    "totalPages": function(req, res) {
+        createNewPage.find({ status: "ACTIVE" }).populate('userId', 'firstName lastName email mobileNumber').exec(function(err, result) {
+            if (err) {
+                res.send({
+                    responseCode: 500,
+                    responseMessage: 'Internal server error'
+                });
+            } else {
+                res.status(200).send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Total Pages."
+                });
+            }
+        })
+    },
+
+    //API for user Profile
+    "viewPage": function(req, res) {
+        createNewPage.findOne({ _id: req.params.id }).populate('userId', 'firstName lastName').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "View Page."
+            });
+        })
+    },
+
+    //API for user Profile
+    "editpage": function(req, res) {
+        createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Page Updated."
+            });
+        })
+    },
 
 
 }

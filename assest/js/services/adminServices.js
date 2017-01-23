@@ -39,6 +39,12 @@ app.service('userService',function($http){
     },
     editUserProfile: function(id, data) {
       return $http.put('/admin/editUserProfile/'+id, data);
+    },
+    totalPages: function() {
+      return $http.get('/admin/totalPages');
+    },
+    viewPage: function(id) {
+      return $http.get('/admin/viewPage/'+id);
     }
 
 	}
