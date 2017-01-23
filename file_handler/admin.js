@@ -374,7 +374,7 @@ module.exports = {
 
 
     "totalIncomeInBrolixFromLuckCard": function(req, res) {
-         User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, results) {
+        User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "User doesn't exist." }); } else {
                 var arr = [];

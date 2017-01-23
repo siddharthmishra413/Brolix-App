@@ -35,15 +35,15 @@ module.exports = {
     //API for create Page
 
     //API for Edit Event
-    "editEvent":function(req, res){
+    "editEvent": function(req, res) {
         createEvents.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "Event details updated successfully."
-                    })
-                })
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Event details updated successfully."
+            })
+        })
     },
 
     // Show all events details

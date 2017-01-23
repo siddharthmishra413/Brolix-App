@@ -1,7 +1,7 @@
   var https = require('https');
   var nodemailer = require('nodemailer');
   var FCM = require('fcm-push');
- // var apn = require('apn');
+  // var apn = require('apn');
   module.exports = {
       "otp": function(req, res, mobile) {
           var possible = "0123456789";
@@ -62,7 +62,7 @@
 
       },
 
-   "android_notification": function(deviceToken, message) {
+      "android_notification": function(deviceToken, message) {
           var serverKey = 'AIzaSyDGz-6yYBGWStanh-DN7ljMzDATDFGA9vQ';
           var fcm = new FCM(serverKey);
 
@@ -87,7 +87,7 @@
           });
       },
 
-  "iOS_notification": function(deviceToken, message) {
+      "iOS_notification": function(deviceToken, message) {
           var options = {
               "cert": "MobiloitteEnterprise.pem",
               "key": "MobiloitteEnterprise.pem",

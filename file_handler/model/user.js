@@ -69,6 +69,11 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
+    cashPrize: {
+        type: Number,
+        default: 0
+    },
+    couponPrize: [],
     gifts: {
         type: Number,
         default: 0
@@ -140,23 +145,23 @@ var userSchema = new Schema({
     },
     luckCardObject: [{
         brolix: { type: Number },
-        cash: { type: Number},
+        cash: { type: Number },
         chances: { type: Number },
-        status:{ type: String, default: 'ACTIVE'}
+        status: { type: String, default: 'ACTIVE' }
     }],
     upgradeCardObject: [{
         brolix: { type: Number },
-        cash: { type: Number},
+        cash: { type: Number },
         viewers: { type: Number },
-        status:{ type: String, default: 'ACTIVE'}
+        status: { type: String, default: 'ACTIVE' }
     }],
-    usedLuckCard:[],
-    pageCount:{
-        type:Number,
+    usedLuckCard: [],
+    pageCount: {
+        type: Number,
         default: 0
     },
-    userUpgradeCard:[],
-    permissions:[],
+    userUpgradeCard: [],
+    permissions: [],
     createdAt: {
         type: Date,
         default: Date.now

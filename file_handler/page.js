@@ -15,7 +15,7 @@ module.exports = {
                     var page = new createNewPage(req.body);
                     page.save(function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            User.findByIdAndUpdate({ _id: req.body.userId },{$inc:{pageCount : 1},$set: { type: "Advertiser" } }).exec(function(err, result1) {
+                            User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 }, $set: { type: "Advertiser" } }).exec(function(err, result1) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
                                     res.send({
                                         result: result,
@@ -54,7 +54,7 @@ module.exports = {
     },
     //API for Business Type
     "showPageBusinessType": function(req, res) {
-        createNewPage.paginate({ userId:req.params.id, pageType: 'Business', status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        createNewPage.paginate({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,
@@ -65,22 +65,22 @@ module.exports = {
     },
     //API for Favourite Type
     "showPageFavouriteType": function(req, res) {
-       User.find({ _id: req.params.id }).exec(function(err, results) {
-        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-            var arr = [];
-            results[0].pageFollowers.forEach(function(result) {
-                arr.push(result.pageId)
-            })
-            createNewPage.find({ _id: { $in: arr } }).exec(function(err, newResult) {
-                res.send({
-                    results: newResult,
-                    responseCode: 200,
-                    responseMessage: "Show list all follow pages."
-                });
-            })
-        }
-    })
-   },
+        User.find({ _id: req.params.id }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                var arr = [];
+                results[0].pageFollowers.forEach(function(result) {
+                    arr.push(result.pageId)
+                })
+                createNewPage.find({ _id: { $in: arr } }).exec(function(err, newResult) {
+                    res.send({
+                        results: newResult,
+                        responseCode: 200,
+                        responseMessage: "Show list all follow pages."
+                    });
+                })
+            }
+        })
+    },
     //API for Edit Page
     "editPage": function(req, res) {
         createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result) {
