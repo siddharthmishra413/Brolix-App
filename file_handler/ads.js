@@ -392,18 +392,9 @@ module.exports = {
             console.log(req.body.images)
             var form = new multiparty.Form();
             form.parse(req, function(err, fields, files) {
-<<<<<<< HEAD
-                console.log("img.path", files)
-                var img = files.images[0];
-                var fileName = files.images[0].originalFilename;
-                console.log(img.path)
-                cloudinary.uploader.upload(img.path, function(result) {
-                    console.log("new url-->" + JSON.stringify(result.url));
-=======
                 var img = files.images[0];
                 var fileName = files.images[0].originalFilename;
                 cloudinary.uploader.upload(img.path, function(result) {
->>>>>>> akash
                     res.send({
                         result: result.url,
                         responseCode: 200,
@@ -414,7 +405,6 @@ module.exports = {
                     chunk_size: 6000000
                 });
             })
-<<<<<<< HEAD
         },
 
 
@@ -504,10 +494,7 @@ module.exports = {
                     })
                 }
             ])
-        },
-=======
         }
->>>>>>> akash
 
     }
     // new CronJob('* * * * * *', function() {  

@@ -367,230 +367,167 @@ module.exports = {
         });
     },
 
-    "totalSoldUpgradeCard": function(req, res) {
-<<<<<<< HEAD
-        User.aggregate({ $unwind: "$upgradeCardObject" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Successfully shown list of upgrade card"
-=======
-        Store.find({}, 'upgradeCardListObject').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    for (j = 0; j < result[i].upgradeCardListObject.length; j++) {
-                        count++;
-                    }
-                }
-                res.send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Successfully show sold upgrade card."
->>>>>>> akash
-                });
-            }
-        })
-    },
+  "totalSoldUpgradeCard": function(req, res) {
+         User.aggregate({ $unwind: "$upgradeCardObject" }).exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                 var count = 0;
+                 for (i = 0; i < result.length; i++) {
+                     count++;
+                 }
+                 res.status(200).send({
+                     result: result,
+                     count: count,
+                     responseCode: 200,
+                     responseMessage: "Successfully shown list of upgrade card"
+                 });
+             }
+         })
+     },
 
     "totalSoldLuckCard": function(req, res) {
-<<<<<<< HEAD
-        User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "successfully shown list of luck card"
-=======
-        Store.find({}, 'luckCardListObject').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    for (j = 0; j < result[i].luckCardListObject.length; j++) {
-                        count++;
-                    }
-                }
-                console.log("count", count);
-                res.send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Successfully show sold luck card."
->>>>>>> akash
-                });
-            }
+         User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                 var count = 0;
+                 for (i = 0; i < result.length; i++) {
+                     count++;
+                 }
+                 res.status(200).send({
+                     result: result,
+                     count: count,
+                     responseCode: 200,
+                     responseMessage: "successfully shown list of luck card"
+                 });
+             }
 
-        })
-    },
-
+         })
+     },
 
     "totalIncomeInBrolixFromLuckCard": function(req, res) {
-<<<<<<< HEAD
-        User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, results) {
-=======
-        Store.aggregate({ $unwind: "$luckCardListObject" }).exec(function(err, results) {
->>>>>>> akash
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "User doesn't exist." }); } else {
-                var arr = [];
-                var count = 0;
-                for (i = 0; i < results.length; i++) {
-                    count++;
-<<<<<<< HEAD
-                    arr.push(parseInt(results[i].luckCardObject.brolix));
-=======
-                    arr.push(parseInt(results[i].luckCardListObject.brolix));
->>>>>>> akash
-                }
-                var sum = arr.reduce((a, b) => a + b, 0);
-                console.log("arrrrr", sum);
-                res.send({
-                    result: results,
-                    totalIncome: sum,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Total income in brolix Shows successfully."
-                });
-            }
-        });
-    },
-
+         User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
+                 var arr = [];
+                 var count = 0;
+                 for (i = 0; i < result.length; i++) {
+                     count++;
+                     console.log("data--->>>>", result[i].luckCardObject.brolix, i);
+                     arr.push(parseInt(result[i].luckCardObject.brolix));
+                 }
+                 var sum = arr.reduce((a, b) => a + b, 0);
+                 console.log("arrrrr", sum);
+                 res.status(200).send({
+                     result: result,
+                     totalIncome: sum,
+                     count: count,
+                     responseCode: 200,
+                     responseMessage: "Total income in brolix Shows successfully."
+                 });
+             }
+         });
+     },
 
     "totalIncomeInBrolixFromUpgradeCard": function(req, res) {
-<<<<<<< HEAD
-        User.aggregate({ $unwind: "$upgradeCardObject" }).exec(function(err, results) {
-=======
-        Store.aggregate({ $unwind: "$upgradeCardListObject" }).exec(function(err, results) {
->>>>>>> akash
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
-                var arr = [];
-                var count = 0;
-                for (i = 0; i < results.length; i++) {
-                    count++;
-<<<<<<< HEAD
-                    arr.push(parseInt(results[i].upgradeCardObject.brolix));
-=======
-                    arr.push(parseInt(results[i].upgradeCardListObject.brolix));
->>>>>>> akash
-                }
-                var sum = arr.reduce((a, b) => a + b, 0);
-                res.send({
-                    result: results,
-                    totalIncome: sum,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Total income in brolix Shows successfully."
-                });
-            }
-        });
-    },
+         User.aggregate({ $unwind: "$upgradeCardObject" }).exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
+                 var arr = [];
+                 var count = 0;
+                 for (i = 0; i < result.length; i++) {
+                     count++;
+                     console.log("data--->>>>", result[i].upgradeCardObject.brolix, i);
+                     arr.push(parseInt(result[i].upgradeCardObject.brolix));
+                 }
+                 var sum = arr.reduce((a, b) => a + b, 0);
+                 console.log("arrrrr", sum);
+                 res.status(200).send({
+                     result: result,
+                     totalIncome: sum,
+                     count: count,
+                     responseCode: 200,
+                     responseMessage: "Total income in brolix Shows successfully."
+                 });
+             }
+         });
+     },
 
     "usedLuckCard": function(req, res) {
-<<<<<<< HEAD
-        User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "INACTIVE" } }).exec(function(err, result) {
-=======
-        User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "ACTIVE" } }).exec(function(err, result) {
->>>>>>> akash
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
-                var count = 0;
-                for (var i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Used luck card Shows successfully."
-                });
-            }
-        });
+         User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "INACTIVE" } }).exec(function(err, result) {
+             console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+                 var count = 0;
+                 for (var i = 0; i < result.length; i++) {
+                     count++;
+                 }
+                 res.status(200).send({
+                     result: result,
+                     count: count,
+                     responseCode: 200,
+                     responseMessage: "Total Brolix Shows successfully."
+                 });
+             }
+         });
 
-    },
-
-    "unUsedLuckCard": function(req, res) {
-<<<<<<< HEAD
-        User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "ACTIVE" } }).exec(function(err, result) {
-=======
-        User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "INACTIVE" } }).exec(function(err, result) {
->>>>>>> akash
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
-                var count = 0;
-                for (var i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Unused luck card Shows successfully."
-                });
-            }
-        });
-
-    },
-
-
-
+     },
+    
     "usedUpgradeCard": function(req, res) {
-<<<<<<< HEAD
-        User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "INACTIVE" } }).exec(function(err, result) {
-=======
-        User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "ACTIVE" } }).exec(function(err, result) {
->>>>>>> akash
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
-                var count = 0;
-                for (var i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Used upgrade card Shows successfully."
-                });
-            }
-        });
+         User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "INACTIVE" } }).exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+                 var count = 0;
+                 for (var i = 0; i < result.length; i++) {
+                     count++;
+                 }
+                 res.status(200).send({
+                     result: result,
+                     count: count,
+                     responseCode: 200,
+                     responseMessage: "Used upgrade card Shows successfully."
+                 });
+             }
+         });
 
-    },
-
+     },
+     
     "unUsedUpgradeCard": function(req, res) {
-<<<<<<< HEAD
-        User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "ACTIVE" } }).exec(function(err, result) {
-=======
-        User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "INACTIVE" } }).exec(function(err, result) {
->>>>>>> akash
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
-                var count = 0;
-                for (var i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Un Used upgrade card Shows successfully."
-                });
-            }
-        });
+         User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "ACTIVE" } }).exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+                 var count = 0;
+                 for (var i = 0; i < result.length; i++) {
+                     count++;
+                 }
+                 res.status(200).send({
+                     result: result,
+                     count: count,
+                     responseCode: 200,
+                     responseMessage: "Un Used upgrade card Shows successfully."
+                 });
+             }
+         });
 
-    },
+     },
+
+    
+    "unUsedLuckCard": function(req, res) {
+        User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "ACTIVE" } }).exec(function(err, result) {
+             console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+                 var count = 0;
+                 for (var i = 0; i < result.length; i++) {
+                     count++;
+                 }
+                 res.status(200).send({
+                     result: result,
+                     count: count,
+                     responseCode: 200,
+                     responseMessage: "Total Brolix Shows successfully."
+                 });
+             }
+         });
+
+     },
 
     "countrys": function(req, res) {
         var countrys = country.all();
