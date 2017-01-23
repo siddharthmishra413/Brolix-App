@@ -954,7 +954,33 @@ module.exports = {
                 })
             }
         })
-    }
+    },
+
+
+    "useUpgradeCard": function(req, res) { //upgradeId, userId, adId, Brolix, viewers in request parameter
+        createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
+            else {
+                var obj = (req.body.upgradeId);
+                console.log("obj", obj, typeof obj);
+                User.update({ 'upgradeCardObject._id': obj }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                    else {
+                        createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "upgradeCardListObject": { userId: req.body.userId, viewers: req.body.viewers } } }, { new: true }).exec(function(err, user) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                res.send({
+                                    result: user,
+                                    responseCode: 200,
+                                    responseMessage: "Successfully used the luck card."
+                                })
+                            }
+
+                        })
+                    }
+                })
+            }
+        })
+    },
 
 
 }
