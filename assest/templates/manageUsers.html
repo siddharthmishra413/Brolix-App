@@ -34,10 +34,10 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Personal Users</div>
-                            <div class="total-amt">27,000</div>
+                            <div class="total-amt">{{personalUser.length}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='personalUser'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
@@ -62,10 +62,10 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Business Users</div>
-                            <div class="total-amt">3,000</div>
+                            <div class="total-amt">{{businessUser.length}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='businessUser'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
@@ -373,5 +373,61 @@
                 </tbody>
             </table>
         </div>
+    </div> 
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="personalUser">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Pages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in personalUser |filter:test">
+                        <td>
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.firstName}}</td>
+                        <td class="skyblue-text">{{x.lastName}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.email}}</td>
+                        <td class="skyblue-text">{{x.pageCount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>  
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="businessUser">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Pages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in businessUser |filter:test">
+                        <td>
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.firstName}}</td>
+                        <td class="skyblue-text">{{x.lastName}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.email}}</td>
+                        <td class="skyblue-text">{{x.pageCount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> 
 </div>

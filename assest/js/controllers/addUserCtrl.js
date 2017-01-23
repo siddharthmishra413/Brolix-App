@@ -15,6 +15,7 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
         console.log($scope.myFrom.country);
         var country = $scope.myFrom.country
         $http.get('/admin/getAllStates/' + country.code + '/ISO2').success(function(res) {
+            console.log(res);
             $scope.allstates = res.result;
         }, function(err) {});
     }

@@ -257,7 +257,7 @@ ul.alert-dropdown {
 .box-block .bottom-box{display: block;  float: left; padding: 1em 0 1em 1em;width:100%;}
 .bottom-box .btn-manage a{border: 2px solid rgba(0, 0, 0, 0.2); border-radius: 2px;  color: #ffffff;   float: left;
     font-size: 10px;  font-weight: 600;  padding: 4px 10px;  text-transform: uppercase;}
-.bottom-box .btn-manage{clear: both;  display: block;  float: left;  margin: 0 0 5px;  width: 100%;}
+.bottom-box .btn-manage{clear: both;  display: block;  float: left;  margin: 0 0 5px;  width: 100%;cursor: pointer;}
 .blk-blue{background:#00aeef;}
 .blk-drakgreen{background:#00b288;}
 .blk-red{background:#ed1c24;}

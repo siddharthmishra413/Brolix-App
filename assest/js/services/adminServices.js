@@ -22,6 +22,12 @@ app.service('userService',function($http){
     totalUser: function() {
       return $http.get('/admin/showAllUser');
     },
+    showAllPersonalUser: function() {
+      return $http.get('/admin/showAllPersonalUser');
+    },
+    showAllBusinessUser: function() {
+      return $http.get('/admin/showAllBusinessUser');
+    },
     totalWinners: function() {
       return $http.get('/admin/winners');
     },
