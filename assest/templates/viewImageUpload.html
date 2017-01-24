@@ -6,25 +6,25 @@
                 </div>
                 <div class="panel-body">
                     <div class="cover-image">
-                    <img src="{{viewPageDetails.coverImage}}">
+                    <img src="{{viewPageDetails.coverImage || coverImage}}">
                         <!-- <img src="../dist/image/cover.jpg"> -->
-                        <div class="upload-btn">
+                        <!-- <div class="upload-btn">
                             <div class="fileUpload btn">
                                 <span>Browse</span>
                                 <input type="file" class="upload" />
                              </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="page-image clearfix">
-                    <img src="{{viewPageDetails.pageImage}}">
+                    <img src="{{viewPageDetails.pageImage || pageImage}}">
                         <!-- <img src="../dist/image/user-image.jpeg"> -->
-                        <div class="page-upload">
+                        <!-- <div class="page-upload">
                             <div class="fileUpload btn">
                                 <span><i class="fa fa-camera"></i></span>
                                 <input type="file" class="upload" />
                              </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="btn2 text-center">

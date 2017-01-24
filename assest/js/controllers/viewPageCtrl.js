@@ -5,6 +5,8 @@ app.controller('viewPageCtrl', function($scope, $window, userService, $state, to
     $scope.$emit('SideMenu', 'Manage Pages');
     $scope.myForm = {};
     $scope.viewUserProfile = {};
+    $scope.coverImage = "../dist/image/cover.jpg";
+    $scope.pageImage = "../dist/image/user-image.jpeg";
     $scope.id = $stateParams.id;
     console.log("Id====>>>" + $scope.id)
 

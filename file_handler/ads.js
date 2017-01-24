@@ -63,7 +63,7 @@ module.exports = {
         },
         // show all ads
         "showAllAdsCouponType": function(req, res) {
-            createNewAds.paginate({ status: "ACTIVE", adsType:"coupon" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ userId:{$ne: req.params.id}, status: "ACTIVE", adsType:"coupon" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -75,7 +75,7 @@ module.exports = {
 
         // show all ads
         "showAllAdsCashType": function(req, res) {
-            createNewAds.paginate({ status: "ACTIVE", adsType:"cash" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ userId:{$ne: req.params.id}, status: "ACTIVE", adsType:"cash" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -516,8 +516,16 @@ module.exports = {
                         })
                     }
                 }
+/*<<<<<<< HEAD*/
 
             })
+/*=======
+            ])
+        },
+
+        "viewPageAds": function (req, res) {
+
+>>>>>>> akash*/
         }
     ])
 }
