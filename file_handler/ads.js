@@ -413,7 +413,7 @@ module.exports = {
             waterfall([
                 function(callback) {
                     createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
-                        if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); }
+                        if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
                         var randomIndex = [];
                         var raffleCount = result.raffleCount;
                         var viewerLenght = result.viewerLenght;
@@ -424,6 +424,7 @@ module.exports = {
                         var has = mySet.has(userId)
                         if (has) {
                             res.send({
+                                //  result:result,
                                 responseCode: 302,
                                 responseMessage: "You have already join the raffle."
                             })
@@ -432,10 +433,11 @@ module.exports = {
                         else if (!has) {
                             raffleCount.push(userId);
                             User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, { new: true }, function(err, result) {
-                                console.log("raffleCount--->>>" + raffleCount);
+                                console.log("raffleCount--->>>" + raffleCount.length);
                             })
 
                             if (raffleCount.length == viewerLenght) {
+                                console.log("raffleCount--111->>>" + raffleCount.length);
                                 for (var n = 0; n < luckUsers.length; n++) {
                                     for (var m = 0; m < luckUsers[n].chances; m++) {
                                         raffleCount.push(luckUsers[n].userId)
@@ -452,10 +454,17 @@ module.exports = {
 
                                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-                                        res.send({
-                                            responseCode: 200,
-                                            responseMessage: "You have successfully join the raffle."
-                                        })
+
+                                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'watchStatus': "WATCHED" } }, function(err, success) {
+                                            console.log("success--111->>>" + JSON.stringify(success));
+                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
+                                                res.send({
+                                                    // result:success,
+                                                    responseCode: 200,
+                                                    responseMessage: "You have successfully join the raffle."
+                                                })
+                                            }
+                                        });
                                     }
                                 });
                                 // }
@@ -466,36 +475,40 @@ module.exports = {
                 function(winners, cashPrize, couponCode, callback) {
                     console.log("winners--->>" + typeof winners)
                     createNewAds.update({ _id: req.body.adId }, { $push: { winners: winners } }, function(err, result) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
+                        if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
                             // res.send({
                             //   responseCode: 200,
                             //   responseMessage: "Raffle is over winner decided.",
                             //  // result: result{ $inc: { brolix: 50 } },
                             //  })
                             if (result.adsType == "cash") {
-                                User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize } }, { multi: true }, function(err, result) {
-                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-                                        res.send({ responseCode: 200, responseMessage: "Record updated successfully.", result: result })
+                                User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize, gifts: 1 } }, { multi: true }, function(err, result) {
+                                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
+                                        res.send({
+                                            responseCode: 200,
+                                            responseMessage: "Raffle is over winner decided."
+                                                //result: result 
+                                        })
                                     }
                                 })
                             } else {
 
                                 User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
-                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-                                        res.send({ responseCode: 200, responseMessage: "Record updated successfully.", result: result })
+                                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
+                                        res.send({
+                                            responseCode: 200,
+                                            responseMessage: "Raffle is over winner decided."
+                                                //result: result
+                                        })
                                     }
                                 })
                             }
-
-
-
                         }
 
                     })
                 }
             ])
         }
-
     }
     // new CronJob('* * * * * *', function() {  
     // var arr = [];
