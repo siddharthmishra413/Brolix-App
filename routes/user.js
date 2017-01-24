@@ -28,7 +28,7 @@ app.post('/filterToDateAndFromDate', authUser.authUser,userHandler.filterToDateA
 app.post('/blockUser', authUser.authUser,userHandler.blockUser);
 app.post('/updatePrivacy', authUser.authUser,userHandler.updatePrivacy);
 app.post('/showPrivacy',authUser.authUser, userHandler.showPrivacy);
-app.get('/showAllBlockUser',authUser.authUser, userHandler.showAllBlockUser);
+app.get('/showAllBlockUser/:id',authUser.authUser, userHandler.showAllBlockUser);
 app.post('/logout',authUser.authUser, userHandler.logout);
 app.post('/purchaseUpgradeCard', authUser.authUser, userHandler.purchaseUpgradeCard);
 app.post('/purchaseLuckCard', authUser.authUser, userHandler.purchaseLuckCard);

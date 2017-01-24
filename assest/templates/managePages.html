@@ -6,10 +6,10 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Total Pages</div>
-                            <div class="total-amt">30,000</div>
+                            <div class="total-amt">{{totalPages.length}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='totalPages'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
@@ -175,7 +175,10 @@
         <div class="row-search">
             <ul>
                 <li class="active">
-                    <a data-toggle="tab">View Page</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
+                </li>
+                <li class="active">
+                    <a data-toggle="tab">Edit Page</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab">Remove</a>
@@ -199,8 +202,8 @@
             </form>
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="row table-responsive cus-table">
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalPages">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -216,41 +219,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="x in totalPages |filter:test">
                         <td>
-                            <input id="o" name="" value="" checked="" type="radio">
+                            <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">Brolix</td>
-                        <td class="skyblue-text">Mobile Apps</td>
-                        <td class="skyblue-text">Yazan AL-Baw</td>
-                        <td class="skyblue-text">Yazan@ctc-jo.com</td>
-                        <td class="skyblue-text">0799435020</td>
-                        <td class="skyblue-text">5</td>
-                        <td class="skyblue-text">30</td>
-                        <td class="skyblue-text">2</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="" name="" value="" type="radio">
-                        </td>
-                        <td class="skyblue-text">Brolix</td>
-                        <td class="skyblue-text">Mobile Apps</td>
-                        <td class="skyblue-text">Yazan AL-Baw</td>
-                        <td class="skyblue-text">Yazan@ctc-jo.com</td>
-                        <td class="skyblue-text">0799435020</td>
-                        <td class="skyblue-text">5</td>
-                        <td class="skyblue-text">30</td>
-                        <td class="skyblue-text">2</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="" name="" value="" type="radio">
-                        </td>
-                        <td class="skyblue-text">Brolix</td>
-                        <td class="skyblue-text">Mobile Apps</td>
-                        <td class="skyblue-text">Yazan AL-Baw</td>
-                        <td class="skyblue-text">Yazan@ctc-jo.com</td>
-                        <td class="skyblue-text">0799435020</td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text">{{x.category}}</td>
+                        <td class="skyblue-text">{{x.userId.firstName}}</td>
+                        <td class="skyblue-text">{{x.userId.email}}</td>
+                        <td class="skyblue-text">{{x.userId.mobileNumber}}</td>
                         <td class="skyblue-text">5</td>
                         <td class="skyblue-text">30</td>
                         <td class="skyblue-text">2</td>

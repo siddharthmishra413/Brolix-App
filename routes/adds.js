@@ -6,7 +6,8 @@ var authUser = require('../middlewares/authUser');
 
 app.post('/createAds', authUser.authUser, adsHandler.createAds);
 app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
-app.get('/showAllAdsData/:pageNumber', authUser.authUser, adsHandler.showAllAdsData);
+app.get('/showAllAdsCouponType/:pageNumber', authUser.authUser, adsHandler.showAllAdsCouponType);
+app.get('/showAllAdsCashType/:pageNumber', authUser.authUser, adsHandler.showAllAdsCashType);
 app.post('/couponsSearch', authUser.authUser, adsHandler.couponsSearch); //Not in docs
 app.post('/searchForCoupons', authUser.authUser, adsHandler.searchForCoupons);
 app.post('/likeAndUnlike', authUser.authUser, adsHandler.likeAndUnlike);
