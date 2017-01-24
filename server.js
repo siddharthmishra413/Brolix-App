@@ -12,6 +12,7 @@ var page = require('./routes/page.js');
 var ads = require('./routes/adds.js');
 var event = require('./routes/event.js');
 var admin = require('./routes/admin.js');
+var follower = require('./routes/followers.js');
 var reportProblem = require('./routes/reportProblem.js');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -73,6 +74,7 @@ app.use('/ads', ads);
 app.use('/event', event);
 app.use('/report', reportProblem);
 app.use('/admin', admin);
+app.use('/follower', follower);
 
 
 
