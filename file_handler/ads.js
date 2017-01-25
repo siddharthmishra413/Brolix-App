@@ -63,7 +63,7 @@ module.exports = {
         },
         // show all ads
         "showAllAdsCouponType": function(req, res) {
-            createNewAds.paginate({ userId:{$ne: req.params.id}, status: "ACTIVE", adsType:"coupon" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE", adsType: "coupon" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -75,7 +75,7 @@ module.exports = {
 
         // show all ads
         "showAllAdsCashType": function(req, res) {
-            createNewAds.paginate({ userId:{$ne: req.params.id}, status: "ACTIVE", adsType:"cash" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE", adsType: "cash" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -419,116 +419,107 @@ module.exports = {
             })
         },
 
-"viewAd": function(req, res) { //req.body.userId, adId
-    var userId = req.body.userId;
-    waterfall([
-        function(callback) {
-            createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
-                if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
-                var randomIndex = [];
-                var raffleCount = result.raffleCount;
-                var viewerLenght = result.viewerLenght;
-                var luckUsers = result.luckCardListObject;
-                var numberOfWinners = result.numberOfWinners;
+        "viewAd": function(req, res) { //req.body.userId, adId
+            var userId = req.body.userId;
+            waterfall([
+                function(callback) {
+                    createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
+                        if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
+                        var randomIndex = [];
+                        var raffleCount = result.raffleCount;
+                        var viewerLenght = result.viewerLenght;
+                        var luckUsers = result.luckCardListObject;
+                        var numberOfWinners = result.numberOfWinners;
 
-                var mySet = new Set(raffleCount);
-                var has = mySet.has(userId)
-                if (has) {
-                    res.send({
-                        //  result:result,
-                        responseCode: 302,
-                        responseMessage: "You have already join the raffle."
-                    })
-                }
-                // else if (!has) raffleCount.push(userId);
-                else if (!has) {
-                    raffleCount.push(userId);
-                    User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, { new: true }, function(err, result) {
-                        console.log("raffleCount--->>>" + raffleCount.length);
-                    })
-
-                    if (raffleCount.length == viewerLenght) {
-                        console.log("raffleCount--111->>>" + raffleCount.length);
-                        for (var n = 0; n < luckUsers.length; n++) {
-                            for (var m = 0; m < luckUsers[n].chances; m++) {
-                                raffleCount.push(luckUsers[n].userId)
-                            }
+                        var mySet = new Set(raffleCount);
+                        var has = mySet.has(userId)
+                        if (has) {
+                            res.send({
+                                //  result:result,
+                                responseCode: 302,
+                                responseMessage: "You have already join the raffle."
+                            })
                         }
-                        for (var i = 0; i < numberOfWinners; i++) {
-                            var index = Math.floor(Math.random() * raffleCount.length);
-                            if (randomIndex.filter(randomIndex => randomIndex != raffleCount[index])) {
-                                randomIndex.push(raffleCount[index])
-                            }
-                        }
-                        callback(null, randomIndex, result.cashAdPrize, result.couponCode)
-                    } else {
+                        // else if (!has) raffleCount.push(userId);
+                        else if (!has) {
+                            raffleCount.push(userId);
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, { new: true }, function(err, result) {
+                                console.log("raffleCount--->>>" + raffleCount.length);
+                            })
 
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
+                            if (raffleCount.length == viewerLenght) {
+                                console.log("raffleCount--111->>>" + raffleCount.length);
+                                for (var n = 0; n < luckUsers.length; n++) {
+                                    for (var m = 0; m < luckUsers[n].chances; m++) {
+                                        raffleCount.push(luckUsers[n].userId)
+                                    }
+                                }
+                                for (var i = 0; i < numberOfWinners; i++) {
+                                    var index = Math.floor(Math.random() * raffleCount.length);
+                                    if (randomIndex.filter(randomIndex => randomIndex != raffleCount[index])) {
+                                        randomIndex.push(raffleCount[index])
+                                    }
+                                }
+                                callback(null, randomIndex, result.cashAdPrize, result.couponCode)
+                            } else {
 
-                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'watchStatus': "WATCHED" } }, function(err, success) {
-
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
 
-                                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED" } }, function(err, success) {
-                                            console.log("success--111->>>" + JSON.stringify(success));
+                                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'watchStatus': "WATCHED" } }, function(err, success) {
+
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-                                                res.send({
-                                                    // result:success,
-                                                    responseCode: 200,
-                                                    responseMessage: "You have successfully join the raffle."
-                                                })
+
+                                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED" } }, function(err, success) {
+                                                    console.log("success--111->>>" + JSON.stringify(success));
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
+                                                        res.send({
+                                                            // result:success,
+                                                            responseCode: 200,
+                                                            responseMessage: "You have successfully join the raffle."
+                                                        })
+                                                    }
+                                                });
                                             }
                                         });
                                     }
                                 });
+                                // }
                             }
-                        });
-                        // }
-                    }
-                }
-            })
-        },
-        function(winners, cashPrize, couponCode, callback) {
-            console.log("winners--->>" + typeof winners)
-            createNewAds.update({ _id: req.body.adId }, { $push: { winners: winners } }, function(err, result) {
-                if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
-                    if (result.adsType == "cash") {
-                        User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize } }, { multi: true }, function(err, result) {
-                            if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
-                                res.send({
-                                    responseCode: 200,
-                                    responseMessage: "Raffle is over winner decided."
-                                        //result: result 
+                        }
+                    })
+                },
+                function(winners, cashPrize, couponCode, callback) {
+                    console.log("winners--->>" + typeof winners)
+                    createNewAds.update({ _id: req.body.adId }, { $push: { winners: winners } }, function(err, result) {
+                        if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
+                            if (result.adsType == "cash") {
+                                User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize } }, { multi: true }, function(err, result) {
+                                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
+                                        res.send({
+                                            responseCode: 200,
+                                            responseMessage: "Raffle is over winner decided."
+                                                //result: result 
+                                        })
+                                    }
+                                })
+                            } else {
+
+                                User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
+                                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
+                                        res.send({
+                                            responseCode: 200,
+                                            responseMessage: "Raffle is over winner decided."
+                                                //result: result
+                                        })
+                                    }
                                 })
                             }
-                        })
-                    } else {
-
-                        User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
-                            if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
-                                res.send({
-                                    responseCode: 200,
-                                    responseMessage: "Raffle is over winner decided."
-                                        //result: result
-                                })
-                            }
-                        })
-                    }
+                        }
+                    })
                 }
-/*<<<<<<< HEAD*/
-
-            })
-/*=======
             ])
-        },
-
-        "viewPageAds": function (req, res) {
-
->>>>>>> akash*/
         }
-    ])
-}
 
 
     }
