@@ -6,9 +6,9 @@
      //API Report Problem
      "followUnfollow": function(req, res) {
          if (req.body.follow == "follow") {
-             followerList.find({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }).exec(function(err, result1) {
+             followerList.findOne({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }).exec(function(err, result1) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                     if (result1.length == 0) {
+                     if (!result1) {
                          var follow = new followerList(req.body);
                          follow.save(function(err, result) {
                              User.findOne({ _id: req.body.receiverId }).exec(function(err, results) {
@@ -30,10 +30,21 @@
                              })
                          })
                      } else {
-                         res.send({
-                             responseCode: 200,
-                             responseMessage: "You have already send request."
-                         });
+                         if (result1.followerStatus == "reject") {
+                             followerList.findOneAndUpdate({ _id: result1._id }, { $set: { followerStatus: "Sent" } }, { new: true }).exec(function(err, result2) {
+                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                                 res.send({
+                                     results: result2,
+                                     responseCode: 200,
+                                     responseMessage: "Followed."
+                                 });
+                             })
+                         } else {
+                             res.send({
+                                 responseCode: 200,
+                                 responseMessage: "You have already send request."
+                             });
+                         }
                      }
                  }
              })
@@ -98,20 +109,20 @@
          })
      },
 
-    //API for Accept Follower Request
-    "acceptFollowerRequest": function(req, res) {
-        followerList.findOneAndUpdate({ receiverId: req.body.receiverId }, {
-            $set: {
-                followerStatus : req.body.followerStatus
-            }
-        }, { new: true }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: "Accepted successfully."
-                });
-            }
-        })
-    }
+     //API for Accept Follower Request
+     "acceptFollowerRequest": function(req, res) {
+         followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
+             $set: {
+                 followerStatus: req.body.followerStatus
+             }
+         }, { new: true }).exec(function(err, results) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                 res.send({
+                     result: results,
+                     responseCode: 200,
+                     responseMessage: "Accepted successfully."
+                 });
+             }
+         })
+     }
  }

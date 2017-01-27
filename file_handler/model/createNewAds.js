@@ -24,6 +24,14 @@ var createNewAdsSchema = new Schema({
         type: String,
         trim: true
     },
+    category: {
+        type: String,
+        trim: true
+    },
+    subCategory: {
+        type: String,
+        trim: true
+    },
     adsType: {
         type: String,
         trim: true

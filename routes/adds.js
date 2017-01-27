@@ -21,7 +21,7 @@ app.get('/winners', authUser.authUser, adsHandler.winners);
 app.post('/upgradeCard', authUser.authUser, adsHandler.upgradeCard);
 app.post('/raffleJoin', authUser.authUser, adsHandler.raffleJoin);
 app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
-app.get('/listOfAllAds', authUser.authUser, adsHandler.listOfAllAds);
+app.get('/listOfAllAds/:id/:type/:pageNumber', authUser.authUser, adsHandler.listOfAllAds);
 app.post('/uploads', authUser.authUser, adsHandler.uploads);
 app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
 
