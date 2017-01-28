@@ -102,6 +102,9 @@ var userSchema = new Schema({
         pageId: { type: String },
         pageName: { type: String }
     }],
+    adFollowers: [{
+        adId: { type: String }
+    }],
     notification_status: { type: String, default: 'on', trim: true },
     viewedAd: [],
     rating: { type: Number, trim: true, default: 0 },

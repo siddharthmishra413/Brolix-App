@@ -444,7 +444,7 @@ module.exports = {
                 // console.log("After pre_book_rating count====>>>>"+pre_book_rating);
                 res.send({
                     responseCode: 200,
-                    responseMessage: "Book rating updated.",
+                    responseMessage: "User rating updated.",
                     rating: update_rating
                 })
                 callback(null, "done");

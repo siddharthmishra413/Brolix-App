@@ -1,5 +1,6 @@
 var createNewPage = require("./model/createNewPage");
 var User = require("./model/user");
+var waterfall = require('async-waterfall');
 //var mongoosePaginate = require('mongoose-paginate');
 module.exports = {
 
@@ -33,6 +34,18 @@ module.exports = {
     //API for Show All Pages
     "showAllPages": function(req, res) {
         createNewPage.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "All pages show successfully."
+            })
+        })
+    },
+
+    //API for Show All Pages
+    "showAllOtherUserPages": function(req, res) {
+        createNewPage.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,
@@ -159,5 +172,75 @@ module.exports = {
                 });
             }
         })
-    }
+    },
+    //API for Show Search
+    "searchForPages": function(req, res) {
+        var data = {
+            'whoWillSeeYourAdd.country': req.body.country,
+            'whoWillSeeYourAdd.state': req.body.state,
+            'whoWillSeeYourAdd.city': req.body.city,
+            'pageName': req.body.pageName,
+            'category': req.body.category,
+            'subCategory': req.body.subCategory
+        }
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                if (data[key] == "" || data[key] == null || data[key] == undefined) {
+                    delete data[key];
+                }
+            }
+        }
+        createNewPage.find({ $and: [data] }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    results: results,
+                    responseCode: 200,
+                    responseMessage: "All Details Found"
+                })
+            }
+        })
+    },
+     // Api for Rating
+    "pageRating": function(req, res, next) {
+        waterfall([
+            function(callback) {
+                createNewPage.findOne({ _id: req.body.pageId }).exec(function(err, result) {
+                    var pre_book_rating = result.rating;
+                    var count = result.review_count;
+
+                    var xxx = pre_book_rating == "0" ? req.body.rating : (parseInt(req.body.rating) + parseInt(pre_book_rating)) / 2;
+                    callback(null, pre_book_rating, count, xxx);
+                    console.log("pre_book_rating count====>>>>" + count)
+                })
+            },
+            function(pre_book_rating, count, xxx, callback) {
+                createNewPage.findByIdAndUpdate(req.body.pageId, {
+                    $set: {
+                        review_count: count + 1,
+                        rating: xxx
+                    }
+                }, {
+                    new: true
+                }).exec(function(err, data) {
+                    var update_rating = data.rating;
+                    console.log("update_rating count====>>>>" + update_rating);
+                    callback(null, update_rating);
+
+                })
+            },
+            function(update_rating, callback) {
+                console.log("After update_rating count====>>>>" + update_rating);
+                // console.log("After pre_book_rating count====>>>>"+pre_book_rating);
+                res.send({
+                    responseCode: 200,
+                    responseMessage: "Page rating updated.",
+                    rating: update_rating
+                })
+                callback(null, "done");
+            },
+            function(err, results) {
+
+            }
+        ])
+    },
 }

@@ -64,7 +64,7 @@ module.exports = {
         },
         // show all ads
         "showAllAdsCouponType": function(req, res) {
-            createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "coupon",  $or:[{status: "ACTIVE"},{status: "EXPIRED"}]}, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "coupon", $or: [{ status: "ACTIVE" }, { status: "EXPIRED" }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -76,7 +76,7 @@ module.exports = {
 
         // show all ads
         "showAllAdsCashType": function(req, res) {
-            createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "cash", $or:[{status: "ACTIVE"},{status: "EXPIRED"}]}, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "cash", $or: [{ status: "ACTIVE" }, { status: "EXPIRED" }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -530,6 +530,30 @@ module.exports = {
                     })
                 }
             ])
+        },
+
+        //API for Follow and unfollow
+        "adFollowUnfollow": function(req, res) {
+            if (req.body.follow == "follow") {
+                User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "adFollowers": { adId: req.body.adId } } }, { new: true }).exec(function(err, results) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                    res.send({
+                        results: results,
+                        responseCode: 200,
+                        responseMessage: "Followed"
+                    });
+                })
+            } else {
+                User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "adFollowers": { adId: req.body.adId } } }, { new: true }).exec(function(err, results) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        res.send({
+                            results: results,
+                            responseCode: 200,
+                            responseMessage: "Unfollowed"
+                        });
+                    }
+                })
+            }
         }
     }
     // new CronJob('* * * * * *', function() {  

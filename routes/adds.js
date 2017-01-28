@@ -24,5 +24,6 @@ app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
 app.get('/listOfAllAds/:id/:type/:pageNumber', authUser.authUser, adsHandler.listOfAllAds);
 app.post('/uploads', authUser.authUser, adsHandler.uploads);
 app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
+app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);
 
 module.exports = app;
