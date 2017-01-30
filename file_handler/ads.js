@@ -49,7 +49,7 @@ module.exports = {
             }
         },
 
-        //API for Apply Coupon
+
         "applyCoupon": function(req, res) {
             createNewAds.findByIdAndUpdate(req.params.id, req.body, {
                 new: true
@@ -64,11 +64,7 @@ module.exports = {
         },
         // show all ads
         "showAllAdsCouponType": function(req, res) {
-<<<<<<< HEAD
-            createNewAds.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE", adsType: "coupon" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-=======
             createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "coupon", $or: [{ status: "ACTIVE" }, { status: "EXPIRED" }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
->>>>>>> akash
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -80,11 +76,7 @@ module.exports = {
 
         // show all ads
         "showAllAdsCashType": function(req, res) {
-<<<<<<< HEAD
-            createNewAds.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE", adsType: "cash" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-=======
             createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "cash", $or: [{ status: "ACTIVE" }, { status: "EXPIRED" }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
->>>>>>> akash
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -195,7 +187,7 @@ module.exports = {
                 'adsType': req.body.type,
                 'category': req.body.category,
                 'subCategory': req.body.subCategory,
-                userId:{$ne:req.body.userId}
+                userId: { $ne: req.body.userId }
             }
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
@@ -204,7 +196,7 @@ module.exports = {
                     }
                 }
             }
-            createNewAds.paginate(data,{ page: req.params.pageNumber, limit: 8 },function(err, results) {
+            createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                     //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
                     res.send({
@@ -440,6 +432,7 @@ module.exports = {
             })
         },
 
+
         "viewAd": function(req, res) { //req.body.userId, adId
             var userId = req.body.userId;
             waterfall([
@@ -499,10 +492,7 @@ module.exports = {
                                         });
                                     }
                                 });
-<<<<<<< HEAD
 
-=======
->>>>>>> akash
                             }
                         }
                     })
@@ -527,7 +517,6 @@ module.exports = {
                                                 })
                                             }
                                         })
-<<<<<<< HEAD
 
                                     } else {
                                         User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
@@ -545,28 +534,6 @@ module.exports = {
                             });
                         }
 
-                    })
-                }
-            ])
-        }
-
-
-=======
-                                    } else {
-                                        User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
-                                            console.log("4")
-                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-                                                res.send({
-                                                    responseCode: 200,
-                                                    responseMessage: "Raffle is over winner decided."
-                                                        //result: result
-                                                })
-                                            }
-                                        })
-                                    }
-                                }
-                            });
-                        }
                     })
                 }
             ])
@@ -596,7 +563,7 @@ module.exports = {
                 })
             }
         }
->>>>>>> akash
+
     }
     // new CronJob('* * * * * *', function() {  
     // var arr = [];

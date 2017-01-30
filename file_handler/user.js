@@ -881,12 +881,6 @@ module.exports = {
         })
     },
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> akash
     "purchaseUpgradeCard": function(req, res) {
         var array = [];
         var array1 = [];
@@ -901,7 +895,7 @@ module.exports = {
         }
         var sum = array1.reduce(function(a, b) {
             return a + b;
-        });
+          });
         User.findOne({ _id: req.body.userId, }, function(err, result) {
             if (err) {
                 res.send({ responseCode: 500, responseMessage: 'Internal server error' });
@@ -911,15 +905,7 @@ module.exports = {
                 for (i = 0; i < array.length; i++) {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-<<<<<<< HEAD
-                            result.cash -= sum;
-                            result.save();
-                        }
-                    });
-                }
-                res.send({
-=======
-                            console.log("sum--->>", sum)
+                            console.log("sum-->>", sum)
                         }
                     });
                 }
@@ -927,7 +913,6 @@ module.exports = {
                 result.save();
                 res.send({
                     result: result,
->>>>>>> akash
                     responseCode: 200,
                     responseMessage: "successfully purchased the upgrade card"
                 });
@@ -946,12 +931,12 @@ module.exports = {
                 obj.brolix = req.body.luckCardArr[j].brolix;
                 array.push(obj);
                 array1.push(parseFloat(req.body.luckCardArr[j].brolix));
+
             }
         }
         var sum = array1.reduce(function(a, b) {
             return a + b;
         });
-
         User.findOne({ _id: req.body.userId, }, function(err, result) {
             if (err) {
                 res.send({ responseCode: 500, responseMessage: 'Internal server error' });
@@ -961,15 +946,7 @@ module.exports = {
                 for (i = 0; i < array.length; i++) {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": array[i] } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-<<<<<<< HEAD
-                            result.brolix -= sum;
-                            result.save();
-                        }
-                    });
-                }
-                res.send({
-=======
-                            console.log("sum--->>", sum)
+                            console.log("sum--->>>", sum)
                         }
                     });
                 }
@@ -977,7 +954,6 @@ module.exports = {
                 result.save();
                 res.send({
                     result: result,
->>>>>>> akash
                     responseCode: 200,
                     responseMessage: "successfully purchased the luck card"
                 });
@@ -1015,10 +991,6 @@ module.exports = {
         })
     },
 
-<<<<<<< HEAD
-=======
-
->>>>>>> akash
     "useUpgradeCard": function(req, res) {
         var obj = (req.body.upgradeId);
         User.update({ 'upgradeCardObject._id': obj }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, function(err, result) {
@@ -1031,5 +1003,5 @@ module.exports = {
                 })
             }
         })
-    }
+    },
 }
