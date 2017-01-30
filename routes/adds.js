@@ -9,7 +9,7 @@ app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
 app.get('/showAllAdsCouponType/:id/:pageNumber', authUser.authUser, adsHandler.showAllAdsCouponType);
 app.get('/showAllAdsCashType/:id/:pageNumber', authUser.authUser, adsHandler.showAllAdsCashType);
 app.post('/couponsSearch', authUser.authUser, adsHandler.couponsSearch); //Not in docs
-app.post('/searchForCoupons', authUser.authUser, adsHandler.searchForCoupons);
+app.post('/searchForCoupons/:pageNumber', authUser.authUser, adsHandler.searchForCoupons);
 app.post('/likeAndUnlike', authUser.authUser, adsHandler.likeAndUnlike);
 app.post('/commentOnAds', authUser.authUser, adsHandler.commentOnAds);
 app.post('/replyOnComment', authUser.authUser, adsHandler.replyOnComment);

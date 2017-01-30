@@ -100,7 +100,8 @@ var userSchema = new Schema({
     }],
     pageFollowers: [{
         pageId: { type: String },
-        pageName: { type: String }
+        pageName: { type: String },
+        pageFollowersStatus: {type: Boolean, default: true}
     }],
     adFollowers: [{
         adId: { type: String }
@@ -148,12 +149,10 @@ var userSchema = new Schema({
     },
     luckCardObject: [{
         brolix: { type: Number },
-        cash: { type: Number },
         chances: { type: Number },
         status: { type: String, default: 'ACTIVE' }
     }],
     upgradeCardObject: [{
-        brolix: { type: Number },
         cash: { type: Number },
         viewers: { type: Number },
         status: { type: String, default: 'ACTIVE' }

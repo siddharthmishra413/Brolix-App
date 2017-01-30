@@ -84,9 +84,9 @@ module.exports = {
                 results[0].pageFollowers.forEach(function(result) {
                     arr.push(result.pageId)
                 })
-                createNewPage.find({ _id: { $in: arr } }).exec(function(err, newResult) {
+                createNewPage.paginate({ _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8 },function(err, newResult) {
                     res.send({
-                        results: newResult,
+                        result: newResult,
                         responseCode: 200,
                         responseMessage: "Show list all follow pages."
                     });
@@ -163,7 +163,7 @@ module.exports = {
     "pagesSearch": function(req, res) {
         //console.log("req======>>>" + JSON.stringify(req.body))
         var re = new RegExp(req.body.search, 'i');
-        createNewPage.find({ status: 'ACTIVE' }).or([{ 'pageName': { $regex: re } }]).sort({ pageName: -1 }).exec(function(err, result) {
+        createNewPage.find({ status: 'ACTIVE', pageType:"Business" }).or([{ 'pageName': { $regex: re } }]).sort({ pageName: -1 }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     responseCode: 200,
@@ -190,7 +190,7 @@ module.exports = {
                 }
             }
         }
-        createNewPage.find({ $and: [data] }).exec(function(err, results) {
+        createNewPage.paginate({ $and: [data] }, { page: req.params.pageNumber, limit: 8 },function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     results: results,
