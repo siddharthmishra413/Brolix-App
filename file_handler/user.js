@@ -958,10 +958,11 @@ module.exports = {
     },
 
 
-    "useLuckCard": function(req, res) { // userId, adId, Brolix in request parameter
+    "useLuckCard": function(req, res) { // userId, adId, Brolix, luckId in request parameter
+        var obj = (req.body.luckId);
         createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
-            else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
+            else if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter luckId' }); } else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
             else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
                 return res.status(403).send({ responseMessage: "Already used luckCard" })
             } else {
@@ -985,19 +986,18 @@ module.exports = {
             }
         })
     },
-    
+
     "useUpgradeCard": function(req, res) {
         var obj = (req.body.upgradeId);
         User.update({ 'upgradeCardObject._id': obj }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-            else {
+            else if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter upgradeId' }); } else {
                 res.send({
                     // result: user,
                     responseCode: 200,
                     responseMessage: "Successfully used the upgrade card."
-                    })
-                }
-            })
-        }
+                })
+            }
+        })
     }
-
+}
