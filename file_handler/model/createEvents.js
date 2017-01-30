@@ -13,6 +13,10 @@ var createEventsSchema = new Schema({
         type: String,
         trim: true
     },
+     pageId: {
+        type: String,
+        trim: true
+    },
     type: {
         type: String,
         trim: true
@@ -32,11 +36,11 @@ var createEventsSchema = new Schema({
     discription: {
         type: String,
         trim: true
-    },    
-    currentEvent:[{
-        name:{type:String}
-    }],
-    socialMedia: [],
+    },
+    coverImage: {
+        type: String,
+        trim: true
+    },
     createdAt: {
         type: Date,
         default: Date.now

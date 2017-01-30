@@ -444,7 +444,7 @@ module.exports = {
                 // console.log("After pre_book_rating count====>>>>"+pre_book_rating);
                 res.send({
                     responseCode: 200,
-                    responseMessage: "Book rating updated.",
+                    responseMessage: "User rating updated.",
                     rating: update_rating
                 })
                 callback(null, "done");
@@ -881,6 +881,12 @@ module.exports = {
         })
     },
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> akash
     "purchaseUpgradeCard": function(req, res) {
         var array = [];
         var array1 = [];
@@ -905,12 +911,23 @@ module.exports = {
                 for (i = 0; i < array.length; i++) {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+<<<<<<< HEAD
                             result.cash -= sum;
                             result.save();
                         }
                     });
                 }
                 res.send({
+=======
+                            console.log("sum--->>", sum)
+                        }
+                    });
+                }
+                result.cash -= sum;
+                result.save();
+                res.send({
+                    result: result,
+>>>>>>> akash
                     responseCode: 200,
                     responseMessage: "successfully purchased the upgrade card"
                 });
@@ -944,12 +961,23 @@ module.exports = {
                 for (i = 0; i < array.length; i++) {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": array[i] } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+<<<<<<< HEAD
                             result.brolix -= sum;
                             result.save();
                         }
                     });
                 }
                 res.send({
+=======
+                            console.log("sum--->>", sum)
+                        }
+                    });
+                }
+                result.brolix -= sum;
+                result.save();
+                res.send({
+                    result: result,
+>>>>>>> akash
                     responseCode: 200,
                     responseMessage: "successfully purchased the luck card"
                 });
@@ -987,6 +1015,10 @@ module.exports = {
         })
     },
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> akash
     "useUpgradeCard": function(req, res) {
         var obj = (req.body.upgradeId);
         User.update({ 'upgradeCardObject._id': obj }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, function(err, result) {

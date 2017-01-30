@@ -100,7 +100,11 @@ var userSchema = new Schema({
     }],
     pageFollowers: [{
         pageId: { type: String },
-        pageName: { type: String }
+        pageName: { type: String },
+        pageFollowersStatus: {type: Boolean, default: true}
+    }],
+    adFollowers: [{
+        adId: { type: String }
     }],
     notification_status: { type: String, default: 'on', trim: true },
     viewedAd: [],

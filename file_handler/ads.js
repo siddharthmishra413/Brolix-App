@@ -7,6 +7,7 @@ var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
 var fs = require('fs');
+var waterfall = require('async-waterfall');
 var multiparty = require('multiparty');
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -35,7 +36,7 @@ module.exports = {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                         res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                     } else {
-                        User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.adsCash } }, { new: true }).exec(function(err, result) {
+                        User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
                             //req.body.viewerLenght = 1000;
                             var Ads = new createNewAds(req.body);
                             Ads.save(function(err, result) {
@@ -63,7 +64,11 @@ module.exports = {
         },
         // show all ads
         "showAllAdsCouponType": function(req, res) {
+<<<<<<< HEAD
             createNewAds.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE", adsType: "coupon" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+=======
+            createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "coupon", $or: [{ status: "ACTIVE" }, { status: "EXPIRED" }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+>>>>>>> akash
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -75,7 +80,11 @@ module.exports = {
 
         // show all ads
         "showAllAdsCashType": function(req, res) {
+<<<<<<< HEAD
             createNewAds.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE", adsType: "cash" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+=======
+            createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "cash", $or: [{ status: "ACTIVE" }, { status: "EXPIRED" }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+>>>>>>> akash
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
@@ -181,7 +190,12 @@ module.exports = {
             var data = {
                 'whoWillSeeYourAdd.country': req.body.country,
                 'whoWillSeeYourAdd.state': req.body.state,
-                'whoWillSeeYourAdd.city': req.body.city
+                'whoWillSeeYourAdd.city': req.body.city,
+                'pageName': req.body.pageName,
+                'adsType': req.body.type,
+                'category': req.body.category,
+                'subCategory': req.body.subCategory,
+                userId:{$ne:req.body.userId}
             }
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
@@ -190,10 +204,11 @@ module.exports = {
                     }
                 }
             }
-            createNewAds.find({ $and: [data] }).exec(function(err, results) {
+            createNewAds.paginate(data,{ page: req.params.pageNumber, limit: 8 },function(err, results) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                    //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
                     res.send({
-                        results: results,
+                        result: results,
                         responseCode: 200,
                         responseMessage: "All Details Found"
                     })
@@ -385,15 +400,21 @@ module.exports = {
         },
 
         "listOfAllAds": function(req, res) { // for a single user
-            createNewAds.find({}).exec(function(err, result) {
+            if (req.params.type == "all") {
+                var data = { pageId: req.params.id }
+            } else {
+                var data = { pageId: req.params.id, adsType: req.params.type }
+            }
+            createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                    var couponType = result.filter(result => result.adsType == "coupon");
-                    var cashType = result.filter(result => result.adsType == "cash");
+                    // var couponType = result.docs.filter(result => result.adsType == "coupon");
+                    // var cashType = result.docs.filter(result => result.adsType == "cash");
                     res.send({
-                        couponType: couponType,
-                        cashType: cashType,
+                        // couponType: couponType,
+                        // cashType: cashType,
+                        result: result,
                         responseCode: 200,
-                        responseMessage: "All blocked user show successfully!!"
+                        responseMessage: "All ads shown cash type and coupon type."
                     });
                 }
 
@@ -478,7 +499,10 @@ module.exports = {
                                         });
                                     }
                                 });
+<<<<<<< HEAD
 
+=======
+>>>>>>> akash
                             }
                         }
                     })
@@ -503,6 +527,7 @@ module.exports = {
                                                 })
                                             }
                                         })
+<<<<<<< HEAD
 
                                     } else {
                                         User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
@@ -526,6 +551,52 @@ module.exports = {
         }
 
 
+=======
+                                    } else {
+                                        User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
+                                            console.log("4")
+                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "Raffle is over winner decided."
+                                                        //result: result
+                                                })
+                                            }
+                                        })
+                                    }
+                                }
+                            });
+                        }
+                    })
+                }
+            ])
+        },
+
+
+        //API for Follow and unfollow
+        "adFollowUnfollow": function(req, res) {
+            if (req.body.follow == "follow") {
+                User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "adFollowers": { adId: req.body.adId } } }, { new: true }).exec(function(err, results) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                    res.send({
+                        results: results,
+                        responseCode: 200,
+                        responseMessage: "Followed"
+                    });
+                })
+            } else {
+                User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "adFollowers": { adId: req.body.adId } } }, { new: true }).exec(function(err, results) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        res.send({
+                            results: results,
+                            responseCode: 200,
+                            responseMessage: "Unfollowed"
+                        });
+                    }
+                })
+            }
+        }
+>>>>>>> akash
     }
     // new CronJob('* * * * * *', function() {  
     // var arr = [];

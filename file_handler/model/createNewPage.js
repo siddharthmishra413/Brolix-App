@@ -60,6 +60,8 @@ var createNewPageSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    pageFollowersStatus: {type: Boolean, default: false},
+    rating: { type: Number, trim: true, default: 0 },
     permissions:[],
     createdAt: {
         type: Date,
