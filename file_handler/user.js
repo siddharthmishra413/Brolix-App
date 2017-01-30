@@ -883,26 +883,40 @@ module.exports = {
 
 
     "purchaseUpgradeCard": function(req, res) {
-        var viewers;
-        var upgrade = req.body.cash;
-        viewers = upgrade * 20;
-        User.findOne({ _id: req.body.userId, }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-            else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
-                User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": { cash: req.body.cash, viewers: viewers } } }, { new: true }).exec(function(err, user) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                        result.cash -= req.body.cash;
-                        result.save();
-                        res.send({
-                            result: user,
-                            responseCode: 200,
-                            responseMessage: "successfully purchased the upgrade card"
-                        });
-                    }
-                });
-            }
-        })
-    },
+     var array = [];
+     var array1 = [];
+     for (j = 0; j < req.body.upgradeCardArr.length; j++) {
+         for (var i = 0; i < req.body.upgradeCardArr[j].numberOfCount; i++) {
+             var obj = { cash: 0, viewers: 0 }
+             obj.viewers = req.body.upgradeCardArr[j].cash * 20;
+             obj.cash = req.body.upgradeCardArr[j].cash;
+             array.push(obj);
+             array1.push(parseFloat(req.body.upgradeCardArr[j].cash));
+         }
+     }
+     var sum = array1.reduce(function(a, b) {
+         return a + b; });
+     User.findOne({ _id: req.body.userId, }, function(err, result) {
+         if (err) {
+             res.send({ responseCode: 500, responseMessage: 'Internal server error' });
+         } else if (!result) {
+             return res.status(404).send({ responseMessage: "please enter userId" })
+         } else if (result.cash <= sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
+             for (i = 0; i < array.length; i++) {
+                 User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] } }, { new: true }).exec(function(err, user) {
+                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                         result.cash -= req.body.cash;
+                         result.save();
+                     }
+                 });
+             }
+             res.send({
+                 responseCode: 200,
+                 responseMessage: "successfully purchased the upgrade card"
+             });
+         }
+     })
+ },
 
 
     "purchaseLuckCard": function(req, res) {
