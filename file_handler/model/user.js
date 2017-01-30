@@ -145,12 +145,10 @@ var userSchema = new Schema({
     },
     luckCardObject: [{
         brolix: { type: Number },
-        cash: { type: Number },
         chances: { type: Number },
         status: { type: String, default: 'ACTIVE' }
     }],
     upgradeCardObject: [{
-        brolix: { type: Number },
         cash: { type: Number },
         viewers: { type: Number },
         status: { type: String, default: 'ACTIVE' }
