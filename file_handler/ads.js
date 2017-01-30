@@ -469,53 +469,57 @@ module.exports = {
                                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'watchStatus': "WATCHED" } }, function(err, success) {
 
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-
-                                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED" } }, function(err, success) {
-                                                    console.log("success--111->>>" + JSON.stringify(success));
-                                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-                                                        res.send({
-                                                            // result:success,
-                                                            responseCode: 200,
-                                                            responseMessage: "You have successfully join the raffle."
-                                                        })
-                                                    }
-                                                });
+                                                res.send({
+                                                    // result:success,
+                                                    responseCode: 200,
+                                                    responseMessage: "You have successfully join the raffle."
+                                                })
                                             }
                                         });
                                     }
                                 });
-                                // }
+
                             }
                         }
                     })
                 },
                 function(winners, cashPrize, couponCode, callback) {
-                    console.log("winners--->>" + typeof winners)
                     createNewAds.update({ _id: req.body.adId }, { $push: { winners: winners } }, function(err, result) {
                         if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
-                            if (result.adsType == "cash") {
-                                User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize } }, { multi: true }, function(err, result) {
-                                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
-                                        res.send({
-                                            responseCode: 200,
-                                            responseMessage: "Raffle is over winner decided."
-                                                //result: result 
-                                        })
-                                    }
-                                })
-                            } else {
 
-                                User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
-                                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else {
-                                        res.send({
-                                            responseCode: 200,
-                                            responseMessage: "Raffle is over winner decided."
-                                                //result: result
+                            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED" } }, function(err, success) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
+                                    console.log("1")
+
+                                    if (success.adsType == "cash") {
+                                        console.log("2")
+                                        User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize } }, { multi: true }, function(err, result) {
+                                            console.log("result--->>" + JSON.stringify(result))
+                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "Raffle is over winner decided."
+                                                        //result: result 
+                                                })
+                                            }
+                                        })
+
+                                    } else {
+                                        User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
+                                            console.log("4")
+                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "Raffle is over winner decided."
+                                                        //result: result
+                                                })
+                                            }
                                         })
                                     }
-                                })
-                            }
+                                }
+                            });
                         }
+
                     })
                 }
             ])
