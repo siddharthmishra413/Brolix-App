@@ -507,7 +507,7 @@ module.exports = {
 
                                     if (success.adsType == "cash") {
                                         console.log("2")
-                                        User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize } }, { multi: true }, function(err, result) {
+                                        User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize, gifts : 1 } }, { multi: true }, function(err, result) {
                                             console.log("result--->>" + JSON.stringify(result))
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
                                                 res.send({
@@ -519,7 +519,7 @@ module.exports = {
                                         })
 
                                     } else {
-                                        User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
+                                        User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode }, $inc : { gifts :1 } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
                                                 res.send({
