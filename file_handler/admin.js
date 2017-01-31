@@ -630,5 +630,28 @@ module.exports = {
         })
     },
 
+    "couponWinners": function(req, res) {
+       createNewAds.find({ adsType: "coupon" }).exec(function(err, result) {
+         var array = [];
+         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+             for (i = 0; i < result.length; i++) {
+                 for (j = 0; j < result[i].winners.length; j++) {
+                     array.push(result[i].winners[j]);
+                 }
+             }
+             User.find({ _id: { $in: array } }).exec(function(err, result) {
+                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                     res.send({
+                         result: result,
+                         responseCode: 200,
+                         responseMessage: "all coupon winner"
+                     })
+                 }
+             })
+         }
+
+     })
+ }
+
 
 }

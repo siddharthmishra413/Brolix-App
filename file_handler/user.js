@@ -551,7 +551,6 @@ module.exports = {
             }]
         };
 
-
         paypal.payment.create(payment, function(error, payment) {
             if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 if (payment.payer.payment_method === 'paypal') {
