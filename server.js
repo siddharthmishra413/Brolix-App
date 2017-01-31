@@ -12,6 +12,7 @@ var page = require('./routes/page.js');
 var ads = require('./routes/adds.js');
 var event = require('./routes/event.js');
 var admin = require('./routes/admin.js');
+var chat = require('./file_handler/chat.js');
 var follower = require('./routes/followers.js');
 var reportProblem = require('./routes/reportProblem.js');
 var mongoose = require('mongoose');

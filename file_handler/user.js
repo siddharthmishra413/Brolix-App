@@ -479,7 +479,6 @@ module.exports = {
         console.log("req data-->" + JSON.stringify(req.body));
         res.send("Payment canceled successfully.");
     },
-
     // Api for Send brolix To Follower
     "sendBrolixToFollower": function(req, res) {
         User.findOne({ _id: req.body.userId }, function(err, result) {

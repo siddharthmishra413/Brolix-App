@@ -45,15 +45,50 @@ module.exports = {
 
     //API for Show All Pages
     "showAllOtherUserPages": function(req, res) {
-        createNewPage.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "All pages show successfully."
-            })
-        })
+        waterfall([
+            function(callback) {
+                User.findOne({ _id: req.params.id }).exec(function(err, result) {
+                    callback(null, result);
+                    console.log("resultresultresult count====>>>>" + result)
+                })
+            },
+            function(result, callback) {
+                createNewPage.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                    callback(null, result, pageResult);
+                })
+            },
+            function(result, pageResult, callback) {
+                console.log("After pageResult pageResult====>>>>" + JSON.stringify(pageResult));
+                console.log("After result result  result  result====>>>>" + JSON.stringify(result));
+                var array = [];
+                var data = [];
+                for (var i = 0; i < result.pageFollowers.length; i++) {
+                    array.push(result.pageFollowers[i].pageId)
+                }
+                console.log("ssssssssss", array);
+                for (var j = 0; j < array.length; j++) {
+                    console.log("jjjjj", j);
+                    for (k = 0; k < pageResult.docs.length; k++) {
+                        console.log("kkkkkk", pageResult.docs[k]._id);
+                        console.log("kkkkkk", pageResult.docs[k]._id == array[j]);
+                        if (pageResult.docs[k]._id == array[j]) {
+                            pageResult.docs[k].pageFollowersStatus = "true"
+                        }
+                    }
+                }
+                res.send({
+                    result: pageResult,
+                    responseCode: 200,
+                    responseMessage: "User rating updated."
+                })
+                callback(null, "done");
+            },
+            function(err, results) {
+
+            }
+        ])
     },
+
     //API for Show Page Details
     "showPageDetails": function(req, res) {
         createNewPage.findOne({ _id: req.body.pageId, status: "ACTIVE" }).exec(function(err, result) {
@@ -84,7 +119,7 @@ module.exports = {
                 results[0].pageFollowers.forEach(function(result) {
                     arr.push(result.pageId)
                 })
-                createNewPage.paginate({ _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8 },function(err, newResult) {
+                createNewPage.paginate({ _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8 }, function(err, newResult) {
                     res.send({
                         result: newResult,
                         responseCode: 200,
@@ -163,7 +198,7 @@ module.exports = {
     "pagesSearch": function(req, res) {
         //console.log("req======>>>" + JSON.stringify(req.body))
         var re = new RegExp(req.body.search, 'i');
-        createNewPage.find({ status: 'ACTIVE', pageType:"Business" }).or([{ 'pageName': { $regex: re } }]).sort({ pageName: -1 }).exec(function(err, result) {
+        createNewPage.find({ status: 'ACTIVE', pageType: "Business" }).or([{ 'pageName': { $regex: re } }]).sort({ pageName: -1 }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     responseCode: 200,
@@ -190,7 +225,7 @@ module.exports = {
                 }
             }
         }
-        createNewPage.paginate({ $and: [data] }, { page: req.params.pageNumber, limit: 8 },function(err, results) {
+        createNewPage.paginate({ $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     results: results,
@@ -200,7 +235,7 @@ module.exports = {
             }
         })
     },
-     // Api for Rating
+    // Api for Rating
     "pageRating": function(req, res, next) {
         waterfall([
             function(callback) {

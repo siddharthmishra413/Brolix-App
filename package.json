@@ -32,7 +32,8 @@
     "push-notification": "^0.1.8",
     "underscore": "^1.8.3",
     "validator": "^6.1.0",
-    "voucher-code-generator": "^1.1.0"
+    "voucher-code-generator": "^1.1.0",
+    "websocket": "^1.0.24"
   },
   "devDependencies": {
     "nodemon": "^1.10.2"
