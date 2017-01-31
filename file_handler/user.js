@@ -296,86 +296,6 @@ module.exports = {
         })
     },
 
-    //API for Follow and unfollow
-    "followUnfollow": function(req, res) {
-        if (req.body.follow == "follow") {
-            User.findOneAndUpdate({ _id: req.body.senderId }, { $push: { "followers": { senderId: req.body.userId, senderName: req.body.senderName } } }, { new: true }).exec(function(err, result) {
-                User.findOne({ _id: req.body.senderId }).exec(function(err, results) {
-                    if (results.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                        var message = "req.body.message";
-                        functions.android_notification(result.deviceToken, message);
-                        console.log("Android notification send!!!!")
-                    } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                        functions.iOS_notification(result.deviceToken, message);
-
-                    } else {
-                        console.log("Something wrong!!!!")
-                    }
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    res.send({
-                        results: result,
-                        responseCode: 200,
-                        responseMessage: "Followed."
-                    });
-                })
-            })
-        } else {
-            User.findOneAndUpdate({ _id: req.body.senderId }, { $pop: { "followers": { senderId: req.body.userId } } }, { new: true }).exec(function(err, results) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    res.send({
-                        results: results,
-                        responseCode: 200,
-                        responseMessage: "Unfollowed"
-                    });
-                }
-            })
-        }
-    },
-
-    //API for Follower List
-    "followerList": function(req, res) {
-        User.findOne({ _id: req.body.userId }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                var arr = [];
-                results.followers.forEach(function(result) {
-                    arr.push(result.senderId)
-                })
-                User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
-                    for (var i = 0; i < newResult.length; i++) {
-                        var obj = {};
-                        newResult[i].followStatus = results.followers[i].FollowStatus;
-                        console.log(results.followers[i].FollowStatus);
-                        // console.log(obj);
-                        // obj.result = newResult[i];
-                        // newResult[i] = obj;
-                    }
-                    res.send({
-                        results: newResult,
-                        responseCode: 200,
-                        responseMessage: "Show list all followers."
-                    });
-                })
-            }
-        })
-    },
-
-    //API for Accept Follower Request
-    "acceptFollowerRequest": function(req, res) {
-        User.findOneAndUpdate({ _id: req.body.userId, 'followers.senderId': req.body.senderId }, {
-            $set: {
-                'followers.$.FollowStatus': req.body.status
-            }
-        }, { new: true }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: "Accepted successfully."
-                });
-            }
-        })
-    },
-
     //API for Tag Friends
     "tagFriends": function(req, res) {
         //console.log("req======>>>" + JSON.stringify(req.body))
@@ -559,23 +479,22 @@ module.exports = {
         console.log("req data-->" + JSON.stringify(req.body));
         res.send("Payment canceled successfully.");
     },
-
     // Api for Send brolix To Follower
     "sendBrolixToFollower": function(req, res) {
         User.findOne({ _id: req.body.userId }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
             else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account." }); } else {
                 result.brolix -= req.body.brolix;
                 result.save();
                 User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } } }, { new: true }, function(err, results) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                     else {
                         results.brolix += req.body.brolix;
                         results.save();
                         res.send({
                             responseCode: 200,
                             responseMessage: "You have successfully transferred your brolix.",
-                            result: results
+                            result: result
 
                         });
                     }
@@ -586,72 +505,24 @@ module.exports = {
 
     // Api for Send Cash to Follower
     "sendCashToFollower": function(req, res) {
-        // paypal payment configuration.
-        var payment = {
-            "intent": "sale",
-            "payer": {
-                "payment_method": "paypal"
-            },
-            "redirect_urls": {
-                "return_url": 'http://localhost:8000/success',
-                "cancel_url": app.locals.baseurl + "/cancel"
-            },
-            "transactions": [{
-                "amount": {
-                    "total": parseInt(req.body.cash),
-                    "currency": req.body.currency
-                        // "transactions_ID": req.body.transactions_ID
-                },
-                "description": req.body.description
-            }]
-        };
+        User.findOne({ _id: req.body.userId }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+            else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
+                result.cash -= req.body.cash;
+                result.save();
+                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } } }, { new: true }, function(err, user) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
+                    else {
+                        user.cash += req.body.cash;
+                        user.save();
+                        res.send({
+                            responseCode: 200,
+                            responseMessage: "You have successfully transferred your cash.",
+                            result: result
 
-
-        paypal.payment.create(payment, function(error, payment) {
-            if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                if (payment.payer.payment_method === 'paypal') {
-                    req.paymentId = payment.id;
-                    var redirectUrl;
-                    console.log("payment", payment);
-                    console.log("requestbody", JSON.stringify(req.body))
-                    console.log("currency", JSON.stringify(req.body.currency))
-
-                    User.findOne({ _id: req.body.userId }, function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-
-                        else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
-                            result.cash -= req.body.cash;
-                            result.save();
-
-                            User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } } }, { new: true }, function(err, results) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
-
-                                else {
-                                    results.cash += req.body.cash;
-                                    results.save();
-
-                                    for (var i = 0; i < payment.links.length; i++) {
-                                        var link = payment.links[i];
-                                        if (link.method === 'REDIRECT') {
-                                            redirectUrl = link.href;
-                                        }
-                                    }
-                                    console.log("paymentttt", JSON.stringify(payment.transactions));
-                                    //res.redirect(redirectUrl);
-
-                                    res.send({
-                                        responseCode: 200,
-                                        responseMessage: "You have successfully transfer your cash",
-                                        result: results
-
-                                    });
-
-                                }
-                            });
-                        }
-                    });
-
-                }
+                        });
+                    }
+                });
             }
         });
     },

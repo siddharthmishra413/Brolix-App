@@ -61,6 +61,10 @@ var createNewPageSchema = new mongoose.Schema({
         trim: true
     },
     pageFollowersStatus: {type: Boolean, default: false},
+    pageProduct: [{
+        image: { type: String },
+        discription: { type: String }
+    }],
     rating: { type: Number, trim: true, default: 0 },
     permissions:[],
     createdAt: {
