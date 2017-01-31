@@ -49,7 +49,7 @@ module.exports = {
             }
         },
 
-        //API for Apply Coupon
+
         "applyCoupon": function(req, res) {
             createNewAds.findByIdAndUpdate(req.params.id, req.body, {
                 new: true
@@ -187,7 +187,7 @@ module.exports = {
                 'adsType': req.body.type,
                 'category': req.body.category,
                 'subCategory': req.body.subCategory,
-                userId:{$ne:req.body.userId}
+                userId: { $ne: req.body.userId }
             }
             for (var key in data) {
                 if (data.hasOwnProperty(key)) {
@@ -196,7 +196,7 @@ module.exports = {
                     }
                 }
             }
-            createNewAds.paginate(data,{ page: req.params.pageNumber, limit: 8 },function(err, results) {
+            createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                     //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
                     res.send({
@@ -432,6 +432,7 @@ module.exports = {
             })
         },
 
+
         "viewAd": function(req, res) { //req.body.userId, adId
             var userId = req.body.userId;
             waterfall([
@@ -491,6 +492,7 @@ module.exports = {
                                         });
                                     }
                                 });
+
                             }
                         }
                     })
@@ -515,6 +517,7 @@ module.exports = {
                                                 })
                                             }
                                         })
+
                                     } else {
                                         User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode } }, { multi: true }, function(err, result) {
                                             console.log("4")
@@ -530,6 +533,7 @@ module.exports = {
                                 }
                             });
                         }
+
                     })
                 }
             ])
@@ -559,6 +563,7 @@ module.exports = {
                 })
             }
         }
+
     }
     // new CronJob('* * * * * *', function() {  
     // var arr = [];

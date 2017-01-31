@@ -752,9 +752,6 @@ module.exports = {
         })
     },
 
-
-
-
     "purchaseUpgradeCard": function(req, res) {
         var array = [];
         var array1 = [];
@@ -769,7 +766,7 @@ module.exports = {
         }
         var sum = array1.reduce(function(a, b) {
             return a + b;
-        });
+          });
         User.findOne({ _id: req.body.userId, }, function(err, result) {
             if (err) {
                 res.send({ responseCode: 500, responseMessage: 'Internal server error' });
@@ -779,7 +776,7 @@ module.exports = {
                 for (i = 0; i < array.length; i++) {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            console.log("sum--->>", sum)
+                            console.log("sum-->>", sum)
                         }
                     });
                 }
@@ -805,12 +802,12 @@ module.exports = {
                 obj.brolix = req.body.luckCardArr[j].brolix;
                 array.push(obj);
                 array1.push(parseFloat(req.body.luckCardArr[j].brolix));
+
             }
         }
         var sum = array1.reduce(function(a, b) {
             return a + b;
         });
-
         User.findOne({ _id: req.body.userId, }, function(err, result) {
             if (err) {
                 res.send({ responseCode: 500, responseMessage: 'Internal server error' });
@@ -820,7 +817,7 @@ module.exports = {
                 for (i = 0; i < array.length; i++) {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": array[i] } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            console.log("sum--->>", sum)
+                            console.log("sum--->>>", sum)
                         }
                     });
                 }
@@ -835,10 +832,12 @@ module.exports = {
         })
     },
 
-    "useLuckCard": function(req, res) { // userId, adId, Brolix in request parameter
+
+    "useLuckCard": function(req, res) { // userId, adId, Brolix, luckId in request parameter
+        var obj = (req.body.luckId);
         createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
-            else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
+            else if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter luckId' }); } else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
             else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
                 return res.status(403).send({ responseMessage: "Already used luckCard" })
             } else {
@@ -863,7 +862,6 @@ module.exports = {
         })
     },
 
-
     "useUpgradeCard": function(req, res) {
         var obj = (req.body.upgradeId);
         User.update({ 'upgradeCardObject._id': obj }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, function(err, result) {
@@ -876,7 +874,5 @@ module.exports = {
                 })
             }
         })
-    }
-
-
+    },
 }
