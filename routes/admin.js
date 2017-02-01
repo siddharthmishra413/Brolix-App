@@ -31,5 +31,6 @@ app.put('/editUserProfile/:id', adminHandler.editUserProfile);
 app.get('/totalPages', adminHandler.totalPages);
 app.get('/viewPage/:id', adminHandler.viewPage);
 app.get('/couponWinners', adminHandler.couponWinners);
+app.get('/cashWinners', adminHandler.cashWinners);
 
 module.exports = app;

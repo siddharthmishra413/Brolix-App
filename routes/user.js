@@ -33,6 +33,7 @@ app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
 app.post('/showUpgradeCard', authUser.authUser, userHandler.showUpgradeCard);
 app.post('/useLuckCard', authUser.authUser, userHandler.useLuckCard);
 app.post('/useUpgradeCard', authUser.authUser, userHandler.useUpgradeCard);
+app.post('/facebookLogin', authUser.authUser, userHandler.facebookLogin);
 
 
 

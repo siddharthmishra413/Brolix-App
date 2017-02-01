@@ -875,4 +875,20 @@ module.exports = {
             }
         })
     },
+
+     "facebookLogin": function(req, res) {
+        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+          User.findOne({ email: req.body.email }, avoid).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+             else if (!result) { res.send({ responseCode: 404, responseMessage: "Sorry Your Id  Incorrect" }); } 
+             else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Login successfully"
+                    });
+                }
+        })
+    }
+
 }
