@@ -111,6 +111,7 @@ var userSchema = new Schema({
     rating: { type: Number, trim: true, default: 0 },
     transferAmountListObject: [{
         amount: { type: Number },
+        adId:{ type: Number},
         CreatedAt: {
             type: Date,
             default: Date.now
@@ -164,6 +165,9 @@ var userSchema = new Schema({
     },
     userUpgradeCard: [],
     permissions: [],
+    termsCondition: {
+       type: String
+   },
     createdAt: {
         type: Date,
         default: Date.now

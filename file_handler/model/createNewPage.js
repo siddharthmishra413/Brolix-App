@@ -67,6 +67,11 @@ var createNewPageSchema = new mongoose.Schema({
     }],
     rating: { type: Number, trim: true, default: 0 },
     permissions:[],
+    linkSocialListObject: [{
+        userId: { type: String },
+        mediaType: {type: String},
+        link: { type: String }
+    }],
     createdAt: {
         type: Date,
         default: Date.now

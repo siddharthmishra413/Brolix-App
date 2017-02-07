@@ -10,7 +10,7 @@ app.post('/verifyOtp', userHandler.verifyOtp);
 app.get('/allUserDetails',authUser.authUser,userHandler.allUserDetails);
 app.put('/editProfile/:id',authUser.authUser,userHandler.editProfile);
 app.post('/changePassword',authUser.authUser,userHandler.changePassword);
-app.post('/forgotPassword',authUser.authUser,userHandler.forgotPassword);
+app.post('/forgotPassword',userHandler.forgotPassword);
 app.post('/userProfile',authUser.authUser,userHandler.userProfile);
 app.get('/detailsOfAdvertiser/:id',authUser.authUser,userHandler.detailsOfAdvertiser);
 app.get('/listOfAllAdvertiser',authUser.authUser,userHandler.listOfAllAdvertiser);
@@ -33,7 +33,10 @@ app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
 app.post('/showUpgradeCard', authUser.authUser, userHandler.showUpgradeCard);
 app.post('/useLuckCard', authUser.authUser, userHandler.useLuckCard);
 app.post('/useUpgradeCard', authUser.authUser, userHandler.useUpgradeCard);
-app.post('/facebookLogin', authUser.authUser, userHandler.facebookLogin);
+app.post('/facebookLogin', userHandler.facebookLogin);
+app.post('/userGifts', authUser.authUser, userHandler.userGifts);
+app.post('/termsConditions', authUser.authUser, userHandler.termsConditions);
+app.get('/showTermsConditions', authUser.authUser, userHandler.showTermsConditions);
 
 
 

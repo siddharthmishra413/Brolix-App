@@ -23,7 +23,7 @@
                                  }
                                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                  res.send({
-                                     results: result,
+                                     result: result,
                                      responseCode: 200,
                                      responseMessage: "Followed."
                                  });
@@ -34,7 +34,7 @@
                              followerList.findOneAndUpdate({ _id: result1._id }, { $set: { followerStatus: "Sent" } }, { new: true }).exec(function(err, result2) {
                                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                  res.send({
-                                     results: result2,
+                                     result: result2,
                                      responseCode: 200,
                                      responseMessage: "Followed."
                                  });
@@ -54,7 +54,7 @@
              }, { new: true }).exec(function(err, result) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                      res.send({
-                         results: result,
+                         result: result,
                          responseCode: 200,
                          responseMessage: "Unfollowed."
                      });

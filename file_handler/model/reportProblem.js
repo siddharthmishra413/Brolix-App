@@ -13,6 +13,12 @@ var reportProblemSchema = new Schema({
         type: String,
         trim: true
     },
+    adId:{
+        type:String
+    },
+    type:{
+        type:String
+    },
     reportType: {
         type: String,
         trim: true

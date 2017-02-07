@@ -18,12 +18,15 @@ app.post('/exchangeCoupon', authUser.authUser, adsHandler.exchangeCoupon);
 app.post('/acceptExchangeCouponRequest', authUser.authUser, adsHandler.acceptExchangeCouponRequest);
 app.post('/socialShare', authUser.authUser, adsHandler.socialShare);
 app.get('/winners', authUser.authUser, adsHandler.winners);
-app.post('/upgradeCard', authUser.authUser, adsHandler.upgradeCard);
-app.post('/raffleJoin', authUser.authUser, adsHandler.raffleJoin);
 app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
 app.get('/listOfAllAds/:id/:type/:pageNumber', authUser.authUser, adsHandler.listOfAllAds);
 app.post('/uploads', authUser.authUser, adsHandler.uploads);
 app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
 app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);
+app.get('/couponWinners/:pageNumber', authUser.authUser, adsHandler.couponWinners);
+app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);
+app.post('/commentsOnAdList', authUser.authUser, adsHandler.commentsOnAdList)
+app.get('/expireCoupon', authUser.authUser, adsHandler.expireCoupon)
+
 
 module.exports = app;

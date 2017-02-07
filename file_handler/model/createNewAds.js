@@ -106,24 +106,31 @@ var createNewAdsSchema = new Schema({
     },
     comments: [{
         userId: { type: String },
+        adId :{ type: String},                           
         comment: { type: String },
-        createdAt: { type: Date, default: Date.now },
+        name: { type : String},
+        image: {type: String},
+        timestamp: {type: String},
         reply: [{
+            adId: {type : String},
             userId: { type: String },
             rplyComment: { type: String },
-            createdAt: { type: Date, default: Date.now }
+            timestamp: { type: String },
+            name :{ type: String},
+            image: {type : String},
+            commentId: {type : String}
         }]
     }],
     raffleCount: [],
     like: [],
-    winners: [{ type: ObjectId, ref: 'brolixUser' }],
+    winners: [],
     viewerLenght: { type: Number },
     luckCardListObject: [{
         userId: { type: String },
         brolix: { type: Number },
         chances: { type: Number }
     }],
-    socailShareListObject: [{
+    socialShareListObject: [{
         userId: { type: String },
         link: { type: String }
     }],
@@ -165,7 +172,7 @@ var createNewAdsSchema = new Schema({
     watchStatus :{
         type: String,
         default : 'Not Watched'
-    },
+    },   
     createdAt: {
         type: Date,
         default: Date.now
