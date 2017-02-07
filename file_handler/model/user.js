@@ -93,6 +93,11 @@ var userSchema = new Schema({
         type: String
     },
     otp: { type: Number },
+    averageRating: { type: Number, trim: true, default: 0 },
+    totalRating: [{
+        senderId: { type: String },
+        rating: { type: Number }
+    }],
     followers: [{
         senderId: { type: String },
         senderName: { type: String },
@@ -108,7 +113,6 @@ var userSchema = new Schema({
     }],
     notification_status: { type: String, default: 'on', trim: true },
     viewedAd: [],
-    rating: { type: Number, trim: true, default: 0 },
     transferAmountListObject: [{
         amount: { type: Number },
         CreatedAt: {

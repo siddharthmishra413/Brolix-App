@@ -13,7 +13,7 @@ var createNewPageSchema = new mongoose.Schema({
     userId: {
         type: String,
         trim: true,
-        ref:'brolixUser'
+        ref: 'brolixUser'
     },
     type: {
         type: String,
@@ -60,13 +60,13 @@ var createNewPageSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    pageFollowersStatus: {type: Boolean, default: false},
-    pageProduct: [{
-        image: { type: String },
-        discription: { type: String }
+    pageFollowersStatus: { type: Boolean, default: false },
+    averageRating: { type: Number, trim: true, default: 0 },
+    totalRating: [{
+        userId: { type: String },
+        rating: { type: Number }
     }],
-    rating: { type: Number, trim: true, default: 0 },
-    permissions:[],
+    permissions: [],
     createdAt: {
         type: Date,
         default: Date.now

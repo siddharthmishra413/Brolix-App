@@ -2,7 +2,7 @@
 /*var asyn=require("async");*/
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
+var mongoosePaginate = require('mongoose-paginate');
 /* Chat schema */
 
 var chatSchema = new Schema({
@@ -14,12 +14,28 @@ var chatSchema = new Schema({
         type: String,
         trim: true
     },
+    senderImage:{
+        type:String
+    },
+    receiverImage:{
+        type:String
+    },
+    senderName:{
+        type:String
+    },
+    receiverName:{
+        type:String
+    },
     message: {
         type: String,
         trim: true
     },
     timestamp:{
         type:String
+    },
+    is_read:{
+        type:Number,
+        default:0
     },
     roomId:{
         type:String
@@ -29,5 +45,6 @@ var chatSchema = new Schema({
         default: Date.now
     }
 });
-var chat = mongoose.model('chatSchema', chatSchema);
+chatSchema.plugin(mongoosePaginate);
+var chat = mongoose.model('chat', chatSchema);
 module.exports = chat;

@@ -17,5 +17,6 @@ app.post('/pagesSearch/:pageNumber',authUser.authUser,pageHandler.pagesSearch); 
 app.post('/pageFollowUnfollow',authUser.authUser,pageHandler.pageFollowUnfollow); //Not Update in Docs
 app.post('/searchForPages/:pageNumber',authUser.authUser,pageHandler.searchForPages); //Not Upadte in Docs
 app.post('/pageRating',authUser.authUser,pageHandler.pageRating);
+app.post('/particularPageWinners', authUser.authUser, pageHandler.particularPageWinners);
 
 module.exports = app;

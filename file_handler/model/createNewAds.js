@@ -104,16 +104,16 @@ var createNewAdsSchema = new Schema({
         type: Number,
         trim: true
     },
-    comments: [{
-        userId: { type: String },
-        comment: { type: String },
-        createdAt: { type: Date, default: Date.now },
-        reply: [{
-            userId: { type: String },
-            rplyComment: { type: String },
-            createdAt: { type: Date, default: Date.now }
-        }]
-    }],
+    // comments: [{
+    //     userId: { type: String },
+    //     comment: { type: String },
+    //     createdAt: { type: Date, default: Date.now },
+    //     reply: [{
+    //         userId: { type: String },
+    //         rplyComment: { type: String },
+    //         createdAt: { type: Date, default: Date.now }
+    //     }]
+    // }],
     raffleCount: [],
     like: [],
     winners: [{ type: ObjectId, ref: 'brolixUser' }],
