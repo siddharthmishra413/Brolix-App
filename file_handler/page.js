@@ -1,5 +1,6 @@
 var createNewPage = require("./model/createNewPage");
 var createNewAds = require("./model/createNewAds");
+var createEvents = require("./model/createEvents");
 var User = require("./model/user");
 var waterfall = require('async-waterfall');
 //var mongoosePaginate = require('mongoose-paginate');
@@ -92,12 +93,18 @@ module.exports = {
 
     //API for Show Page Details
     "showPageDetails": function(req, res) {
+        var date = new Date().toUTCString()
+                console.log(JSON.stringify(date))
         createNewPage.findOne({ _id: req.body.pageId, status: "ACTIVE" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Pages details show successfully."
+            createEvents.find({ pageId: req.body.pageId, status: "ACTIVE", createdAt: { $gte: date } }).exec(function(err, result1) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                res.send({
+                    result: result,
+                    eventList: result1,
+                    responseCode: 200,
+                    responseMessage: "Pages details show successfully."
+                })
             })
         })
     },
