@@ -387,7 +387,6 @@ module.exports = {
 
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-                                    console.log("2")
                                     res.send({
                                         // result:success,
                                         responseCode: 200,
@@ -401,17 +400,15 @@ module.exports = {
                 })
             },
             function(winners, cashPrize, couponCode, callback) {
-                createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }, function(err, result) {
+                createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
-
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED" } }, function(err, success) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-                                console.log("1")
 
                                 if (success.adsType == "cash") {
                                     console.log("2")
                                     User.update({ _id: { $in: winners } }, { $inc: { cash: cashPrize, gifts: 1 } }, { multi: true }, function(err, result) {
-                                        console.log("result--->>" + JSON.stringify(result))
+
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
                                             res.send({
                                                 responseCode: 200,
@@ -441,8 +438,6 @@ module.exports = {
             }
         ])
     },
-
-
 
     //API for Follow and unfollow
     "adFollowUnfollow": function(req, res) {
@@ -523,29 +518,23 @@ module.exports = {
         })
     },
 
-    "commentsOnAdList": function(req, res) {
-        createNewAds.find({ _id: req.body.adId }, 'comments').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "all comments"
-                })
-            }
-        })
-    },
-
     "expireCoupon": function(req, res) {
-        createNewAds.find({ adsType: "coupon" }, { status: "EXPIRED" }).exec(function(err, result) {
+        createNewAds.find({ status: "EXPIRED" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                var couponType = result.filter(result => result.adsType == "coupon");
+                // var d = Math.round(new Date().getTime())
+                var d = new Date().toUTCString()
+                console.log("date--->>", d)
                 res.send({
-                    result: result,
+                    result: couponType,
                     responseCode: 200,
                     responseMessage: "data shown successfully"
                 })
             }
+            var couponType = result.filter(result => result.adsType == "coupon");
         })
     }
+
 
 
 
