@@ -877,36 +877,6 @@ module.exports = {
         })
     },
 
-
-    "facebookLogin": function(req, res) {
-        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-        User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "User not register" }); } else {
-                if (result.facebookID == undefined) {
-                    res.send({ responseCode: 200, responseMessage: "User register with app.", user: result });
-                } else {
-                    User.findOneAndUpdate({ email: req.body.email }, {
-                        $set: {
-                            deviceType: req.body.deviceType,
-                            deviceToken: req.body.deviceToken
-                        }
-                    }, { new: true }).exec(function(err, user) {
-                        var token = jwt.sign(result, config.secreteKey);
-                        res.header({
-                            "appToken": token
-                        }).send({
-                            result: user,
-                            token: token,
-                            responseCode: 200,
-                            responseMessage: "Login successfully."
-                        });
-                        //console.log("what is in token-->>>" + token);
-                    })
-                }
-            }
-        })
-    },
-
     "facebookLogin": function(req, res) {
          var obj = (req.body.facebookID);
          if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter facebookID' }); }
@@ -945,7 +915,6 @@ module.exports = {
              }
          })
      },
-
 
     "userGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
@@ -1086,34 +1055,6 @@ module.exports = {
                 });
             }
 
-        })
-    },
-
-    "userGifts": function(req, res) { // userId in req 
-        var userId = req.body.userId;
-        var array = [];
-        createNewAds.find({}).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                for (i = 0; i < result.length; i++) {
-                    for (j = 0; j < result[i].winners.length; j++) {
-                        if (result[i].winners[j] == userId) {
-                            array.push(result[i]._id);
-                        }
-                    }
-                }
-                createNewAds.find({ _id: { $in: array } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                        var couponType = result1.filter(result1 => result1.adsType == "coupon");
-                        var cashType = result1.filter(result1 => result1.adsType == "cash");
-                        res.send({
-                            couponType: couponType,
-                            cashType: cashType,
-                            responseCode: 200,
-                            responseMessage: "result show successfully;"
-                        })
-                    }
-                })
-            }
         })
     }
 

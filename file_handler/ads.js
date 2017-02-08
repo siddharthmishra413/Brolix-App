@@ -366,6 +366,10 @@ module.exports = {
                         })
 
                         if (raffleCount.length == viewerLenght) {
+                            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else { console.log("pushed") }
+
+                            })
                             console.log("raffleCount--111->>>" + raffleCount.length);
                             for (var n = 0; n < luckUsers.length; n++) {
                                 for (var m = 0; m < luckUsers[n].chances; m++) {
@@ -383,17 +387,12 @@ module.exports = {
 
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-
-                                    createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'watchStatus': "WATCHED" } }, function(err, success) {
-
-                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-                                            res.send({
-                                                // result:success,
-                                                responseCode: 200,
-                                                responseMessage: "You have successfully join the raffle."
-                                            })
-                                        }
-                                    });
+                                    console.log("2")
+                                    res.send({
+                                        // result:success,
+                                        responseCode: 200,
+                                        responseMessage: "You have successfully join the raffle."
+                                    })
                                 }
                             });
 
@@ -402,7 +401,7 @@ module.exports = {
                 })
             },
             function(winners, cashPrize, couponCode, callback) {
-                createNewAds.update({ _id: req.body.adId }, { $push: { winners: winners } }, function(err, result) {
+                createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }, function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
 
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED" } }, function(err, success) {
@@ -411,7 +410,7 @@ module.exports = {
 
                                 if (success.adsType == "cash") {
                                     console.log("2")
-                                    User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize, gifts: 1 } }, { multi: true }, function(err, result) {
+                                    User.update({ _id: { $in: winners } }, { $inc: { cash: cashPrize, gifts: 1 } }, { multi: true }, function(err, result) {
                                         console.log("result--->>" + JSON.stringify(result))
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
                                             res.send({
@@ -423,7 +422,7 @@ module.exports = {
                                     })
 
                                 } else {
-                                    User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                    User.update({ _id: { $in: winners } }, { $push: { couponCode: couponCode }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
                                         console.log("4")
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
                                             res.send({
@@ -442,6 +441,7 @@ module.exports = {
             }
         ])
     },
+
 
 
     //API for Follow and unfollow

@@ -84,7 +84,11 @@ var createNewAdsSchema = new Schema({
     },
     couponStatus: {
         type: String,
-        default: 'Pending'
+        default: 'valid'
+    },
+    cashStatus: {
+        type: String,
+        default: 'pending'
     },
     adContentType: { type: String },
     musicFileName: { type: String },
@@ -122,10 +126,6 @@ var createNewAdsSchema = new Schema({
         brolix: { type: Number },
         viewers: { type: Number }
     }],
-    count: {
-        type: Number,
-        default: 0
-    },
     couponExchange: [{
         senderId: { type: String },
         newCoupon: { type: String },
@@ -152,10 +152,10 @@ var createNewAdsSchema = new Schema({
         type: Number
     },
     hiddenGifts: [],
-    watchStatus :{
+    watchStatus: {
         type: String,
-        default : 'Not Watched'
-    },   
+        default: 'Not Watched'
+    },
     createdAt: {
         type: Date,
         default: Date.now

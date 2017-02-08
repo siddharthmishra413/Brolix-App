@@ -45,21 +45,13 @@ module.exports = {
     "editEvent": function(req, res) {
         createEvents.findByIdAndUpdate(req.params.id, req.body).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            // res.send({
-            //     result: result,
-            //     responseCode: 200,
-            //     responseMessage: "Event details updated successfully."
-            // })
-            createEvents.find({ userId: req.body.userId, status:"ACTIVE" }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "All event show successfully."
                 })
             })
-        })
-    },
+        },
 
     //API for Edit Event
     "deleteEvent": function(req, res) {
