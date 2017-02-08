@@ -33,11 +33,14 @@ app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
 app.post('/showUpgradeCard', authUser.authUser, userHandler.showUpgradeCard);
 app.post('/useLuckCard', authUser.authUser, userHandler.useLuckCard);
 app.post('/useUpgradeCard', authUser.authUser, userHandler.useUpgradeCard);
-app.post('/facebookLogin', userHandler.facebookLogin);
-app.post('/userGifts', authUser.authUser, userHandler.userGifts);
 app.post('/termsConditions', authUser.authUser, userHandler.termsConditions);
 app.get('/showTermsConditions', authUser.authUser, userHandler.showTermsConditions);
-
+app.post('/facebookLogin',  authUser.authUser, userHandler.facebookLogin);
+app.get('/countrys', userHandler.countrys);
+app.get('/getAllStates/:name/:code', userHandler.getAllStates);
+app.post('/chatHistory/:pageNumber',  authUser.authUser, userHandler.chatHistory);
+app.post('/onlineUserList',  authUser.authUser, userHandler.onlineUserList);
+app.post('/userGifts', authUser.authUser, userHandler.userGifts);
 
 
 module.exports = app;	

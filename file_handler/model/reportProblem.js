@@ -16,8 +16,8 @@ var reportProblemSchema = new Schema({
     adId:{
         type:String
     },
-    type:{
-        type:String
+    type: {
+        type: String
     },
     reportType: {
         type: String,

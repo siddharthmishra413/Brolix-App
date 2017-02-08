@@ -10,6 +10,7 @@ var wsServer = new WebSocketServer({
 server.listen(8086, function() {
     console.log((new Date()) + ' Server is listening on port ---->>>>'+8086);
 });
+
 var chat=function(){
     wsServer.on('request', function(r){
     var connection = r.accept(null, r.origin);
@@ -26,13 +27,17 @@ var chat=function(){
             connection.ID = obj.senderId;
         }
         console.log(obj)
-        if(!connectedClients[obj.senderId]){
+        console.log(connection.ID);
+        //console.log("connectedClients --- ", JSON.stringify(connectedClients));
+       /* if(!connectedClients[obj.senderId]){
             connection.send('closed');
-        }
+        }*/
         switch(obj.msgTyp){
             case "init":connectedClients[obj.senderId]=connection; break;
             case "textOneOnOne":chatUser.textOneOnOne(connectedClients[obj.senderId],connectedClients[obj.receiverId],obj); break;
-            
+            case "onlineUserList":chatUser.onlineUserList(connectedClients[obj.senderId],connectedClients,obj); break;
+            case "readCount":chatUser.readCount(obj); break;
+             
             }
         });
     });

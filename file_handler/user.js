@@ -1,5 +1,7 @@
 var User = require("./model/user");
+var createNewAds = require("./model/createNewAds");
 var functions = require("./functionHandler");
+var chat = require("./model/chatModel")
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
 var config = require('../config');
@@ -11,7 +13,11 @@ var validator = require('validator');
 var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
+<<<<<<< HEAD
 var createNewAds = require("./model/createNewAds");
+=======
+var country = require('countryjs');
+>>>>>>> akash
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -99,7 +105,14 @@ module.exports = {
         User.findOne({ email: req.body.email, password: req.body.password, status: 'ACTIVE' }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!result) {
+<<<<<<< HEAD
                 return res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." });
+=======
+                return res.send({
+                    responseCode: 404,
+                    responseMessage: "Sorry your id or password is incorrect."
+                });
+>>>>>>> akash
             } else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
             else {
                 User.findOneAndUpdate({ email: req.body.email }, {
@@ -332,46 +345,41 @@ module.exports = {
 
     // Api for Rating
     "rating": function(req, res, next) {
-        waterfall([
-            function(callback) {
-                User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-                    var pre_book_rating = result.rating;
-                    var count = result.review_count;
-
-                    var xxx = pre_book_rating == "0" ? req.body.rating : (parseInt(req.body.rating) + parseInt(pre_book_rating)) / 2;
-                    callback(null, pre_book_rating, count, xxx);
-                    console.log("pre_book_rating count====>>>>" + count)
-                })
-            },
-            function(pre_book_rating, count, xxx, callback) {
-                User.findByIdAndUpdate(req.body.userId, {
-                    $set: {
-                        review_count: count + 1,
-                        rating: xxx
+        var avrg = 0;
+        User.findOne({ _id: req.body.userId, totalRating: { $elemMatch: { senderId: req.body.senderId } } }).exec(function(err, result) {
+            console.log("result========================" + JSON.stringify(result));
+            if (!result) {
+                console.log("If");
+                User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "totalRating": { senderId: req.body.senderId, rating: req.body.rating } } }, { new: true }).exec(function(err, results) {
+                    for (var i = 0; i < results.totalRating.length; i++) {
+                        avrg += results.totalRating[i].rating;
                     }
-                }, {
-                    new: true
-                }).exec(function(err, data) {
-                    var update_rating = data.rating;
-                    console.log("update_rating count====>>>>" + update_rating);
-                    callback(null, update_rating);
-
+                    var averageRating = avrg / results.totalRating.length;
+                    User.findOneAndUpdate({ _id: req.body.userId }, { $set: { averageRating: averageRating } }, { new: true }).exec(function(err, results2) {
+                        res.send({
+                            result: results2,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    })
                 })
-            },
-            function(update_rating, callback) {
-                console.log("After update_rating count====>>>>" + update_rating);
-                // console.log("After pre_book_rating count====>>>>"+pre_book_rating);
-                res.send({
-                    responseCode: 200,
-                    responseMessage: "User rating updated.",
-                    rating: update_rating
+            } else {
+                console.log("else");
+                User.findOneAndUpdate({ _id: req.body.userId, 'totalRating.senderId': req.body.senderId }, { $set: { "totalRating.$.rating": req.body.rating } }, { new: true }).exec(function(err, results1) {
+                    for (var i = 0; i < results1.totalRating.length; i++) {
+                        avrg += results1.totalRating[i].rating;
+                    }
+                    var averageRating = avrg / results1.totalRating.length;
+                    User.findOneAndUpdate({ _id: req.body.userId }, { $set: { averageRating: averageRating } }, { new: true }).exec(function(err, results2) {
+                        res.send({
+                            result: results2,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    })
                 })
-                callback(null, "done");
-            },
-            function(err, results) {
-
             }
-        ])
+        })
     },
 
     // Api for Luck Card
@@ -688,7 +696,6 @@ module.exports = {
                     })
                 })
             }
-
         });
     },
 
@@ -706,9 +713,14 @@ module.exports = {
     },
 
     "showUpgradeCard": function(req, res) {
+<<<<<<< HEAD
         User.find({ _id: req.body.userId, 'upgradeCardObject.status': "ACTIVE" }).exec(function(err, result) {            
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
              else if (result.length == 0){ res.send({ responseCode: 404, responseMessage: 'No card to found.' }); } else {
+=======
+        User.find({ _id: req.body.userId, 'upgradeCardObject.status': "ACTIVE" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No card found" }); } else {
+>>>>>>> akash
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     for (j = 0; j < result[i].upgradeCardObject.length; j++) {
@@ -730,10 +742,15 @@ module.exports = {
     },
 
     "showLuckCard": function(req, res) {
+<<<<<<< HEAD
         User.find({ _id: req.body.userId, 'luckCardObject.status': "ACTIVE" }).exec(function(err, result) {            
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
              else if (result.length == 0){ res.send({ responseCode: 404, responseMessage: 'No card to found.' }); }
              else {
+=======
+        User.find({ _id: req.body.userId, 'luckCardObject.status': "ACTIVE" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No card found" }); } else {
+>>>>>>> akash
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     for (j = 0; j < result[i].luckCardObject.length; j++) {
@@ -864,6 +881,7 @@ module.exports = {
     },
 
     "useUpgradeCard": function(req, res) {
+<<<<<<< HEAD
          var obj = req.body.upgradeId;
          if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); }
          for (var i = 0; i < obj.length; i++) {
@@ -899,6 +917,32 @@ module.exports = {
             } else {
                 if (result.facebookID == undefined) {
                     res.send({ responseCode: 201, responseMessage: "You have already register with app.", user: result });
+=======
+        var obj = req.body.upgradeId;
+        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); }
+        for (var i = 0; i < obj.length; i++) {
+            User.update({ 'upgradeCardObject._id': obj[i] }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                else {
+                    console.log("else")
+
+                }
+            })
+        }
+        res.send({
+            // result: user,
+            responseCode: 200,
+            responseMessage: "Successfully used the upgrade card."
+        })
+    },
+
+        "facebookLogin": function(req, res) {
+        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "User not register" }); } else {
+                if (result.facebookID == undefined) {
+                    res.send({ responseCode: 200, responseMessage: "User register with app.", user: result });
+>>>>>>> akash
                 } else {
                     User.findOneAndUpdate({ email: req.body.email }, {
                         $set: {
@@ -922,6 +966,7 @@ module.exports = {
         })
     },
 
+<<<<<<< HEAD
     "userGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
         var array = [];
@@ -957,10 +1002,122 @@ module.exports = {
                     result: result,
                     responseCode: 200,
                     responseMessage: "Privacy updated successfully."
+=======
+    "countrys": function(req, res) {
+        var countrys = country.all();
+        var coutr = [];
+        var a = new Array();
+        var b = new Object();
+        a[0] = b;
+        for (var i = 0; i < countrys.length; i++) {
+            var data = {
+                name: countrys[i].name,
+                callingCode: countrys[i].callingCodes,
+                code: countrys[i].ISO.alpha2
+            }
+            coutr.push(data);
+        }
+        res.send({
+            result: coutr,
+            responseCode: 200,
+            responseMessage: "All countrys list."
+        });
+    },
+    "getAllStates": function(req, res) {
+        var name = req.params.name;
+        var code = req.params.code;
+        console.log(name, code);
+        var states = country.states(name, code);
+        if (!states) {
+            res.send({
+                responseCode: 201,
+                responseMessage: "No list."
+            });
+        } else {
+            res.send({
+                result: states,
+                responseCode: 200,
+                responseMessage: "All state list."
+            });
+        }
+    },
+
+    "chatHistory": function(req, res, next) {
+        console.log('everything------------' + JSON.stringify(req.body));
+        chat.paginate({ $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }] }, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
+            if (!results.docs.length) {
+                res.send({
+                    result: results,
+                    responseCode: 403,
+                    responseMessage: "No record found."
+                });
+            } else {
+                res.send({
+                    result: results,
+                    responseCode: 200,
+                    responseMessage: "Record found successfully."
                 });
             }
+        });
+    },
+
+
+    "onlineUserList": function(req, res) {
+        chat.aggregate(
+            [{
+                $match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
+            }, { $sort: { timestamp: -1 } }, {
+                $group: {
+                    _id: { senderId: "$senderId", receiverId: "$receiverId" },
+                    unread: {
+                        $sum: {
+                            $cond: { if: { $eq: ["$is_read", 0] }, then: 1, else: 0 }
+                        }
+                    },
+                    lastMsg: { $last: "$message" },
+                    timestamp: { $last: "$timestamp" },
+                    senderImage: { $last: "$senderImage" },
+                    receiverImage: { $last: "$receiverImage" },
+                    senderName: { $last: "$senderName" },
+                    receiverName: { $last: "$receiverName" }
+                }
+            }]
+        ).exec(function(err, result) {
+            if (err) res.send({ responseCode: 500, responseMessage: err });
+            else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
+            else {
+                result.sort(function(a, b) {
+                    if (a.timestamp < b.timestamp) return -1;
+                    if (a.timestamp > b.timestamp) return 1;
+                    return 0;
+                });
+                var obj = [],
+                    j;
+                console.log("result--->" + JSON.stringify(result));
+                for (var i = 0; i < result.length; i++) {
+                    result.length - 1 == i ? j = i : j = i + 1;
+                    console.log("j--->" + j);
+                    while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
+                        j += 1;
+                    }
+                    if (i != j) {
+                        result[i].unread += result[j].unread;
+                    }
+                    obj.push(result[i]);
+                    result.splice(j, 1);
+                    console.log("length---->" + result.length);
+                }
+                res.send({
+                    result: obj,
+                    responseCode: 200,
+                    responseMessage: "Record found successfully."
+>>>>>>> akash
+                });
+            }
+
         })
     },
+<<<<<<< HEAD
 
     "showTermsConditions": function(req, res) {
         User.findOne({}, 'termsCondition').exec(function(err, result) {
@@ -974,6 +1131,34 @@ module.exports = {
 
         })
 
+=======
+    "userGifts": function(req, res) { // userId in req 
+        var userId = req.body.userId;
+        var array = [];
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                for (i = 0; i < result.length; i++) {
+                    for (j = 0; j < result[i].winners.length; j++) {
+                        if (result[i].winners[j] == userId) {
+                            array.push(result[i]._id);
+                        }
+                    }
+                }
+                createNewAds.find({ _id: { $in: array } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                        var couponType = result1.filter(result1 => result1.adsType == "coupon");
+                        var cashType = result1.filter(result1 => result1.adsType == "cash");
+                        res.send({
+                            couponType: couponType,
+                            cashType: cashType,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    }
+                })
+            }
+        })
+>>>>>>> akash
     }
 
 }

@@ -12,7 +12,7 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
     })
 
     $scope.catId = function() {
-        console.log($scope.myFrom.country);
+        console.log($scope.myFrom.country.code);
         var country = $scope.myFrom.country
         $http.get('/admin/getAllStates/' + country.code + '/ISO2').success(function(res) {
             console.log(res);

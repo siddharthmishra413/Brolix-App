@@ -14,6 +14,7 @@ var event = require('./routes/event.js');
 var admin = require('./routes/admin.js');
 var chat = require('./file_handler/chat.js');
 var follower = require('./routes/followers.js');
+var product = require('./routes/product.js');
 var reportProblem = require('./routes/reportProblem.js');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -76,6 +77,7 @@ app.use('/event', event);
 app.use('/report', reportProblem);
 app.use('/admin', admin);
 app.use('/follower', follower);
+app.use('/product', product);
 
 
 

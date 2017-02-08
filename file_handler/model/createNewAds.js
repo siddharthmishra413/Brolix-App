@@ -104,23 +104,6 @@ var createNewAdsSchema = new Schema({
         type: Number,
         trim: true
     },
-    comments: [{
-        userId: { type: String },
-        adId :{ type: String},                           
-        comment: { type: String },
-        name: { type : String},
-        image: {type: String},
-        timestamp: {type: String},
-        reply: [{
-            adId: {type : String},
-            userId: { type: String },
-            rplyComment: { type: String },
-            timestamp: { type: String },
-            name :{ type: String},
-            image: {type : String},
-            commentId: {type : String}
-        }]
-    }],
     raffleCount: [],
     like: [],
     winners: [],

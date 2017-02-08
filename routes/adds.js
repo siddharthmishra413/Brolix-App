@@ -27,6 +27,6 @@ app.get('/couponWinners/:pageNumber', authUser.authUser, adsHandler.couponWinner
 app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);
 app.post('/commentsOnAdList', authUser.authUser, adsHandler.commentsOnAdList)
 app.get('/expireCoupon', authUser.authUser, adsHandler.expireCoupon)
-
+app.get('/adsCommentList/:id/:pageNumber', authUser.authUser, adsHandler.adsCommentList);
 
 module.exports = app;

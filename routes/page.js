@@ -22,6 +22,6 @@ app.post('/removePage',authUser.authUser,pageHandler.removePage);
 app.get('/showAllRemovedPage/:pageNumber',authUser.authUser,pageHandler.showAllRemovedPage);
 app.post('/linkSocialMedia', authUser.authUser, pageHandler.linkSocialMedia);
 app.post('/getSocialMediaLink', authUser.authUser, pageHandler.getSocialMediaLink);
-app.post('/particularPageWinners', authUser.authUser, pageHandler.particularPageWinners)
+app.post('/particularPageWinners', authUser.authUser, pageHandler.particularPageWinners);
 
 module.exports = app;
