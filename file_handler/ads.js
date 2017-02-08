@@ -368,7 +368,6 @@ module.exports = {
                         if (raffleCount.length == viewerLenght) {
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else { console.log("pushed") }
-
                             })
                             console.log("raffleCount--111->>>" + raffleCount.length);
                             for (var n = 0; n < luckUsers.length; n++) {
@@ -400,7 +399,6 @@ module.exports = {
                                     });
                                 }
                             });
-
                         }
                     }
                 })
@@ -441,7 +439,6 @@ module.exports = {
                             }
                         });
                     }
-
                 })
             }
         ])
@@ -497,7 +494,6 @@ module.exports = {
                     }
                 })
             }
-
         })
     },
 
@@ -527,18 +523,6 @@ module.exports = {
         })
     },
 
-    "commentsOnAdList": function(req, res) {
-        createNewAds.find({ _id: req.body.adId }, 'comments').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "all comments"
-                })
-            }
-        })
-    },
-
     "expireCoupon": function(req, res) {
         createNewAds.find({ adsType: "coupon" }, { status: "EXPIRED" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
@@ -547,6 +531,20 @@ module.exports = {
                     responseCode: 200,
                     responseMessage: "data shown successfully"
                 })
+            }
+        })
+    },
+
+    "tagOnads": function(req, res) {
+        createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
+            $push: { "tag": { userId: req.body.userId, senderId: req.body.senderId } }
+        }, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: results,
+                    responseCode: 200,
+                    responseMessage: "Tag save with concerned User details."
+                });
             }
         })
     }

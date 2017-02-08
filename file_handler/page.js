@@ -258,7 +258,7 @@ module.exports = {
                         res.send({
                             result: results2,
                             responseCode: 200,
-                            responseMessage: "result show successfully;"
+                            responseMessage: "result show successfully"
                         })
                     })
                 })
@@ -273,7 +273,7 @@ module.exports = {
                         res.send({
                             result: results2,
                             responseCode: 200,
-                            responseMessage: "result show successfully;"
+                            responseMessage: "result show successfully"
                         })
                     })
                 })

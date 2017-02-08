@@ -152,6 +152,10 @@ var createNewAdsSchema = new Schema({
         type: String,
         default: 'Not Watched'
     },
+    tag: [{
+        userId: { type: String },
+        senderId: []
+    }],
     createdAt: {
         type: Date,
         default: Date.now

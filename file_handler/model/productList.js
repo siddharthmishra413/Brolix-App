@@ -39,7 +39,7 @@ var pageProductSchema = new Schema({
     }],
     tag: [{
         userId: { type: String },
-        senderId: { type: String }
+        senderId: []
     }],
     createdAt: {
         type: Date,
