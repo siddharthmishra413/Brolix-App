@@ -82,10 +82,6 @@ var createNewAdsSchema = new Schema({
     cashAdPrize: {
         type: Number
     },
-    couponStatus: {
-        type: String,
-        default: 'valid'
-    },
     cashStatus: {
         type: String,
         default: 'pending'

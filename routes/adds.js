@@ -25,7 +25,6 @@ app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
 app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);
 app.get('/couponWinners/:pageNumber', authUser.authUser, adsHandler.couponWinners);
 app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);
-app.get('/expireCoupon', authUser.authUser, adsHandler.expireCoupon)
 app.get('/adsCommentList/:id/:pageNumber', authUser.authUser, adsHandler.adsCommentList);
 
 module.exports = app;

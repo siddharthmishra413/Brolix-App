@@ -1056,10 +1056,46 @@ module.exports = {
             }
 
         })
+    },
+
+
+
+
+    "expireCoupon": function(req, res) {
+        User.find({}).exec(function(err, result) {
+            
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+             else {
+                 
+                for(var i = 0; i<result.length; i++){
+                    console.log("length--->>",result.length,i)
+                    for (var j = 0; j<result[i].coupon.length; j++){
+                       // if(result[i].coupon[j].expirationTime){}
+                    }
+                }
+               
+                res.send({
+                    //result: result,
+                    responseCode: 200,
+                    responseMessage: "data shown successfully"
+                })
+            }
+        })
     }
+
+
 
 }
 
+ // cron.schedule('*/1 * * * *', function(){
+
+ //        User.find({},'coupon').exec(function(err, result){
+ //            if (err) { console.log("error") }
+ //            else{
+ //                console.log("result")
+ //            }
+ //        })
+ //    })
 
 
 

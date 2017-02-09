@@ -39,6 +39,7 @@ app.get('/getAllStates/:name/:code', userHandler.getAllStates);
 app.post('/chatHistory/:pageNumber',  authUser.authUser, userHandler.chatHistory);
 app.post('/onlineUserList',  authUser.authUser, userHandler.onlineUserList);
 app.post('/userGifts', authUser.authUser, userHandler.userGifts);
+app.get('/expireCoupon', authUser.authUser, userHandler.expireCoupon)
 
 
 module.exports = app;	

@@ -3,7 +3,7 @@ var addsComments = require("./model/addsComments");
 var User = require("./model/user");
 var functions = require("./functionHandler");
 var voucher_codes = require('voucher-code-generator');
-var CronJob = require('cron').CronJob;
+var cron = require('node-cron');
 var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -336,12 +336,12 @@ module.exports = {
         })
     },
 
-
     "viewAd": function(req, res) { //req.body.userId, adId
         var userId = req.body.userId;
         waterfall([
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
+                    console.log("result--->>", result)
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) return res.send({ responseCode: 406, responseMessage: "Winner allready decided" });
                     var randomIndex = [];
                     var raffleCount = result.raffleCount;
@@ -351,7 +351,7 @@ module.exports = {
 
                     var mySet = new Set(raffleCount);
                     var has = mySet.has(userId)
-                    if (has) { res.send({ responseCode: 302, responseMessage: "You have already join the raffle."  }) }
+                    if (has) { res.send({ responseCode: 302, responseMessage: "You have already join the raffle." }) }
                     // else if (!has) raffleCount.push(userId);
                     else if (!has) {
                         raffleCount.push(userId);
@@ -362,8 +362,7 @@ module.exports = {
 
                         if (raffleCount.length == viewerLenght) {
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
-                                  }
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {}
 
                             })
                             console.log("raffleCount--111->>>" + raffleCount.length);
@@ -398,8 +397,9 @@ module.exports = {
             function(winners, cashPrize, couponCode, callback) {
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
-                         var date = new Date();
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date} }, function(err, result3) {
+                        var date = new Date();
+
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date } }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
 
                                 if (result3.adsType == "cash") {
@@ -416,16 +416,27 @@ module.exports = {
                                     })
 
                                 } else {
-                        User.update({ _id: { $in: winners } }, { $push: { coupons: couponCode }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
-                            console.log("4")
-                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                res.send({
-                                    responseCode: 200,
-                                    responseMessage: "Raffle is over winner decided."
-                                        //result: result
-                                })
-                            }
-                        })
+                                    var startTime = new Date().toUTCString();
+                                    var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+                                    var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+                                    var s = Date.now(m)
+                                    var coupanAge = result3.couponExpiryDate;
+                                    var actualTime = parseInt(s) + parseInt(coupanAge);
+                                    var data = {
+                                        couponCode: couponCode,
+                                        expirationTime: actualTime,
+                                        adId: req.body.adId
+                                    }
+                                    User.update({ _id: { $in: winners } }, { $push: { coupon: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                        console.log("4")
+                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                            res.send({
+                                                responseCode: 200,
+                                                responseMessage: "Raffle is over winner decided."
+                                                    //result: result
+                                            })
+                                        }
+                                    })
                                 }
                             }
                         });
@@ -515,26 +526,47 @@ module.exports = {
         })
     },
 
-    "expireCoupon": function(req, res) {
-        createNewAds.find({ status: "EXPIRED" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                var couponType = result.filter(result => result.adsType == "coupon"); 
-               // console.log("couponType-->>",couponType)                
-                var d = Math.round( new Date().getTime())
-                console.log("date--->>", d)
-                res.send({
-                    result: couponType,
-                    responseCode: 200,
-                    responseMessage: "data shown successfully"
-                })
-            }
-        })
-    }
+  
+   }
+
+    // cron.schedule('*/1 * * * *', function(){
+
+    //     User.find({},'coupon').exec(function(err, result){
+    //         if (err) { console.log("error") }
+    //         else{
+    //             console.log("result")
+    //         }
+    //     })
+    // })
+
+    // "expireCoupon": function(req, res) {
+    //     createNewAds.find({ status: "EXPIRED" }).exec(function(err, result) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+    //             var couponType = result.filter(result => result.adsType == "coupon"); 
+    //            // console.log("couponType-->>",couponType)         
+
+    //             var twoWeeks = 1000 * 60 * 60 * 24 * 14;
+    //           //  var twoWeeksTime = new Date(new Date().getTime() + twoWeeks);       
+    //             var d = Math.round( new Date().getTime() + twoWeeks)
+    //             var startTime = new Date().toUTCString();
+    //             var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+    //             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+    //             var s = Date.now(m)
+    //            // var ExpireDate = s+
+    //             console.log("date--->>", m)
+    //             res.send({
+    //                 result: couponType,
+    //                 responseCode: 200,
+    //                 responseMessage: "data shown successfully"
+    //             })
+    //         }
+    //     })
+    // }
 
 
 
 
-}
+
 
 
 

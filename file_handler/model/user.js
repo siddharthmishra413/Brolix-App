@@ -82,7 +82,12 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
-    coupons: [],
+    coupon: [{
+        couponCode: {type: String},
+        adId:{ type: String},
+        expirationTime: { type : Date, default : Date.now},
+        couponStatus: {type: String, default: 'valid'}
+    }],
     luckCard: {
         type: String
     },
