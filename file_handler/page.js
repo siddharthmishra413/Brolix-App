@@ -1,4 +1,5 @@
 var createNewPage = require("./model/createNewPage");
+var createNewAds = require("./model/createNewAds");
 var User = require("./model/user");
 var waterfall = require('async-waterfall');
 //var mongoosePaginate = require('mongoose-paginate');
@@ -17,7 +18,7 @@ module.exports = {
                     page.save(function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                             User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 }, $set: { type: "Advertiser" } }).exec(function(err, result1) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
+                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                     res.send({
                                         result: result,
                                         responseCode: 200,
@@ -177,7 +178,7 @@ module.exports = {
             User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: req.body.pageId, pageName: req.body.pageName } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
-                    results: results,
+                    result: results,
                     responseCode: 200,
                     responseMessage: "Followed"
                 });
@@ -186,7 +187,7 @@ module.exports = {
             User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "pageFollowers": { pageId: req.body.pageId } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
-                        results: results,
+                        result: results,
                         responseCode: 200,
                         responseMessage: "Unfollowed"
                     });
@@ -228,7 +229,7 @@ module.exports = {
         createNewPage.paginate({ $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
-                    results: results,
+                    result: results,
                     responseCode: 200,
                     responseMessage: "All Details Found"
                 })
@@ -236,46 +237,139 @@ module.exports = {
         })
     },
     // Api for Rating
-    "pageRating": function(req, res, next) {
-        waterfall([
-            function(callback) {
-                createNewPage.findOne({ _id: req.body.pageId }).exec(function(err, result) {
-                    var pre_book_rating = result.rating;
-                    var count = result.review_count;
+    // "pageRating": function(req, res, next) {
+    //     waterfall([
+    //         function(callback) {
+    //             createNewPage.findOne({ _id: req.body.pageId, totalRating: { $elemMatch: { userId: req.body.userId } } }).exec(function(err, result) {
+    //                 res.json(result);
+    //                 //var pre_book_rating = result.rating;
+    //                 //var count = result.review_count;
+    //                 var xxx = pre_book_rating == "0" ? req.body.rating : (parseInt(req.body.rating) + parseInt(pre_book_rating)) / 2;
+    //                 callback(null, pre_book_rating, count, xxx);
+    //                 console.log("pre_book_rating count====>>>>" + count)
+    //             })
+    //         },
+    //         function(pre_book_rating, count, xxx, callback) {
+    //             createNewPage.findByIdAndUpdate(req.body.pageId, {
+    //                 $set: {
+    //                     review_count: count + 1,
+    //                     rating: xxx,
+    //                     temRating: req.body.rating
+    //                 }
+    //             }, {
+    //                 new: true
+    //             }).exec(function(err, data) {
+    //                 var update_rating = data.rating;
+    //                 console.log("update_rating count====>>>>" + update_rating);
+    //                 callback(null, update_rating);
 
-                    var xxx = pre_book_rating == "0" ? req.body.rating : (parseInt(req.body.rating) + parseInt(pre_book_rating)) / 2;
-                    callback(null, pre_book_rating, count, xxx);
-                    console.log("pre_book_rating count====>>>>" + count)
-                })
-            },
-            function(pre_book_rating, count, xxx, callback) {
-                createNewPage.findByIdAndUpdate(req.body.pageId, {
-                    $set: {
-                        review_count: count + 1,
-                        rating: xxx
+    //             })
+    //         },
+    //         function(update_rating, callback) {
+    //             console.log("After update_rating count====>>>>" + update_rating);
+    //             // console.log("After pre_book_rating count====>>>>"+pre_book_rating);
+    //             res.send({
+    //                 responseCode: 200,
+    //                 responseMessage: "Page rating updated.",
+    //                 rating: update_rating
+    //             })
+    //             callback(null, "done");
+    //         },
+    //         function(err, results) {
+
+    //         }
+    //     ])
+    // },
+    "pageRating": function(req, res) {
+        var avrg = 0;
+        createNewPage.findOne({ _id: req.body.pageId, totalRating: { $elemMatch: { userId: req.body.userId } } }).exec(function(err, result) {
+            console.log("result========================" + JSON.stringify(result));
+            if (!result) {
+                console.log("If");
+                createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "totalRating": { userId: req.body.userId, rating: req.body.rating } } }, { new: true }).exec(function(err, results) {
+                    for (var i = 0; i < results.totalRating.length; i++) {
+                        avrg += results.totalRating[i].rating;
                     }
-                }, {
-                    new: true
-                }).exec(function(err, data) {
-                    var update_rating = data.rating;
-                    console.log("update_rating count====>>>>" + update_rating);
-                    callback(null, update_rating);
-
+                    var averageRating = avrg / results.totalRating.length;
+                    createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $set: { averageRating: averageRating } }, { new: true }).exec(function(err, results2) {
+                        res.send({
+                            result: results2,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    })
                 })
-            },
-            function(update_rating, callback) {
-                console.log("After update_rating count====>>>>" + update_rating);
-                // console.log("After pre_book_rating count====>>>>"+pre_book_rating);
-                res.send({
-                    responseCode: 200,
-                    responseMessage: "Page rating updated.",
-                    rating: update_rating
+            } else {
+                console.log("else");
+                createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'totalRating.userId': req.body.userId }, { $set: { "totalRating.$.rating": req.body.rating } }, { new: true }).exec(function(err, results1) {
+                    for (var i = 0; i < results1.totalRating.length; i++) {
+                        avrg += results1.totalRating[i].rating;
+                    }
+                    var averageRating = avrg / results1.totalRating.length;
+                    createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $set: { averageRating: averageRating } }, { new: true }).exec(function(err, results2) {
+                        res.send({
+                            result: results2,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    })
                 })
-                callback(null, "done");
-            },
-            function(err, results) {
-
             }
-        ])
+        })
     },
+    
+    "particularPageCouponWinners": function(req, res) {
+        var pageId = req.body.pageId;
+        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); }
+        var array = [];
+        createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                var couponType = result.filter(result => result.adsType == "coupon");
+                for (i = 0; i < couponType.length; i++) {
+                    for (j = 0; j < couponType[i].winners.length; j++, j) {
+                        array.push(couponType[i].winners[j]);
+                    }
+                }
+                User.find({ _id: { $in: array } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } 
+                        else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    }
+                })
+            }
+        })
+    },
+
+    "particularPageCashWinners": function(req, res) {
+        var pageId = req.body.pageId;
+        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); }
+        var array = [];
+        createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                var cashType = result.filter(result => result.adsType == "cash");
+                for (i = 0; i < cashType.length; i++) {
+                    for (j = 0; j < cashType[i].winners.length; j++, j) {
+                        array.push(cashType[i].winners[j]);
+                    }
+                }
+                User.find({ _id: { $in: array } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } 
+                        else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    }
+                })
+            }
+        })
+    }
+
 }

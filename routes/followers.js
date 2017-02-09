@@ -7,5 +7,6 @@ app.post('/followUnfollow',authUser.authUser,followerHandler.followUnfollow);
 app.post('/followerRequestSend',authUser.authUser,followerHandler.followerRequestSend);
 app.post('/followerRequestReceive',authUser.authUser,followerHandler.followerRequestReceive);
 app.post('/acceptFollowerRequest',authUser.authUser,followerHandler.acceptFollowerRequest);
+app.post('/blockUserList',authUser.authUser,followerHandler.blockUserList);
 
 module.exports = app;

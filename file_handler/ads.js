@@ -1,4 +1,5 @@
 var createNewAds = require("./model/createNewAds");
+var addsComments = require("./model/addsComments");
 var User = require("./model/user");
 var functions = require("./functionHandler");
 var voucher_codes = require('voucher-code-generator');
@@ -23,7 +24,7 @@ module.exports = {
             if (req.body.adsType == "coupon") {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
-                req.body.viewerLenght = 100;
+                req.body.viewerLenght = 5;
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
@@ -65,12 +66,13 @@ module.exports = {
         // show all ads
         "showAllAdsCouponType": function(req, res) {
             createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "coupon", $or: [{ status: "ACTIVE" }, { status: "EXPIRED" }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Data Show successfully"
-                })
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "Data Show successfully"
+                    })
+                }
             })
         },
 
@@ -83,82 +85,6 @@ module.exports = {
                     responseCode: 200,
                     responseMessage: "Data Show successfully"
                 })
-            })
-        },
-
-        "raffleJoin": function(req, res) {
-            waterfall([
-                function(callback) {
-                    User.findOne({ _id: req.body.userId, viewedAd: req.body.adId }, function(err, result) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                            createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
-                                $inc: { count: 1 }
-                            }, function(err, data) {
-                                if (err) res.status(500).send(err);
-                                else {
-
-                                    User.findOneAndUpdate({ _id: req.body.userId }, {
-                                        $push: { viewedAd: req.body.adId }
-                                    }, function(err, user) {
-                                        //res.status(200).send({ msg: "success" });
-                                        callback(null)
-                                    })
-                                }
-                            })
-                        } else {
-                            res.status(200).send({ msg: "Already watched ad" });
-                        }
-                    })
-                },
-                function(callback) {
-                    createNewAds.findOne({ _id: req.body.adId, raffleCount: req.body.userId }, function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, function(err, data) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                    createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, { new: true }).exec(function(err, user) {
-                                        if (user.raffleCount.length >= user.viewerLenght) {
-                                            var arr1 = user.raffleCount,
-                                                randomIndex = [],
-                                                a = 0;
-                                            for (var i = 0; i < user.luckCardListObject.length; i++) {
-                                                for (var j = 0; j < user.luckCardListObject[i].chances; j++) {
-                                                    arr1.push(user.luckCardListObject[i].userId);
-                                                }
-                                            }
-                                            console.log("arr111----->", arr1);
-                                            for (var i = 0; i < user.numberOfWinners; i++) {
-                                                var index = Math.floor(Math.random() * arr1.length);
-                                                if (randomIndex.filter(randomIndex => randomIndex != arr1[index])) {
-                                                    randomIndex.push(arr1[index])
-                                                }
-                                            }
-                                            console.log("randomIndex winners id--->" + randomIndex);
-
-                                            for (var i = 0; i < user.numberOfWinners; i++) {
-                                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { winners: randomIndex[i] } }, { new: true }).exec(function(err, result1) {
-                                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                                        console.log("value of i--->", i);
-                                                        a += user.numberOfWinners - 1
-                                                        if (a == user.numberOfWinners - 1) //res.status(200).send({ responseMessage: "winner declared", result1: result1 })
-                                                            callback(null, result1)
-                                                    }
-
-                                                })
-
-                                            }
-                                        } else {
-                                            res.status(200).send({ responseMessage: "Successfully joined the raffle" });
-
-                                        }
-                                    })
-                                }
-                            })
-                        }
-                    })
-                }
-
-            ], function(err, result) {
-                res.status(200).send({ responseMessage: "Winner declared", result: result })
             })
         },
 
@@ -214,7 +140,7 @@ module.exports = {
                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { like: req.body.userId } }, { new: true }).exec(function(err, results) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         res.send({
-                            results: results,
+                            result: results,
                             responseCode: 200,
                             responseMessage: "Liked"
                         });
@@ -224,7 +150,7 @@ module.exports = {
                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { like: req.body.userId } }, { new: true }).exec(function(err, results) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         res.send({
-                            results: results,
+                            result: results,
                             responseCode: 200,
                             responseMessage: "Unliked"
                         });
@@ -235,30 +161,35 @@ module.exports = {
 
         //API Comment on Ads
         "commentOnAds": function(req, res) {
-            createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
-                $push: { "comments": { userId: req.body.userId, comment: req.body.comment } }
-            }, { new: true }).exec(function(err, results) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    res.send({
-                        results: results,
-                        responseCode: 200,
-                        responseMessage: "Comments save with concerned User details."
-                    });
-                }
+            var adds = new addsComments(req.body);
+            adds.save(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                res.send({ result: result, responseCode: 200, responseMessage: "Comments save with concerned User details." });
             })
         },
         //API Comment on Ads
         "replyOnComment": function(req, res) {
-            console.log(req.body)
-            createNewAds.findOneAndUpdate({ _id: req.body.adId, 'comments._id': req.body.commentId }, {
-                $push: { 'comments.$.reply': { userId: req.body.userId, rplyComment: req.body.rplyComment } }
+            addsComments.findOneAndUpdate({ addId: req.body.addId, _id: req.body.commentId }, {
+                $push: { 'reply': { userId: req.body.userId, rplyComment: req.body.rplyComment, userName: req.body.userName, userImage: req.body.userImage } }
             }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
-                        results: results,
+                        result: results,
                         responseCode: 200,
                         responseMessage: "Comments save successfully."
                     });
+                }
+            })
+        },
+
+        "adsCommentList": function(req, res) {
+            addsComments.paginate({ addId: req.params.id }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "Comments List."
+                    })
                 }
             })
         },
@@ -336,32 +267,6 @@ module.exports = {
             })
         },
 
-        "upgradeCard": function(req, res) {
-            var viewers;
-            var upgrade = req.body.brolix / 5;
-            if (upgrade % 50 == 0) {
-                viewers = upgrade;
-            }
-            createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" });
-                else if (Boolean(data.upgradeCardListObjectupgradeCardListObject.find(upgradeCardListObject => upgradeCardListObject.userId == req.body.userId))) {
-                    return res.status(403).send({ responseMessage: "Already used upgradeCard" })
-                } else {
-                    User.findOne({ _id: req.body.userId, }, function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-                        else if (result.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
-                            createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "upgradeCardListObject": { userId: req.body.userId, brolix: req.body.brolix, viewers: viewers } } }, { new: true }).exec(function(err, user) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                    result.brolix -= req.body.brolix;
-                                    result.save();
-                                    res.status(200).send({ responseMessage: "successfully used the upgrade card" });
-                                }
-                            })
-                        }
-                    })
-                }
-            })
-        },
 
         "winners": function(req, res) {
             createNewAds.find({}, 'winners').exec(function(err, result) {
@@ -432,13 +337,12 @@ module.exports = {
             })
         },
 
-
         "viewAd": function(req, res) { //req.body.userId, adId
             var userId = req.body.userId;
             waterfall([
                 function(callback) {
                     createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
-                        if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
+                        if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner already decided" }); }
                         var randomIndex = [];
                         var raffleCount = result.raffleCount;
                         var viewerLenght = result.viewerLenght;
@@ -458,24 +362,28 @@ module.exports = {
                         else if (!has) {
                             raffleCount.push(userId);
                             User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, { new: true }, function(err, result) {
-                                console.log("raffleCount--->>>" + raffleCount.length);
+                                console.log("raffleCount--11->>>" + raffleCount.length);
                             })
 
-                            if (raffleCount.length == viewerLenght) {
-                                console.log("raffleCount--111->>>" + raffleCount.length);
-                                for (var n = 0; n < luckUsers.length; n++) {
-                                    for (var m = 0; m < luckUsers[n].chances; m++) {
-                                        raffleCount.push(luckUsers[n].userId)
-                                    }
+                           if (raffleCount.length == viewerLenght) {
+                            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); }
+                                else { console.log("pushed") }
+                            })
+                            console.log("raffleCount--111->>>" + raffleCount.length);
+                            for (var n = 0; n < luckUsers.length; n++) {
+                                for (var m = 0; m < luckUsers[n].chances; m++) {
+                                    raffleCount.push(luckUsers[n].userId)
                                 }
-                                for (var i = 0; i < numberOfWinners; i++) {
-                                    var index = Math.floor(Math.random() * raffleCount.length);
-                                    if (randomIndex.filter(randomIndex => randomIndex != raffleCount[index])) {
-                                        randomIndex.push(raffleCount[index])
-                                    }
+                            }
+                            for (var i = 0; i < numberOfWinners; i++) {
+                                var index = Math.floor(Math.random() * raffleCount.length);
+                                if (randomIndex.filter(randomIndex => randomIndex != raffleCount[index])) {
+                                    randomIndex.push(raffleCount[index])
                                 }
-                                callback(null, randomIndex, result.cashAdPrize, result.couponCode)
-                            } else {
+                            }
+                            callback(null, randomIndex, result.cashAdPrize, result.couponCode)
+                        } else {
 
                                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
@@ -498,7 +406,7 @@ module.exports = {
                     })
                 },
                 function(winners, cashPrize, couponCode, callback) {
-                    createNewAds.update({ _id: req.body.adId }, { $push: { winners: winners } }, function(err, result) {
+                    createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }, function(err, result) {
                         if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
 
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED" } }, function(err, success) {
@@ -507,7 +415,7 @@ module.exports = {
 
                                     if (success.adsType == "cash") {
                                         console.log("2")
-                                        User.update({ _id: { $in: winners } }, { $inc: { cashPrize: cashPrize, gifts : 1 } }, { multi: true }, function(err, result) {
+                                        User.update({ _id: { $in: winners } }, { $inc: { cash: cashPrize, gifts: 1 } }, { multi: true }, function(err, result) {
                                             console.log("result--->>" + JSON.stringify(result))
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
                                                 res.send({
@@ -519,7 +427,7 @@ module.exports = {
                                         })
 
                                     } else {
-                                        User.update({ _id: { $in: winners } }, { $push: { couponPrize: couponCode }, $inc : { gifts :1 } }, { multi: true }, function(err, result) {
+                                        User.update({ _id: { $in: winners } }, { $push: { coupons: couponCode }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
                                                 res.send({
@@ -546,7 +454,7 @@ module.exports = {
                 User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "adFollowers": { adId: req.body.adId } } }, { new: true }).exec(function(err, results) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                     res.send({
-                        results: results,
+                        result: results,
                         responseCode: 200,
                         responseMessage: "Followed"
                     });
@@ -555,7 +463,7 @@ module.exports = {
                 User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "adFollowers": { adId: req.body.adId } } }, { new: true }).exec(function(err, results) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         res.send({
-                            results: results,
+                            result: results,
                             responseCode: 200,
                             responseMessage: "Unfollowed"
                         });

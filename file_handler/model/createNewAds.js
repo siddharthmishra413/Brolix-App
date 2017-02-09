@@ -84,7 +84,11 @@ var createNewAdsSchema = new Schema({
     },
     couponStatus: {
         type: String,
-        default: 'Pending'
+        default: 'valid'
+    },
+    cashStatus: {
+        type: String,
+        default: 'pending'
     },
     adContentType: { type: String },
     musicFileName: { type: String },
@@ -104,16 +108,16 @@ var createNewAdsSchema = new Schema({
         type: Number,
         trim: true
     },
-    comments: [{
-        userId: { type: String },
-        comment: { type: String },
-        createdAt: { type: Date, default: Date.now },
-        reply: [{
-            userId: { type: String },
-            rplyComment: { type: String },
-            createdAt: { type: Date, default: Date.now }
-        }]
-    }],
+    // comments: [{
+    //     userId: { type: String },
+    //     comment: { type: String },
+    //     createdAt: { type: Date, default: Date.now },
+    //     reply: [{
+    //         userId: { type: String },
+    //         rplyComment: { type: String },
+    //         createdAt: { type: Date, default: Date.now }
+    //     }]
+    // }],
     raffleCount: [],
     like: [],
     winners: [{ type: ObjectId, ref: 'brolixUser' }],
@@ -132,10 +136,6 @@ var createNewAdsSchema = new Schema({
         brolix: { type: Number },
         viewers: { type: Number }
     }],
-    count: {
-        type: Number,
-        default: 0
-    },
     couponExchange: [{
         senderId: { type: String },
         newCoupon: { type: String },
