@@ -349,19 +349,65 @@ module.exports = {
             }
         })
     },
-    "particularPageWinners": function(req, res) {
+
+    // createNewAds.find({ status: "EXPIRED" }).exec(function(err, result) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+    //             var couponType = result.filter(result => result.adsType == "coupon");
+    //             // var d = Math.round(new Date().getTime())
+    //             // console.log("couponType--->>",couponType.updatedAt)
+    //             // var d = new Date().toUTCString()
+    //             // console.log("date--->>", d)
+    //             res.send({
+    //                 result: couponType,
+    //                 responseCode: 200,
+    //                 responseMessage: "data shown successfully"
+    //             })
+    //         }
+    //     })
+
+    "particularPageCouponWinners": function(req, res) {
         var pageId = req.body.pageId;
+        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); }
         var array = [];
-        createNewAds.find({ pageId: pageId }).exec(function(err, result) {
-            // console.log("result-->>"+result)
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
-                for (i = 0; i < result.length; i++) {
-                    for (j = 0; j < result[i].winners.length; j++, j) {
-                        array.push(result[i].winners[j]);
+        createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                var couponType = result.filter(result => result.adsType == "coupon");
+                for (i = 0; i < couponType.length; i++) {
+                    for (j = 0; j < couponType[i].winners.length; j++, j) {
+                        array.push(couponType[i].winners[j]);
                     }
                 }
                 User.find({ _id: { $in: array } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } 
+                        else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    }
+                })
+            }
+        })
+    },
+
+    "particularPageCashWinners": function(req, res) {
+        var pageId = req.body.pageId;
+        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); }
+        var array = [];
+        createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                var cashType = result.filter(result => result.adsType == "cash");
+                for (i = 0; i < cashType.length; i++) {
+                    for (j = 0; j < cashType[i].winners.length; j++, j) {
+                        array.push(cashType[i].winners[j]);
+                    }
+                }
+                User.find({ _id: { $in: array } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } 
+                        else {
                         res.send({
                             result: result1,
                             responseCode: 200,
@@ -372,4 +418,5 @@ module.exports = {
             }
         })
     }
+
 }
