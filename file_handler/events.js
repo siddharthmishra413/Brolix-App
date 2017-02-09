@@ -16,7 +16,7 @@ module.exports = {
                 //     responseCode: 200,
                 //     responseMessage: "Event create successfully."
                 // });
-                createEvents.find({ userId: req.body.userId,  status:"ACTIVE" }).exec(function(err, result) {
+                createEvents.find({ userId: req.body.userId, status: "ACTIVE" }).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                     res.send({
                         result: result,
@@ -30,7 +30,7 @@ module.exports = {
 
     //API for create Page
     "showAllEvents": function(req, res) {
-        createEvents.find({ userId: req.params.id,  status:"ACTIVE" }).exec(function(err, result) {
+        createEvents.find({ userId: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,
@@ -50,7 +50,7 @@ module.exports = {
             //     responseCode: 200,
             //     responseMessage: "Event details updated successfully."
             // })
-            createEvents.find({ userId: req.body.userId, status:"ACTIVE" }).exec(function(err, result) {
+            createEvents.find({ userId: req.body.userId, status: "ACTIVE" }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: result,

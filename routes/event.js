@@ -8,6 +8,6 @@ app.post('/createEvent', authUser.authUser, eventHandler.createEvent);
 app.get('/showAllEvents/:id', authUser.authUser, eventHandler.showAllEvents);
 app.get('/showEventDetails/:id', authUser.authUser, eventHandler.showEventDetails);
 app.put('/editEvent/:id', authUser.authUser, eventHandler.editEvent);
-app.put('/deleteEvent', authUser.authUser, eventHandler.deleteEvent); 
+app.put('/deleteEvent', authUser.authUser, eventHandler.deleteEvent);
 
 module.exports = app;

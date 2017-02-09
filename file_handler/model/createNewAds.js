@@ -108,19 +108,6 @@ var createNewAdsSchema = new Schema({
         type: Number,
         trim: true
     },
-<<<<<<< HEAD
-    // comments: [{
-    //     userId: { type: String },
-    //     comment: { type: String },
-    //     createdAt: { type: Date, default: Date.now },
-    //     reply: [{
-    //         userId: { type: String },
-    //         rplyComment: { type: String },
-    //         createdAt: { type: Date, default: Date.now }
-    //     }]
-    // }],
-=======
->>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
     raffleCount: [],
     like: [],
     winners: [],
@@ -165,10 +152,10 @@ var createNewAdsSchema = new Schema({
         type: Number
     },
     hiddenGifts: [],
-    watchStatus :{
+    watchStatus: {
         type: String,
-        default : 'Not Watched'
-    },   
+        default: 'Not Watched'
+    },
     createdAt: {
         type: Date,
         default: Date.now

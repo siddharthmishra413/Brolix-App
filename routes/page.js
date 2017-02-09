@@ -5,28 +5,24 @@ var authUser = require('../middlewares/authUser');
 
 
 
-app.post('/createPage',pageHandler.createPage);
-app.get('/showAllPages/:pageNumber',authUser.authUser,pageHandler.showAllPages);
-app.get('/showAllOtherUserPages/:id/:pageNumber',authUser.authUser,pageHandler.showAllOtherUserPages);
-app.post('/showPageDetails',authUser.authUser,pageHandler.showPageDetails);
-app.get('/showPageBusinessType/:id/:pageNumber',authUser.authUser,pageHandler.showPageBusinessType);
-app.get('/showPageFavouriteType/:id/:pageNumber',authUser.authUser,pageHandler.showPageFavouriteType);
-app.put('/editPage/:id',authUser.authUser,pageHandler.editPage);
-app.post('/deletePage',authUser.authUser,pageHandler.deletePage);
-app.post('/pagesSearch/:pageNumber',authUser.authUser,pageHandler.pagesSearch); //Not Update in Docs
-app.post('/pageFollowUnfollow',authUser.authUser,pageHandler.pageFollowUnfollow); //Not Update in Docs
-app.post('/searchForPages/:pageNumber',authUser.authUser,pageHandler.searchForPages); //Not Upadte in Docs
-app.post('/pageRating',authUser.authUser,pageHandler.pageRating);
-<<<<<<< HEAD
+app.post('/createPage', pageHandler.createPage);
+app.get('/showAllPages/:pageNumber', authUser.authUser, pageHandler.showAllPages);
+app.get('/showAllOtherUserPages/:id/:pageNumber', authUser.authUser, pageHandler.showAllOtherUserPages);
+app.post('/showPageDetails', authUser.authUser, pageHandler.showPageDetails);
+app.get('/showPageBusinessType/:id/:pageNumber', authUser.authUser, pageHandler.showPageBusinessType);
+app.get('/showPageFavouriteType/:id/:pageNumber', authUser.authUser, pageHandler.showPageFavouriteType);
+app.put('/editPage/:id', authUser.authUser, pageHandler.editPage);
+app.post('/deletePage', authUser.authUser, pageHandler.deletePage);
+app.post('/pagesSearch/:pageNumber', authUser.authUser, pageHandler.pagesSearch); //Not Update in Docs
+app.post('/pageFollowUnfollow', authUser.authUser, pageHandler.pageFollowUnfollow); //Not Update in Docs
+app.post('/searchForPages/:pageNumber', authUser.authUser, pageHandler.searchForPages); //Not Upadte in Docs
+app.post('/pageRating', authUser.authUser, pageHandler.pageRating);
 app.post('/particularPageCouponWinners', authUser.authUser, pageHandler.particularPageCouponWinners);
 app.post('/particularPageCashWinners', authUser.authUser, pageHandler.particularPageCashWinners);
-=======
-app.get('/showBlockedPage/:pageNumber',authUser.authUser,pageHandler.showBlockedPage);
-app.post('/removePage',authUser.authUser,pageHandler.removePage);
-app.get('/showAllRemovedPage/:pageNumber',authUser.authUser,pageHandler.showAllRemovedPage);
+app.get('/showBlockedPage/:pageNumber', authUser.authUser, pageHandler.showBlockedPage);
+app.post('/removePage', authUser.authUser, pageHandler.removePage);
+app.get('/showAllRemovedPage/:pageNumber', authUser.authUser, pageHandler.showAllRemovedPage);
 app.post('/linkSocialMedia', authUser.authUser, pageHandler.linkSocialMedia);
 app.post('/getSocialMediaLink', authUser.authUser, pageHandler.getSocialMediaLink);
-app.post('/particularPageWinners', authUser.authUser, pageHandler.particularPageWinners);
->>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
 
 module.exports = app;

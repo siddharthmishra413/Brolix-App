@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 /* Send/Receive Cash and Brolix schema */
 
 var cashBrolixSchema = new Schema({
-	senderId: {
+    senderId: {
         type: String,
         trim: true
     },

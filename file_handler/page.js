@@ -236,7 +236,7 @@ module.exports = {
             }
         })
     },
-<<<<<<< HEAD
+
     // Api for Rating
     // "pageRating": function(req, res, next) {
     //     waterfall([
@@ -281,8 +281,7 @@ module.exports = {
     //         }
     //     ])
     // },
-=======
->>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
+
     "pageRating": function(req, res) {
         var avrg = 0;
         createNewPage.findOne({ _id: req.body.pageId, totalRating: { $elemMatch: { userId: req.body.userId } } }).exec(function(err, result) {
@@ -320,8 +319,7 @@ module.exports = {
             }
         })
     },
-<<<<<<< HEAD
-    
+
     "particularPageCouponWinners": function(req, res) {
         var pageId = req.body.pageId;
         if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); }
@@ -335,9 +333,7 @@ module.exports = {
                     }
                 }
                 User.find({ _id: { $in: array } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } 
-                        else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
@@ -362,10 +358,18 @@ module.exports = {
                     }
                 }
                 User.find({ _id: { $in: array } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } 
-                        else {
-=======
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    }
+                })
+            }
+        })
+    },
+
 
     "showBlockedPage": function(req, res) { // pageId in request
         createNewPage.paginate({ status: "BLOCK" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
@@ -442,32 +446,5 @@ module.exports = {
             }
         })
     },
-    "particularPageWinners": function(req, res) {
-        var pageId = req.body.pageId;
-        var array = [];
-        createNewAds.find({ pageId: pageId }).exec(function(err, result) {
-            // console.log("result-->>"+result)
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
-                for (i = 0; i < result.length; i++) {
-                    for (j = 0; j < result[i].winners.length; j++, j) {
-                        array.push(result[i].winners[j]);
-                    }
-                }
-                User.find({ _id: { $in: array } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
->>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
-                        res.send({
-                            result: result1,
-                            responseCode: 200,
-                            responseMessage: "result show successfully;"
-                        })
-                    }
-                })
-            }
-        })
-    }
-<<<<<<< HEAD
 
-=======
->>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
 }

@@ -106,7 +106,7 @@ var userSchema = new Schema({
     pageFollowers: [{
         pageId: { type: String },
         pageName: { type: String },
-        pageFollowersStatus: {type: Boolean, default: true}
+        pageFollowersStatus: { type: Boolean, default: true }
     }],
     adFollowers: [{
         adId: { type: String }
@@ -115,7 +115,7 @@ var userSchema = new Schema({
     viewedAd: [],
     transferAmountListObject: [{
         amount: { type: Number },
-        adId:{ type: Number},
+        adId: { type: Number },
         CreatedAt: {
             type: Date,
             default: Date.now
@@ -170,8 +170,8 @@ var userSchema = new Schema({
     userUpgradeCard: [],
     permissions: [],
     termsCondition: {
-       type: String
-   },
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now

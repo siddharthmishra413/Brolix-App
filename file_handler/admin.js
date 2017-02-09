@@ -836,7 +836,7 @@ module.exports = {
                 var count = 0;
                 for (var i = 0; i < result.docs.length; i++) {
                     count++;
-                }               
+                }
                 res.send({
                     result: result,
                     count: count,

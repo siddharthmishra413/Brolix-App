@@ -36,11 +36,11 @@ app.get('/totalActiveAds', adminHandler.totalActiveAds);
 app.get('/totalExpiredAds', adminHandler.totalExpiredAds);
 app.get('/videoAds', adminHandler.videoAds);
 app.get('/slideshowAds', adminHandler.slideshowAds);
-app.get('/totalPages/:pageNumber',adminHandler.totalPages);
-app.post('/blockPage',adminHandler.blockPage);
-app.get('/showAllBlockedPage/:pageNumber',adminHandler.showAllBlockedPage);
-app.post('/removePage',adminHandler.removePage);
-app.get('/showAllRemovedPage/:pageNumber',adminHandler.showAllRemovedPage);
+app.get('/totalPages/:pageNumber', adminHandler.totalPages);
+app.post('/blockPage', adminHandler.blockPage);
+app.get('/showAllBlockedPage/:pageNumber', adminHandler.showAllBlockedPage);
+app.post('/removePage', adminHandler.removePage);
+app.get('/showAllRemovedPage/:pageNumber', adminHandler.showAllRemovedPage);
 
 
 

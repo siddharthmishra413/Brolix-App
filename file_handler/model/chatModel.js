@@ -6,7 +6,7 @@ var mongoosePaginate = require('mongoose-paginate');
 /* Chat schema */
 
 var chatSchema = new Schema({
-	senderId: {
+    senderId: {
         type: String,
         trim: true
     },
@@ -14,31 +14,31 @@ var chatSchema = new Schema({
         type: String,
         trim: true
     },
-    senderImage:{
-        type:String
+    senderImage: {
+        type: String
     },
-    receiverImage:{
-        type:String
+    receiverImage: {
+        type: String
     },
-    senderName:{
-        type:String
+    senderName: {
+        type: String
     },
-    receiverName:{
-        type:String
+    receiverName: {
+        type: String
     },
     message: {
         type: String,
         trim: true
     },
-    timestamp:{
-        type:String
+    timestamp: {
+        type: String
     },
-    is_read:{
-        type:Number,
-        default:0
+    is_read: {
+        type: Number,
+        default: 0
     },
-    roomId:{
-        type:String
+    roomId: {
+        type: String
     },
     createdAt: {
         type: Date,

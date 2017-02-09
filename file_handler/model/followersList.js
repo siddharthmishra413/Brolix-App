@@ -20,7 +20,7 @@ var followerListSchema = new Schema({
     followerStatus: {
         type: String,
         trim: true,
-        default:"Sent"
+        default: "Sent"
     },
     createdAt: {
         type: Date,

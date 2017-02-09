@@ -5,10 +5,10 @@
 
      //API Report Problem
      "followUnfollow": function(req, res) {
-        console.log("result1.followerStatus == null =========", req.body);
+         console.log("result1.followerStatus == null =========", req.body);
          if (req.body.follow == "follow") {
              followerList.findOne({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }).exec(function(err, result1) {
-                console.log("result1.followerStatus == null =========", JSON.stringify(result1));
+                 console.log("result1.followerStatus == null =========", JSON.stringify(result1));
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                      if (!result1) {
                          var follow = new followerList(req.body);
@@ -32,9 +32,9 @@
                              })
                          })
                      } else {
-                        console.log("result1.followerStatus == null ========="+result1.followerStatus);
+                         console.log("result1.followerStatus == null =========" + result1.followerStatus);
                          if (result1.followerStatus == "reject" || result1.followerStatus == "unfollow") {
-                            console.log("result1.followerStatus == null =========");
+                             console.log("result1.followerStatus == null =========");
                              followerList.findOneAndUpdate({ _id: result1._id }, { $set: { followerStatus: "Sent" } }, { new: true }).exec(function(err, result2) {
                                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                  res.send({
@@ -130,8 +130,8 @@
          })
      },
 
-     "blockUserList" : function (req, res) {
-        followerList.find({ senderId: req.body.userId , followerStatus:"block"}).exec(function(err, result) {
+     "blockUserList": function(req, res) {
+         followerList.find({ senderId: req.body.userId, followerStatus: "block" }).exec(function(err, result) {
              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                  var arr = [];
                  result.forEach(function(result) {
