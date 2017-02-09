@@ -115,6 +115,7 @@ var userSchema = new Schema({
     viewedAd: [],
     transferAmountListObject: [{
         amount: { type: Number },
+        adId:{ type: Number},
         CreatedAt: {
             type: Date,
             default: Date.now
@@ -168,6 +169,9 @@ var userSchema = new Schema({
     },
     userUpgradeCard: [],
     permissions: [],
+    termsCondition: {
+       type: String
+   },
     createdAt: {
         type: Date,
         default: Date.now

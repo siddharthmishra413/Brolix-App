@@ -13,6 +13,10 @@ var validator = require('validator');
 var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
+<<<<<<< HEAD
+=======
+var createNewAds = require("./model/createNewAds");
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
 var country = require('countryjs');
 
 cloudinary.config({
@@ -426,7 +430,7 @@ module.exports = {
             },
             "transactions": [{
                 "amount": {
-                    "total": parseInt(req.body.brolix),
+                    "total": parseInt(req.body.cash),
                     "currency": req.body.currency
                         // "transactions_ID": req.body.transactions_ID
                 },
@@ -442,15 +446,15 @@ module.exports = {
                     console.log("requestbody", JSON.stringify(req.body))
                     console.log("currency", JSON.stringify(req.body.currency))
 
-                    var amount = req.body.brolix / 100;
+                    var amount = req.body.cash;
                     console.log("amount-------", amount)
                     User.findOne({ _id: req.body.userId }, function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-                        else if (result.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "transferAmountListObject": { amount: amount } } }, { new: true }, function(err, results) {
+                        else if (result.cash < req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "transferAmountListObject": { amount: amount, adId: req.body.adId } } }, { new: true }, function(err, results) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
                                 else {
-                                    results.brolix -= req.body.brolix;
+                                    results.cash -= req.body.cash;
                                     results.save();
                                     for (var i = 0; i < payment.links.length; i++) {
                                         var link = payment.links[i];
@@ -548,7 +552,6 @@ module.exports = {
                 "description": req.body.description
             }]
         };
-
 
         paypal.payment.create(payment, function(error, payment) {
             if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -801,7 +804,6 @@ module.exports = {
                 obj.brolix = req.body.luckCardArr[j].brolix;
                 array.push(obj);
                 array1.push(parseFloat(req.body.luckCardArr[j].brolix));
-
             }
         }
         var sum = array1.reduce(function(a, b) {
@@ -866,10 +868,16 @@ module.exports = {
         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); }
         for (var i = 0; i < obj.length; i++) {
             User.update({ 'upgradeCardObject._id': obj[i] }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
+<<<<<<< HEAD
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
                 else {
                     console.log("else")
 
+=======
+                if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                else {
+                    console.log("else")
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
                 }
             })
         }
@@ -880,7 +888,11 @@ module.exports = {
         })
     },
 
+<<<<<<< HEAD
         "facebookLogin": function(req, res) {
+=======
+    "facebookLogin": function(req, res) {
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "User not register" }); } else {
@@ -908,7 +920,37 @@ module.exports = {
             }
         })
     },
+<<<<<<< HEAD
 
+=======
+    "userGifts": function(req, res) { // userId in req 
+        var userId = req.body.userId;
+        var array = [];
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                for (i = 0; i < result.length; i++) {
+                    for (j = 0; j < result[i].winners.length; j++) {
+                        if (result[i].winners[j] == userId) {
+                            array.push(result[i]._id);
+                        }
+                    }
+                }
+                createNewAds.find({ _id: { $in: array } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                        var couponType = result1.filter(result1 => result1.adsType == "coupon");
+                        var cashType = result1.filter(result1 => result1.adsType == "cash");
+                        res.send({
+                            couponType: couponType,
+                            cashType: cashType,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    }
+                })
+            }
+        })
+    },
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
     "countrys": function(req, res) {
         var countrys = country.all();
         var coutr = [];
@@ -963,6 +1005,7 @@ module.exports = {
                     responseCode: 200,
                     responseMessage: "Record found successfully."
                 });
+<<<<<<< HEAD
             }
         });
     },
@@ -1022,6 +1065,68 @@ module.exports = {
 
         })
     },
+=======
+            }
+        });
+    },
+
+
+    "onlineUserList": function(req, res) {
+        chat.aggregate(
+            [{
+                $match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
+            }, { $sort: { timestamp: -1 } }, {
+                $group: {
+                    _id: { senderId: "$senderId", receiverId: "$receiverId" },
+                    unread: {
+                        $sum: {
+                            $cond: { if: { $eq: ["$is_read", 0] }, then: 1, else: 0 }
+                        }
+                    },
+                    lastMsg: { $last: "$message" },
+                    timestamp: { $last: "$timestamp" },
+                    senderImage: { $last: "$senderImage" },
+                    receiverImage: { $last: "$receiverImage" },
+                    senderName: { $last: "$senderName" },
+                    receiverName: { $last: "$receiverName" }
+                }
+            }]
+        ).exec(function(err, result) {
+            if (err) res.send({ responseCode: 500, responseMessage: err });
+            else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
+            else {
+                result.sort(function(a, b) {
+                    if (a.timestamp < b.timestamp) return -1;
+                    if (a.timestamp > b.timestamp) return 1;
+                    return 0;
+                });
+                var obj = [],
+                    j;
+                console.log("result--->" + JSON.stringify(result));
+                for (var i = 0; i < result.length; i++) {
+                    result.length - 1 == i ? j = i : j = i + 1;
+                    console.log("j--->" + j);
+                    while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
+                        j += 1;
+                    }
+                    if (i != j) {
+                        result[i].unread += result[j].unread;
+                    }
+                    obj.push(result[i]);
+                    result.splice(j, 1);
+                    console.log("length---->" + result.length);
+                }
+                res.send({
+                    result: obj,
+                    responseCode: 200,
+                    responseMessage: "Record found successfully."
+                });
+            }
+
+        })
+    },
+
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
     "userGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
         var array = [];
@@ -1051,3 +1156,26 @@ module.exports = {
     }
 
 }
+
+
+
+
+// "userGifts": function(req, res) { // userId in req 
+//    var userId = req.body.userId;
+//    var array = [userId];
+//      createNewAds.find({ winners: { $in: array } },function(err, result) {
+//         console.log("result--->>"+result)
+//     if (err){ res.send({responseCode: 500,  responseMessage:err}); }
+//     else if (userId == null || userId == '' || userId === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter userId' }); }
+//     else{
+//         //  console.log("result--->>"+result)
+
+//                 res.send({
+//                     result:result,
+//                     responseCode: 200
+//                 })
+//     }
+
+//    })
+
+// }

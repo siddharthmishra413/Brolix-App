@@ -39,8 +39,11 @@ app.get('/getAllStates/:name/:code', userHandler.getAllStates);
 app.post('/chatHistory/:pageNumber',  authUser.authUser, userHandler.chatHistory);
 app.post('/onlineUserList',  authUser.authUser, userHandler.onlineUserList);
 app.post('/userGifts', authUser.authUser, userHandler.userGifts);
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
 
 
 module.exports = app;	

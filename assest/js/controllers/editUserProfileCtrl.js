@@ -38,6 +38,7 @@ app.controller('editUserProfileCtrl', function($scope, $window, userService, $st
 
     $scope.updateUser = function() {
         $scope.viewUserProfile.country = $scope.viewUserProfile.country.name;
+        console.log(JSON.stringify($scope.viewUserProfile));
         userService.editUserProfile(id, $scope.viewUserProfile).success(function(res) {
             if (res.responseCode == 200) {
                 toastr.success(res.responseMessage);

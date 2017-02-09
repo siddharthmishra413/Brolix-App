@@ -23,6 +23,13 @@ app.get('/listOfAllAds/:id/:type/:pageNumber', authUser.authUser, adsHandler.lis
 app.post('/uploads', authUser.authUser, adsHandler.uploads);
 app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
 app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);
+<<<<<<< HEAD
+=======
+app.get('/couponWinners/:pageNumber', authUser.authUser, adsHandler.couponWinners);
+app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);
+app.post('/commentsOnAdList', authUser.authUser, adsHandler.commentsOnAdList)
+app.get('/expireCoupon', authUser.authUser, adsHandler.expireCoupon)
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
 app.get('/adsCommentList/:id/:pageNumber', authUser.authUser, adsHandler.adsCommentList);
 
 module.exports = app;

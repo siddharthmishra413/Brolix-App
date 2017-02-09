@@ -236,6 +236,7 @@ module.exports = {
             }
         })
     },
+<<<<<<< HEAD
     // Api for Rating
     // "pageRating": function(req, res, next) {
     //     waterfall([
@@ -280,6 +281,8 @@ module.exports = {
     //         }
     //     ])
     // },
+=======
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
     "pageRating": function(req, res) {
         var avrg = 0;
         createNewPage.findOne({ _id: req.body.pageId, totalRating: { $elemMatch: { userId: req.body.userId } } }).exec(function(err, result) {
@@ -317,6 +320,7 @@ module.exports = {
             }
         })
     },
+<<<<<<< HEAD
     
     "particularPageCouponWinners": function(req, res) {
         var pageId = req.body.pageId;
@@ -361,6 +365,97 @@ module.exports = {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
                      else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } 
                         else {
+=======
+
+    "showBlockedPage": function(req, res) { // pageId in request
+        createNewPage.paginate({ status: "BLOCK" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
+            else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No blocked page found" }) } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Blocked page shown successfully."
+                });
+            }
+
+        });
+    },
+
+    "removePage": function(req, res) { // pageId in request
+        createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: { 'status': 'REMOVED' } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
+            else {
+                res.send({
+                    // result: result,
+                    responseCode: 200,
+                    responseMessage: "Page removed successfully."
+                });
+            }
+
+        });
+    },
+
+    "showAllRemovedPage": function(req, res) {
+        createNewPage.paginate({ status: "REMOVED" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
+            else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No removed page found" }) } else {
+                var count = 0;
+                for (var i = 0; i < result.docs.length; i++) {
+                    count++;
+                }
+                res.send({
+                    result: result,
+                    count: count,
+                    responseCode: 200,
+                    responseMessage: "Removed page shown successfully."
+                });
+            }
+
+        });
+    },
+
+
+    "linkSocialMedia": function(req, res) {
+        var userId = req.body.userId;
+        var mediaType = req.body.mediaType;
+        var link = req.body.link;
+        createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "linkSocialListObject": { userId: req.body.userId, mediaType: req.body.mediaType, link: req.body.link } } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad Found" }); } else if (userId == null || userId == '' || userId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter userId' }); } else if (mediaType == null || mediaType == '' || mediaType === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter mediaType' }); } else if (link == null || link == '' || link === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter link' }); } else {
+                res.send({
+                    //  result: result,
+                    responseCode: 200,
+                    responseMessage: "Post saved successfully"
+                })
+            }
+        })
+    },
+
+    "getSocialMediaLink": function(req, res) {
+        createNewPage.findOne({ _id: req.body.pageId }, 'linkSocialListObject').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No page found." }))
+            else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Post saved successfully"
+                })
+            }
+        })
+    },
+    "particularPageWinners": function(req, res) {
+        var pageId = req.body.pageId;
+        var array = [];
+        createNewAds.find({ pageId: pageId }).exec(function(err, result) {
+            // console.log("result-->>"+result)
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
+                for (i = 0; i < result.length; i++) {
+                    for (j = 0; j < result[i].winners.length; j++, j) {
+                        array.push(result[i].winners[j]);
+                    }
+                }
+                User.find({ _id: { $in: array } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
                         res.send({
                             result: result1,
                             responseCode: 200,
@@ -371,5 +466,8 @@ module.exports = {
             }
         })
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
 }

@@ -17,7 +17,16 @@ app.post('/pagesSearch/:pageNumber',authUser.authUser,pageHandler.pagesSearch); 
 app.post('/pageFollowUnfollow',authUser.authUser,pageHandler.pageFollowUnfollow); //Not Update in Docs
 app.post('/searchForPages/:pageNumber',authUser.authUser,pageHandler.searchForPages); //Not Upadte in Docs
 app.post('/pageRating',authUser.authUser,pageHandler.pageRating);
+<<<<<<< HEAD
 app.post('/particularPageCouponWinners', authUser.authUser, pageHandler.particularPageCouponWinners);
 app.post('/particularPageCashWinners', authUser.authUser, pageHandler.particularPageCashWinners);
+=======
+app.get('/showBlockedPage/:pageNumber',authUser.authUser,pageHandler.showBlockedPage);
+app.post('/removePage',authUser.authUser,pageHandler.removePage);
+app.get('/showAllRemovedPage/:pageNumber',authUser.authUser,pageHandler.showAllRemovedPage);
+app.post('/linkSocialMedia', authUser.authUser, pageHandler.linkSocialMedia);
+app.post('/getSocialMediaLink', authUser.authUser, pageHandler.getSocialMediaLink);
+app.post('/particularPageWinners', authUser.authUser, pageHandler.particularPageWinners);
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
 
 module.exports = app;

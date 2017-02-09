@@ -19,7 +19,7 @@ app.get('/listOfAllAds', adminHandler.listOfAllAds);
 app.get('/totalSoldUpgradeCard', adminHandler.totalSoldUpgradeCard);
 app.get('/totalSoldLuckCard', adminHandler.totalSoldLuckCard);
 app.get('/totalIncomeInBrolixFromLuckCard', adminHandler.totalIncomeInBrolixFromLuckCard);
-app.get('/totalIncomeInBrolixFromUpgradeCard', adminHandler.totalIncomeInBrolixFromUpgradeCard);
+app.get('/totalIncomeInCashFromUpgradeCard', adminHandler.totalIncomeInCashFromUpgradeCard);
 app.get('/usedLuckCard', adminHandler.usedLuckCard);
 app.get('/unUsedLuckCard', adminHandler.unUsedLuckCard);
 app.get('/usedUpgradeCard', adminHandler.usedUpgradeCard);
@@ -30,5 +30,20 @@ app.get('/userProfile/:id', adminHandler.userProfile);
 app.put('/editUserProfile/:id', adminHandler.editUserProfile);
 app.get('/totalPages', adminHandler.totalPages);
 app.get('/viewPage/:id', adminHandler.viewPage);
+app.get('/couponWinners', adminHandler.couponWinners);
+app.get('/cashWinners', adminHandler.cashWinners);
+app.get('/totalActiveAds', adminHandler.totalActiveAds);
+app.get('/totalExpiredAds', adminHandler.totalExpiredAds);
+app.get('/videoAds', adminHandler.videoAds);
+app.get('/slideshowAds', adminHandler.slideshowAds);
+app.get('/totalPages/:pageNumber',adminHandler.totalPages);
+app.post('/blockPage',adminHandler.blockPage);
+app.get('/showAllBlockedPage/:pageNumber',adminHandler.showAllBlockedPage);
+app.post('/removePage',adminHandler.removePage);
+app.get('/showAllRemovedPage/:pageNumber',adminHandler.showAllRemovedPage);
+
+
+
+
 
 module.exports = app;

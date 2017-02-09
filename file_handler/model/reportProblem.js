@@ -13,8 +13,13 @@ var reportProblemSchema = new Schema({
         type: String,
         trim: true
     },
+<<<<<<< HEAD
     adId: {
         type: String
+=======
+    adId:{
+        type:String
+>>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
     },
     type: {
         type: String
