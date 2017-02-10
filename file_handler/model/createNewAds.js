@@ -84,13 +84,6 @@ var createNewAdsSchema = new Schema({
     },
     cashStatus: {
         type: String,
-<<<<<<< HEAD
-        default: 'valid'
-    },
-    cashStatus: {
-        type: String,
-=======
->>>>>>> akash
         default: 'pending'
     },
     adContentType: { type: String },
@@ -159,14 +152,11 @@ var createNewAdsSchema = new Schema({
         type: String,
         default: 'Not Watched'
     },
-<<<<<<< HEAD
-=======
     tag: [{
         userId: { type: String },
         senderId: []
     }],
     commentCount:{type:Number, default:0},
->>>>>>> akash
     createdAt: {
         type: Date,
         default: Date.now

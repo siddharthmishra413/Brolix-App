@@ -343,18 +343,13 @@ module.exports = {
             });
         })
     },
-
     "viewAd": function(req, res) { //req.body.userId, adId
         var userId = req.body.userId;
         waterfall([
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
-<<<<<<< HEAD
-                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner already decided" }); }
-=======
                     console.log("result--->>", result)
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) return res.send({ responseCode: 406, responseMessage: "Winner allready decided" });
->>>>>>> akash
                     var randomIndex = [];
                     var raffleCount = result.raffleCount;
                     var viewerLenght = result.viewerLenght;
@@ -367,24 +362,15 @@ module.exports = {
                     // else if (!has) raffleCount.push(userId);
                     else if (!has) {
                         raffleCount.push(userId);
-<<<<<<< HEAD
-                        User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, { new: true }, function(err, result) {
-                            console.log("raffleCount--11->>>" + raffleCount.length);
-=======
                         User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, { new: true }, function(err, result1) {
 
                             console.log("raffleCount--->>>" + raffleCount.length);
->>>>>>> akash
                         })
 
                         if (raffleCount.length == viewerLenght) {
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
-<<<<<<< HEAD
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else { console.log("pushed") }
-=======
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {}
 
->>>>>>> akash
                             })
                             console.log("raffleCount--111->>>" + raffleCount.length);
                             for (var n = 0; n < luckUsers.length; n++) {
@@ -415,11 +401,7 @@ module.exports = {
                 })
             },
             function(winners, cashPrize, couponCode, callback) {
-<<<<<<< HEAD
-                createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }, function(err, result) {
-=======
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }).lean().exec(function(err, result) {
->>>>>>> akash
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
                         var date = new Date();
 
@@ -429,13 +411,8 @@ module.exports = {
                                 if (result3.adsType == "cash") {
                                     console.log("2")
                                     User.update({ _id: { $in: winners } }, { $inc: { cash: cashPrize, gifts: 1 } }, { multi: true }, function(err, result) {
-<<<<<<< HEAD
-                                        console.log("result--->>" + JSON.stringify(result))
-                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else {
-=======
 
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
->>>>>>> akash
                                             res.send({
                                                 responseCode: 200,
                                                 responseMessage: "Raffle is over winner decided."
@@ -445,9 +422,6 @@ module.exports = {
                                     })
 
                                 } else {
-<<<<<<< HEAD
-                                    User.update({ _id: { $in: winners } }, { $push: { coupons: couponCode }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
-=======
                                     var startTime = new Date().toUTCString();
                                     var h = new Date(new Date(startTime).setHours(00)).toUTCString();
                                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
@@ -460,7 +434,6 @@ module.exports = {
                                         adId: req.body.adId
                                     }
                                     User.update({ _id: { $in: winners } }, { $push: { coupon: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
->>>>>>> akash
                                         console.log("4")
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                             res.send({
@@ -555,13 +528,8 @@ module.exports = {
                 })
             }
         })
-<<<<<<< HEAD
-    }
-
-
-=======
     },
-    
+
     "tagOnads": function(req, res) {
         createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
             $push: { "tag": { userId: req.body.userId, senderId: req.body.senderId } }
@@ -588,5 +556,4 @@ module.exports = {
             });
         });
     }
->>>>>>> akash
 }
