@@ -39,8 +39,9 @@ var pageProductSchema = new Schema({
     }],
     tag: [{
         userId: { type: String },
-        senderId: { type: String }
+        senderId: []
     }],
+    commentCount:{type:Number, default:0},
     createdAt: {
         type: Date,
         default: Date.now

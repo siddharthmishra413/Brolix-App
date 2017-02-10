@@ -152,6 +152,14 @@ var createNewAdsSchema = new Schema({
         type: String,
         default: 'Not Watched'
     },
+<<<<<<< HEAD
+=======
+    tag: [{
+        userId: { type: String },
+        senderId: []
+    }],
+    commentCount:{type:Number, default:0},
+>>>>>>> akash
     createdAt: {
         type: Date,
         default: Date.now

@@ -13,8 +13,13 @@ var validator = require('validator');
 var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
+<<<<<<< HEAD
 var country = require('countryjs');
 var cron = require('node-cron');
+=======
+var createNewAds = require("./model/createNewAds");
+var country = require('countryjs');
+>>>>>>> akash
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -916,7 +921,11 @@ module.exports = {
             }
         })
     },
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> akash
     "userGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
         var array = [];
@@ -944,7 +953,10 @@ module.exports = {
             }
         })
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> akash
     "countrys": function(req, res) {
         var countrys = country.all();
         var coutr = [];
@@ -985,7 +997,7 @@ module.exports = {
     },
 
     "chatHistory": function(req, res, next) {
-        console.log('everything------------' + JSON.stringify(req.body));
+        console.log('everything-----chatHistorychatHistorychatHistorys-------' + JSON.stringify(req.body));
         chat.paginate({ $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }] }, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
             if (!results.docs.length) {
                 res.send({
@@ -1058,6 +1070,7 @@ module.exports = {
 
         })
     }
+<<<<<<< HEAD
 }
 
      cron.schedule('*/1 * * * *', function() {
@@ -1092,4 +1105,29 @@ module.exports = {
             // })
         })
     })
+=======
+
+}
+
+
+
+
+// "userGifts": function(req, res) { // userId in req 
+//    var userId = req.body.userId;
+//    var array = [userId];
+//      createNewAds.find({ winners: { $in: array } },function(err, result) {
+//         console.log("result--->>"+result)
+//     if (err){ res.send({responseCode: 500,  responseMessage:err}); }
+//     else if (userId == null || userId == '' || userId === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter userId' }); }
+//     else{
+//         //  console.log("result--->>"+result)
+
+//                 res.send({
+//                     result:result,
+//                     responseCode: 200
+//                 })
+//     }
+
+//    })
+>>>>>>> akash
 

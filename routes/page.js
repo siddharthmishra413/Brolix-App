@@ -22,7 +22,12 @@ app.post('/removePage',authUser.authUser,pageHandler.removePage);
 app.get('/showAllRemovedPage/:pageNumber',authUser.authUser,pageHandler.showAllRemovedPage);
 app.post('/linkSocialMedia', authUser.authUser, pageHandler.linkSocialMedia);
 app.post('/getSocialMediaLink', authUser.authUser, pageHandler.getSocialMediaLink);
+<<<<<<< HEAD
 app.post('/particularPageCouponWinners/:pageNumber', authUser.authUser, pageHandler.particularPageCouponWinners);
 app.post('/particularPageCashWinners/:pageNumber', authUser.authUser, pageHandler.particularPageCashWinners);
+=======
+app.post('/particularPageWinners', authUser.authUser, pageHandler.particularPageWinners);
+app.put('/adAdmin/:id', authUser.authUser, pageHandler.adAdmin);
+>>>>>>> akash
 
 module.exports = app;
