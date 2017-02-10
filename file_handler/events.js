@@ -16,7 +16,7 @@ module.exports = {
                 //     responseCode: 200,
                 //     responseMessage: "Event create successfully."
                 // });
-                createEvents.find({ userId: req.body.userId,  status:"ACTIVE" }).exec(function(err, result) {
+                createEvents.find({ userId: req.body.userId, status: "ACTIVE" }).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                     res.send({
                         result: result,
@@ -30,7 +30,7 @@ module.exports = {
 
     //API for create Page
     "showAllEvents": function(req, res) {
-        createEvents.find({ userId: req.params.id,  status:"ACTIVE" }).exec(function(err, result) {
+        createEvents.find({ userId: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,
@@ -45,18 +45,13 @@ module.exports = {
     "editEvent": function(req, res) {
         createEvents.findByIdAndUpdate(req.params.id, req.body).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: "All event show successfully."
-                })
-<<<<<<< HEAD
+            res.send({
+                result: results,
+                responseCode: 200,
+                responseMessage: "All event show successfully."
             })
-        },
-=======
         })
     },
->>>>>>> akash
 
     //API for Edit Event
     "deleteEvent": function(req, res) {

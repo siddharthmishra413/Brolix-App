@@ -25,12 +25,8 @@ app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
 app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);
 app.get('/couponWinners/:pageNumber', authUser.authUser, adsHandler.couponWinners);
 app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);
-<<<<<<< HEAD
-=======
-app.get('/expireCoupon', authUser.authUser, adsHandler.expireCoupon)
->>>>>>> akash
 app.get('/adsCommentList/:id/:pageNumber', authUser.authUser, adsHandler.adsCommentList);
-app.post('/tagOnads',authUser.authUser,adsHandler.tagOnads);
+app.post('/tagOnads', authUser.authUser, adsHandler.tagOnads);
 app.put('/editAd/:id/:userId', authUser.authUser, adsHandler.editAd);
 
 module.exports = app;

@@ -13,13 +13,8 @@ var validator = require('validator');
 var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
-<<<<<<< HEAD
 var country = require('countryjs');
 var cron = require('node-cron');
-=======
-var createNewAds = require("./model/createNewAds");
-var country = require('countryjs');
->>>>>>> akash
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -921,11 +916,7 @@ module.exports = {
             }
         })
     },
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> akash
     "userGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
         var array = [];
@@ -953,10 +944,7 @@ module.exports = {
             }
         })
     },
-<<<<<<< HEAD
 
-=======
->>>>>>> akash
     "countrys": function(req, res) {
         var countrys = country.all();
         var coutr = [];
@@ -977,6 +965,7 @@ module.exports = {
             responseMessage: "All countrys list."
         });
     },
+
     "getAllStates": function(req, res) {
         var name = req.params.name;
         var code = req.params.code;
@@ -1069,65 +1058,38 @@ module.exports = {
             }
 
         })
-    }
-<<<<<<< HEAD
+    },
 }
 
-     cron.schedule('*/1 * * * *', function() {
-        User.find({}).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                var array = [];
-                var startTime = new Date().toUTCString();
-                var h = new Date(new Date(startTime).setHours(00)).toUTCString();
-                var m = new Date(new Date(h).setMinutes(00)).toUTCString();
-                var currentTime = Date.now(m)
-                for (var i = 0; i < result.length; i++) {
-                    for (var j = 0; j < result[i].coupon.length; j++) {
-                        if (currentTime >= Math.round(result[i].coupon[j].expirationTime)) {
-                            array.push(result[i].coupon[j]._id)
-                        } else {
-                            console.log("time is not equal")
-                        }
+cron.schedule('*/1 * * * *', function() {
+    User.find({}).exec(function(err, result) {
+        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+            var array = [];
+            var startTime = new Date().toUTCString();
+            var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+            var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+            var currentTime = Date.now(m)
+            for (var i = 0; i < result.length; i++) {
+                for (var j = 0; j < result[i].coupon.length; j++) {
+                    if (currentTime >= Math.round(result[i].coupon[j].expirationTime)) {
+                        array.push(result[i].coupon[j]._id)
+                    } else {
+                        console.log("time is not equal")
                     }
                 }
-                for (var i = 0; i < array.length; i++) {
-                    User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "USED" } }, { multi: true }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: err }); } else {
-                            console.log("else")
-                        }
-                    })
-                }
             }
-            // res.send({
-            //     result: result,
-            //     responseCode: 200,
-            //     responseMessage: "data shown successfully"
-            // })
-        })
+            for (var i = 0; i < array.length; i++) {
+                User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "USED" } }, { multi: true }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: err }); } else {
+                        console.log("else")
+                    }
+                })
+            }
+        }
+        // res.send({
+        //     result: result,
+        //     responseCode: 200,
+        //     responseMessage: "data shown successfully"
+        // })
     })
-=======
-
-}
-
-
-
-
-// "userGifts": function(req, res) { // userId in req 
-//    var userId = req.body.userId;
-//    var array = [userId];
-//      createNewAds.find({ winners: { $in: array } },function(err, result) {
-//         console.log("result--->>"+result)
-//     if (err){ res.send({responseCode: 500,  responseMessage:err}); }
-//     else if (userId == null || userId == '' || userId === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter userId' }); }
-//     else{
-//         //  console.log("result--->>"+result)
-
-//                 res.send({
-//                     result:result,
-//                     responseCode: 200
-//                 })
-//     }
-
-//    })
->>>>>>> akash
-
+})
