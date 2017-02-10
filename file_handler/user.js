@@ -14,6 +14,7 @@ var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
 var country = require('countryjs');
+var cron = require('node-cron');
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -878,43 +879,43 @@ module.exports = {
     },
 
     "facebookLogin": function(req, res) {
-         var obj = (req.body.facebookID);
-         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter facebookID' }); }
-         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-         User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
-             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                 var user = new User(req.body)
-                 user.save(function(err, result1) {
-                     var token = jwt.sign(result1, config.secreteKey);
-                     res.header({
-                         "appToken": token
-                     }).send({ result: result1, token: token, responseCode: 200, responseMessage: "Signup successfully." });
-                 })
-             } else {
-                 if (result.facebookID == undefined) {
-                     res.send({ responseCode: 201, responseMessage: "You have already register with app.", user: result });
-                 } else {
-                     User.findOneAndUpdate({ email: req.body.email }, {
-                         $set: {
-                             deviceType: req.body.deviceType,
-                             deviceToken: req.body.deviceToken
-                         }
-                     }, { new: true }).exec(function(err, user) {
-                         var token = jwt.sign(result, config.secreteKey);
-                         res.header({
-                             "appToken": token
-                         }).send({
-                             result: user,
-                             token: token,
-                             responseCode: 200,
-                             responseMessage: "Login successfully."
-                         });
-                         //console.log("what is in token-->>>" + token);
-                     })
-                 }
-             }
-         })
-     },
+        var obj = (req.body.facebookID);
+        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter facebookID' }); }
+        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
+                var user = new User(req.body)
+                user.save(function(err, result1) {
+                    var token = jwt.sign(result1, config.secreteKey);
+                    res.header({
+                        "appToken": token
+                    }).send({ result: result1, token: token, responseCode: 200, responseMessage: "Signup successfully." });
+                })
+            } else {
+                if (result.facebookID == undefined) {
+                    res.send({ responseCode: 201, responseMessage: "You have already register with app.", user: result });
+                } else {
+                    User.findOneAndUpdate({ email: req.body.email }, {
+                        $set: {
+                            deviceType: req.body.deviceType,
+                            deviceToken: req.body.deviceToken
+                        }
+                    }, { new: true }).exec(function(err, user) {
+                        var token = jwt.sign(result, config.secreteKey);
+                        res.header({
+                            "appToken": token
+                        }).send({
+                            result: user,
+                            token: token,
+                            responseCode: 200,
+                            responseMessage: "Login successfully."
+                        });
+                        //console.log("what is in token-->>>" + token);
+                    })
+                }
+            }
+        })
+    },
 
     "userGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
@@ -1056,65 +1057,39 @@ module.exports = {
             }
 
         })
-    },
-
-
-
-
-    "expireCoupon": function(req, res) {
-        User.find({}).exec(function(err, result) {
-            
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-             else {
-                 
-                for(var i = 0; i<result.length; i++){
-                    console.log("length--->>",result.length,i)
-                    for (var j = 0; j<result[i].coupon.length; j++){
-                       // if(result[i].coupon[j].expirationTime){}
-                    }
-                }
-               
-                res.send({
-                    //result: result,
-                    responseCode: 200,
-                    responseMessage: "data shown successfully"
-                })
-            }
-        })
     }
-
-
-
 }
 
- // cron.schedule('*/1 * * * *', function(){
+     cron.schedule('*/1 * * * *', function() {
+        User.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                var array = [];
+                var startTime = new Date().toUTCString();
+                var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+                var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+                var currentTime = Date.now(m)
+                for (var i = 0; i < result.length; i++) {
+                    for (var j = 0; j < result[i].coupon.length; j++) {
+                        if (currentTime >= Math.round(result[i].coupon[j].expirationTime)) {
+                            array.push(result[i].coupon[j]._id)
+                        } else {
+                            console.log("time is not equal")
+                        }
+                    }
+                }
+                for (var i = 0; i < array.length; i++) {
+                    User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "USED" } }, { multi: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: err }); } else {
+                            console.log("else")
+                        }
+                    })
+                }
+            }
+            // res.send({
+            //     result: result,
+            //     responseCode: 200,
+            //     responseMessage: "data shown successfully"
+            // })
+        })
+    })
 
- //        User.find({},'coupon').exec(function(err, result){
- //            if (err) { console.log("error") }
- //            else{
- //                console.log("result")
- //            }
- //        })
- //    })
-
-
-
-// "userGifts": function(req, res) { // userId in req 
-//    var userId = req.body.userId;
-//    var array = [userId];
-//      createNewAds.find({ winners: { $in: array } },function(err, result) {
-//         console.log("result--->>"+result)
-//     if (err){ res.send({responseCode: 500,  responseMessage:err}); }
-//     else if (userId == null || userId == '' || userId === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter userId' }); }
-//     else{
-//         //  console.log("result--->>"+result)
-
-//                 res.send({
-//                     result:result,
-//                     responseCode: 200
-//                 })
-//     }
-
-//    })
-
-// }

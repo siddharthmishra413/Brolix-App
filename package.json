@@ -13,7 +13,7 @@
     "cloudinary": "^1.4.3",
     "countryjs": "^1.6.0",
     "coupon-code": "^0.4.4",
-    "cron": "^1.1.1",
+    "cron": "^1.2.1",
     "express": "^4.13.4",
     "fcm-push": "^1.1.2",
     "fresh": "^0.3.0",
