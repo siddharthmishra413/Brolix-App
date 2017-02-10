@@ -72,6 +72,13 @@ var createNewPageSchema = new mongoose.Schema({
         mediaType: {type: String},
         link: { type: String }
     }],
+    adAdmin:[{
+        userId:{type:String},
+        type:{type: String}
+    }],
+    pageFollowersUser:[{
+        userId:{type:String, ref:'brolixUser'}
+    }],
     createdAt: {
         type: Date,
         default: Date.now

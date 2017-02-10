@@ -984,7 +984,7 @@ module.exports = {
     },
 
     "chatHistory": function(req, res, next) {
-        console.log('everything------------' + JSON.stringify(req.body));
+        console.log('everything-----chatHistorychatHistorychatHistorys-------' + JSON.stringify(req.body));
         chat.paginate({ $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }] }, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
             if (!results.docs.length) {
                 res.send({

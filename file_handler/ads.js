@@ -162,14 +162,20 @@ module.exports = {
     "commentOnAds": function(req, res) {
         var adds = new addsComments(req.body);
         adds.save(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({ result: result, responseCode: 200, responseMessage: "Comments save with concerned User details." });
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                createNewAds.findOneAndUpdate({ _id: req.body.addId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        res.send({ result: result, responseCode: 200, responseMessage: "Comments save with concerned User details." });
+                    }
+                })
+
+            }
         })
     },
     //API Comment on Ads
     "replyOnComment": function(req, res) {
         addsComments.findOneAndUpdate({ addId: req.body.addId, _id: req.body.commentId }, {
-            $push: { 'reply': { userId: req.body.userId, rplyComment: req.body.rplyComment, userName: req.body.userName, userImage: req.body.userImage } }
+            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
         }, { new: true }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({
@@ -547,32 +553,24 @@ module.exports = {
                 });
             }
         })
+    },
+
+    "editAd": function(req, res) {
+        createNewAds.update({ _id: req.params.id, $or: [{ userId: req.params.userId }, { 'adAdmin.userId': req.params.userId }] }, req.body, {
+            new: true
+        }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Ad edit."
+            });
+        });
     }
 
 
 
 }
-
-// "linkSocialMedia": function(req, res) {
-//     var userId = req.body.userId;
-//     var mediaType = req.body.mediaType;
-//     var link = req.body.link;
-//     console.log("request----->>>" + JSON.stringify(req.body))
-//     createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "linkSocialListObject": { userId: req.body.userId, mediaType: req.body.mediaType, link: req.body.link } } }, { new: true }, function(err, result) {
-//         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
-//         else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad Found"}); }
-//         else if (userId == null || userId == '' || userId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter userId' }); }
-//         else if (mediaType == null || mediaType == '' || mediaType === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter mediaType' }); }
-//         else if (link == null || link == '' || link === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter link' }); }
-//         else {
-//             res.send({
-//                 result: result,
-//                 responseCode: 200,
-//                 responseMessage: "Post saved successfully"
-//             })
-//         }
-//     })
-// }
 
 
 

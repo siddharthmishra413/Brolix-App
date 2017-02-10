@@ -17,6 +17,14 @@ var followerListSchema = new Schema({
         type: String,
         trim: true,
     },
+    userId: {
+        type: String,
+        trim: true,
+    },
+    blockUserId: {
+        type: String,
+        trim: true,
+    },
     followerStatus: {
         type: String,
         trim: true,

@@ -23,5 +23,6 @@ app.get('/showAllRemovedPage/:pageNumber',authUser.authUser,pageHandler.showAllR
 app.post('/linkSocialMedia', authUser.authUser, pageHandler.linkSocialMedia);
 app.post('/getSocialMediaLink', authUser.authUser, pageHandler.getSocialMediaLink);
 app.post('/particularPageWinners', authUser.authUser, pageHandler.particularPageWinners);
+app.put('/adAdmin/:id', authUser.authUser, pageHandler.adAdmin);
 
 module.exports = app;

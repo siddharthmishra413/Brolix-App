@@ -94,8 +94,8 @@ module.exports = {
     //API for Show Page Details
     "showPageDetails": function(req, res) {
         var date = new Date().toUTCString()
-                console.log(JSON.stringify(date))
-        createNewPage.findOne({ _id: req.body.pageId, status: "ACTIVE" }).exec(function(err, result) {
+        console.log(JSON.stringify(date))
+        createNewPage.findOne({ _id: req.body.pageId, status: "ACTIVE" }).populate({ path: 'pageFollowersUser.userId', select: ('firstName lastName image country state city') }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             createEvents.find({ pageId: req.body.pageId, status: "ACTIVE", createdAt: { $gte: date } }).exec(function(err, result1) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -184,20 +184,24 @@ module.exports = {
         if (req.body.follow == "follow") {
             User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: req.body.pageId, pageName: req.body.pageName } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: "Followed"
-                });
+                createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
+                    res.send({
+                        result: results,
+                        responseCode: 200,
+                        responseMessage: "Followed"
+                    });
+                })
             })
         } else {
             User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "pageFollowers": { pageId: req.body.pageId } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    res.send({
-                        result: results,
-                        responseCode: 200,
-                        responseMessage: "Unfollowed"
-                    });
+                    createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $pop: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
+                        res.send({
+                            result: results,
+                            responseCode: 200,
+                            responseMessage: "Followed"
+                        });
+                    })
                 }
             })
         }
@@ -378,5 +382,31 @@ module.exports = {
                 })
             }
         })
+    },
+
+    "adAdmin": function(req, res) {
+        if (req.body.add == "add") {
+            createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } } }, {
+                new: true
+            }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Ad edit."
+                });
+            });
+        } else if (req.body.add == "remove") {
+            createNewPage.findByIdAndUpdate(req.params.id, { $pop: { "adAdmin": { userId: req.body.userId, type: req.body.type } } }, {
+                new: true
+            }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Removed."
+                });
+            });
+        }
     }
 }

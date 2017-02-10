@@ -41,6 +41,7 @@ var pageProductSchema = new Schema({
         userId: { type: String },
         senderId: []
     }],
+    commentCount:{type:Number, default:0},
     createdAt: {
         type: Date,
         default: Date.now
