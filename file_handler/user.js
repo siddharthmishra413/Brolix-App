@@ -14,6 +14,10 @@ var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
 var country = require('countryjs');
+<<<<<<< HEAD
+=======
+var cron = require('node-cron');
+>>>>>>> akash
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -864,10 +868,9 @@ module.exports = {
         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); }
         for (var i = 0; i < obj.length; i++) {
             User.update({ 'upgradeCardObject._id': obj[i] }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
                 else {
                     console.log("else")
-
                 }
             })
         }
@@ -917,6 +920,37 @@ module.exports = {
         })
     },
 
+<<<<<<< HEAD
+=======
+    "userGifts": function(req, res) { // userId in req 
+        var userId = req.body.userId;
+        var array = [];
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                for (i = 0; i < result.length; i++) {
+                    for (j = 0; j < result[i].winners.length; j++) {
+                        if (result[i].winners[j] == userId) {
+                            array.push(result[i]._id);
+                        }
+                    }
+                }
+                createNewAds.find({ _id: { $in: array } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                        var couponType = result1.filter(result1 => result1.adsType == "coupon");
+                        var cashType = result1.filter(result1 => result1.adsType == "cash");
+                        res.send({
+                            couponType: couponType,
+                            cashType: cashType,
+                            responseCode: 200,
+                            responseMessage: "result show successfully;"
+                        })
+                    }
+                })
+            }
+        })
+    },
+
+>>>>>>> akash
     "countrys": function(req, res) {
         var countrys = country.all();
         var coutr = [];
@@ -937,6 +971,7 @@ module.exports = {
             responseMessage: "All countrys list."
         });
     },
+
     "getAllStates": function(req, res) {
         var name = req.params.name;
         var code = req.params.code;
@@ -957,7 +992,7 @@ module.exports = {
     },
 
     "chatHistory": function(req, res, next) {
-        console.log('everything------------' + JSON.stringify(req.body));
+        console.log('everything-----chatHistorychatHistorychatHistorys-------' + JSON.stringify(req.body));
         chat.paginate({ $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }] }, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
             if (!results.docs.length) {
                 res.send({
@@ -1030,6 +1065,7 @@ module.exports = {
 
         })
     },
+<<<<<<< HEAD
 
 
     "userGifts": function(req, res) { // userId in req 
@@ -1042,21 +1078,35 @@ module.exports = {
                         if (result[i].winners[j] == userId) {
                             array.push(result[i]._id);
                         }
+=======
+}
+
+cron.schedule('*/1 * * * *', function() {
+    User.find({}).exec(function(err, result) {
+        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+            var array = [];
+            var startTime = new Date().toUTCString();
+            var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+            var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+            var currentTime = Date.now(m)
+            for (var i = 0; i < result.length; i++) {
+                for (var j = 0; j < result[i].coupon.length; j++) {
+                    if (currentTime >= Math.round(result[i].coupon[j].expirationTime)) {
+                        array.push(result[i].coupon[j]._id)
+                    } else {
+                        console.log("time is not equal")
+>>>>>>> akash
                     }
                 }
-                createNewAds.find({ _id: { $in: array } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                        var couponType = result1.filter(result1 => result1.adsType == "coupon");
-                        var cashType = result1.filter(result1 => result1.adsType == "cash");
-                        res.send({
-                            couponType: couponType,
-                            cashType: cashType,
-                            responseCode: 200,
-                            responseMessage: "result show successfully;"
-                        })
+            }
+            for (var i = 0; i < array.length; i++) {
+                User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "USED" } }, { multi: true }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: err }); } else {
+                        console.log("else")
                     }
                 })
             }
+<<<<<<< HEAD
         })
     }
 
@@ -1084,3 +1134,13 @@ module.exports = {
 //    })
 
 // }
+=======
+        }
+        // res.send({
+        //     result: result,
+        //     responseCode: 200,
+        //     responseMessage: "data shown successfully"
+        // })
+    })
+})
+>>>>>>> akash

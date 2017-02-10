@@ -22,7 +22,7 @@ var createEventsSchema = new Schema({
         trim: true
     },
     eventDate: {
-        type: String,
+        type: Date,
         trim: true
     },
     eventName: {

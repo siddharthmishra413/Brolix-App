@@ -45,6 +45,7 @@ module.exports = {
     "editEvent": function(req, res) {
         createEvents.findByIdAndUpdate(req.params.id, req.body).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+<<<<<<< HEAD
             // res.send({
             //     result: result,
             //     responseCode: 200,
@@ -57,6 +58,12 @@ module.exports = {
                     responseCode: 200,
                     responseMessage: "All event show successfully."
                 })
+=======
+            res.send({
+                result: results,
+                responseCode: 200,
+                responseMessage: "All event show successfully."
+>>>>>>> akash
             })
         })
     },
