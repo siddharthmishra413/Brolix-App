@@ -830,7 +830,7 @@ module.exports = {
     },
 
     "showAllRemovedPage": function(req, res) { // pageId in request
-        createNewPage.paginate({ status: "REMOVED" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        createNewPage.find({ status: "REMOVED" },function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
             else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No removed page found" }) } else {
                 var count = 0;

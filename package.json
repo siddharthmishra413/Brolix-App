@@ -6,12 +6,8 @@
   "dependencies": {
     "apn": "^2.1.2",
     "apns": "^0.1.0",
-<<<<<<< HEAD
-    "async": "^2.1.2",
-    "async-waterfall": "^0.1.5",
-=======
     "async": "^2.1.4",
->>>>>>> ab392163b8b2082e1779c15c8863c2e8881e9db2
+    "async-waterfall": "^0.1.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.1",
     "client-sessions": "^0.7.0",
@@ -39,7 +35,8 @@
     "underscore": "^1.8.3",
     "validator": "^6.1.0",
     "voucher-code-generator": "^1.1.0",
-    "websocket": "^1.0.24"
+    "websocket": "^1.0.24",
+    "yeast": "^0.1.2"
   },
   "devDependencies": {
     "nodemon": "^1.10.2"

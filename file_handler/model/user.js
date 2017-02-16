@@ -177,6 +177,9 @@ var userSchema = new Schema({
     termsCondition: {
         type: String
     },
+    referralCode: {
+        type:String
+    },
     createdAt: {
         type: Date,
         default: Date.now

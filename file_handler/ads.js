@@ -275,17 +275,33 @@ module.exports = {
             }
         })
     },
+    
     "winners": function(req, res) {
-        createNewAds.find({}).exec(function(err, result) {
+        createNewAds.find({ status: "EXPIRED" }).exec(function(err, result) {
+            var array = [];
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Winners details show successfully"
+                var count = 0;
+                for (var i = 0; i < result.length; i++) {
+                    for (var j = 0; j < result[i].winners.length; j++) {
+                        array.push(result[i].winners[j])
+                        count++;
+                    }
+                }
+                User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        res.send({
+                            result: result1,
+                            count: count,
+                            responseCode: 200,
+                            responseMessage: "Post saved successfully"
+                        })
+
+                    }
                 })
             }
         })
     },
+
 
     "listOfAds": function(req, res) {
         createNewAds.find({ userId: req.body.userId }).exec(function(err, result) {
@@ -496,7 +512,7 @@ module.exports = {
                             result: result1,
                             responseCode: 200,
                             count: count,
-                            responseMessage: "all coupon winner"
+                            responseMessage: "All coupon winner shown successfully."
                         })
                     }
                 })
@@ -522,7 +538,7 @@ module.exports = {
                             result: result,
                             responseCode: 200,
                             count: count,
-                            responseMessage: "all cash winner"
+                            responseMessage: "All cash winner shown successfully."
                         })
                     }
                 })
@@ -555,5 +571,22 @@ module.exports = {
                 responseMessage: "Ad edit."
             });
         });
+    },
+
+    "adsFilter": function(req, res) {
+        var startDate = req.body.startDate;
+        var endDate = req.body.endDate;
+        console.log("startDate--->>", startDate)
+        console.log("endDate--->>", endDate)
+        createNewAds.find({ 'createdAt': { $gte: startDate, $lte: endDate }, status: 'ACTIVE' }).sort({ pageName: -1 }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "err" }) } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Result shown successfully."
+                })
+            }
+        })
     }
+
 }

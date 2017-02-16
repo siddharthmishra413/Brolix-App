@@ -15,6 +15,7 @@ var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
 var country = require('countryjs');
 var cron = require('node-cron');
+var yeast = require('yeast');
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -51,6 +52,7 @@ module.exports = {
                         User.findOne({ mobileNumber: req.body.mobileNumber }, function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
                                 req.body.otp = functions.otp();
+                                req.body.referralCode = yeast();
                                 var user = User(req.body)
                                 user.save(function(err, result) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
@@ -1061,7 +1063,7 @@ module.exports = {
     }
 }
 
-cron.schedule('*/1 * * * *', function() {
+cron.schedule('* * * * *', function() {
    User.find({}).exec(function(err, result) {
        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
            var array = [];
