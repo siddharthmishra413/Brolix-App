@@ -359,6 +359,7 @@ module.exports = {
             });
         })
     },
+
     "viewAd": function(req, res) { //req.body.userId, adId
         var userId = req.body.userId;
         waterfall([
@@ -587,6 +588,45 @@ module.exports = {
                 })
             }
         })
-    }
+    },
+
+    "searchAds": function(req, res) {
+         var condition = { $and: [] };
+      if (req.body.adsType == 'all') {
+          var obj = {
+              $or: [{ adsType: 'cash' }, { adsType: 'coupon' }]
+          }
+          condition.$and.push(obj);
+      } else {
+          var obj = {
+               adsType: req.body.adsType 
+          }
+          condition.$and.push(obj);
+      }
+
+      if (req.body.status == 'all') {
+          var obj = {
+              $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }]
+          }
+          condition.$and.push(obj);
+      } else {
+          var obj = {
+               status: req.body.status 
+          }
+          condition.$and.push(obj);
+      }
+
+     createNewAds.find(condition).exec(function(err, result) {
+         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+         else {
+             res.send({
+                 result: result,
+                 responseCode: 200,
+                 responseMessage: "Result shown successfully."
+                 })
+             }
+         })
+     }
+
 
 }
