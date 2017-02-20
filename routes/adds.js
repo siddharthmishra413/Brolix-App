@@ -28,7 +28,7 @@ app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);
 app.get('/adsCommentList/:id/:pageNumber', authUser.authUser, adsHandler.adsCommentList);
 app.post('/tagOnads', authUser.authUser, adsHandler.tagOnads);
 app.put('/editAd/:id/:userId', authUser.authUser, adsHandler.editAd);
-app.post('/adsFilter',authUser.authUser,adsHandler.adsFilter);
+app.post('/adsDateFilter',authUser.authUser,adsHandler.adsDateFilter);
 app.post('/searchAds',authUser.authUser,adsHandler.searchAds)
 
 module.exports = app;

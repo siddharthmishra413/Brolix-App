@@ -25,6 +25,7 @@ module.exports = {
             var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
             req.body.couponCode = couponCode;
             req.body.viewerLenght = 5;
+            req.body.couponStatus = 'valid';
             var Ads = new createNewAds(req.body);
             Ads.save(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
@@ -39,6 +40,7 @@ module.exports = {
                 } else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
                         //req.body.viewerLenght = 1000;
+                        req.body.cashStatus = 'pending';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -275,7 +277,7 @@ module.exports = {
             }
         })
     },
-    
+
     "winners": function(req, res) {
         createNewAds.find({ status: "EXPIRED" }).exec(function(err, result) {
             var array = [];
@@ -420,14 +422,19 @@ module.exports = {
             function(winners, cashPrize, couponCode, callback) {
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
+
                         var date = new Date();
 
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date } }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
 
                                 if (result3.adsType == "cash") {
-                                    console.log("2")
-                                    User.update({ _id: { $in: winners } }, { $inc: { cash: cashPrize, gifts: 1 } }, { multi: true }, function(err, result) {
+                                     
+                                      var data = {
+                                        cash: cashPrize,
+                                        adId:req.body.adId
+                                      }                                    
+                                    User.update({ _id: { $in: winners } }, { $push: { cashPrize: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
 
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                             res.send({
@@ -574,15 +581,20 @@ module.exports = {
         });
     },
 
-    "adsFilter": function(req, res) {
+    "adsDateFilter": function(req, res) {
         var startDate = req.body.startDate;
         var endDate = req.body.endDate;
         console.log("startDate--->>", startDate)
         console.log("endDate--->>", endDate)
         createNewAds.find({ 'createdAt': { $gte: startDate, $lte: endDate }, status: 'ACTIVE' }).sort({ pageName: -1 }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "err" }) } else {
+                var count = 0;
+                for (var i = 0; i < result.length; i++) {
+                    count++;
+                }
                 res.send({
                     result: result,
+                    count: count,
                     responseCode: 200,
                     responseMessage: "Result shown successfully."
                 })
@@ -591,42 +603,41 @@ module.exports = {
     },
 
     "searchAds": function(req, res) {
-         var condition = { $and: [] };
-      if (req.body.adsType == 'all') {
-          var obj = {
-              $or: [{ adsType: 'cash' }, { adsType: 'coupon' }]
-          }
-          condition.$and.push(obj);
-      } else {
-          var obj = {
-               adsType: req.body.adsType 
-          }
-          condition.$and.push(obj);
-      }
+        var condition = { $and: [] };
+        if (req.body.adsType == 'all') {
+            var obj = {
+                $or: [{ adsType: 'cash' }, { adsType: 'coupon' }]
+            }
+            condition.$and.push(obj);
+        } else {
+            var obj = {
+                adsType: req.body.adsType
+            }
+            condition.$and.push(obj);
+        }
 
-      if (req.body.status == 'all') {
-          var obj = {
-              $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }]
-          }
-          condition.$and.push(obj);
-      } else {
-          var obj = {
-               status: req.body.status 
-          }
-          condition.$and.push(obj);
-      }
+        if (req.body.status == 'all') {
+            var obj = {
+                $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }]
+            }
+            condition.$and.push(obj);
+        } else {
+            var obj = {
+                status: req.body.status
+            }
+            condition.$and.push(obj);
+        }
 
-     createNewAds.find(condition).exec(function(err, result) {
-         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-         else {
-             res.send({
-                 result: result,
-                 responseCode: 200,
-                 responseMessage: "Result shown successfully."
-                 })
-             }
-         })
-     }
+        createNewAds.find(condition).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Result shown successfully."
+                })
+            }
+        })
+    }
 
 
 }

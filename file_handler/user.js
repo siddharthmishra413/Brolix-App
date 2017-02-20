@@ -732,7 +732,8 @@ module.exports = {
 
     "showLuckCard": function(req, res) {
         User.find({ _id: req.body.userId, 'luckCardObject.status': "ACTIVE" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No card found" }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+            else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No card found" }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     for (j = 0; j < result[i].luckCardObject.length; j++) {
@@ -1064,34 +1065,45 @@ module.exports = {
 }
 
 cron.schedule('* * * * *', function() {
-   User.find({}).exec(function(err, result) {
-       if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-           var array = [];
-           var startTime = new Date().toUTCString();
-           var h = new Date(new Date(startTime).setHours(00)).toUTCString();
-           var m = new Date(new Date(h).setMinutes(00)).toUTCString();
-           var currentTime = Date.now(m)
-           for (var i = 0; i < result.length; i++) {
-               for (var j = 0; j < result[i].coupon.length; j++) {
-                   if (currentTime >= Math.round(result[i].coupon[j].expirationTime)) {
-                       array.push(result[i].coupon[j]._id)
-                   } else {
-                       console.log("time is not equal")
-                   }
-               }
-           }
-           for (var i = 0; i < array.length; i++) {
-               User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "USED" } }, { multi: true }, function(err, result1) {
-                   if (err) { res.send({ responseCode: 500, responseMessage: err }); } else {
-                       console.log("else")
-                   }
-               })
-           }
-       }
-       // res.send({
-       //     result: result,
-       //     responseCode: 200,
-       //     responseMessage: "data shown successfully"
-       // })
-   })
+
+    User.find({ 'coupon.couponStatus': "valid" }).exec(function(err, result) {
+        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+       //  else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); }
+          else {
+            var array = [];
+            var array1 = [];
+            var startTime = new Date().toUTCString();
+            var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+            var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+            var currentTime = Date.now(m)
+            for (var i = 0; i < result.length; i++) {
+                for (var j = 0; j < result[i].coupon.length; j++) {
+                    if (currentTime <= Math.round(result[i].coupon[j].expirationTime)) {
+                        array.push(result[i].coupon[j]._id);
+                        array1.push(result[i].coupon[j].adId)
+                    } else {
+                        console.log("time is not equal")
+                    }
+                }
+            }
+            for (var i = 0; i < array.length; i++) {
+                User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "Expired" } }, { multi: true }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                        createNewAds.update({ _id: { $in: array1 } }, { $set: { 'couponStatus': "Expired" } }, function(err, result) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+
+                            }
+
+                        })
+
+                    }
+                })
+            }
+        }
+        // res.send({
+        //     result: result,
+        //     responseCode: 200,
+        //     responseMessage: "data shown successfully"
+        // })
+    })
 })

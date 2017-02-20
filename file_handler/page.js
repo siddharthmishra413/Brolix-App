@@ -438,5 +438,30 @@ module.exports = {
                 });
             });
         }
+    },
+
+    "pageFilter": function(req, res){
+        var condition = {};
+        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+            if (key == 'cashtype' || key == 'couponType') {
+                var cond = { $or: [] };
+                if (key == "cashtype") {
+                    for (data in req.body[key]) {
+                        cond.$or.push({ cashtype: req.body[key][data] })
+                    }
+                } else {
+                    for (data in req.body[key]) {
+                        cond.$or.push({ couponType: req.body[key][data] })
+                    }
+                }
+                condition[key] = cond;
+            } else {
+                condition[key] = req.body[key];
+            }
+        });
+
+
     }
+
+
 }

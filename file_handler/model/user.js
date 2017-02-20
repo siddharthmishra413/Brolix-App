@@ -69,10 +69,11 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
-    cashPrize: {
-        type: Number,
-        default: 0
-    },
+    cashPrize: [{
+        cash: {type: String},
+        adId:{ type: String},
+        cashStatus: {type: String, default: 'pending'}
+    }],
     couponPrize: [],
     gifts: {
         type: Number,
@@ -180,6 +181,10 @@ var userSchema = new Schema({
     referralCode: {
         type:String
     },
+    cashStatus: [{
+        adId:{ type: String},
+        cashStatus: {type: String, default: 'pending'}
+    }],
     createdAt: {
         type: Date,
         default: Date.now

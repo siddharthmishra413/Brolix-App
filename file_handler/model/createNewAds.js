@@ -79,12 +79,14 @@ var createNewAdsSchema = new Schema({
     couponCode: {
         type: String
     },
+    couponStatus: {
+        type: String
+    },
     cashAdPrize: {
         type: Number
     },
     cashStatus: {
-        type: String,
-        default: 'pending'
+        type: String
     },
     adContentType: { type: String },
     musicFileName: { type: String },
@@ -106,7 +108,7 @@ var createNewAdsSchema = new Schema({
     },
     raffleCount: [],
     like: [],
-    winners: [],
+    winners: [String],
     viewerLenght: { type: Number },
     luckCardListObject: [{
         userId: { type: String },
@@ -156,7 +158,7 @@ var createNewAdsSchema = new Schema({
         userId: { type: String },
         senderId: []
     }],
-    commentCount:{type:Number, default:0},
+    commentCount: { type: Number, default: 0 },
     createdAt: {
         type: Date,
         default: Date.now
