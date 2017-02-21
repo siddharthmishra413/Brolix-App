@@ -25,5 +25,7 @@ app.post('/getSocialMediaLink', authUser.authUser, pageHandler.getSocialMediaLin
 app.post('/particularPageCouponWinners/:pageNumber', authUser.authUser, pageHandler.particularPageCouponWinners);
 app.post('/particularPageCashWinners/:pageNumber', authUser.authUser, pageHandler.particularPageCashWinners);
 app.put('/adAdmin/:id', authUser.authUser, pageHandler.adAdmin);
+app.post('/pageFilter', authUser.authUser, pageHandler.pageFilter);
+
 
 module.exports = app;

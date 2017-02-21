@@ -48,10 +48,7 @@ var createNewPageSchema = new mongoose.Schema({
         type: Number,
         trim: true
     },
-    location: {
-        type: String,
-        trim: true
-    },
+    location: [],
     pageImage: {
         type: String,
         trim: true

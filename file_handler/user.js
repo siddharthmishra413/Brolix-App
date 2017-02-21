@@ -1078,7 +1078,7 @@ cron.schedule('* * * * *', function() {
             var currentTime = Date.now(m)
             for (var i = 0; i < result.length; i++) {
                 for (var j = 0; j < result[i].coupon.length; j++) {
-                    if (currentTime <= Math.round(result[i].coupon[j].expirationTime)) {
+                    if (currentTime >= Math.round(result[i].coupon[j].expirationTime)) {
                         array.push(result[i].coupon[j]._id);
                         array1.push(result[i].coupon[j].adId)
                     } else {

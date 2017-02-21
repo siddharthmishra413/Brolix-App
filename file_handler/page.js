@@ -440,28 +440,149 @@ module.exports = {
         }
     },
 
-    "pageFilter": function(req, res){
-        var condition = {};
-        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-            if (key == 'cashtype' || key == 'couponType') {
-                var cond = { $or: [] };
-                if (key == "cashtype") {
-                    for (data in req.body[key]) {
-                        cond.$or.push({ cashtype: req.body[key][data] })
-                    }
-                } else {
-                    for (data in req.body[key]) {
-                        cond.$or.push({ couponType: req.body[key][data] })
-                    }
-                }
-                condition[key] = cond;
-            } else {
-                condition[key] = req.body[key];
-            }
-        });
+    // "pageFilter": function(req, res) {
+    //       var condition = { $or: [] };
+    //       var obj = req.body;
+    //       Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+    //           if (key == 'cashStatus' || key == 'couponStatus') {
+    //               var cond = { $or: [] };
+    //               if (key == "cashStatus") {
+    //                   for (data in obj[key]) {
+    //                       condition.$or.push({ cashStatus: obj[key][data] })
+    //                   }
+    //               } else {
+    //                   for (data in obj[key]) {
+    //                       condition.$or.push({ couponStatus: obj[key][data] })
+    //                   }
+    //               }
+    //               //condition[key] = cond;
+    //           } else if (key == 'subCategory') {
+    //               var cond = { $or: [] };
+    //               for (data in obj[key]) {
+    //                   condition.$or.push({ subCategory: obj[key][data] })
+    //               }
+    //           } else {
+    //               condition[key] = obj[key];
+    //           }
+    //       });
+    //       if (condition.$or.length == 0) {
+    //           delete condition.$or;
+    //       }
+    //       console.log("subCategory--->>",condition)
+    //       createNewAds.find(condition).exec(function(err, result) {
+    //          console.log("result--->>",result)
+    //           if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+    //               res.send({
+    //                   result: result,
+    //                   responseCode: 200,
+    //                   responseMessage: "Result shown successfully."
+    //               })
+    //           }
+    //       })
+    //   },
 
 
-    }
+    //  "pageFilter": function(req, res) {
+    //     var data = {
+    //         'pageName': req.body.country,
+    //         '': req.body.state,
+    //         '': req.body.city,
+    //         'pageName': req.body.pageName,
+    //         'adsType': req.body.type,
+    //         'category': req.body.category,
+    //         'subCategory': req.body.subCategory,
+    //         userId: { $ne: req.body.userId }
+    //     }
+    //     for (var key in data) {
+    //         if (data.hasOwnProperty(key)) {
+    //             if (data[key] == "" || data[key] == null || data[key] == undefined) {
+    //                 delete data[key];
+    //             }
+    //         }
+    //     }
+    //     createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+    //             //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
+    //             res.send({
+    //                 result: results,
+    //                 responseCode: 200,
+    //                 responseMessage: "All Details Found"
+    //             })
+    //         }
+    //     })
+    // },
+
+
+     "pageFilter": function(req, res) {
+          var condition = { $or: [] };
+          var obj = req.body;
+          Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+              if (key == 'subCategory') {
+                  var cond = { $or: [] };
+                  for (data in obj[key]) {
+                      condition.$or.push({ subCategory: obj[key][data] })
+                  }
+              } else {
+                  condition[key] = obj[key];
+              }
+          });
+          if (condition.$or.length == 0) {
+              delete condition.$or;
+          }
+          console.log("subCategory--->>",condition)
+          createNewPage.find(condition).exec(function(err, result) {
+             console.log("result--->>",result)
+              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                  res.send({
+                      result: result,
+                      responseCode: 200,
+                      responseMessage: "Result shown successfully."
+                  })
+              }
+          })
+      },
 
 
 }
+
+
+/*************************************************************************
+
+"searchAds": function(req, res) {
+        var condition = { $and: [] };
+        if (req.body.adsType == 'all') {
+            var obj = {
+                $or: [{ adsType: 'cash' }, { adsType: 'coupon' }]
+            }
+            condition.$and.push(obj);
+        } else {
+            var obj = {
+                adsType: req.body.adsType
+            }
+            condition.$and.push(obj);
+        }
+
+        if (req.body.status == 'all') {
+            var obj = {
+                $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }]
+            }
+            condition.$and.push(obj);
+        } else {
+            var obj = {
+                status: req.body.status
+            }
+            condition.$and.push(obj);
+        }
+
+        createNewAds.find(condition).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Result shown successfully."
+                })
+            }
+        })
+    }
+
+*****************************************************************************/
