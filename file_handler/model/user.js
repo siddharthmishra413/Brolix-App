@@ -59,6 +59,9 @@ var userSchema = new Schema({
     facebookID: {
         type: String
     },
+    googleID:{
+        type: String
+    },
     image: {
         type: String
     },

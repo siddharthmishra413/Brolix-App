@@ -482,36 +482,6 @@ module.exports = {
     //   },
 
 
-    //  "pageFilter": function(req, res) {
-    //     var data = {
-    //         'pageName': req.body.country,
-    //         '': req.body.state,
-    //         '': req.body.city,
-    //         'pageName': req.body.pageName,
-    //         'adsType': req.body.type,
-    //         'category': req.body.category,
-    //         'subCategory': req.body.subCategory,
-    //         userId: { $ne: req.body.userId }
-    //     }
-    //     for (var key in data) {
-    //         if (data.hasOwnProperty(key)) {
-    //             if (data[key] == "" || data[key] == null || data[key] == undefined) {
-    //                 delete data[key];
-    //             }
-    //         }
-    //     }
-    //     createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
-    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-    //             //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
-    //             res.send({
-    //                 result: results,
-    //                 responseCode: 200,
-    //                 responseMessage: "All Details Found"
-    //             })
-    //         }
-    //     })
-    // },
-
 
      "pageFilter": function(req, res) {
           var condition = { $or: [] };
@@ -540,7 +510,7 @@ module.exports = {
                   })
               }
           })
-      },
+      }
 
 
 }

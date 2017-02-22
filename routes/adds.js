@@ -30,5 +30,6 @@ app.post('/tagOnads', authUser.authUser, adsHandler.tagOnads);
 app.put('/editAd/:id/:userId', authUser.authUser, adsHandler.editAd);
 app.post('/adsDateFilter',authUser.authUser,adsHandler.adsDateFilter);
 app.post('/searchAds',authUser.authUser,adsHandler.searchAds)
+app.post('/couponFilter',authUser.authUser,adsHandler.couponFilter)
 
 module.exports = app;

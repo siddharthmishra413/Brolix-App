@@ -103,6 +103,15 @@ var createNewPageSchema = new mongoose.Schema({
     socialMediaClicks: {
         type: String
     },
+    country: {
+        type: String
+    },
+    state: {
+        type:String
+    },
+    city:{
+        type:String
+    },
     createdAt: {
         type: Date,
         default: Date.now

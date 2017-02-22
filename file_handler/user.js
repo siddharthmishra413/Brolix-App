@@ -1061,7 +1061,88 @@ module.exports = {
             }
 
         })
-    }
+    },
+
+    "winnersFilter": function(req, res){
+        var condition = { $or: [] };
+          var obj = req.body;
+           console.log("obj--->>",obj)
+          Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+              if (key == 'cashPrize.cashStatus' || key == 'coupon.couponStatus') {
+                  var cond = { $or: [] };
+                  if (key == "cashPrize.cashStatus") {
+                      for (data in obj[key]) {
+                          condition.$or.push({ 'cashPrize.cashStatus': obj[key][data] })
+                      }
+                  } else {
+                      for (data in obj[key]) {
+                          condition.$or.push({ 'coupon.couponStatus': obj[key][data] })
+                      }
+                  }
+                  //condition[key] = cond;
+              }  else {
+                  condition[key] = obj[key];
+              }
+          });
+          if (condition.$or.length == 0) {
+              delete condition.$or;
+          }
+          console.log("condition--->>",condition)
+          User.find(condition).exec(function(err, result) {
+            // console.log("result--->>",result)
+              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+              else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found."}) }
+               else {
+                  res.send({
+                      result: result,
+                      responseCode: 200,
+                      responseMessage: "Result shown successfully."
+                  })
+              }
+          })
+    },
+
+
+    "googleLogin": function(req, res) {
+        var obj = (req.body.googleID);
+        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter googleID' }); }
+        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
+                var user = new User(req.body)
+                user.save(function(err, result) {
+                    var token = jwt.sign(result, config.secreteKey);
+                    res.header({
+                        "appToken": token
+                    }).send({ result: result, token: token, responseCode: 200, responseMessage: "Signup successfully." });
+                })
+            } else {
+                if (result.googleID == undefined) {
+                    res.send({ responseCode: 201, responseMessage: "You have already register with app.", user: result });
+                } else {
+                    User.findOneAndUpdate({ email: req.body.email }, {
+                        $set: {
+                            deviceType: req.body.deviceType,
+                            deviceToken: req.body.deviceToken
+                        }
+                    }, { new: true }).exec(function(err, user) {
+                        var token = jwt.sign(result, config.secreteKey);
+                        res.header({
+                            "appToken": token
+                        }).send({
+                            result: user,
+                            token: token,
+                            responseCode: 200,
+                            responseMessage: "Login successfully."
+                        });
+                        //console.log("what is in token-->>>" + token);
+                    })
+                }
+            }
+        })
+    },
+
+
 }
 
 cron.schedule('* * * * *', function() {
@@ -1087,9 +1168,9 @@ cron.schedule('* * * * *', function() {
                 }
             }
             for (var i = 0; i < array.length; i++) {
-                User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "Expired" } }, { multi: true }, function(err, result1) {
+                User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "expired" } }, { multi: true }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                        createNewAds.update({ _id: { $in: array1 } }, { $set: { 'couponStatus': "Expired" } }, function(err, result) {
+                        createNewAds.update({ _id: { $in: array1 } }, { $set: { 'couponStatus': "expired" } }, function(err, result) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
 
                             }
