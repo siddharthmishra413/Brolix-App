@@ -732,8 +732,7 @@ module.exports = {
 
     "showLuckCard": function(req, res) {
         User.find({ _id: req.body.userId, 'luckCardObject.status': "ACTIVE" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
-            else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No card found" }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No card found" }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     for (j = 0; j < result[i].luckCardObject.length; j++) {
@@ -1063,43 +1062,41 @@ module.exports = {
         })
     },
 
-    "winnersFilter": function(req, res){
+    "winnersFilter": function(req, res) {
         var condition = { $or: [] };
-          var obj = req.body;
-           console.log("obj--->>",obj)
-          Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-              if (key == 'cashPrize.cashStatus' || key == 'coupon.couponStatus') {
-                  var cond = { $or: [] };
-                  if (key == "cashPrize.cashStatus") {
-                      for (data in obj[key]) {
-                          condition.$or.push({ 'cashPrize.cashStatus': obj[key][data] })
-                      }
-                  } else {
-                      for (data in obj[key]) {
-                          condition.$or.push({ 'coupon.couponStatus': obj[key][data] })
-                      }
-                  }
-                  //condition[key] = cond;
-              }  else {
-                  condition[key] = obj[key];
-              }
-          });
-          if (condition.$or.length == 0) {
-              delete condition.$or;
-          }
-          console.log("condition--->>",condition)
-          User.find(condition).exec(function(err, result) {
+        var obj = req.body;
+        console.log("obj--->>", obj)
+        Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+            if (key == 'cashPrize.cashStatus' || key == 'coupon.couponStatus') {
+                var cond = { $or: [] };
+                if (key == "cashPrize.cashStatus") {
+                    for (data in obj[key]) {
+                        condition.$or.push({ 'cashPrize.cashStatus': obj[key][data] })
+                    }
+                } else {
+                    for (data in obj[key]) {
+                        condition.$or.push({ 'coupon.couponStatus': obj[key][data] })
+                    }
+                }
+                //condition[key] = cond;
+            } else {
+                condition[key] = obj[key];
+            }
+        });
+        if (condition.$or.length == 0) {
+            delete condition.$or;
+        }
+        console.log("condition--->>", condition)
+        User.find(condition).exec(function(err, result) {
             // console.log("result--->>",result)
-              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-              else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found."}) }
-               else {
-                  res.send({
-                      result: result,
-                      responseCode: 200,
-                      responseMessage: "Result shown successfully."
-                  })
-              }
-          })
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Result shown successfully."
+                })
+            }
+        })
     },
 
 
@@ -1141,14 +1138,60 @@ module.exports = {
             }
         })
     },
+
+    "buyCoupon": function(req, res) { // user Id and ad Id and brolix in request 
+        createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
+            console.log("result", result)
+            console.log("couponBuyersLength", result.couponBuyersLength)
+            console.log("couponPurchased", result.couponPurchased)
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength <= result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
+
+                User.findOne({ _id: req.body.userId }).exec(function(err, result2) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (result2.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+                        var couponCode = result.couponCode;
+                        console.log("couponCode--->>", result.couponCode)
+                        console.log("couponExpiryDate--->>", result.couponExpiryDate)
+                        var startTime = new Date().toUTCString();
+                        var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+                        var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+                        var s = Date.now(m)
+                        var coupanAge = result.couponExpiryDate;
+                        var actualTime = parseInt(s) + parseInt(coupanAge);
+                        console.log("actualTime-->>", actualTime)
+                        var data = {
+                            couponCode: couponCode,
+                            expirationTime: actualTime,
+                            adId: req.body.adId
+                        }
+
+                        User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data } }, { new: true }, function(err, result3) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+
+                            }
+
+                        })
+                    }
+                })
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Successfully purchased the coupon."
+                })
+
+            }
+        })
+    }
+
+
 }
+
 
 cron.schedule('00 12 * * *', function() {
 
     User.find({ 'coupon.couponStatus': "valid" }).exec(function(err, result) {
         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-       //  else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); }
-          else {
+        //  else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); }
+        else {
             var array = [];
             var array1 = [];
             var startTime = new Date().toUTCString();

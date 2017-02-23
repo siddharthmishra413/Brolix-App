@@ -367,7 +367,6 @@ module.exports = {
         waterfall([
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
-                    console.log("result--->>", result)
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) return res.send({ responseCode: 406, responseMessage: "Winner allready decided" });
                     var randomIndex = [];
                     var raffleCount = result.raffleCount;
@@ -434,6 +433,7 @@ module.exports = {
                                         cash: cashPrize,
                                         adId: req.body.adId
                                     }
+
                                     User.update({ _id: { $in: winners } }, { $push: { cashPrize: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
 
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
@@ -446,6 +446,7 @@ module.exports = {
                                     })
 
                                 } else {
+                                    console.log("hiddenGift - - 1", result3.hiddenGifts)
                                     var startTime = new Date().toUTCString();
                                     var h = new Date(new Date(startTime).setHours(00)).toUTCString();
                                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
@@ -457,7 +458,12 @@ module.exports = {
                                         expirationTime: actualTime,
                                         adId: req.body.adId
                                     }
-                                    User.update({ _id: { $in: winners } }, { $push: { coupon: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                    var data1 = {
+                                        hiddenCode: result3.hiddenGifts,
+                                        adId: req.body.adId
+                                    }
+                                    console.log("data1-->>>", data1)
+                                    User.update({ _id: { $in: winners } }, { $push: { coupon: data, hiddenGifts: data1 }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
                                         console.log("4")
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                             res.send({
@@ -640,43 +646,41 @@ module.exports = {
     },
 
 
-    "couponFilter": function (req, res){
-          var condition = { $or: [] };
-          var obj = req.body;
-           console.log("obj--->>",obj)
-          Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-              if (key == 'cashStatus' || key == 'couponStatus') {
-                  var cond = { $or: [] };
-                  if (key == "cashStatus") {
-                      for (data in obj[key]) {
-                          condition.$or.push({ cashStatus: obj[key][data] })
-                      }
-                  } else {
-                      for (data in obj[key]) {
-                          condition.$or.push({ couponStatus: obj[key][data] })
-                      }
-                  }
-                  //condition[key] = cond;
-              }  else {
-                  condition[key] = obj[key];
-              }
-          });
-          if (condition.$or.length == 0) {
-              delete condition.$or;
-          }
-          console.log("condition--->>",condition)
-          createNewAds.find(condition).exec(function(err, result) {
+    "couponFilter": function(req, res) {
+        var condition = { $or: [] };
+        var obj = req.body;
+        console.log("obj--->>", obj)
+        Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+            if (key == 'cashStatus' || key == 'couponStatus') {
+                var cond = { $or: [] };
+                if (key == "cashStatus") {
+                    for (data in obj[key]) {
+                        condition.$or.push({ cashStatus: obj[key][data] })
+                    }
+                } else {
+                    for (data in obj[key]) {
+                        condition.$or.push({ couponStatus: obj[key][data] })
+                    }
+                }
+                //condition[key] = cond;
+            } else {
+                condition[key] = obj[key];
+            }
+        });
+        if (condition.$or.length == 0) {
+            delete condition.$or;
+        }
+        console.log("condition--->>", condition)
+        createNewAds.find(condition).exec(function(err, result) {
             // console.log("result--->>",result)
-              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-              else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found."}) }
-               else {
-                  res.send({
-                      result: result,
-                      responseCode: 200,
-                      responseMessage: "Result shown successfully."
-                  })
-              }
-          })
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Result shown successfully."
+                })
+            }
+        })
 
     }
 

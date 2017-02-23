@@ -90,7 +90,16 @@ var createNewAdsSchema = new Schema({
     },
     adContentType: { type: String },
     musicFileName: { type: String },
-    couponSellPrice: { type: String },
+    couponSellPrice: {
+        type: String
+    },
+    couponBuyersLength:{
+        type:Number
+    },
+    couponPurchased:{
+        type: Number,
+        default:0
+    },
     couponSellViewers: { type: String },
     dawnloadPagePhoto: [],
     whoWillSeeYourAdd: [{

@@ -41,5 +41,5 @@ app.post('/onlineUserList', authUser.authUser, userHandler.onlineUserList);
 app.post('/userGifts', authUser.authUser, userHandler.userGifts);
 app.post('/winnersFilter', authUser.authUser, userHandler.winnersFilter);
 app.post('/googleLogin',  userHandler.googleLogin);
-
+app.post('/buyCoupon',  authUser.authUser, userHandler.buyCoupon);
 module.exports = app;
