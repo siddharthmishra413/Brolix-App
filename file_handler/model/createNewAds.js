@@ -80,7 +80,7 @@ var createNewAdsSchema = new Schema({
         type: String
     },
     couponStatus: {
-        type: String
+        type: String,
     },
     cashAdPrize: {
         type: Number
@@ -93,12 +93,15 @@ var createNewAdsSchema = new Schema({
     couponSellPrice: {
         type: Number
     },
-    couponBuyersLength:{
-        type:Number
+    couponBuyersLength: {
+        type: Number
     },
-    couponPurchased:{
+    couponPurchased: {
         type: Number,
-        default:0
+        default: 0
+    },
+    sellCoupon: {
+        type: Boolean
     },
     couponSellViewers: { type: String },
     dawnloadPagePhoto: [],
@@ -142,6 +145,9 @@ var createNewAdsSchema = new Schema({
     numberOfWinners: {
         type: Number,
         default: 1
+    },
+    couponUsedDate: {
+        type: Date
     },
     couponExpiryDate: {
         type: String
