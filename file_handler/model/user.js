@@ -75,7 +75,7 @@ var userSchema = new Schema({
     cashPrize: [{
         cash: { type: String },
         adId: { type: String },
-        cashStatus: { type: String, default: 'pending' }
+        cashStatus: { type: String, default: 'PENDING' }
     }],
     couponPrize: [],
     gifts: {
@@ -90,7 +90,7 @@ var userSchema = new Schema({
         couponCode: { type: String },
         adId: { type: String },
         expirationTime: { type: Date, default: Date.now },
-        couponStatus: { type: String, default: 'valid' }
+        couponStatus: { type: String, default: 'VALID' }
     }],
     hiddenGifts: [{
         adId: { type: String },

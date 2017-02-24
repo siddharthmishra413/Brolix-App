@@ -1083,7 +1083,6 @@ module.exports = {
     "winnersFilter": function(req, res) {
         var condition = { $or: [] };
         var obj = req.body;
-        console.log("obj--->>", obj)
         Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
             if (key == 'cashPrize.cashStatus' || key == 'coupon.couponStatus') {
                 var cond = { $or: [] };
@@ -1104,7 +1103,6 @@ module.exports = {
         if (condition.$or.length == 0) {
             delete condition.$or;
         }
-        console.log("condition--->>", condition)
         User.find(condition).exec(function(err, result) {
             // console.log("result--->>",result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
@@ -1220,9 +1218,9 @@ cron.schedule('00 12 * * *', function() {
                 }
             }
             for (var i = 0; i < array.length; i++) {
-                User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "expired" } }, { multi: true }, function(err, result1) {
+                User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "EXPIRED" } }, { multi: true }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                        createNewAds.update({ _id: { $in: array1 } }, { $set: { 'couponStatus': "expired" } }, function(err, result) {
+                        createNewAds.update({ _id: { $in: array1 } }, { $set: { 'couponStatus': "EXPIRED" } }, function(err, result) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
 
                             }

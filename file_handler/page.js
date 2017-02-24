@@ -440,112 +440,26 @@ module.exports = {
         }
     },
 
-    // "pageFilter": function(req, res) {
-    //       var condition = { $or: [] };
-    //       var obj = req.body;
-    //       Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-    //           if (key == 'cashStatus' || key == 'couponStatus') {
-    //               var cond = { $or: [] };
-    //               if (key == "cashStatus") {
-    //                   for (data in obj[key]) {
-    //                       condition.$or.push({ cashStatus: obj[key][data] })
-    //                   }
-    //               } else {
-    //                   for (data in obj[key]) {
-    //                       condition.$or.push({ couponStatus: obj[key][data] })
-    //                   }
-    //               }
-    //               //condition[key] = cond;
-    //           } else if (key == 'subCategory') {
-    //               var cond = { $or: [] };
-    //               for (data in obj[key]) {
-    //                   condition.$or.push({ subCategory: obj[key][data] })
-    //               }
-    //           } else {
-    //               condition[key] = obj[key];
-    //           }
-    //       });
-    //       if (condition.$or.length == 0) {
-    //           delete condition.$or;
-    //       }
-    //       console.log("subCategory--->>",condition)
-    //       createNewAds.find(condition).exec(function(err, result) {
-    //          console.log("result--->>",result)
-    //           if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-    //               res.send({
-    //                   result: result,
-    //                   responseCode: 200,
-    //                   responseMessage: "Result shown successfully."
-    //               })
-    //           }
-    //       })
-    //   },
-
-
-
-     "pageFilter": function(req, res) {
-          var condition = { $or: [] };
-          var obj = req.body;
-          Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-              if (key == 'subCategory') {
-                  var cond = { $or: [] };
-                  for (data in obj[key]) {
-                      condition.$or.push({ subCategory: obj[key][data] })
-                  }
-              } else {
-                  condition[key] = obj[key];
-              }
-          });
-          if (condition.$or.length == 0) {
-              delete condition.$or;
-          }
-          console.log("subCategory--->>",condition)
-          createNewPage.find(condition).exec(function(err, result) {
-             console.log("result--->>",result)
-              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                  res.send({
-                      result: result,
-                      responseCode: 200,
-                      responseMessage: "Result shown successfully."
-                  })
-              }
-          })
-      }
-
-
-}
-
-
-/*************************************************************************
-
-"searchAds": function(req, res) {
-        var condition = { $and: [] };
-        if (req.body.adsType == 'all') {
-            var obj = {
-                $or: [{ adsType: 'cash' }, { adsType: 'coupon' }]
+    "pageFilter": function(req, res) {
+        var condition = { $or: [] };
+        var obj = req.body;
+        Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+            if (key == 'subCategory') {
+                var cond = { $or: [] };
+                for (data in obj[key]) {
+                    condition.$or.push({ subCategory: obj[key][data] })
+                }
+            } else {
+                condition[key] = obj[key];
             }
-            condition.$and.push(obj);
-        } else {
-            var obj = {
-                adsType: req.body.adsType
-            }
-            condition.$and.push(obj);
+        });
+        if (condition.$or.length == 0) {
+            delete condition.$or;
         }
-
-        if (req.body.status == 'all') {
-            var obj = {
-                $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }]
-            }
-            condition.$and.push(obj);
-        } else {
-            var obj = {
-                status: req.body.status
-            }
-            condition.$and.push(obj);
-        }
-
-        createNewAds.find(condition).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+        console.log("subCategory--->>", condition)
+        createNewPage.find(condition).exec(function(err, result) {
+            console.log("result--->>", result)
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -555,4 +469,5 @@ module.exports = {
         })
     }
 
-*****************************************************************************/
+
+}

@@ -25,7 +25,7 @@ module.exports = {
             var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
             req.body.couponCode = couponCode;
             req.body.viewerLenght = 5;
-            req.body.couponStatus = 'valid';
+            req.body.couponStatus = 'VALID';
             var Ads = new createNewAds(req.body);
             Ads.save(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
@@ -40,7 +40,7 @@ module.exports = {
                 } else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
                         //req.body.viewerLenght = 1000;
-                        req.body.cashStatus = 'pending';
+                        req.body.cashStatus = 'PENDING';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -446,15 +446,12 @@ module.exports = {
                                     })
 
                                 } else {
-                                    console.log("hiddenGift - - 1", result3.hiddenGifts)
-                                    console.log("hiddenGift - - 1", result3.hiddenGifts)
                                     var startTime = new Date().toUTCString();
                                     var h = new Date(new Date(startTime).setHours(00)).toUTCString();
                                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
                                     var s = Date.now(m)
                                     var coupanAge = result3.couponExpiryDate;
                                     var actualTime = parseInt(s) + parseInt(coupanAge);
-                                    console.log("actualTime - - 1", actualTime)
                                     var data = {
                                         couponCode: couponCode,
                                         expirationTime: actualTime,
@@ -464,7 +461,6 @@ module.exports = {
                                         hiddenCode: hiddenGifts,
                                         adId: req.body.adId
                                     }
-                                    console.log("data1-->>>", data1)
                                     User.update({ _id: { $in: winners } }, { $push: { coupon: data, hiddenGifts: data1 }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
                                         console.log("4")
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
@@ -518,10 +514,8 @@ module.exports = {
                     for (j = 0; j < result[i].winners.length; j++) {
                         array.push(result[i].winners[j]);
                         count++;
-                        console.log("count--", count)
                     }
                 }
-                console.log("count-->>>", count)
                 User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
                         res.send({
@@ -547,7 +541,6 @@ module.exports = {
                         count++;
                     }
                 }
-                console.log("count-->>", count)
                 User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
                         res.send({
@@ -592,8 +585,6 @@ module.exports = {
     "adsDateFilter": function(req, res) {
         var startDate = req.body.startDate;
         var endDate = req.body.endDate;
-        console.log("startDate--->>", startDate)
-        console.log("endDate--->>", endDate)
         createNewAds.find({ 'createdAt': { $gte: startDate, $lte: endDate }, status: 'ACTIVE' }).sort({ pageName: -1 }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "err" }) } else {
                 var count = 0;
@@ -650,7 +641,6 @@ module.exports = {
     "couponFilter": function(req, res) {
         var condition = { $or: [] };
         var obj = req.body;
-        console.log("obj--->>", obj)
         Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
             if (key == 'cashStatus' || key == 'couponStatus') {
                 var cond = { $or: [] };
@@ -671,7 +661,6 @@ module.exports = {
         if (condition.$or.length == 0) {
             delete condition.$or;
         }
-        console.log("condition--->>", condition)
         createNewAds.find(condition).exec(function(err, result) {
             // console.log("result--->>",result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
@@ -688,7 +677,6 @@ module.exports = {
     "couponGiftsFilter": function(req, res) {
         var userId = req.body.userId;
         var status = req.body.couponStatus;
-        console.log("condition--->>", status)
         var array = [];
         User.findOne({ _id: userId }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
@@ -711,7 +699,6 @@ module.exports = {
     "cashGiftsFilter": function(req, res) { // userId in req 
         var userId = req.body.userId;
         var status = req.body.cashStatus;
-        console.log("condition--->>", status)
         var array = [];
         createNewAds.find({ adsType: "cash" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
