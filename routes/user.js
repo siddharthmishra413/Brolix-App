@@ -43,8 +43,8 @@ app.post('/winnersFilter', authUser.authUser, userHandler.winnersFilter);
 app.post('/googleLogin',  userHandler.googleLogin);
 app.post('/buyCoupon',  authUser.authUser, userHandler.buyCoupon);
 app.post('/userCashGifts/:pageNumber',  authUser.authUser, userHandler.userCashGifts);
-app.post('/addCouponToFavourite',  authUser.authUser, userHandler.addCouponToFavourite);
-app.post('/listOfFavouriteCoupon',  authUser.authUser, userHandler.listOfFavouriteCoupon);
+app.post('/addRemoveCouponFromFavourite',  authUser.authUser, userHandler.addRemoveCouponFromFavourite);
+app.post('/listOfFavouriteCoupon/:pageNumber',  authUser.authUser, userHandler.listOfFavouriteCoupon);
 
 
 module.exports = app;
