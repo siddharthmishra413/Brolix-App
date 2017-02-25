@@ -957,7 +957,7 @@ module.exports = {
                         res.send({
                             result: result1,
                             responseCode: 200,
-                            responseMessage: "result show successfully;"
+                            responseMessage: "result show successfully."
                         })
                     }
                 })
@@ -1209,53 +1209,74 @@ module.exports = {
     },
 
     "addRemoveCouponFromFavourite": function(req, res) {
-         var adId = req.body.adId;
-         if (req.body.type == "favourite") {
-             User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
-                 var favouriteCoupon = result.favouriteCoupon;
+        var adId = req.body.adId;
+        if (req.body.type == "favourite") {
+            User.findOne({ _id: req.body.userId }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
+                var favouriteCoupon = result.favouriteCoupon;
 
-                 var mySet = new Set(favouriteCoupon);
-                 var has = mySet.has(adId)
-                 if (has) { res.send({ responseCode: 302, responseMessage: "Already added to favourites." }) } else if (!has) {
-                     User.findOneAndUpdate({ _id: req.body.userId }, { $push: { favouriteCoupon: adId } }, { new: true }, function(err, result1) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
-                             res.send({
+                var mySet = new Set(favouriteCoupon);
+                var has = mySet.has(adId)
+                if (has) { res.send({ responseCode: 302, responseMessage: "Already added to favourites." }) } else if (!has) {
+                    User.findOneAndUpdate({ _id: req.body.userId }, { $push: { favouriteCoupon: adId } }, { new: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                            res.send({
                                 // result: result1,
-                                 responseCode: 200,
-                                 responseMessage: "successfully added to favourite."
-                             })
-                         }
-                     })
-                 }
-             })
-         } else {
+                                responseCode: 200,
+                                responseMessage: "successfully added to favourite."
+                            })
+                        }
+                    })
+                }
+            })
+        } else {
 
-             User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
-                 var favouriteCoupon = result.favouriteCoupon;
+            User.findOne({ _id: req.body.userId }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
+                var favouriteCoupon = result.favouriteCoupon;
 
-                 var mySet = new Set(favouriteCoupon);
-                 var has = mySet.has(adId)
-                 if (!has) { res.send({ responseCode: 302, responseMessage: "Already removed from favourites." }) } else if (has) {
-                     User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { favouriteCoupon: -adId } }, { new: true }, function(err, result1) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
-                             res.send({
-                              //   result: result1,
-                                 responseCode: 200,
-                                 responseMessage: "Coupon removed from favourites successfully."
-                             })
-                         }
-                     })
-                 }
-             })
-         }
-     },
+                var mySet = new Set(favouriteCoupon);
+                var has = mySet.has(adId)
+                if (!has) { res.send({ responseCode: 302, responseMessage: "Already removed from favourites." }) } else if (has) {
+                    User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { favouriteCoupon: -adId } }, { new: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                            res.send({
+                                //   result: result1,
+                                responseCode: 200,
+                                responseMessage: "Coupon removed from favourites successfully."
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    },
 
+    "couponExchangeOnOff": function(req, res) {
+        var userId = req.body.userId;
+        var obj = req.body.couponId;
+        var status = req.body.status;
+        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter couponId' }); } else {
+            User.findOne({ _id: userId }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                    User.update({ 'coupon._id': obj }, { $set: { 'coupon.$.exchangeStatus': status } }, { new: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                            res.send({
+                                //result: result1,
+                                responseCode: 200,
+                                responseMessage: "Coupon status changed successfully."
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    }
 
 
 
 }
+
 
 
 
