@@ -1173,8 +1173,8 @@ module.exports = {
                             expirationTime: actualTime,
                             adId: req.body.adId
                         }
-                        User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data } }, { new: true }, function(err, result3) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                        User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data }, $inc: { brolix: -req.body.brolix } }, { new: true }, function(err, result3) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else {
 
                             }
 
@@ -1189,10 +1189,53 @@ module.exports = {
 
             }
         })
+    },
+
+    //favouriteCoupon
+    "addCouponToFavourite": function(req, res) {
+        var adId = req.body.adId;
+        User.findOne({ _id: req.body.userId }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
+            var favouriteCoupon = result.favouriteCoupon;
+
+            var mySet = new Set(favouriteCoupon);
+            var has = mySet.has(adId)
+            if (has) { res.send({ responseCode: 302, responseMessage: "Already added to favourites." }) } else if (!has) {
+                User.findOneAndUpdate({ _id: req.body.userId }, { $push: { favouriteCoupon: adId } }, { new: true }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "successfully added to favourite."
+                        })
+                    }
+                })
+            }
+        })
+    },
+
+    "listOfFavouriteCoupon": function(req, res) {
+        User.findOne({ _id: req.body.userId }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                var array = result.favouriteCoupon;
+
+                createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "successfully shown the result."
+                        })
+                    }
+                })
+            }
+        })
     }
 
 
 }
+
+
 
 
 cron.schedule('00 12 * * *', function() {

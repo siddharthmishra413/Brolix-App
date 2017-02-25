@@ -192,6 +192,7 @@ var userSchema = new Schema({
         adId: { type: String },
         cashStatus: { type: String, default: 'pending' }
     }],
+    favouriteCoupon:[],
     createdAt: {
         type: Date,
         default: Date.now
