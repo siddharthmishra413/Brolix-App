@@ -46,6 +46,7 @@ app.post('/userCashGifts/:pageNumber',  authUser.authUser, userHandler.userCashG
 app.post('/addRemoveCouponFromFavourite',  authUser.authUser, userHandler.addRemoveCouponFromFavourite);
 app.post('/listOfFavouriteCoupon/:pageNumber',  authUser.authUser, userHandler.listOfFavouriteCoupon);
 app.post('/couponExchangeOnOff',  authUser.authUser, userHandler.couponExchangeOnOff);
+app.post('/CouponExchangeRequest',  authUser.authUser, userHandler.CouponExchangeRequest);
 
 
 module.exports = app;
