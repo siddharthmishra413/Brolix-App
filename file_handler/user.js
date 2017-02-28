@@ -16,7 +16,7 @@ var upload = multer({ dest: 'uploads/' })
 var country = require('countryjs');
 var cron = require('node-cron');
 var yeast = require('yeast');
- var followerList = require("./model/followersList");
+var followerList = require("./model/followersList");
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -42,246 +42,251 @@ var avoid = {
 var braintree = require("braintree");
 
 var gateway = braintree.connect({
-  environment: braintree.Environment.Sandbox,
-  merchantId: "hncxrnbt5fh2c2cr",
-  publicKey: "xjhcfhbmqszj6rcx",
-  privateKey: "f3ffe3376878b6d1a0eff16c9099127d"
+    environment: braintree.Environment.Sandbox,
+    merchantId: "hncxrnbt5fh2c2cr",
+    publicKey: "xjhcfhbmqszj6rcx",
+    privateKey: "f3ffe3376878b6d1a0eff16c9099127d"
 });
 
 module.exports = {
-    
-"paymentClientToken": function(req, res){ 
-    gateway.clientToken.generate({}, function (err, response) {
-    console.log(response)
-    responseHandler.apiResponder(req, res, 200,"success", response.clientToken)
-  });
-},
 
-  "paymentIntegration": function(req, res){ 
-      waterfall([
-          function(callback){ 
-              // createNewAds.findOne({
-              //   _id: req.body.Id,
-              //   adsType:'coupon'
-              // }).exec(function(err, result){
-              //   if(err){      
-              //     res.send({
-              //           responseCode: 302,
-              //           responseMessage: 'error.',
-              //           result: err
-              //     });}
-              //   else if(!result){
-              //           res.send({
-              //           responseCode: 404,
-              //           responseMessage: 'data not found.'
-              //         //  result: result
-              //       });
-              //   }
-              //   else{
-                  var nextPay;
-                   // console.log("chefRefund==>>",result.chefRefund)
-                    // if(result.chefRefund == "Yes"){
-                    //   var amount = req.body.paymentDetails.amount;
-                    //   var serviceFee = amount/10 + parseInt(result.chefPay);
-                    //  // var nextPay = 0;
-                    //   console.log("amount"+amount);
-                    //   console.log("serviceFee"+serviceFee)
-                    //   if(serviceFee > amount){
-                    //     nextPay = serviceFee - amount;
-                    //      serviceFee = amount;
-                         
-                    //      console.log("nextPay"+nextPay)
-                    //   }
-                    // }else{
-                    //   console.log("wrong")
-                    //   var amount = req.body.paymentDetails.amount;
-                    //    var serviceFee = amount/10;
-                    //   // nextPay = 0;
-                    // }
-                    var amount = req.body.amount;
-                    var serviceFee = amount/10; 
-                      var transactionCost = amount*(2.9/100)+ 0.30;
-                      merchantAccountParams = {
-                      individual: {
+    "paymentClientToken": function(req, res) {
+        gateway.clientToken.generate({}, function(err, response) {
+            console.log(response)
+            responseHandler.apiResponder(req, res, 200, "success", response.clientToken)
+        });
+    },
+
+    "paymentIntegration": function(req, res) {
+        waterfall([
+            function(callback) {
+                // createNewAds.findOne({
+                //   _id: req.body.Id,
+                //   adsType:'coupon'
+                // }).exec(function(err, result){
+                //   if(err){      
+                //     res.send({
+                //           responseCode: 302,
+                //           responseMessage: 'error.',
+                //           result: err
+                //     });}
+                //   else if(!result){
+                //           res.send({
+                //           responseCode: 404,
+                //           responseMessage: 'data not found.'
+                //         //  result: result
+                //       });
+                //   }
+                //   else{
+                var nextPay;
+                // console.log("chefRefund==>>",result.chefRefund)
+                // if(result.chefRefund == "Yes"){
+                //   var amount = req.body.paymentDetails.amount;
+                //   var serviceFee = amount/10 + parseInt(result.chefPay);
+                //  // var nextPay = 0;
+                //   console.log("amount"+amount);
+                //   console.log("serviceFee"+serviceFee)
+                //   if(serviceFee > amount){
+                //     nextPay = serviceFee - amount;
+                //      serviceFee = amount;
+
+                //      console.log("nextPay"+nextPay)
+                //   }
+                // }else{
+                //   console.log("wrong")
+                //   var amount = req.body.paymentDetails.amount;
+                //    var serviceFee = amount/10;
+                //   // nextPay = 0;
+                // }
+                var amount = req.body.amount;
+                var serviceFee = amount / 10;
+                var transactionCost = amount * (2.9 / 100) + 0.30;
+                merchantAccountParams = {
+                    individual: {
                         firstName: req.body.firstName,
-                        lastName:req.body.lastName,
+                        lastName: req.body.lastName,
                         email: req.body.email,
                         phone: req.body.phoneNumber,
                         dateOfBirth: req.body.dateOfBirth,
                         //ssn: "456-45-4567",
                         address: {
-                          streetAddress: req.body.address.streetAddress,
-                          locality: req.body.address.locality,
-                          region: req.body.address.region,
-                          postalCode: req.body.address.postalCode
+                            streetAddress: req.body.address.streetAddress,
+                            locality: req.body.address.locality,
+                            region: req.body.address.region,
+                            postalCode: req.body.address.postalCode
                         }
-                      },
-                      funding: {
+                    },
+                    funding: {
                         descriptor: "Sub merchantAccount",
                         destination: braintree.MerchantAccount.FundingDestination.Bank,
-                        email:req.body.email,
+                        email: req.body.email,
                         mobilePhone: req.body.phoneNumber,
                         accountNumber: req.body.accountNumber,
                         routingNumber: req.body.routingNumber
-                      },
-                        tosAccepted: true,
-                        masterMerchantAccountId: "mobiloitte"
-                      };
-                     //console.log("nextpay in out merchant==>>"+nextPay)
-                    gateway.merchantAccount.create(merchantAccountParams, function (err, resultss) {
-                      console.log(resultss);
-                       console.log("merchantAccount=====>>>",resultss.merchantAccount.id);
+                    },
+                    tosAccepted: true,
+                    masterMerchantAccountId: "mobiloitte"
+                };
+                //console.log("nextpay in out merchant==>>"+nextPay)
+                gateway.merchantAccount.create(merchantAccountParams, function(err, resultss) {
+                    console.log(resultss);
+                    console.log("merchantAccount=====>>>", resultss.merchantAccount.id);
                     //  console.log("nextpay in create merchant==>>"+nextPay)
-                      callback(null,resultss);
-                     
-                    }); 
-              //   }
-              // })
-          },
-          function(resultss, callback){
-            var amount = req.body.amount;
-                    var serviceFee = amount/10; 
-            console.log("amount=====>>>",amount);
-            console.log("serviceFee=====>>>",serviceFee);
-            console.log("merchantAccount=====>>>",resultss.merchantAccount.id);
-              gateway.transaction.sale({
-                  merchantAccountId: resultss.merchantAccount.id,
-                  amount: amount,
-                  paymentMethodNonce: req.body.paymentMethodNonce,
-                  serviceFeeAmount:serviceFee,
-                  options: {
-                     submitForSettlement: true
-                  }
-              }, function (err, results) {
-                 if(err){      
-                  res.send({
-                        responseCode: 302,
-                        responseMessage: 'error.',
-                        result: err
-                    });}
-                  else if(results.errors){
-                    res.send({
-                        responseCode: 404,
-                        responseMessage: 'not found.'
-                       // result: result
-                    });
-                  }
-                  else{
+                    callback(null, resultss);
 
-                    res.send({
-                        responseCode: 200,
-                        responseMessage: 'Successfully.',
-                        result: results
-                    });
-                // console.log("transaction id===>>", results.transaction.id);
-                // User.find({_id:req.body.chefId}).exec(function(err, ress){
-                //   if(err){respon seHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
-                //   else if(!ress){
-                //     responseHandler.apiResponder(req, res, 404,"Data not found.");
-                //   }
-                //   else{
-                //     var user = new User();
-                //     user.paymentDetails.serviceFee =serviceFee; 
-                //     user.paymentDetails.amount=amount;
-                //     user.paymentDetails.chefId=req.body.paymentDetails.chefId;
-                //     user.paymentDetails.dinerId=req.body.paymentDetails.dinerId;
-                //     user.paymentDetails.mealId=req.body.paymentDetails.mealId;
-                //     user.paymentDetails.transactionId= results.transaction.id;
-                //     user.paymentDetails.transactionCost= transactionCost;
-                //     user.save(function (err,user) {
-                //       if(err){responseHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
-                //       else if (!user) {responseHandler.apiResponder(req, res, 404,"Data not Found")}
-                //       else{
-                //       callback(null ,user,result, amount, serviceFee, transactionCost,nextPay,resultss, results)
-                //       }
-                //     })
+                });
                 //   }
                 // })
-              }
-            })
-          },
-          // function(user,result, amount, serviceFee, transactionCost,nextPay,resultss,results, callback){
-          //     console.log("nextPay value after callback"+nextPay)
-          //     var nextAmount = nextPay;
-          //     if(result.chefRefund == "Yes"){
-          //     console.log("yes");
-          //       if(nextPay = 0 || nextPay == undefined || nextPay == null){
-          //         User.findOneAndUpdate({_id:req.body.paymentDetails.chefId}, {'$set': {
-          //           chefRefund: 'No' , chefPay: 0
-          //         }},{new:true},function (err, resu) {
-          //         if (err) {res.send({response_code: 404,response_message: "something went wrong"});}
-          //         if (!resu) {res.send({response_code: 400,response_message: "Data not found."});}
-          //         else{
-          //           callback(null,user,results)
-          //         }})
-          //       }
-          //       else{
-          //         console.log("nextPay is not zero==>>"+nextAmount)
-          //         User.findOneAndUpdate({_id:req.body.paymentDetails.chefId}, {'$set': {
-          //           chefRefund: 'Yes' , chefPay: nextAmount
-          //         }},{new:true},function (err, resu) {
-          //         if (err) {res.send({response_code: 404,response_message: "something went wrong"});}
-          //         if (!resu) {res.send({response_code: 400,response_message: "Data not found."});}
-          //         else{
-          //           callback(null,user,results)
-          //         }})
-          //       }               
-          //    }else{
-          //     console.log("no");
-          //       callback(null,user,results)
-          //    }
-          // }
+            },
+            function(resultss, callback) {
+                var amount = req.body.amount;
+                var serviceFee = amount / 10;
+                console.log("amount=====>>>", amount);
+                console.log("serviceFee=====>>>", serviceFee);
+                console.log("merchantAccount=====>>>", resultss.merchantAccount.id);
+                gateway.transaction.sale({
+                    merchantAccountId: resultss.merchantAccount.id,
+                    amount: amount,
+                    paymentMethodNonce: req.body.paymentMethodNonce,
+                    serviceFeeAmount: serviceFee,
+                    options: {
+                        submitForSettlement: true
+                    }
+                }, function(err, results) {
+                    if (err) {
+                        res.send({
+                            responseCode: 302,
+                            responseMessage: 'error.',
+                            result: err
+                        });
+                    } else if (results.errors) {
+                        res.send({
+                            responseCode: 404,
+                            responseMessage: 'not found.'
+                                // result: result
+                        });
+                    } else {
 
-      ],function (err, result) {
-          if(err){responseHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
-          else{
-            res.send({
-                        responseCode: 200,
-                        responseMessage: 'Successfully.',
-                        result: result
-                    });
-          }
-      })
-  },
+                        res.send({
+                            responseCode: 200,
+                            responseMessage: 'Successfully.',
+                            result: results
+                        });
+                        // console.log("transaction id===>>", results.transaction.id);
+                        // User.find({_id:req.body.chefId}).exec(function(err, ress){
+                        //   if(err){respon seHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
+                        //   else if(!ress){
+                        //     responseHandler.apiResponder(req, res, 404,"Data not found.");
+                        //   }
+                        //   else{
+                        //     var user = new User();
+                        //     user.paymentDetails.serviceFee =serviceFee; 
+                        //     user.paymentDetails.amount=amount;
+                        //     user.paymentDetails.chefId=req.body.paymentDetails.chefId;
+                        //     user.paymentDetails.dinerId=req.body.paymentDetails.dinerId;
+                        //     user.paymentDetails.mealId=req.body.paymentDetails.mealId;
+                        //     user.paymentDetails.transactionId= results.transaction.id;
+                        //     user.paymentDetails.transactionCost= transactionCost;
+                        //     user.save(function (err,user) {
+                        //       if(err){responseHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
+                        //       else if (!user) {responseHandler.apiResponder(req, res, 404,"Data not Found")}
+                        //       else{
+                        //       callback(null ,user,result, amount, serviceFee, transactionCost,nextPay,resultss, results)
+                        //       }
+                        //     })
+                        //   }
+                        // })
+                    }
+                })
+            },
+            // function(user,result, amount, serviceFee, transactionCost,nextPay,resultss,results, callback){
+            //     console.log("nextPay value after callback"+nextPay)
+            //     var nextAmount = nextPay;
+            //     if(result.chefRefund == "Yes"){
+            //     console.log("yes");
+            //       if(nextPay = 0 || nextPay == undefined || nextPay == null){
+            //         User.findOneAndUpdate({_id:req.body.paymentDetails.chefId}, {'$set': {
+            //           chefRefund: 'No' , chefPay: 0
+            //         }},{new:true},function (err, resu) {
+            //         if (err) {res.send({response_code: 404,response_message: "something went wrong"});}
+            //         if (!resu) {res.send({response_code: 400,response_message: "Data not found."});}
+            //         else{
+            //           callback(null,user,results)
+            //         }})
+            //       }
+            //       else{
+            //         console.log("nextPay is not zero==>>"+nextAmount)
+            //         User.findOneAndUpdate({_id:req.body.paymentDetails.chefId}, {'$set': {
+            //           chefRefund: 'Yes' , chefPay: nextAmount
+            //         }},{new:true},function (err, resu) {
+            //         if (err) {res.send({response_code: 404,response_message: "something went wrong"});}
+            //         if (!resu) {res.send({response_code: 400,response_message: "Data not found."});}
+            //         else{
+            //           callback(null,user,results)
+            //         }})
+            //       }               
+            //    }else{
+            //     console.log("no");
+            //       callback(null,user,results)
+            //    }
+            // }
+
+        ], function(err, result) {
+            if (err) { responseHandler.apiResponder(req, res, 302, "Problem in data finding", err) } else {
+                res.send({
+                    responseCode: 200,
+                    responseMessage: 'Successfully.',
+                    result: result
+                });
+            }
+        })
+    },
     // "paymentIntegration": function(req, res){
 
     // },
 
     //API for user signUP
     "signup": function(req, res) {
-        if (!req.body.email) res.send({ responseCode: 403, responseMessage: 'Email required' });
-        else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-        else {
-            User.findOne({ email: req.body.email }, function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 401, responseMessage: "Email id must be unique." }); } else {
-                    if (!req.body.mobileNumber) res.send({ responseCode: 403, responseMessage: 'Mobile number required' });
-                    else {
-                        if (!validator.isNumeric((req.body.mobileNumber).toString())) return res.status(403).send({ msg: "Mobile number must be numeric" });
-                        if (!validator.isLength((req.body.mobileNumber).toString(), { min: 10, max: 12 })) return res.status(403).send({ msg: "Mobile number length must be 10 to 12." });
-                        User.findOne({ mobileNumber: req.body.mobileNumber }, function(err, result1) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
-                                req.body.otp = functions.otp();
-                                req.body.referralCode = yeast();
-                                var user = User(req.body)
-                                user.save(function(err, result) {
-                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                    var token = jwt.sign(result, config.secreteKey);
-                                    res.header({
-                                        "appToken": token
-                                    }).send({
-                                        result: result,
-                                        token: token,
-                                        responseCode: 200,
-                                        responseMessage: "You have been registered successfully."
-                                    });
-                                })
-                            }
-                        })
-                    }
-                }
-            })
-        }
-    },
+     if (!req.body.email) res.send({ responseCode: 403, responseMessage: 'Email required' });
+     else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+     else {
+         User.findOne({ email: req.body.email }, function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 401, responseMessage: "Email id must be unique." }); } else {
+                 if (!req.body.mobileNumber) res.send({ responseCode: 403, responseMessage: 'Mobile number required' });
+                 else {
+                     if (!validator.isNumeric((req.body.mobileNumber).toString())) return res.status(403).send({ msg: "Mobile number must be numeric" });
+                     if (!validator.isLength((req.body.mobileNumber).toString(), { min: 10, max: 12 })) return res.status(403).send({ msg: "Mobile number length must be 10 to 12." });
+                     User.findOne({ mobileNumber: req.body.mobileNumber }, function(err, result1) {
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
+                             if (req.body.haveReferralCode == true) {
+                                 User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: 250 } }).exec(function(err, result2) {
+                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                         req.body.otp = functions.otp();
+                                         req.body.referralCode = yeast();
+                                         var user = User(req.body)
+                                         user.save(function(err, result) {
+                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                             var token = jwt.sign(result, config.secreteKey);
+                                             res.header({
+                                                 "appToken": token
+                                             }).send({
+                                                 result: result,
+                                                 token: token,
+                                                 responseCode: 200,
+                                                 responseMessage: "You have been registered successfully."
+                                             });
+                                         })
+                                     }
+                                 })
+                             }
+                         }
+                     })
+                 }
+             }
+         })
+     }
+ },
+
 
     //API for verify Otp
     "verifyOtp": function(req, res, next) {
@@ -318,7 +323,7 @@ module.exports = {
                     responseMessage: "Sorry your id or password is incorrect."
                 });
             } else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
-            else {
+            else {              
                 User.findOneAndUpdate({ email: req.body.email }, {
                     $set: {
                         deviceType: req.body.deviceType,
@@ -984,7 +989,7 @@ module.exports = {
                 return res.status(404).send({ responseMessage: "please enter userId" })
             } else if (result.cash <= sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
                 for (i = 0; i < array.length; i++) {
-                    User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] },  $set:{cardPurchaseDate:req.body.date} }, { new: true }).exec(function(err, user) {
+                    User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                             console.log("sum-->>", sum)
                         }
@@ -1023,7 +1028,7 @@ module.exports = {
                 return res.status(404).send({ responseMessage: "please enter userId" })
             } else if (result.brolix <= sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
                 for (i = 0; i < array.length; i++) {
-                    User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": array[i] } , $set:{cardPurchaseDate:req.body.date}}, { new: true }).exec(function(err, user) {
+                    User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                             console.log("sum--->>>", sum)
                         }
@@ -1378,11 +1383,11 @@ module.exports = {
                         var coupanAge = result.couponExpiryDate;
                         var actualTime = parseInt(s) + parseInt(coupanAge);
                         var data = {
-                            couponCode: couponCode+1234,
+                            couponCode: couponCode + 1234,
                             expirationTime: actualTime,
                             adId: req.body.adId
                         }
-                        console.log("data--->>",data)
+                        console.log("data--->>", data)
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data }, $inc: { brolix: -req.body.brolix } }, { new: true }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else {
 
@@ -1466,15 +1471,11 @@ module.exports = {
         var userId = req.body.userId;
         var obj = req.body.couponCode;
         var status = req.body.status;
-        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter couponCode' }); } 
-        else {
+        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter couponCode' }); } else {
             User.findOne({ _id: userId }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); }
-                 else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
-                  else {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                     User.update({ 'coupon.couponCode': obj }, { $set: { 'coupon.$.exchangeStatus': status } }, { new: true }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-                         else {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
                             res.send({
                                 //result: result1,
                                 responseCode: 200,
@@ -1487,53 +1488,109 @@ module.exports = {
         }
     },
 
-"CouponExchangeRequest": function(req, res) { // userId, couponCode, receiverId, senderId
-    waterfall([
-        function(callback) {
-            var obj = req.body.couponCode;
-            var userId = req.body.userId;
-            User.findOne({ _id: userId }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
-                    User.findOne({ 'coupon.couponCode': obj }, function(err, result1) {
-                        console.log("result-->>", result1)
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (Boolean(result1.coupon.find(coupon => coupon.exchangeStatus == "OFF"))) {
-                            res.send({ responseCode: 403, responseMessage: "Exchange request not allowed." })
-                        } else {
-                            callback(null, result)
-                        }
-                    })
-                }
-            })
-        },
-        function(result, callback) {
-            var receiverId = req.body.receiverId;
-            var senderId = req.body.userId;
-            User.findOne({ _id: receiverId }, function(err, result2) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
-                 else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) }
-                 else if (result2.privacy.exchangeCoupon == "followers") {
-
-                   var flag = result2.userFollowers.find(userFollowers => userFollowers == req.body.senderId)                
-                if (flag === undefined) return res.status(400).send({ responseMessage: "you are not friend" })
-                    else{
-                         console.log("friend")
+    "CouponExchangeRequest": function(req, res) { // userId, couponCode, receiverId, senderId
+        waterfall([
+            function(callback) {
+                var obj = req.body.couponCode;
+                var userId = req.body.userId;
+                User.findOne({ _id: userId }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                        User.findOne({ 'coupon.couponCode': obj }, function(err, result1) {
+                            console.log("result-->>", result1)
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (Boolean(result1.coupon.find(coupon => coupon.exchangeStatus == "OFF"))) {
+                                res.send({ responseCode: 403, responseMessage: "Exchange request not allowed." })
+                            } else {
+                                callback(null, result)
+                            }
+                        })
                     }
-                } else {
-                    console.log("public")
+                })
+            },
+            function(result, callback) {
+                var receiverId = req.body.receiverId;
+                var senderId = req.body.userId;
+                User.findOne({ _id: receiverId }, function(err, result2) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) } else if (result2.privacy.exchangeCoupon == "followers") {
 
-                }
-            })
-        },
+                        var flag = result2.userFollowers.find(userFollowers => userFollowers == req.body.senderId)
+                        if (flag === undefined) return res.status(400).send({ responseMessage: "you are not friend" })
+                        else {
+                            console.log("friend")
+                        }
+                    } else {
+                        console.log("public")
 
-    ], function(err, result) {
-        res.send({
-            result: result,
-            responseCode: 200,
-            responseMessage: "data shows successfully created"
-        });
-    })
+                    }
+                })
+            },
 
-}
+        ], function(err, result) {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "data shows successfully created"
+            });
+        })
+
+    },
+
+    "sendCouponToFollower": function(req, res) {
+        waterfall([
+            function(callback) {
+                var obj = req.body.couponCode;
+                var userId = req.body.userId;
+                User.findOne({ _id: userId }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                        User.findOne({ 'coupon.couponCode': obj }, function(err, result1) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (Boolean(result1.coupon.find(coupon => coupon.exchangeStatus == "OFF"))) {
+                                res.send({ responseCode: 403, responseMessage: "Exchange request not allowed." })
+                            } else {
+                                callback(null, result)
+                            }
+                        })
+                    }
+                })
+            },
+            function(result, callback) {
+                var receiverId = req.body.receiverId;
+                var senderId = req.body.userId;
+                User.findOne({ _id: receiverId }, function(err, result2) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) } else if (result2.privacy.exchangeCoupon == "followers") {
+
+                        var flag = result2.userFollowers.find(userFollowers => userFollowers == req.body.senderId)
+                        if (flag === undefined) return res.status(400).send({ responseMessage: "you are not friend" })
+                        else {
+                            User.findOneAndUpdate({ _id: senderId }, { $pop: { favouriteCoupon: -adId } })
+                        }
+                    } else {
+                        console.log("public")
+
+                    }
+                })
+            },
+
+        ], function(err, result) {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "data shows successfully"
+            });
+        })
+    },
+
+    "registerWithRefferalCode": function(req, res) {
+        User.paginate({ referredCode: req.body.referralCode }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+              res.send({
+                  result: result,
+                  responseCode: 200,
+                  responseMessage: "All user shows successfully"
+              });
+          }
+
+      })
+
+  }
 
 
 

@@ -49,5 +49,7 @@ app.post('/addRemoveCouponFromFavourite',  authUser.authUser, userHandler.addRem
 app.post('/listOfFavouriteCoupon/:pageNumber',  authUser.authUser, userHandler.listOfFavouriteCoupon);
 app.post('/couponExchangeOnOff',  authUser.authUser, userHandler.couponExchangeOnOff);
 app.post('/CouponExchangeRequest',  authUser.authUser, userHandler.CouponExchangeRequest);
+app.post('/sendCouponToFollower',  authUser.authUser, userHandler.sendCouponToFollower);
+app.post('/registerWithRefferalCode',  authUser.authUser, userHandler.registerWithRefferalCode);
 
 module.exports = app;

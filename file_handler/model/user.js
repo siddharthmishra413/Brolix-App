@@ -192,6 +192,12 @@ var userSchema = new Schema({
     referralCode: {
         type: String
     },
+    haveReferralCode:{
+        type: Boolean
+    },
+    referredCode:{
+        type: String
+    },
     cashStatus: [{
         adId: { type: String },
         cashStatus: { type: String, default: 'pending' }
