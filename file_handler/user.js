@@ -36,6 +36,7 @@ var avoid = {
     // http://172.16.6.171
 
 
+
 var braintree = require("braintree");
 
 var gateway = braintree.connect({
@@ -261,10 +262,12 @@ module.exports = {
                                 var user = User(req.body)
                                 user.save(function(err, result) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                    //var token = jwt.sign(result, config.secreteKey);
-                                    res.send({
+                                    var token = jwt.sign(result, config.secreteKey);
+                                    res.header({
+                                        "appToken": token
+                                    }).send({
                                         result: result,
-                                       // token: token,
+                                        token: token,
                                         responseCode: 200,
                                         responseMessage: "You have been registered successfully."
                                     });
@@ -995,7 +998,6 @@ module.exports = {
         })
     },
 
-
     "purchaseLuckCard": function(req, res) { //request: date
         var array = [];
         var array1 = [];
@@ -1037,11 +1039,11 @@ module.exports = {
 
 
     "useLuckCard": function(req, res) { // userId, adId, Brolix, luckId in request parameter
-        var obj = req.body.luckId;
-        console.log("object===>>"+obj)
+
+        var obj = (req.body.luckId);
         createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
-            else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
+            else if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter luckId' }); } else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
             else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
                 return res.status(403).send({ responseMessage: "Already used luckCard" })
             } else {

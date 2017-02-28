@@ -1,6 +1,5 @@
 var createNewAds = require("./model/createNewAds");
 var createNewPage = require("./model/createNewPage");
-
 var addsComments = require("./model/addsComments");
 var User = require("./model/user");
 var functions = require("./functionHandler");
@@ -339,13 +338,6 @@ module.exports = {
                             });
                     }
                 })
-
-
-
-              
-                // var couponType = result.docs.filter(result => result.adsType == "coupon");
-                // var cashType = result.docs.filter(result => result.adsType == "cash");
-               
             }
 
         });
@@ -435,13 +427,10 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
 
                                 if (result3.adsType == "cash") {
-
-                                    
                                     console.log("2")
                                     User.update({ _id: { $in: winners } }, { $inc: { cash: cashPrize, gifts: 1 } }, { multi: true }, function(err, result) {
 
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
-
                                             res.send({
                                                 responseCode: 200,
                                                 responseMessage: "Raffle is over winner decided."
@@ -584,13 +573,6 @@ module.exports = {
                 responseMessage: "Ad edit."
             });
         });
-    },
+    }
 
-    // "adsClick": function(req, res){
-    //     createNewAds.findOneAndUpdate({_id: req.body.adsId},{ $inc: { watchedAds: 1 }}).exec(function(err, result){
-    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-    //         else if{res.send({result: result,responseCode: 200,responseMessage: "Data not found."});}
-    //         else{res.send({result: result,responseCode: 200,responseMessage: "Successfully updated."});}
-    //     })
-    // }
 }

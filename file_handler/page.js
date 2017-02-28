@@ -11,7 +11,6 @@ var waterfall = require('async-waterfall');
 //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>"+new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
-
 module.exports = {
 
     //API for create Page
@@ -933,7 +932,7 @@ module.exports = {
                 }
             })
         })
-    },
+    }
 
     // "notificationList":function(req, res){
     //     notificationList.findOne({
@@ -950,5 +949,6 @@ module.exports = {
 
     //     })
     // },
+
 
 }

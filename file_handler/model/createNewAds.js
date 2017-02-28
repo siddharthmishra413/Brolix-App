@@ -7,7 +7,7 @@ var encrypt = require('mongoose-encryption');
 var mongoosePaginate = require('mongoose-paginate');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
-var autopopulate = require('mongoose-autopopulate');
+//var autopopulate = require('mongoose-autopopulate');
 
 /* Ads schema */
 
