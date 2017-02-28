@@ -59,6 +59,9 @@ var userSchema = new Schema({
     facebookID: {
         type: String
     },
+    googleID: {
+        type: String
+    },
     image: {
         type: String
     },
@@ -69,10 +72,11 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
-    cashPrize: {
-        type: Number,
-        default: 0
-    },
+    cashPrize: [{
+        cash: { type: String },
+        adId: { type: String },
+        cashStatus: { type: String, default: 'PENDING' }
+    }],
     couponPrize: [],
     gifts: {
         type: Number,
@@ -83,10 +87,15 @@ var userSchema = new Schema({
         default: 0
     },
     coupon: [{
-        couponCode: {type: String},
-        adId:{ type: String},
-        expirationTime: { type : Date, default : Date.now},
-        couponStatus: {type: String, default: 'valid'}
+        couponCode: { type: String },
+        adId: { type: String },
+        expirationTime: { type: Date, default: Date.now },
+        couponStatus: { type: String, default: 'VALID' },
+        exchangeStatus:{type: String, default:'ON'}
+    }],
+    hiddenGifts: [{
+        adId: { type: String },
+        hiddenCode: { type: String }
     }],
     luckCard: {
         type: String
@@ -180,6 +189,15 @@ var userSchema = new Schema({
     termsCondition: {
         type: String
     },
+    referralCode: {
+        type: String
+    },
+    cashStatus: [{
+        adId: { type: String },
+        cashStatus: { type: String, default: 'pending' }
+    }],
+    favouriteCoupon:[],
+    userFollowers: [],
     createdAt: {
         type: Date,
         default: Date.now

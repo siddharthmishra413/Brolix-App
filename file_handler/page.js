@@ -447,6 +447,7 @@ module.exports = {
         }
     },
 
+<<<<<<< HEAD
     // "pageFilter": function(req, res) {
     //     var date = req.body.date;
     //       function daysInMonth(month,year) {
@@ -950,5 +951,36 @@ module.exports = {
     //     })
     // },
 
+=======
+    "pageFilter": function(req, res) {
+        var condition = { $or: [] };
+        var obj = req.body;
+        Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+            if (key == 'subCategory') {
+                var cond = { $or: [] };
+                for (data in obj[key]) {
+                    condition.$or.push({ subCategory: obj[key][data] })
+                }
+            } else {
+                condition[key] = obj[key];
+            }
+        });
+        if (condition.$or.length == 0) {
+            delete condition.$or;
+        }
+        console.log("subCategory--->>", condition)
+        createNewPage.find(condition).exec(function(err, result) {
+            console.log("result--->>", result)
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Result shown successfully."
+                })
+            }
+        })
+    }
+
+>>>>>>> deepak
 
 }

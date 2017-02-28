@@ -48,10 +48,7 @@ var createNewPageSchema = new mongoose.Schema({
         type: Number,
         trim: true
     },
-    location: {
-        type: String,
-        trim: true
-    },
+    location: [],
     pageImage: {
         type: String,
         trim: true
@@ -73,14 +70,15 @@ var createNewPageSchema = new mongoose.Schema({
         mediaType: { type: String },
         link: { type: String }
     }],
-    adAdmin:[{
-        userId:{type:String},
-        type:{type: String}
+    adAdmin: [{
+        userId: { type: String },
+        type: { type: String }
     }],
-    pageFollowersUser:[{
-        userId:{type:String, ref:'brolixUser'}
+    pageFollowersUser: [{
+        userId: { type: String, ref: 'brolixUser' }
     }],
     pageView: {
+<<<<<<< HEAD
         type: Number,
         default: 0
     },
@@ -115,6 +113,42 @@ var createNewPageSchema = new mongoose.Schema({
     socialMediaClicks:{
         type: Number,
         default: 0
+=======
+        type: String
+    },
+    followerNumber: {
+        type: String
+    },
+    callUsClick: {
+        type: String
+    },
+    productView: {
+        type: String
+    },
+    locationClicks: {
+        type: String
+    },
+    websiteClicks: {
+        type: String
+    },
+    emailClicks: {
+        type: String
+    },
+    eventViewClicks: {
+        type: String
+    },
+    socialMediaClicks: {
+        type: String
+    },
+    country: {
+        type: String
+    },
+    state: {
+        type:String
+    },
+    city:{
+        type:String
+>>>>>>> deepak
     },
     createdAt: {
         type: Date,

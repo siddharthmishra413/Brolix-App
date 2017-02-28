@@ -40,7 +40,7 @@ app.get('/totalPages/:pageNumber', adminHandler.totalPages);
 app.post('/blockPage', adminHandler.blockPage);
 app.get('/showAllBlockedPage/:pageNumber', adminHandler.showAllBlockedPage);
 app.post('/removePage', adminHandler.removePage);
-app.get('/showAllRemovedPage/:pageNumber', adminHandler.showAllRemovedPage);
+app.get('/showAllRemovedPage', adminHandler.showAllRemovedPage);
 
 
 
