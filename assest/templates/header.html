@@ -1,0 +1,231 @@
+ <div id="wrapper">
+ <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" ui-sref="header.manageUsers"><img src="../dist/image/logo.png"/></a>
+            </div>
+            <!-- Top Menu Items -->
+            <div class="nav navbar-right top-nav">
+                <div class="admintools">
+                    Admin Tools
+                </div>               
+            </div>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->            
+            <div ng-if="menu=='Manage User'">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="prodata">
+                        <div class="profile-img">
+                            <div class="left-img">
+                                <img src=" {{image}}"/>
+                            </div>
+                            <div class="rightdes">
+                                <h3 class="title-s">Welcome</h3>
+                                <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
+                                <div class="logout">
+                                    <a ng-click="logout()">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a ui-sref="header.addUser">ADD USER</a>
+                    </li>
+                    <li>
+                        <a>BLOCK USER</a>
+                    </li>
+                    <li>
+                        <a> CREATE REPORT</a>
+                    </li>                    
+                </ul>
+            </div>
+            </div>
+            <div ng-if="menu=='Manage Pages'">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="prodata">
+                        <div class="profile-img">
+                            <div class="left-img">
+                                <img src=" {{image}}"/>
+                            </div>
+                            <div class="rightdes">
+                                <h3 class="title-s">Welcome</h3>
+                                <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
+                                <div class="logout">
+                                    <a ng-click="logout()">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a ui-sref="header.addNewPages">ADD PAGE</a>
+                    </li>
+                    <li>
+                        <a>REMOVE PAGE</a>
+                    </li>
+                    <li>
+                        <a>BLOCK PAGE</a>
+                    </li>
+                    <li>
+                        <a> CREATE REPORT</a>
+                    </li>                    
+                </ul>
+            </div>
+            </div>
+            <div ng-if="menu=='Manage Ads'">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="prodata">
+                        <div class="profile-img">
+                            <div class="left-img">
+                                <img src=" {{image}}"/>
+                            </div>
+                            <div class="rightdes">
+                                <h3 class="title-s">Welcome</h3>
+                                <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
+                                <div class="logout">
+                                    <a ng-click="logout()">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a>CREATE AD</a>
+                    </li>
+                    <li>
+                        <a>EDIT AD</a>
+                    </li>
+                    <li>
+                        <a>REMOVE AD</a>
+                    </li>
+                    <li>
+                        <a>HOME PAGE AD</a>
+                    </li>
+                    <li>
+                        <a> CREATE REPORT</a>
+                    </li>                    
+                </ul>
+            </div>
+            </div>
+            <div ng-if="menu=='Manage Cards'">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="prodata">
+                        <div class="profile-img">
+                            <div class="left-img">
+                                <img src=" {{image}}"/>
+                            </div>
+                            <div class="rightdes">
+                                <h3 class="title-s">Welcome</h3>
+                                <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
+                                <div class="logout">
+                                    <a ng-click="logout()">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a>CREATE AD</a>
+                    </li>
+                    <li>
+                        <a>EDIT AD</a>
+                    </li>
+                    <li>
+                        <a>REMOVE AD</a>
+                    </li>
+                    <li>
+                        <a>HOME PAGE AD</a>
+                    </li>
+                    <li>
+                        <a> CREATE REPORT</a>
+                    </li>                    
+                </ul>
+            </div>
+            </div>
+            <div ng-if="menu=='Manage Gifts'">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="prodata">
+                        <div class="profile-img">
+                            <div class="left-img">
+                                <img src=" {{image}}"/>
+                            </div>
+                            <div class="rightdes">
+                                <h3 class="title-s">Welcome</h3>
+                                <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
+                                <div class="logout">
+                                    <a ng-click="logout()">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a> CREATE REPORT</a>
+                    </li>                    
+                </ul>
+            </div>
+            </div>
+            <div ng-if="menu=='Manage Paymant'">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="prodata">
+                        <div class="profile-img">
+                            <div class="left-img">
+                                <img src=" {{image}}"/>
+                            </div>
+                            <div class="rightdes">
+                                <h3 class="title-s">Welcome</h3>
+                                <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
+                                <div class="logout">
+                                    <a ng-click="logout()">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a> CREATE REPORT</a>
+                    </li>                    
+                </ul>
+            </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="nav nav-tabs nav-tabs-inverse nav-justified nav-justified-mobile" data-sortable-id="index-2">
+                            <li class="first" ng-class="{'active':header=='Manage User'}">
+                                <a ng-href="#header/manageUsers">Manage Users</a>
+                            </li>
+                            <li class="" ng-class="{'active':header=='Manage Pages'}">
+                                <a ng-href="#header/managePages">Manage Pages</a>
+                            </li>
+                            <li class="" ng-class="{'active':header=='Manage Ads'}">
+                                <a ng-href="#header/manageAds">Manage Ads</a>
+                            </li>
+                             <li class="" ng-class="{'active':header=='Manage Cards'}">
+                                <a ng-href="#header/manageCards">Manage Cards</a>
+                            </li>
+                            <li class="" ng-class="{'active':header=='Manage Gifts'}">
+                                <a ng-href="#header/manageGifts">Manage Gifts</a>
+                            </li>
+                             <li class="" ng-class="{'active':header=='Manage Paymant'}">
+                                <a ng-href="#header/managePayments">Manage Paymant</a>
+                            </li>
+                        </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" data-sortable-id="index-3">
+        <div ui-view></div>
+        </div>
+    </div>
+</div>

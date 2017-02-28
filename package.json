@@ -1,0 +1,43 @@
+{
+  "name": "brolix",
+  "description": "Brolix",
+  "version": "0.0.1",
+  "main": "server.js",
+  "dependencies": {
+    "apn": "^2.1.2",
+    "apns": "^0.1.0",
+    "async": "^2.1.2",
+    "async-waterfall": "^0.1.5",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.1",
+    "client-sessions": "^0.7.0",
+    "cloudinary": "^1.4.3",
+    "countryjs": "^1.6.0",
+    "coupon-code": "^0.4.4",
+    "cron": "^1.2.1",
+    "express": "^4.13.4",
+    "fcm-push": "^1.1.2",
+    "fresh": "^0.3.0",
+    "json-web-token": "^2.0.2",
+    "jsonwebtoken": "^7.1.9",
+    "jwt-simple": "^0.5.0",
+    "mongoose": "^4.4.19",
+    "mongoose-autopopulate": "^0.5.0",
+    "mongoose-encryption": "^1.3.1",
+    "mongoose-paginate": "^5.0.3",
+    "multiparty": "^4.1.2",
+    "node-cron": "^1.1.3",
+    "nodemailer": "^2.6.4",
+    "nodemon": "^1.9.2",
+    "passport-local": "1.0.0",
+    "paypal-rest-sdk": "^1.7.0",
+    "push-notification": "^0.1.8",
+    "underscore": "^1.8.3",
+    "validator": "^6.1.0",
+    "voucher-code-generator": "^1.1.0",
+    "websocket": "^1.0.24"
+  },
+  "devDependencies": {
+    "nodemon": "^1.10.2"
+  }
+}

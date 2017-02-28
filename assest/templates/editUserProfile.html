@@ -1,0 +1,145 @@
+<!-- <div class="top-header">
+        <a href="#" class="brand-logo">Brolix</a>
+    </div>
+ -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add New User</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
+                            <form class="form-block" role="form" name="userFrom">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">First Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="firstName" ng-model="viewUserProfile.firstName" placeholder="First Name" maxlength="41" ng-maxlength="40" required>
+                                                <span style="color:red;" ng-show="userFrom.firstName.$dirty && userFrom.firstName.$invalid">
+                                                <span ng-show="userFrom.firstName.$error.required">First name is required.</span>
+                                                <span ng-show="userFrom.firstName.$error.maxlength">Your first name should contain max 40 characters.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Last Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="lastName" ng-model="viewUserProfile.lastName" placeholder="Last Name" maxlength="41" ng-maxlength="40" required> 
+                                                <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid">
+                                                <span ng-show="userFrom.lastName.$error.required">Last name is required.</span>
+                                                <span ng-show="userFrom.lastName.$error.maxlength">Your last name should contain max 40 characters.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Date of Birth</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="dob" ng-model="viewUserProfile.dob" placeholder="Date of Birth"> 
+                                                <span style="color:red;" ng-show="userFrom.dob.$dirty && userFrom.dob.$invalid">
+                                                <span ng-show="userFrom.dob.$error.required">Date of birth is required.</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Email</label>
+                                            <div class="col-md-9">
+                                                <input type="email" class="form-control" name="email" ng-model="viewUserProfile.email" placeholder="Email" maxlength="71" ng-maxlength="70" required>
+                                                <span style="color:red;" ng-show="userFrom.email.$dirty && userFrom.email.$invalid">
+                                                <span ng-show="userFrom.email.$error.required">Email is required.</span>
+                                                <span ng-show="userFrom.email.$error.email">Invalid email address.</span>
+                                                <span style="color:red;" ng-show="userFrom.email.$error.maxlength">This email address is too long.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Gender</label>
+                                            <div class="col-md-9">
+                                                <div class="radio-btn">
+                                                    <label>
+                                                        <input value="Male" ng-model="viewUserProfile.gender" type="radio"> Male
+                                                    </label>
+                                                    <label>
+                                                        <input value="Female" ng-model="viewUserProfile.gender" type="radio"> Female
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Mobile No</label>
+                                            <div class="col-md-9">
+                                                <input type="tel" class="form-control" name="mobileNumber" ng-model="viewUserProfile.mobileNumber" placeholder="Mobile No" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                                                <span style="color:red;" ng-show="userFrom.mobileNumber.$dirty && userFrom.mobileNumber.$invalid">
+                                                <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required.</span> 
+                                                <span ng-show="userFrom.mobileNumber.$error.maxlength">Must have at most 10 digits.</span>
+                                                <span ng-show="userFrom.mobileNumber.$error.pattern">Only number are allowed.</span>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Country</label>
+                                            <div class="col-md-9">
+                                                <select class="form-control" ng-options="p.name for p in country" ng-model="viewUserProfile.country" ng-change="catId(p)"><option value="">{{viewUserProfile.country}}</option>
+                                                </select>
+                                                <span style="color:red;" ng-show="userFrom.country.$dirty && userFrom.country.$invalid">
+                                                <span ng-show="userFrom.country.$error.required">Country is required.</span>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">State</label>
+                                            <div class="col-md-9">
+                                                <select class="form-control" ng-options="state for state in allstates" ng-model="viewUserProfile.state"><option value="">{{viewUserProfile.state}}</option>
+                                                </select>
+                                                <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid">
+                                                <span ng-show="userFrom.state.$error.required">State is required.</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">City</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="city" ng-model="viewUserProfile.city" placeholder="City" required> 
+                                                <span style="color:red;" ng-show="userFrom.city.$dirty && userFrom.city.$invalid">
+                                                <span ng-show="userFrom.city.$error.required">City is required.</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row" ng-if="viewUserProfile.pincode!=null">
+                                            <label class="control-label col-md-3">Pincode</label>
+                                            <div class="col-md-9">
+                                                <input type="tel" class="form-control" name="pincode" ng-model="viewUserProfile.pincode" placeholder="Pincode" maxlength="9" ng-maxlength="8" ng-pattern="/^[0-9]{1,9}$/" required> 
+                                                <span style="color:red;" ng-show="userFrom.pincode.$dirty && userFrom.pincode.$invalid">
+                                                <span ng-show="userFrom.pincode.$error.required">Pincode is required.</span> 
+                                                <span ng-show="userFrom.pincode.$error.maxlength">Must have at most 8 digits.</span>
+                                                <span ng-show="userFrom.pincode.$error.pattern">Only number are allowed.</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <div class="btn2 text-center">
+                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid" ng-click="updateUser()">Update Profile</a>
+                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid" ui-sref="header.manageUsers">Cancel</a>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
