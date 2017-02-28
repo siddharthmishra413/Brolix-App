@@ -753,9 +753,4 @@ module.exports = {
             }
         })
     }
-
-<<<<<<< HEAD
-=======
-
->>>>>>> deepak
 }

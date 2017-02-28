@@ -173,12 +173,10 @@ var createNewAdsSchema = new Schema({
         userId: { type: String },
         senderId: []
     }],
-<<<<<<< HEAD
+
     adFollowers: [ String ],
     commentCount:{type:Number, default:0},
-=======
-    commentCount: { type: Number, default: 0 },
->>>>>>> deepak
+
     createdAt: {
         type: Date,
         default: Date.now

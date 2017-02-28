@@ -38,11 +38,8 @@ app.get('/countrys', userHandler.countrys);
 app.get('/getAllStates/:name/:code', userHandler.getAllStates);
 app.post('/chatHistory/:pageNumber', authUser.authUser, userHandler.chatHistory);
 app.post('/onlineUserList', authUser.authUser, userHandler.onlineUserList);
-<<<<<<< HEAD
-app.post('/userGifts', authUser.authUser, userHandler.userGifts);
 app.get('/paymentClientToken',   userHandler.paymentClientToken);
 app.post('/paymentIntegration',   userHandler.paymentIntegration);
-=======
 app.post('/userCouponGifts/:pageNumber', authUser.authUser, userHandler.userCouponGifts);
 app.post('/winnersFilter', authUser.authUser, userHandler.winnersFilter);
 app.post('/googleLogin',  userHandler.googleLogin);
@@ -52,7 +49,5 @@ app.post('/addRemoveCouponFromFavourite',  authUser.authUser, userHandler.addRem
 app.post('/listOfFavouriteCoupon/:pageNumber',  authUser.authUser, userHandler.listOfFavouriteCoupon);
 app.post('/couponExchangeOnOff',  authUser.authUser, userHandler.couponExchangeOnOff);
 app.post('/CouponExchangeRequest',  authUser.authUser, userHandler.CouponExchangeRequest);
-
->>>>>>> deepak
 
 module.exports = app;

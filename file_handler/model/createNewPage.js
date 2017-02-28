@@ -78,42 +78,6 @@ var createNewPageSchema = new mongoose.Schema({
         userId: { type: String, ref: 'brolixUser' }
     }],
     pageView: {
-<<<<<<< HEAD
-        type: Number,
-        default: 0
-    },
-    followerNumber:{
-         type: Number,
-        default: 0
-    },
-    callUsClick:{
-         type: Number,
-        default: 0
-    },
-    productView:{
-        type: Number,
-        default: 0
-    },
-    locationClicks:{
-        type: Number,
-        default: 0
-    },
-    websiteClicks:{
-        type: Number,
-        default: 0
-    },
-    emailClicks:{
-        type: Number,
-        default: 0
-    },
-    eventViewClicks:{
-        type: Number,
-        default: 0
-    },
-    socialMediaClicks:{
-        type: Number,
-        default: 0
-=======
         type: String
     },
     followerNumber: {
@@ -148,7 +112,6 @@ var createNewPageSchema = new mongoose.Schema({
     },
     city:{
         type:String
->>>>>>> deepak
     },
     createdAt: {
         type: Date,

@@ -447,7 +447,6 @@ module.exports = {
         }
     },
 
-<<<<<<< HEAD
     // "pageFilter": function(req, res) {
     //     var date = req.body.date;
     //       function daysInMonth(month,year) {
@@ -933,7 +932,7 @@ module.exports = {
                 }
             })
         })
-    }
+    },
 
     // "notificationList":function(req, res){
     //     notificationList.findOne({
@@ -951,7 +950,6 @@ module.exports = {
     //     })
     // },
 
-=======
     "pageFilter": function(req, res) {
         var condition = { $or: [] };
         var obj = req.body;
@@ -980,7 +978,5 @@ module.exports = {
             }
         })
     }
-
->>>>>>> deepak
 
 }
