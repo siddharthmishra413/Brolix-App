@@ -1279,135 +1279,53 @@ module.exports = {
         }
     },
 
-
-    // Coupon exchange request api integration  
-    // Coupon exchange request search api
-    // Cancel sent exchange coupon request api
-    // Accept/ Decline coupon request api
-    // Send coupon to any follower api
-
- //API Comment on Ads
-    // "sendCoupon": function(req, res) {
-    //     User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result) {
-    //         if (!result) {
-    //             res.send({
-    //                 responseCode: 404,
-    //                 responseMessage: 'User does not exists.'
-    //             });
-    //         } else {
-    //             console.log(result.email)
-    //             var massege = "Coupon Code is:-"
-    //             functions.mail(result.email, massege, req.body.couponCode);
-    //             res.send({
-    //                 responseCode: 200,
-    //                 responseMessage: "Send your coupon successfully."
-    //             });
-    //         }
-    //     })
-    // },
-
-    //Exchange Coupons Api
-    "exchangeCoupon": function(req, res) {
-        User.findOne({ _id: req.body.senderId }).exec(function(err, result) {
-            if (!result) {
-                res.send({
-                    responseCode: 404,
-                    responseMessage: 'User does not exists.'
-                });
-            } else {
-                createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "couponExchange": { senderId: req.body.senderId, newCoupon: req.body.newCoupon, oldCoupon: req.body.oldCoupon, couponExchangeStatus: req.body.couponExchangeStatus } } }, { new: true }).exec(function(err, results) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                        //mail(result.email, req.body.massege, req.body.couponCode);
-                        res.send({
-                            result: results,
-                            responseCode: 200,
-                            responseMessage: "Coupon exchange request sent successfully."
-                        });
-                    }
-                })
-
-            }
-        })
-    },
-
-    "acceptExchangeCouponRequest": function(req, res) {
-        createNewAds.update({ _id: req.body.adId, 'couponExchange.senderId': req.body.senderId }, {
-            $set: {
-                'couponExchange.$.couponExchangeStatus': "Accepted"
-            }
-        }, { new: true }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: "Accepted successfully."
-                });
-            }
-        })
-
-    },
-
-   
-    // else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
-    //             return res.status(403).send({ responseMessage: "Already used luckCard" })
-
-     "CouponExchangeRequest": function(req, res) { // userId, couponCode, receiverId
-         waterfall([
-             function(callback) {
-                 var obj = req.body.couponCode;
-                 var userId = req.body.userId;
-              User.findOne({ _id: userId }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); }
-                 else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }                 
-
-                  else {
+"CouponExchangeRequest": function(req, res) { // userId, couponCode, receiverId, senderId
+    waterfall([
+        function(callback) {
+            var obj = req.body.couponCode;
+            var userId = req.body.userId;
+            User.findOne({ _id: userId }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                     User.findOne({ 'coupon.couponCode': obj }, function(err, result1) {
-                        console.log("result-->>",result1)
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-                        else if (Boolean(result1.coupon.find(coupon => coupon.exchangeStatus == "OFF"))) {
-                        res.send({ responseCode:403, responseMessage: "Exchange request not allowed." }) }
-                         else {
-                            callback(null,result)
+                        console.log("result-->>", result1)
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (Boolean(result1.coupon.find(coupon => coupon.exchangeStatus == "OFF"))) {
+                            res.send({ responseCode: 403, responseMessage: "Exchange request not allowed." })
+                        } else {
+                            callback(null, result)
                         }
                     })
                 }
             })
-          },
-            function(result, callback) {
-                var receiverId = req.body.receiverId;
-                var senderId = req.body.userId;
-                User.findOne({ _id: receiverId }, function(err, result2) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                     else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
-                     else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) }
-                    else if (result2.privacy.exchangeCoupon == "followers") { 
+        },
+        function(result, callback) {
+            var receiverId = req.body.receiverId;
+            var senderId = req.body.userId;
+            User.findOne({ _id: receiverId }, function(err, result2) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
+                 else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) }
+                 else if (result2.privacy.exchangeCoupon == "followers") {
 
-                        
-           followerList.findOne({ $and: [{ $or: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $or: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }], 'followerStatus' :'accept' }).exec(function(err, result3) {
-             console.log("result-->>",result3)
-                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                     else if (!result3) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
-                     else{
-                       
-                     }
-
-           })
-                    } else {
-                 console.log("public")
-
+                   var flag = result2.userFollowers.find(userFollowers => userFollowers == req.body.senderId)                
+                if (flag === undefined) return res.status(400).send({ responseMessage: "you are not friend" })
+                    else{
+                         console.log("friend")
                     }
-                })
-            },
+                } else {
+                    console.log("public")
 
-         ],function(err, result) {
-             res.send({
-                 result: result,
-                 responseCode: 200,
-                 responseMessage: "data shows successfully created"
-             });
-         })
+                }
+            })
+        },
 
-     },
+    ], function(err, result) {
+        res.send({
+            result: result,
+            responseCode: 200,
+            responseMessage: "data shows successfully created"
+        });
+    })
+
+}
 
 
 
