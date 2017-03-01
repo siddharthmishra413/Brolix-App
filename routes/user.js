@@ -50,6 +50,6 @@ app.post('/listOfFavouriteCoupon/:pageNumber',  authUser.authUser, userHandler.l
 app.post('/couponExchangeOnOff',  authUser.authUser, userHandler.couponExchangeOnOff);
 app.post('/CouponExchangeRequest',  authUser.authUser, userHandler.CouponExchangeRequest);
 app.post('/sendCouponToFollower',  authUser.authUser, userHandler.sendCouponToFollower);
-app.post('/registerWithRefferalCode',  authUser.authUser, userHandler.registerWithRefferalCode);
+app.post('/registerWithRefferalCode/:pageNumber',  authUser.authUser, userHandler.registerWithRefferalCode);
 
 module.exports = app;

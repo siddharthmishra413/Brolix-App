@@ -247,45 +247,45 @@ module.exports = {
 
     //API for user signUP
     "signup": function(req, res) {
-     if (!req.body.email) res.send({ responseCode: 403, responseMessage: 'Email required' });
-     else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-     else {
-         User.findOne({ email: req.body.email }, function(err, result) {
-             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 401, responseMessage: "Email id must be unique." }); } else {
-                 if (!req.body.mobileNumber) res.send({ responseCode: 403, responseMessage: 'Mobile number required' });
-                 else {
-                     if (!validator.isNumeric((req.body.mobileNumber).toString())) return res.status(403).send({ msg: "Mobile number must be numeric" });
-                     if (!validator.isLength((req.body.mobileNumber).toString(), { min: 10, max: 12 })) return res.status(403).send({ msg: "Mobile number length must be 10 to 12." });
-                     User.findOne({ mobileNumber: req.body.mobileNumber }, function(err, result1) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
-                             if (req.body.haveReferralCode == true) {
-                                 User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: 250 } }).exec(function(err, result2) {
-                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                         req.body.otp = functions.otp();
-                                         req.body.referralCode = yeast();
-                                         var user = User(req.body)
-                                         user.save(function(err, result) {
-                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                             var token = jwt.sign(result, config.secreteKey);
-                                             res.header({
-                                                 "appToken": token
-                                             }).send({
-                                                 result: result,
-                                                 token: token,
-                                                 responseCode: 200,
-                                                 responseMessage: "You have been registered successfully."
-                                             });
-                                         })
-                                     }
-                                 })
-                             }
-                         }
-                     })
-                 }
-             }
-         })
-     }
- },
+        if (!req.body.email) res.send({ responseCode: 403, responseMessage: 'Email required' });
+        else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        else {
+            User.findOne({ email: req.body.email }, function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 401, responseMessage: "Email id must be unique." }); } else {
+                    if (!req.body.mobileNumber) res.send({ responseCode: 403, responseMessage: 'Mobile number required' });
+                    else {
+                        if (!validator.isNumeric((req.body.mobileNumber).toString())) return res.status(403).send({ msg: "Mobile number must be numeric" });
+                        if (!validator.isLength((req.body.mobileNumber).toString(), { min: 10, max: 12 })) return res.status(403).send({ msg: "Mobile number length must be 10 to 12." });
+                        User.findOne({ mobileNumber: req.body.mobileNumber }, function(err, result1) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
+                                if (req.body.haveReferralCode == true) {
+                                    User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: 250 } }).exec(function(err, result2) {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                            req.body.otp = functions.otp();
+                                            req.body.referralCode = yeast();
+                                            var user = User(req.body)
+                                            user.save(function(err, result) {
+                                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                                var token = jwt.sign(result, config.secreteKey);
+                                                res.header({
+                                                    "appToken": token
+                                                }).send({
+                                                    result: result,
+                                                    token: token,
+                                                    responseCode: 200,
+                                                    responseMessage: "You have been registered successfully."
+                                                });
+                                            })
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        }
+    },
 
 
     //API for verify Otp
@@ -323,7 +323,7 @@ module.exports = {
                     responseMessage: "Sorry your id or password is incorrect."
                 });
             } else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
-            else {              
+            else {
                 User.findOneAndUpdate({ email: req.body.email }, {
                     $set: {
                         deviceType: req.body.deviceType,
@@ -1100,16 +1100,32 @@ module.exports = {
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                var user = new User(req.body)
-                user.save(function(err, result1) {
-                    var token = jwt.sign(result1, config.secreteKey);
-                    res.header({
-                        "appToken": token
-                    }).send({ result: result1, token: token, responseCode: 200, responseMessage: "Signup successfully." });
-                })
+                if (req.body.haveReferralCode == true) {
+                    User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: 250 } }).exec(function(err, result2) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                            req.body.referralCode = yeast();
+                            var user = new User(req.body);
+                            user.save(function(err, result1) {
+                                var token = jwt.sign(result1, config.secreteKey);
+                                res.header({
+                                    "appToken": token
+                                }).send({
+                                    result: result1,
+                                    token: token,
+                                    responseCode: 200,
+                                    responseMessage: "Signup successfully."
+                                });
+                            })
+                        }
+                    })
+                }
             } else {
                 if (result.facebookID == undefined) {
-                    res.send({ responseCode: 201, responseMessage: "You have already register with app.", user: result });
+                    res.send({
+                        responseCode: 201,
+                        responseMessage: "You have already register with app.",
+                        user: result
+                    });
                 } else {
                     User.findOneAndUpdate({ email: req.body.email }, {
                         $set: {
@@ -1132,6 +1148,7 @@ module.exports = {
             }
         })
     },
+
 
     "userCashGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
@@ -1329,20 +1346,31 @@ module.exports = {
         })
     },
 
-
     "googleLogin": function(req, res) {
         var obj = (req.body.googleID);
         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter googleID' }); }
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                var user = new User(req.body)
-                user.save(function(err, result) {
-                    var token = jwt.sign(result, config.secreteKey);
-                    res.header({
-                        "appToken": token
-                    }).send({ result: result, token: token, responseCode: 200, responseMessage: "Signup successfully." });
-                })
+                if (req.body.haveReferralCode == true) {
+                    User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: 250 } }).exec(function(err, result2) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                            req.body.referralCode = yeast();
+                            var user = new User(req.body);
+                            user.save(function(err, result) {
+                                var token = jwt.sign(result, config.secreteKey);
+                                res.header({
+                                    "appToken": token
+                                }).send({
+                                    result: result,
+                                    token: token,
+                                    responseCode: 200,
+                                    responseMessage: "Signup successfully."
+                                });
+                            })
+                        }
+                    })
+                }
             } else {
                 if (result.googleID == undefined) {
                     res.send({ responseCode: 201, responseMessage: "You have already register with app.", user: result });
@@ -1580,17 +1608,17 @@ module.exports = {
 
     "registerWithRefferalCode": function(req, res) {
         User.paginate({ referredCode: req.body.referralCode }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
-              res.send({
-                  result: result,
-                  responseCode: 200,
-                  responseMessage: "All user shows successfully"
-              });
-          }
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All user shows successfully"
+                });
+            }
 
-      })
+        })
 
-  }
+    }
 
 
 
