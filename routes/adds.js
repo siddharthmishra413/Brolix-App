@@ -34,5 +34,6 @@ app.post('/couponFilter', authUser.authUser, adsHandler.couponFilter);
 app.post('/couponGiftsFilter/:pageNumber', authUser.authUser, adsHandler.couponGiftsFilter);
 app.post('/cashGiftsFilter/:pageNumber', authUser.authUser, adsHandler.cashGiftsFilter);
 app.get('/storeCouponList/:pageNumber', authUser.authUser, adsHandler.storeCouponList);
+app.post('/viewCoupon', authUser.authUser, adsHandler.viewCoupon);
 
 module.exports = app;

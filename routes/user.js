@@ -48,8 +48,10 @@ app.post('/userCashGifts/:pageNumber',  authUser.authUser, userHandler.userCashG
 app.post('/addRemoveCouponFromFavourite',  authUser.authUser, userHandler.addRemoveCouponFromFavourite);
 app.post('/listOfFavouriteCoupon/:pageNumber',  authUser.authUser, userHandler.listOfFavouriteCoupon);
 app.post('/couponExchangeOnOff',  authUser.authUser, userHandler.couponExchangeOnOff);
-app.post('/CouponExchangeRequest',  authUser.authUser, userHandler.CouponExchangeRequest);
+app.post('/sendCouponExchangeRequest',  authUser.authUser, userHandler.sendCouponExchangeRequest);
 app.post('/sendCouponToFollower',  authUser.authUser, userHandler.sendCouponToFollower);
 app.post('/registerWithRefferalCode/:pageNumber',  authUser.authUser, userHandler.registerWithRefferalCode);
+app.post('/seeExchangeRequest',  authUser.authUser, userHandler.seeExchangeRequest);
+app.post('/couponRequestsSearch',  authUser.authUser, userHandler.couponRequestsSearch);
 
 module.exports = app;

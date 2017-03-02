@@ -91,7 +91,8 @@ var userSchema = new Schema({
         adId: { type: String },
         expirationTime: { type: Date, default: Date.now },
         couponStatus: { type: String, default: 'VALID' },
-        exchangeStatus:{type: String, default:'ON'}
+        exchangeStatus:{type: String, default:'ON'},
+        type:{ type: String}
     }],
     hiddenGifts: [{
         adId: { type: String },

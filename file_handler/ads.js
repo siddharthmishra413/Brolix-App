@@ -331,12 +331,12 @@ module.exports = {
         createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 createNewPage.findOne({
-                    _id:req.params.id,
-                    userId:req.params.userId
-                }).exec(function(err, results){
-                    if(err){res.send({ responseCode: 500, responseMessage: 'Internal server error' })}
-                    if(!results){
-                          createNewPage.findOneAndUpdate({_id:req.params.id}, { $inc: { pageView: 1 }}).exec(function(err, pageRes){
+                    _id: req.params.id,
+                    userId: req.params.userId
+                }).exec(function(err, results) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) }
+                    if (!results) {
+                        createNewPage.findOneAndUpdate({ _id: req.params.id }, { $inc: { pageView: 1 } }).exec(function(err, pageRes) {
                             res.send({
                                 // couponType: couponType,
                                 // cashType: cashType,
@@ -345,15 +345,14 @@ module.exports = {
                                 responseMessage: "All ads shown cash type and coupon type."
                             });
                         })
-                    }
-                    else{
-                         res.send({
-                                // couponType: couponType,
-                                // cashType: cashType,
-                                result: result,
-                                responseCode: 200,
-                                responseMessage: "All ads shown cash type and coupon type."
-                            });
+                    } else {
+                        res.send({
+                            // couponType: couponType,
+                            // cashType: cashType,
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "All ads shown cash type and coupon type."
+                        });
                     }
                 })
             }
@@ -470,10 +469,12 @@ module.exports = {
                                     var s = Date.now(m)
                                     var coupanAge = result3.couponExpiryDate;
                                     var actualTime = parseInt(s) + parseInt(coupanAge);
+                                    var type = "WINNER";
                                     var data = {
                                         couponCode: couponCode,
                                         expirationTime: actualTime,
-                                        adId: req.body.adId
+                                        adId: req.body.adId,
+                                        type:type
                                     }
                                     var data1 = {
                                         hiddenCode: hiddenGifts,
@@ -501,7 +502,7 @@ module.exports = {
     //API for Follow and unfollow
     "adFollowUnfollow": function(req, res) {
         if (req.body.follow == "follow") {
-            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "adFollowers":  req.body.userId  } }, { new: true }).exec(function(err, results) {
+            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "adFollowers": req.body.userId } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 res.send({
                     result: results,
@@ -510,7 +511,7 @@ module.exports = {
                 });
             })
         } else {
-            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { "adFollowers":  -req.body.userId } }, { new: true }).exec(function(err, results) {
+            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { "adFollowers": -req.body.userId } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
                         result: results,
@@ -728,8 +729,7 @@ module.exports = {
                     }
                 }
                 createNewAds.paginate({ _id: { $in: array }, cashStatus: { $in: status } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-                     else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
@@ -742,9 +742,8 @@ module.exports = {
     },
 
     "storeCouponList": function(req, res) {
-      createNewAds.paginate({ sellCoupon: true },{ page: req.params.pageNumber, limit: 8 },function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-            else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
+        createNewAds.paginate({ sellCoupon: true }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -752,5 +751,19 @@ module.exports = {
                 })
             }
         })
+    },
+
+    "viewCoupon": function(req, res) {
+        createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+            if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Result show successfully."
+                })
+            }
+        })
     }
+
 }
