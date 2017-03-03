@@ -146,7 +146,7 @@ var createNewAdsSchema = new Schema({
     couponSend: [{
         senderId: { type: String },
         receiverId: { type: String },
-        exchangedDate: { type : Date, default:  Date.now }
+        sendDate: { type : Date, default:  Date.now }
     }],
     numberOfWinners: {
         type: Number,
