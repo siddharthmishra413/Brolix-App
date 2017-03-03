@@ -91,11 +91,12 @@ var userSchema = new Schema({
         adId: { type: String, ref: 'createNewAds' },
         expirationTime: { type: Date, default: Date.now },
         couponStatus: { type: String, default: 'VALID' },
-        exchangeStatus:{type: String, default:'ON'}
+        exchangeStatus:{type: String, default:'ON'},
+        status:{type: String, default: 'ACTIVE'}
     }],
     hiddenGifts: [{
         adId: { type: String },
-        hiddenCode: { type: String },
+        hiddenCode: []
     }],
     luckCard: {
         type: String

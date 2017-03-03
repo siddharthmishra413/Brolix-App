@@ -419,7 +419,7 @@ module.exports = {
                                     randomIndex.push(raffleCount[index])
                                 }
                             }
-                            callback(null, randomIndex, result.cashAdPrize, result.couponCode)
+                            callback(null, randomIndex, result.cashAdPrize, result.couponCode, result.hiddenGifts)
                         } else {
 
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
@@ -436,9 +436,9 @@ module.exports = {
                 })
             },
             function(winners, cashPrize, couponCode, hiddenGifts, callback) {
-                console.log("cashPrize----->>>>",cashPrize)
-                console.log("couponCode----->>>>",couponCode)
-                console.log("hiddenGifts----->>>>",hiddenGifts)
+                console.log("cashPrize----->>>>", cashPrize)
+                console.log("couponCode----->>>>", couponCode)
+                console.log("hiddenGifts----->>>>", hiddenGifts)
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
 
@@ -472,21 +472,22 @@ module.exports = {
                                     var s = Date.now(m)
                                     var coupanAge = result3.couponExpiryDate;
                                     var actualTime = parseInt(s) + parseInt(coupanAge);
-                                    
                                     var data = {
                                         couponCode: couponCode,
                                         expirationTime: actualTime,
                                         adId: req.body.adId,
-                                       
                                     }
-                                   //  if(hiddenGifts != null){
-                                   //      hiddenCode = hiddenGifts;
-                                   //  }
-                                   // console.log("hiddenCode----->>>>",hiddenCode)
+                                    console.log("data---->>>>", data)
+                                    if (hiddenGifts != null) {
+                                        var hiddenCode = hiddenGifts;
+                                    }
+                                    console.log("hiddenCode----->>>>", hiddenCode)
                                     var data1 = {
-                                        hiddenCode: hiddenGifts,
+                                        hiddenCode: hiddenCode,
                                         adId: req.body.adId
                                     }
+                                    console.log("hiddenCode---22-->>>>", hiddenCode)
+                                    console.log("data1---22-->>>>", data1)
                                     User.update({ _id: { $in: winners } }, { $push: { coupon: data, hiddenGifts: data1 }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
                                         console.log("4")
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
@@ -749,7 +750,7 @@ module.exports = {
     },
 
     "storeCouponList": function(req, res) {
-        createNewAds.paginate({ sellCoupon: true, status:"ACTIVE"}, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        createNewAds.paginate({ sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                 res.send({
                     result: result,

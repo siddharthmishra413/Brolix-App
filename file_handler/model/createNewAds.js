@@ -140,7 +140,13 @@ var createNewAdsSchema = new Schema({
         senderId: { type: String },
         receiverId: { type: String },
         exchangedWithAdId: { type: String },
-        couponExchangeStatus: { type: String, default: 'REQUESTED' }
+        couponExchangeStatus: { type: String, default: 'REQUESTED' },
+        exchangedDate: { type : Date, default:  Date.now }
+    }],
+    couponSend: [{
+        senderId: { type: String },
+        receiverId: { type: String },
+        exchangedDate: { type : Date, default:  Date.now }
     }],
     numberOfWinners: {
         type: Number,
