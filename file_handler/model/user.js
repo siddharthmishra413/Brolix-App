@@ -88,15 +88,14 @@ var userSchema = new Schema({
     },
     coupon: [{
         couponCode: { type: String },
-        adId: { type: String },
+        adId: { type: String, ref: 'createNewAds' },
         expirationTime: { type: Date, default: Date.now },
         couponStatus: { type: String, default: 'VALID' },
-        exchangeStatus:{type: String, default:'ON'},
-        type:{ type: String}
+        exchangeStatus:{type: String, default:'ON'}
     }],
     hiddenGifts: [{
         adId: { type: String },
-        hiddenCode: { type: String }
+        hiddenCode: { type: String },
     }],
     luckCard: {
         type: String

@@ -165,10 +165,6 @@ var createNewAdsSchema = new Schema({
         type: Number
     },
     hiddenGifts: [],
-    watchStatus: {
-        type: String,
-        default: 'Not Watched'
-    },
     tag: [{
         userId: { type: String },
         senderId: []

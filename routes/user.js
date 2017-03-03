@@ -40,7 +40,7 @@ app.post('/chatHistory/:pageNumber', authUser.authUser, userHandler.chatHistory)
 app.post('/onlineUserList', authUser.authUser, userHandler.onlineUserList);
 app.get('/paymentClientToken',   userHandler.paymentClientToken);
 app.post('/paymentIntegration',   userHandler.paymentIntegration);
-app.post('/userCouponGifts/:pageNumber', authUser.authUser, userHandler.userCouponGifts);
+app.post('/userCouponGifts', authUser.authUser, userHandler.userCouponGifts);
 app.post('/winnersFilter', authUser.authUser, userHandler.winnersFilter);
 app.post('/googleLogin',  userHandler.googleLogin);
 app.post('/buyCoupon',  authUser.authUser, userHandler.buyCoupon);

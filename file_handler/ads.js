@@ -436,6 +436,9 @@ module.exports = {
                 })
             },
             function(winners, cashPrize, couponCode, hiddenGifts, callback) {
+                console.log("cashPrize----->>>>",cashPrize)
+                console.log("couponCode----->>>>",couponCode)
+                console.log("hiddenGifts----->>>>",hiddenGifts)
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
 
@@ -469,13 +472,17 @@ module.exports = {
                                     var s = Date.now(m)
                                     var coupanAge = result3.couponExpiryDate;
                                     var actualTime = parseInt(s) + parseInt(coupanAge);
-                                    var type = "WINNER";
+                                    
                                     var data = {
                                         couponCode: couponCode,
                                         expirationTime: actualTime,
                                         adId: req.body.adId,
-                                        type:type
+                                       
                                     }
+                                   //  if(hiddenGifts != null){
+                                   //      hiddenCode = hiddenGifts;
+                                   //  }
+                                   // console.log("hiddenCode----->>>>",hiddenCode)
                                     var data1 = {
                                         hiddenCode: hiddenGifts,
                                         adId: req.body.adId
@@ -742,7 +749,7 @@ module.exports = {
     },
 
     "storeCouponList": function(req, res) {
-        createNewAds.paginate({ sellCoupon: true }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        createNewAds.paginate({ sellCoupon: true, status:"ACTIVE"}, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                 res.send({
                     result: result,
