@@ -53,5 +53,6 @@ app.post('/sendCouponToFollower',  authUser.authUser, userHandler.sendCouponToFo
 app.post('/registerWithRefferalCode/:pageNumber',  authUser.authUser, userHandler.registerWithRefferalCode);
 app.post('/seeExchangeRequest',  authUser.authUser, userHandler.seeExchangeRequest);
 app.post('/couponRequestsSearch',  authUser.authUser, userHandler.couponRequestsSearch);
+app.post('/acceptDeclineCouponRequest',  authUser.authUser, userHandler.acceptDeclineCouponRequest);
 
 module.exports = app;

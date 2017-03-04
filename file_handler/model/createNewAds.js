@@ -140,13 +140,14 @@ var createNewAdsSchema = new Schema({
         senderId: { type: String },
         receiverId: { type: String },
         exchangedWithAdId: { type: String },
+        senderCouponCode: { type: String },
         couponExchangeStatus: { type: String, default: 'REQUESTED' },
-        exchangedDate: { type : Date, default:  Date.now }
+        exchangedDate: { type: Date, default: Date.now }
     }],
     couponSend: [{
         senderId: { type: String },
         receiverId: { type: String },
-        sendDate: { type : Date, default:  Date.now }
+        sendDate: { type: Date, default: Date.now }
     }],
     numberOfWinners: {
         type: Number,
@@ -176,8 +177,8 @@ var createNewAdsSchema = new Schema({
         senderId: []
     }],
 
-    adFollowers: [ String ],
-    commentCount:{type:Number, default:0},
+    adFollowers: [String],
+    commentCount: { type: Number, default: 0 },
 
     createdAt: {
         type: Date,
@@ -187,7 +188,7 @@ var createNewAdsSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    watchedAds:{
+    watchedAds: {
         type: Number,
         default: 0
     },
