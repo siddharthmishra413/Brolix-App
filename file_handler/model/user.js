@@ -163,12 +163,11 @@ var userSchema = new Schema({
         sendMessage: { type: String, default: 'public' },
         sendCash: { type: String, default: 'public' },
         sendCoupon: { type: String, default: 'public' },
-        follow: { type: String, default: 'public' },
+        followMe: { type: String, default: 'public' },
         ViewFollower: { type: String, default: 'public' },
-        ViewGifts: { type: String, default: 'public' },
+        sendBrolix: { type: String, default: 'public' },
         findMe: { type: String, default: 'public' },
-        exchangeCoupon: { type: String, default: 'public' },
-        viewLocation: { type: String, default: 'public' }
+        exchangeCoupon: { type: String, default: 'public' }
     },
     luckCardObject: [{
         brolix: { type: Number },

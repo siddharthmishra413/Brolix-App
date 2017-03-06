@@ -19,7 +19,6 @@ app.post('/luckCard', authUser.authUser, userHandler.luckCard);
 app.post('/redeemCash', authUser.authUser, userHandler.redeemCash);
 app.post('/sendBrolixToFollower', authUser.authUser, userHandler.sendBrolixToFollower);
 app.post('/sendCashToFollower', authUser.authUser, userHandler.sendCashToFollower);
-app.post('/buyBrolix', authUser.authUser, userHandler.buyBrolix);
 app.post('/rating', authUser.authUser, userHandler.rating);
 app.post('/filterToDateAndFromDate', authUser.authUser, userHandler.filterToDateAndFromDate);
 app.post('/blockUser', authUser.authUser, userHandler.blockUser);
@@ -54,5 +53,6 @@ app.post('/registerWithRefferalCode/:pageNumber',  authUser.authUser, userHandle
 app.post('/seeExchangeRequest',  authUser.authUser, userHandler.seeExchangeRequest);
 app.post('/couponRequestsSearch',  authUser.authUser, userHandler.couponRequestsSearch);
 app.post('/acceptDeclineCouponRequest',  authUser.authUser, userHandler.acceptDeclineCouponRequest);
+app.post('/useCouponWithoutCode',  authUser.authUser, userHandler.useCouponWithoutCode);
 
 module.exports = app;
