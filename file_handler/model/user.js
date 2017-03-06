@@ -91,18 +91,19 @@ var userSchema = new Schema({
         adId: { type: String, ref: 'createNewAds' },
         expirationTime: { type: Date, default: Date.now },
         couponStatus: { type: String, default: 'VALID' },
-        exchangeStatus:{type: String, default:'ON'},
-        status:{type: String, default: 'ACTIVE'}
+        exchangeStatus: { type: String, default: 'ON' },
+        status: { type: String, default: 'ACTIVE' }
     }],
     hiddenGifts: [{
         adId: { type: String },
+        status:{ type: String, default:'ACTIVE'},
         hiddenCode: []
     }],
     luckCard: {
         type: String
     },
-    cardPurchaseDate:{
-        type:Date
+    cardPurchaseDate: {
+        type: Date
     },
     deviceToken: {
         type: String
@@ -192,17 +193,17 @@ var userSchema = new Schema({
     referralCode: {
         type: String
     },
-    haveReferralCode:{
+    haveReferralCode: {
         type: Boolean
     },
-    referredCode:{
+    referredCode: {
         type: String
     },
     cashStatus: [{
         adId: { type: String },
         cashStatus: { type: String, default: 'pending' }
     }],
-    favouriteCoupon:[],
+    favouriteCoupon: [],
     userFollowers: [],
     createdAt: {
         type: Date,

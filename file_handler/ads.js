@@ -478,26 +478,41 @@ module.exports = {
                                         adId: req.body.adId,
                                     }
                                     console.log("data---->>>>", data)
-                                    if (hiddenGifts != null) {
+                                    if (hiddenGifts.length != 0) {
+                                        console.log("if")
+                                        console.log("hiddenGifts.length-->>",hiddenGifts.length)
                                         var hiddenCode = hiddenGifts;
-                                    }
-                                    console.log("hiddenCode----->>>>", hiddenCode)
-                                    var data1 = {
-                                        hiddenCode: hiddenCode,
-                                        adId: req.body.adId
-                                    }
-                                    console.log("hiddenCode---22-->>>>", hiddenCode)
-                                    console.log("data1---22-->>>>", data1)
-                                    User.update({ _id: { $in: winners } }, { $push: { coupon: data, hiddenGifts: data1 }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
-                                        console.log("4")
-                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                            res.send({
-                                                responseCode: 200,
-                                                responseMessage: "Raffle is over winner decided."
-                                                    //result: result
-                                            })
+
+                                        console.log("hiddenCode----->>>>", hiddenCode)
+                                        var data1 = {
+                                            hiddenCode: hiddenCode,
+                                            adId: req.body.adId
                                         }
-                                    })
+                                        console.log("hiddenCode---22-->>>>", hiddenCode)
+                                        console.log("data1---22-->>>>", data1)
+                                        User.update({ _id: { $in: winners } }, { $push: { coupon: data, hiddenGifts: data1 }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                            console.log("4")
+                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "Raffle is over winner decided."
+                                                        //result: result
+                                                })
+                                            }
+                                        })
+                                    } else {
+                                      console.log("else")
+                                        User.update({ _id: { $in: winners } }, { $push: { coupon: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                            console.log("4")
+                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "Raffle is over winner decided."
+                                                        //result: result
+                                                })
+                                            }
+                                        })
+                                    }
                                 }
                             }
                         });
