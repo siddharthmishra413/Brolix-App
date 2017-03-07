@@ -744,6 +744,7 @@ module.exports = {
                                 else if (result2.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account." }); } else {
                                     result2.brolix -= req.body.brolix;
                                     result2.save();
+
                                     User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendBrolixListObject": { senderId: senderId, brolix: req.body.brolix } }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result3) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                         else {
@@ -792,6 +793,7 @@ module.exports = {
             else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
                 result.cash -= req.body.cash;
                 result.save();
+
                 User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } } }, { new: true }, function(err, user) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                     else {
@@ -1091,6 +1093,7 @@ module.exports = {
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
+
                 if (req.body.haveReferralCode == true) {
                     User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: 250 } }).exec(function(err, result2) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -1182,7 +1185,7 @@ module.exports = {
 
     "userCouponGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
-        User.find({ _id: userId, 'coupon.status': "ACTIVE" }).populate('coupon.adId').exec(function(err, result) {
+        User.find({ _id: userId, 'coupon.status': "ACTIVE" }).populate('coupon.adId').populate('coupon.pageId', 'pageName').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }) } else {
                 var obj = result[0].coupon;
                 var data = obj.filter(obj => obj.status == "ACTIVE");
@@ -1416,11 +1419,11 @@ module.exports = {
             function(callback) {
                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $inc: { couponPurchased: 1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength <= result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
-                        callback(null, result.couponCode, result.couponExpiryDate)
+                        callback(null, result.couponCode, result.couponExpiryDate, result.pageId)
                     }
                 })
             },
-            function(couponCode1, couponExpiryDate1, callback) {
+            function(couponCode1, couponExpiryDate1, pageId, callback) {
                 User.findOne({ _id: req.body.userId }).exec(function(err, result1) {
 
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (result1.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
@@ -1435,7 +1438,9 @@ module.exports = {
                         var data = {
                             couponCode: couponCode1,
                             expirationTime: actualTime,
-                            adId: req.body.adId
+                            adId: req.body.adId,
+                            pageId: pageId,
+                            type: "PURCHASED"
                         }
                         console.log("data--->>", data)
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data }, $inc: { brolix: -req.body.brolix } }, { new: true }, function(err, result3) {
@@ -1900,13 +1905,12 @@ module.exports = {
                 })
             }
         })
-    }, 
+    },
 
     "winnersFilterCodeBasis": function(req, res) { // with code and without code
-        if(req.body.type == 'all'){          
-            User.aggregate({ $unwind : "$hiddenGifts" },{ $unwind : "$coupon" },{ $match:{$or:[{'hiddenGifts.status': "ACTIVE" },{'coupon.status': "ACTIVE"}] } }).exec(function(err, result1) {
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+        if (req.body.type == 'all') {
+            User.aggregate({ $unwind: "$hiddenGifts" }, { $unwind: "$coupon" }, { $match: { $or: [{ 'hiddenGifts.status': "ACTIVE" }, { 'coupon.status': "ACTIVE" }] } }).exec(function(err, result1) {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result1,
                         responseCode: 200,
@@ -1914,11 +1918,9 @@ module.exports = {
                     })
                 }
             })
-        }
-        else if (req.body.type == 'withCode') {
-            User.aggregate({ $unwind : "$hiddenGifts" },{ $match: { 'hiddenGifts.status': "ACTIVE" } }).exec(function(err, result1) {
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+        } else if (req.body.type == 'withCode') {
+            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.status': "ACTIVE" } }).exec(function(err, result1) {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result1,
                         responseCode: 200,
@@ -1927,9 +1929,8 @@ module.exports = {
                 }
             })
         } else {
-            User.aggregate({ $unwind : "$coupon" },{ $match: { 'coupon.status': "ACTIVE" } }).exec(function(err, result2) {
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-                else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.status': "ACTIVE" } }).exec(function(err, result2) {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result2,
                         responseCode: 200,
@@ -1939,10 +1940,6 @@ module.exports = {
             })
         }
     }
-
-
-
-
 
 
 

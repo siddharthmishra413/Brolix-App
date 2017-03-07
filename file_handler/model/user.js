@@ -75,6 +75,7 @@ var userSchema = new Schema({
     cashPrize: [{
         cash: { type: String },
         adId: { type: String },
+        pageId:{type:String, ref:'createNewPage'},
         cashStatus: { type: String, default: 'PENDING' }
     }],
     couponPrize: [],
@@ -89,10 +90,12 @@ var userSchema = new Schema({
     coupon: [{
         couponCode: { type: String },
         adId: { type: String, ref: 'createNewAds' },
+        pageId:{type:String, ref:'createNewPage'},
         expirationTime: { type: Date, default: Date.now },
         couponStatus: { type: String, default: 'VALID' },
         exchangeStatus: { type: String, default: 'ON' },
-        status: { type: String, default: 'ACTIVE' }
+        status: { type: String, default: 'ACTIVE' },
+        type:{type:String}
     }],
     hiddenGifts: [{
         adId: { type: String },
