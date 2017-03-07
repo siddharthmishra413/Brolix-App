@@ -55,5 +55,6 @@ app.post('/couponRequestsSearch',  authUser.authUser, userHandler.couponRequests
 app.post('/acceptDeclineCouponRequest',  authUser.authUser, userHandler.acceptDeclineCouponRequest);
 app.post('/useCouponWithoutCode',  authUser.authUser, userHandler.useCouponWithoutCode);
 app.post('/winnersFilterCodeBasis', authUser.authUser, userHandler.winnersFilterCodeBasis)
+app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode)
 
 module.exports = app;

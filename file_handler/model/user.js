@@ -100,7 +100,7 @@ var userSchema = new Schema({
     hiddenGifts: [{
         adId: { type: String },
         status:{ type: String, default:'ACTIVE'},
-        hiddenCode: []
+        hiddenCode: { type: String }
     }],
     luckCard: {
         type: String

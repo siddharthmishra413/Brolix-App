@@ -1939,7 +1939,26 @@ module.exports = {
                 }
             })
         }
-    }
+    },
+
+    "useCouponWithCode": function(req, res) {
+         var couponId = req.body.couponId;
+         User.findOne({ 'hiddenGifts._id': couponId }).exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (Boolean(result.hiddenGifts.find(hiddenGifts => hiddenGifts.status == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } else {
+                 User.update({ 'hiddenGifts._id': couponId }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result1) {
+                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                         res.send({
+                             // result: result2,
+                             responseCode: 200,
+                             responseMessage: "Coupon used successfully."
+                         })
+                     }
+                 })
+             }
+         })
+
+     }
+
 
 
 
