@@ -12,7 +12,8 @@ app.get('/showAllBusinessUser', adminHandler.showAllBusinessUser);
 app.get('/winners', adminHandler.winners);
 app.post('/sendBrolix', adminHandler.sendBrolix);
 app.get('/showAllBlockUser', adminHandler.showAllBlockUser);
-app.post('/blockUser', adminHandler.blockUser);
+// app.post('/blockUser', adminHandler.blockUser);
+app.get('/blockUser/:userId', adminHandler.blockUser);
 app.get('/totalAds', adminHandler.totalAds);
 app.post('/listOfAds', adminHandler.listOfAds);
 app.get('/listOfAllAds', adminHandler.listOfAllAds);
@@ -38,9 +39,20 @@ app.get('/videoAds', adminHandler.videoAds);
 app.get('/slideshowAds', adminHandler.slideshowAds);
 app.get('/totalPages/:pageNumber', adminHandler.totalPages);
 app.post('/blockPage', adminHandler.blockPage);
-app.get('/showAllBlockedPage/:pageNumber', adminHandler.showAllBlockedPage);
-app.post('/removePage', adminHandler.removePage);
+app.get('/showAllBlockedPage', adminHandler.showAllBlockedPage);
+app.get('/removePage/:pageId', adminHandler.removePage);
 app.get('/showAllRemovedPage', adminHandler.showAllRemovedPage);
+app.get('/sendcardAndcoupan/:id',adminHandler.sendcardAndcoupan);
+app.get('/findAllCities',adminHandler.findAllCities);
+app.get('/unPublishedPage',adminHandler.unPublishedPage);
+
+app.post('/createCards',adminHandler.createCards);
+app.get('/viewCards/:type',adminHandler.viewCards);
+app.post('/editCards',adminHandler.editCards);
+app.get('/showCardDetails/:id',adminHandler.showCardDetails);
+app.get('/removeCard/:id', adminHandler.removeCard);
+app.post('/createOfferOnCard', adminHandler.createOfferOnCard);
+app.post('/showOfferOnCards',adminHandler.showOfferOnCards);
 
 
 
