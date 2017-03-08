@@ -772,14 +772,8 @@ module.exports = {
     },
 
     "storeCouponList": function(req, res) {
-<<<<<<< HEAD
-        createNewAds.paginate({ sellCoupon: true },{ page: req.params.pageNumber, limit: 8 },function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-            else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
-=======
         createNewAds.paginate({ sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
->>>>>>> deepak
                 res.send({
                     result: result,
                     responseCode: 200,
