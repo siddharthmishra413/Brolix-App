@@ -19,7 +19,6 @@ app.post('/luckCard', authUser.authUser, userHandler.luckCard);
 app.post('/redeemCash', authUser.authUser, userHandler.redeemCash);
 app.post('/sendBrolixToFollower', authUser.authUser, userHandler.sendBrolixToFollower);
 app.post('/sendCashToFollower', authUser.authUser, userHandler.sendCashToFollower);
-app.post('/buyBrolix', authUser.authUser, userHandler.buyBrolix);
 app.post('/rating', authUser.authUser, userHandler.rating);
 app.post('/filterToDateAndFromDate', authUser.authUser, userHandler.filterToDateAndFromDate);
 app.post('/blockUser', authUser.authUser, userHandler.blockUser);
@@ -40,14 +39,22 @@ app.post('/chatHistory/:pageNumber', authUser.authUser, userHandler.chatHistory)
 app.post('/onlineUserList', authUser.authUser, userHandler.onlineUserList);
 app.get('/paymentClientToken',   userHandler.paymentClientToken);
 app.post('/paymentIntegration',   userHandler.paymentIntegration);
-app.post('/userCouponGifts/:pageNumber', authUser.authUser, userHandler.userCouponGifts);
+app.post('/userCouponGifts', authUser.authUser, userHandler.userCouponGifts);
 app.post('/winnersFilter', authUser.authUser, userHandler.winnersFilter);
 app.post('/googleLogin',  userHandler.googleLogin);
 app.post('/buyCoupon',  authUser.authUser, userHandler.buyCoupon);
-app.post('/userCashGifts/:pageNumber',  authUser.authUser, userHandler.userCashGifts);
+app.post('/userCashGifts',  authUser.authUser, userHandler.userCashGifts);
 app.post('/addRemoveCouponFromFavourite',  authUser.authUser, userHandler.addRemoveCouponFromFavourite);
 app.post('/listOfFavouriteCoupon/:pageNumber',  authUser.authUser, userHandler.listOfFavouriteCoupon);
 app.post('/couponExchangeOnOff',  authUser.authUser, userHandler.couponExchangeOnOff);
-app.post('/CouponExchangeRequest',  authUser.authUser, userHandler.CouponExchangeRequest);
+app.post('/sendCouponExchangeRequest',  authUser.authUser, userHandler.sendCouponExchangeRequest);
+app.post('/sendCouponToFollower',  authUser.authUser, userHandler.sendCouponToFollower);
+app.post('/registerWithRefferalCode/:pageNumber',  authUser.authUser, userHandler.registerWithRefferalCode);
+app.post('/seeExchangeRequest',  authUser.authUser, userHandler.seeExchangeRequest);
+app.post('/couponRequestsSearch',  authUser.authUser, userHandler.couponRequestsSearch);
+app.post('/acceptDeclineCouponRequest',  authUser.authUser, userHandler.acceptDeclineCouponRequest);
+app.post('/useCouponWithoutCode',  authUser.authUser, userHandler.useCouponWithoutCode);
+app.post('/winnersFilterCodeBasis', authUser.authUser, userHandler.winnersFilterCodeBasis)
+app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode)
 
 module.exports = app;

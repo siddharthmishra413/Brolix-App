@@ -74,7 +74,9 @@ var userSchema = new Schema({
     },
     cashPrize: [{
         cash: { type: String },
-        adId: { type: String },
+        adId: { type: String, ref: 'createNewAds'},
+        pageId:{type:String, ref:'createNewPage'},
+        status: { type: String, default: 'ACTIVE' },
         cashStatus: { type: String, default: 'PENDING' }
     }],
     couponPrize: [],
@@ -88,20 +90,24 @@ var userSchema = new Schema({
     },
     coupon: [{
         couponCode: { type: String },
-        adId: { type: String },
+        adId: { type: String, ref: 'createNewAds' },
+        pageId:{type:String, ref:'createNewPage'},
         expirationTime: { type: Date, default: Date.now },
         couponStatus: { type: String, default: 'VALID' },
-        exchangeStatus:{type: String, default:'ON'}
+        exchangeStatus: { type: String, default: 'ON' },
+        status: { type: String, default: 'ACTIVE' },
+        type:{type:String}
     }],
     hiddenGifts: [{
         adId: { type: String },
+        status:{ type: String, default:'ACTIVE'},
         hiddenCode: { type: String }
     }],
     luckCard: {
         type: String
     },
-    cardPurchaseDate:{
-        type:Date
+    cardPurchaseDate: {
+        type: Date
     },
     deviceToken: {
         type: String
@@ -162,12 +168,11 @@ var userSchema = new Schema({
         sendMessage: { type: String, default: 'public' },
         sendCash: { type: String, default: 'public' },
         sendCoupon: { type: String, default: 'public' },
-        follow: { type: String, default: 'public' },
+        followMe: { type: String, default: 'public' },
         ViewFollower: { type: String, default: 'public' },
-        ViewGifts: { type: String, default: 'public' },
+        sendBrolix: { type: String, default: 'public' },
         findMe: { type: String, default: 'public' },
-        exchangeCoupon: { type: String, default: 'public' },
-        viewLocation: { type: String, default: 'public' }
+        exchangeCoupon: { type: String, default: 'public' }
     },
     luckCardObject: [{
         brolix: { type: Number },
@@ -192,11 +197,17 @@ var userSchema = new Schema({
     referralCode: {
         type: String
     },
+    haveReferralCode: {
+        type: Boolean
+    },
+    referredCode: {
+        type: String
+    },
     cashStatus: [{
         adId: { type: String },
         cashStatus: { type: String, default: 'pending' }
     }],
-    favouriteCoupon:[],
+    favouriteCoupon: [],
     userFollowers: [],
     createdAt: {
         type: Date,
