@@ -74,8 +74,9 @@ var userSchema = new Schema({
     },
     cashPrize: [{
         cash: { type: String },
-        adId: { type: String },
+        adId: { type: String, ref: 'createNewAds'},
         pageId:{type:String, ref:'createNewPage'},
+        status: { type: String, default: 'ACTIVE' },
         cashStatus: { type: String, default: 'PENDING' }
     }],
     couponPrize: [],

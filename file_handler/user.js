@@ -1160,24 +1160,14 @@ module.exports = {
 
     "userCashGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
-        var array = [];
-        createNewAds.find({ adsType: "cash" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                for (i = 0; i < result.length; i++) {
-                    for (j = 0; j < result[i].winners.length; j++) {
-                        if (result[i].winners[j] == userId) {
-                            array.push(result[i]._id);
-                        }
-                    }
-                }
-                createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
-                        res.send({
-                            result: result1,
-                            responseCode: 200,
-                            responseMessage: "result show successfully;"
-                        })
-                    }
+        User.find({ _id: userId, 'cashPrize.status': "ACTIVE" }).populate('cashPrize.adId').populate('cashPrize.pageId', 'pageName').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
+                var obj = result[0].cashPrize;
+                var data = obj.filter(obj => obj.status == "ACTIVE");
+                res.send({
+                    result: data,
+                    responseCode: 200,
+                    responseMessage: "Cash gifts show successfully."
                 })
             }
         })
@@ -1186,7 +1176,7 @@ module.exports = {
     "userCouponGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
         User.find({ _id: userId, 'coupon.status': "ACTIVE" }).populate('coupon.adId').populate('coupon.pageId', 'pageName').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }) } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
                 var obj = result[0].coupon;
                 var data = obj.filter(obj => obj.status == "ACTIVE");
                 res.send({
@@ -1197,7 +1187,6 @@ module.exports = {
             }
         })
     },
-
 
     "countrys": function(req, res) {
         var countrys = country.all();
