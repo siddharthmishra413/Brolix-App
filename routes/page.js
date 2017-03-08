@@ -14,7 +14,7 @@ app.get('/showPageFavouriteType/:id/:pageNumber', authUser.authUser, pageHandler
 app.put('/editPage/:id', authUser.authUser, pageHandler.editPage);
 app.post('/deletePage', authUser.authUser, pageHandler.deletePage);
 app.post('/pagesSearch/:pageNumber', authUser.authUser, pageHandler.pagesSearch); //Not Update in Docs
-app.post('/pageFollowUnfollow', authUser.authUser, pageHandler.pageFollowUnfollow); //Not Update in Docs
+app.post('/pageFollowUnfollow', pageHandler.pageFollowUnfollow); //Not Update in Docs
 app.post('/searchForPages/:pageNumber', authUser.authUser, pageHandler.searchForPages); //Not Upadte in Docs
 app.post('/pageRating', authUser.authUser, pageHandler.pageRating);
 app.get('/showBlockedPage/:pageNumber', authUser.authUser, pageHandler.showBlockedPage);
@@ -33,5 +33,7 @@ app.post('/adsStatistics', pageHandler.adsStatistics);
 app.post('/CouponCashAdStatistics', pageHandler.CouponCashAdStatistics);
 
 app.post('/pageFilter', authUser.authUser, pageHandler.pageFilter);
+app.post('/userFavouratePages', pageHandler.userFavouratePages);
+
 
 module.exports = app;

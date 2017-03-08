@@ -934,21 +934,21 @@ module.exports = {
         })
     },
 
-    // "notificationList":function(req, res){
-    //     notificationList.findOne({
-    //       _id: req.body.adId
-    //     }).exec(function(err, result){
-    //        if(err){responseHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
-    //         else{
-    //             res.send({
-    //                     responseCode: 200,
-    //                     responseMessage: 'Successfully.',
-    //                     result: result
-    //             });
-    //         }
+    "notificationList":function(req, res){
+        notificationList.findOne({
+          userId: req.body.userId
+        }).exec(function(err, result){
+           if(err){responseHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
+            else{
+                res.send({
+                    responseCode: 200,
+                    responseMessage: 'Successfully.',
+                    result: result
+                });
+            }
 
-    //     })
-    // },
+        })
+    },
 
     "pageFilter": function(req, res) {
         var condition = { $or: [] };
@@ -977,6 +977,31 @@ module.exports = {
                 })
             }
         })
+    },
+
+    "userFavouratePages": function(req, res){
+      User.findOne({
+        _id:req.body.userId
+      },'pageFollowers',function(err, result){
+        if(err){res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+        else if(!result){res.send({
+                    responseCode: 404,
+                    responseMessage: "Data not found."
+        })}
+        else{
+            User.populate(result,{
+              path:'pageFollowers.pageId',
+              model:'createNewPage'
+            },function(err, resultt){
+
+                res.send({
+                    result: resultt,
+                    responseCode: 200,
+                    responseMessage: "Data not found."
+                })
+            })
+        }
+      })  
     }
 
 }

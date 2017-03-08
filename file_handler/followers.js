@@ -73,7 +73,7 @@
          }
      },
 
-     "followerRequestSend": function(req, res) {
+    "followerRequestSend": function(req, res) {
          console.log("followerRequestSend===senderId=======>>>" + req.body.senderId)
          followerList.find({ senderId: req.body.senderId }).exec(function(err, result) {
              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {

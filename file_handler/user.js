@@ -24,12 +24,6 @@ cloudinary.config({
     api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
 });
 
-paypal.configure({
-    'host': 'api.sandbox.paypal.com',
-    'mode': 'sandbox', //sandbox or live
-    'client_id': 'AUPnCDpK4dzzqAaNNHrw4bYxkjG0SDWGislalh5-6T1sx2XYn7ZpwX3D1-QO5snuG339SDV3esPyKbBq',
-    'client_secret': 'EEaa_8sOwZ9aond0Dta5zNA_xE40zsv-VaUudN3jARkKEMhGBvEXBdu4f29b-TJ0KZ5oq2vZOr-8sFHt'
-});
 
 var avoid = {
         "password": 0
@@ -37,8 +31,7 @@ var avoid = {
     //var createNewPage = require("./model/createNewAds");
     // http://172.16.6.171
 
-
-
+//brintree Integration
 var braintree = require("braintree");
 
 var gateway = braintree.connect({
@@ -49,7 +42,7 @@ var gateway = braintree.connect({
 });
 
 module.exports = {
-    
+
 "paymentClientToken": function(req, res){ 
     gateway.clientToken.generate({}, function (err, response) {
     console.log(response)
@@ -89,7 +82,6 @@ module.exports = {
                     //   if(serviceFee > amount){
                     //     nextPay = serviceFee - amount;
                     //      serviceFee = amount;
-                         
                     //      console.log("nextPay"+nextPay)
                     //   }
                     // }else{
@@ -1534,9 +1526,6 @@ module.exports = {
     })
 
 }
-
-
-
 
 }
 

@@ -455,6 +455,10 @@ module.exports = {
                                     User.update({ _id: { $in: winners } }, { $push: { cashPrize: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
 
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
+
+                                            functions.iOS_notification();
+                                            functions.android_notification();
+
                                             res.send({
                                                 responseCode: 200,
                                                 responseMessage: "Raffle is over winner decided."
@@ -521,7 +525,6 @@ module.exports = {
             })
         }
     },
-
 
     "couponWinners": function(req, res) {
         createNewAds.find({ adsType: "coupon" }).exec(function(err, result) {
@@ -742,7 +745,7 @@ module.exports = {
     },
 
     "storeCouponList": function(req, res) {
-      createNewAds.paginate({ sellCoupon: true },{ page: req.params.pageNumber, limit: 8 },function(err, result) {
+        createNewAds.paginate({ sellCoupon: true },{ page: req.params.pageNumber, limit: 8 },function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
             else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                 res.send({
