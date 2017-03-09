@@ -12,14 +12,8 @@ var Schema = mongoose.Schema,
 /* Ads schema */
 
 var createNewAdsSchema = new Schema({
-    userId: {
-        type: String,
-        trim: true
-    },
-    pageId: {
-        type: String,
-        trim: true
-    },
+    userId: { type: String, trim: true, ref: 'brolixUser' },
+    pageId: { type: String, trim: true, ref: 'createNewPage' },
     pageName: {
         type: String,
         trim: true
@@ -179,6 +173,7 @@ var createNewAdsSchema = new Schema({
 
     adFollowers: [String],
     commentCount: { type: Number, default: 0 },
+    reportOnAd:{ type: Number, default:0},
 
     createdAt: {
         type: Date,

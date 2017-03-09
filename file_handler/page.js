@@ -426,7 +426,7 @@ module.exports = {
 
     "adAdmin": function(req, res) {
         if (req.body.add == "add") {
-            createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } } }, {
+            createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc:{adAdminCount: 1} }, {
                 new: true
             }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }

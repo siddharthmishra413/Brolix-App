@@ -30,7 +30,11 @@ module.exports = {
             var Ads = new createNewAds(req.body);
             Ads.save(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
-                    res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+                    createNewPage.findOneAndUpdate({ _id: req.body.pageId },{ $inc: { adsCount: 1} },{ new: true }).exec(function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                            res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+                        }
+                    })
                 }
             })
         } else {
@@ -39,13 +43,19 @@ module.exports = {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash <= req.body.cashAdPrize) {
                     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                 } else {
+
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
                         //req.body.viewerLenght = 1000;
                         req.body.cashStatus = 'PENDING';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                            res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 }},{ new: true }).exec(function(err, result1) {
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                        res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+                                    }
+                                })
+                            }
                         })
                     })
                 }
@@ -404,7 +414,19 @@ module.exports = {
 
                         if (raffleCount.length == viewerLenght) {
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {}
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
+                                    console.log("success-->>",success)
+                                    var winnerCount = success.numberOfWinners;
+                                    var pageId = success.pageId;
+                                    console.log("winnerCount-->>",winnerCount)
+                                     createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: + winnerCount }},{ new: true }).exec(function(err, result2) {
+                                        console.log("result2-->",result2)
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+                                        console.log("in else")
+                                    }
+                                })
+
+                                }
 
                             })
                             console.log("raffleCount--111->>>" + raffleCount.length);
@@ -451,14 +473,14 @@ module.exports = {
                                     var data = {
                                         cash: cashPrize,
                                         adId: req.body.adId,
-                                        pageId:pageId
+                                        pageId: pageId
                                     }
                                     User.update({ _id: { $in: winners } }, { $push: { cashPrize: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
 
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
 
-                                            functions.iOS_notification();
-                                            functions.android_notification();
+                                            // functions.iOS_notification();
+                                            // functions.android_notification();
 
                                             res.send({
                                                 responseCode: 200,
@@ -480,8 +502,8 @@ module.exports = {
                                         couponCode: couponCode,
                                         expirationTime: actualTime,
                                         adId: req.body.adId,
-                                        pageId:pageId,
-                                        type:"WINNER"
+                                        pageId: pageId,
+                                        type: "WINNER"
                                     }
                                     console.log("data---->>>>", data)
                                     if (hiddenGifts.length != 0) {

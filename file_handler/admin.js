@@ -2,6 +2,7 @@ var validator = require('validator');
 var User = require("./model/user");
 var createNewAds = require("./model/createNewAds");
 var createNewPage = require("./model/createNewPage");
+var createNewReport = require("./model/reportProblem");
 var adminCards = require("./model/cardsAdmin");
 var cloudinary = require('cloudinary');
 var multiparty = require('multiparty');
@@ -14,15 +15,14 @@ var waterfall = require('async-waterfall');
 
 
 var cron = require('node-cron');
-cron.schedule('* * * * *', function(){
+cron.schedule('* * * * *', function() {
     var startDate = new Date().toUTCString();
 
-  adminCards.update({'offer.offerTime':{$lte:startDate}},{ $set:  { 'offer.$.status': 'expired' }},{multi:true},function(err, result){
-              if (err) { console.log('some thing went wrong') }
-          else{
-             console.log("result in offer Expire>>>>"+JSON.stringify(result))
-          } 
-  })
+    adminCards.update({ 'offer.offerTime': { $lte: startDate } }, { $set: { 'offer.$.status': 'expired' } }, { multi: true }, function(err, result) {
+        if (err) { console.log('some thing went wrong') } else {
+            console.log("result in offer Expire>>>>" + JSON.stringify(result))
+        }
+    })
 })
 
 cloudinary.config({
@@ -147,13 +147,8 @@ module.exports = {
         User.find({
             $or: [{ type: "USER" }, { type: "Advertiser" }]
         }, function(err, result) {
-            if (err) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }) } else {
                 res.send({
-                    responseCode: 500,
-                    responseMessage: 'Internal server error'
-                });
-            } else {
-                res.status(200).send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Users show successfully."
@@ -336,7 +331,7 @@ module.exports = {
     },
 
     "totalAds": function(req, res) { // all ads cash and coupon type
-        createNewAds.find({}).exec(function(err, result) {
+        createNewAds.find({}).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -840,9 +835,8 @@ module.exports = {
     },
 
     "showAllBlockedPage": function(req, res) { // pageId in request
-        createNewPage.find({ status: "BLOCK" },function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else if (result.length == 0) { res.send({ responseCode: 200, count:0, responseMessage: "No blocked page found" }) } else {
+        createNewPage.find({ status: "BLOCK" }).populate('userId', 'firstName lastName email mobileNumber').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 200, count: 0, responseMessage: "No blocked page found" }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -859,23 +853,28 @@ module.exports = {
     },
 
     "removePage": function(req, res) { // pageId in request
-        createNewPage.findByIdAndUpdate({ _id: req.params.pageId }, { $set: { 'status': 'REMOVED' } }, { new: true }, function(err, result) {
+        createNewPage.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'status': 'REMOVED' } }, { new: true }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
             else {
-                res.send({
-                    // result: result,
-                    responseCode: 200,
-                    responseMessage: "Page removed successfully."
-                });
+                var userId = result.userId;
+                User.findOneAndUpdate({ _id: userId }, { $inc: { pageCount: -1 } }, { new: true }).exec(function(err, resul1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        res.send({
+                            //result: resul1,
+                            responseCode: 200,
+                            responseMessage: "Page removed successfully."
+                        });
+                    }
+                })
+
             }
 
         });
     },
 
     "showAllRemovedPage": function(req, res) { // pageId in request
-        createNewPage.find({ status: "REMOVED" },function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else if (result.length == 0) { res.send({ responseCode: 200, count:0 , responseMessage: "No removed page found"}) } else {
+        createNewPage.find({ status: "REMOVED" }).populate('userId', 'firstName lastName email mobileNumber').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 200, count: 0, responseMessage: "No removed page found" }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -890,124 +889,202 @@ module.exports = {
 
         });
     },
-    "sendcardAndcoupan":function(req, res){
-     var userId = req.params.id; //589dc8f2d6c43c4034a92f5e
-     User.findOne({_id:userId},'coupon',function(err, result){
-      if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Coupan not found for this user" })
-     res.send({ responseCode: 200, responseMessage: 'Coupan of user' , result :result})
-     })
-    },
-    "findAllCities":function(req, res){
-        User.find({},'city',function(err, result){
-      if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No city record found" })
-       var result = result.map(function(a) {return a.city;});
-       res.send({ responseCode: 200, responseMessage: 'Here all all citiers', data:result })
+    "sendcardAndcoupan": function(req, res) {
+        var userId = req.params.id; //589dc8f2d6c43c4034a92f5e
+        User.findOne({ _id: userId }, 'coupon', function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Coupan not found for this user" })
+            res.send({ responseCode: 200, responseMessage: 'Coupan of user', result: result })
         })
     },
-    "unPublishedPage":function(req, res){
-        createNewAds.find({},'pageId',function(err, result){
-         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No page found" })
-       var result = result.map(function(a) {return a.pageId;});
-       var allPageIds = _.uniq(result);
-       createNewPage.find({_id:{$nin:allPageIds}},function(err, result){
-      res.send({ responseCode: 200, responseMessage: 'Here all the Unsuscribe pages', data:result })
-
-       })
+    "findAllCities": function(req, res) {
+        User.find({}, 'city', function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No city record found" })
+            var result = result.map(function(a) {
+                return a.city; });
+            res.send({ responseCode: 200, responseMessage: 'Here all all citiers', data: result })
         })
     },
-    "createCards":function(req, res){
-   console.log("SASAS>>>"+JSON.stringify(req.body))
-     var saveCards = new adminCards(req.body);
+    "unPublishedPage": function(req, res) {
+        createNewAds.find({}, 'pageId', function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No page found" })
+            var result = result.map(function(a) {
+                return a.pageId; });
+            var allPageIds = _.uniq(result);
+            createNewPage.find({ _id: { $nin: allPageIds } }).populate('userId', 'firstName lastName email mobileNumber').exec(function(err, result) {
+                res.send({ responseCode: 200, responseMessage: 'Here all the Unsuscribe pages', data: result })
 
-     saveCards.save(function(err, result){
-          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-          else{
-             res.send({ responseCode: 200, responseMessage: 'Save card successfully',data:result });
-          }
-     })  
+            })
+        })
     },
-    "viewCards":function(req, res){
+    "createCards": function(req, res) {
+        console.log("SASAS>>>" + JSON.stringify(req.body))
+        var saveCards = new adminCards(req.body);
+
+        saveCards.save(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({ responseCode: 200, responseMessage: 'Save card successfully', data: result });
+            }
+        })
+    },
+    "viewCards": function(req, res) {
         console.log(typeof(req.params.type))
-     var cardType = req.params.type;
-     adminCards.find({type:cardType,status : "active"},function(err, result){
-          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-          else{
-             res.send({ responseCode: 200, responseMessage: 'Card find successfully',data:result });
-          }
-     })  
-    },
-   "showCardDetails":function(req, res){
-     var cardId = req.params.id;
-     adminCards.findById(cardId,function(err, result){
-          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-          else{
-             res.send({ responseCode: 200, responseMessage: 'Card find successfully',data:result });
-          }
-     })  
-    },
-    "editCards":function(req, res){
-     var cardId = req.body.cardId;
-     console.log("req in edit card>>>"+JSON.stringify(req.body))
-     var data = req.body;
-     adminCards.findOneAndUpdate({_id:cardId},data,{new:true},function(err, result){
-          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-          else{
-             res.send({ responseCode: 200, responseMessage: 'card updated successfully',data:result });
-          }
-     })  
-    },
-    "removeCard":function(req, res){
-     var cardId = req.params.id;
-     adminCards.findByIdAndUpdate(cardId,{status:"removed"},{new:true},function(err, result){
-          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-          else{
-             res.send({ responseCode: 200, responseMessage: 'Card find successfully',data:result });
-          }
-     })    
-    },
-    "createOfferOnCard":function(req, res){
-        var cardId = req.body.id;
-        adminCards.findByIdAndUpdate(cardId,{$push:{offer:req.body}},{new:true},function(err, result){
-          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-          else{
-             res.send({ responseCode: 200, responseMessage: 'Offer created on card successfully',data:result });
-          }            
+        var cardType = req.params.type;
+        adminCards.find({ type: cardType, status: "active" }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
+            }
         })
     },
-    "showOfferOnCards":function(req, res){
+    "showCardDetails": function(req, res) {
+        var cardId = req.params.id;
+        adminCards.findById(cardId, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
+            }
+        })
+    },
+    "editCards": function(req, res) {
+        var cardId = req.body.cardId;
+        console.log("req in edit card>>>" + JSON.stringify(req.body))
+        var data = req.body;
+        adminCards.findOneAndUpdate({ _id: cardId }, data, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({ responseCode: 200, responseMessage: 'card updated successfully', data: result });
+            }
+        })
+    },
+    "removeCard": function(req, res) {
+        var cardId = req.params.id;
+        adminCards.findByIdAndUpdate(cardId, { status: "removed" }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
+            }
+        })
+    },
+    "createOfferOnCard": function(req, res) {
+        var cardId = req.body.id;
+        adminCards.findByIdAndUpdate(cardId, { $push: { offer: req.body } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({ responseCode: 200, responseMessage: 'Offer created on card successfully', data: result });
+            }
+        })
+    },
+    "showOfferOnCards": function(req, res) {
         var cardType = req.body.cardType;
         adminCards.aggregate([
-        {$unwind:'$offer'},
-        {$match:{type:cardType,'offer.status':'active'}},
-        { $project: {offer:1,_id:0} }
-            ]).exec(function(err, result){
-          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-          else{
-             res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully',data:result });
-          }             
-       }) 
+            { $unwind: '$offer' },
+            { $match: { type: cardType, 'offer.status': 'active' } },
+            { $project: { offer: 1, _id: 0 } }
+        ]).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
+            }
+        })
+    },
+
+    "showUserPage": function(req, res) {
+        createNewPage.find({ userId: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All pages show successfully."
+                })
+            }
+        })
+    },
+
+    "adsOnPage": function(req, res) {
+        createNewAds.find({ pageId: req.params.id }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All pages show successfully."
+                })
+            }
+        })
+    },
+
+    "winnersOnPage": function(req, res) {
+        createNewAds.find({ pageId: req.params.id }).exec(function(err, result) {
+            console.log("result--->>", result)
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                var array = [];
+                for (var i = 0; i < result.length; i++) {
+                    console.log("array--->>", array)
+                    for (var j = 0; j < result[i].winners.length; j++) {
+                        array.push(result[i].winners[j])
+                    }
+                }
+                console.log("array--->>", array)
+                User.find({ _id: { $in: array } }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found" }); } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "List of all winners show successfully."
+                        })
+                    }
+                })
+            }
+        })
+    },
+
+    "pageAdmins": function(req, res) {
+        createNewPage.aggregate({ $unwind: "$adAdmin" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All pages show successfully."
+                })
+            }
+        })
+    },
+
+    "showReportOnAd": function(req, res) {
+        createNewReport.find({ adId: req.params.id }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All report show successfully."
+                })
+            }
+        })
     }
+
+
+
+
+
+
+
+
+
 
 
 }
-   function uploads(req, callback) {
-        console.log(req.body.images)
-        var form = new multiparty.Form();
-        form.parse(req, function(err, fields, files) {
-            console.log("files>>"+JSON.stringify(files));
-            var img = files.images[0];
-            var fileName = files.images[0].originalFilename;
-            cloudinary.uploader.upload(img.path, function(result) {
-                console.log("results url>>>"+result)
-                callback(null,result.url);
-              /*  res.send({
-                    result: result.url,
-                    responseCode: 200,
-                    responseMessage: "File uploaded successfully."
-                });*/
-            }, {
-                resource_type: "auto",
-                chunk_size: 6000000
-            });
-        })
-    }
+
+function uploads(req, callback) {
+    console.log(req.body.images)
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        console.log("files>>" + JSON.stringify(files));
+        var img = files.images[0];
+        var fileName = files.images[0].originalFilename;
+        cloudinary.uploader.upload(img.path, function(result) {
+            console.log("results url>>>" + result)
+            callback(null, result.url);
+            /*  res.send({
+                  result: result.url,
+                  responseCode: 200,
+                  responseMessage: "File uploaded successfully."
+              });*/
+        }, {
+            resource_type: "auto",
+            chunk_size: 6000000
+        });
+    })
+}
