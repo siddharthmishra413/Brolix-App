@@ -55,8 +55,10 @@ app.post('/showOfferOnCards',adminHandler.showOfferOnCards);
 app.get('/showUserPage/:id',adminHandler.showUserPage);
 app.get('/adsOnPage/:id',adminHandler.adsOnPage);
 app.get('/winnersOnPage/:id',adminHandler.winnersOnPage);
-app.get('/pageAdmins',adminHandler.pageAdmins);
+app.get('/pageAdminsDetail/:id',adminHandler.pageAdminsDetail);
 app.get('/showReportOnAd/:id',adminHandler.showReportOnAd);
+app.get('/ownerDetails/:id',adminHandler.ownerDetails);
+app.get('/PagesAdmins',adminHandler.PagesAdmins);
 
 
 

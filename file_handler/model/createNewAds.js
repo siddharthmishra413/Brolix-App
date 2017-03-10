@@ -126,9 +126,8 @@ var createNewAdsSchema = new Schema({
         link: { type: String }
     }],
     upgradeCardListObject: [{
-        userId: { type: String },
-        brolix: { type: Number },
-        viewers: { type: Number }
+        cash: { type: Number, default:0 },
+        viewers: { type: Number, default:0 }
     }],
     couponExchange: [{
         senderId: { type: String },

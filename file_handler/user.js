@@ -1038,8 +1038,8 @@ module.exports = {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
             else if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter luckId' }); } else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
             else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
-                return res.status(403).send({ responseMessage: "Already used luckCard" })
-            } else {
+                return res.status(403).send({ responseMessage: "Already used luckCard" })}
+                 else {
                 var obj = (req.body.luckId);
                 console.log("obj", obj, typeof obj);
                 User.update({ 'luckCardObject._id': obj }, { $set: { 'luckCardObject.$.status': "INACTIVE" } }, function(err, result) {
@@ -1062,23 +1062,39 @@ module.exports = {
     },
 
     "useUpgradeCard": function(req, res) {
-        var obj = req.body.upgradeId;
-        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); }
-        for (var i = 0; i < obj.length; i++) {
-            User.update({ 'upgradeCardObject._id': obj[i] }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-                else {
-                    console.log("else")
-                }
-            })
-        }
-        res.send({
-            // result: user,
-            responseCode: 200,
-            responseMessage: "Successfully used the upgrade card."
-        })
-    },
+         var obj = req.body.upgradeId;
+         var adId = req.body.adId;
+         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); }
+         else if(adId == null || adId == '' || adId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter adId' }); }
+         else{
+         for (var i = 0; i < obj.length; i++) {
+             User.update({ 'upgradeCardObject._id': obj[i] }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
+                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                 else {
+                   console.log("updated in user---");
+                 }
+             })
+         }
+                   var cash = req.body.cash;
+                     var viewers = req.body.viewers;
+                     console.log("cash--->>",cash)
+                     console.log("viewers-->>",viewers)
+                     console.log("adId--->>",adId)
+                     createNewAds.findOneAndUpdate({ _id: adId }, { $inc: { "upgradeCardListObject": {cash: cash, viewers: viewers } } }, { new: true },function(err, result1) {
+                        console.log("add--111->>",result1)
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); }else if (!result1) { res.send({ responseCode: 404, responseMessage: "No adId found" }); } else {
+                             res.send({
+                                    result: result1,
+                                    responseCode: 200,
+                                    responseMessage: "Successfully used the luck card."
+                                })
+                         }
+                     })
+}
+     },
 
+
+     
     "facebookLogin": function(req, res) {
         var obj = (req.body.facebookID);
         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter facebookID' }); }

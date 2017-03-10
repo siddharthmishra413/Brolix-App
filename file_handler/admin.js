@@ -1031,17 +1031,27 @@ module.exports = {
         })
     },
 
-    "pageAdmins": function(req, res) {
-        createNewPage.aggregate({ $unwind: "$adAdmin" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "All pages show successfully."
+    "pageAdminsDetail": function(req, res) {
+        var array = [];
+        createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+                for (var i = 0; i < result.adAdmin.length; i++) {
+                    array.push(result.adAdmin[i].userId)
+                }
+                User.find({ _id: { $in: array } }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "All pages show successfully."
+
+                        })
+                    }
                 })
             }
         })
     },
+
 
     "showReportOnAd": function(req, res) {
         createNewReport.find({ adId: req.params.id }).exec(function(err, result) {
@@ -1053,7 +1063,53 @@ module.exports = {
                 })
             }
         })
+    },
+
+    "ownerDetails": function(req, res) {
+        createNewPage.find({ _id: req.params.id },function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+             else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); }
+              else {
+                var userId1 = result[0].userId;
+                console.log("userId--->>>",userId1)
+                User.findOne({ _id: userId1 }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "User detail show successfully."
+                        })
+                    }
+                })
+
+            }
+        })
+    },
+
+    "PagesAdmins": function(req, res){
+        createNewPage.find({},function(err, result){
+            var array = [];
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+             else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); }             
+             else{
+                 for(var i =0; i<result.length;i++){           
+                   if(result[i].adAdminCount>0){
+                         array.push(result[i]._id)
+                        }                    
+                 }
+                  createNewPage.find({ _id: { $in: array } }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length ==0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "Page detail show successfully."
+                        })
+                    }
+                })
+             }
+         })
     }
+
 
 
 
