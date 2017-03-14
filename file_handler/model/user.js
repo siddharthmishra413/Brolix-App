@@ -209,6 +209,14 @@ var userSchema = new Schema({
     }],
     favouriteCoupon: [],
     userFollowers: [],
+    UpgradeUsedAd:[{
+        upgradeId:{type:String},
+        adId:{type:String}
+    }],
+    luckUsedAd:[{
+        luckId:{type:String},
+        adId:{type:String}
+    }],
     createdAt: {
         type: Date,
         default: Date.now

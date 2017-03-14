@@ -125,10 +125,8 @@ var createNewAdsSchema = new Schema({
         userId: { type: String },
         link: { type: String }
     }],
-    upgradeCardListObject: [{
-        cash: { type: Number, default:0 },
-        viewers: { type: Number, default:0 }
-    }],
+    cash: { type: Number, default: 0 },
+    viewers: { type: Number, default: 0 },
     couponExchange: [{
         senderId: { type: String },
         receiverId: { type: String },
@@ -172,7 +170,7 @@ var createNewAdsSchema = new Schema({
 
     adFollowers: [String],
     commentCount: { type: Number, default: 0 },
-    reportOnAd:{ type: Number, default:0},
+    reportOnAd: { type: Number, default: 0 },
 
     createdAt: {
         type: Date,

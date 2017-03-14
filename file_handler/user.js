@@ -43,58 +43,58 @@ var gateway = braintree.connect({
 
 module.exports = {
 
-"paymentClientToken": function(req, res){ 
-    gateway.clientToken.generate({}, function (err, response) {
-    console.log(response)
-    responseHandler.apiResponder(req, res, 200,"success", response.clientToken)
-  });
-},
+    "paymentClientToken": function(req, res) {
+        gateway.clientToken.generate({}, function(err, response) {
+            console.log(response)
+            responseHandler.apiResponder(req, res, 200, "success", response.clientToken)
+        });
+    },
 
-  "paymentIntegration": function(req, res){ 
-      waterfall([
-          function(callback){ 
-              // createNewAds.findOne({
-              //   _id: req.body.Id,
-              //   adsType:'coupon'
-              // }).exec(function(err, result){
-              //   if(err){      
-              //     res.send({
-              //           responseCode: 302,
-              //           responseMessage: 'error.',
-              //           result: err
-              //     });}
-              //   else if(!result){
-              //           res.send({
-              //           responseCode: 404,
-              //           responseMessage: 'data not found.'
-              //         //  result: result
-              //       });
-              //   }
-              //   else{
-                  var nextPay;
-                   // console.log("chefRefund==>>",result.chefRefund)
-                    // if(result.chefRefund == "Yes"){
-                    //   var amount = req.body.paymentDetails.amount;
-                    //   var serviceFee = amount/10 + parseInt(result.chefPay);
-                    //  // var nextPay = 0;
-                    //   console.log("amount"+amount);
-                    //   console.log("serviceFee"+serviceFee)
-                    //   if(serviceFee > amount){
-                    //     nextPay = serviceFee - amount;
-                    //      serviceFee = amount;
-                    //      console.log("nextPay"+nextPay)
-                    //   }
-                    // }else{
-                    //   console.log("wrong")
-                    //   var amount = req.body.paymentDetails.amount;
-                    //    var serviceFee = amount/10;
-                    //   // nextPay = 0;
-                    // }
-                    var amount = req.body.amount;
-                    var serviceFee = amount/10; 
-                      var transactionCost = amount*(2.9/100)+ 0.30;
-                      merchantAccountParams = {
-                      individual: {
+    "paymentIntegration": function(req, res) {
+        waterfall([
+            function(callback) {
+                // createNewAds.findOne({
+                //   _id: req.body.Id,
+                //   adsType:'coupon'
+                // }).exec(function(err, result){
+                //   if(err){      
+                //     res.send({
+                //           responseCode: 302,
+                //           responseMessage: 'error.',
+                //           result: err
+                //     });}
+                //   else if(!result){
+                //           res.send({
+                //           responseCode: 404,
+                //           responseMessage: 'data not found.'
+                //         //  result: result
+                //       });
+                //   }
+                //   else{
+                var nextPay;
+                // console.log("chefRefund==>>",result.chefRefund)
+                // if(result.chefRefund == "Yes"){
+                //   var amount = req.body.paymentDetails.amount;
+                //   var serviceFee = amount/10 + parseInt(result.chefPay);
+                //  // var nextPay = 0;
+                //   console.log("amount"+amount);
+                //   console.log("serviceFee"+serviceFee)
+                //   if(serviceFee > amount){
+                //     nextPay = serviceFee - amount;
+                //      serviceFee = amount;
+                //      console.log("nextPay"+nextPay)
+                //   }
+                // }else{
+                //   console.log("wrong")
+                //   var amount = req.body.paymentDetails.amount;
+                //    var serviceFee = amount/10;
+                //   // nextPay = 0;
+                // }
+                var amount = req.body.amount;
+                var serviceFee = amount / 10;
+                var transactionCost = amount * (2.9 / 100) + 0.30;
+                merchantAccountParams = {
+                    individual: {
                         firstName: req.body.firstName,
                         lastName: req.body.lastName,
                         email: req.body.email,
@@ -983,7 +983,7 @@ module.exports = {
                 result.cash -= sum;
                 result.save();
                 res.send({
-                    result: result,
+                    //result: result,
                     responseCode: 200,
                     responseMessage: "successfully purchased the upgrade card"
                 });
@@ -1022,7 +1022,7 @@ module.exports = {
                 result.brolix -= sum;
                 result.save();
                 res.send({
-                    result: result,
+                  //  result: result,
                     responseCode: 200,
                     responseMessage: "successfully purchased the luck card"
                 });
@@ -1034,67 +1034,82 @@ module.exports = {
     "useLuckCard": function(req, res) { // userId, adId, Brolix, luckId in request parameter
 
         var obj = (req.body.luckId);
-        createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
-            else if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter luckId' }); } else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
-            else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
-                return res.status(403).send({ responseMessage: "Already used luckCard" })}
-                 else {
-                var obj = (req.body.luckId);
-                console.log("obj", obj, typeof obj);
-                User.update({ 'luckCardObject._id': obj }, { $set: { 'luckCardObject.$.status': "INACTIVE" } }, function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-                    else {
-                        createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, chances: req.body.chances } } }, { new: true }).exec(function(err, user) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                res.send({
-                                    result: user,
-                                    responseCode: 200,
-                                    responseMessage: "Successfully used the luck card."
-                                })
-                            }
+        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter luckId' }); } else {
+            createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
+                else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
+                else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
+                    return res.status(403).send({ responseMessage: "Already used luckCard" })
+                } else {
+                    var obj = (req.body.luckId);
+                    console.log("obj", obj, typeof obj);
+                    User.update({ 'luckCardObject._id': obj }, { $push: { 'luckUsedAd': { luckId: obj, adId: req.body.adId } }, $set: { 'luckCardObject.$.status': "INACTIVE" } }, function(err, result) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                        else {
+                            createNewAds.findByIdAndUpdate({ _id: req.body.adId }, { $push: { "luckCardListObject": { userId: req.body.userId, chances: req.body.chances } } }, { new: true }).exec(function(err, user) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                    res.send({
+                                        // result: user,
+                                        responseCode: 200,
+                                        responseMessage: "Successfully used the luck card."
+                                    })
+                                }
 
-                        })
-                    }
-                })
-            }
-        })
+                            })
+                        }
+                    })
+                }
+            })
+        }
     },
 
-    "useUpgradeCard": function(req, res) {
-         var obj = req.body.upgradeId;
-         var adId = req.body.adId;
-         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); }
-         else if(adId == null || adId == '' || adId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter adId' }); }
-         else{
-         for (var i = 0; i < obj.length; i++) {
-             User.update({ 'upgradeCardObject._id': obj[i] }, { $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
-                 else {
-                   console.log("updated in user---");
-                 }
-             })
-         }
-                   var cash = req.body.cash;
-                     var viewers = req.body.viewers;
-                     console.log("cash--->>",cash)
-                     console.log("viewers-->>",viewers)
-                     console.log("adId--->>",adId)
-                     createNewAds.findOneAndUpdate({ _id: adId }, { $inc: { "upgradeCardListObject": {cash: cash, viewers: viewers } } }, { new: true },function(err, result1) {
-                        console.log("add--111->>",result1)
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); }else if (!result1) { res.send({ responseCode: 404, responseMessage: "No adId found" }); } else {
-                             res.send({
-                                    result: result1,
-                                    responseCode: 200,
-                                    responseMessage: "Successfully used the luck card."
-                                })
-                         }
-                     })
-}
-     },
+
+    "useUpgradeCard": function(req, res) { //upgradeId adId viewers cash in request
+        waterfall([
+            function(callback) {
+                var obj = req.body.upgradeId;
+                var adId = req.body.adId;
+                if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); } else {
+                    for (var i = 0; i < obj.length; i++) {
+                        console.log("in loop")
+                        User.update({ 'upgradeCardObject._id': obj[i] }, { $push: { 'UpgradeUsedAd': { upgradeId: obj[i], adId: adId } }, $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+                            else {
+                                console.log("in loop 1")
+                                    // callback(null)
+                            }
+                        })
+                    }
+                    callback(null)
+                }
+            },
+            function(callback) {
+                var cash = req.body.cash;
+                var viewers = req.body.viewers;
+                var adId = req.body.adId;
+                console.log("cash--->>", cash)
+                console.log("viewers-->>", viewers)
+                console.log("adId--->>", adId)
+                createNewAds.findOneAndUpdate({ _id: adId }, { $inc: { cash: +cash, viewers: +viewers } }, { new: true }, function(err, result1) {
+                    //console.log("add--111->>", result1)
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No adId found" }); } else {
+                        callback(null, result1)
+                    }
+                })
+            },
+        ], function(err, result) {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Successfully used the upgrade card."
+            })
+        })
+
+    },
 
 
-     
+
+
     "facebookLogin": function(req, res) {
         var obj = (req.body.facebookID);
         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter facebookID' }); }
@@ -1939,22 +1954,22 @@ module.exports = {
     },
 
     "useCouponWithCode": function(req, res) {
-         var couponId = req.body.couponId;
-         User.findOne({ 'hiddenGifts._id': couponId }).exec(function(err, result) {
-             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (Boolean(result.hiddenGifts.find(hiddenGifts => hiddenGifts.status == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } else {
-                 User.update({ 'hiddenGifts._id': couponId }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result1) {
-                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                         res.send({
-                             // result: result2,
-                             responseCode: 200,
-                             responseMessage: "Coupon used successfully."
-                         })
-                     }
-                 })
-             }
-         })
+        var couponId = req.body.couponId;
+        User.findOne({ 'hiddenGifts._id': couponId }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (Boolean(result.hiddenGifts.find(hiddenGifts => hiddenGifts.status == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } else {
+                User.update({ 'hiddenGifts._id': couponId }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                        res.send({
+                            // result: result2,
+                            responseCode: 200,
+                            responseMessage: "Coupon used successfully."
+                        })
+                    }
+                })
+            }
+        })
 
-     }
+    }
 
 
 

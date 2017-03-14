@@ -59,6 +59,8 @@ app.get('/pageAdminsDetail/:id',adminHandler.pageAdminsDetail);
 app.get('/showReportOnAd/:id',adminHandler.showReportOnAd);
 app.get('/ownerDetails/:id',adminHandler.ownerDetails);
 app.get('/PagesAdmins',adminHandler.PagesAdmins);
+app.post('/luckCardUsedAd',adminHandler.luckCardUsedAd);
+app.post('/upgradeCardUsedAd',adminHandler.upgradeCardUsedAd);
 
 
 
