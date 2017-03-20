@@ -1,0 +1,191 @@
+<div class="container" ng-show="first">
+            <div class="outer-block">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Create Offer</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="offer-block">
+                            <form class="form-block" role="form">
+                                <div class="radio-tab">
+                                    <div class="radio-btn">
+                                        <label>
+                                            <input type="radio" name="radio" value="upgradeCard" ng-model="myForm.cardType" checked>&nbsp; Upgrade Card
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="radio" value="luckCard" ng-model="myForm.cardType">&nbsp; Luck Cards
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" ng-model="myForm.offerType">
+                                                    <option value="">Please select the offer type</option>
+                                                    <option value="discount">Discount</option>
+                                                    <option value="buyGet">Buy & Get/option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <div ng-show="myForm.offerType=='discount'">   
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-sm-3">Buy Cards</label>
+                                            <div class="col-sm-5">
+                                                <div class="input-group">
+                                                  <input ng-model="myForm.buyCard" type="text" class="form-control text-center" placeholder="50">
+                                                  <span class="input-group-addon" id="basic-addon2">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-sm-3">Offer Time</label>
+                                            <div class="col-sm-5">
+                                                <div class="input-group">
+                                              <input ng-model="myForm.offerTime" type="text" class="form-control text-center" placeholder="48">
+                                              <span class="input-group-addon txt-sm" id="basic-addon2">Hours</span>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <div class="btn2 text-center">
+                                        <a  class="btn btn-lg btn-green" ng-click="createOffer(myForm.cardType)">Next</a>
+                                        <a  class="btn btn-lg btn-green">Cancel</a>
+                                    </div>
+                                </div>
+                                
+                                <div ng-show="myForm.offerType=='buyGet'">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-sm-3">Buy Cards</label>
+                                            <div class="col-sm-5">
+                                                <input ng-model="myForm.buyCard" type="text" class="form-control text-center">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-sm-3">Get Free Cards</label>
+                                            <div class="col-sm-5">
+                                                <input ng-model="myForm.freeCard" type="text" class="form-control text-center">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-sm-3">Offer Time</label>
+                                            <div class="col-sm-5">
+                                                <div class="input-group">
+                                                  <input ng-model="myForm.offerTime" type="text" class="form-control text-center" placeholder="48">
+                                                  <span class="input-group-addon txt-sm" id="basic-addon2">Hours</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <div class="btn2 text-center">
+                                        <a  class="btn btn-lg btn-green" ng-click="createOffer(myForm.cardType)">Next</a>
+                                        <a  class="btn btn-lg btn-green">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+    <div class="container" ng-show="second">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add Offer</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="nav nav-pills card-tabs">
+                            <li class="active"><a data-toggle="pill" >Upgrade Card</a></li>
+                        </ul>
+                        <div class="tab-content add-card">
+                            <div id="home" class="tab-pane fade in active" >
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="remove-card-block" >
+                                            <div class="cover-image" ng-repeat="x in UpgradeCard">
+                                                <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">    
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="cover-image" >
+                                        <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                        </div>
+                                        <div class="btn2 text-center">
+                                            <a class="btn btn-lg btn-green" ng-click="createOfferNext(cardDetails._id)">Apply Offer</a>
+                                            <a class="btn btn-lg btn-green">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container" ng-show="third">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add Offer</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="nav nav-pills card-tabs">
+                            <li class="active"><a data-toggle="pill" >Luck Card</a></li>
+                        </ul>
+                        <div class="tab-content add-card">
+                            <div id="home" class="tab-pane fade in active" >
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="remove-card-block" >
+                                            <div class="cover-image" ng-repeat="x in UpgradeCard">
+                                                <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">    
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="cover-image" >
+                                        <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                        </div>
+                                        <div class="btn2 text-center">
+                                            <a class="btn btn-lg btn-green" ng-click="createOfferNext(cardDetails._id)">Apply Offer</a>
+                                            <a class="btn btn-lg btn-green">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    

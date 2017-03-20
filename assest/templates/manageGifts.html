@@ -1,4 +1,4 @@
-<div class="tab-pane>
+<div class="tab-pane">
     <div class="height-sm" data-scrollbar="true">
         <div class="row ">
             <div class="col-md-9 col-sm-6 dwd-border-l">
@@ -7,13 +7,13 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Brolix Gifts</div>
-                                <div class="total-amt">30,000</div>
+                                <div class="total-amt">{{totalBrolixGiftsCount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage">
+                                <div class="btn-manage" ng-click="top_50_balanc('balances')">
                                     <a>Top 50 Balances</a>
                                 </div>
-                                <div class="btn-manage">
+                                <div class="btn-manage" ng-click="tab='contectOwner'">
                                     <a>Contact Winners</a>
                                 </div>
                             </div>
@@ -26,7 +26,7 @@
                                 <div class="total-amt">27,000</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage">
+                                <div class="btn-manage" ng-click="tab='totalCouponsGifts'">
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
@@ -42,7 +42,7 @@
                                 <div class="total-amt">3,000</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage">
+                                <div class="btn-manage" ng-click="tab='totalCashGifts'">
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
@@ -58,7 +58,7 @@
                                 <div class="total-amt">3,000</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage">
+                                <div class="btn-manage" ng-click="tab='totalHiddenGifts'">
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
@@ -70,17 +70,16 @@
                     <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk offerbtn-s">
                             <div class="top-box">
-                                <div class="green-box">3 Offers</div>
+                                <div class="green-box">Top 50 Coupons Providers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn">
+                                <div class="btn-manage show-btn w-100" ng-click="top_50_balanc('coupons')">
                                     <a>Show</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <h4>Upgrade Cards</h4>
                 <div class="clearfix">
                     <div class="box-block  blk-drkvolit">
                         <div class="widget widget-stats divi-blk">
@@ -89,7 +88,7 @@
                                 <div class="total-amt">19,000</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage">
+                                <div class="btn-manage" ng-click="tab='totalExchanged'">
                                     <a>Show</a>
                                 </div>
                             </div>
@@ -102,7 +101,7 @@
                                 <div class="total-amt">500</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage">
+                                <div class="btn-manage" ng-click="tab='totalSentCoupons'">
                                     <a>Show</a>
                                 </div>
                             </div>
@@ -115,19 +114,35 @@
                                 <div class="total-amt">18,500</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage">
+                                <div class="btn-manage" ng-click="tab='totalSentCash'">
                                     <a>Show</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="box-block">
+                        <div class="widget widget-stats divi-blk">
+                            <!--<div class="top-box">
+                                <div class="total-add">Total Hidden Gifts</div>
+                                <div class="total-amt">3,000</div>
+                            </div>
+                            <div class="bottom-box">
+                                <div class="btn-manage" ng-click="tab='totalHiddenGifts'">
+                                    <a>Show</a>
+                                </div>
+                                <div class="btn-manage">
+                                    <a>Contact Winners</a>
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
                     <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk offerbtn-s">
                             <div class="top-box">
-                                <div class="green-box">5 Offers</div>
+                                <div class="green-box">Top 50 Cash Providers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn">
+                                <div class="btn-manage show-btn w-100" ng-click="top_50_balanc('cash')">
                                     <a>Show</a>
                                 </div>
                             </div>
@@ -219,62 +234,290 @@
             </form>
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="row table-responsive cus-table">
-            <table class="table table-bordered table-striped">
+
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalExchanged">
+            <table id="manageUserTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Coupon Gift</th>
+                        <th>Exchanged From</th>
+                        <th>Exchanged To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in totalUser |filter:test">
+                        <!-- <td>
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td> -->
+                        <td class="skyblue-text">{{x.firstName}}</td>
+                        <td class="skyblue-text">{{x.lastName}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div> 
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalCouponsGifts">
+            <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Page Name</th>
                         <th>Winner Name</th>
                         <th>Coupon Gift</th>
                         <th>Coupon Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in totalUser |filter:test">
+                        <!-- <td>
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td> -->
+                        <td class="skyblue-text">{{x.firstName}}</td>
+                        <td class="skyblue-text">{{x.lastName}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalCashGifts">
+            <table id="manageUserTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Page Name</th>
+                        <th>Winner Name</th>
                         <th>Cash Gift</th>
                         <th>Cash Status</th>
-                        <th>Exch From</th>
-                        <th>Exch To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in totalUser |filter:test">
+                        <!-- <td>
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td> -->
+                        <td class="skyblue-text">{{x.firstName}}</td>
+                        <td class="skyblue-text">{{x.lastName}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalHiddenGifts">
+            <table id="manageUserTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Page Name</th>
+                        <th>Winner Name</th>
+                        <th>Coupon Gift</th>
+                        <th>Coupon Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in totalUser |filter:test">
+                        <!-- <td>
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td> -->
+                        <td class="skyblue-text">{{x.firstName}}</td>
+                        <td class="skyblue-text">{{x.lastName}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalSentCoupons">
+            <table id="manageUserTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Coupon Gift</th>
                         <th>Sent From</th>
                         <th>Sent To</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Brolix</td>
-                        <td class="skyblue-text">Yazan AL-Baw</td>
-                        <td>View</td>
-                        <td class="skyblue-text">Valid</td>
-                        <td class="skyblue-text">N/A</td>
-                        <td class="skyblue-text">N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>Yazan AL-BAW</td>
-                        <td>Zaid Sami</td>
-                    </tr>
-                    <tr>
-                        <td>Brolix</td>
-                        <td class="skyblue-text">Yazan AL-Baw</td>
-                        <td>View</td>
-                        <td class="skyblue-text">Valid</td>
-                        <td class="skyblue-text">N/A</td>
-                        <td class="skyblue-text">N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>Yazan AL-BAW</td>
-                        <td>Zaid Sami</td>
-                    </tr>
-                    <tr>
-                        <td>Brolix</td>
-                        <td class="skyblue-text">Yazan AL-Baw</td>
-                        <td>View</td>
-                        <td class="skyblue-text">Valid</td>
-                        <td class="skyblue-text">N/A</td>
-                        <td class="skyblue-text">N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>Yazan AL-BAW</td>
-                        <td>Zaid Sami</td>
-                    </tr>
+                    <tr ng-repeat="x in totalUser |filter:test">
+                        <!-- <td>
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td> -->
+                        <td class="skyblue-text">{{x.firstName}}</td>
+                        <td class="skyblue-text">{{x.lastName}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
                 </tbody>
             </table>
         </div>
     </div>
+
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalSentCash">
+            <table id="manageUserTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Sent From</th>
+                        <th>Sent To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in totalUser |filter:test">
+                        <!-- <td>
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td> -->
+                        <td class="skyblue-text">{{x.firstName}}</td>
+                        <td class="skyblue-text">{{x.lastName}}</td>
+                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div id="top_50_balance" class="modal fade" >
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Top 50 Brolix User</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Winner Name</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="x in totalBrolixGifts |filter:test">
+                                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                                        <td class="skyblue-text">{{x.brolix}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<div id="top_50_couponsProviders" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Top 50 Brolix User</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Winner Name</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="x in totalBrolixGifts |filter:test">
+                                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                                        <td class="skyblue-text">{{x.brolix}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="top_50_cashProviders" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Top 50 Brolix User</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Winner Name</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="x in totalBrolixGifts |filter:test">
+                                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                                        <td class="skyblue-text">{{x.brolix}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<!-- contect owner -->
+
+
+<div id="contectOwner" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Winner price</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Winner Name</th>
+                                        <th>Balance</th>
+                                        <th>Send Msg</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="x in totalBrolixGifts |filter:test">
+                                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                                        <td class="skyblue-text">{{x.brolix}}</td>
+                                        <td class="skyblue-text"><button>Send Message</button>></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
 </div>

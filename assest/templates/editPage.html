@@ -14,7 +14,7 @@
                                             <label class="control-label col-md-3">Page Name</label>
                                             <div class="col-md-9">
                                                 <div class="input-group">
-                                                  <input type="text" class="form-control" value="abc page">
+                                                  <input type="text" class="form-control" name="pageName" ng-model="viewPageDetails.pageName">
                                                   <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search" ></i></span>
                                                 </div>
                                             </div>
@@ -24,7 +24,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Page Owner</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" value="owner"> 
+                                                <input type="text" class="form-control" value="firstName" ng-model="viewPageDetails.userId.firstName"> 
                                             </div>
                                         </div>
                                     </div>
@@ -32,7 +32,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Main Category</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" value="category1"> 
+                                                <input type="text" class="form-control" value="category" ng-model="viewPageDetails.category"> 
                                             </div>
                                         </div>
                                     </div>
@@ -40,7 +40,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Sub Categories</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" value="sub category2"> 
+                                                <input type="text" class="form-control" value="subcategory2" ng-model="viewPageDetails.subCategory"> 
                                             </div>
                                         </div>
                                     </div>
@@ -48,7 +48,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Description</label>
                                             <div class="col-md-9">
-                                                <textarea class="form-control textarea-a">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porta lacinia turpis vitae fringilla. Phasellus dictum sapien eget quam auctor lacinia. Vestibulum id dapibus felis.</textarea>
+                                                <textarea class="form-control textarea-a" value="pageDiscription" ng-model="viewPageDetails.pageDiscription"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -56,7 +56,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Email</label>
                                             <div class="col-md-9">
-                                                <input type="email" class="form-control" value="abc@gmail.com" > 
+                                                <input type="email" class="form-control" value="email" ng-model="viewPageDetails.email" > 
                                             </div>
                                         </div>
                                     </div>
@@ -64,7 +64,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Website</label>
                                             <div class="col-md-9">
-                                                 <input type="text" class="form-control" value="brolix"> 
+                                                 <input type="text" class="form-control" value="website" ng-model="viewPageDetails.pageName"> 
                                             </div>
                                         </div>
                                     </div>
@@ -72,7 +72,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Phone</label>
                                             <div class="col-md-9">
-                                                <input type="tel" class="form-control" value="984651123"> 
+                                                <input type="tel" class="form-control" value="phoneNumber" ng-model="viewPageDetails.phoneNumber"> 
                                             </div>
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Location</label>
                                             <div class="col-md-9">
-                                                <select class="form-control">
+                                                <select class="form-control" ng-model="viewPageDetails.location">
                                                     <option>Location1</option>
                                                     <option>Location2</option>
                                                     <option>Location3</option>

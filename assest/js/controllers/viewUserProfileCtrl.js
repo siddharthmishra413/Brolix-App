@@ -18,7 +18,8 @@ app.controller('viewUserProfileCtrl', function($scope, $window, userService, $st
             toastr.error(res.responseMessage)
         }
     })
-}
-
-
+    }
 })
+
+
+  

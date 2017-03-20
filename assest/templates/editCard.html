@@ -1,0 +1,110 @@
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Edit Cards</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="nav nav-pills card-tabs">
+                            <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="active_tab('upgrade_card')">Upgrade Card</a></li>
+                            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
+                          </ul>
+
+                        <div class="tab-content add-card">
+                            <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="remove-card-block" >
+                                            <div class="cover-image" ng-repeat="x in UpgradeCard">
+                                                <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">    
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="cover-image" >
+                                        <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                                        </div>
+
+                                        <form class="form-block" role="form">
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <label class="control-label col-md-4">Viewers</label>
+                                                        <div class="col-md-8">
+                                                            <input ng-model="cardDetails.viewers" type="text" class="form-control text-center" placeholder="10,000"> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <label class="control-label col-md-4">Price</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-group">
+                                                              <input ng-model="cardDetails.price" type="text" class="form-control text-center" placeholder="25">
+                                                              <span class="input-group-addon" id="basic-addon2"><i class="fa fa-usd" ></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                        <div class="btn2 text-center">
+                                            <a class="btn btn-lg btn-green" ng-click="updateCard('upgrade_card',cardDetails._id,cardDetails.photo)">Update</a>
+                                            <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="remove-card-block" ng-repeat="x in LuckCard">
+                                            <div class="cover-image" >
+                                                <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" src="{{x.photo || '../dist/image/cover.jpg'}}" id="output">    
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="cover-image"  >
+                                        <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                                        </div>
+
+                                        <form class="form-block" role="form">
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <label class="control-label col-md-4">Chances</label>
+                                                        <div class="col-md-8">
+                                                            <input ng-model="cardDetails.chances"type="text" class="form-control text-center" placeholder="10,000"> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <label class="control-label col-md-4">Brolix</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-group">
+                                                              <input ng-model="cardDetails.brolix"type="text" class="form-control text-center" placeholder="25">
+                                                              <span class="input-group-addon" id="basic-addon2"><i class="fa fa-usd" ></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                        <div class="btn2 text-center">
+                                            <a ng-click="updateCard('luck_card',cardDetails._id)" class="btn btn-lg btn-green">Save</a>
+                                            <a class="btn btn-lg btn-green">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

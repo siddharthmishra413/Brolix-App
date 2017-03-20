@@ -30,6 +30,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: 'templates/manageUsers.html'
     })
 
+
     .state('header.addUser', {
             url: '/addUser',
             controller: 'addUserCtrl',
@@ -57,21 +58,6 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'addNewPagesCtrl',
             templateUrl: 'templates/addNewPages.html'
         })
-        .state('header.pageImageUpload', {
-            url: '/pageImageUpload',
-            controller: 'addNewPagesCtrl',
-            templateUrl: 'templates/pageImageUpload.html'
-        })
-        .state('header.pageSocialMedia', {
-            url: '/pageSocialMedia',
-            controller: 'addNewPagesCtrl',
-            templateUrl: 'templates/pageSocialMedia.html'
-        })
-        .state('header.pageAdmins', {
-            url: '/pageAdmins',
-            controller: 'addNewPagesCtrl',
-            templateUrl: 'templates/pageAdmins.html'
-        })
      .state('header.viewPage', {
             url: '/viewPage/:id',
             controller: 'viewPageCtrl',
@@ -85,8 +71,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })  
 
     .state('header.editPage', {
-            url: '/editPage',
-            //controller: 'editPagesCtrl',
+            url: '/editPage/:id',
+            controller: 'editPagesCtrl',
             templateUrl: 'templates/editPage.html'
         })
         .state('header.editPageSocialMedia', {
@@ -128,7 +114,28 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         controller: 'manageCardsCtrl',
         templateUrl: 'templates/manageCards.html'
     })
+        .state('header.createCard', {
+            url: '/createCard',
+            controller: 'createCardCtrl',
+            templateUrl: 'templates/createCard.html'
+        })
 
+        .state('header.editCard', {
+            url: '/editCard',
+            controller: 'editCardCtrl',
+            templateUrl: 'templates/editCard.html'
+        })
+        .state('header.removeCard', {
+            url: '/removeCard',
+            controller: 'removeCardCtrl',
+            templateUrl: 'templates/removeCard.html'
+        })
+        .state('header.createOffer', {
+            url: '/createOffer',
+            controller: 'createOfferCtrl',
+            templateUrl: 'templates/createOffer.html'
+        })
+        
     .state('header.manageGifts', {
         url: '/manageGifts',
         controller: 'manageGiftsCtrl',

@@ -6,10 +6,10 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Total Ads</div>
-                            <div class="total-amt">30,000</div>
+                            <div class="total-amt">{{totalAds.lenght}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='totalads'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
@@ -22,7 +22,7 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Active Ads</div>
-                            <div class="total-amt">27,000</div>
+                            <div class="total-amt">{{totalActiveAdscount}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage">
@@ -38,7 +38,7 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Expired Ads</div>
-                            <div class="total-amt">3,000</div>
+                            <div class="total-amt">{{totalExpiredAdscount}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage">
@@ -86,7 +86,7 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Video Ads</div>
-                            <div class="total-amt">19,000</div>
+                            <div class="total-amt">{{videoAdscount}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage">
@@ -102,7 +102,7 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Slide Show Ads</div>
-                            <div class="total-amt">500</div>
+                            <div class="total-amt">{{slideshowAdscount}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage">
@@ -216,7 +216,7 @@
         <div class="row-search">
             <ul>
                 <li class="active">
-                    <a data-toggle="tab">View Ad</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Ad</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab">Remove Ad</a>
@@ -240,8 +240,8 @@
             </form>
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="row table-responsive cus-table">
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalads">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -257,38 +257,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="x in totalAds |filter:test">
                         <td>
-                            <input id="o" name="" value="" checked="" type="radio">
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
                         <td>1574962</td>
-                        <td class="skyblue-text">brandmark™</td>
-                        <td>0799435020</td>
-                        <td class="skyblue-text">15</td>
-                        <td class="skyblue-text">3</td>
-                        <td class="skyblue-text">VIEW</td>
-                        <td>8$</td>
-                        <td>50V</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="o" name="" value="" type="radio">
-                        </td>
-                        <td>1574962</td>
-                        <td class="skyblue-text">brandmark™</td>
-                        <td>0799435020</td>
-                        <td class="skyblue-text">15</td>
-                        <td class="skyblue-text">3</td>
-                        <td class="skyblue-text">VIEW</td>
-                        <td>8$</td>
-                        <td>50V</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="o" name="" value="" checked="" type="radio">
-                        </td>
-                        <td>1574962</td>
-                        <td class="skyblue-text">brandmark™</td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
                         <td>0799435020</td>
                         <td class="skyblue-text">15</td>
                         <td class="skyblue-text">3</td>
