@@ -15,8 +15,6 @@
                         <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
                            <div class="cover-image" >
                                 <img class="profile-user-img img-responsive" src="{{user.photo || '../dist/image/cover.jpg'}}" id="output">
-                                <!--<input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">-->
-
                                 <label class="fileContainer">
                                     Choose File
                                     <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
@@ -53,9 +51,12 @@
                        
                         <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
                             <div class="cover-image" >
-                                        <img class="profile-user-img img-responsive" src="{{user.photo || '../dist/image/cover.jpg'}}" id="output">
-                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                    </div>
+                                <img class="profile-user-img img-responsive" src="{{user.photo || '../dist/image/cover.jpg'}}" id="output">
+                                 <label class="fileContainer">
+                                    Choose File
+                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                                </label>
+                            </div>
                             <form class="form-block" role="form">
                                 <fieldset>
                                     <div class="form-group">

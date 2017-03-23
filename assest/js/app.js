@@ -148,7 +148,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: 'templates/managePayment.html'
     })
 
-    .state('manageAdminTools', {
+    .state('header.manageAdminTools', {
         url: '/manageAdminTools',
         controller: 'manageAdminToolsCtrl',
         templateUrl: 'templates/manageAdminTools.html'

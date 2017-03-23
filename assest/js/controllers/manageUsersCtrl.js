@@ -56,7 +56,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         width: 500,
                     }]
                 };
-                pdfMake.createPdf(docDefinition).download("test.pdf");
+                pdfMake.createPdf(docDefinition).download("ManageUser Table.pdf");
             }
         });
     }
@@ -212,6 +212,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
+                    console.log("data",data)
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All User");

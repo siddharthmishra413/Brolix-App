@@ -46,5 +46,81 @@ $scope.$emit('headerStatus', 'Manage Pages');
             toastr.error("Only image supported.")
         }        
     }
-    
+    $scope.submitt = function(){
+        var data = {};
+        $scope.myForm.location = $scope.location;
+        data = $scope.myForm;
+        console.log("all data",JSON.stringify(data));
+
+    }
+
+      //  Location on googleMap
+  var geocoder;
+  var map;
+  var marker;
+  $scope.IsVisible = false;
+
+  $scope.codeAddress = function () {
+    $scope.IsVisible = $scope.IsVisible ? false : true;
+    geocoder = new google.maps.Geocoder();
+
+    var address = document.getElementById('city_country').value;
+    geocoder.geocode({ 'address': address }, function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map = new google.maps.Map(document.getElementById('mapCanvas'), {
+          zoom: 8,
+          streetViewControl: false,
+          mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            mapTypeIds: [google.maps.MapTypeId.HYBRID, google.maps.MapTypeId.ROADMAP]
+          },
+          center: results[0].geometry.location,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+        map.setCenter(results[0].geometry.location);
+        marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location,
+          draggable: true,
+          title: 'My Title'
+        });
+        updateMarkerPosition(results[0].geometry.location);
+        geocodePosition(results[0].geometry.location);
+
+        // Add dragging event listeners.
+
+        google.maps.event.addListener(marker, 'dragend', function () {
+          updateMarkerStatus('Drag ended');
+          geocodePosition(marker.getPosition());
+          map.panTo(marker.getPosition());
+        });
+      }
+    });
+  }
+
+  function geocodePosition(pos) {
+    geocoder.geocode({
+      latLng: pos
+    }, function (responses) {
+      if (responses && responses.length > 0) {
+        updateMarkerAddress(responses[0].formatted_address);
+      }
+      else {
+        updateMarkerAddress('Cannot determine address at this location.');
+      }
+    });
+  }
+
+  function updateMarkerStatus(str) {
+  }
+
+  function updateMarkerPosition(latLng) {
+  }
+
+  function updateMarkerAddress(str) {
+    document.getElementById('city_country').value = str;
+    $scope.location=str;
+    console.log(document.getElementById('city_country').value);
+  }
+      
 })

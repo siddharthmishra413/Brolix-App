@@ -9,6 +9,7 @@ var country = require('countryjs');
 var functionHandler = require('./functionHandler.js')
 var multiparty = require('multiparty');
 var cloudinary = require('cloudinary');
+var gps = require('gps2zip'); 
 
 const cities = require("cities-list");
 //console.log(cities) // WARNING: this will print out the whole object 
@@ -858,6 +859,18 @@ module.exports = {
     });
     }); 
 })                  
+},
+
+"zipcodFunction": function(req,res){
+    console.log("req",req.body)
+    var zipcod = gps.gps2zip(req.body.lat, req.body.lng);
+    res.send({
+        result:zipcod,
+        serverStatus:200,
+        response_message:"Image Uploaded"
+    });
+    console.log("zipcode",zipcod)
+
 }
 
 }

@@ -12,11 +12,11 @@
                 <a class="navbar-brand" ui-sref="header.manageUsers"><img src="../dist/image/logo.png"/></a>
             </div>
             <!-- Top Menu Items -->
-            <div class="nav navbar-right top-nav">
+            <!-- <div class="nav navbar-right top-nav">
                 <div class="admintools">
                     Admin Tools
                 </div>               
-            </div>
+            </div> -->
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->            
             <div ng-if="menu=='Manage User'">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -142,9 +142,6 @@
                     </li>
                     <li>
                         <a ui-sref="header.createOffer">Create Offer</a>
-                    </li>
-                    <li>
-                        <a> CREATE REPORT</a>
                     </li>                    
                 </ul>
             </div>
@@ -195,6 +192,48 @@
                 </ul>
             </div>
             </div>
+
+            <div ng-if="menu=='Admin Tools'">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="prodata">
+                        <div class="profile-img">
+                            <div class="left-img">
+                                <img src=" {{image}}"/>
+                            </div>
+                            <div class="rightdes">
+                                <h3 class="title-s">Welcome</h3>
+                                <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
+                                <div class="logout">
+                                    <a ng-click="logout()">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a>Create System User</a>
+                    </li>
+                    <li>
+                        <a>Notification</a>
+                    </li>
+                    <li>
+                        <a>Reports</a>
+                    </li>
+                    <li>
+                        <a>Admin coupons</a>
+                    </li>
+                    <li>
+                        <a>Terms & Conditions</a>
+                    </li> 
+                     <li>
+                        <a>Brolix & Dollars</a>
+                    </li> 
+                     <li>
+                        <a>Default Values</a>
+                    </li>                    
+                </ul>
+            </div>
+            </div>
             <!-- /.navbar-collapse -->
         </nav>
     <div id="page-wrapper">
@@ -219,6 +258,9 @@
                             </li>
                              <li class="" ng-class="{'active':header=='Manage Paymant'}">
                                 <a ng-href="#header/managePayments">Manage Paymant</a>
+                            </li>
+                            <li class="" ng-class="{'active':header=='Admin Tools'}">
+                                <a ng-href="#header/manageAdminTools">Admin Tools</a>
                             </li>
                         </ul>
                 </div>

@@ -7,7 +7,7 @@
                     <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk offerbtn-s">
                             <div class="top-box">
-                                <div class="green-box">{{totalOfferUpgradeCard.length}} Offers</div>
+                                <div class="green-box">{{totalOfferUpgradeCardCount}} Offers</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage show-btn w-100" ng-click="tab='upgradeCardOffer'">
@@ -27,7 +27,7 @@
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Buyers</a>
+                                    <a ng-click="total_user_message('SoldUpgradeCard')">Contact Buyers</a>
                                 </div>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Buyers</a>
+                                    <a ng-click="total_user_message('totalincomeUpgrade')">Contact Buyers</a>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Buyers</a>
+                                    <a ng-click="total_user_message('usedUpgradeCard')">Contact Buyers</a>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Buyers</a>
+                                    <a ng-click="total_user_message('unUsedUpgradeCard')">Contact Buyers</a>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                     <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
-                                <div class="green-box">{{totalOfferLuckCard.length}} Offers</div>
+                                <div class="green-box">{{totalOfferLuckCardCount}} Offers</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage show-btn w-100" ng-click="tab='luckCardOffer'">
@@ -106,7 +106,7 @@
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Buyers</a>
+                                    <a ng-click="total_user_message('SoldULuckCard')">Contact Buyers</a>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Buyers</a>
+                                    <a ng-click="total_user_message('totalincomeLuck')">Contact Buyers</a>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +138,7 @@
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Buyers</a>
+                                    <a ng-click="total_user_message('usedLuckCard')">Contact Buyers</a>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +154,7 @@
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Buyers</a>
+                                    <a ng-click="total_user_message('unUsedLuckCard')">Contact Buyers</a>
                                 </div>
                             </div>
                         </div>
@@ -164,52 +164,52 @@
             <div class="col-md-3 col-sm-6 dwd-border">
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
+                     <div class="form-group cus-select">
+                        <select class="form-control" id="country" ng-model="myFrom.country" required>
+                            <option value="">Select Country</option>
+                            <option value="{{country.code}}" ng-repeat="country in countryList">{{country.name}}</option>
+                        </select>
+                        
+                    </div>
+                    <div class="form-group cus-select">
+                       
+                        <select class="form-control" id="region" ng-model="myFrom.state" required>
+                          <option value="">Select State</option>
+                          <option value="{{state.region}}" ng-repeat="state in stateList">{{state.region}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group cus-select">
+                       
+                         <select  class="form-control" id="city" ng-model="myFrom.city" required>
+                            <option value="">Select City</option>
+                         </select>
+                    </div>
                     <div class="form-group cus-select">
                         <select class="form-control">
-                            <option>All Countries</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option value="">Upgrade Card Type</option>
+                            <option>50 Viewers</option>
+                            <option>100 Viewers</option>
+                            <option>150 Viewers</option>
+                            <option>200 Viewers</option>
+                            <option>250 Viewers</option>
                         </select>
                     </div>
                     <div class="form-group cus-select">
                         <select class="form-control">
-                            <option>All States</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option value="">Luck Card Type</option>
+                            <option>5 Chances</option>
+                            <option>10 Chances</option>
+                            <option>15 Chances</option>
+                            <option>20 Chances</option>
+                            <option>25 Chances</option>
+                            <option>30 Chances</option>
+                            <option>35 Chances</option>
+                            <option>40 Chances</option>
+                            <option>45 Chances</option>
+                            <option>50 Chances</option>
                         </select>
                     </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All Cities</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Upgrade Card Type</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Luck Card Type</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
+                    <!-- <div class="form-group cus-select">
                         <select class="form-control">
                             <option>Date From</option>
                             <option>2</option>
@@ -226,12 +226,46 @@
                             <option>4</option>
                             <option>5</option>
                         </select>
+                    </div> -->
+                    <div class="form-group cus-select">
+                        <div class="col-md-9">
+                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">  
+                        </div>
+                    </div>
+
+                    <div class="form-group cus-select">
+                        <div class="col-md-9">
+                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth"> 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- <div class="grp-search">
+        <div class="row-search">
+        </div>
+        <div class="search-bar-cus">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="test.firstName" placeholder="Search By Buyer Name">
+                        <div class="input-group-addon">Search</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div> -->
+
+
     <div class="grp-search">
+        <div class="row-search">
+            <ul>
+                <li class="last">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                </li>
+            </ul>
+        </div>
         <div class="row-search">
         </div>
         <div class="search-bar-cus">
@@ -250,7 +284,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="SoldUpgradeCard">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -267,12 +301,12 @@
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.upgradeCardObject.viewers}} Viewers</td>
-                        <td>{{x.upgradeCardObject.cash}}$</td>
-                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text">Yazan@ctc-jo.com </td>
-                        <td class="skyblue-text">View</td>
-                        <td class="skyblue-text">3</td>
+                        <td >{{x.upgradeCardObject.viewers}} Viewers</td>
+                        <td >{{x.upgradeCardObject.cash}}$</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="buyerDetails(x.id)">{{x.firstName}} {{x.lastName}}</td>
+                        <td >{{x.email}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="">{{x.pageCount}}</td>
                     </tr>
                     
                 </tbody>
@@ -282,7 +316,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalincomeUpgrade">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -301,14 +335,14 @@
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                        <td >{{x.firstName}} {{x.lastName}}</td>
                         <td>{{x.cash}}$</td>
-                        <td class="skyblue-text">{{x.brolix}}</td>
-                        <td class="skyblue-text">{{x.city}}</td>
-                        <td class="skyblue-text">{{x.country}}</td>
-                        <td class="skyblue-text">{{x.gender}}</td>
-                        <td class="skyblue-text">{{x.email}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td >{{x.brolix}}</td>
+                        <td >{{x.city}}</td>
+                        <td >{{x.country}}</td>
+                        <td >{{x.gender}}</td>
+                        <td >{{x.email}}</td>
+                        <td >{{x.mobileNumber}}</td>
                     </tr>
                     
                 </tbody>
@@ -318,7 +352,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="usedUpgradeCard">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -337,14 +371,14 @@
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                        <td >{{x.firstName}} {{x.lastName}}</td>
                         <td>{{x.cash}}$</td>
-                        <td class="skyblue-text">{{x.brolix}}</td>
-                        <td class="skyblue-text">{{x.city}}</td>
-                        <td class="skyblue-text">{{x.country}}</td>
-                        <td class="skyblue-text">{{x.gender}}</td>
-                        <td class="skyblue-text">{{x.email}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td >{{x.brolix}}</td>
+                        <td >{{x.city}}</td>
+                        <td >{{x.country}}</td>
+                        <td >{{x.gender}}</td>
+                        <td >{{x.email}}</td>
+                        <td >{{x.mobileNumber}}</td>
                     </tr>
                     
                 </tbody>
@@ -354,7 +388,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="unUsedUpgradeCard">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -373,14 +407,14 @@
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                        <td >{{x.firstName}} {{x.lastName}}</td>
                         <td>{{x.cash}}$</td>
-                        <td class="skyblue-text">{{x.brolix}}</td>
-                        <td class="skyblue-text">{{x.city}}</td>
-                        <td class="skyblue-text">{{x.country}}</td>
-                        <td class="skyblue-text">{{x.gender}}</td>
-                        <td class="skyblue-text">{{x.email}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td >{{x.brolix}}</td>
+                        <td >{{x.city}}</td>
+                        <td >{{x.country}}</td>
+                        <td >{{x.gender}}</td>
+                        <td >{{x.email}}</td>
+                        <td >{{x.mobileNumber}}</td>
                     </tr>
                     
                 </tbody>
@@ -393,14 +427,14 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="SoldULuckCard">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Chances</th>
                         <th>Brolix</th>
                         <th>Buyer Name</th>
-                        <th>Buyer PayPal</th>
+                        <th>Mobile Number</th>
                         <th>Used Ad</th>
                         <th>Pages</th>
                     </tr>
@@ -410,12 +444,12 @@
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.luckCardObject.chances}}</td>
+                        <td >{{x.luckCardObject.chances}}</td>
                         <td>{{x.luckCardObject.brolix}}</td>
-                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text">Yazan@ctc-jo.com </td>
-                        <td class="skyblue-text">View</td>
-                        <td class="skyblue-text">3</td>
+                        <td class="skyblue-text" style="cursor: pointer;">{{x.firstName}} {{x.lastName}}</td>
+                        <td >{{x.mobileNumber}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;">{{x.pageCount}}</td>
                     </tr>
                     
                 </tbody>
@@ -425,7 +459,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalincomeLuck">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -444,14 +478,14 @@
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                        <td >{{x.firstName}} {{x.lastName}}</td>
                         <td>{{x.cash}}$</td>
-                        <td class="skyblue-text">{{x.brolix}}</td>
-                        <td class="skyblue-text">{{x.city}}</td>
-                        <td class="skyblue-text">{{x.country}}</td>
-                        <td class="skyblue-text">{{x.gender}}</td>
-                        <td class="skyblue-text">{{x.email}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td >{{x.brolix}}</td>
+                        <td >{{x.city}}</td>
+                        <td >{{x.country}}</td>
+                        <td >{{x.gender}}</td>
+                        <td >{{x.email}}</td>
+                        <td >{{x.mobileNumber}}</td>
                     </tr>
                     
                 </tbody>
@@ -461,7 +495,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="usedLuckCard">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -480,14 +514,51 @@
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                        <td >{{x.firstName}} {{x.lastName}}</td>
                         <td>{{x.cash}}$</td>
-                        <td class="skyblue-text">{{x.brolix}}</td>
-                        <td class="skyblue-text">{{x.city}}</td>
-                        <td class="skyblue-text">{{x.country}}</td>
-                        <td class="skyblue-text">{{x.gender}}</td>
-                        <td class="skyblue-text">{{x.email}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                        <td >{{x.brolix}}</td>
+                        <td >{{x.city}}</td>
+                        <td >{{x.country}}</td>
+                        <td >{{x.gender}}</td>
+                        <td >{{x.email}}</td>
+                        <td >{{x.mobileNumber}}</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="unUsedLuckCard">
+            <table id="manageCardTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Total Cash</th>
+                        <th>Total Brolix</th>
+                        <th>City</th>
+                        <th>Countory</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th>Mobile Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in unUsedLuckCard |filter:test">
+                        <td>
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td >{{x.firstName}} {{x.lastName}}</td>
+                        <td>{{x.cash}}$</td>
+                        <td >{{x.brolix}}</td>
+                        <td >{{x.city}}</td>
+                        <td >{{x.country}}</td>
+                        <td >{{x.gender}}</td>
+                        <td >{{x.email}}</td>
+                        <td >{{x.mobileNumber}}</td>
                     </tr>
                     
                 </tbody>
@@ -497,7 +568,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="upgradeCardOffer">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -526,7 +597,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="upgradeCardOffer">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -559,7 +630,7 @@
 
      <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="luckCardOffer">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -589,7 +660,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="luckCardOffer">
-            <table class="table table-bordered table-striped">
+            <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -617,11 +688,6 @@
             </table>
         </div>
     </div>
-
-
-   
-
-
 </div>
 
 
@@ -629,33 +695,56 @@
 <!-- upgradeOffer Table -->
 
 <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="upgradeOffer">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Cards Type</th>
-                        <th>Price</th>
-                        <th>Buyer Name</th>
-                        <th>Buyer PayPal</th>
-                        <th>Used Ad</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="x in totalUpgradeOffer |filter:test">
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td class="skyblue-text">{{x.upgradeCardObject.viewers}} Viewers</td>
-                        <td>{{x.upgradeCardObject.cash}}$</td>
-                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text">Yazan@ctc-jo.com </td>
-                        <td class="skyblue-text">View</td>
-                        <td class="skyblue-text">3</td>
-                    </tr>
-                    
-                </tbody>
-            </table>
-        </div>
+    <div class="row table-responsive cus-table" ng-switch-when="upgradeOffer">
+        <table id="manageCardTable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Cards Type</th>
+                    <th>Price</th>
+                    <th>Buyer Name</th>
+                    <th>Buyer PayPal</th>
+                    <th>Used Ad</th>
+                    <th>Pages</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in totalUpgradeOffer |filter:test">
+                    <td>
+                        <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                    </td>
+                    <td class="skyblue-text">{{x.upgradeCardObject.viewers}} Viewers</td>
+                    <td>{{x.upgradeCardObject.cash}}$</td>
+                    <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                    <td class="skyblue-text">Yazan@ctc-jo.com </td>
+                    <td class="skyblue-text">View</td>
+                    <td class="skyblue-text">3</td>
+                </tr>
+                
+            </tbody>
+        </table>
     </div>
+</div>
+
+
+
+<div id="sendMessageModelAllUser" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send message Buyer</h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendMessage">
+                   <div class="form-group">
+                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" /></textarea>
+                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
+                   </div>
+                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send massage</button>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+

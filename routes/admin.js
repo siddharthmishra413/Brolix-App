@@ -70,6 +70,7 @@ app.post('/sendCashBrolix', adminHandler.sendCashBrolix);
 
 app.post('/messageBroadcast', adminHandler.messageBroadcast);
 
-app.post('/uploadImage', adminHandler.uploadImage); 
+app.post('/uploadImage', adminHandler.uploadImage);
+app.post('/zipcodFunction', adminHandler.zipcodFunction); 
 
 module.exports = app;

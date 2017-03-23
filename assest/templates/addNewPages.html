@@ -80,7 +80,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Location</label>
                                             <div class="col-md-9">
@@ -91,8 +91,17 @@
                                                 </select>
                                             </div>
                                         </div>
+                                    </div> -->
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Location</label>
+                                            <div class="col-md-9">
+                                                 <input id="city_country" type="textbox" ng-click="codeAddress()" class="form-control" ng-model="myForm.location">
+                                                 <div id="mapCanvas"  ng-show = "IsVisible" style="height:300px;width: 300px;"></div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
@@ -120,13 +129,19 @@
                 </div>
                 <div class="panel-body">
                     <div class="cover-image" >
-                        <img class="profile-user-img img-responsive" src="{{user.pagephoto || '../dist/image/cover.jpg'}}" id="output">
+                        <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || '../dist/image/cover.jpg'}}" id="output">
+                        <label class="fileContainer">
+                            Choose File
                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" accept="image/*">
+                        </label>
                     </div>
 
                     <div class="page-image clearfix">
-                        <img class="profile-user-img img-responsive" src="{{user.userphoto || '../dist/image/user-image.jpeg'}}" id="output">
+                        <img class="profile-user-img img-responsive" src="{{myForm.userphoto || '../dist/image/user-image.jpeg'}}" id="output">
+                        <label class="fileContainer">
+                            Choose File
                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'userImage')" accept="image/*">
+                        </label>
                     </div>
 
                     <div class="btn2 text-center">
@@ -158,21 +173,21 @@
                                             <div class="col-sm-12">
                                                 <div class="row-table">
                                                     <div class="col-cell">
-                                                        <select class="form-control">
+                                                        <select class="form-control" ng-model="myForm.socialMedia">
                                                             <option>Select Social Media</option>
                                                             <option>Select Social Media1</option>
                                                             <option>Select Social Media2</option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-cell add-remove">
+                                                   <!--  <div class="col-cell add-remove">
                                                         <span class="fa fa-plus-circle"></span>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-8">
                                                 <div class="row-table">
@@ -200,7 +215,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
@@ -234,20 +249,20 @@
                                             <div class="col-sm-12">
                                                 <div class="row-table">
                                                     <div class="col-cell">
-                                                      <div class="input-group">
-                                                      <input type="text" class="form-control" placeholder="Search for users">
-                                                      <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search" ></i></span>
-                                                </div>
+                                                        <div class="input-group">
+                                                          <input type="text" class="form-control" placeholder="Search for users" ng-model="myForm.pageAdmin">
+                                                          <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search" ></i></span>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-cell add-remove">
+                                                    <!-- <div class="col-cell add-remove">
                                                         <span class="fa fa-minus-circle"></span>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="form-group">
+                                   <!--  <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-8">
                                                 <div class="row-table">
@@ -275,12 +290,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
                                         <a class="btn btn-lg btn-green" ng-click="submitt()">Add Pages</a>
-                                        <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
+                                        <a class="btn btn-lg btn-green">Cancel</a>
                                     </div>
                                 </fieldset>
                             </form>

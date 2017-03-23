@@ -12,6 +12,7 @@ app.controller('editCardCtrl', function($scope, $window, userService, uploadimgS
     userService.viewcard($scope.cardType).success(function(res) {
       console.log("resssssssssssssss",res)
         $scope.UpgradeCard = res.data;
+        console.log("$scope.UpgradeCard",JSON.stringify($scope.UpgradeCard));
         $scope.user.photo = '';
         $scope.cardDetails.photo = '';
     })

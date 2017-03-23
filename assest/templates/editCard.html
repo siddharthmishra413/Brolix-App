@@ -24,8 +24,11 @@
                                     <div class="col-md-6">
                                         <div class="cover-image" >
                                         <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                        <label class="fileContainer">
+                                            Choose File
                                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
                                         </div>
+                                        </label>
 
                                         <form class="form-block" role="form">
                                             <fieldset>
@@ -60,8 +63,8 @@
                             <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="remove-card-block" ng-repeat="x in LuckCard">
-                                            <div class="cover-image" >
+                                        <div class="remove-card-block" >
+                                            <div class="cover-image" ng-repeat="x in LuckCard">
                                                 <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" src="{{x.photo || '../dist/image/cover.jpg'}}" id="output">    
                                             </div>
                                         </div>
@@ -69,8 +72,11 @@
                                     <div class="col-md-6">
                                         <div class="cover-image"  >
                                         <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                        <label class="fileContainer">
+                                            Choose File
                                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
                                         </div>
+                                        </label>
 
                                         <form class="form-block" role="form">
                                             <fieldset>

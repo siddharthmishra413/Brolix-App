@@ -1,112 +1,142 @@
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="add-user panel panel-default cust-panel">
-                <div class="panel-heading">
-                    <h3 class="panel-title">View Page</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="login-block">
-                        <form class="form-block" role="form">
-                            <fieldset>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="control-label col-md-3">Page Name</label>
-                                        <div class="col-md-9">
-                                            <!-- <input type="text" class="form-control" name="pageName" ng-model="viewPageDetails.pageName" placeholder=""> -->
-                                            <span class="form-control">{{viewPageDetails.pageName}}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="control-label col-md-3">Page Owner</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <!-- <input type="text" class="form-control" ng-model="viewPageDetails.userId.firstName">
-                                                <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search" ></i></span> -->
-                                                 <span class="form-control">{{viewPageDetails.userId.firstName}}</span>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Page Details</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
+                            <form class="form-block" role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Page Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="pageName" ng-model="myForm.pageName" placeholder=""> 
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="control-label col-md-3">Main Category</label>
-                                        <div class="col-md-9">
-                                            <!-- <input type="text" class="form-control" ng-model="viewPageDetails.category" placeholder=""> -->
-                                            <span class="form-control">{{viewPageDetails.category}}</span>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Page Owner</label>
+                                            <div class="col-md-9">
+                                                <div class="input-group">
+                                                  <input type="text" class="form-control" ng-model="myForm.pageowner">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="control-label col-md-3">Sub Categories</label>
-                                        <div class="col-md-9">
-                                            <!-- <input type="text" class="form-control" ng-model="viewPageDetails.subCategory" placeholder=""> -->
-                                            <span class="form-control">{{viewPageDetails.subCategory}}</span>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Main Category</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" placeholder="" ng-model="myForm.mainCategory"> 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="control-label col-md-3">Description</label>
-                                        <div class="col-md-9">
-                                            <!-- <textarea class="form-control textarea-a" ng-model="viewPageDetails.pageDiscription"></textarea> -->
-                                            <span class="form-control">{{viewPageDetails.pageDiscription}}</span>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Sub Categories</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" placeholder="" ng-model="myForm.subCategory"> 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="control-label col-md-3">Email</label>
-                                        <div class="col-md-9">
-                                            <!-- <input type="email" class="form-control" ng-model="viewPageDetails.email" placeholder=""> -->
-                                            <span class="form-control">{{viewPageDetails.email}}</span>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Description</label>
+                                            <div class="col-md-9">
+                                                <textarea class="form-control textarea-a" ng-model="myForm.description"></textarea>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="control-label col-md-3">Website</label>
-                                        <div class="col-md-9">
-                                            <!-- <input type="text" class="form-control" ng-model="viewPageDetails.pageName" placeholder=""> -->
-                                            <span class="form-control">{{viewPageDetails.pageName}}</span>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Email</label>
+                                            <div class="col-md-9">
+                                                <input type="email" class="form-control" placeholder="" ng-model="myForm.email"> 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="control-label col-md-3">Phone</label>
-                                        <div class="col-md-9">
-                                            <!-- <input type="tel" class="form-control" ng-model="viewPageDetails.phoneNumber" placeholder=""> -->
-                                            <span class="form-control">{{viewPageDetails.phoneNumber}}</span>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Website</label>
+                                            <div class="col-md-9">
+                                                 <input type="text" class="form-control" placeholder="" ng-model="myForm.website"> 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="control-label col-md-3">Location</label>
-                                        <div class="col-md-9">
-                                            <!-- <select class="form-control">
-                                                <option>Location1</option>
-                                                <option>Location2</option>
-                                                <option>Location3</option>
-                                            </select> -->
-                                            <span class="form-control"></span>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Phone</label>
+                                            <div class="col-md-9">
+                                                <input type="tel" class="form-control" placeholder="" ng-model="myForm.phon"> 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <div class="btn2 text-center">
-                                    <a ng-href="#header/viewImageUpload/{{viewPageDetails._id}}" class="btn btn-lg btn-green">Next</a>
-                                    <a ui-sref="header.managePages" class="btn btn-lg btn-green">Cancel</a>
-                                </div>
-                            </fieldset>
-                        </form>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Location</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cover-image" >
+                                        <label class="control-label col-md-3">Cover Image</label>
+                                        <img class="profile-user-img img-responsive" src="{{user.pagephoto || '../dist/image/cover.jpg'}}" id="output">
+                                    </div>
+
+                                    <div class="page-image clearfix">
+                                    <label class="control-label col-md-3">Page Image</label>
+                                        <img class="profile-user-img img-responsive" src="{{user.userphoto || '../dist/image/user-image.jpeg'}}" id="output">
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label col-md-12">Social Media Accounts</label>
+                                        <div class="col-sm-12">
+                                            <div class="row-table">
+                                                <div class="col-cell">
+                                                    <input type="text" class="form-control" placeholder="">
+                                                </div>
+                                               <!--  <div class="col-cell add-remove">
+                                                    <span class="fa fa-plus-circle"></span>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-12">Page Admins</label>
+                                            <div class="col-sm-12">
+                                                <div class="row-table">
+                                                    <div class="col-cell">
+                                                        <div class="input-group">
+                                                          <input type="text" class="form-control" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-cell add-remove">
+                                                        <span class="fa fa-minus-circle"></span>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <!-- <div class="btn2 text-center">
+                                        <a class="btn btn-lg btn-green" ng-click="click('Step1')">Next</a>
+                                        <a class="btn btn-lg btn-green">Cancel</a>
+                                    </div> -->
+                                </fieldset>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+
+    

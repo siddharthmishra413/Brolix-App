@@ -6,7 +6,128 @@ $scope.class = false;
  $scope.tab = 'totalPages';
  $scope.myForm = {};
  $scope.sendMessage = {};
+ $scope.active_upgrade_card=true;
+ $scope.cardType = 'upgrade_card';
 
+
+
+ /*------------Send case---------------*/
+
+ $scope.total_user_cash = function (modal) {
+    $("#sendcashModelAllUser").modal('show'); 
+}
+
+$scope.send_cashall = function(modal){ 
+var array =[];
+var data = {};
+for (var i = 0; i < $scope.allAdminPages.length; i++) {
+        array.push($scope.allAdminPages[i]._id)
+    }
+    data = {
+        Cash:$scope.sendCash.Cash,
+        Id:array
+    }
+    console.log("data",data)
+    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
+        if (res.responseCode == 200){
+            toastr.success("Cash Send successfully to All User");
+            $scope.sendCash = '';
+            $("#sendcashModelAllUser").modal('hide'); 
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+}
+
+/*-----------------------------------------*/
+
+
+/*----------send Brolix------------------*/
+
+ $scope.total_user_brolix = function (modal) {
+        $("#sendbrolixModelAllUser").modal('show'); 
+    }
+
+
+$scope.send_brolix = function(modal){
+var array =[];
+var data = {};
+
+for (var i = 0; i < $scope.allAdminPages.length; i++) {
+        array.push($scope.allAdminPages[i]._id)
+    }
+    data = {
+        Brolix:$scope.sendBrolix.brolix,
+        Id:array
+    }
+    console.log("seccccccccccccccccccc",data)
+    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
+        if (res.responseCode == 200){
+            toastr.success("Brolix Send successfully to All User");
+            $scope.sendBrolix = '';
+            $("#sendbrolixModelAllUser").modal('hide'); 
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+}
+/*----------------------------------------*/
+
+
+/*------------------Send Card------------------*/
+ $scope.total_user_card = function () {
+        $("#showAllCard").modal('show');
+    }
+
+$scope.sendCard = function(id){
+ console.log("id",id);
+ $scope.cardID = id;
+ var array =[];
+ var data = {};
+
+ for (var i = 0; i < $scope.allAdminPages.length; i++) {
+        array.push($scope.allAdminPages[i]._id)
+    }
+    data = {
+        cardId:$scope.cardID,
+        Id:array
+    }
+    console.log("dataIn",data)
+    // userService.sendMassageAllUser(data).success(function(res) {        
+    //     if (res.responseCode == 200){
+    //         toastr.success("Message Send Successfully to All User");
+    //         $scope.sendMessage = '';
+    //         $("#sendMessageModelAllUser").modal('hide'); 
+    //     } else {
+    //         toastr.error(res.responseMessage);
+    //     }
+    // })
+}
+
+userService.viewcard($scope.cardType).success(function(res) {
+      //console.log("resssssssssssssss",res)
+        $scope.UpgradeCard = res.data;
+        console.log("UpgradeCard",$scope.UpgradeCard);
+    })
+
+
+$scope.active_tab=function(active_card){
+        if(active_card=='upgrade_card'){
+        $scope.active_upgrade_card=true;
+         $scope.active_luck_card=false;
+      }else{
+        userService.viewcard(active_card).success(function(res) {
+        console.log("resssssssssssssss",res)
+        $scope.LuckCard = res.data;
+        console.log("LuckCard",$scope.LuckCard);
+    })
+         $scope.active_upgrade_card=false;
+            $scope.active_luck_card=true;
+      }
+    }
+
+
+/*----------------------------------------------------*/
 
  $scope.userTypeName = function(val) {
     localStorage.setItem('userTypeName',val);
@@ -17,17 +138,24 @@ userService.countrys().success(function(res) {
     }).error(function(status, data) {
 })
 
+userService.allAdminPages().success(function(res) {
+    $scope.allAdminPages = res.result;
+     $scope.allAdminPagesCount = res.count;
+     
+    }).error(function(status, data) {
+})
+
 $scope.catId = function() {
     //console.log($scope.dashBordFilter.country);
     var country = $scope.dashBordFilter.country
     $http.get('/admin/getAllStates/' + country.code + '/ISO2').success(function(res) {
-        console.log(res);
+        //console.log(res);
         $scope.allstates = res.result;
     }, function(err) {});
 }
 
 $scope.slectCountry = function(qq){
-        console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
+        //console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
         userService.allstatefind($scope.dashBordFilter.country).success(function(res) {
         $scope.allstatefind = res.result;
     })
@@ -39,7 +167,7 @@ $scope.dashBordFilter = function(){
     $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
     $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
     $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
-    console.log("date",$scope.dashBordFilter.country);
+    //console.log("date",$scope.dashBordFilter.country);
     var data = {};
         data = {
             userType:localStorage.getItem('userTypeName'),
@@ -50,12 +178,12 @@ $scope.dashBordFilter = function(){
             joinTo:$scope.dobTo,
             joinFrom:$scope.dobFrom,
         }
-        console.log("datatata",data)
+        //console.log("datatata",data)
 
     switch (type)
             {
                 case 'totalPages':
-                console.log("1"); 
+                //console.log("1"); 
                     userService.userfilter(data).success(function(res){
                         $scope.totalUser = res.data;
                         console.log("ressssssss1",JSON.stringify($scope.totalUser));
@@ -64,7 +192,7 @@ $scope.dashBordFilter = function(){
                 break;
 
                 case 'unPublishedPage': 
-                console.log("2");
+                //console.log("2");
                     userService.userfilter(data).success(function(res){
                         $scope.personalUser = res.data;
                         console.log("ressssssss2",JSON.stringify($scope.personalUser));
@@ -73,7 +201,7 @@ $scope.dashBordFilter = function(){
                 break;
 
                 case 'removedPage': 
-                console.log("3");
+                //console.log("3");
                     userService.userfilter(data).success(function(res){
                         $scope.businessUser = res.data;
                         console.log("ressssssss3",JSON.stringify($scope.businessUser));
@@ -82,7 +210,7 @@ $scope.dashBordFilter = function(){
                 break;
 
                 case 'blockedPage': 
-                console.log("4");
+                //console.log("4");
                     userService.userfilter(data).success(function(res){
                         $scope.liveUser = res.data;
                         console.log("ressssssss4",JSON.stringify($scope.liveUser));
@@ -107,7 +235,7 @@ $scope.dashBordFilter = function(){
                     width: 500,
                 }]
             };
-            pdfMake.createPdf(docDefinition).download("test.pdf");
+            pdfMake.createPdf(docDefinition).download("Report.pdf");
         }
     });
  }
@@ -121,7 +249,6 @@ $scope.dashBordFilter = function(){
 
         $scope.modalId = modal;
         $scope.modelData = modal;
-       //console.log("111111",$scope.modelData);
         if($scope.modalId == '' || $scope.modalId == undefined || $scope.modalId == null){
         toastr.error("Please select user.")
         $state.go('header.managePages')
@@ -177,23 +304,23 @@ $scope.dashBordFilter = function(){
                 break;
 
                 case 'pagesAdmins': 
-                    // for (var i = 0; i < $scope.unPublishedPage.length; i++) {
-                    //     array.push($scope.unPublishedPage[i]._id)
-                    // }
+                    for (var i = 0; i < $scope.allAdminPages.length; i++) {
+                        array.push($scope.allAdminPages[i]._id)
+                    }
                     data = {
                         Message:$scope.sendMessage.massage,
-                        //Id:array
+                        Id:array
                     }
-                    //console.log("sssss",data)
-                    // userService.sendMassageAllUser(data).success(function(res) {        
-                    //     if (res.responseCode == 200){
-                    //         toastr.success("Message Send Successfully to All UnPublished Page Owner");
-                    //         $scope.sendMessage = '';
-                             $("#sendMessageModelAllUser").modal('hide'); 
-                    //     } else {
-                    //         toastr.error(res.responseMessage);
-                    //     }
-                    // })
+                    console.log("luuuuuuuuuuuuuu",data)
+                    userService.sendMassageAllUser(data).success(function(res) {        
+                        if (res.responseCode == 200){
+                            toastr.success("Message Send Successfully to All UnPublished Page Owner");
+                            $scope.sendMessage = '';
+                            $("#sendMessageModelAllUser").modal('hide'); 
+                        } else {
+                            toastr.error(res.responseMessage);
+                        }
+                    })
                 break;
 
                 default: 
@@ -303,7 +430,7 @@ $scope.dashBordFilter = function(){
  userService.totalPages().success(function(res) {
  	if (res.responseCode == 200){
             $scope.totalPages = res.result;
-            //console.log("atatataa1212",JSON.stringify($scope.totalPages));
+            //console.log("totalllllpage",JSON.stringify($scope.totalPages));
         } else {
             toastr.error(res.responseMessage);
         }        
@@ -333,7 +460,7 @@ $scope.dashBordFilter = function(){
         if (res.responseCode == 200){
             $scope.showAllRemovedPage = res.result;
             $scope.showAllRemovedPageCount = res.count;
-            console.log("lllllllllllll",JSON.stringify($scope.showAllRemovedPageCount))
+            //console.log("lllllllllllll",JSON.stringify($scope.showAllRemovedPageCount))
             } else {
             //toastr.error(res.responseMessage);
             $scope.showAllRemovedPage = res.count;
@@ -345,7 +472,7 @@ $scope.dashBordFilter = function(){
     $scope.Remove_User = function (id) {
         $scope.RemoveId = id;
         var userId = $scope.RemoveId;
-        console.log("Blockidvcbc");
+        //console.log("Blockidvcbc");
 
         if ($scope.RemoveId == '' || $scope.RemoveId == undefined || $scope.RemoveId == null) {
        toastr.error("Please select user.")
@@ -383,7 +510,7 @@ $scope.showAdds = function(id){
     userService.showAdds(id).success(function(res){
         if(res.responseCode == 200){
             $scope.allAddsOnPage=res.result;
-            console.log("res",JSON.stringify(res));
+            //console.log("res",JSON.stringify(res));
             $("#adsDetails").modal('show');
 
         }else{
@@ -396,35 +523,35 @@ $scope.showAdds = function(id){
 /*ownerDetails*/
 
 $scope.ownerDetails = function(id){
-    console.log("id",id);
+    //console.log("id",id);
 
 }
 
 /*show winners*/
 
 $scope.showWinners = function(id){
-    console.log("iddddd",id);
+    //console.log("iddddd",id);
     userService.showPageWinner(id).success(function(res){
         if(res.responseCode == 200){
             $scope.allWinnerOnPage=res.result;
-            console.log("res",JSON.stringify(res.result));
+            //console.log("res",JSON.stringify(res.result));
             $("#pageWinnerDetails").modal('show');
 
         }else{
            toastr.error(res.responseMessage);
         }
-        console.log("res",res);
+       // console.log("res",res);
     })
 }
 
 /*show Admin Pages*/
 
 $scope.showAdminPages = function(id){
-    console.log("iddddd",id);
+    //console.log("iddddd",id);
     userService.showAdminPages(id).success(function(res){
         if(res.responseCode == 200){
             $scope.allAdminOnPages=res.result;
-            console.log("res----------------",JSON.stringify(res.result));
+            //console.log("res----------------",JSON.stringify(res.result));
             $("#pageAdminDetails").modal('show');
 
         }else{

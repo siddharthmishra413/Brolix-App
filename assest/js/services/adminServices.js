@@ -30,6 +30,8 @@ app.service('uploadimgServeice', function($http, $q) {
 })
 
 
+
+
 app.service('userService',function($http){
 
 	return{
@@ -80,29 +82,32 @@ app.service('userService',function($http){
     showAllBlockUser: function() {
       return $http.get('/admin/showAllBlockUser');
     },
+
+    /*-------------------------Manage Cards---------------------*/
+
     totalSoldUpgradeCard: function() {
-      return $http.get('/admin/totalSoldUpgradeCard');
+      return $http.get('http://172.16.6.171:8082/admin/totalSoldUpgradeCard');
     },
     totalIncomeInCashFromUpgradeCard: function() {
-      return $http.get('/admin/totalIncomeInCashFromUpgradeCard');
+      return $http.get('http://172.16.6.171:8082/admin/totalIncomeInCashFromUpgradeCard');
     },
     usedUpgradeCard: function() {
-      return $http.get('/admin/usedUpgradeCard');
+      return $http.get('http://172.16.6.171:8082/admin/usedUpgradeCard');
     },
     unUsedUpgradeCard: function() {
-      return $http.get('/admin/unUsedUpgradeCard');
+      return $http.get('http://172.16.6.171:8082/admin/unUsedUpgradeCard');
     },
     totalSoldLuckCard: function() {
-      return $http.get('/admin/totalSoldLuckCard');
+      return $http.get('http://172.16.6.171:8082/admin/totalSoldLuckCard');
     },
     totalIncomeInBrolixFromLuckCard: function() {
-      return $http.get('/admin/totalIncomeInBrolixFromLuckCard');
+      return $http.get('http://172.16.6.171:8082/admin/totalIncomeInBrolixFromLuckCard');
     },
     usedLuckCard: function() {
-      return $http.get('/admin/usedLuckCard');
+      return $http.get('http://172.16.6.171:8082/admin/usedLuckCard');
     },
     unUsedLuckCard: function() {
-      return $http.get('/admin/unUsedLuckCard');
+      return $http.get('http://172.16.6.171:8082/admin/unUsedLuckCard');
     },
 
     /*-------------------------Manage ADS---------------------*/
@@ -127,6 +132,10 @@ app.service('userService',function($http){
 
     totalPages: function() {
       return $http.get('http://172.16.6.171:8082/admin/totalPages');
+    },
+
+    allAdminPages: function() {
+      return $http.get('http://172.16.6.171:8082/admin/PagesAdmins');
     },
 
     showAllBlockedPage: function() {
@@ -238,7 +247,11 @@ app.service('userService',function($http){
 
     showAdminPages: function(id){
       return $http.get('http://172.16.6.171:8082/admin/pageAdminsDetail/'+id);
-    }
+    },
+
+    zipcodFunction: function(data){
+      return $http.post('/admin/zipcodFunction', data);
+    },
 
   }
 

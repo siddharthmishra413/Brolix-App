@@ -88,7 +88,7 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Page’s Admins</div>
-                            <div class="total-amt">1,500</div>
+                            <div class="total-amt">{{allAdminPagesCount}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage">
@@ -100,9 +100,9 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="sendMessagePage('pagesAdmins')"><a>Message</a></li>
                                         <li><a>Coupon</a></li>
-                                        <li><a>Brolix</a></li>
-                                        <li><a>Card</a></li>
-                                        <li><a>Cash</a></li>
+                                        <li ng-click="total_user_brolix()"><a>Brolix</a></li>
+                                        <li ng-click="total_user_card()"><a>Card</a></li>
+                                        <li ng-click="total_user_cash()"><a>Cash</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -481,6 +481,108 @@
                         </div>
                     </div>           
                 </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="showAllCard" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send CArd to All User</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                      <!--   <div class="panel-heading">
+                            <h3 class="panel-title">Remove Cards</h3>
+                        </div> -->
+                        <div class="panel-body">
+                            <ul class="nav nav-pills card-tabs">
+                                <li class="active"><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('upgrade_card')">Upgrade Card</a>
+                                </li>
+                                <li><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
+                            </ul>
+                            <div class="tab-content add-card">
+                                <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
+                                    <div class="row-table" ng-repeat="data in UpgradeCard">
+                                        <div class="col-cell">
+                                            <div class="cover-image">
+                                                <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                            </div>
+                                        </div>
+                                        <div class="col-cell add-remove">
+                                            <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
+                                    <div class="row-table" ng-repeat="data in LuckCard">
+                                        <div class="col-cell">
+                                            <div class="cover-image">
+                                                <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                            </div>
+                                        </div>
+                                        <div class="col-cell add-remove">
+                                            <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+   </div>
+</div>
+
+
+
+<div id="sendbrolixModelAllUser" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Enter Brolix to pay by admin </h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendBrolix">
+                   <div class="form-group">
+                   <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                    <span style="color:red;" ng-show="sendBrolix.brolixsend.$dirty && sendBrolix.brolixsend.$invalid">
+                    <span ng-show="sendBrolix.brolixsend.$error.required">Brolix is required.</span> 
+                    <span ng-show="sendBrolix.brolixsend.$error.maxlength">Brolix have at most 10 digits.</span>
+                    <span ng-show="sendBrolix.brolixsend.$error.pattern">Only number are allowed.</span>
+                   </div>
+                   <button ng-disabled="sendBrolix.$invalid" type="submit" class="btn btn-danger" ng-click="send_brolix('totalUser')">Send Brolix</button>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<div id="sendcashModelAllUser" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Enter Cash to pay by admin </h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendCash">
+                   <div class="form-group">
+                   <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                    <span style="color:red;" ng-show="sendCash.cashsend.$dirty && sendCash.cashsend.$invalid">
+                    <span ng-show="sendCash.cashsend.$error.required">Cash is required.</span> 
+                    <span ng-show="sendCash.cashsend.$error.maxlength">Cash have at most 10 digits.</span>
+                    <span ng-show="sendCash.cashsend.$error.pattern">Only number are allowed.</span>
+                   </div>
+                   <button ng-disabled="sendCash.$invalid" type="submit" class="btn btn-danger" ng-click="send_cashall('totalUser')">Send Cash</button>
+               </form>
            </div>
        </div>
    </div>
