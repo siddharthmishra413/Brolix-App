@@ -353,7 +353,7 @@ module.exports = {
     },
 
     "totalActiveAds": function(req, res) { // all ads cash and coupon type
-        createNewAds.find({ status: 'ACTIVE' }).exec(function(err, result) {
+        createNewAds.find({ status: 'ACTIVE' }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -375,7 +375,7 @@ module.exports = {
     },
 
     "totalExpiredAds": function(req, res) { // all ads cash and coupon type
-        createNewAds.find({ status: 'EXPIRED' }).exec(function(err, result) {
+        createNewAds.find({ status: 'EXPIRED' }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -518,7 +518,7 @@ module.exports = {
 
     "usedLuckCard": function(req, res) {
         User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "INACTIVE" } }).exec(function(err, result) {
-            console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
+            //   console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var count = 0;
@@ -577,7 +577,7 @@ module.exports = {
 
     "unUsedLuckCard": function(req, res) {
         User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "ACTIVE" } }).exec(function(err, result) {
-            console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
+            //   console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var count = 0;
@@ -752,7 +752,7 @@ module.exports = {
     },
 
     "videoAds": function(req, res) {
-        createNewAds.find({ adContentType: "video" }).exec(function(err, result) {
+        createNewAds.find({ adContentType: "video" }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0 || result.length == null || result.length == undefined || result.length == '') { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
@@ -769,7 +769,7 @@ module.exports = {
     },
 
     "slideshowAds": function(req, res) {
-        createNewAds.find({ adContentType: "slideshow" }).exec(function(err, result) {
+        createNewAds.find({ adContentType: "slideshow" }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0 || result.length == null || result.length == undefined || result.length == '') { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
@@ -886,7 +886,6 @@ module.exports = {
                     responseMessage: "Removed page shown successfully."
                 });
             }
-
         });
     },
     "sendcardAndcoupan": function(req, res) {
@@ -1057,7 +1056,7 @@ module.exports = {
 
     "showReportOnAd": function(req, res) {
         createNewReport.find({ adId: req.params.id }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No report found on this ad." }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -1097,8 +1096,13 @@ module.exports = {
                 }
                 createNewPage.find({ _id: { $in: array } }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+                        var count = 0;
+                        for (var i = 0; i < result1.length; i++) {
+                            count++;
+                        }
                         res.send({
                             result: result1,
+                            count: count,
                             responseCode: 200,
                             responseMessage: "Page detail show successfully."
                         })
@@ -1113,15 +1117,39 @@ module.exports = {
         var array = [];
         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter luckId' }); } else {
             User.findOne({ 'luckUsedAd.luckId': obj }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
-
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Card not used yet." }); } else {
                     for (var i = 0; i < result.luckUsedAd.length; i++) {
                         if (result.luckUsedAd[i].luckId == obj) {
                             array.push(result.luckUsedAd[i].adId)
                         }
                     }
                     createNewAds.find({ _id: { $in: array } }).exec(function(err, result1) {
-                        console.log("array-->>>>", result1.length)
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                            res.send({
+                                result: result1,
+                                responseCode: 200,
+                                responseMessage: "Ad detail show successfully."
+                            })
+                        }
+                    })
+                }
+            })
+        }
+
+    },
+
+    "upgradeCardUsedAd": function(req, res) {
+        var obj = (req.body.upgradeId);
+        var array = [];
+        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter upgradeId' }); } else {
+            User.findOne({ 'UpgradeUsedAd.upgradeId': obj }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Card not used yet." }); } else {
+                    for (var i = 0; i < result.UpgradeUsedAd.length; i++) {
+                        if (result.UpgradeUsedAd[i].upgradeId == obj) {
+                            array.push(result.UpgradeUsedAd[i].adId)
+                        }
+                    }
+                    createNewAds.find({ _id: { $in: array } }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                             res.send({
                                 result: result1,
@@ -1137,37 +1165,207 @@ module.exports = {
 
     },
 
-    "upgradeCardUsedAd": function(req, res) {
-        var obj = (req.body.upgradeId);
-        var array = [];
-        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter upgradeId' }); } else {
-            User.findOne({ 'UpgradeUsedAd.upgradeId': obj }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found.11" }); } else {
-                    for (var i = 0; i < result.UpgradeUsedAd.length; i++) {
-                        if (result.UpgradeUsedAd[i].upgradeId == obj) {
-                            array.push(result.UpgradeUsedAd[i].adId)
-                        }
-                    }
-                    createNewAds.find({ _id: { $in: array } }).exec(function(err, result1) {
-                        console.log("array-->>>>", result1.length)
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found.22" }); } else {
-                            res.send({
-                                result: result1,
-                                responseCode: 200,
-                                responseMessage: "Ad detail show successfully."
-                            })
-                        }
-                    })
+    "paymentHistoryUpgradeCard": function(req, res) { // pageId in request
+        User.find({ _id: req.params.id }, 'upgradeCardObject UpgradeUsedAd').populate('UpgradeUsedAd.adId').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result[0].upgradeCardObject.length == 0) { res.send({ responseCode: 404, responseMessage: 'No card found' }) } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All history shown successfully."
+                });
+            }
+        })
+    },
+
+    "paymentHistoryLuckCard": function(req, res) { // pageId in request  { $in: ["text", "here"] }  'luckCardObject', 'luckUsedAd'
+        User.find({ _id: req.params.id }, 'luckCardObject luckUsedAd').populate('luckUsedAd.adId').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result[0].luckCardObject.length == 0) { res.send({ responseCode: 404, responseMessage: 'No card found' }) } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All history shown successfully."
+                });
+            }
+        })
+    },
+
+    "userInfo": function(req, res) {
+        User.findOne({ _id: req.params.id }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            if (!result) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All history shown successfully."
+                });
+            }
+        })
+    },
+
+    "totalBrolixGift": function(req, res) {
+        User.aggregate({ $unwind: "$brolix" }).exec(function(err, result) {
+            console.log("brolix--->>", result)
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
+                var arr = [];
+                for (i = 0; i < result.length; i++) {
+                    console.log("data--->>>>", result[i].brolix, i);
+                    arr.push(parseInt(result[i].brolix));
                 }
+                var sum = arr.reduce((a, b) => a + b, 0);
+                console.log("arrrrr", sum);
+                res.status(200).send({
+                    // result: result,
+                    totalBrolix: sum,
+                    responseCode: 200,
+                    responseMessage: "Total brolix Shows successfully."
+                });
+            }
+        });
+    },
 
-            })
-        }
+    "showReportedAd": function(req, res) {
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                var array = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].reportOnAd > 0) {
+                        array.push(result[i]._id)
+                    }
+                }
+                createNewAds.find({ _id: { $in: array } }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                        var count = 0;
+                        for (var i = 0; i < result1.length; i++) {
+                            count++;
+                        }
+                        res.send({
+                            result: result1,
+                            count: count,
+                            responseCode: 200,
+                            responseMessage: "Ad detail show successfully."
+                        })
+                    }
+                })
+            }
+        })
+    },
 
+    "adUpgradedByDollor": function(req, res) {
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                var array = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].cash > 0) {
+                        array.push(result[i]._id)
+                    }
+                }
+                console.log("array-->>" + array)
+                createNewAds.find({ _id: { $in: array } }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                        var count = 0;
+                        for (var i = 0; i < result1.length; i++) {
+                            count++;
+                        }
+                        res.send({
+                            result: result1,
+                            count: count,
+                            responseCode: 200,
+                            responseMessage: "Ad detail show successfully."
+                        })
+                    }
+                })
+            }
+        })
+    },
+
+    "adUpgradedByBrolix": function(req, res) {
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                var array = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].couponPurchased > 0) {
+                        array.push(result[i]._id)
+                    }
+                }
+                console.log("array-->>" + array)
+                createNewAds.find({ _id: { $in: array } }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                        var count = 0;
+                        for (var i = 0; i < result1.length; i++) {
+                            count++;
+                        }
+                        res.send({
+                            result: result1,
+                            count: count,
+                            responseCode: 200,
+                            responseMessage: "Ad detail show successfully."
+                        })
+                    }
+                })
+            }
+        })
+    },
+
+    "totalCouponGifts": function(req, res) {
+        User.aggregate({ $unwind: "$coupon" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
+                var count = 0;
+                for (i = 0; i < result.length; i++) {
+                    count++;
+                }
+                res.status(200).send({
+                    result: result,
+                    count: count,
+                    responseCode: 200,
+                    responseMessage: "Successfully shown list of upgrade card"
+                });
+            }
+        })
+    },
+
+    "cashGift": function(req, res) {
+        User.aggregate({ $unwind: "$cashPrize" }, function(err, results) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No result found." }); } else {
+                var arr = [];
+                var count = 0;
+                for (i = 0; i < results.length; i++) {
+                    count++;
+                    arr.push(parseInt(results[i].cashPrize.cash));
+                }
+                var sum = arr.reduce((a, b) => a + b, 0);
+                console.log("arrrrr", sum);
+                User.populate(results, 'cashPrize.pageId', function(err, result1) {
+                    res.status(200).send({
+                        result: result1,
+                        totalIncome: sum,
+                        count: count,
+                        responseCode: 200,
+                        responseMessage: "Cash shows successfully."
+                    });
+                })
+            }
+        });
+    },
+
+    "soldCoupon": function(req, res) {
+        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "PURCHASED" } }, function(err, results) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No result found." }); } else {
+                User.populate(results, 'coupon.pageId', function(err, result1) {
+                    User.populate(result1, 'coupon.adId',function(err, result2){
+                            res.status(200).send({
+                            result: result2,
+                            responseCode: 200,
+                            responseMessage: "Cash shows successfully."
+                        });
+                    })
+                  
+                })
+            }
+        })
     }
-
-
-
-
 
 
 

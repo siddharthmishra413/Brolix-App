@@ -639,78 +639,6 @@ module.exports = {
 
     },
 
-    "success": function(req, res) {
-        console.log("req data-->" + JSON.stringify(req.body));
-        res.send("Payment transfered successfully.");
-    },
-
-    // Api For Reedem Cash
-    "redeemCash": function(req, res) {
-        // paypal payment configuration.
-        var payment = {
-            "intent": "sale",
-            "payer": {
-                "payment_method": "paypal"
-            },
-            "redirect_urls": {
-                "return_url": 'http://localhost:8000/success',
-                "cancel_url": app.locals.baseurl + "/cancel"
-            },
-            "transactions": [{
-                "amount": {
-                    "total": parseInt(req.body.cash),
-                    "currency": req.body.currency
-                        // "transactions_ID": req.body.transactions_ID
-                },
-                "description": req.body.description
-            }]
-        };
-        paypal.payment.create(payment, function(error, payment) {
-            if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                if (payment.payer.payment_method === 'paypal') {
-                    req.paymentId = payment.id;
-                    var redirectUrl;
-                    console.log("payment", payment);
-                    console.log("requestbody", JSON.stringify(req.body))
-                    console.log("currency", JSON.stringify(req.body.currency))
-
-                    var amount = req.body.cash;
-                    console.log("amount-------", amount)
-                    User.findOne({ _id: req.body.userId }, function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-                        else if (result.cash < req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "transferAmountListObject": { amount: amount, adId: req.body.adId } } }, { new: true }, function(err, results) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-                                else {
-                                    results.cash -= req.body.cash;
-                                    results.save();
-                                    for (var i = 0; i < payment.links.length; i++) {
-                                        var link = payment.links[i];
-                                        if (link.method === 'REDIRECT') {
-                                            redirectUrl = link.href;
-                                        }
-                                    }
-                                    console.log("paymentttt", JSON.stringify(payment.transactions));
-                                    //res.redirect(redirectUrl);
-                                    res.send({
-                                        responseCode: 200,
-                                        responseMessage: "You have successfully transferred your amount"
-
-                                    });
-                                }
-                            });
-                        }
-                    })
-                }
-            }
-        });
-    },
-
-    "cancel": function(req, res) {
-        console.log("req data-->" + JSON.stringify(req.body));
-        res.send("Payment canceled successfully.");
-    },
-
     "sendBrolixToFollower": function(req, res) { // senderId, receiverId, brolix
         waterfall([
             function(callback) {
@@ -1022,7 +950,7 @@ module.exports = {
                 result.brolix -= sum;
                 result.save();
                 res.send({
-                  //  result: result,
+                    //  result: result,
                     responseCode: 200,
                     responseMessage: "successfully purchased the luck card"
                 });
@@ -1179,7 +1107,6 @@ module.exports = {
             }
         })
     },
-
 
     "userCashGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;

@@ -74,8 +74,8 @@ var userSchema = new Schema({
     },
     cashPrize: [{
         cash: { type: String },
-        adId: { type: String, ref: 'createNewAds'},
-        pageId:{type:String, ref:'createNewPage'},
+        adId: { type: String, ref: 'createNewAds' },
+        pageId: { type: String, ref: 'createNewPage' },
         status: { type: String, default: 'ACTIVE' },
         cashStatus: { type: String, default: 'PENDING' }
     }],
@@ -91,16 +91,16 @@ var userSchema = new Schema({
     coupon: [{
         couponCode: { type: String },
         adId: { type: String, ref: 'createNewAds' },
-        pageId:{type:String, ref:'createNewPage'},
+        pageId: { type: String, ref: 'createNewPage' },
         expirationTime: { type: Date, default: Date.now },
         couponStatus: { type: String, default: 'VALID' },
         exchangeStatus: { type: String, default: 'ON' },
         status: { type: String, default: 'ACTIVE' },
-        type:{type:String}
+        type: { type: String }
     }],
     hiddenGifts: [{
         adId: { type: String },
-        status:{ type: String, default:'ACTIVE'},
+        status: { type: String, default: 'ACTIVE' },
         hiddenCode: { type: String }
     }],
     luckCard: {
@@ -209,13 +209,13 @@ var userSchema = new Schema({
     }],
     favouriteCoupon: [],
     userFollowers: [],
-    UpgradeUsedAd:[{
-        upgradeId:{type:String},
-        adId:{type:String}
+    UpgradeUsedAd: [{
+        upgradeId: { type: String },
+        adId: { type: String, ref: 'createNewAds' }
     }],
-    luckUsedAd:[{
-        luckId:{type:String},
-        adId:{type:String}
+    luckUsedAd: [{
+        luckId: { type: String },
+        adId: { type: String, ref: 'createNewAds' }
     }],
     createdAt: {
         type: Date,
