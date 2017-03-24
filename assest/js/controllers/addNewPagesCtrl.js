@@ -50,6 +50,7 @@ $scope.$emit('headerStatus', 'Manage Pages');
         var data = {};
         $scope.myForm.location = $scope.location;
         data = $scope.myForm;
+        
         console.log("all data",JSON.stringify(data));
 
     }

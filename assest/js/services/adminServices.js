@@ -113,20 +113,31 @@ app.service('userService',function($http){
     /*-------------------------Manage ADS---------------------*/
 
     totalAds: function(id) {
-      return $http.get('/admin/totalAds');
+      return $http.get('http://172.16.6.171:8082/admin/totalAds');
     },
     totalActiveAds: function(id) {
-      return $http.get('/admin/totalActiveAds');
+      return $http.get('http://172.16.6.171:8082/admin/totalActiveAds');
     },
     totalExpiredAds: function(id) {
-      return $http.get('/admin/totalExpiredAds');
+      return $http.get('http://172.16.6.171:8082/admin/totalExpiredAds');
     },
     videoAds: function(id) {
-      return $http.get('/admin/videoAds');
+      return $http.get('http://172.16.6.171:8082/admin/videoAds');
     },
     slideshowAds: function(id) {
-      return $http.get('/admin/slideshowAds');
+      return $http.get('http://172.16.6.171:8082/admin/slideshowAds');
     },
+    adUpgradedByDollor: function(id) {
+      return $http.get('http://172.16.6.171:8082/admin/adUpgradedByDollor');
+    },
+    adUpgradedByBrolix: function(id) {
+      return $http.get('http://172.16.6.171:8082/admin/adUpgradedByBrolix');
+    },
+    showReportedAd: function(id) {
+      return $http.get('http://172.16.6.171:8082/admin/showReportedAd');
+    },
+
+
 
     /*------------------------Manage Pages---------------------*/
 
@@ -224,7 +235,7 @@ app.service('userService',function($http){
     /*------ManageGiftSection-------*/
 
     totalBrolixGift: function(){
-      return $http.get('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1310/admin/totalBrolixGift');
+      return $http.get('http://172.16.6.171:8082/admin/totalBrolixGift');
     },
 
   

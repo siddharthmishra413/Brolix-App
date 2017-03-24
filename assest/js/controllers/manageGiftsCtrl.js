@@ -8,6 +8,7 @@ userService.totalBrolixGift().success(function(res){
 	if(res.responseCode == 200){
 		$scope.totalBrolixGiftsCount = res.total_brolix_gift;
 		$scope.totalBrolixGifts = res.data;
+		console.log("res",res);
 		for(i=0;i<res.data.length;i++){
 			$scope.array.push(res.data[i]._id);
 		}
