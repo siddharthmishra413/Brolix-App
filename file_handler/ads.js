@@ -30,7 +30,7 @@ module.exports = {
             var Ads = new createNewAds(req.body);
             Ads.save(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
-                    createNewPage.findOneAndUpdate({ _id: req.body.pageId },{ $inc: { adsCount: 1} },{ new: true }).exec(function(err, result1) {
+                    createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                             res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
                         }
@@ -50,7 +50,7 @@ module.exports = {
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 }},{ new: true }).exec(function(err, result1) {
+                                createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                         res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
                                     }
@@ -415,16 +415,16 @@ module.exports = {
                         if (raffleCount.length == viewerLenght) {
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
-                                    console.log("success-->>",success)
+                                    console.log("success-->>", success)
                                     var winnerCount = success.numberOfWinners;
                                     var pageId = success.pageId;
-                                    console.log("winnerCount-->>",winnerCount)
-                                     createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: + winnerCount }},{ new: true }).exec(function(err, result2) {
-                                        console.log("result2-->",result2)
-                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
-                                        console.log("in else")
-                                    }
-                                })
+                                    console.log("winnerCount-->>", winnerCount)
+                                    createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +winnerCount } }, { new: true }).exec(function(err, result2) {
+                                        console.log("result2-->", result2)
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+                                            console.log("in else")
+                                        }
+                                    })
 
                                 }
 
@@ -513,7 +513,8 @@ module.exports = {
                                         for (var i = 0; i < hiddenCode.length; i++) {
                                             var data1 = {
                                                 hiddenCode: hiddenCode[i],
-                                                adId: req.body.adId
+                                                adId: req.body.adId,
+                                                pageId: pageId
                                             }
                                             User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, hiddenGifts: data1 }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
                                                 console.log("4")

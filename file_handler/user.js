@@ -633,7 +633,6 @@ module.exports = {
                 }
             })
         } else {
-
             res.status(200).send({ responseMessage: "Enter the proper number of brolix" });
         }
 
@@ -706,29 +705,44 @@ module.exports = {
 
     },
 
-    // Api for Send Cash to Follower    
     "sendCashToFollower": function(req, res) { // userId, receiverId, cash in request
-        User.findOne({ _id: req.body.userId }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-            else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
-                result.cash -= req.body.cash;
-                result.save();
-
-                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } } }, { new: true }, function(err, user) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
-                    else {
-                        user.cash += req.body.cash;
-                        user.save();
-                        res.send({
-                            responseCode: 200,
-                            responseMessage: "You have successfully transferred your cash.",
-                            result: result
-
+        waterfall([
+            function(callback) {
+                var receiverId = req.body.receiverId;
+                var senderId = req.body.userId;
+                User.findOne({ _id: receiverId }, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) } else {
+                        callback(null)
+                    }
+                })
+            },
+            function(callback) {
+                var senderId = req.body.userId;
+                var receiverId = req.body.receiverId;
+                User.findOne({ _id: senderId }, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                    else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
+                        result.cash -= req.body.cash;
+                        result.save();
+                        User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendCashListObject": { senderId: senderId, cash: req.body.cash } } }, { new: true }, function(err, user) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
+                            else {
+                                user.cash += req.body.cash;
+                                user.save();
+                                //callback(null, user)
+                            }
                         });
+                        callback(null, result)
                     }
                 });
-            }
-        });
+            },
+        ], function(err, result) {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "You have successfully transferred your cash."
+            });
+        })
     },
 
 
@@ -1382,7 +1396,7 @@ module.exports = {
                             type: "PURCHASED"
                         }
                         console.log("data--->>", data)
-                        User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data }, $inc: { brolix: -req.body.brolix } }, { new: true }, function(err, result3) {
+                        User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data }, $inc: { gifts: 1, brolix: -req.body.brolix } }, { new: true }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 33' }); } else {
                                 callback(null, result3)
                             }

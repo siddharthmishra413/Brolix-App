@@ -99,7 +99,8 @@ var userSchema = new Schema({
         type: { type: String }
     }],
     hiddenGifts: [{
-        adId: { type: String },
+        adId: { type: String, ref: 'createNewAds' },
+        pageId: { type: String, ref: 'createNewPage' },
         status: { type: String, default: 'ACTIVE' },
         hiddenCode: { type: String }
     }],

@@ -71,7 +71,11 @@ app.get('/showReportedAd', adminHandler.showReportedAd);
 app.get('/adUpgradedByDollor', adminHandler.adUpgradedByDollor);
 app.get('/adUpgradedByBrolix', adminHandler.adUpgradedByBrolix);
 app.get('/soldCoupon', adminHandler.soldCoupon);
-
-
+app.get('/totalCashGifts', adminHandler.totalCashGifts);
+app.get('/totalHiddenGifts', adminHandler.totalHiddenGifts);
+app.get('/totalExchangedCoupon', adminHandler.totalExchangedCoupon);
+app.get('/totalSentCoupon', adminHandler.totalSentCoupon);
+app.get('/totalSentCash', adminHandler.totalSentCash);
+app.get('/createPage', adminHandler.createPage);
 
 module.exports = app;
