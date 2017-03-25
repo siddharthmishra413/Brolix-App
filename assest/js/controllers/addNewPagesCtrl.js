@@ -7,6 +7,16 @@ $scope.$emit('headerStatus', 'Manage Pages');
  $scope.Step2 = false;
  $scope.Step3 = false;
  $scope.Step4 = false;
+
+ $scope.addSocialMedia = function(addSocialMedia){
+  var array = [];
+  array.push(JSON.parse(localStorage.getItem(addSocialMedia)));
+  var data = localStorage.setItem(addSocialMedia, JSON.stringify(array));
+  console.log("fffffff",data)
+ /* $scope.array.item.push(addSocialMedia);*/
+  // array.concate(addSocialMedia);
+  console.log("arrrrr",array);
+ }
  $scope.click = function(type){
  	if(type=='Step1'){
  		$scope.Step1=false;
@@ -50,10 +60,20 @@ $scope.$emit('headerStatus', 'Manage Pages');
         var data = {};
         $scope.myForm.location = $scope.location;
         data = $scope.myForm;
-        
         console.log("all data",JSON.stringify(data));
 
+        userService.createPage(data).success(function(res) {
+        if (res.responseCode == 200){
+            $scope.createPageData = res.result;
+            toastr.success(res.responseMessage);
+        } else {
+            toastr.error(res.responseMessage);
+        }
+        
+    })
     }
+
+
 
       //  Location on googleMap
   var geocoder;

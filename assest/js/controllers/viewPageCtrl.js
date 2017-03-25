@@ -14,11 +14,11 @@ app.controller('viewPageCtrl', function($scope, $window, userService, $state, to
         toastr.error("Please first select.")
         $state.go('header.managePages')
     } else {
-        userService.viewPage($scope.id).success(function(res) {
-            //console.log("idddddddddddd",$scope.id)
+        console.log("idddddddddddd",$scope.id)
+        userService.viewPage($scope.id).success(function(res) {    
             if (res.responseCode == 200) {
                 $scope.viewPageDetails = res.result;
-                console.log("data" + $scope.viewPageDetails);
+                console.log("dataasasas",JSON.stringify(res));
 
                 // var updateDate = new Date($scope.viewUserProfile.dob);
                 // $scope.viewUserProfile.dob = moment(updateDate).format('MM/DD/YYYY');

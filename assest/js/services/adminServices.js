@@ -69,10 +69,6 @@ app.service('userService',function($http){
       return $http.put('/admin/editUserProfile/'+ id, data);
     },
     
-    viewPage: function(id) {
-      return $http.get('/admin/viewPage/'+id);
-    },    
-    
     showAllCashWinners: function() {
       return $http.get('/admin/cashWinners');
     },
@@ -150,7 +146,20 @@ app.service('userService',function($http){
     },
 
     showAllBlockedPage: function() {
-      return $http.get('/admin/showAllBlockedPage');
+      return $http.get('http://172.16.6.171:8082/admin/showAllBlockedPage');
+    },
+
+    createPage: function(data) {
+      return $http.post('http://172.16.6.171:8082/page/createPage', data);
+    },
+
+    // showPageDetails: function(data) {
+    //   return $http.post('http://172.16.6.41:8082/page/showPageDetails', data);
+    // },
+
+
+    viewPage: function(id) {
+      return $http.get('http://172.16.6.171:8082/admin/viewPage/'+id);
     },
 
     /*------------------------All Countries---------------------*/

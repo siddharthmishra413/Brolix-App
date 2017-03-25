@@ -13,7 +13,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Page Name</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="pageName" ng-model="myForm.pageName" placeholder=""> 
+                                               <span class="form-control">{{viewPageDetails.pageName}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -22,7 +22,7 @@
                                             <label class="control-label col-md-3">Page Owner</label>
                                             <div class="col-md-9">
                                                 <div class="input-group">
-                                                  <input type="text" class="form-control" ng-model="myForm.pageowner">
+                                                  <span class="form-control">{{viewPageDetails.userId.firstName}} {{viewPageDetails.userId.lastName}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -31,7 +31,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Main Category</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="" ng-model="myForm.mainCategory"> 
+                                                <span class="form-control">{{viewPageDetails.category}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -39,7 +39,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Sub Categories</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="" ng-model="myForm.subCategory"> 
+                                                <span class="form-control">{{viewPageDetails.subCategory}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -47,7 +47,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Description</label>
                                             <div class="col-md-9">
-                                                <textarea class="form-control textarea-a" ng-model="myForm.description"></textarea>
+                                                <span class="form-control">{{viewPageDetails.pageDiscription}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -55,7 +55,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Email</label>
                                             <div class="col-md-9">
-                                                <input type="email" class="form-control" placeholder="" ng-model="myForm.email"> 
+                                                <span class="form-control">{{viewPageDetails.email}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Website</label>
                                             <div class="col-md-9">
-                                                 <input type="text" class="form-control" placeholder="" ng-model="myForm.website"> 
+                                                 <span class="form-control">{{viewUserProfile.firstName}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -71,7 +71,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Phone</label>
                                             <div class="col-md-9">
-                                                <input type="tel" class="form-control" placeholder="" ng-model="myForm.phon"> 
+                                                <span class="form-control">{{viewUserProfile.firstName}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -79,7 +79,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Location</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="">
+                                                <span class="form-control">{{viewUserProfile.firstName}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -97,7 +97,7 @@
                                         <div class="col-sm-12">
                                             <div class="row-table">
                                                 <div class="col-cell">
-                                                    <input type="text" class="form-control" placeholder="">
+                                                   <span class="form-control">{{viewUserProfile.firstName}}</span>
                                                 </div>
                                                <!--  <div class="col-cell add-remove">
                                                     <span class="fa fa-plus-circle"></span>
@@ -112,7 +112,7 @@
                                                 <div class="row-table">
                                                     <div class="col-cell">
                                                         <div class="input-group">
-                                                          <input type="text" class="form-control" placeholder="">
+                                                         <span class="form-control">{{viewUserProfile.firstName}}</span>
                                                         </div>
                                                     </div>
                                                     <!-- <div class="col-cell add-remove">
