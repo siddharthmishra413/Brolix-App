@@ -302,7 +302,6 @@ module.exports = {
         }
     },
 
-
     //API for verify Otp
     "verifyOtp": function(req, res, next) {
         User.findOne({ _id: req.body.userId, otp: req.body.otp }).exec(function(err, results) {
@@ -1605,7 +1604,7 @@ module.exports = {
                     }
                 })
             },
-            function(callback) {
+            function(callback) { //  receiverId  senderId senderCouponId adId
                 console.log("in friends")
                 var receiverId = req.body.receiverId;
                 var senderId = req.body.senderId;
@@ -1624,16 +1623,19 @@ module.exports = {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
 
                                     User.findOneAndUpdate({ 'coupon._id': senderCouponId }, { $set: { "coupon.$.status": "SEND" } }, { new: true }).exec(function(err, result3) {
+                                        console.log("result3--->>", result3)
                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                                             for (i = 0; i < result3.coupon.length; i++) {
                                                 if (result3.coupon[i]._id == senderCouponId) {
                                                     var couponCode = result3.coupon[i].couponCode;
                                                     var couponAdId = result3.coupon[i].adId;
                                                     var expirationTime = result3.coupon[i].expirationTime;
+                                                    var pageId = result3.coupon[i].pageId;
+                                                    var type = "SEND BY FOLLOWER";
                                                 }
                                             }
                                             console.log("couponAdId--->>>", couponAdId)
-                                            User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime } } }, { new: true }).exec(function(err, result4) {
+                                            User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } } }, { new: true }).exec(function(err, result4) {
                                                 console.log("result4--->>>", result4)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                             })
@@ -1657,15 +1659,18 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
 
                                 User.findOneAndUpdate({ 'coupon._id': senderCouponId }, { $set: { "coupon.$.status": "SEND" } }, { new: true }).exec(function(err, result3) {
+                                    console.log("result3--->>", result3)
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                                         for (i = 0; i < result3.coupon.length; i++) {
                                             if (result3.coupon[i]._id == senderCouponId) {
                                                 var couponCode = result3.coupon[i].couponCode;
                                                 var couponAdId = result3.coupon[i].adId;
                                                 var expirationTime = result3.coupon[i].expirationTime;
+                                                var pageId = result3.coupon[i].pageId;
+                                                var type = "SENDBYFOLLOWER";
                                             }
                                         }
-                                        User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime } } }, { new: true }).exec(function(err, result4) {
+                                        User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } } }, { new: true }).exec(function(err, result4) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                         })
                                     }
@@ -1713,16 +1718,19 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
 
                                 User.findOne({ 'coupon.couponCode': senderCouponCode }).exec(function(err, result2) {
-                                    console.log("result2-->>", result2)
+                                    console.log("result2------->>", result2)
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                                         for (i = 0; i < result2.coupon.length; i++) {
+                                            console.log("result2.coupon-->>", result2.coupon)
                                             if (result2.coupon[i].couponCode == senderCouponCode) {
                                                 var couponCode = result2.coupon[i].couponCode;
                                                 var couponAdId = result2.coupon[i].adId;
                                                 var expirationTime = result2.coupon[i].expirationTime;
+                                                var pageId = result2.coupon[i].pageId;
+                                                var type = "EXCHANGED"
                                             }
                                         }
-                                        callback(null, couponCode, couponAdId, expirationTime)
+                                        callback(null, couponCode, couponAdId, expirationTime, pageId, type)
                                     }
                                 })
 
@@ -1731,10 +1739,12 @@ module.exports = {
                         })
                     }
                 },
-                function(couponCode1, couponAdId1, expirationTime1, callback) {
+                function(couponCode1, couponAdId1, expirationTime1, pageId1, type1, callback) {
                     console.log("couponCode-11-->>", couponCode1);
                     console.log("couponId-11-->>", couponAdId1);
                     console.log("expirationTime-11-->>>", expirationTime1);
+                    console.log("pageId1-11-->>>", pageId1);
+                    console.log("type1-11-->>>", type1);
 
                     var h = new Date(new Date(startTime).setHours(00)).toUTCString();
                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
@@ -1746,7 +1756,9 @@ module.exports = {
                         var data = {
                             couponCode: couponCode1,
                             adId: couponAdId1,
-                            expirationTime: expirationTime1
+                            expirationTime: expirationTime1,
+                            pageId: pageId1,
+                            type: type1
                         }
 
                         User.findOneAndUpdate({ _id: receiverId }, { $push: { coupon: data } }, { new: true }).exec(function(err, result3) {
@@ -1762,9 +1774,11 @@ module.exports = {
                                                         var couponCode2 = result5.coupon[i].couponCode;
                                                         var couponAdId2 = result5.coupon[i].adId;
                                                         var expirationTime2 = result5.coupon[i].expirationTime;
+                                                        var pageId2 = result5.coupon[i].pageId;
+                                                        var type2 = "EXCHANGED"
                                                     }
                                                 }
-                                                callback(null, couponCode2, couponAdId2, expirationTime2)
+                                                callback(null, couponCode2, couponAdId2, expirationTime2, pageId2, type2)
                                             }
                                         })
                                     }
@@ -1774,10 +1788,13 @@ module.exports = {
                     }
 
                 },
-                function(couponCode2, couponAdId2, expirationTime2, callback) {
+                function(couponCode2, couponAdId2, expirationTime2, pageId2, type2, callback) {
                     console.log("couponCode-22-->>", couponCode2);
                     console.log("couponId-22-->>", couponAdId2);
                     console.log("expirationTime-22-->>>", expirationTime2);
+                    console.log("pageId2-22-->>>", pageId2);
+                    console.log("type2-22-->>>", type2);
+
                     var receiverId = req.body.receiverId;
                     var h = new Date(new Date(startTime).setHours(00)).toUTCString();
                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
@@ -1787,7 +1804,9 @@ module.exports = {
                         var data1 = {
                             couponCode: couponCode2,
                             adId: couponAdId2,
-                            expirationTime: expirationTime2
+                            expirationTime: expirationTime2,
+                            pageId: pageId2,
+                            type: type2
                         }
 
                         User.findOneAndUpdate({ _id: receiverId }, { $push: { coupon: data1 } }, { new: true }).exec(function(err, result6) {

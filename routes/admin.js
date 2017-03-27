@@ -76,6 +76,15 @@ app.get('/totalHiddenGifts', adminHandler.totalHiddenGifts);
 app.get('/totalExchangedCoupon', adminHandler.totalExchangedCoupon);
 app.get('/totalSentCoupon', adminHandler.totalSentCoupon);
 app.get('/totalSentCash', adminHandler.totalSentCash);
-app.get('/createPage', adminHandler.createPage);
+app.get('/pageInfo/:id', adminHandler.pageInfo);
+app.get('/topFiftyBalances', adminHandler.topFiftyBalances);
+app.get('/topFiftyUpgradeCardBuyers', adminHandler.topFiftyUpgradeCardBuyers);
+app.get('/totalBrolixPrice', adminHandler.totalBrolixPrice);
+app.get('/totalCashPrice', adminHandler.totalCashPrice);
+app.get('/adInfo/:id', adminHandler.adInfo);
+app.get('/topFiftyLuckCardBuyers', adminHandler.topFiftyLuckCardBuyers);
+app.get('/topFiftyAds', adminHandler.topFiftyAds);
+app.get('/unblockUser/:userId', adminHandler.unblockUser);
+
 
 module.exports = app;
