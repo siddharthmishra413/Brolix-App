@@ -986,10 +986,42 @@ module.exports = {
              res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully',data:result });
           }             
        }) 
+    },
+
+     "createPage": function(req, res) {
+        createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
+        if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {
+            res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
+        } else {
+            if (!req.body.category || !req.body.subCategory) {
+                res.send({ responseCode: 403, responseMessage: 'Category and Sub category required' });
+            } else {
+                var page = new createNewPage(req.body);
+                page.save(function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                    else {
+                        User.findByIdAndUpdate({ _id: req.body.adminId }, { $inc: { pageCount: 1 } }).exec(function(err, result1) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                res.send({
+                                    result: result,
+                                    responseCode: 200,
+                                    responseMessage: "Page create successfully."
+                                });
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    })
+    },
+
+    "adsStatus": function(req, res){
+        
     }
 
-
 }
+
    function uploads(req, callback) {
         console.log(req.body.images)
         var form = new multiparty.Form();

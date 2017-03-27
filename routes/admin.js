@@ -53,6 +53,7 @@ app.get('/showCardDetails/:id',adminHandler.showCardDetails);
 app.get('/removeCard/:id', adminHandler.removeCard);
 app.post('/createOfferOnCard', adminHandler.createOfferOnCard);
 app.post('/showOfferOnCards',adminHandler.showOfferOnCards);
+app.post('/createPage',adminHandler.createPage);
 
 
 

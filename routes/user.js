@@ -57,4 +57,7 @@ app.post('/useCouponWithoutCode',  authUser.authUser, userHandler.useCouponWitho
 app.post('/winnersFilterCodeBasis', authUser.authUser, userHandler.winnersFilterCodeBasis)
 app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode)
 
+app.post('/payU', userHandler.payU)
+
+
 module.exports = app;

@@ -360,23 +360,57 @@ module.exports = {
         });
     },
 
+     // var imageUrl = [];
+     //      var a = 0;
+     //      for (var i = 0; i < images.length; i++) {
+     //          var img_base64 = images[i];
+     //          binaryData = new Buffer(img_base64, 'base64');
+     //          require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {});
+     //          cloudinary.uploader.upload("test.jpeg", function(result) {
+     //              if (result.url) {
+     //                  imageUrl.push(result.url);
+     //                  a += i;
+     //                  if (a == i * i) {
+     //                      callback(null, imageUrl);
+     //                  }
+     //              } else {
+     //                  callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+     //              }
+
+     //          });
+     //      }
+
     "uploads": function(req, res) {
-        console.log(req.body.images)
+
+        console.log(req.files);
+        var imageUrl = [];
         var form = new multiparty.Form();
         form.parse(req, function(err, fields, files) {
-            var img = files.images[0];
-            var fileName = files.images[0].originalFilename;
-            cloudinary.uploader.upload(img.path, function(result) {
-                res.send({
-                    result: result.url,
-                    responseCode: 200,
-                    responseMessage: "File uploaded successfully."
+            var a = 0;
+            for (var i = 0; i < files.images.length; i++) {
+                var img = files.images[i];
+                var fileName = files.images[i].originalFilename;
+                cloudinary.uploader.upload(img.path, function(result) {
+                   if (result.url) {
+                      imageUrl.push(result.url);
+                      a += i;
+                      if (a == i * i) {
+                           res.send({
+                            result: imageUrl,
+                            responseCode: 200,
+                            responseMessage: "File uploaded successfully."
+                        });
+                      }
+                   } else {
+                       callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+                   }
+                }, {
+                    resource_type: "auto",
+                    chunk_size: 6000000
                 });
-            }, {
-                resource_type: "auto",
-                chunk_size: 6000000
-            });
+            }
         })
+
     },
 
     "viewAd": function(req, res) { //req.body.userId, adId
