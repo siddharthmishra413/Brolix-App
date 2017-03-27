@@ -193,6 +193,10 @@ body{margin: 0; padding: 0; font-family: 'Open Sans', sans-serif;}
 
 /************/
 
+.cus-addnew-page .add-remove {top: 20%;right: auto;}
+.cus-addnew-page .form-block .form-control {margin: 10px 0;}
+.modal-body .col-cell.add-remove { width: 100%;text-align: right;}
+
 
 
 

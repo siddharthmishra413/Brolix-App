@@ -231,31 +231,30 @@
             <div class="col-md-3 col-sm-6 dwd-border">
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
-                    <div class="form-group cus-select">
-                        <!-- <select ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" class="form-control" ng-click ="slectCountry()" >
-                         <option value="">All Countries</option>
-                             <option ng-options="p.name for p in country" value="{{country}}">{{country}}</option>
-                        </select> -->
-                        <select class="form-control" ng-options="p.name for p in allCountriesfind" ng-model="dashBordFilter.country" ng-change="dashBordFilter(dashBordFilter.country); catId(p)" required><option value="">Select Country</option>
-                        </select>
+
+
+                     <div class="form-group cus-select">
+                         <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
+                            <option value="">Select Country</option>
+                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <!-- <select ng-change="dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" ng-click ="slectState()" class="form-control">
-                            <option value="">All States</option>
-                            <option ng-repeat="state in allstatefind" value="{{state}}">{{state}}</option>
-                        </select> -->
-                        <select class="form-control" ng-change="dashBordFilter(dashBordFilter.state);" ng-options="state for state in allstates" ng-model="dashBordFilter.state" required><option value="">Select State</option>
-                        </select>
+                         <select class="form-control" ng-change="changeState(); dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" required>
+                            <option value="">Select State</option>
+                            <option ng-repeat="state in stateList">{{state.region}}</option>
+                         </select> 
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-change="dashBordFilter(dashBordFilter.cities);" ng-model="dashBordFilter.cities">
-                            <option value="">All Cities</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                         <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.city" required>
+                            <option value="">Select City</option>
+                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                         </select> 
                     </div>
+
+
+
+                    
                     <div class="form-group cus-select">
                         <select class="form-control" ng-change="dashBordFilter(dashBordFilter.gender);" ng-model="dashBordFilter.gender" >
                             <option value="">Both Genders</option>
@@ -308,7 +307,10 @@
             </div>
         </div>
     </div>
-    <div class="grp-search">
+    
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalUsers">
+        <div class="grp-search">
         <div class="row-search">
             <ul>
                 <li class="active">
@@ -348,15 +350,13 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test.mobileNumber" placeholder="Search By Name or Mobile">
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="totalUsers">
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -369,7 +369,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalUser |filter:test">
+                    <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
+                    <tr ng-repeat="x in totalUser | manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -385,6 +386,54 @@
     </div> 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="personalUser">
+            <div class="grp-search">
+            <div class="row-search">
+                <ul>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                    </li>
+                    <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
+                        
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                    </li>
+                    <li class="last">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+          
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -397,7 +446,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in personalUser |filter:test">
+                    <!-- <tr ng-repeat="x in personalUser |filter:test"> -->
+                    <tr ng-repeat="x in personalUser | manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -413,6 +463,54 @@
     </div>  
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="businessUser">
+            <div class="grp-search">
+            <div class="row-search">
+                <ul>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                    </li>
+                    <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
+                        
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                    </li>
+                    <li class="last">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -425,7 +523,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in businessUser |filter:test">
+                    <tr ng-repeat="x in businessUser |manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -441,6 +539,53 @@
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="liveUser">
+            <div class="grp-search">
+            <div class="row-search">
+                <ul>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                    </li>
+                    <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
+                        
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                    </li>
+                    <li class="last">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -453,7 +598,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in liveUser |filter:test">
+                    <tr ng-repeat="x in liveUser |manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -469,6 +614,53 @@
     </div> 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalwinners">
+            <div class="grp-search">
+            <div class="row-search">
+                <ul>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                    </li>
+                    <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
+                        
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                    </li>
+                    <li class="last">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -481,7 +673,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalWinners |filter:test">
+                    <tr ng-repeat="x in totalWinners | manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -498,6 +690,54 @@
     
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="cashWinners">
+        <div class="grp-search">
+            <div class="row-search">
+                <ul>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                    </li>
+                    <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
+                        
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                    </li>
+                    <li class="last">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -510,7 +750,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in cashWinners |filter:test">
+                    <tr ng-repeat="x in cashWinners |manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -526,6 +766,53 @@
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="couponWinners">
+        <div class="grp-search">
+            <div class="row-search">
+                <ul>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                    </li>
+                    <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
+                        
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                    </li>
+                    <li class="last">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -538,7 +825,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in couponWinners |filter:test">
+                    <tr ng-repeat="x in couponWinners | manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -554,6 +841,31 @@
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="blockuser">
+        <div class="grp-search">
+            <div class="row-search">
+                <ul>
+                    <li class="active">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                    </li>
+                    <li class="active">
+                         <a data-toggle="tab" style="cursor: pointer;" ng-click="UnBlock_User(myForm.checkId)">Unblock User</a>
+                    </li>
+                    <li class="last">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -566,7 +878,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in allblockUser |filter:test">
+                    <tr ng-repeat="x in allblockUser |manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>

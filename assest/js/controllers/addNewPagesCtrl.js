@@ -7,15 +7,16 @@ $scope.$emit('headerStatus', 'Manage Pages');
  $scope.Step2 = false;
  $scope.Step3 = false;
  $scope.Step4 = false;
+ $scope.array = [];
 
  $scope.addSocialMedia = function(addSocialMedia){
-  var array = [];
-  array.push(JSON.parse(localStorage.getItem(addSocialMedia)));
-  var data = localStorage.setItem(addSocialMedia, JSON.stringify(array));
-  console.log("fffffff",data)
- /* $scope.array.item.push(addSocialMedia);*/
+ 
+  // array.push(JSON.parse(localStorage.getItem(addSocialMedia)));
+  // var data = localStorage.setItem(addSocialMedia, JSON.stringify(array));
+  //console.log("fffffff",data)
+  $scope.array.push(addSocialMedia);
   // array.concate(addSocialMedia);
-  console.log("arrrrr",array);
+  console.log("arrrrr",$scope.array);
  }
  $scope.click = function(type){
  	if(type=='Step1'){

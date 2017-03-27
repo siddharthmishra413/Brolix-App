@@ -158,7 +158,7 @@
 
 
     <div class="container" ng-if="Step3">
-            <div class="outer-block">
+            <div class="outer-block cus-addnew-page">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">Add New Page</h3>
@@ -170,13 +170,14 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-12">Add Social Media Accounts</label>
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-8">
                                                 <div class="row-table">
                                                     <div class="col-cell">
                                                         <select class="form-control" ng-model="myForm.socialMedia">
-                                                            <option>Select Social Media</option>
+                                                            <option value="">Select Social Media</option>
                                                             <option>Select Social Media1</option>
                                                             <option>Select Social Media2</option>
+                                                            <option>Select Social Media3</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-cell add-remove">
@@ -190,19 +191,20 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-8">
-                                                <div class="row-table">
+                                                <div class="row-table" ng-repeat="x in array">
                                                     <div class="col-cell">
-                                                        <input type="text" class="form-control">
+                                                    <span class="form-control">{{x}}</span>
+                                                        <!-- <input type="text" class="form-control"> -->
                                                     </div>
-                                                    <div class="col-cell add-remove">
-                                                        <span class="fa fa-plus-circle"></span>
+                                                    <div class="col-cell add-remove" >
+                                                        <span class="fa fa-minus-circle"></span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-8">
                                                 <div class="row-table">
@@ -215,7 +217,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">

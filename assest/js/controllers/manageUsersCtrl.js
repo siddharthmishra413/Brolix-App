@@ -1,4 +1,4 @@
-app.controller('manageUsersCtrl', function($scope, $window, userService, $state, toastr, $http) {
+app.controller('manageUsersCtrl', function($scope, $window, userService, $state, toastr, $http, $timeout) {
     $(window).scrollTop(0, 0);
     $scope.class = true;
     $scope.$emit('headerStatus', 'Manage User');
@@ -56,7 +56,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         width: 500,
                     }]
                 };
-                pdfMake.createPdf(docDefinition).download("ManageUser Table.pdf");
+                pdfMake.createPdf(docDefinition).download("test.pdf");
             }
         });
     }
@@ -67,31 +67,59 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     }
 
 
-    $scope.slectCountry = function(qq){
-        console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
-        userService.allstatefind($scope.dashBordFilter.country).success(function(res) {
-        $scope.allstatefind = res.result;
-    })
+    // $scope.slectCountry = function(qq){
+    //     console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
+    //     userService.allstatefind($scope.dashBordFilter.country).success(function(res) {
+    //     $scope.allstatefind = res.result;
+    // })
+    // }
+
+//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+    var currentCities=[];
+    $scope.currentCountry= '';
+var BATTUTA_KEY="00000000000000000000000000000000"
+    // Populate country select box from battuta API
+  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+    $.getJSON(url,function(countries)
+    {
+      $timeout(function(){
+        $scope.countriesList=countries;
+      },100)
+      
+      
+    });
+  var countryCode;
+    $scope.changeCountry = function(){
+      for(var i=0;i<$scope.countriesList.length;i++){
+        if($scope.countriesList[i].name==$scope.dashBordFilter.country){
+          countryCode=$scope.countriesList[i].code;
+          //console.log(countryCode)
+          break;
+        }
+      }
+      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+      $.getJSON(url,function(regions)
+      {
+        //console.log('state list:   '+JSON.stringify(regions))
+            $timeout(function(){
+             $scope.stateList = regions;
+            },100)
+      });
     }
 
-/******************contory or state function*****************/
-
-    userService.countrys().success(function(res) {
-         $scope.allCountriesfind = res.result;
-    }).error(function(status, data) {
-
-    })
-
-    $scope.catId = function() {
-        //console.log($scope.dashBordFilter.country);
-        var country = $scope.dashBordFilter.country
-        $http.get('/admin/getAllStates/' + country.code + '/ISO2').success(function(res) {
-            console.log(res);
-            $scope.allstates = res.result;
-        }, function(err) {});
+    $scope.changeState = function(){
+      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
+      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+      $.getJSON(url,function(cities)
+      {
+        // console.log('city list:   '+JSON.stringify(cities))
+            $timeout(function(){
+             $scope.cityList = cities;
+            },100)
+      })
     }
-
-/************************************************************/
+    //-------------------------------END OF SELECT CASCADING-------------------------//
+   
    
     //*******************Total Winners****************
     userService.totalWinners().success(function(res) {
@@ -212,7 +240,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    console.log("data",data)
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All User");
@@ -780,6 +807,43 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         if (res.responseCode == 200){
                             dialog.close();
                             toastr.success("User Blocked");
+                            $state.reload();
+                        } else {
+                            toastr.error(res.responseMessage);
+                        }
+                    })    
+                }
+            }, {
+                label: 'No',
+                action: function(dialog) {
+                    dialog.close();
+                    // toastr.success("User Blocked");
+                }
+            }]
+        });
+    }
+    }
+
+
+    $scope.UnBlock_User = function (id) {
+        $scope.BlockId = id;
+        var userId = $scope.BlockId;
+        console.log("Blockid",userId);
+        if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
+        toastr.error("Please select user.")
+        $state.go('header.manageUsers')
+        }else {
+        BootstrapDialog.show({
+            title: 'Block User',
+            message: 'Are you sure want to Unblock this User',
+            buttons: [{
+                label: 'Yes',
+                action: function(dialog) {
+                    userService.UnBlockUser(userId).success(function(res) {        
+                        if (res.responseCode == 200){
+                            dialog.close();
+                            toastr.success("User UnBlocked");
+                            $state.reload();
                         } else {
                             toastr.error(res.responseMessage);
                         }
@@ -1014,24 +1078,24 @@ $scope.dashBordFilter = function(){
     var data = {};
         data = {
             userType:localStorage.getItem('userTypeName'),
-            country:$scope.country,
+            country:$scope.dashBordFilter.country,
             state:$scope.dashBordFilter.state,
-            city:$scope.dashBordFilter.cities,
+            city:$scope.dashBordFilter.city,
             gender:$scope.dashBordFilter.gender,
             ageTo:$scope.dashBordFilter.ageTo,
             ageFrom:$scope.dashBordFilter.ageFrom,
             joinTo:$scope.dobTo,
             joinFrom:$scope.dobFrom,
         }
-        console.log("datatata",data)
+        console.log("datatata",JSON.stringify(data))
 
     switch (type)
             {
                 case 'totalUsers':
-                console.log("1"); 
+                console.log("aaa1"); 
                     userService.userfilter(data).success(function(res){
                         $scope.totalUser = res.data;
-                        console.log("ressssssss1",JSON.stringify($scope.totalUser));
+                        console.log("ressssssss1",JSON.stringify(res));
                     })
                     
                 break;
@@ -1104,14 +1168,22 @@ $scope.dashBordFilter = function(){
             }
 
     }
-
-
-
-
-
-
 })
+ /*----------ManageUserCustomFilter----------*/
 
-
-
+app.filter("manageUsersFilter",function() {
+     return function(items,nameValue){
+       if (!nameValue) {
+         return retArray = items;
+         }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+                {
+                if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].mobileNumber.toString().substr(0,nameValue.length) == nameValue.toString()) {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray
+        } 
+ })
 

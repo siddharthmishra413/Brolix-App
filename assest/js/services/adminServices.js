@@ -45,7 +45,7 @@ app.service('userService',function($http){
       return $http.get('/admin/adminProfile');
     },
     addUser: function(data) {
-      return $http.post('/admin/addNewUser', data);
+      return $http.post('http://172.16.6.171:8082/admin/addNewUser', data);
     },
     totalUser: function() {
       return $http.get('http://172.16.6.171:8082/admin/showAllUser');
@@ -63,20 +63,20 @@ app.service('userService',function($http){
       return $http.get('/admin/countrys');
     },
     userProfile: function(id) {
-      return $http.get('/admin/userProfile/'+id);
+      return $http.get('http://172.16.6.171:8082/admin/userProfile/'+id);
     },
     editUserProfile: function(id, data) {
-      return $http.put('/admin/editUserProfile/'+ id, data);
+      return $http.put('http://172.16.6.171:8082/admin/editUserProfile/'+ id, data);
     },
     
     showAllCashWinners: function() {
-      return $http.get('/admin/cashWinners');
+      return $http.get('http://172.16.6.171:8082/admin/cashWinners');
     },
     showAllCouponWinners: function() {
-      return $http.get('/admin/couponWinners');
+      return $http.get('http://172.16.6.171:8082/admin/couponWinners');
     },
     showAllBlockUser: function() {
-      return $http.get('/admin/showAllBlockUser');
+      return $http.get('http://172.16.6.171:8082/admin/showAllBlockUser');
     },
 
     /*-------------------------Manage Cards---------------------*/
@@ -181,7 +181,11 @@ app.service('userService',function($http){
     },
 
     BlockUser: function(userId) {
-      return $http.get('/admin/blockUser/'+userId);
+      return $http.get('http://172.16.6.171:8082/admin/blockUser/'+userId);
+    },
+
+    UnBlockUser: function(userId) {
+      return $http.get('http://172.16.6.171:8082/admin/unblockUser/'+userId);
     },
 
     viewCoupon: function(id){
