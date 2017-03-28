@@ -12,14 +12,8 @@ var Schema = mongoose.Schema,
 /* Ads schema */
 
 var createNewAdsSchema = new Schema({
-    userId: {
-        type: String,
-        trim: true
-    },
-    pageId: {
-        type: String,
-        trim: true
-    },
+    userId: { type: String, trim: true, ref: 'brolixUser' },
+    pageId: { type: String, trim: true, ref: 'createNewPage' },
     pageName: {
         type: String,
         trim: true
@@ -131,11 +125,8 @@ var createNewAdsSchema = new Schema({
         userId: { type: String },
         link: { type: String }
     }],
-    upgradeCardListObject: [{
-        userId: { type: String },
-        brolix: { type: Number },
-        viewers: { type: Number }
-    }],
+    cash: { type: Number, default: 0 },
+    viewers: { type: Number, default: 0 },
     couponExchange: [{
         senderId: { type: String },
         receiverId: { type: String },
@@ -172,13 +163,15 @@ var createNewAdsSchema = new Schema({
         type: Number
     },
     hiddenGifts: [],
+    permissions: [],
     tag: [{
         userId: { type: String },
         senderId: []
     }],
-
+    viewersAdded: { type: Number },
     adFollowers: [String],
     commentCount: { type: Number, default: 0 },
+    reportOnAd: { type: Number, default: 0 },
 
     createdAt: {
         type: Date,

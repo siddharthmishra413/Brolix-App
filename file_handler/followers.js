@@ -73,7 +73,7 @@
          }
      },
 
-    "followerRequestSend": function(req, res) {
+     "followerRequestSend": function(req, res) {
          console.log("followerRequestSend===senderId=======>>>" + req.body.senderId)
          followerList.find({ senderId: req.body.senderId }).exec(function(err, result) {
              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -83,7 +83,7 @@
                      console.log("arrr========");
                      console.log(arr);
                  })
-                 User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) { 
+                 User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                      for (var i = 0; i < newResult.length; i++) {
                          newResult[i].followerStatus = result[i].followerStatus;
                      }
@@ -132,16 +132,16 @@
                  }
              }, { new: true }).exec(function(err, results) {
                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }).exec(function(err, result) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-                            res.send({
-                                result: results,
-                                responseCode: 200,
-                                responseMessage: "Accepted successfully."
-                            });
-                        }
-                    })
-                }
+                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }).exec(function(err, result) {
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                             res.send({
+                                 result: results,
+                                 responseCode: 200,
+                                 responseMessage: "Accepted successfully."
+                             });
+                         }
+                     })
+                 }
              })
          } else if (req.body.followerStatus == "block") {
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {

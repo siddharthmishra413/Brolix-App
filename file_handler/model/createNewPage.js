@@ -74,6 +74,10 @@ var createNewPageSchema = new mongoose.Schema({
         userId: { type: String },
         type: { type: String }
     }],
+    adAdminCount:{
+        type:Number,
+        default:0
+    },
     pageFollowersUser: [{
         userId: { type: String, ref: 'brolixUser' }
     }],
@@ -113,6 +117,15 @@ var createNewPageSchema = new mongoose.Schema({
     city:{
         type:String
     },
+    adsCount:{
+     type: Number,
+     default:0
+    },
+    winnersCount:{
+     type: Number,
+     default:0
+    },
+    socialMedia:[],
     createdAt: {
         type: Date,
         default: Date.now

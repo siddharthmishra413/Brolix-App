@@ -9,7 +9,7 @@ var User = require("./model/user");
 var waterfall = require('async-waterfall');
 
 //var mongoosePaginate = require('mongoose-paginate');
-console.log("test===>"+new Date(1487589012837).getTimezoneOffset())
+console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
 module.exports = {
 
@@ -103,11 +103,9 @@ module.exports = {
         var date = new Date().toUTCString()
         console.log(JSON.stringify(date))
         createNewPage.findOne({ _id: req.body.pageId, status: "ACTIVE" }).populate({ path: 'pageFollowersUser.userId', select: ('firstName lastName image country state city') }).populate({ path: 'adAdmin.userId', select: ('firstName lastName image country state city') }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else if(!result){ res.send({responseCode:404, responseMessage:"No page found"}); }
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); }
             createEvents.find({ pageId: req.body.pageId, status: "ACTIVE", createdAt: { $gte: date } }).exec(function(err, result1) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                else if(!result1){ res.send({responseCode:404, responseMessage:"No event found"}); }
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No event found" }); }
                 res.send({
                     result: result,
                     eventList: result1,
@@ -120,8 +118,7 @@ module.exports = {
     //API for Business Type
     "showPageBusinessType": function(req, res) {
         createNewPage.paginate({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else if(!result){ res.send({responseCode:404, responseMessage:"No page found"}); }
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); }
             res.send({
                 result: result,
                 responseCode: 200,
@@ -264,7 +261,7 @@ module.exports = {
             console.log("result========================" + JSON.stringify(result));
             if (!result) {
                 console.log("If");
-                createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "totalRating": { userId: req.body.userId, rating: req.body.rating ,date:req.body.date } } }, { new: true }).exec(function(err, results) {
+                createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "totalRating": { userId: req.body.userId, rating: req.body.rating, date: req.body.date } } }, { new: true }).exec(function(err, results) {
                     for (var i = 0; i < results.totalRating.length; i++) {
                         avrg += results.totalRating[i].rating;
                     }
@@ -279,7 +276,7 @@ module.exports = {
                 })
             } else {
                 console.log("else");
-                createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'totalRating.userId': req.body.userId }, { $set: { "totalRating.$.rating": req.body.rating ,"totalRating.$.date": req.body.date} }, { new: true }).exec(function(err, results1) {
+                createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'totalRating.userId': req.body.userId }, { $set: { "totalRating.$.rating": req.body.rating, "totalRating.$.date": req.body.date } }, { new: true }).exec(function(err, results1) {
                     for (var i = 0; i < results1.totalRating.length; i++) {
                         avrg += results1.totalRating[i].rating;
                     }
@@ -426,7 +423,7 @@ module.exports = {
 
     "adAdmin": function(req, res) {
         if (req.body.add == "add") {
-            createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } } }, {
+            createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: 1 } }, {
                 new: true
             }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -437,7 +434,7 @@ module.exports = {
                 });
             });
         } else if (req.body.add == "remove") {
-            createNewPage.findByIdAndUpdate(req.params.id, { $pop: { "adAdmin": { userId: req.body.userId, type: req.body.type } } }, {
+            createNewPage.findByIdAndUpdate(req.params.id, { $pop: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: -1 } }, {
                 new: true
             }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -469,10 +466,10 @@ module.exports = {
     //         console.log("year==>"+yy)
     //         var days = daysInMonth(mm,yy);
     //         console.log("days-----------  ",days);
-             
+
     //         var month = parseInt(req.body.date) + (86400000 * days)
     //         var monthly = new Date(month).toUTCString();
-         
+
     //         console.log("startTime"+startTime);
     //         console.log("endTime"+endTime);
     //         console.log("weekly"+weekly);
@@ -498,86 +495,85 @@ module.exports = {
     //     })
     // },
 
-    "pageViewClick": function(req, res){
+    "pageViewClick": function(req, res) {
         var startTime = new Date(req.body.date).toUTCString();
-        var endTimeHour = req.body.date +  86399000;
+        var endTimeHour = req.body.date + 86399000;
         var endTime = new Date(endTimeHour).toUTCString();
-            console.log(startTime);
-            console.log(endTime)
+        console.log(startTime);
+        console.log(endTime)
 
         var details = req.body;
         var data = req.body.click;
- 
-        switch(data){
-          case 'productView':
-          var updateData = { $inc: { productView: 1 }};
-          details.productView = 1;
-          break;
-          case 'callUsClick':
-          var updateData = { $inc: { callUsClick: 1 }};
-          details.productView = 1;
-          break;
-          case 'locationClicks':
-          var updateData = { $inc: { locationClicks: 1 }};
-          details.locationClicks = 1;
-          break;
-          case 'websiteClicks':
-          var updateData = { $inc: { websiteClicks: 1 }};
-          details.websiteClicks = 1;
-          break;
-          case 'emailClicks':
-          var updateData = { $inc: { emailClicks: 1 }};
-          details.emailClicks = 1;
-          break;
-          case 'socialMediaClicks':
-          var updateData = { $inc: { socialMediaClicks: 1 }};
-          details.socialMediaClicks = 1;
-          break;
-          case 'pageView':
-          var updateData = { $inc: { pageView: 1 }};
-          details.pageView = 1;
-          break;
-          case 'followerNumber':
-          var updateData = { $inc: { followerNumber: 1 }};
-          details.followerNumber = 1;
-          break;
-          case 'eventViewClicks':
-          var updateData = { $inc: { eventViewClicks: 1 }};
-          details.eventViewClicks = 1;
-          break;
-          case 'shares':
-          var updateData = { $inc: { shares: 1 }};
-          details.shares = 1;
-          break;
-          case 'viewAds':
-          var updateData = { $inc: { viewAds: 1 }};
-          details.viewAds = 1;
-          break;
+
+        switch (data) {
+            case 'productView':
+                var updateData = { $inc: { productView: 1 } };
+                details.productView = 1;
+                break;
+            case 'callUsClick':
+                var updateData = { $inc: { callUsClick: 1 } };
+                details.productView = 1;
+                break;
+            case 'locationClicks':
+                var updateData = { $inc: { locationClicks: 1 } };
+                details.locationClicks = 1;
+                break;
+            case 'websiteClicks':
+                var updateData = { $inc: { websiteClicks: 1 } };
+                details.websiteClicks = 1;
+                break;
+            case 'emailClicks':
+                var updateData = { $inc: { emailClicks: 1 } };
+                details.emailClicks = 1;
+                break;
+            case 'socialMediaClicks':
+                var updateData = { $inc: { socialMediaClicks: 1 } };
+                details.socialMediaClicks = 1;
+                break;
+            case 'pageView':
+                var updateData = { $inc: { pageView: 1 } };
+                details.pageView = 1;
+                break;
+            case 'followerNumber':
+                var updateData = { $inc: { followerNumber: 1 } };
+                details.followerNumber = 1;
+                break;
+            case 'eventViewClicks':
+                var updateData = { $inc: { eventViewClicks: 1 } };
+                details.eventViewClicks = 1;
+                break;
+            case 'shares':
+                var updateData = { $inc: { shares: 1 } };
+                details.shares = 1;
+                break;
+            case 'viewAds':
+                var updateData = { $inc: { viewAds: 1 } };
+                details.viewAds = 1;
+                break;
         }
-       
-        Views.findOne({pageId:req.body.pageId, date:{$gte: startTime , $lte: endTime} },function(err, result){
-            console.log("views r3sult==>>"+result)
-            if(err){
-              res.send({
-                result: err,
-                responseCode: 302,
-                responseMessage: "error."
-              });}
-            else if(!result){
+
+        Views.findOne({ pageId: req.body.pageId, date: { $gte: startTime, $lte: endTime } }, function(err, result) {
+            console.log("views r3sult==>>" + result)
+            if (err) {
+                res.send({
+                    result: err,
+                    responseCode: 302,
+                    responseMessage: "error."
+                });
+            } else if (!result) {
                 saveData = 1;
                 details.date = startTime;
                 var views = Views(details);
-                views.save(function(err, pageRes){
-                    if(req.body.click == 'viewAds'){
-                        createNewAds.findOneAndUpdate({_id:req.body.adsId}, { $inc: { watchedAds: 1 }},{new: true}).exec(function(err, AdsRes){
+                views.save(function(err, pageRes) {
+                    if (req.body.click == 'viewAds') {
+                        createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $inc: { watchedAds: 1 } }, { new: true }).exec(function(err, AdsRes) {
                             res.send({
                                 result: pageRes,
                                 responseCode: 200,
                                 responseMessage: "Successfully update clicks."
                             });
                         })
-                    }
-                    else{
+                    } else {
                         res.send({
                             result: pageRes,
                             responseCode: 200,
@@ -586,37 +582,34 @@ module.exports = {
                     }
                 })
 
-            }
-            else{
-                Views.findOneAndUpdate({_id:result._id}, updateData,{new: true}).exec(function(err, pageRes){
-                    if(err){
-                      res.send({
-                        result: err,
-                        responseCode: 302,
-                        responseMessage: "error."
-                      });}
-                    else if(!result){
+            } else {
+                Views.findOneAndUpdate({ _id: result._id }, updateData, { new: true }).exec(function(err, pageRes) {
+                    if (err) {
+                        res.send({
+                            result: err,
+                            responseCode: 302,
+                            responseMessage: "error."
+                        });
+                    } else if (!result) {
                         res.send({
                             result: pageRes,
                             responseCode: 404,
                             responseMessage: "Successfully update clicks."
                         });
-                    }
-                    else{
-                        if(req.body.click == 'viewAds'){
-                        createNewAds.findOneAndUpdate({_id:req.body.adsId}, { $inc: { watchedAds: 1 }},{new: true}).exec(function(err, AdsRes){
+                    } else {
+                        if (req.body.click == 'viewAds') {
+                            createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $inc: { watchedAds: 1 } }, { new: true }).exec(function(err, AdsRes) {
                                 res.send({
                                     result: pageRes,
                                     responseCode: 200,
                                     responseMessage: "Successfully update clicks."
                                 });
                             })
-                        }
-                        else{
+                        } else {
                             res.send({
-                              result: pageRes,
-                              responseCode: 200,
-                              responseMessage: "Successfully update clicks."
+                                result: pageRes,
+                                responseCode: 200,
+                                responseMessage: "Successfully update clicks."
                             });
                         }
                     }
@@ -625,126 +618,124 @@ module.exports = {
         })
     },
 
-    "pageStatisticsFilter": function(req, res){   //pageId, 
+    "pageStatisticsFilter": function(req, res) { //pageId, 
         var startTime = new Date(req.body.date).toUTCString();
-        var endTimeHour = req.body.date +  86399000;
+        var endTimeHour = req.body.date + 86399000;
         var endTime = new Date(endTimeHour).toUTCString();
 
         var week = endTimeHour - 604800000;
         var weekly = new Date(week).toUTCString();
 
-         
-        function daysInMonth(month,year) {
+
+        function daysInMonth(month, year) {
             return new Date(year, month, 0).getDate();
         }
         var month_date = new Date(parseInt(req.body.date))
         var mm = month_date.getMonth();
         var yy = month_date.getFullYear();
-        console.log("year==>"+yy)
-        var days = daysInMonth(mm,yy);
-        console.log("days-----------  ",days);
+        console.log("year==>" + yy)
+        var days = daysInMonth(mm, yy);
+        console.log("days-----------  ", days);
         var month = parseInt(req.body.date) + (86400000 * days)
         var monthly = new Date(month).toUTCString();
 
         //var yearly = new Date().getFullYear;
-        if(req.body.dateFilter == 'all'){
-            var queryCondition = { $match: {date: {"$gte":  new Date(startTime), "$lte": new Date(endTime)}}}
+        if (req.body.dateFilter == 'all') {
+            var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) } } }
         }
-        if(req.body.dateFilter == 'today'){
-          var queryCondition = { $match: {date: {"$gte":  new Date(startTime), "$lte": new Date(endTime)},pageId:req.body.pageId}}
+        if (req.body.dateFilter == 'today') {
+            var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) }, pageId: req.body.pageId } }
         }
-        if(req.body.dateFilter == 'weekly'){
+        if (req.body.dateFilter == 'weekly') {
             var condition;
-          var queryCondition = { $match: {date: {"$gte":  new Date(startTime), "$lte": new Date(endTime)},pageId:req.body.pageId}}
+            var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) }, pageId: req.body.pageId } }
         }
-        if(req.body.dateFilter == 'monthly'){
-          var query = { $match : { "month" : mm, "year": yy } }
+        if (req.body.dateFilter == 'monthly') {
+            var query = { $match: { "month": mm, "year": yy } }
         }
-        if(req.body.dateFilter == 'yearly'){
-          var condition = { $project: {pageView: "$pageView",productView: "$productView", callUsClick:"$callUsClick", date: "$date", year: { $year: "$date" }, month: { $month: "$date" } } };
-          var queryCondition = { $match : {"year": yy } };
-         // var queryCondition = {query,condition};
+        if (req.body.dateFilter == 'yearly') {
+            var condition = { $project: { pageView: "$pageView", productView: "$productView", callUsClick: "$callUsClick", date: "$date", year: { $year: "$date" }, month: { $month: "$date" } } };
+            var queryCondition = { $match: { "year": yy } };
+            // var queryCondition = {query,condition};
         }
-        console.log("startTime==>>"+startTime);
-        console.log("new date startTime==>>"+new Date(startTime));
-        console.log("endTime====>>"+endTime)
- //   var rules = [{pageId:"58aaa1b3fdc4ed1553754d2f"}, {date: {$gte: startTime}}];
+        console.log("startTime==>>" + startTime);
+        console.log("new date startTime==>>" + new Date(startTime));
+        console.log("endTime====>>" + endTime)
+            //   var rules = [{pageId:"58aaa1b3fdc4ed1553754d2f"}, {date: {$gte: startTime}}];
 
- //         Views.aggregate( [    
- //  { $match: {date: {"$gte":  new Date(startTime), "$lte": new Date(endTime)},pageId:"58aaa1b3fdc4ed1553754d2f"}},
- // // { $group: { _id: null, count: { $sum: "$productView" } } }
- //  ]).exec(function(err,result){
-        
-        console.log("queryCondition"+JSON.stringify(queryCondition))
+        //         Views.aggregate( [    
+        //  { $match: {date: {"$gte":  new Date(startTime), "$lte": new Date(endTime)},pageId:"58aaa1b3fdc4ed1553754d2f"}},
+        // // { $group: { _id: null, count: { $sum: "$productView" } } }
+        //  ]).exec(function(err,result){
 
-        Views.aggregate( [ queryCondition,{
-                  $group : {
-                    _id : null,
-                    totalProductView: { $sum: "$productView"},
-                    totalPageView: { $sum: "$pageView"},
-                    totalEventViewClicks: { $sum: "$eventViewClicks"},
-                    totalEmailClicks: { $sum: "$emailClicks"},
-                    totalCallUsClick: { $sum: "$callUsClick"},
-                    totalFollowerNumber: { $sum: "$followerNumber"},
-                    totalSocialMediaClicks: { $sum: "$socialMediaClicks"},
-                    totalLocationClicks: { $sum: "$locationClicks"},
-                    totalWebsiteClicks: { $sum: "$websiteClicks"},
-                    totalShares :{$sum:"$shares"},
-                    totalViewAds :{$sum:"$viewAds"},
-                    totalRating : {$sum:0}
-                }
-              }] ).exec(function(err, result){
-            if(err){
-              res.send({
-                result: err,
-                responseCode: 404,
-                responseMessage: "error."
-              });   
+        console.log("queryCondition" + JSON.stringify(queryCondition))
+
+        Views.aggregate([queryCondition, {
+            $group: {
+                _id: null,
+                totalProductView: { $sum: "$productView" },
+                totalPageView: { $sum: "$pageView" },
+                totalEventViewClicks: { $sum: "$eventViewClicks" },
+                totalEmailClicks: { $sum: "$emailClicks" },
+                totalCallUsClick: { $sum: "$callUsClick" },
+                totalFollowerNumber: { $sum: "$followerNumber" },
+                totalSocialMediaClicks: { $sum: "$socialMediaClicks" },
+                totalLocationClicks: { $sum: "$locationClicks" },
+                totalWebsiteClicks: { $sum: "$websiteClicks" },
+                totalShares: { $sum: "$shares" },
+                totalViewAds: { $sum: "$viewAds" },
+                totalRating: { $sum: 0 }
             }
-            else if(!result){
-              res.send({
-                result: result,
-                responseCode: 404,
-                responseMessage: "Data not found."
-              });
-            }
-            else{
-               createNewPage.aggregate(
-                [
-                  //  { $match: {_id:req.body.pageId} },
-                    { $unwind: "$totalRating" },
-                    { $match: {"totalRating.date": {"$gte":  new Date(startTime), "$lte": new Date(endTime)}, _id: new mongoose.Types.ObjectId(req.body.pageId)}}
-                ],
-                function(err,pages) {
+        }]).exec(function(err, result) {
+            if (err) {
+                res.send({
+                    result: err,
+                    responseCode: 404,
+                    responseMessage: "error."
+                });
+            } else if (!result) {
+                res.send({
+                    result: result,
+                    responseCode: 404,
+                    responseMessage: "Data not found."
+                });
+            } else {
+                createNewPage.aggregate(
+                        [
+                            //  { $match: {_id:req.body.pageId} },
+                            { $unwind: "$totalRating" },
+                            { $match: { "totalRating.date": { "$gte": new Date(startTime), "$lte": new Date(endTime) }, _id: new mongoose.Types.ObjectId(req.body.pageId) } }
+                        ],
+                        function(err, pages) {
 
-                    var totalRating = pages.length;
-                    console.log("totalRating====>>"+totalRating)
-                    result[0].totalRating = totalRating;
-                      res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "Success."
-                      });
-                })
-                // createNewPage.findOne({_id:req.body.pageId,'totalRating.date': {"$gte":  new Date(startTime), "$lte": new Date(endTime)}}).exec(function(err, ress){
-                //     var totalRating = ress.totalRating.length;
-                //     console.log("totalRating====>>"+totalRating)
-                //     result[0].totalRating = totalRating;
-                //       res.send({
-                //         result: result,
-                //         responseCode: 200,
-                //         responseMessage: "Success."
-                //       });
-                // })
+                            var totalRating = pages.length;
+                            console.log("totalRating====>>" + totalRating)
+                            result[0].totalRating = totalRating;
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "Success."
+                            });
+                        })
+                    // createNewPage.findOne({_id:req.body.pageId,'totalRating.date': {"$gte":  new Date(startTime), "$lte": new Date(endTime)}}).exec(function(err, ress){
+                    //     var totalRating = ress.totalRating.length;
+                    //     console.log("totalRating====>>"+totalRating)
+                    //     result[0].totalRating = totalRating;
+                    //       res.send({
+                    //         result: result,
+                    //         responseCode: 200,
+                    //         responseMessage: "Success."
+                    //       });
+                    // })
 
             }
-          
+
         })
     },
 
-    "giftStatistics" : function(req, res){
+    "giftStatistics": function(req, res) {
         var startTime = new Date(req.body.date).toUTCString();
-        var endTimeHour = req.body.date +  86399000;
+        var endTimeHour = req.body.date + 86399000;
         var endTime = new Date(endTimeHour).toUTCString();
 
         var week = endTimeHour - 604800000;
@@ -752,18 +743,16 @@ module.exports = {
 
 
         waterfall([
-             function(callback){
+            function(callback) {
                 createNewAds.find({
-                    updatedAt: {$gte: startTime, $lte:endTime},
+                    updatedAt: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
-                }).exec(function(err, result){
-                    if(err){res.send({result: err,responseCode: 404,responseMessage: "error."});}
-                    else if(!result){res.send({result: result,responseCode: 404,responseMessage: "Data not found."});}
-                    else{
+                }).exec(function(err, result) {
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (!result) { res.send({ result: result, responseCode: 404, responseMessage: "Data not found." }); } else {
                         console.log(result)
                         var winnersLength = 0;
-                        
-                        for(var i=0; i<result.length; i++){
+
+                        for (var i = 0; i < result.length; i++) {
                             winnersLength += result[i].winners.length;
                             console.log(winnersLength);
 
@@ -772,51 +761,50 @@ module.exports = {
                     }
                 })
             },
-            function(winnersLength,callback){
+            function(winnersLength, callback) {
                 User.find({
-                    cardPurchaseDate:{$gte: startTime, $lte: endTime}
-                }).exec(function(err, ress){
+                    cardPurchaseDate: { $gte: startTime, $lte: endTime }
+                }).exec(function(err, ress) {
                     var totalBuyers = ress.length;
                     var data = {
-                        total_winners : winnersLength,
-                        total_buyers : totalBuyers
+                        total_winners: winnersLength,
+                        total_buyers: totalBuyers
                     }
                     callback(null, data)
                 })
             },
-            function(winnersLength, totalBuyers, callback){
+            function(winnersLength, totalBuyers, callback) {
                 createNewAds.find({
                     couponStatus: 'used',
-                    couponUsedDate: {$gte: startTime, $lte: endTime}
-                }).exec(function(err, couponUsedResult){
+                    couponUsedDate: { $gte: startTime, $lte: endTime }
+                }).exec(function(err, couponUsedResult) {
                     callback(null, winnersLength, totalBuyers, couponUsedResult)
                 })
             },
-            function(winnersLength, totalBuyers, couponUsedResult, callback){
+            function(winnersLength, totalBuyers, couponUsedResult, callback) {
                 createNewAds.find({
                     couponStatus: 'expired',
-                    couponUsedDate:{$gte: startTime, $lte: endTime}
-                }).exec(function(err, couponExpResult){
-                    callback(null, winnersLength, totalBuyers, couponUsedResult, couponExpResult);       
+                    couponUsedDate: { $gte: startTime, $lte: endTime }
+                }).exec(function(err, couponExpResult) {
+                    callback(null, winnersLength, totalBuyers, couponUsedResult, couponExpResult);
                 })
             },
-            function(winnersLength, totalBuyers, couponUsedResult, couponExpResult, callback){
+            function(winnersLength, totalBuyers, couponUsedResult, couponExpResult, callback) {
                 createNewAds.find({
                     couponStatus: 'valid',
-                    couponUsedDate:{$gte: startTime, $lte: endTime}
-                }).exec(function(err, couponValidResult){
-                    callback(null, winnersLength, totalBuyers, couponUsedResult, couponExpResult,couponValidResult);       
+                    couponUsedDate: { $gte: startTime, $lte: endTime }
+                }).exec(function(err, couponValidResult) {
+                    callback(null, winnersLength, totalBuyers, couponUsedResult, couponExpResult, couponValidResult);
                 })
             }
-        ],function (err, result) {
-          if(err){responseHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
-          else{
-            res.send({
-                        responseCode: 200,
-                        responseMessage: 'Successfully.',
-                        result: result
-                    });
-          }
+        ], function(err, result) {
+            if (err) { responseHandler.apiResponder(req, res, 302, "Problem in data finding", err) } else {
+                res.send({
+                    responseCode: 200,
+                    responseMessage: 'Successfully.',
+                    result: result
+                });
+            }
         })
 
     },
@@ -827,122 +815,122 @@ module.exports = {
     // "pageId":"58aaa1b3fdc4ed1553754d2f"
     // }
 
-    "adsStatistics": function(req, res){
+    "adsStatistics": function(req, res) {
         var startTime = new Date(req.body.date).toUTCString();
-        var endTimeHour = req.body.date +  86399000;
+        var endTimeHour = req.body.date + 86399000;
         var endTime = new Date(endTimeHour).toUTCString();
 
         var week = endTimeHour - 604800000;
         var weekly = new Date(week).toUTCString();
 
         waterfall([
-            function(callback){
-                var queryCondition = { $match : {pageId:req.body.pageId} } 
-                Views.aggregate( [ queryCondition,{
-                  $group : {
-                    _id : null,
-                    totalPageView: { $sum: "$pageView"}
-                  }
-                }] ).exec(function(err, result){
+            function(callback) {
+                var queryCondition = { $match: { pageId: req.body.pageId } }
+                Views.aggregate([queryCondition, {
+                    $group: {
+                        _id: null,
+                        totalPageView: { $sum: "$pageView" }
+                    }
+                }]).exec(function(err, result) {
                     callback(null, result)
                 })
             },
-            function(pageView, callback){
+            function(pageView, callback) {
                 createNewAds.findOne({
                     _id: req.body.adId
-                }).exec(function(err, results){
-                    callback(null,pageView, results)
+                }).exec(function(err, results) {
+                    callback(null, pageView, results)
                 })
             },
-            function(pageView, results, callback){
+            function(pageView, results, callback) {
                 createNewReport.find({
-                  adId: req.body.adId
-                }).exec(function(err, resultRepo){
-                    console.log("result repo==>>"+resultRepo)
+                    adId: req.body.adId
+                }).exec(function(err, resultRepo) {
+                    console.log("result repo==>>" + resultRepo)
                     var data = {
-                        pageView : pageView[0].totalPageView,
-                        AdTag : results.tag.length,
-                        socialShare : results.socialShareListObject.length,
-                        AdFollowers : results.adFollowers.length,
-                        useLuckCard : results.luckCardListObject.length,
-                        AdReport : resultRepo.length
+                        pageView: pageView[0].totalPageView,
+                        AdTag: results.tag.length,
+                        socialShare: results.socialShareListObject.length,
+                        AdFollowers: results.adFollowers.length,
+                        useLuckCard: results.luckCardListObject.length,
+                        AdReport: resultRepo.length
                     }
                     console.log(data)
                     callback(null, data)
                 })
-            }],function (err, result) {
-            if(err){ res.send({
-                        responseCode: 302,
-                        responseMessage: 'Something went worng.',
-                        result: err
-                });}
-            else{
+            }
+        ], function(err, result) {
+            if (err) {
                 res.send({
-                        responseCode: 200,
-                        responseMessage: 'Successfully.',
-                        result: result
+                    responseCode: 302,
+                    responseMessage: 'Something went worng.',
+                    result: err
+                });
+            } else {
+                res.send({
+                    responseCode: 200,
+                    responseMessage: 'Successfully.',
+                    result: result
                 });
             }
         })
     },
 
-    "CouponCashAdStatistics": function(req, res){
+    "CouponCashAdStatistics": function(req, res) {
         createNewAds.findOne({
-          _id: req.body.adId
-        }).exec(function(err, result){
+            _id: req.body.adId
+        }).exec(function(err, result) {
             createNewAds.findOne({
-               _id: req.body.adId
-            },function(err, result){
-                if(result.adsType == 'coupon'){
+                _id: req.body.adId
+            }, function(err, result) {
+                if (result.adsType == 'coupon') {
                     //var couponStatus = result.couponPurchased;
-                    console.log("result coupon===>"+result.couponExpired)
+                    console.log("result coupon===>" + result.couponExpired)
                     var data = {
-                        couponStatus : result.couponStatus,
-                        winners : result.winners.length,
+                        couponStatus: result.couponStatus,
+                        winners: result.winners.length,
                         couponBuyer: result.couponPurchased
-                        //couponPurchased : result.couponPurchased.length
+                            //couponPurchased : result.couponPurchased.length
                     }
                     res.send({
                         responseCode: 200,
                         responseMessage: 'Successfully.',
                         result: data
                     });
-                }
-                else{
+                } else {
                     var array = [];
 
                     User.find({ _id: { $in: result.winners } }, function(err, result1) {
-                       
+
                         result1.forEach(function(result) {
                             array.push(result.firstName)
                         })
                         console.log(array)
-                            var data = {
-                                 cashStatus : result.cashStatus,
-                                 winners : array
+                        var data = {
+                            cashStatus: result.cashStatus,
+                            winners: array
                                 //couponPurchased : result.couponPurchased.length
-                            }
+                        }
 
-                            res.send({
-                                responseCode: 200,
-                                responseMessage: 'Successfully.',
-                                result: data
-                            });  
-                        })
-                        
-                   // })
+                        res.send({
+                            responseCode: 200,
+                            responseMessage: 'Successfully.',
+                            result: data
+                        });
+                    })
+
+                    // })
 
                 }
             })
         })
     },
 
-    "notificationList":function(req, res){
+    "notificationList": function(req, res) {
         notificationList.findOne({
-          userId: req.body.userId
-        }).exec(function(err, result){
-           if(err){responseHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
-            else{
+            userId: req.body.userId
+        }).exec(function(err, result) {
+            if (err) { responseHandler.apiResponder(req, res, 302, "Problem in data finding", err) } else {
                 res.send({
                     responseCode: 200,
                     responseMessage: 'Successfully.',
@@ -982,29 +970,29 @@ module.exports = {
         })
     },
 
-    "userFavouratePages": function(req, res){
-      User.findOne({
-        _id:req.body.userId
-      },'pageFollowers',function(err, result){
-        if(err){res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-        else if(!result){res.send({
+    "userFavouratePages": function(req, res) {
+        User.findOne({
+            _id: req.body.userId
+        }, 'pageFollowers', function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
+                res.send({
                     responseCode: 404,
                     responseMessage: "Data not found."
-        })}
-        else{
-            User.populate(result,{
-              path:'pageFollowers.pageId',
-              model:'createNewPage'
-            },function(err, resultt){
-
-                res.send({
-                    result: resultt,
-                    responseCode: 200,
-                    responseMessage: "Data not found."
                 })
-            })
-        }
-      })  
+            } else {
+                User.populate(result, {
+                    path: 'pageFollowers.pageId',
+                    model: 'createNewPage'
+                }, function(err, resultt) {
+
+                    res.send({
+                        result: resultt,
+                        responseCode: 200,
+                        responseMessage: "Data not found."
+                    })
+                })
+            }
+        })
     }
 
 }
