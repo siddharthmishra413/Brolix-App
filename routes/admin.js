@@ -13,7 +13,6 @@ app.post('/addNewUser', adminHandler.addNewUser);
 
 app.post('/sendBrolix', adminHandler.sendBrolix);
 
-app.get('/blockUser/:userId', adminHandler.blockUser);
 
 app.get('/countrys', adminHandler.countrys);
 app.get('/getAllStates/:name/:code', adminHandler.getAllStates);
@@ -32,18 +31,17 @@ app.get('/winners', adminHandler.winners);
 app.get('/couponWinners', adminHandler.couponWinners);
 app.get('/cashWinners', adminHandler.cashWinners);
 app.get('/showAllBlockUser', adminHandler.showAllBlockUser);
-<<<<<<< HEAD
+
 app.get('/blockUser/:userId', adminHandler.blockUser);
-app.get('/totalAds', adminHandler.totalAds);
-app.post('/listOfAds', adminHandler.listOfAds);
-app.get('/listOfAllAds', adminHandler.listOfAllAds);
-=======
+
+
+
 
 /*---------------------------------------------------------------*/
 
 /*--------------------------Manage Cards--------------------------*/
 
->>>>>>> surajAdmin
+
 app.get('/totalSoldUpgradeCard', adminHandler.totalSoldUpgradeCard);
 app.get('/totalSoldLuckCard', adminHandler.totalSoldLuckCard);
 app.get('/totalIncomeInBrolixFromLuckCard', adminHandler.totalIncomeInBrolixFromLuckCard);
@@ -63,7 +61,7 @@ app.get('/totalActiveAds', adminHandler.totalActiveAds);
 app.get('/totalExpiredAds', adminHandler.totalExpiredAds);
 app.get('/videoAds', adminHandler.videoAds);
 app.get('/slideshowAds', adminHandler.slideshowAds);
-<<<<<<< HEAD
+
 app.get('/totalPages/:pageNumber', adminHandler.totalPages);
 app.post('/blockPage', adminHandler.blockPage);
 app.get('/showAllBlockedPage', adminHandler.showAllBlockedPage);
@@ -121,7 +119,7 @@ app.get('/showListOFCoupon', adminHandler.showListOFCoupon);
 app.get('/showPageName', adminHandler.showPageName);
 app.post('/createSystemUser', adminHandler.createSystemUser);
 app.post('/checkPermission', adminHandler.checkPermission);
-=======
+
 app.post('/listOfAds', adminHandler.listOfAds);
 app.get('/listOfAllAds', adminHandler.listOfAllAds);
 
@@ -133,7 +131,7 @@ app.post('/allstatefind', adminHandler.allstatefind);
 
 
 app.post('/sendCashBrolix', adminHandler.sendCashBrolix);
->>>>>>> surajAdmin
+
 
 app.post('/messageBroadcast', adminHandler.messageBroadcast);
 

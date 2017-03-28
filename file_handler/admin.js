@@ -258,11 +258,9 @@ module.exports = {
     },
 
     "blockUser": function(req, res) {
-<<<<<<< HEAD
+
         console.log("req.body.userId", req.params.userId);
-=======
-        console.log("req.body.userId",req.params.userId);
->>>>>>> surajAdmin
+
         User.findByIdAndUpdate({
             _id: req.params.userId
         }, {
@@ -301,12 +299,11 @@ module.exports = {
                     responseCode: 500,
                     responseMessage: 'Internal server error'
                 });
-<<<<<<< HEAD
-            } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No blocked found." }) } else {
-=======
-            }
+
+            } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No blocked found." }) } 
+            
             else {
->>>>>>> surajAdmin
+
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -346,7 +343,6 @@ module.exports = {
     },
 
     "totalActiveAds": function(req, res) { // all ads cash and coupon type
-<<<<<<< HEAD
         createNewAds.find({ status: 'ACTIVE' }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result) {
             if (err) {
                 res.send({
@@ -365,31 +361,10 @@ module.exports = {
                     responseMessage: "All ads shown successfully."
                 })
             }
-=======
-        createNewAds.find({status : 'ACTIVE'}).exec(function(err, result) {
-           if (err) {
-               res.send({
-                   responseCode: 409,
-                   responseMessage: 'Internal server error'
-               });
-           } else {
-               var count = 0;
-               for (var i = 0; i < result.length; i++) {
-                   count++;
-               }
-               res.send({
-                   result: result,
-                   count: count,
-                   responseCode: 200,
-                   responseMessage: "All ads shown successfully."
-               })
-           }
->>>>>>> surajAdmin
         })
     },
 
     "totalExpiredAds": function(req, res) { // all ads cash and coupon type
-<<<<<<< HEAD
         createNewAds.find({ status: 'EXPIRED' }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result) {
             if (err) {
                 res.send({
@@ -408,26 +383,6 @@ module.exports = {
                     responseMessage: "All ads shown successfully."
                 })
             }
-=======
-        createNewAds.find({status : 'EXPIRED'}).exec(function(err, result) {
-           if (err) {
-               res.send({
-                   responseCode: 409,
-                   responseMessage: 'Internal server error'
-               });
-           } else {
-               var count = 0;
-               for (var i = 0; i < result.length; i++) {
-                   count++;
-               }
-               res.send({
-                   result: result,
-                   count: count,
-                   responseCode: 200,
-                   responseMessage: "All ads shown successfully."
-               })
-           }
->>>>>>> surajAdmin
         })
     },
 
@@ -589,49 +544,25 @@ module.exports = {
             }
         });
     },
+"usedLuckCard": function(req, res) {
+       User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "INACTIVE" } }).exec(function(err, result) {
+           //   console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
+           if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+           if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+               var count = 0;
+               for (var i = 0; i < result.length; i++) {
+                   count++;
+               }
+               res.status(200).send({
+                   result: result,
+                   count: count,
+                   responseCode: 200,
+                   responseMessage: "Total Brolix Shows successfully."
+               });
+           }
+       });
 
-    "usedLuckCard": function(req, res) {
-<<<<<<< HEAD
-        User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "INACTIVE" } }).exec(function(err, result) {
-            //   console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
-                var count = 0;
-                for (var i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Total Brolix Shows successfully."
-                });
-            }
-        });
-
-    },
-
-=======
-         User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "INACTIVE" } }).exec(function(err, result) {
-             console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
-             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-             if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
-                 var count = 0;
-                 for (var i = 0; i < result.length; i++) {
-                     count++;
-                 }
-                 res.status(200).send({
-                     result: result,
-                     count: count,
-                     responseCode: 200,
-                     responseMessage: "Total Brolix Shows successfully."
-                 });
-             }
-         });
-
-     },
-    
->>>>>>> surajAdmin
+   },
     "usedUpgradeCard": function(req, res) {
          User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "INACTIVE" } }).exec(function(err, result) {
              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
@@ -673,25 +604,6 @@ module.exports = {
     
     "unUsedLuckCard": function(req, res) {
         User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "ACTIVE" } }).exec(function(err, result) {
-<<<<<<< HEAD
-            //   console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
-                var count = 0;
-                for (var i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Total Brolix Shows successfully."
-                });
-            }
-        });
-
-    },
-=======
              console.log("rseult=-=-=-=-=->>" + JSON.stringify(result))
              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
              if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
@@ -709,7 +621,6 @@ module.exports = {
          });
 
      },
->>>>>>> surajAdmin
 
     "countrys": function(req, res) {
         var countrys = country.all();
@@ -860,7 +771,6 @@ module.exports = {
    },
 
     "cashWinners": function(req, res) {
-<<<<<<< HEAD
         createNewAds.find({ adsType: "cash" }).exec(function(err, result) {
             var array = [];
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
@@ -2061,37 +1971,11 @@ module.exports = {
                 }
             }
         })
-    }
+    },
 
 
 
 
-
-
-
-
-
-=======
-       createNewAds.find({ adsType: "cash" }).exec(function(err, result) {
-           var array = [];
-           if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-           for (var i = 0; i < result.length; i++) {
-               for (var j = 0; j < result[i].winners.length; j++) {
-                   array.push(result[i].winners[j]);
-               }
-           }
-
-           User.find({ _id: { $in: array } }).exec(function(err, result) {
-               if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                   res.send({
-                       result: result,
-                       responseCode: 200,
-                       responseMessage: "all cash winner"
-                   })
-               }
-           })
-       })
-   },
 
    "allCountriesfind": function(req, res) {  
        res.send({
@@ -2146,7 +2030,7 @@ module.exports = {
         res.send({ responseCode: 200, responseMessage: 'Message brodcast successfully' })
     })
 },
->>>>>>> surajAdmin
+
 
 
     "uploadImage": function (req, res) {
