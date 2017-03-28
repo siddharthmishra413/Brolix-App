@@ -12,7 +12,6 @@ app.get('/showAllBusinessUser', adminHandler.showAllBusinessUser);
 app.get('/winners', adminHandler.winners);
 app.post('/sendBrolix', adminHandler.sendBrolix);
 app.get('/showAllBlockUser', adminHandler.showAllBlockUser);
-// app.post('/blockUser', adminHandler.blockUser);
 app.get('/blockUser/:userId', adminHandler.blockUser);
 app.get('/totalAds', adminHandler.totalAds);
 app.post('/listOfAds', adminHandler.listOfAds);
@@ -85,6 +84,15 @@ app.get('/adInfo/:id', adminHandler.adInfo);
 app.get('/topFiftyLuckCardBuyers', adminHandler.topFiftyLuckCardBuyers);
 app.get('/topFiftyAds', adminHandler.topFiftyAds);
 app.get('/unblockUser/:userId', adminHandler.unblockUser);
+app.post('/addNewCoupon', adminHandler.addNewCoupon);
+app.get('/viewCoupon/:id', adminHandler.viewCoupon);
+app.put('/editCoupon/:id', adminHandler.editCoupon);
+app.post('/removeCoupon', adminHandler.removeCoupon);
+app.get('/showListOFCoupon', adminHandler.showListOFCoupon);
+app.get('/showPageName', adminHandler.showPageName);
+app.post('/createSystemUser', adminHandler.createSystemUser);
+app.post('/checkPermission', adminHandler.checkPermission);
+
 
 
 module.exports = app;

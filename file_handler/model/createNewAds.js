@@ -163,6 +163,7 @@ var createNewAdsSchema = new Schema({
         type: Number
     },
     hiddenGifts: [],
+    permissions: [],
     tag: [{
         userId: { type: String },
         senderId: []
