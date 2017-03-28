@@ -154,6 +154,18 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: 'templates/manageAdminTools.html'
     })
 
+  .state('header.addSystemUser', {
+        url: '/addSystemUser',
+        controller: 'addSystemUserCtrl',
+        templateUrl: 'templates/addSystemUser.html'
+    })
+
+  .state('header.addAdminCoupon', {
+            url: '/addAdminCoupon',
+            controller: 'addAdminCouponCtrl',
+            templateUrl: 'templates/addAdminCoupon.html'
+        })
+
 
     $urlRouterProvider.otherwise('/login');
 

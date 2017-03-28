@@ -1,0 +1,111 @@
+ 
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="addSystemuser()">Button</button>
+
+
+
+<div class="table-responsive cus-table" ng-if="tableData">
+    <table id="manageUserTable" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in allshowUserPage |filter:test">
+                <td>{{x.firstName}}</td>
+                <td>{{x.lastName}}</td>
+                <td>{{x.email}}</td>
+                <td>Edit</td>
+                <td>Remove</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+ <div class="container" ng-if="Systemuser">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add System User</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
+                            <form class="form-block" role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">First Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="firstName" ng-model="myFrom.firstName" placeholder=""> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Last Name</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="lastName" ng-model="myFrom.lastName" placeholder=""> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Email</label>
+                                            <div class="col-md-9">
+                                                <input type="email" class="form-control" name="email" ng-model="myFrom.email" placeholder=""> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Password</label>
+                                            <div class="col-md-9">
+                                                <input type="password" class="form-control" name="password" ng-model="myFrom.password" placeholder=""> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Confirm Password</label>
+                                            <div class="col-md-9">
+                                                <input type="password" class="form-control" name="passwordConfirm" ng-model="myFrom.passwordConfirm" placeholder=""> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="permission-block clearfix">
+                                        <h3 class="permission-heading">Permissions</h3>
+                                        <div class="checkbox-a">
+                                            <label><input name="manageUser" ng-model="myFrom.manageUser" type="checkbox"> Manage users</label>
+                                            <label><input name="managePages" ng-model="myFrom.managePages" type="checkbox"> Manage pages</label>
+                                            <label><input name="manageAdds" ng-model="myFrom.manageAdds" type="checkbox"> Manage adds</label>
+                                            <label><input name="manageCards" ng-model="myFrom.manageCards" type="checkbox"> Manage cards</label>
+                                            <label><input name="manageGifts" ng-model="myFrom.manageGifts" type="checkbox"> Manage gifts</label>
+                                            <label><input name="managePayments" ng-model="myFrom.managePayments" type="checkbox"> Manage payments</label>
+                                            <label><input name="adminTool" ng-model="myFrom.adminTool" type="checkbox"> Admin tools</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <div class="btn2 text-center">
+                                        <button type="submit" class="btn btn-lg btn-green" ng-click="addSystemUser(myFrom)">Add</button>
+                                        <button type="submit" class="btn btn-lg btn-green" ng-click="cancel()">Cancel</button>
+                                       
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
