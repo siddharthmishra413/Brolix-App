@@ -16,7 +16,6 @@ app.get('/detailsOfAdvertiser/:id', authUser.authUser, userHandler.detailsOfAdve
 app.get('/listOfAllAdvertiser', authUser.authUser, userHandler.listOfAllAdvertiser);
 app.post('/tagFriends', authUser.authUser, userHandler.tagFriends);
 app.post('/luckCard', authUser.authUser, userHandler.luckCard);
-app.post('/redeemCash', authUser.authUser, userHandler.redeemCash);
 app.post('/sendBrolixToFollower', authUser.authUser, userHandler.sendBrolixToFollower);
 app.post('/sendCashToFollower', authUser.authUser, userHandler.sendCashToFollower);
 app.post('/rating', authUser.authUser, userHandler.rating);
@@ -32,29 +31,32 @@ app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
 app.post('/showUpgradeCard', authUser.authUser, userHandler.showUpgradeCard);
 app.post('/useLuckCard', authUser.authUser, userHandler.useLuckCard);
 app.post('/useUpgradeCard', authUser.authUser, userHandler.useUpgradeCard);
-app.post('/facebookLogin',   userHandler.facebookLogin);
+app.post('/facebookLogin', userHandler.facebookLogin);
 app.get('/countrys', userHandler.countrys);
 app.get('/getAllStates/:name/:code', userHandler.getAllStates);
 app.post('/chatHistory/:pageNumber', authUser.authUser, userHandler.chatHistory);
 app.post('/onlineUserList', authUser.authUser, userHandler.onlineUserList);
-app.get('/paymentClientToken',   userHandler.paymentClientToken);
-app.post('/paymentIntegration',   userHandler.paymentIntegration);
+app.get('/paymentClientToken', userHandler.paymentClientToken);
+app.post('/paymentIntegration', userHandler.paymentIntegration);
 app.post('/userCouponGifts', authUser.authUser, userHandler.userCouponGifts);
 app.post('/winnersFilter', authUser.authUser, userHandler.winnersFilter);
-app.post('/googleLogin',  userHandler.googleLogin);
-app.post('/buyCoupon',  authUser.authUser, userHandler.buyCoupon);
-app.post('/userCashGifts',  authUser.authUser, userHandler.userCashGifts);
-app.post('/addRemoveCouponFromFavourite',  authUser.authUser, userHandler.addRemoveCouponFromFavourite);
-app.post('/listOfFavouriteCoupon/:pageNumber',  authUser.authUser, userHandler.listOfFavouriteCoupon);
-app.post('/couponExchangeOnOff',  authUser.authUser, userHandler.couponExchangeOnOff);
-app.post('/sendCouponExchangeRequest',  authUser.authUser, userHandler.sendCouponExchangeRequest);
-app.post('/sendCouponToFollower',  authUser.authUser, userHandler.sendCouponToFollower);
-app.post('/registerWithRefferalCode/:pageNumber',  authUser.authUser, userHandler.registerWithRefferalCode);
-app.post('/seeExchangeRequest',  authUser.authUser, userHandler.seeExchangeRequest);
-app.post('/couponRequestsSearch',  authUser.authUser, userHandler.couponRequestsSearch);
-app.post('/acceptDeclineCouponRequest',  authUser.authUser, userHandler.acceptDeclineCouponRequest);
-app.post('/useCouponWithoutCode',  authUser.authUser, userHandler.useCouponWithoutCode);
+app.post('/googleLogin', userHandler.googleLogin);
+app.post('/buyCoupon', authUser.authUser, userHandler.buyCoupon);
+app.post('/userCashGifts', authUser.authUser, userHandler.userCashGifts);
+app.post('/addRemoveCouponFromFavourite', authUser.authUser, userHandler.addRemoveCouponFromFavourite);
+app.post('/listOfFavouriteCoupon/:pageNumber', authUser.authUser, userHandler.listOfFavouriteCoupon);
+app.post('/couponExchangeOnOff', authUser.authUser, userHandler.couponExchangeOnOff);
+app.post('/sendCouponExchangeRequest', authUser.authUser, userHandler.sendCouponExchangeRequest);
+app.post('/sendCouponToFollower', authUser.authUser, userHandler.sendCouponToFollower);
+app.post('/registerWithRefferalCode/:pageNumber', authUser.authUser, userHandler.registerWithRefferalCode);
+app.post('/seeExchangeRequest', authUser.authUser, userHandler.seeExchangeRequest);
+app.post('/couponRequestsSearch', authUser.authUser, userHandler.couponRequestsSearch);
+app.post('/acceptDeclineCouponRequest', authUser.authUser, userHandler.acceptDeclineCouponRequest);
+app.post('/useCouponWithoutCode', authUser.authUser, userHandler.useCouponWithoutCode);
 app.post('/winnersFilterCodeBasis', authUser.authUser, userHandler.winnersFilterCodeBasis)
 app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode)
+
+app.post('/payU', userHandler.payU)
+
 
 module.exports = app;
