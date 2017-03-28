@@ -1016,9 +1016,132 @@ module.exports = {
     })
     },
 
-    "adsStatus": function(req, res){
-        
-    }
+"adsfilter":function(req, res){
+    var condition = { $and: [] };
+    var todayDate = new Date();
+    var newTodayDate = new Date();
+    var data = req.body.pageType;
+
+    waterfall([
+        function(callback){
+            if(data== "unpublishedPages"){
+                    createNewAds.find({},'pageId',function(err, result){
+                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No page found" })
+                       var result = result.map(function(a) {return a.pageId;});
+                       var allPageIds = _.uniq(result);
+                       callback(null, allPageIds)
+                   // createNewPage.find({_id:{$nin:allPageIds}},function(err, result){
+                   // res.send({ responseCode: 200, responseMessage: 'Here all the Unsuscribe pages', data:result })
+                   // })
+                })
+            }
+            else{
+                callback(null, "null")
+            }
+        },
+        function(allPageIds,callback){
+            switch(data){
+              case 'totalAds':
+              var updateData = { status: 'ACTIVE' };
+              condition.$and.push(updateData)
+              break;
+
+              case 'activeAds':
+              var updateData = { status: "ACTIVE" };
+              condition.$and.push(updateData)
+              break;
+
+              case 'expiredAds':
+              var updateData = { status: "EXPIRED" };
+              condition.$and.push(updateData)
+              break;
+
+              case 'reportedAds':
+              var updateData = { };
+              condition.$and.push(updateData)
+              break;
+
+              case 'adsWithLinks':
+              var updateData = { };
+              condition.$and.push(updateData)
+              break;
+
+              case 'videoAds':
+              var updateData = { adContentType: "video" };
+              condition.$and.push(updateData)
+              break; 
+
+              case 'slideShowAds':
+              var updateData = { adContentType: "slideshow" };
+              condition.$and.push(updateData)
+              break;
+
+              case 'upgradedAdsBy$':
+              var updateData = { };
+              condition.$and.push(updateData)
+              break;
+
+              case 'upgradedAdsByB':
+              var updateData = { };
+              condition.$and.push(updateData)
+              break;
+ 
+              default:
+              var updateData = { };
+              condition.$and.push(updateData)
+            }
+            console.log("condition before callback==>>"+JSON.stringify(condition))
+            console.log("updated data===>."+updateData)
+            callback(null,updateData)
+        },
+        function(updateData, callback){
+
+            if(req.body.joinTo && req.body.joinTo){
+                condition.$and.push({
+                    createdAt: {$gte:new Date(req.body.joinFrom).toUTCString(),$lte:new Date(req.body.joinTo).toUTCString()}
+                })
+            }
+
+
+            if(req.body.country && req.body.joinTo){
+                condition.$and.push({
+                    createdAt: {$gte:new Date(req.body.joinFrom).toUTCString(),$lte:new Date(req.body.joinTo).toUTCString()}
+                })
+            }
+
+        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+         
+                    if (!(key == "pageType" || key == "joinFrom" || key == "joinTo" )) {
+                        var tempCond={};
+                        tempCond[key]=req.body[key];
+                        condition.$and.push(tempCond)
+                    }
+        });
+        if (condition.$and.length == 0) {
+            delete condition.$and;
+        }
+        callback(null, condition)
+    },function(condition, callback){
+
+
+        console.log("condition===>.."+JSON.stringify(condition))
+        createNewAds.find(condition,function(err, result){
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                else{
+                    console.log("result;;;>"+result)
+                    callback(null,result,condition)
+                }
+
+        })
+        }
+
+    ],function(err, result,condition){
+       res.send({ responseCode: 200, responseMessage: 'Filtered Users',data:result
+      });
+    })
+}
+
+
 
 }
 
