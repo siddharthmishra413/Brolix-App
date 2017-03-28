@@ -6,14 +6,14 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Total Ads</div>
-                            <div class="total-amt">30,000</div>
+                            <div class="total-amt">{{totalAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='totalads'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Owners</a>
+                                <a>Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -22,14 +22,14 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Active Ads</div>
-                            <div class="total-amt">27,000</div>
+                            <div class="total-amt">{{totalActiveAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='activeads'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Owners</a>
+                                <a>Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -38,14 +38,14 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Expired Ads</div>
-                            <div class="total-amt">3,000</div>
+                            <div class="total-amt">{{totalExpiredAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='expiredAds'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Owners</a>
+                                <a>Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -54,14 +54,14 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Reported Ads</div>
-                            <div class="total-amt">10,000</div>
+                            <div class="total-amt">{{showReportedAdcount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='showReportedAd'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Owners</a>
+                                <a>Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Owners</a>
+                                <a>Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -86,14 +86,14 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Video Ads</div>
-                            <div class="total-amt">19,000</div>
+                            <div class="total-amt">{{videoAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='videoAds'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Owners</a>
+                                <a>Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -102,14 +102,14 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Slide Show Ads</div>
-                            <div class="total-amt">500</div>
+                            <div class="total-amt">{{slideshowAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='slideShowAds'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Owners</a>
+                                <a>Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -118,14 +118,14 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Upgraded Ads By $</div>
-                            <div class="total-amt">18,500</div>
+                            <div class="total-amt">{{adUpgradedByDollorcount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='adUpgradedByDollor'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Owners</a>
+                                <a>Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -134,14 +134,14 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Upgraded Ads By B</div>
-                            <div class="total-amt">20</div>
+                            <div class="total-amt">{{adUpgradedByBrolixcount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='adUpgradedByBrolix'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Owners</a>
+                                <a>Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -216,7 +216,7 @@
         <div class="row-search">
             <ul>
                 <li class="active">
-                    <a data-toggle="tab">View Ad</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Ad</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab">Remove Ad</a>
@@ -240,13 +240,12 @@
             </form>
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="row table-responsive cus-table">
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalads">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
-                        <th>AD NUMBER</th>
                         <th>PAGE NAME</th>
                         <th>OWNER MOBILE</th>
                         <th>AD REPORTS</th>
@@ -257,44 +256,248 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="x in totalAds |filter:test">
                         <td>
-                            <input id="o" name="" value="" checked="" type="radio">
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td>1574962</td>
-                        <td class="skyblue-text">brandmark™</td>
-                        <td>0799435020</td>
-                        <td class="skyblue-text">15</td>
-                        <td class="skyblue-text">3</td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
                         <td class="skyblue-text">VIEW</td>
-                        <td>8$</td>
-                        <td>50V</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="activeads">
+            <table class="table table-bordered table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            <input id="o" name="" value="" type="radio">
-                        </td>
-                        <td>1574962</td>
-                        <td class="skyblue-text">brandmark™</td>
-                        <td>0799435020</td>
-                        <td class="skyblue-text">15</td>
-                        <td class="skyblue-text">3</td>
-                        <td class="skyblue-text">VIEW</td>
-                        <td>8$</td>
-                        <td>50V</td>
+                        <th></th>
+                        <th>PAGE NAME</th>
+                        <th>OWNER MOBILE</th>
+                        <th>AD REPORTS</th>
+                        <th>DOWNLOAD LINKS</th>
+                        <th>SOLD COUPON</th>
+                        <th>DOLLARS PAIS</th>
+                        <th>CARD</th>
                     </tr>
-                    <tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in totalActiveAds |filter:test">
                         <td>
-                            <input id="o" name="" value="" checked="" type="radio">
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td>1574962</td>
-                        <td class="skyblue-text">brandmark™</td>
-                        <td>0799435020</td>
-                        <td class="skyblue-text">15</td>
-                        <td class="skyblue-text">3</td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
                         <td class="skyblue-text">VIEW</td>
-                        <td>8$</td>
-                        <td>50V</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="expiredAds">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>PAGE NAME</th>
+                        <th>OWNER MOBILE</th>
+                        <th>AD REPORTS</th>
+                        <th>DOWNLOAD LINKS</th>
+                        <th>SOLD COUPON</th>
+                        <th>DOLLARS PAIS</th>
+                        <th>CARD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in totalExpiredAds |filter:test">
+                        <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
+                        <td class="skyblue-text">VIEW</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="videoAds">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>PAGE NAME</th>
+                        <th>OWNER MOBILE</th>
+                        <th>AD REPORTS</th>
+                        <th>DOWNLOAD LINKS</th>
+                        <th>SOLD COUPON</th>
+                        <th>DOLLARS PAIS</th>
+                        <th>CARD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in videoAds |filter:test">
+                        <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
+                        <td class="skyblue-text">VIEW</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="slideShowAds">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>PAGE NAME</th>
+                        <th>OWNER MOBILE</th>
+                        <th>AD REPORTS</th>
+                        <th>DOWNLOAD LINKS</th>
+                        <th>SOLD COUPON</th>
+                        <th>DOLLARS PAIS</th>
+                        <th>CARD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in slideshowAds |filter:test">
+                        <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
+                        <td class="skyblue-text">VIEW</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="adUpgradedByBrolix">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>PAGE NAME</th>
+                        <th>OWNER MOBILE</th>
+                        <th>AD REPORTS</th>
+                        <th>DOWNLOAD LINKS</th>
+                        <th>SOLD COUPON</th>
+                        <th>DOLLARS PAIS</th>
+                        <th>CARD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in adUpgradedByBrolix |filter:test">
+                        <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
+                        <td class="skyblue-text">VIEW</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="adUpgradedByBrolix">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>PAGE NAME</th>
+                        <th>OWNER MOBILE</th>
+                        <th>AD REPORTS</th>
+                        <th>DOWNLOAD LINKS</th>
+                        <th>SOLD COUPON</th>
+                        <th>DOLLARS PAIS</th>
+                        <th>CARD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in adUpgradedByBrolix |filter:test">
+                        <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
+                        <td class="skyblue-text">VIEW</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="showReportedAd">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>PAGE NAME</th>
+                        <th>OWNER MOBILE</th>
+                        <th>AD REPORTS</th>
+                        <th>DOWNLOAD LINKS</th>
+                        <th>SOLD COUPON</th>
+                        <th>DOLLARS PAIS</th>
+                        <th>CARD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in showReportedAd |filter:test">
+                        <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
+                        <td class="skyblue-text">VIEW</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
                     </tr>
                 </tbody>
             </table>

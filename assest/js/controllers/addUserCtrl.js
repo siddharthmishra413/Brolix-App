@@ -1,30 +1,15 @@
-app.controller('addUserCtrl', function($scope, $state, $window, userService, $http, toastr) {
+app.controller('addUserCtrl', function($scope, $state, $window, userService, $http, toastr, $timeout) {
     $(window).scrollTop(0, 0);
     $scope.$emit('headerStatus', 'Manage User');
     $scope.$emit('SideMenu', 'Manage User');
 
     $scope.myFrom = {};
 
-    userService.countrys().success(function(res) {
-        $scope.country = res.result;
-    }).error(function(status, data) {
-
-    })
-
-    $scope.catId = function() {
-        console.log($scope.myFrom.country.code);
-        var country = $scope.myFrom.country
-        $http.get('/admin/getAllStates/' + country.code + '/ISO2').success(function(res) {
-            console.log(res);
-            $scope.allstates = res.result;
-        }, function(err) {});
-    }
-
-
     $scope.addUser = function() {
         $scope.myFrom.type = "USER";
-        $scope.myFrom.country = $scope.myFrom.country.name;
+        console.log("mmmmmm111111",$scope.myFrom)
         userService.addUser($scope.myFrom).success(function(res) {
+            console.log("myform data",$scope.myFrom);
             if (res.responseCode == 200) {
             console.log(JSON.stringify(res))
             toastr.success(res.responseMessage);
@@ -62,4 +47,49 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
         $scope.userFrom.country.$error.required = false;
     }
 
+//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+    var currentCities=[];
+    $scope.currentCountry= '';
+var BATTUTA_KEY="00000000000000000000000000000000"
+    // Populate country select box from battuta API
+  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+    $.getJSON(url,function(countries)
+    {
+      $timeout(function(){
+        $scope.countriesList=countries;
+      },100)
+      
+      
+    });
+  var countryCode;
+    $scope.changeCountry = function(){
+      for(var i=0;i<$scope.countriesList.length;i++){
+        if($scope.countriesList[i].name==$scope.myFrom.country){
+          countryCode=$scope.countriesList[i].code;
+          //console.log(countryCode)
+          break;
+        }
+      }
+      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+      $.getJSON(url,function(regions)
+      {
+        //console.log('state list:   '+JSON.stringify(regions))
+        $timeout(function(){
+        $scope.stateList = regions;
+          },100)
+      });
+    }
+
+    $scope.changeState = function(){
+      //console.log('detail -> '+countryCode+' city name -> '+$scope.myFrom.state)
+      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.myFrom.state+"&key="+BATTUTA_KEY+"&callback=?";
+      $.getJSON(url,function(cities)
+      {
+        // console.log('city list:   '+JSON.stringify(cities))
+        $timeout(function(){
+          $scope.cityList = cities;
+            },100)
+      })
+    }
+    //-------------------------------END OF SELECT CASCADING-------------------------//
 })

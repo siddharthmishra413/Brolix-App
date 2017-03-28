@@ -16,6 +16,7 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
     	}else {
     		$scope.user = res.result;
     		$scope.image = $scope.user.image
+            console.log("data",$scope.user,$scope.image)
     	}
     }).error(function(status, data) {
 

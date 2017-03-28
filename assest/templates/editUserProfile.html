@@ -28,7 +28,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Last Name</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="lastName" ng-model="viewUserProfile.lastName" placeholder="Last Name" maxlength="41" ng-maxlength="40" required> 
+                                                <input type="text" class="form-control" name="category" ng-model="viewUserProfile.lastName" placeholder="Last Name" maxlength="41" ng-maxlength="40" required> 
                                                 <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid">
                                                 <span ng-show="userFrom.lastName.$error.required">Last name is required.</span>
                                                 <span ng-show="userFrom.lastName.$error.maxlength">Your last name should contain max 40 characters.</span>
@@ -76,7 +76,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Mobile No</label>
                                             <div class="col-md-9">
-                                                <input type="tel" class="form-control" name="mobileNumber" ng-model="viewUserProfile.mobileNumber" placeholder="Mobile No" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                                                <input type="text" class="form-control" name="mobileNumber" ng-model="viewUserProfile.mobileNumber" placeholder="Mobile No" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
                                                 <span style="color:red;" ng-show="userFrom.mobileNumber.$dirty && userFrom.mobileNumber.$invalid">
                                                 <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required.</span> 
                                                 <span ng-show="userFrom.mobileNumber.$error.maxlength">Must have at most 10 digits.</span>

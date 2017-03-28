@@ -1,0 +1,93 @@
+
+    <div class="container">
+        <div class="outer-block">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add Card</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-pills card-tabs">
+                        <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="active_tab('upgrade_card')">Upgrade Cards</a></li>
+                        <li><a data-toggle="pill" style="cursor: pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
+                      </ul>
+
+                    <div class="tab-content add-card"  >
+                        <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
+                           <div class="cover-image" >
+                                <img class="profile-user-img img-responsive" src="{{user.photo || '../dist/image/cover.jpg'}}" id="output">
+                                <label class="fileContainer">
+                                    Choose File
+                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                                </label>
+                            </div>
+                            <form class="form-block" role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">Viewers</label>
+                                            <div class="col-md-8">
+                                                <input ng-model="createCard.viewers" type="text" class="form-control text-center" placeholder="10,000"> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">Price</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                  <input ng-model="createCard.price" type="text" class="form-control text-center" placeholder="25">
+                                                  <span class="input-group-addon" id="basic-addon2"><i class="fa fa-usd" ></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                            <div class="btn2 text-center">
+                                <a class="btn btn-lg btn-green" ng-click="addCard('upgrade_card')">Save</a>
+                                <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
+                            </div>
+                        </div>
+                       
+                        <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
+                            <div class="cover-image" >
+                                <img class="profile-user-img img-responsive" src="{{user.photo || '../dist/image/cover.jpg'}}" id="output">
+                                 <label class="fileContainer">
+                                    Choose File
+                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                                </label>
+                            </div>
+                            <form class="form-block" role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">Chances</label>
+                                            <div class="col-md-8">
+                                                <input ng-model="createCard.chances" type="text" class="form-control text-center" placeholder="10,000"> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-4">Brolix</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                  <input ng-model="createCard.brolix" type="text" class="form-control text-center" placeholder="25">
+                                                  <span class="input-group-addon" id="basic-addon2"><i class="fa fa-usd" ></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                            <div class="btn2 text-center">
+                                <a class="btn btn-lg btn-green" ng-click="addCard('luck_card')">Save</a>
+                                <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
+                            </div>
+                        </div>
+                        
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>

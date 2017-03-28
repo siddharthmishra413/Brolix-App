@@ -10,21 +10,21 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='totalPages'">
-                                <a>Show</a>
+                                <a ng-click="userTypeName('totalPages')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click="sendMessagePage('totalPages')">
                                         Send Message
                                         <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                     </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <!-- <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li><a>Message</a></li>
                                         <li><a>Coupon</a></li>
                                         <li><a>Brolix</a></li>
                                         <li><a>Card</a></li>
                                         <li><a>Cash</a></li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
                             </div>
                         </div>
@@ -34,25 +34,25 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Unpublished Pages</div>
-                            <div class="total-amt">30,000</div>
+                            <div class="total-amt">{{unPublishedPage.length}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
-                                <a>Show</a>
+                            <div class="btn-manage" ng-click="tab='unPublishedPage'">
+                                <a ng-click="userTypeName('unPublishedPage')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click="sendMessagePage('unPublishedPage')">
                                         Send Message
                                         <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                     </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <!-- <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li><a>Message</a></li>
                                         <li><a>Coupon</a></li>
                                         <li><a>Brolix</a></li>
                                         <li><a>Card</a></li>
                                         <li><a>Cash</a></li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
                             </div>
                         </div>
@@ -62,11 +62,11 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Removed Pages</div>
-                            <div class="total-amt">30,00</div>
+                            <div class="total-amt">{{showAllRemovedPageCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
-                                <a>Show</a>
+                            <div class="btn-manage" ng-click="tab='showAllRemovedPage'">
+                                <a ng-click="userTypeName('removedPage')">Show</a>
                             </div>
                         </div>
                     </div>
@@ -75,11 +75,11 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Blocked Pages</div>
-                            <div class="total-amt">500</div>
+                            <div class="total-amt">{{showAllBlockedPageCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
-                                <a>Show</a>
+                            <div class="btn-manage" ng-click="tab='showAllBlockedPage'">
+                                <a ng-click="userTypeName('blockedPage')">Show</a>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Page’s Admins</div>
-                            <div class="total-amt">1,500</div>
+                            <div class="total-amt">{{allAdminPagesCount}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage">
@@ -98,11 +98,11 @@
                                         <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a>Message</a></li>
+                                        <li ng-click="sendMessagePage('pagesAdmins')"><a>Message</a></li>
                                         <li><a>Coupon</a></li>
-                                        <li><a>Brolix</a></li>
-                                        <li><a>Card</a></li>
-                                        <li><a>Cash</a></li>
+                                        <li ng-click="total_user_brolix()"><a>Brolix</a></li>
+                                        <li ng-click="total_user_card()"><a>Card</a></li>
+                                        <li ng-click="total_user_cash()"><a>Cash</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -110,12 +110,30 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="col-md-3 col-sm-6 dwd-border">
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All Countries</option>
+                        <!-- <select ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" class="form-control" ng-click ="slectCountry()" >
+                         <option value="">All Countries</option>
+                             <option ng-options="p.name for p in country" value="{{country}}">{{country}}</option>
+                        </select> -->
+                        <select class="form-control" ng-options="p.name for p in allCountriesfind" ng-model="dashBordFilter.country" ng-change="dashBordFilter(dashBordFilter.country); catId(p)" required><option value="">Select Country</option>
+                        </select>
+                    </div>
+                    <div class="form-group cus-select">
+                        <!-- <select ng-change="dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" ng-click ="slectState()" class="form-control">
+                            <option value="">All States</option>
+                            <option ng-repeat="state in allstatefind" value="{{state}}">{{state}}</option>
+                        </select> -->
+                        <select class="form-control" ng-change="dashBordFilter(dashBordFilter.state);" ng-options="state for state in allstates" ng-model="dashBordFilter.state" required><option value="">Select State</option>
+                        </select>
+                    </div>
+                    <div class="form-group cus-select">
+                        <select class="form-control" ng-change="dashBordFilter(dashBordFilter.cities);" ng-model="dashBordFilter.cities">
+                            <option value="">All Cities</option>
                             <option>2</option>
                             <option>3</option>
                             <option>4</option>
@@ -123,8 +141,8 @@
                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All States</option>
+                        <select class="form-control" ng-model="dashBordFilter.categories">
+                            <option value="">All Categories</option>
                             <option>2</option>
                             <option>3</option>
                             <option>4</option>
@@ -132,40 +150,15 @@
                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All Cities</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                        <div class="col-md-9">
+                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">  
+                        </div>
                     </div>
+
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All Categories</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Date From</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Date To</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                        <div class="col-md-9">
+                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth"> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,16 +171,19 @@
                     <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
                 </li>
                 <li class="active">
-                    <a data-toggle="tab">Edit Page</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editPage/{{myForm.pageId}}">Edit Page</a>
+                </li>
+                <li class="active">
+                     <a data-toggle="tab" style="cursor: pointer;" ng-click="Remove_User(myForm.pageId)">Remove</a>
                 </li>
                 <li class="">
-                    <a data-toggle="tab">Remove</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="blockUnblockPage(myForm.pageId)">Block/Unblock</a>
                 </li>
-                <li class="">
-                    <a data-toggle="tab">Block/Unblock</a>
+                <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="sendMessagePage(myForm.pageId)">Send Message</a>
                 </li>
                 <li class="last">
-                    <a data-toggle="tab">Send Message</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
                 </li>
             </ul>
         </div>
@@ -204,7 +200,7 @@
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalPages">
-            <table class="table table-bordered table-striped">
+            <table id="managePageTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -223,17 +219,371 @@
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
-                        <td class="skyblue-text">{{x.category}}</td>
-                        <td class="skyblue-text">{{x.userId.firstName}}</td>
-                        <td class="skyblue-text">{{x.userId.email}}</td>
-                        <td class="skyblue-text">{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">5</td>
-                        <td class="skyblue-text">30</td>
-                        <td class="skyblue-text">2</td>
+                        <td >{{x.pageName}}</td>
+                        <td >{{x.category}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="ownerDetails(x._id)">{{x.userId.firstName}}</td>
+                        <td >{{x.userId.email}}</td>
+                        <td >{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showWinners(x._id)">{{x.winnersCount}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="unPublishedPage">
+            <table id="managePageTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Page Name</th>
+                        <th>Main Category</th>
+                        <th>Owner Name</th>
+                        <th>Owner Email</th>
+                        <th>Owner Mobile</th>
+                        <th>Ads</th>
+                        <th>Winners</th>
+                        <th>Admins</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in unPublishedPage |filter:test">
+                        <td>
+                            <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td >{{x.pageName}}</td>
+                        <td >{{x.category}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="ownerDetails(x._id)">{{x.userId.firstName}}</td>
+                        <td >{{x.userId.email}}</td>
+                        <td >{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showWinners(x._id)">{{x.winnersCount}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+     <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="showAllRemovedPage">
+            <table id="managePageTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Page Name</th>
+                        <th>Main Category</th>
+                        <th>Owner Name</th>
+                        <th>Owner Email</th>
+                        <th>Owner Mobile</th>
+                        <th>Ads</th>
+                        <th>Winners</th>
+                        <th>Admins</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in showAllRemovedPage |filter:test">
+                        <td>
+                            <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td >{{x.pageName}}</td>
+                        <td >{{x.category}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="ownerDetails(x._id)">{{x.userId.firstName}}</td>
+                        <td >{{x.userId.email}}</td>
+                        <td >{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showWinners(x._id)">{{x.winnersCount}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="showAllBlockedPage">
+            <table id="managePageTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Page Name</th>
+                        <th>Main Category</th>
+                        <th>Owner Name</th>
+                        <th>Owner Email</th>
+                        <th>Owner Mobile</th>
+                        <th>Ads</th>
+                        <th>Winners</th>
+                        <th>Admins</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in  |filter:test">
+                        <td>
+                            <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td >{{x.pageName}}</td>
+                        <td >{{x.category}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="ownerDetails(x._id)">{{x.userId.firstName}}</td>
+                        <td >{{x.userId.email}}</td>
+                        <td >{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showWinners(x._id)">{{x.winnersCount}}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+<div id="sendMessageModelAllUser" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send message to All User</h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendMessage">
+                   <div class="form-group">
+                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" /></textarea>
+                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
+                   </div>
+                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send massage</button>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+
+<div id="adsDetails" class="modal fade" >
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Page Details</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Ads Type</th>
+                                        <th>AdContent Type</th>
+                                        <th>Category</th>
+                                        <th>Sub Category</th>
+                                        <th>Page Discription</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="x in allAddsOnPage |filter:test">
+                                        <td class="skyblue-text">{{x.pageType}}</td>
+                                        <td class="skyblue-text">{{x.pageName}}</td>
+                                        <td class="skyblue-text">{{x.category}}</td>
+                                        <td class="skyblue-text">{{x.subCategory}}</td>
+                                        <td class="skyblue-text">{{x.pageDiscription}}</td>
+                                        <td class="skyblue-text">{{x.status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="pageWinnerDetails" class="modal fade" >
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Page Details</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Page Type</th>
+                                        <th>Page Name</th>
+                                        <th>Category</th>
+                                        <th>Sub Category</th>
+                                        <th>Page Discription</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="x in allshowUserPage |filter:test">
+                                        <td class="skyblue-text">{{x.pageType}}</td>
+                                        <td class="skyblue-text">{{x.pageName}}</td>
+                                        <td class="skyblue-text">{{x.category}}</td>
+                                        <td class="skyblue-text">{{x.subCategory}}</td>
+                                        <td class="skyblue-text">{{x.pageDiscription}}</td>
+                                        <td class="skyblue-text">{{x.status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<div id="pageAdminDetails" class="modal fade" >
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Pages Admin Details</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Admin Name</th>
+                                        <th>Mobile Number</th>
+                                        <th>Email</th>
+                                        <th>Country</th>
+                                        <th>State</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="x in allAdminOnPages |filter:test">
+                                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                                        <td class="skyblue-text">{{x.email}}</td>
+                                        <td class="skyblue-text">{{x.country}}</td>
+                                        <td class="skyblue-text">{{x.state}}</td>
+                                        <td class="skyblue-text">{{x.status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="showAllCard" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send CArd to All User</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                      <!--   <div class="panel-heading">
+                            <h3 class="panel-title">Remove Cards</h3>
+                        </div> -->
+                        <div class="panel-body">
+                            <ul class="nav nav-pills card-tabs">
+                                <li class="active"><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('upgrade_card')">Upgrade Card</a>
+                                </li>
+                                <li><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
+                            </ul>
+                            <div class="tab-content add-card">
+                                <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
+                                    <div class="row-table" ng-repeat="data in UpgradeCard">
+                                        <div class="col-cell">
+                                            <div class="cover-image">
+                                                <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                            </div>
+                                        </div>
+                                        <div class="col-cell add-remove">
+                                            <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
+                                    <div class="row-table" ng-repeat="data in LuckCard">
+                                        <div class="col-cell">
+                                            <div class="cover-image">
+                                                <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                            </div>
+                                        </div>
+                                        <div class="col-cell add-remove">
+                                            <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+   </div>
+</div>
+
+
+
+<div id="sendbrolixModelAllUser" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Enter Brolix to pay by admin </h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendBrolix">
+                   <div class="form-group">
+                   <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                    <span style="color:red;" ng-show="sendBrolix.brolixsend.$dirty && sendBrolix.brolixsend.$invalid">
+                    <span ng-show="sendBrolix.brolixsend.$error.required">Brolix is required.</span> 
+                    <span ng-show="sendBrolix.brolixsend.$error.maxlength">Brolix have at most 10 digits.</span>
+                    <span ng-show="sendBrolix.brolixsend.$error.pattern">Only number are allowed.</span>
+                   </div>
+                   <button ng-disabled="sendBrolix.$invalid" type="submit" class="btn btn-danger" ng-click="send_brolix('totalUser')">Send Brolix</button>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<div id="sendcashModelAllUser" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Enter Cash to pay by admin </h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendCash">
+                   <div class="form-group">
+                   <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                    <span style="color:red;" ng-show="sendCash.cashsend.$dirty && sendCash.cashsend.$invalid">
+                    <span ng-show="sendCash.cashsend.$error.required">Cash is required.</span> 
+                    <span ng-show="sendCash.cashsend.$error.maxlength">Cash have at most 10 digits.</span>
+                    <span ng-show="sendCash.cashsend.$error.pattern">Only number are allowed.</span>
+                   </div>
+                   <button ng-disabled="sendCash.$invalid" type="submit" class="btn btn-danger" ng-click="send_cashall('totalUser')">Send Cash</button>
+               </form>
+           </div>
+       </div>
+   </div>
 </div>

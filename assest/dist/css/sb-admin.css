@@ -249,7 +249,7 @@ ul.alert-dropdown {
 .side-nav{background:#6d6e71;}
 .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:focus,
 .navbar-inverse .navbar-nav > .active > a:hover{background:#58595b!important;}
-.box-block{float:left; width:19%; margin:5px;min-height: 180px;}
+.box-block{float:left; width:19%; margin:5px;min-height: 200px;}
 .box-block .widget{padding:10px;}
 .box-block .top-box{padding: 1em 0 1em 1em;}
 .top-box .total-add{color: #ffffff; font-size:12px;  font-weight: 700;}
@@ -288,8 +288,8 @@ ul.alert-dropdown {
 .search-bar-cus .input-group{width:100%;}
 .search-bar-cus .form-inline .form-group{width:100%;}
 .row-search ul{padding-left: 0;}
-.row-search ul li{list-style-type: none; display: inline-block;  margin-right:10px; vertical-align: top;}
-.row-search ul li:after{content:"|";padding-left:10px;}
+.row-search ul li{list-style-type: none; display: inline-block;  margin-right:5px; vertical-align: top;}
+.row-search ul li:after{content:"|";padding-left:5px;}
 .row-search ul li.last:after{content:"";}
 .row-search ul li a{color: #636363;  font-size: 12px;  font-weight: 700;  letter-spacing: 0.5px;  text-transform: uppercase;}
 .row-search ul li a span{border-right:2px solid #636363;  padding:0 20px 0 15px;}
@@ -317,6 +317,20 @@ ul.alert-dropdown {
 .m-t-0{margin-top: 0;}
 .bdr-0{border: 0;}
 
+/*------Lov Style Start----*/
+.modal-body .col-cell{display:block;}
+.modal-body .col-cell.add-remove{width:100%;text-align: center;}
+.box-block .top-box{padding:1em;text-align: center;}
+.top-box .total-add{font-size:14px;}
+.top-box .total-amt{font-size:1.9em;}
+.box-block .bottom-box{padding:1em;}
+.box-block .bottom-box .btn-manage{width:auto;display:inline-block;}
+.w-100{width: 100% !important;}
+.w-19{width:19%;}
+.cover-image {width: 300px;height: 300px;margin: 0 auto !important;text-align: center;}
+
+/*---------Finish------------*/
+
 @media only screen and (max-width:767px) {
 .box-block {width:100%;}
 .nav-tabs.nav-justified > li > a{padding-left:0;}
@@ -333,6 +347,7 @@ ul.alert-dropdown {
   .nav > li > a { font-size:12px!important; padding: 10px 15px;}
   .box-block {width:100%;}
   .ipad-50{width: 48% !important;}
+  .nav-tabs.nav-justified > li > a{padding: 10px 0;}
 }
 
 @media screen 
