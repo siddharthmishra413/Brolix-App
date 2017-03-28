@@ -129,7 +129,6 @@ var options = {
 
 module.exports = {
 
-<<<<<<< HEAD
 //////////////////////////////////////////////////////////////////
 //////////////////////////////payU////////////////////////////////
 
@@ -238,60 +237,6 @@ req.end();
                       var transactionCost = amount*(2.9/100)+ 0.30;
                       merchantAccountParams = {
                       individual: {
-=======
-    "paymentClientToken": function(req, res) {
-        gateway.clientToken.generate({}, function(err, response) {
-            console.log(response)
-            responseHandler.apiResponder(req, res, 200, "success", response.clientToken)
-        });
-    },
-
-    "paymentIntegration": function(req, res) {
-        waterfall([
-            function(callback) {
-                // createNewAds.findOne({
-                //   _id: req.body.Id,
-                //   adsType:'coupon'
-                // }).exec(function(err, result){
-                //   if(err){      
-                //     res.send({
-                //           responseCode: 302,
-                //           responseMessage: 'error.',
-                //           result: err
-                //     });}
-                //   else if(!result){
-                //           res.send({
-                //           responseCode: 404,
-                //           responseMessage: 'data not found.'
-                //         //  result: result
-                //       });
-                //   }
-                //   else{
-                var nextPay;
-                // console.log("chefRefund==>>",result.chefRefund)
-                // if(result.chefRefund == "Yes"){
-                //   var amount = req.body.paymentDetails.amount;
-                //   var serviceFee = amount/10 + parseInt(result.chefPay);
-                //  // var nextPay = 0;
-                //   console.log("amount"+amount);
-                //   console.log("serviceFee"+serviceFee)
-                //   if(serviceFee > amount){
-                //     nextPay = serviceFee - amount;
-                //      serviceFee = amount;
-                //      console.log("nextPay"+nextPay)
-                //   }
-                // }else{
-                //   console.log("wrong")
-                //   var amount = req.body.paymentDetails.amount;
-                //    var serviceFee = amount/10;
-                //   // nextPay = 0;
-                // }
-                var amount = req.body.amount;
-                var serviceFee = amount / 10;
-                var transactionCost = amount * (2.9 / 100) + 0.30;
-                merchantAccountParams = {
-                    individual: {
->>>>>>> deepak
                         firstName: req.body.firstName,
                         lastName: req.body.lastName,
                         email: req.body.email,

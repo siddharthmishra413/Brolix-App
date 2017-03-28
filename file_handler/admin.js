@@ -941,20 +941,18 @@ module.exports = {
             }
         })
     },
-    "showOfferOnCards": function(req, res) {
-        var cardType = req.body.cardType;
-        adminCards.aggregate([
-<<<<<<< HEAD
-        {$unwind:'$offer'},
-        {$match:{type:cardType,'offer.status':'active'}},
-        { $project: {offer:1,_id:0} }
-            ]).exec(function(err, result){
-          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-          else{
-             res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully',data:result });
-          }             
-       }) 
-    },
+   "showOfferOnCards": function(req, res) {
+       var cardType = req.body.cardType;
+       adminCards.aggregate([
+           { $unwind: '$offer' },
+           { $match: { type: cardType, 'offer.status': 'active' } },
+           { $project: { offer: 1, _id: 0 } }
+       ]).exec(function(err, result) {
+           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+               res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
+           }
+       })
+   },
 
      "createPage": function(req, res) {
         createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
@@ -1107,40 +1105,10 @@ module.exports = {
        res.send({ responseCode: 200, responseMessage: 'Filtered Users',data:result
       });
     })
-}
+},
 
 
 
-}
-
-   function uploads(req, callback) {
-        console.log(req.body.images)
-        var form = new multiparty.Form();
-        form.parse(req, function(err, fields, files) {
-            console.log("files>>"+JSON.stringify(files));
-            var img = files.images[0];
-            var fileName = files.images[0].originalFilename;
-            cloudinary.uploader.upload(img.path, function(result) {
-                console.log("results url>>>"+result)
-                callback(null,result.url);
-              /*  res.send({
-                    result: result.url,
-                    responseCode: 200,
-                    responseMessage: "File uploaded successfully."
-                });*/
-            }, {
-                resource_type: "auto",
-                chunk_size: 6000000
-=======
-            { $unwind: '$offer' },
-            { $match: { type: cardType, 'offer.status': 'active' } },
-            { $project: { offer: 1, _id: 0 } }
-        ]).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
-            }
-        })
-    },
 
     "showUserPage": function(req, res) {
         createNewPage.find({ userId: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
@@ -1931,7 +1899,6 @@ module.exports = {
                 result: result,
                 responseCode: 200,
                 responseMessage: "System user successfully created"
->>>>>>> deepak
             });
         })
 

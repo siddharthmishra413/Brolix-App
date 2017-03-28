@@ -50,12 +50,7 @@ app.post('/editCards', adminHandler.editCards);
 app.get('/showCardDetails/:id', adminHandler.showCardDetails);
 app.get('/removeCard/:id', adminHandler.removeCard);
 app.post('/createOfferOnCard', adminHandler.createOfferOnCard);
-<<<<<<< HEAD
-app.post('/showOfferOnCards',adminHandler.showOfferOnCards);
 app.post('/createPage',adminHandler.createPage);
-
-
-=======
 app.post('/showOfferOnCards', adminHandler.showOfferOnCards);
 app.get('/showUserPage/:id', adminHandler.showUserPage);
 app.get('/adsOnPage/:id', adminHandler.adsOnPage);
@@ -98,7 +93,6 @@ app.get('/showListOFCoupon', adminHandler.showListOFCoupon);
 app.get('/showPageName', adminHandler.showPageName);
 app.post('/createSystemUser', adminHandler.createSystemUser);
 app.post('/checkPermission', adminHandler.checkPermission);
->>>>>>> deepak
 
 
 
