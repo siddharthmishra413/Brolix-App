@@ -43,8 +43,8 @@ var gateway = braintree.connect({
 
 ///////////////////////////////////////////////////////
 var sha512 = require('js-sha512');
-var querystring = require('querystring'); 
-var https = require('https'); 
+var querystring = require('querystring');
+var https = require('https');
 
 // var data = querystring.stringify({ 
 //     merchantKey:"qZSnc2tX", 
@@ -57,34 +57,34 @@ var https = require('https');
 //     surl:"http://localhost:4001/login",
 //     furl:"http://localhost:4001/signup",
 //     service_provider:'payu_paisa'
-  
+
 // })
 
 var marchentKey = "3okpgP4T";
-var txnid='4945398';
-var amount=1000;
-var productinfo='Product 1';
-var firstname='sakshi';
-var email='sakshigadia1994@gmail.com';
-var phone='9015426958';
-var surl='http://localhost/success';
-var furl='http://localhost/fail';
-var service_provider='payu_paisa';
+var txnid = '4945398';
+var amount = 1000;
+var productinfo = 'Product 1';
+var firstname = 'sakshi';
+var email = 'sakshigadia1994@gmail.com';
+var phone = '9015426958';
+var surl = 'http://localhost/success';
+var furl = 'http://localhost/fail';
+var service_provider = 'payu_paisa';
 var salt = '8AdRj6TvKz';
-var string = marchentKey +'|' +txnid+ '|' +amount+'|'+productinfo+'|'+firstname+'|'+email+'|||||||||||'+salt;
-var data1 = querystring.stringify({ 
-    marchentKey:"3okpgP4T", 
-    txnid:'4945398',
-    amount:1000,
-    productinfo:'Product 1',
-    firstname:'sakshi',
-    email:'sakshigadia1994@gmail.com',
-    phone:'9015426958',
-    surl:'http://localhost/success',
-    furl:'http://localhost/fail',
-    service_provider:'payu_paisa',
+var string = marchentKey + '|' + txnid + '|' + amount + '|' + productinfo + '|' + firstname + '|' + email + '|||||||||||' + salt;
+var data1 = querystring.stringify({
+    marchentKey: "3okpgP4T",
+    txnid: '4945398',
+    amount: 1000,
+    productinfo: 'Product 1',
+    firstname: 'sakshi',
+    email: 'sakshigadia1994@gmail.com',
+    phone: '9015426958',
+    surl: 'http://localhost/success',
+    furl: 'http://localhost/fail',
+    service_provider: 'payu_paisa',
     salt: '8AdRj6TvKz',
-    hash:sha512(string)
+    hash: sha512(string)
 
     // string : "qZSnc2tX" +'|' +"4944995"+ '|' +1000+'|'+"Product 1"+'|'+"susheel"+'|'+"susheelyadav95@gmail.com"+'|'+"8800418935"+'|'+ "http://localhost/success" +'|'+"http://localhost/fail"+'|'+"payu_paisa"+'|||||||'+"2PcI9FTyys",
     // hash:sha512("qZSnc2tX" +'|' +"4944995"+ '|' +1000+'|'+"Product 1"+'|'+"susheel"+'|'+"susheelyadav95@gmail.com"+'|'+"8800418935"+'|'+ "http://localhost/success" +'|'+"http://localhost/fail"+'|'+"payu_paisa"+'|||||||'+"2PcI9FTyys")
@@ -103,140 +103,140 @@ var data1 = querystring.stringify({
 //         'Content-Length': Buffer.byteLength(data1), 
 //         'content': data1, 
 //         'accept': '*/*'
-        
+
 //     } 
 // };
 
-var data = querystring.stringify({ 
-    merchantKey:"3okpgP4T"
-    /*merchantTransactionIds:"4945362" */
-}); 
+var data = querystring.stringify({
+    merchantKey: "3okpgP4T"
+        /*merchantTransactionIds:"4945362" */
+});
 
-var options = { 
-    hostname: 'test.payumoney.com', 
-    port: 443, 
-    path: '/payment/op/getPaymentResponse?'+data, 
-    method: 'POST', 
-    headers: { 
-        'Content-Type': 'application/json', 
-        'Content-Length': Buffer.byteLength(data), 
-        'content': data, 
-        'accept': '*/*', 
-        'Authorization': '0SC8FamYqWnwFzVgYKmiCfSsT96xerU8E+WBUh/KDXc=' 
-    } 
+var options = {
+    hostname: 'test.payumoney.com',
+    port: 443,
+    path: '/payment/op/getPaymentResponse?' + data,
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data),
+        'content': data,
+        'accept': '*/*',
+        'Authorization': '0SC8FamYqWnwFzVgYKmiCfSsT96xerU8E+WBUh/KDXc='
+    }
 };
 //////////////////////////////////////////////////////////////////
 
 module.exports = {
 
-//////////////////////////////////////////////////////////////////
-//////////////////////////////payU////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////payU////////////////////////////////
 
-"payU" : function(request,response){
-    console.log(data);
-    var req = https.request(options, function(res) { 
-        console.log("res"+res);
-        
-    res.setEncoding('utf8'); 
-        res.on('data', function(chunk) {    // data will be available in callback 
-                console.log("body: " + chunk); 
-            }); 
-        }); 
-        req.on('error',function(e){ 
-          console.log('Error'+ e.message); 
-        }); 
-        req.write(data); 
+    "payU": function(request, response) {
+        console.log(data);
+        var req = https.request(options, function(res) {
+            console.log("res" + res);
+
+            res.setEncoding('utf8');
+            res.on('data', function(chunk) { // data will be available in callback 
+                console.log("body: " + chunk);
+            });
+        });
+        req.on('error', function(e) {
+            console.log('Error' + e.message);
+        });
+        req.write(data);
         req.end();
-},
+    },
 
-"paydU": function(request,  response){
-//     var querystring = require('querystring'); 
-// var http = require('https'); 
+    "paydU": function(request, response) {
+        //     var querystring = require('querystring'); 
+        // var http = require('https'); 
 
-var data = querystring.stringify({ 
-    merchantKey:"BBF7oOWI", 
-    merchantTransactionIds:"4945362" 
-}); 
-var options = { 
-    hostname: 'https://test.payu.in/_payment', 
-    port: 443, 
-    path: '/payment/op/getPaymentResponse?'+data, 
-    method: 'POST', 
-    headers: { 
-        'Content-Type': 'application/json', 
-        'Content-Length': Buffer.byteLength(data), 
-        'content': data, 
-        'accept': '*/*' 
-    } 
-}; 
+        var data = querystring.stringify({
+            merchantKey: "BBF7oOWI",
+            merchantTransactionIds: "4945362"
+        });
+        var options = {
+            hostname: 'https://test.payu.in/_payment',
+            port: 443,
+            path: '/payment/op/getPaymentResponse?' + data,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(data),
+                'content': data,
+                'accept': '*/*'
+            }
+        };
 
-var req = https.request(options, function(res) { 
-    res.setEncoding('utf8'); 
-    res.on('data', function(chunk) {    // data will be available in callback 
-        console.log("body: " + chunk); 
-    }); 
-}); 
-req.on('error',function(e){ 
-  console.log('Error'+ e.message); 
-}); 
-req.write(data); 
-req.end();
-},
+        var req = https.request(options, function(res) {
+            res.setEncoding('utf8');
+            res.on('data', function(chunk) { // data will be available in callback 
+                console.log("body: " + chunk);
+            });
+        });
+        req.on('error', function(e) {
+            console.log('Error' + e.message);
+        });
+        req.write(data);
+        req.end();
+    },
 
-////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
 
-"paymentClientToken": function(req, res){ 
-    gateway.clientToken.generate({}, function (err, response) {
-    console.log(response)
-    responseHandler.apiResponder(req, res, 200,"success", response.clientToken)
-  });
-},
+    "paymentClientToken": function(req, res) {
+        gateway.clientToken.generate({}, function(err, response) {
+            console.log(response)
+            responseHandler.apiResponder(req, res, 200, "success", response.clientToken)
+        });
+    },
 
-  "paymentIntegration": function(req, res){ 
-      waterfall([
-          function(callback){ 
-              // createNewAds.findOne({
-              //   _id: req.body.Id,
-              //   adsType:'coupon'
-              // }).exec(function(err, result){
-              //   if(err){      
-              //     res.send({
-              //           responseCode: 302,
-              //           responseMessage: 'error.',
-              //           result: err
-              //     });}
-              //   else if(!result){
-              //           res.send({
-              //           responseCode: 404,
-              //           responseMessage: 'data not found.'
-              //         //  result: result
-              //       });
-              //   }
-              //   else{
-                  var nextPay;
-                   // console.log("chefRefund==>>",result.chefRefund)
-                    // if(result.chefRefund == "Yes"){
-                    //   var amount = req.body.paymentDetails.amount;
-                    //   var serviceFee = amount/10 + parseInt(result.chefPay);
-                    //  // var nextPay = 0;
-                    //   console.log("amount"+amount);
-                    //   console.log("serviceFee"+serviceFee)
-                    //   if(serviceFee > amount){
-                    //     nextPay = serviceFee - amount;
-                    //      serviceFee = amount;
-                    //      console.log("nextPay"+nextPay)
-                    //   }
-                    // }else{
-                    //   console.log("wrong")
-                    //   var amount = req.body.paymentDetails.amount;
-                    //    var serviceFee = amount/10;
-                    //   // nextPay = 0;
-                    // }
-                    var amount = req.body.amount;
-                    var serviceFee = amount/10; 
-                      var transactionCost = amount*(2.9/100)+ 0.30;
-                      merchantAccountParams = {
-                      individual: {
+    "paymentIntegration": function(req, res) {
+        waterfall([
+            function(callback) {
+                // createNewAds.findOne({
+                //   _id: req.body.Id,
+                //   adsType:'coupon'
+                // }).exec(function(err, result){
+                //   if(err){      
+                //     res.send({
+                //           responseCode: 302,
+                //           responseMessage: 'error.',
+                //           result: err
+                //     });}
+                //   else if(!result){
+                //           res.send({
+                //           responseCode: 404,
+                //           responseMessage: 'data not found.'
+                //         //  result: result
+                //       });
+                //   }
+                //   else{
+                var nextPay;
+                // console.log("chefRefund==>>",result.chefRefund)
+                // if(result.chefRefund == "Yes"){
+                //   var amount = req.body.paymentDetails.amount;
+                //   var serviceFee = amount/10 + parseInt(result.chefPay);
+                //  // var nextPay = 0;
+                //   console.log("amount"+amount);
+                //   console.log("serviceFee"+serviceFee)
+                //   if(serviceFee > amount){
+                //     nextPay = serviceFee - amount;
+                //      serviceFee = amount;
+                //      console.log("nextPay"+nextPay)
+                //   }
+                // }else{
+                //   console.log("wrong")
+                //   var amount = req.body.paymentDetails.amount;
+                //    var serviceFee = amount/10;
+                //   // nextPay = 0;
+                // }
+                var amount = req.body.amount;
+                var serviceFee = amount / 10;
+                var transactionCost = amount * (2.9 / 100) + 0.30;
+                merchantAccountParams = {
+                    individual: {
                         firstName: req.body.firstName,
                         lastName: req.body.lastName,
                         email: req.body.email,

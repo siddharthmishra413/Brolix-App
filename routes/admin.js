@@ -5,15 +5,9 @@ var adminHandler = require('../file_handler/admin.js');
 
 
 app.post('/login', adminHandler.login);
-
-
 app.get('/adminProfile', adminHandler.adminProfile);
 app.post('/addNewUser', adminHandler.addNewUser);
-
-
 app.post('/sendBrolix', adminHandler.sendBrolix);
-
-
 app.get('/countrys', adminHandler.countrys);
 app.get('/getAllStates/:name/:code', adminHandler.getAllStates);
 app.get('/userProfile/:id', adminHandler.userProfile);
@@ -31,13 +25,7 @@ app.get('/winners', adminHandler.winners);
 app.get('/couponWinners', adminHandler.couponWinners);
 app.get('/cashWinners', adminHandler.cashWinners);
 app.get('/showAllBlockUser', adminHandler.showAllBlockUser);
-
 app.get('/blockUser/:userId', adminHandler.blockUser);
-
-
-
-
-/*---------------------------------------------------------------*/
 
 /*--------------------------Manage Cards--------------------------*/
 
@@ -51,9 +39,6 @@ app.get('/unUsedLuckCard', adminHandler.unUsedLuckCard);
 app.get('/usedUpgradeCard', adminHandler.usedUpgradeCard);
 app.get('/unUsedUpgradeCard', adminHandler.unUsedUpgradeCard);
 
-/*---------------------------------------------------------------*/
-
-
 /*-------------------------Manage ADS---------------------*/
 
 app.get('/totalAds', adminHandler.totalAds);
@@ -61,7 +46,6 @@ app.get('/totalActiveAds', adminHandler.totalActiveAds);
 app.get('/totalExpiredAds', adminHandler.totalExpiredAds);
 app.get('/videoAds', adminHandler.videoAds);
 app.get('/slideshowAds', adminHandler.slideshowAds);
-
 app.get('/totalPages/:pageNumber', adminHandler.totalPages);
 app.post('/blockPage', adminHandler.blockPage);
 app.get('/showAllBlockedPage', adminHandler.showAllBlockedPage);
@@ -76,7 +60,7 @@ app.post('/editCards', adminHandler.editCards);
 app.get('/showCardDetails/:id', adminHandler.showCardDetails);
 app.get('/removeCard/:id', adminHandler.removeCard);
 app.post('/createOfferOnCard', adminHandler.createOfferOnCard);
-app.post('/createPage',adminHandler.createPage);
+app.post('/createPage', adminHandler.createPage);
 app.post('/showOfferOnCards', adminHandler.showOfferOnCards);
 app.get('/showUserPage/:id', adminHandler.showUserPage);
 app.get('/adsOnPage/:id', adminHandler.adsOnPage);
@@ -119,23 +103,18 @@ app.get('/showListOFCoupon', adminHandler.showListOFCoupon);
 app.get('/showPageName', adminHandler.showPageName);
 app.post('/createSystemUser', adminHandler.createSystemUser);
 app.post('/checkPermission', adminHandler.checkPermission);
-
 app.post('/listOfAds', adminHandler.listOfAds);
 app.get('/listOfAllAds', adminHandler.listOfAllAds);
-
-/*----------------------------------------------------*/
-
-
 app.get('/allCountriesfind', adminHandler.allCountriesfind);
 app.post('/allstatefind', adminHandler.allstatefind);
-
-
 app.post('/sendCashBrolix', adminHandler.sendCashBrolix);
-
-
 app.post('/messageBroadcast', adminHandler.messageBroadcast);
-
 app.post('/uploadImage', adminHandler.uploadImage);
-app.post('/zipcodFunction', adminHandler.zipcodFunction); 
+app.post('/zipcodFunction', adminHandler.zipcodFunction);
+app.get('/topFiftyCashProviders', adminHandler.topFiftyCashProviders);
+app.get('/topFiftyCouponProviders', adminHandler.topFiftyCouponProviders);
+app.get('/adsWithLinks', adminHandler.adsWithLinks);
+
+
 
 module.exports = app;

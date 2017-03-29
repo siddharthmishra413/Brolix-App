@@ -172,7 +172,9 @@ var createNewAdsSchema = new Schema({
     adFollowers: [String],
     commentCount: { type: Number, default: 0 },
     reportOnAd: { type: Number, default: 0 },
-
+    promoteApp: {
+        type: Boolean
+    },
     createdAt: {
         type: Date,
         default: Date.now
