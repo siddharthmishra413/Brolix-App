@@ -41,7 +41,7 @@ app.post('/paymentIntegration', userHandler.paymentIntegration);
 app.post('/userCouponGifts', authUser.authUser, userHandler.userCouponGifts);
 app.post('/winnersFilter', authUser.authUser, userHandler.winnersFilter);
 app.post('/googleLogin', userHandler.googleLogin);
-app.post('/buyCoupon', authUser.authUser, userHandler.buyCoupon);
+app.post('/buyCoupon', userHandler.buyCoupon);
 app.post('/userCashGifts', authUser.authUser, userHandler.userCashGifts);
 app.post('/addRemoveCouponFromFavourite', authUser.authUser, userHandler.addRemoveCouponFromFavourite);
 app.post('/listOfFavouriteCoupon/:pageNumber', authUser.authUser, userHandler.listOfFavouriteCoupon);

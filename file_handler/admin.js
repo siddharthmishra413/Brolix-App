@@ -10,6 +10,7 @@ var functionHandler = require('./functionHandler.js')
 var multiparty = require('multiparty');
 var cloudinary = require('cloudinary');
 var gps = require('gps2zip'); 
+var waterfall = require('async-waterfall');
 
 const cities = require("cities-list");
 //console.log(cities) // WARNING: this will print out the whole object 
@@ -1039,32 +1040,60 @@ module.exports = {
     var condition = { $and: [] };
     var todayDate = new Date();
     var newTodayDate = new Date();
-    var data = req.body.pageType;
+    var data = req.body.adsType;
 
     waterfall([
         function(callback){
-            if(data== "unpublishedPages"){
-                    createNewAds.find({},'pageId',function(err, result){
-                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No page found" })
-                       var result = result.map(function(a) {return a.pageId;});
-                       var allPageIds = _.uniq(result);
-                       callback(null, allPageIds)
-                   // createNewPage.find({_id:{$nin:allPageIds}},function(err, result){
-                   // res.send({ responseCode: 200, responseMessage: 'Here all the Unsuscribe pages', data:result })
-                   // })
+            if(data== "reportedAds" || data == "adsWithLinks" || data == "upgradedAdsBy$" || data == "upgradedAdsByB"){
+                createNewAds.find({}).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                        var array = [];
+                        if(data=="reportedAds"){
+                            for (var i = 0; i < result.length; i++) {
+                                if (result[i].reportOnAd > 0) {
+                                    array.push(result[i]._id)
+                                }
+                            }  
+                        }
+                        if(data=='adsWithLinks'){
+                            for (var i = 0; i < result.length; i++) {
+                                if (result[i].promoteApp == true) {
+                                    array.push(result[i]._id)
+                                }
+                            } 
+                        }
+                        if(data=='upgradedAdsBy$'){
+                            for (var i = 0; i < result.length; i++) {
+                                if (result[i].cash > 0) {
+                                    array.push(result[i]._id)
+                                }
+                            } 
+                        }
+                        if(data=='upgradedAdsByB'){
+                            for (var i = 0; i < result.length; i++) {
+                                if (result[i].couponPurchased > 0) {
+                                    array.push(result[i]._id)
+                                }
+                            } 
+                        }
+                       
+                        // createNewAds.find({ _id: { $in: array } }).exec(function(err, result1) {
+                        //     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                        //     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } 
+                        //     else {
+                            
+                                callback(null, array)
+                        //     }
+                        // })
+                    }
                 })
             }
             else{
                 callback(null, "null")
             }
         },
-        function(allPageIds,callback){
+        function(allAdsIds,callback){
             switch(data){
-              case 'totalAds':
-              var updateData = { status: 'ACTIVE' };
-              condition.$and.push(updateData)
-              break;
-
               case 'activeAds':
               var updateData = { status: "ACTIVE" };
               condition.$and.push(updateData)
@@ -1076,12 +1105,12 @@ module.exports = {
               break;
 
               case 'reportedAds':
-              var updateData = { };
+              var updateData = { _id: { $in: allAdsIds }};
               condition.$and.push(updateData)
               break;
 
               case 'adsWithLinks':
-              var updateData = { };
+              var updateData = { _id: { $in: allAdsIds }};
               condition.$and.push(updateData)
               break;
 
@@ -1096,12 +1125,12 @@ module.exports = {
               break;
 
               case 'upgradedAdsBy$':
-              var updateData = { };
+              var updateData = { _id: { $in: allAdsIds }};
               condition.$and.push(updateData)
               break;
 
               case 'upgradedAdsByB':
-              var updateData = { };
+              var updateData = { _id: { $in: allAdsIds }};
               condition.$and.push(updateData)
               break;
  
@@ -1121,21 +1150,39 @@ module.exports = {
                 })
             }
 
-
-            if(req.body.country && req.body.joinTo){
-                condition.$and.push({
-                    createdAt: {$gte:new Date(req.body.joinFrom).toUTCString(),$lte:new Date(req.body.joinTo).toUTCString()}
-                })
+            if(req.body.country){
+                var data = {'whoWillSeeYourAdd.country':req.body.country}
+               condition.$and.push(data)
+            }
+             if(req.body.state){
+                var data = {'whoWillSeeYourAdd.state':req.body.state}
+               condition.$and.push(data)
+            }
+             if(req.body.city){
+                var data = {'whoWillSeeYourAdd.city':req.body.city}
+               condition.$and.push(data)
             }
 
-        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-         
-                    if (!(key == "pageType" || key == "joinFrom" || key == "joinTo" )) {
-                        var tempCond={};
-                        tempCond[key]=req.body[key];
-                        condition.$and.push(tempCond)
-                    }
-        });
+        // Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+        //             if (!(key == "adsType" || key == "joinFrom" || key == "joinTo" )) {
+        //                 var tempCond={};
+        //                 if(req.body.country){
+        //                     var data = {'whoWillSeeYourAdd.country':req.body[key]}
+        //                    condition.$and.push(data)
+        //                 }
+        //                  if(req.body.state){
+        //                     var data = {'whoWillSeeYourAdd.state':req.body[key]}
+        //                    condition.$and.push(data)
+        //                 }
+        //                  if(req.body.city){
+        //                     var data = {'whoWillSeeYourAdd.country':req.body[key]}
+        //                    condition.$and.push(data)
+        //                 }
+        //                // tempCond[key]=req.body[key];
+        //                 //console.log("tempCOndition===>"+JSON.stringify(tempCond))
+        //                 // condition.$and.push(data)
+        //             }
+        // });
         if (condition.$and.length == 0) {
             delete condition.$and;
         }
@@ -1147,7 +1194,7 @@ module.exports = {
         createNewAds.find(condition,function(err, result){
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                 else{
-                    console.log("result;;;>"+result)
+                  //  console.log("result;;;>"+result)
                     callback(null,result,condition)
                 }
 
@@ -1155,7 +1202,7 @@ module.exports = {
         }
 
     ],function(err, result,condition){
-       res.send({ responseCode: 200, responseMessage: 'Filtered Users',data:result
+       res.send({ responseCode: 200, responseMessage: 'Filtered Ads.',data:result
       });
     })
 },

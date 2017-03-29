@@ -119,6 +119,8 @@ app.get('/showListOFCoupon', adminHandler.showListOFCoupon);
 app.get('/showPageName', adminHandler.showPageName);
 app.post('/createSystemUser', adminHandler.createSystemUser);
 app.post('/checkPermission', adminHandler.checkPermission);
+app.post('/adsfilter', adminHandler.adsfilter);
+
 
 app.post('/listOfAds', adminHandler.listOfAds);
 app.get('/listOfAllAds', adminHandler.listOfAllAds);

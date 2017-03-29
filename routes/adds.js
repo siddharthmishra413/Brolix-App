@@ -4,7 +4,7 @@ var adsHandler = require('../file_handler/ads.js');
 var authUser = require('../middlewares/authUser');
 
 
-app.post('/createAds', authUser.authUser, adsHandler.createAds);
+app.post('/createAds', adsHandler.createAds);
 app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
 app.get('/showAllAdsCouponType/:id/:pageNumber', authUser.authUser, adsHandler.showAllAdsCouponType);
 app.get('/showAllAdsCashType/:id/:pageNumber', authUser.authUser, adsHandler.showAllAdsCashType);

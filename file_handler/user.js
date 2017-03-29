@@ -60,7 +60,7 @@ var https = require('https');
   
 // })
 
-var marchentKey = "3okpgP4T";
+var marchentKey = "gtKFFx";
 var txnid='4945398';
 var amount=1000;
 var productinfo='Product 1';
@@ -70,10 +70,10 @@ var phone='9015426958';
 var surl='http://localhost/success';
 var furl='http://localhost/fail';
 var service_provider='payu_paisa';
-var salt = '8AdRj6TvKz';
+var salt = 'eCwWELxi';
 var string = marchentKey +'|' +txnid+ '|' +amount+'|'+productinfo+'|'+firstname+'|'+email+'|||||||||||'+salt;
 var data1 = querystring.stringify({ 
-    marchentKey:"3okpgP4T", 
+    marchentKey:"gtKFFx", 
     txnid:'4945398',
     amount:1000,
     productinfo:'Product 1',
@@ -83,7 +83,7 @@ var data1 = querystring.stringify({
     surl:'http://localhost/success',
     furl:'http://localhost/fail',
     service_provider:'payu_paisa',
-    salt: '8AdRj6TvKz',
+    salt: 'eCwWELxi',
     hash:sha512(string)
 
     // string : "qZSnc2tX" +'|' +"4944995"+ '|' +1000+'|'+"Product 1"+'|'+"susheel"+'|'+"susheelyadav95@gmail.com"+'|'+"8800418935"+'|'+ "http://localhost/success" +'|'+"http://localhost/fail"+'|'+"payu_paisa"+'|||||||'+"2PcI9FTyys",
@@ -92,39 +92,39 @@ var data1 = querystring.stringify({
 
 
 
-// var optionsNew = { 
-//         'Content-Type': 'application/json', 
-//     hostname: 'test.payumoney.com', 
-//     port: 443, 
-//     path: '/payment/payment/createPayment'+data1, 
-//     method: 'POST', 
-//     headers: { 
-//         'Content-Type': 'application/json', 
-//         'Content-Length': Buffer.byteLength(data1), 
-//         'content': data1, 
-//         'accept': '*/*'
-        
-//     } 
-// };
-
-var data = querystring.stringify({ 
-    merchantKey:"3okpgP4T"
-    /*merchantTransactionIds:"4945362" */
-}); 
-
-var options = { 
+var optionsNew = { 
+        'Content-Type': 'application/json', 
     hostname: 'test.payumoney.com', 
     port: 443, 
-    path: '/payment/op/getPaymentResponse?'+data, 
+    path: '/payment/payment/createPayment'+data1, 
     method: 'POST', 
     headers: { 
         'Content-Type': 'application/json', 
-        'Content-Length': Buffer.byteLength(data), 
-        'content': data, 
-        'accept': '*/*', 
-        'Authorization': '0SC8FamYqWnwFzVgYKmiCfSsT96xerU8E+WBUh/KDXc=' 
+        'Content-Length': Buffer.byteLength(data1), 
+        'content': data1, 
+        'accept': '*/*'
+        
     } 
 };
+
+// var data = querystring.stringify({ 
+//     merchantKey:"gtKFFx"
+//     /*merchantTransactionIds:"4945362" */
+// }); 
+
+// var options = { 
+//     hostname: 'test.payumoney.com', 
+//     port: 443, 
+//     path: '/payment/op/getPaymentResponse?'+data, 
+//     method: 'POST', 
+//     headers: { 
+//         'Content-Type': 'application/json', 
+//         'Content-Length': Buffer.byteLength(data), 
+//         'content': data, 
+//         'accept': '*/*', 
+//         'Authorization': '0SC8FamYqWnwFzVgYKmiCfSsT96xerU8E+WBUh/KDXc=' 
+//     } 
+// };
 //////////////////////////////////////////////////////////////////
 
 module.exports = {
@@ -133,19 +133,23 @@ module.exports = {
 //////////////////////////////payU////////////////////////////////
 
 "payU" : function(request,response){
-    console.log(data);
-    var req = https.request(options, function(res) { 
-        console.log("res"+res);
+    console.log(data1);
+    var req = https.request(optionsNew, function(res) { 
+        console.log("res");
+        console.log(res.txnid);
+        res.json({
+            res: res
+        })
         
     res.setEncoding('utf8'); 
-        res.on('data', function(chunk) {    // data will be available in callback 
+        res.on('data1', function(chunk) {    // data will be available in callback 
                 console.log("body: " + chunk); 
             }); 
         }); 
         req.on('error',function(e){ 
           console.log('Error'+ e.message); 
         }); 
-        req.write(data); 
+        req.write(data1); 
         req.end();
 },
 
