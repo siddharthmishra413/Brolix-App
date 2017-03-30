@@ -1815,27 +1815,27 @@ module.exports = {
     "addNewCoupon": function(req, res) {
         console.log("---addNewCoupon---")
         if (req.body.pageName == undefined || req.body.pageName == null || req.body.pageName == '') { res.send({ responseCode: 403, responseMessage: 'Please enter pageName' }); } else {
-        var obj = {
-            pageId: req.body.pageId,
-            pageName: req.body.pageName,
-            coverImage: req.body.coverImage,
-            giftDescription: req.body.giftDescription,
-            couponExpiryDate: req.body.couponExpiryDate,
-            adsType: "ADMINCOUPON",
-            sellCoupon: false,
-            couponSellPrice: 0
-        };
-        var coupon = createNewAds(obj)
-        coupon.save(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                        res.send({ result: result, responseCode: 200, responseMessage: "Coupon created successfully" });
-                    }
-                })
-            }
-        })
-    }
+            var obj = {
+                pageId: req.body.pageId,
+                pageName: req.body.pageName,
+                coverImage: req.body.coverImage,
+                giftDescription: req.body.giftDescription,
+                couponExpiryDate: req.body.couponExpiryDate,
+                adsType: "ADMINCOUPON",
+                sellCoupon: false,
+                couponSellPrice: 0
+            };
+            var coupon = createNewAds(obj)
+            coupon.save(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                    createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                            res.send({ result: result, responseCode: 200, responseMessage: "Coupon created successfully" });
+                        }
+                    })
+                }
+            })
+        }
     },
 
 
@@ -1881,7 +1881,7 @@ module.exports = {
     },
 
     "showPageName": function(req, res) {
-        createNewPage.find({status:'ACTIVE'}, 'pageName').exec(function(err, result) {
+        createNewPage.find({ status: 'ACTIVE' }, 'pageName').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: "All page with name shown successfully" })
             }
