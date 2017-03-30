@@ -57,9 +57,7 @@
               if (error) {
                   console.log("internal server error");
               }
-
           });
-
       },
 
       "android_notification": function(deviceToken, message) {

@@ -10,7 +10,7 @@ app.post('/addNewUser', adminHandler.addNewUser);
 app.post('/sendBrolix', adminHandler.sendBrolix);
 app.get('/countrys', adminHandler.countrys);
 app.get('/getAllStates/:name/:code', adminHandler.getAllStates);
-app.get('/userProfile/:id', adminHandler.userProfile);
+app.get('/viewProfile/:id', adminHandler.viewProfile);
 app.put('/editUserProfile/:id', adminHandler.editUserProfile);
 app.get('/totalPages', adminHandler.totalPages);
 app.get('/viewPage/:id', adminHandler.viewPage);
@@ -114,7 +114,10 @@ app.post('/zipcodFunction', adminHandler.zipcodFunction);
 app.get('/topFiftyCashProviders', adminHandler.topFiftyCashProviders);
 app.get('/topFiftyCouponProviders', adminHandler.topFiftyCouponProviders);
 app.get('/adsWithLinks', adminHandler.adsWithLinks);
-
+app.get('/postCouponToStore/:id', adminHandler.postCouponToStore);
+app.get('/listOfSystemAdmin', adminHandler.listOfSystemAdmin);
+app.get('/removeSystemAdmin/:id', adminHandler.removeSystemAdmin);
+app.put('/editSystemAdmin/:id', adminHandler.editSystemAdmin);
 
 
 module.exports = app;
