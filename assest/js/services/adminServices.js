@@ -277,6 +277,32 @@ app.service('userService',function($http){
       return $http.post('/admin/zipcodFunction', data);
     },
 
+    /*Admin Tool Section*/
+
+    createSystemUser: function(data){
+      return $http.post('http://172.16.6.171:8082/admin/createSystemUser', data);
+    },
+
+    listOfSystemAdmin: function(data){
+      return $http.get('http://172.16.6.171:8082/admin/listOfSystemAdmin');
+    },
+
+    removeSystemAdmin: function(id){
+      return $http.get('http://172.16.6.171:8082/admin/removeSystemAdmin/'+id);
+    },
+
+    viewProfile: function(id){
+      return $http.get('http://172.16.6.171:8082/admin/viewProfile/'+id);
+    },
+
+    editSystemAdmin: function(id,data){
+      return $http.put('http://172.16.6.171:8082/admin/editSystemAdmin/'+id, data);
+    },
+
+    showReport: function(data){
+      return $http.get('http://172.16.6.171:8082/report/showReport');
+    }
+
   }
 
 });

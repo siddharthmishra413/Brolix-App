@@ -1,0 +1,26 @@
+<div class="col-sm-12">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" >
+            <tr>
+                <th>Name</th>
+                <th>Country</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>ReportType</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Reported Time</th>  
+            </tr>
+            <tr ng-repeat="x in allReports">
+                <td>{{x.userId.firstName}} {{x.userId.lastName}}</td>
+                <td>{{x.userId.country}}</td>
+                <td>{{x.userId.email}}</td>
+                <td>{{x.userId.mobileNumber}}</td>
+                <td>{{x.reportType}}</td>
+                <td>{{x.subject}}</td>
+                <td>{{x.status}}</td>
+                <td>{{x.createdAt | date:'MMMM dd, yyyy' }}</td>
+            </tr> 
+        </table>
+    </div>
+</div>

@@ -361,6 +361,9 @@ ul.alert-dropdown {
 .offerbtn-s .top-box{padding-top:0; padding-left: 0;}
 h4{color: #00b288;  font-family: "Open Sans",sans-serif !important;  font-size: 18px;   font-weight: 600;}
 
+.table-a{background: #35b387;color: #fff;min-width: 80px;display: inline-block;text-align: center;
+    padding: 5px;margin: 6px 5px 6px 0;}
+.table-a:hover{color: #fff;}
 
 
 

@@ -165,6 +165,21 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'addAdminCouponCtrl',
             templateUrl: 'templates/addAdminCoupon.html'
         })
+  .state('header.editSystemUser', {
+            url: '/editSystemUser/:id',
+            controller: 'editSystemUserCtrl',
+            templateUrl: 'templates/editSystemUser.html'
+        })
+  .state('header.adminReports', {
+            url: '/adminReports',
+            controller: 'adminReportsCtrl',
+            templateUrl: 'templates/adminReports.html'
+        })
+  .state('header.termsAndCondition', {
+            url: '/termsAndCondition',
+            controller: 'termsAndConditionCtrl',
+            templateUrl: 'templates/termsAndCondition.html'
+        })
 
 
     $urlRouterProvider.otherwise('/login');

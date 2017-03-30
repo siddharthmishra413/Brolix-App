@@ -1,70 +1,32 @@
-<!-- <div class="top-header">
-        <a href="#" class="brand-logo">Brolix</a>
+<div class="col-sm-12">
+    <a class="table-a">Add New Coupons</a>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>S.No</th>
+                <th>Page Name</th>
+                <th>Expiry Date</th>
+                <th>Gift Description</th>
+                <th>Post</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Brolix</td>
+                <td>3 Week</td>
+                <td>hgjkhsdfghfgjhjkdfsghjkdf hjgshkfjgsfjkdfjhg hjgsdfgjkshjdfgfh</td>
+                <td>B 250</td>
+                <td><a class="table-a">View</a><a class="table-a">Edit</a><a class="table-a">Post</a><a class="table-a">Remove</a></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Brolix</td>
+                <td>3 Week</td>
+                <td>hgjkhsdfghfgjhjkdfsghjkdf hjgshkfjgsfjkdfjhg hjgsdfgjkshjdfgfh</td>
+                <td>B 250</td>
+                <td><a class="table-a">View</a><a class="table-a">Edit</a><a class="table-a">Post</a><a class="table-a">Remove</a></td>
+            </tr>
+        </table>
     </div>
- -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add Admin Coupons</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-                            <form class="form-block" role="form" name="userFrom">
-                                <fieldset>
-                                    <div class="cover-image" >
-                                        <img class="profile-user-img img-responsive" src="{{user.photo || '../dist/image/cover.jpg'}}" id="output">
-                                        <label class="fileContainer">
-                                            Choose File
-                                            <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                        </label>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <label class="control-label col-md-3">Page Name</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" name="lastName" ng-model="myFrom.lastName" placeholder="Last Name" maxlength="31" ng-maxlength="30" required> 
-                                                <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid">
-                                                <span ng-show="userFrom.lastName.$error.required">Last name is required.</span>
-                                                <span ng-show="userFrom.lastName.$error.maxlength">Your last name should contain max 30 characters.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <label class="control-label col-md-3">Expiry Date</label>
-                                            <div class="col-md-9">
-                                                <input type="date" class="form-control" name="dob" ng-model="myFrom.dob" placeholder="Date of Birth"> 
-                                                <span style="color:red;" ng-show="userFrom.dob.$dirty && userFrom.dob.$invalid">
-                                                <span ng-show="userFrom.dob.$error.required">Date of birth is required.</span> 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <label class="control-label col-md-3">Gift description</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" name="email" ng-model="myFrom.email" placeholder="Email" maxlength="71" ng-maxlength="70" required>
-                                                <span style="color:red;" ng-show="userFrom.email.$dirty && userFrom.email.$invalid">
-                                                <span ng-show="userFrom.email.$error.required">Email is required.</span>
-                                                <span ng-show="userFrom.email.$error.email">Invalid email address.</span>
-                                                <span style="color:red;" ng-show="userFrom.email.$error.maxlength">This email address is too long.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    
-                                    <!-- Change this to a button or input when using this as a form -->
-                                    <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid" ng-click="addUser()">Add</a>
-                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid" ng-click="cancel()">Cancel</a>
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+
