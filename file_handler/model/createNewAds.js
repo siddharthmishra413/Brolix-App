@@ -163,11 +163,12 @@ var createNewAdsSchema = new Schema({
         type: Number
     },
     hiddenGifts: [],
+    permissions: [],
     tag: [{
         userId: { type: String },
         senderId: []
     }],
-
+    viewersAdded: { type: Number },
     adFollowers: [String],
     commentCount: { type: Number, default: 0 },
     reportOnAd: { type: Number, default: 0 },

@@ -41,60 +41,202 @@ var gateway = braintree.connect({
     privateKey: "f3ffe3376878b6d1a0eff16c9099127d"
 });
 
+///////////////////////////////////////////////////////
+var sha512 = require('js-sha512');
+var querystring = require('querystring'); 
+var https = require('https'); 
+
+// var data = querystring.stringify({ 
+//     merchantKey:"qZSnc2tX", 
+//     merchantTransactionIds:"4944995",
+//     amount:"100",
+//     productinfo:"hhhhhh",
+//     productinfo:'susheel',
+//     email:"susheelyadav95@gmail.com",
+//     phone:"8800418935",
+//     surl:"http://localhost:4001/login",
+//     furl:"http://localhost:4001/signup",
+//     service_provider:'payu_paisa'
+  
+// })
+
+var marchentKey = "3okpgP4T";
+var txnid='4945398';
+var amount=1000;
+var productinfo='Product 1';
+var firstname='sakshi';
+var email='sakshigadia1994@gmail.com';
+var phone='9015426958';
+var surl='http://localhost/success';
+var furl='http://localhost/fail';
+var service_provider='payu_paisa';
+var salt = '8AdRj6TvKz';
+var string = marchentKey +'|' +txnid+ '|' +amount+'|'+productinfo+'|'+firstname+'|'+email+'|||||||||||'+salt;
+var data1 = querystring.stringify({ 
+    marchentKey:"3okpgP4T", 
+    txnid:'4945398',
+    amount:1000,
+    productinfo:'Product 1',
+    firstname:'sakshi',
+    email:'sakshigadia1994@gmail.com',
+    phone:'9015426958',
+    surl:'http://localhost/success',
+    furl:'http://localhost/fail',
+    service_provider:'payu_paisa',
+    salt: '8AdRj6TvKz',
+    hash:sha512(string)
+
+    // string : "qZSnc2tX" +'|' +"4944995"+ '|' +1000+'|'+"Product 1"+'|'+"susheel"+'|'+"susheelyadav95@gmail.com"+'|'+"8800418935"+'|'+ "http://localhost/success" +'|'+"http://localhost/fail"+'|'+"payu_paisa"+'|||||||'+"2PcI9FTyys",
+    // hash:sha512("qZSnc2tX" +'|' +"4944995"+ '|' +1000+'|'+"Product 1"+'|'+"susheel"+'|'+"susheelyadav95@gmail.com"+'|'+"8800418935"+'|'+ "http://localhost/success" +'|'+"http://localhost/fail"+'|'+"payu_paisa"+'|||||||'+"2PcI9FTyys")
+})
+
+
+
+// var optionsNew = { 
+//         'Content-Type': 'application/json', 
+//     hostname: 'test.payumoney.com', 
+//     port: 443, 
+//     path: '/payment/payment/createPayment'+data1, 
+//     method: 'POST', 
+//     headers: { 
+//         'Content-Type': 'application/json', 
+//         'Content-Length': Buffer.byteLength(data1), 
+//         'content': data1, 
+//         'accept': '*/*'
+        
+//     } 
+// };
+
+var data = querystring.stringify({ 
+    merchantKey:"3okpgP4T"
+    /*merchantTransactionIds:"4945362" */
+}); 
+
+var options = { 
+    hostname: 'test.payumoney.com', 
+    port: 443, 
+    path: '/payment/op/getPaymentResponse?'+data, 
+    method: 'POST', 
+    headers: { 
+        'Content-Type': 'application/json', 
+        'Content-Length': Buffer.byteLength(data), 
+        'content': data, 
+        'accept': '*/*', 
+        'Authorization': '0SC8FamYqWnwFzVgYKmiCfSsT96xerU8E+WBUh/KDXc=' 
+    } 
+};
+//////////////////////////////////////////////////////////////////
+
 module.exports = {
 
-    "paymentClientToken": function(req, res) {
-        gateway.clientToken.generate({}, function(err, response) {
-            console.log(response)
-            responseHandler.apiResponder(req, res, 200, "success", response.clientToken)
-        });
-    },
+//////////////////////////////////////////////////////////////////
+//////////////////////////////payU////////////////////////////////
 
-    "paymentIntegration": function(req, res) {
-        waterfall([
-            function(callback) {
-                // createNewAds.findOne({
-                //   _id: req.body.Id,
-                //   adsType:'coupon'
-                // }).exec(function(err, result){
-                //   if(err){      
-                //     res.send({
-                //           responseCode: 302,
-                //           responseMessage: 'error.',
-                //           result: err
-                //     });}
-                //   else if(!result){
-                //           res.send({
-                //           responseCode: 404,
-                //           responseMessage: 'data not found.'
-                //         //  result: result
-                //       });
-                //   }
-                //   else{
-                var nextPay;
-                // console.log("chefRefund==>>",result.chefRefund)
-                // if(result.chefRefund == "Yes"){
-                //   var amount = req.body.paymentDetails.amount;
-                //   var serviceFee = amount/10 + parseInt(result.chefPay);
-                //  // var nextPay = 0;
-                //   console.log("amount"+amount);
-                //   console.log("serviceFee"+serviceFee)
-                //   if(serviceFee > amount){
-                //     nextPay = serviceFee - amount;
-                //      serviceFee = amount;
-                //      console.log("nextPay"+nextPay)
-                //   }
-                // }else{
-                //   console.log("wrong")
-                //   var amount = req.body.paymentDetails.amount;
-                //    var serviceFee = amount/10;
-                //   // nextPay = 0;
-                // }
-                var amount = req.body.amount;
-                var serviceFee = amount / 10;
-                var transactionCost = amount * (2.9 / 100) + 0.30;
-                merchantAccountParams = {
-                    individual: {
+"payU" : function(request,response){
+    console.log(data);
+    var req = https.request(options, function(res) { 
+        console.log("res"+res);
+        
+    res.setEncoding('utf8'); 
+        res.on('data', function(chunk) {    // data will be available in callback 
+                console.log("body: " + chunk); 
+            }); 
+        }); 
+        req.on('error',function(e){ 
+          console.log('Error'+ e.message); 
+        }); 
+        req.write(data); 
+        req.end();
+},
+
+"paydU": function(request,  response){
+//     var querystring = require('querystring'); 
+// var http = require('https'); 
+
+var data = querystring.stringify({ 
+    merchantKey:"BBF7oOWI", 
+    merchantTransactionIds:"4945362" 
+}); 
+var options = { 
+    hostname: 'https://test.payu.in/_payment', 
+    port: 443, 
+    path: '/payment/op/getPaymentResponse?'+data, 
+    method: 'POST', 
+    headers: { 
+        'Content-Type': 'application/json', 
+        'Content-Length': Buffer.byteLength(data), 
+        'content': data, 
+        'accept': '*/*' 
+    } 
+}; 
+
+var req = https.request(options, function(res) { 
+    res.setEncoding('utf8'); 
+    res.on('data', function(chunk) {    // data will be available in callback 
+        console.log("body: " + chunk); 
+    }); 
+}); 
+req.on('error',function(e){ 
+  console.log('Error'+ e.message); 
+}); 
+req.write(data); 
+req.end();
+},
+
+////////////////////////////////////////////////////////////////////
+
+"paymentClientToken": function(req, res){ 
+    gateway.clientToken.generate({}, function (err, response) {
+    console.log(response)
+    responseHandler.apiResponder(req, res, 200,"success", response.clientToken)
+  });
+},
+
+  "paymentIntegration": function(req, res){ 
+      waterfall([
+          function(callback){ 
+              // createNewAds.findOne({
+              //   _id: req.body.Id,
+              //   adsType:'coupon'
+              // }).exec(function(err, result){
+              //   if(err){      
+              //     res.send({
+              //           responseCode: 302,
+              //           responseMessage: 'error.',
+              //           result: err
+              //     });}
+              //   else if(!result){
+              //           res.send({
+              //           responseCode: 404,
+              //           responseMessage: 'data not found.'
+              //         //  result: result
+              //       });
+              //   }
+              //   else{
+                  var nextPay;
+                   // console.log("chefRefund==>>",result.chefRefund)
+                    // if(result.chefRefund == "Yes"){
+                    //   var amount = req.body.paymentDetails.amount;
+                    //   var serviceFee = amount/10 + parseInt(result.chefPay);
+                    //  // var nextPay = 0;
+                    //   console.log("amount"+amount);
+                    //   console.log("serviceFee"+serviceFee)
+                    //   if(serviceFee > amount){
+                    //     nextPay = serviceFee - amount;
+                    //      serviceFee = amount;
+                    //      console.log("nextPay"+nextPay)
+                    //   }
+                    // }else{
+                    //   console.log("wrong")
+                    //   var amount = req.body.paymentDetails.amount;
+                    //    var serviceFee = amount/10;
+                    //   // nextPay = 0;
+                    // }
+                    var amount = req.body.amount;
+                    var serviceFee = amount/10; 
+                      var transactionCost = amount*(2.9/100)+ 0.30;
+                      merchantAccountParams = {
+                      individual: {
                         firstName: req.body.firstName,
                         lastName: req.body.lastName,
                         email: req.body.email,
@@ -301,7 +443,6 @@ module.exports = {
             })
         }
     },
-
 
     //API for verify Otp
     "verifyOtp": function(req, res, next) {
@@ -633,82 +774,9 @@ module.exports = {
                 }
             })
         } else {
-
             res.status(200).send({ responseMessage: "Enter the proper number of brolix" });
         }
 
-    },
-
-    "success": function(req, res) {
-        console.log("req data-->" + JSON.stringify(req.body));
-        res.send("Payment transfered successfully.");
-    },
-
-    // Api For Reedem Cash
-    "redeemCash": function(req, res) {
-        // paypal payment configuration.
-        var payment = {
-            "intent": "sale",
-            "payer": {
-                "payment_method": "paypal"
-            },
-            "redirect_urls": {
-                "return_url": 'http://localhost:8000/success',
-                "cancel_url": app.locals.baseurl + "/cancel"
-            },
-            "transactions": [{
-                "amount": {
-                    "total": parseInt(req.body.cash),
-                    "currency": req.body.currency
-                        // "transactions_ID": req.body.transactions_ID
-                },
-                "description": req.body.description
-            }]
-        };
-        paypal.payment.create(payment, function(error, payment) {
-            if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                if (payment.payer.payment_method === 'paypal') {
-                    req.paymentId = payment.id;
-                    var redirectUrl;
-                    console.log("payment", payment);
-                    console.log("requestbody", JSON.stringify(req.body))
-                    console.log("currency", JSON.stringify(req.body.currency))
-
-                    var amount = req.body.cash;
-                    console.log("amount-------", amount)
-                    User.findOne({ _id: req.body.userId }, function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-                        else if (result.cash < req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "transferAmountListObject": { amount: amount, adId: req.body.adId } } }, { new: true }, function(err, results) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-                                else {
-                                    results.cash -= req.body.cash;
-                                    results.save();
-                                    for (var i = 0; i < payment.links.length; i++) {
-                                        var link = payment.links[i];
-                                        if (link.method === 'REDIRECT') {
-                                            redirectUrl = link.href;
-                                        }
-                                    }
-                                    console.log("paymentttt", JSON.stringify(payment.transactions));
-                                    //res.redirect(redirectUrl);
-                                    res.send({
-                                        responseCode: 200,
-                                        responseMessage: "You have successfully transferred your amount"
-
-                                    });
-                                }
-                            });
-                        }
-                    })
-                }
-            }
-        });
-    },
-
-    "cancel": function(req, res) {
-        console.log("req data-->" + JSON.stringify(req.body));
-        res.send("Payment canceled successfully.");
     },
 
     "sendBrolixToFollower": function(req, res) { // senderId, receiverId, brolix
@@ -778,29 +846,44 @@ module.exports = {
 
     },
 
-    // Api for Send Cash to Follower    
     "sendCashToFollower": function(req, res) { // userId, receiverId, cash in request
-        User.findOne({ _id: req.body.userId }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-            else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
-                result.cash -= req.body.cash;
-                result.save();
-
-                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } } }, { new: true }, function(err, user) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
-                    else {
-                        user.cash += req.body.cash;
-                        user.save();
-                        res.send({
-                            responseCode: 200,
-                            responseMessage: "You have successfully transferred your cash.",
-                            result: result
-
+        waterfall([
+            function(callback) {
+                var receiverId = req.body.receiverId;
+                var senderId = req.body.userId;
+                User.findOne({ _id: receiverId }, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) } else {
+                        callback(null)
+                    }
+                })
+            },
+            function(callback) {
+                var senderId = req.body.userId;
+                var receiverId = req.body.receiverId;
+                User.findOne({ _id: senderId }, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                    else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
+                        result.cash -= req.body.cash;
+                        result.save();
+                        User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendCashListObject": { senderId: senderId, cash: req.body.cash } } }, { new: true }, function(err, user) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
+                            else {
+                                user.cash += req.body.cash;
+                                user.save();
+                                //callback(null, user)
+                            }
                         });
+                        callback(null, result)
                     }
                 });
-            }
-        });
+            },
+        ], function(err, result) {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "You have successfully transferred your cash."
+            });
+        })
     },
 
 
@@ -1022,7 +1105,7 @@ module.exports = {
                 result.brolix -= sum;
                 result.save();
                 res.send({
-                  //  result: result,
+                    //  result: result,
                     responseCode: 200,
                     responseMessage: "successfully purchased the luck card"
                 });
@@ -1179,7 +1262,6 @@ module.exports = {
             }
         })
     },
-
 
     "userCashGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
@@ -1455,7 +1537,7 @@ module.exports = {
                             type: "PURCHASED"
                         }
                         console.log("data--->>", data)
-                        User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data }, $inc: { brolix: -req.body.brolix } }, { new: true }, function(err, result3) {
+                        User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data }, $inc: { gifts: 1, brolix: -req.body.brolix } }, { new: true }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 33' }); } else {
                                 callback(null, result3)
                             }
@@ -1664,7 +1746,7 @@ module.exports = {
                     }
                 })
             },
-            function(callback) {
+            function(callback) { //  receiverId  senderId senderCouponId adId
                 console.log("in friends")
                 var receiverId = req.body.receiverId;
                 var senderId = req.body.senderId;
@@ -1683,16 +1765,19 @@ module.exports = {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
 
                                     User.findOneAndUpdate({ 'coupon._id': senderCouponId }, { $set: { "coupon.$.status": "SEND" } }, { new: true }).exec(function(err, result3) {
+                                        console.log("result3--->>", result3)
                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                                             for (i = 0; i < result3.coupon.length; i++) {
                                                 if (result3.coupon[i]._id == senderCouponId) {
                                                     var couponCode = result3.coupon[i].couponCode;
                                                     var couponAdId = result3.coupon[i].adId;
                                                     var expirationTime = result3.coupon[i].expirationTime;
+                                                    var pageId = result3.coupon[i].pageId;
+                                                    var type = "SEND BY FOLLOWER";
                                                 }
                                             }
                                             console.log("couponAdId--->>>", couponAdId)
-                                            User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime } } }, { new: true }).exec(function(err, result4) {
+                                            User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } } }, { new: true }).exec(function(err, result4) {
                                                 console.log("result4--->>>", result4)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                             })
@@ -1716,15 +1801,18 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
 
                                 User.findOneAndUpdate({ 'coupon._id': senderCouponId }, { $set: { "coupon.$.status": "SEND" } }, { new: true }).exec(function(err, result3) {
+                                    console.log("result3--->>", result3)
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                                         for (i = 0; i < result3.coupon.length; i++) {
                                             if (result3.coupon[i]._id == senderCouponId) {
                                                 var couponCode = result3.coupon[i].couponCode;
                                                 var couponAdId = result3.coupon[i].adId;
                                                 var expirationTime = result3.coupon[i].expirationTime;
+                                                var pageId = result3.coupon[i].pageId;
+                                                var type = "SENDBYFOLLOWER";
                                             }
                                         }
-                                        User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime } } }, { new: true }).exec(function(err, result4) {
+                                        User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } } }, { new: true }).exec(function(err, result4) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                         })
                                     }
@@ -1772,16 +1860,19 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
 
                                 User.findOne({ 'coupon.couponCode': senderCouponCode }).exec(function(err, result2) {
-                                    console.log("result2-->>", result2)
+                                    console.log("result2------->>", result2)
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                                         for (i = 0; i < result2.coupon.length; i++) {
+                                            console.log("result2.coupon-->>", result2.coupon)
                                             if (result2.coupon[i].couponCode == senderCouponCode) {
                                                 var couponCode = result2.coupon[i].couponCode;
                                                 var couponAdId = result2.coupon[i].adId;
                                                 var expirationTime = result2.coupon[i].expirationTime;
+                                                var pageId = result2.coupon[i].pageId;
+                                                var type = "EXCHANGED"
                                             }
                                         }
-                                        callback(null, couponCode, couponAdId, expirationTime)
+                                        callback(null, couponCode, couponAdId, expirationTime, pageId, type)
                                     }
                                 })
 
@@ -1790,10 +1881,12 @@ module.exports = {
                         })
                     }
                 },
-                function(couponCode1, couponAdId1, expirationTime1, callback) {
+                function(couponCode1, couponAdId1, expirationTime1, pageId1, type1, callback) {
                     console.log("couponCode-11-->>", couponCode1);
                     console.log("couponId-11-->>", couponAdId1);
                     console.log("expirationTime-11-->>>", expirationTime1);
+                    console.log("pageId1-11-->>>", pageId1);
+                    console.log("type1-11-->>>", type1);
 
                     var h = new Date(new Date(startTime).setHours(00)).toUTCString();
                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
@@ -1805,7 +1898,9 @@ module.exports = {
                         var data = {
                             couponCode: couponCode1,
                             adId: couponAdId1,
-                            expirationTime: expirationTime1
+                            expirationTime: expirationTime1,
+                            pageId: pageId1,
+                            type: type1
                         }
 
                         User.findOneAndUpdate({ _id: receiverId }, { $push: { coupon: data } }, { new: true }).exec(function(err, result3) {
@@ -1821,9 +1916,11 @@ module.exports = {
                                                         var couponCode2 = result5.coupon[i].couponCode;
                                                         var couponAdId2 = result5.coupon[i].adId;
                                                         var expirationTime2 = result5.coupon[i].expirationTime;
+                                                        var pageId2 = result5.coupon[i].pageId;
+                                                        var type2 = "EXCHANGED"
                                                     }
                                                 }
-                                                callback(null, couponCode2, couponAdId2, expirationTime2)
+                                                callback(null, couponCode2, couponAdId2, expirationTime2, pageId2, type2)
                                             }
                                         })
                                     }
@@ -1833,10 +1930,13 @@ module.exports = {
                     }
 
                 },
-                function(couponCode2, couponAdId2, expirationTime2, callback) {
+                function(couponCode2, couponAdId2, expirationTime2, pageId2, type2, callback) {
                     console.log("couponCode-22-->>", couponCode2);
                     console.log("couponId-22-->>", couponAdId2);
                     console.log("expirationTime-22-->>>", expirationTime2);
+                    console.log("pageId2-22-->>>", pageId2);
+                    console.log("type2-22-->>>", type2);
+
                     var receiverId = req.body.receiverId;
                     var h = new Date(new Date(startTime).setHours(00)).toUTCString();
                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
@@ -1846,7 +1946,9 @@ module.exports = {
                         var data1 = {
                             couponCode: couponCode2,
                             adId: couponAdId2,
-                            expirationTime: expirationTime2
+                            expirationTime: expirationTime2,
+                            pageId: pageId2,
+                            type: type2
                         }
 
                         User.findOneAndUpdate({ _id: receiverId }, { $push: { coupon: data1 } }, { new: true }).exec(function(err, result6) {
