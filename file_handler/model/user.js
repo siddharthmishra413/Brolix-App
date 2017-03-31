@@ -246,11 +246,11 @@ function initDB() {
                 callback(null, { adminUser: adminUser });
             else {
                 var defaultUser = {
-                    email: 'admin@admin.com',
-                    password: 'admin123',
+                    email: 'deepakmobiloitte@gmail.com',
+                    password: 'Mobiloitte1',
                     type: 'ADMIN',
-                    firstName: 'AKASH',
-                    lastName: 'BAIS',
+                    firstName: 'Deepak',
+                    lastName: 'Sharma',
                     image: 'http://res.cloudinary.com/mobiloitte-in/image/upload/v1482579253/IMG_0768_f9b0nw.jpg'
                 }
 

@@ -182,6 +182,9 @@ var createNewAdsSchema = new Schema({
     promoteApp: {
         type: Boolean
     },
+    uploadGiftImage:{
+        type:String
+    },
     createdAt: {
         type: Date,
         default: Date.now

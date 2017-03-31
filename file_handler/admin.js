@@ -1288,7 +1288,7 @@ module.exports = {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "All history shown successfully."
+                    responseMessage: "All info shown successfully."
                 });
             }
         })
@@ -1822,6 +1822,7 @@ module.exports = {
                 giftDescription: req.body.giftDescription,
                 couponExpiryDate: req.body.couponExpiryDate,
                 adsType: "ADMINCOUPON",
+                couponBuyersLength: 0,
                 sellCoupon: false,
                 couponSellPrice: 0
             };
@@ -1873,7 +1874,7 @@ module.exports = {
     },
 
     "postCouponToStore": function(req, res) {
-        createNewAds.findOneAndUpdate({ _id: req.params.id }, { $set: { sellCoupon: true } }, { new: true }, function(err, result) {
+        createNewAds.findOneAndUpdate({ _id: req.params.id }, { $set: { couponSellPrice: req.body.couponSellPrice, couponBuyersLength: req.body.couponBuyersLength, sellCoupon: true } }, { new: true }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 res.send({ responseCode: 200, responseMessage: "Coupon posted to store successfully." })
             }
@@ -1887,9 +1888,6 @@ module.exports = {
             }
         })
     },
-
-
-    /**************************************** Admin Tool Section *********************************************************************************/
 
     "createSystemUser": function(req, res) {
         waterfall([
@@ -2136,6 +2134,50 @@ module.exports = {
             }
         })
     },
+
+    "notificationToAdmin": function(req, res) {
+        waterfall([
+            function(callback) {
+                var array = [];
+                User.find({}).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
+                        array.push(result)
+                        console.log("array--->>>", array)
+                        callback(null, array)
+                    }
+                })
+            },
+            function(array, callback) {
+                createNewAds.find({}).exec(function(err, result2) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result2.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
+
+                        array.push(result2)
+
+                        callback(null, array)
+                    }
+
+                })
+
+            },
+            function(array, callback) {
+                createNewPage.find({}).exec(function(err, result3) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result3.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
+                        array.push(result3)
+                        callback(null, array)
+                    }
+                })
+            },
+        ], function(err, result) {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "All info shown successfully."
+            })
+        })
+
+
+    }
+
 
 
 

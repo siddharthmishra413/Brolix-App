@@ -9,13 +9,16 @@ var Schema = mongoose.Schema;
 /* Notification schema */
 
 var termsConditionSchema = new Schema({
-	userId: {
+    userId: {
         type: String
     },
     termsConditionContent: {
         type: String
     },
     type: {
+        type: String
+    },
+    authorType: {
         type: String
     },
     createdAt: {

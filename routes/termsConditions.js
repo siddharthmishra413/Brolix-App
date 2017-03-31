@@ -5,9 +5,9 @@ var authUser = require('../middlewares/authUser');
 
 
 app.post('/createTerms', termsConditionHandler.createTerms);
-app.get('/viewTermsCondition', termsConditionHandler.viewTermsCondition);
-//app.put('/editTermsCondition/:type/:id', termsConditionHandler.editTermsCondition);
-
+app.get('/viewTermsCondition/:type', termsConditionHandler.viewTermsCondition);
+app.put('/editTermsCondition/:type', termsConditionHandler.editTermsCondition);
+app.get('/viewAllTerms', termsConditionHandler.viewAllTerms);
 
 
 module.exports = app;

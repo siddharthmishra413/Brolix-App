@@ -114,10 +114,11 @@ app.post('/zipcodFunction', adminHandler.zipcodFunction);
 app.get('/topFiftyCashProviders', adminHandler.topFiftyCashProviders);
 app.get('/topFiftyCouponProviders', adminHandler.topFiftyCouponProviders);
 app.get('/adsWithLinks', adminHandler.adsWithLinks);
-app.get('/postCouponToStore/:id', adminHandler.postCouponToStore);
+app.put('/postCouponToStore/:id', adminHandler.postCouponToStore);
 app.get('/listOfSystemAdmin', adminHandler.listOfSystemAdmin);
 app.get('/removeSystemAdmin/:id', adminHandler.removeSystemAdmin);
 app.put('/editSystemAdmin/:id', adminHandler.editSystemAdmin);
+app.get('/notificationToAdmin', adminHandler.notificationToAdmin);
 
 
 module.exports = app;
