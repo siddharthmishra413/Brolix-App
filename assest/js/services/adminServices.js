@@ -38,6 +38,11 @@ app.service('userService',function($http){
 	  signup: function(data) {
       return $http.post('/signup', data);
     },
+
+    forgotPassword: function(data) {
+      return $http.post('http://172.16.6.171:8082/user/forgotPassword', data);
+    },
+
     login: function(data) {
       return $http.post('/admin/login', data);
     },
@@ -245,10 +250,56 @@ app.service('userService',function($http){
     userfilter: function(data){
       return $http.post('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1310/admin/userfilter', data);
     },
+    // /*------ManageGiftSection-------*/
+
+    // totalBrolixGift: function(){
+    //   return $http.get('http://172.16.6.171:8082/admin/totalBrolixGift');
+    // },
+
     /*------ManageGiftSection-------*/
 
-    totalBrolixGift: function(){
-      return $http.get('http://172.16.6.171:8082/admin/totalBrolixGift');
+    totalBrolixGift: function () {
+      return $http.get('http://172.16.6.171:8082/admin/totalBrolixGift');  
+    },
+
+    totalCouponsGifts: function() {
+      return $http.get('http://172.16.6.171:8082/admin/totalCouponGifts');
+    },
+ 
+    totalCashGifts: function() {
+       return $http.get('http://172.16.6.171:8082/admin/totalCashGifts');
+    },
+
+    totalHiddenGifts: function() {
+      return $http.get('http://172.16.6.171:8082/admin/totalHiddenGifts');
+    },
+    
+    totalExchangedCoupon: function() {
+      return $http.get('http://172.16.6.171:8082/admin/totalExchangedCoupon');
+    },
+    
+    totalSentCash: function() {
+      return $http.get('http://172.16.6.171:8082/admin/totalSentCash');
+    },
+    
+    totalSentCoupon: function() {
+      return $http.get('http://172.16.6.171:8082/admin/totalSentCoupon');
+    },
+     
+    topFiftyBalances: function() {
+      return $http.get('http://172.16.6.171:8082/admin/topFiftyBalances');
+    },
+
+    topFiftyCouponProvider: function() {
+       return $http.get('http://172.16.6.171:8082/admin/topFiftyCouponProviders');
+    },
+    
+    topFiftyCashProvider: function() {
+      return $http.get('http://172.16.6.171:8082/admin/topFiftyCashProviders');
+    },
+    
+    couponGiftAd: function(id) {
+      return $http.get('http://172.16.6.171:8082/admin/adInfo/'+id);
     },
 
   
@@ -277,6 +328,63 @@ app.service('userService',function($http){
       return $http.post('/admin/zipcodFunction', data);
     },
 
+    //******************** Manage Payment Section ******************************
+
+     SoldUpgradeCard: function(){
+      return $http.get('http://172.16.6.171:8082/admin/totalSoldUpgradeCard');
+    },
+      userInfo: function(id){
+      return $http.get('http://172.16.6.171:8082/admin/userInfo/'+id);
+    },
+     SoldLuckCard: function(){
+      return $http.get('http://172.16.6.171:8082/admin/totalSoldLuckCard');admin/luckCardUsedAd
+    },
+      luckCardUsedAd: function(data){
+      return $http.post('http://172.16.6.171:8082/admin/luckCardUsedAd',data);
+    },
+    luckCardUsedAd: function(data){
+      return $http.post('http://172.16.6.171:8082/admin/luckCardUsedAd',data);
+    },
+    upgradeCardUsedAd: function(data){
+      return $http.post('http://172.16.6.171:8082/admin/upgradeCardUsedAd',data);
+    },
+    upgradeCardPayment: function(id){
+      return $http.get('http://172.16.6.171:8082/admin/paymentHistoryUpgradeCard/'+id);
+    },
+    luckCardPayment: function(id){
+      return $http.get('http://172.16.6.171:8082/admin/paymentHistoryLuckCard/'+id);
+    },
+    cashGift: function(){
+      return $http.get('http://172.16.6.171:8082/admin/cashGift');
+    },
+    soldCoupons: function(){
+      return $http.get('http://172.16.6.171:8082/admin/soldCoupon');
+    },
+     pageInfo: function(id){
+      return $http.get('http://172.16.6.171:8082/admin/pageInfo/'+id);
+    }, 
+    top_50_dollarsBuyers: function(){
+      return $http.get('http://172.16.6.171:8082/admin/topFiftyUpgradeCardBuyers');
+    },
+    top_50_brolixBuyers: function(){
+      return $http.get('http://172.16.6.171:8082/admin/topFiftyLuckCardBuyers');
+    },
+    top_50_Ads: function(){
+      return $http.get('http://172.16.6.171:8082/admin/topFiftyAds');
+    },
+    totalDollarsPrice: function(){
+      return $http.get('http://172.16.6.171:8082/admin/totalCashPrice');
+    },
+    totalBrolixPrice: function(){
+      return $http.get('http://172.16.6.171:8082/admin/totalBrolixPrice');
+    },
+    adInfo: function(id){
+      return $http.get('http://172.16.6.171:8082/admin/adInfo/'+id);
+    },
+    pageCount: function(id){
+      return $http.get('http://172.16.6.171:8082/admin/showUserPage/'+id);
+    },
+
     /*Admin Tool Section*/
 
     createSystemUser: function(data){
@@ -301,7 +409,42 @@ app.service('userService',function($http){
 
     showReport: function(data){
       return $http.get('http://172.16.6.171:8082/report/showReport');
+    },
+
+    createTerms: function(data){
+      return $http.post('http://172.16.6.171:8082/terms/createTerms', data);
+    },
+
+    viewAllTerms: function(data){
+      return $http.get('http://172.16.6.171:8082/terms/viewAllTerms');
+    },
+
+    editTermsCondition: function(type, data) {
+      return $http.put('http://172.16.6.171:8082/terms/editTermsCondition/'+ type, data);
+    },
+
+    addCoupon: function(data){
+      return $http.post('http://172.16.6.171:8082/admin/addNewCoupon', data);
+    },
+    getPage: function(){
+      return $http.get('http://172.16.6.171:8082/admin/showPageName');
+    },
+    allCoupons: function(){
+      return $http.get('http://172.16.6.171:8082/admin/showListOFCoupon');
+    },
+    viewCoupon: function(id){
+      return $http.get('http://172.16.6.171:8082/admin/viewCoupon/'+id);
+    },
+    editCoupon: function(id,data){
+      return $http.put('http://172.16.6.171:8082/admin/editCoupon/'+id,data);
+    },
+    postCoupon: function(id,data){
+      return $http.put('http://172.16.6.171:8082/admin/postCouponToStore/'+id, data);
+    },
+     removeCoupon: function(id){
+      return $http.post('http://172.16.6.171:8082/admin/removeCoupon/',id);
     }
+
 
   }
 

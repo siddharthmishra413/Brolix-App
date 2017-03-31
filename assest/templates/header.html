@@ -163,9 +163,9 @@
                             </div>
                         </div>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a> CREATE REPORT</a>
-                    </li>                    
+                    </li>  -->                   
                 </ul>
             </div>
             </div>
@@ -222,7 +222,7 @@
                          <a ui-sref="header.termsAndCondition">Terms & conditions</a>
                     </li>
                     <li>
-                         <a ui-sref="header.addAdminCoupon">Brolix & Dollars</a>
+                         <a ui-sref="header.brolixAndDollars">Brolix & Dollars</a>
                     </li>
                     <li>
                          <a ui-sref="header.addAdminCoupon">Default Values</a>
@@ -263,6 +263,14 @@
             </div>
         </div>
         <div class="tab-content" data-sortable-id="index-3">
+        <spinner name="html5spinner" ng-cloak="">
+          <div class="overlay"></div>
+          <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+          <div class="please-wait">Please Wait...</div>
+        </spinner>  
         <div ui-view></div>
         </div>
     </div>

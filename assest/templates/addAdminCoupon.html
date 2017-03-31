@@ -1,32 +1,99 @@
-<div class="col-sm-12">
-    <a class="table-a">Add New Coupons</a>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <tr>
-                <th>S.No</th>
-                <th>Page Name</th>
-                <th>Expiry Date</th>
-                <th>Gift Description</th>
-                <th>Post</th>
-                <th>Action</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Brolix</td>
-                <td>3 Week</td>
-                <td>hgjkhsdfghfgjhjkdfsghjkdf hjgshkfjgsfjkdfjhg hjgsdfgjkshjdfgfh</td>
-                <td>B 250</td>
-                <td><a class="table-a">View</a><a class="table-a">Edit</a><a class="table-a">Post</a><a class="table-a">Remove</a></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Brolix</td>
-                <td>3 Week</td>
-                <td>hgjkhsdfghfgjhjkdfsghjkdf hjgshkfjgsfjkdfjhg hjgsdfgjkshjdfgfh</td>
-                <td>B 250</td>
-                <td><a class="table-a">View</a><a class="table-a">Edit</a><a class="table-a">Post</a><a class="table-a">Remove</a></td>
-            </tr>
-        </table>
+<div class="container" >
+        <div class="col-sm-12" ng-if="couponDeatil">
+                <a class="table-a" ng-click="addCouponFun()">Add Coupon</a>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>S.No</th>
+                            <th>Page Name</th>
+                            <th>Expiry Date</th>
+                            <th>Gift Description</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr ng-repeat="details in Detail">
+                            <td>#{{$index + 1}}</td>
+                            <td>{{details.pageName}}</td>
+                            <td>{{details.couponExpiryDate | date:'MMMM dd, yyyy'}}</td>
+                            <td>{{details.giftDescription}}</td>
+                            <td>{{details.couponSellPrice}} B</td>
+                            <td>
+                                <a class="table-a"  ng-href="#header/viewCoupon" ng-click="viewCoupon(details._id)">View</a>
+                                <a class="table-a" ng-href="#header/editCoupon" ng-click="editCoupon(details._id)">Edit</a>
+                                <a class="table-a" ng-click="postCoupon(details._id)">Post</a>
+                                <a class="table-a" ng-click="removeCoupon(details._id)">Remove</a>
+                             </td>
+                        </tr>
+                    </table>
+                </div>
+        </div>
+        <div class="col-sm-12" style="text-align: center" ng-if="addNewCoupon == true">
+            <span class="heading-coupon"><u>ADD NEW COUPON</u></span>
+            <form class="form-block" role="form" name="myForm">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <div class="cover-image" style="height:250px;">
+                                        <img style="height:200px;width:600px;border-radius: 70%;" class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Page Name</label>
+                                        <div class="col-sm-8">
+                                          <select class="form-control" ng-model="user.pageName" ng-change="isSelected(user.pageName)">
+                                                <option value="">Select</option>
+                                                <option value="{{page.pageName}}" ng-repeat="page in pageDetail">{{page.pageName}}</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Expiry Date</label>
+                                        <div class="col-sm-8">
+                                          <input type="date" class="form-control" ng-model="user.expDate">
+                                        </div>
+                                      </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Gift Description</label>
+                                        <div class="col-sm-8">
+                                            <textarea class="form-control" ng-model="user.description"></textarea>
+                                        </div>
+                                      </div>
+                              
+                                </fieldset>
+            <div class="btn2 text-center">
+                <a href="" class="btn btn-lg btn-green">Cancel</a>
+                <a  class="btn btn-lg btn-green" ng-click="addCoupon(user)">Add</a>
+            </div>
+        </form >
     </div>
 </div>
-
+<div id="post" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Post Coupon</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+               <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Available Coupons</th>
+                              <td><input type="text" name="" ng-model="availableCoupon"></td>
+                          </tr>
+                          <tr>
+                              <th>Coupon Price</th>
+                              <td><input type="text" name="" ng-model="couponPrice"></td>
+                          </tr>
+                          <tr>
+                              <th></th>
+                              <td ><input class="table-a" type="submit" ng-click="submit()" name="Post">       </td>
+                          </tr>
+                  </table>
+                </div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="col-sm-12" style="text-align: center" >
+    <span class="heading-coupon"><u>View Coupon</u></span>
+    <div class="container" >
+      <div class="col-sm-12">
+                <div class="cover-image" style="height:250px;">
+                    <img style="height:200px;width:600px;border-radius: 70%;" class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Page Name</th>
+                            <td>{{couponData.pageName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Expiry Date</th>
+                             <td>{{expDate | date:'MMMM dd, yyyy'}}</td>
+                        </tr>
+                        <tr>
+                          <th>Gift Description</th>
+                          <td>{{couponData.giftDescription}}</td>
+                        </tr>
+                    </table>
+              </div>
+          </div>
+       </div>
+</div>
