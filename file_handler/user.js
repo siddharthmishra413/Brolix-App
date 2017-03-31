@@ -137,9 +137,6 @@ module.exports = {
     var req = https.request(optionsNew, function(res) { 
         console.log("res");
         console.log(res.txnid);
-        res.json({
-            res: res
-        })
         
     res.setEncoding('utf8'); 
         res.on('data1', function(chunk) {    // data will be available in callback 

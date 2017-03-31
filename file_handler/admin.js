@@ -149,6 +149,7 @@ module.exports = {
             }
         })
     },
+
     "showAllPersonalUser": function(req, res) {
         User.find({ type: "USER", status: 'ACTIVE' }, function(err, result) {
             if (err) {
@@ -1207,8 +1208,255 @@ module.exports = {
     })
 },
 
+  "luckUpgradeCardfilter":function(req, res){
+    var data = req.body.cardType;
 
+    waterfall([
+        function(callback){
+            switch(data){
+              case 'totalSoldCards':
+              var matchCondt = { $match: { } }
+              var updateData = { $unwind: "$upgradeCardObject" };
+              break;
 
+              case 'totalIncome$':
+              var matchCondt = { $match: { } }
+              var updateData = { $unwind: "$upgradeCardObject" };
+              break;
+
+              case 'usedCards':
+              var matchCondt = { $match: { 'upgradeCardObject.status': "INACTIVE" } }
+              var updateData = { $unwind: "$upgradeCardObject" };
+              break;
+
+              case 'unusedCards':
+              var matchCondt = { $match: { 'upgradeCardObject.status': "ACTIVE" } }
+              var updateData = { $unwind: "$upgradeCardObject" }
+              break;
+
+              case 'totalSoldLuckCards':
+              var matchCondt = { $match: { } }
+              var updateData = { $unwind: "$luckCardObject" }
+              break; 
+
+              case 'totalIncome$LuckCards':
+              var matchCondt = { $match: { } }
+              var updateData = { $unwind: "$luckCardObject" }
+              break;
+
+              case 'usedCardsLuckCards':
+              var updateData = { $unwind: "$luckCardObject" }
+              var matchCondt = { $match: { 'luckCardObject.status': "INACTIVE" } }
+              break;
+
+              case 'unusedCardsLuckCards':
+              var updateData = { $unwind: "$luckCardObject" }
+              var matchCondt = { $match: { 'luckCardObject.status': "ACTIVE" } }
+              break;
+
+              default:
+              var matchCondt = { $match: { } }
+              var updateData = { $unwind: "$upgradeCardObject" };
+            }
+            console.log("updated data===>."+updateData)
+            callback(null,updateData, matchCondt)
+        },
+        function(updateData, matchCondt, callback){
+            console.log("match condition==>"+JSON.stringify(matchCondt));
+            console.log("unwind conditions==>>"+JSON.stringify(updateData));
+            if(req.body.joinTo && req.body.joinFrom){
+                var dateMatch = {createdAt: {$gte:new Date(req.body.joinFrom),$lte:new Date(req.body.joinTo)}}
+            }
+            else{
+                var dateMatch = {}
+            }
+            var upgradeType = {}
+            if(req.body.upgradeType){
+                  var upgradeType= { 'upgradeCardObject.viewers': req.body.upgradeType }
+            }
+            else{
+                var upgradeType = {} 
+            }
+            if(req.body.luckCardType){
+                 var luckCardType= { 'luckCardObject.chances': req.body.luckCardType} 
+            }
+            else{
+                var luckCardType = {}
+            }
+
+        var tempCond={};
+        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                    if (!(key == "cardType" || key == "joinFrom" || key == "joinTo" || key == "upgradeType" || key == "luckCardType")) {
+                        
+                       var conditions = {}
+                       tempCond[key]=req.body[key];
+                       console.log("tempCOndition===>"+JSON.stringify(tempCond))
+                    }
+        });
+        Object.assign(tempCond, upgradeType)
+        Object.assign(tempCond, luckCardType)
+
+        callback(null, updateData,tempCond, matchCondt, dateMatch,luckCardType,upgradeType)
+    },function(updateData,tempCond, matchCondt, dateMatch, luckCardType,upgradeType,callback){
+
+        User.aggregate(updateData,{ $match: tempCond}, matchCondt,{ $match: dateMatch}).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); }
+            else {
+               callback(null, results)
+            }
+        });
+        }
+
+    ],function(err, result,condition){
+       res.send({ responseCode: 200, responseMessage: 'Filtered cards.',data:result
+      });
+    })
+},
+
+"giftsFilter":function(req, res){
+    var condition = { $and: [] };
+    var todayDate = new Date();
+    var newTodayDate = new Date();
+    var data = req.body.giftsType;
+
+    waterfall([
+        function(callback){
+            if(data== 'totalCouponsGifts'){
+                var query =  { $unwind: "$coupon" }
+                module.exports.totalCouponGifts(req, res,query )
+            }
+            else{
+                callback(null, "null")
+            }
+        },
+        function(allAdsIds,callback){
+            switch(data){
+              case 'totalBrolixGifts':
+              var updateData = { $unwind: "$cashPrize" }
+              var matchData =  { }
+              var pathData1 = ''
+              var pathData = 'coupon.pageId.userId'
+              break;
+
+              case 'totalCouponsGifts':
+              var updateData = { $unwind: "$coupon" }
+              var matchData =  {  'coupon.type': "PURCHASED" }
+              var pathData1 = 'coupon.pageId'
+              var pathData = 'coupon.pageId.userId'
+              break;
+
+              case 'totalCashGifts':
+              var updateData = { $unwind: "$cashPrize" }
+              var matchData =  { }
+              var pathData1 = 'cashPrize.pageId'
+              var pathData = 'cashPrize.pageId.userId'
+              break;
+
+              case 'totalHiddenGifts':
+              var updateData = { $unwind: "$hiddenGifts" }
+              var matchData = { }
+              var pathData1 = 'hiddenGifts.pageId'
+              var pathData = 'hiddenGifts.pageId.userId'
+              break;
+
+              case 'totalExchanged':
+              var updateData = { $unwind: "$coupon" }
+              var matchData = { 'coupon.status': "EXCHANGED" }
+              var pathData1 = 'coupon.adId'
+              var pathData = 'coupon.adId.couponExchange.receiverId'
+              break; 
+
+              case 'totalSentCoupons':
+              var updateData = { $unwind: "$coupon" }
+              var matchData = { 'coupon.status': "SEND" }
+              var pathData1 = 'coupon.pageId'
+              var pathData = 'coupon.adId.couponSend.receiverId'
+              break;
+
+              case 'totalSentCash':
+              var updateData = { $unwind: "$sendCashListObject" }
+              var matchData = { }
+              var pathData1 = 'sendCashListObject.senderId'
+              var pathData = ''
+              break;
+ 
+              default:
+              var updateData = { $unwind: "$cashPrize" }
+              var matchData = { }
+              var pathData = 'coupon.pageId.userId'
+              var pathData = ''
+            }
+            console.log("condition before callback==>>"+JSON.stringify(condition))
+            console.log("updated data===>."+updateData)
+            callback(null,updateData, matchData, pathData1,pathData)
+        },
+        function(updateData, matchData, pathData1,pathData, callback){
+
+            if(req.body.joinTo && req.body.joinTo){
+                var dataMatch = {createdAt: {$gte:new Date(req.body.joinFrom).toUTCString(),$lte:new Date(req.body.joinTo).toUTCString()}}
+                // condition.$and.push({
+                //     createdAt: {$gte:new Date(req.body.joinFrom).toUTCString(),$lte:new Date(req.body.joinTo).toUTCString()}
+                // })
+            }
+            else{
+                var dataMatch = {}
+            }
+        var tempCond={};
+
+        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                    if (!(key == "giftsType" || key == "joinFrom" || key == "joinTo" )) {
+                        tempCond[key]=req.body[key];
+                        console.log("tempCOndition===>"+JSON.stringify(tempCond))
+                        condition.$and.push(data)
+                    }
+        });
+        if (condition.$and.length == 0) {
+            delete condition.$and;
+        }
+
+        Object.assign(tempCond, dataMatch)
+        Object.assign(tempCond, matchData)
+
+        callback(null, tempCond, updateData,pathData1,pathData)
+    },function(tempCond, updateData,pathData1,pathData, callback){
+
+            console.log("tempCond===>"+JSON.stringify(tempCond))
+            console.log("updateData===>"+JSON.stringify(updateData))
+            console.log("pathData1===>"+JSON.stringify(pathData1))
+            console.log("pathData===>"+JSON.stringify(pathData))
+
+            User.aggregate(updateData, { $match:tempCond} ).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
+                    var count = 0;
+                    for (i = 0; i < result.length; i++) {
+                        count++;
+                    }
+                    console.log("aggregate result===>>>"+result)
+                    User.populate(result, pathData1, function(err, result1) {
+                        User.populate(result1, {
+                            path: pathData,
+                            model: 'brolixUser',
+                            select: 'firstName lastName email'
+                        }, function(err, result2) {
+                            res.send({
+                                result: result1,
+                                count: count,
+                                responseCode: 200,
+                                responseMessage: "Sold Coupon shows successfully."
+                            });
+                        })
+                    })
+                }
+            })
+
+        }
+
+    ],function(err, result,condition){
+       res.send({ responseCode: 200, responseMessage: 'Filtered Ads.',data:result
+      });
+    })
+},
 
     "showUserPage": function(req, res) {
         createNewPage.find({ userId: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
@@ -1489,7 +1737,8 @@ module.exports = {
         });
     },
 
-    "totalCouponGifts": function(req, res) {
+    "totalCouponGifts": function(req, res, query) {
+        console.log("query===>"+JSON.stringify(query))
         User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER" } }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 var count = 0;

@@ -120,6 +120,8 @@ app.get('/showPageName', adminHandler.showPageName);
 app.post('/createSystemUser', adminHandler.createSystemUser);
 app.post('/checkPermission', adminHandler.checkPermission);
 app.post('/adsfilter', adminHandler.adsfilter);
+app.post('/luckUpgradeCardfilter', adminHandler.luckUpgradeCardfilter);
+app.post('/giftsFilter', adminHandler.giftsFilter);
 
 
 app.post('/listOfAds', adminHandler.listOfAds);
