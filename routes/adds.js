@@ -21,7 +21,7 @@ app.get('/winners', authUser.authUser, adsHandler.winners);
 app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
 app.get('/listOfAllAds/:id/:type/:pageNumber', authUser.authUser, adsHandler.listOfAllAds);
 app.post('/uploads', adsHandler.uploads);
-app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
+app.post('/viewAd', adsHandler.viewAd);
 app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);
 app.get('/couponWinners/:pageNumber', authUser.authUser, adsHandler.couponWinners);
 app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);

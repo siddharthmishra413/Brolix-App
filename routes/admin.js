@@ -122,6 +122,8 @@ app.post('/checkPermission', adminHandler.checkPermission);
 app.post('/adsfilter', adminHandler.adsfilter);
 app.post('/luckUpgradeCardfilter', adminHandler.luckUpgradeCardfilter);
 app.post('/giftsFilter', adminHandler.giftsFilter);
+app.post('/brolixPaymentFilter', adminHandler.brolixPaymentFilter);
+app.post('/dollorPaymentFilter', adminHandler.dollorPaymentFilter);
 
 
 app.post('/listOfAds', adminHandler.listOfAds);

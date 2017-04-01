@@ -465,8 +465,18 @@ module.exports = {
         });
     },
 /*----------------------------------------------------------------------------------------------------*/
-  "totalSoldUpgradeCard": function(req, res) {
-         User.aggregate({ $unwind: "$upgradeCardObject" }).exec(function(err, result) {
+  "totalSoldUpgradeCard": function(req, res, query) {
+        console.log(query.length)
+        console.log("query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { }
+        }
+         User.aggregate({ $unwind: "$upgradeCardObject" },{$match:updateData}).exec(function(err, result) {
              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                  var count = 0;
                  for (i = 0; i < result.length; i++) {
@@ -482,8 +492,18 @@ module.exports = {
          })
      },
 
-    "totalSoldLuckCard": function(req, res) {
-         User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, result) {
+    "totalSoldLuckCard": function(req, res, query) {
+         console.log(query.length)
+        console.log("query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { }
+        }
+         User.aggregate({ $unwind: "$luckCardObject" },{$match :updateData}).exec(function(err, result) {
              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                  var count = 0;
                  for (i = 0; i < result.length; i++) {
@@ -1322,90 +1342,29 @@ module.exports = {
 
     waterfall([
         function(callback){
-            if(data== 'totalCouponsGifts'){
-                var query =  { $unwind: "$coupon" }
-                module.exports.totalCouponGifts(req, res,query )
-            }
-            else{
-                callback(null, "null")
-            }
-        },
-        function(allAdsIds,callback){
-            switch(data){
-              case 'totalBrolixGifts':
-              var updateData = { $unwind: "$cashPrize" }
-              var matchData =  { }
-              var pathData1 = ''
-              var pathData = 'coupon.pageId.userId'
-              break;
-
-              case 'totalCouponsGifts':
-              var updateData = { $unwind: "$coupon" }
-              var matchData =  {  'coupon.type': "PURCHASED" }
-              var pathData1 = 'coupon.pageId'
-              var pathData = 'coupon.pageId.userId'
-              break;
-
-              case 'totalCashGifts':
-              var updateData = { $unwind: "$cashPrize" }
-              var matchData =  { }
-              var pathData1 = 'cashPrize.pageId'
-              var pathData = 'cashPrize.pageId.userId'
-              break;
-
-              case 'totalHiddenGifts':
-              var updateData = { $unwind: "$hiddenGifts" }
-              var matchData = { }
-              var pathData1 = 'hiddenGifts.pageId'
-              var pathData = 'hiddenGifts.pageId.userId'
-              break;
-
-              case 'totalExchanged':
-              var updateData = { $unwind: "$coupon" }
-              var matchData = { 'coupon.status': "EXCHANGED" }
-              var pathData1 = 'coupon.adId'
-              var pathData = 'coupon.adId.couponExchange.receiverId'
-              break; 
-
-              case 'totalSentCoupons':
-              var updateData = { $unwind: "$coupon" }
-              var matchData = { 'coupon.status': "SEND" }
-              var pathData1 = 'coupon.pageId'
-              var pathData = 'coupon.adId.couponSend.receiverId'
-              break;
-
-              case 'totalSentCash':
-              var updateData = { $unwind: "$sendCashListObject" }
-              var matchData = { }
-              var pathData1 = 'sendCashListObject.senderId'
-              var pathData = ''
-              break;
- 
-              default:
-              var updateData = { $unwind: "$cashPrize" }
-              var matchData = { }
-              var pathData = 'coupon.pageId.userId'
-              var pathData = ''
-            }
-            console.log("condition before callback==>>"+JSON.stringify(condition))
-            console.log("updated data===>."+updateData)
-            callback(null,updateData, matchData, pathData1,pathData)
-        },
-        function(updateData, matchData, pathData1,pathData, callback){
-
             if(req.body.joinTo && req.body.joinTo){
-                var dataMatch = {createdAt: {$gte:new Date(req.body.joinFrom).toUTCString(),$lte:new Date(req.body.joinTo).toUTCString()}}
-                // condition.$and.push({
-                //     createdAt: {$gte:new Date(req.body.joinFrom).toUTCString(),$lte:new Date(req.body.joinTo).toUTCString()}
-                // })
+                var dataMatch = {createdAt: {$gte:new Date(req.body.joinFrom),$lte:new Date(req.body.joinTo)}}
             }
             else{
                 var dataMatch = {}
             }
+
+            if(req.body.couponStatus){
+                var couponStatus = {'coupon.couponStatus' : req.body.couponStatus}
+            }
+            else{
+                var couponStatus = {}
+            }
+            if(req.body.cashStatus){
+                var cashStatus = {'cashPrize.cashStatus' : req.body.cashStatus}
+            }
+            else{
+                var cashStatus = { }
+            }
         var tempCond={};
 
         Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                    if (!(key == "giftsType" || key == "joinFrom" || key == "joinTo" )) {
+                    if (!(key == "giftsType" || key == "joinFrom" || key == "joinTo" || key == 'couponStatus' || key == 'cashStatus' )) {
                         tempCond[key]=req.body[key];
                         console.log("tempCOndition===>"+JSON.stringify(tempCond))
                         condition.$and.push(data)
@@ -1416,40 +1375,86 @@ module.exports = {
         }
 
         Object.assign(tempCond, dataMatch)
-        Object.assign(tempCond, matchData)
+        Object.assign(tempCond, couponStatus)
+        Object.assign(tempCond, cashStatus)
+        callback(null, tempCond)
+    },
+            function(tempCond,callback){
+            switch(data){
+              case 'totalBrolixGifts':
+              var matchData =  { }
+              break;
 
-        callback(null, tempCond, updateData,pathData1,pathData)
-    },function(tempCond, updateData,pathData1,pathData, callback){
+              case 'totalCouponsGifts':
+              var updateData = { $unwind: "$coupon" }
+              var matchData =  {  'coupon.type': "WINNER" }
+              break;
+
+              case 'totalCashGifts':
+              var updateData = { $unwind: "$cashPrize" }
+              var matchData =  { }
+              break;
+
+              case 'totalHiddenGifts':
+              var updateData = { $unwind: "$hiddenGifts" }
+              var matchData = { }
+              break;
+
+              case 'totalExchanged':
+              var updateData = { $unwind: "$coupon" }
+              var matchData = { 'coupon.status': "EXCHANGED" }
+              break; 
+
+              case 'totalSentCoupons':
+              var updateData = { $unwind: "$coupon" }
+              var matchData = { 'coupon.status': "SEND" }
+              break;
+
+              case 'totalSentCash':
+              var updateData = { $unwind: "$sendCashListObject" }
+              var matchData = { }
+              break;
+ 
+              default:
+              var updateData = { $unwind: "$cashPrize" }
+              var matchData = { }
+            }
+            console.log("condition before callback==>>"+JSON.stringify(condition))
+            console.log("updated data===>."+updateData)
+            Object.assign(tempCond, matchData)
+            callback(null,tempCond)
+        }
+    ,function(tempCond, callback){
 
             console.log("tempCond===>"+JSON.stringify(tempCond))
-            console.log("updateData===>"+JSON.stringify(updateData))
-            console.log("pathData1===>"+JSON.stringify(pathData1))
-            console.log("pathData===>"+JSON.stringify(pathData))
-
-            User.aggregate(updateData, { $match:tempCond} ).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
-                    var count = 0;
-                    for (i = 0; i < result.length; i++) {
-                        count++;
-                    }
-                    console.log("aggregate result===>>>"+result)
-                    User.populate(result, pathData1, function(err, result1) {
-                        User.populate(result1, {
-                            path: pathData,
-                            model: 'brolixUser',
-                            select: 'firstName lastName email'
-                        }, function(err, result2) {
-                            res.send({
-                                result: result1,
-                                count: count,
-                                responseCode: 200,
-                                responseMessage: "Sold Coupon shows successfully."
-                            });
-                        })
-                    })
-                }
-            })
-
+            // console.log("updateData===>"+JSON.stringify(updateData))
+            // console.log("pathData1===>"+JSON.stringify(pathData1))
+            // console.log("pathData===>"+JSON.stringify(pathData))
+            var query = tempCond;
+            if(data == 'totalBrolixGifts'){
+                module.exports.totalBrolixGift(req, res, query)
+            }
+            else if(data == 'totalCouponsGifts'){
+                module.exports.totalCouponGifts(req, res, query)
+            }
+            else if( data == 'totalCashGifts'){
+                module.exports.totalCashGifts(req, res, query)
+            }
+            else if( data == 'totalHiddenGifts'){
+                module.exports.totalHiddenGifts(req, res, query)
+            }
+            else if( data == 'totalExchanged'){
+                module.exports.totalExchangedCoupon(req, res, query)
+            }
+            else if( data == 'totalSentCoupons'){
+                module.exports.totalSentCoupon(req, res, query)
+            }
+            else if( data == 'totalSentCash'){
+                module.exports.totalSentCash(req, res, query)
+            }
+            else{
+                module.exports.totalBrolixGift(req, res, query)
+            }
         }
 
     ],function(err, result,condition){
@@ -1457,6 +1462,132 @@ module.exports = {
       });
     })
 },
+
+    
+"brolixPaymentFilter":function(req, res){
+    var data = req.body.paymentCardType;
+
+    waterfall([
+        function(callback){
+            if(req.body.joinTo && req.body.joinTo){
+                var dataMatch = {createdAt: {$gte:new Date(req.body.joinFrom),$lte:new Date(req.body.joinTo)}}
+            }
+            else{
+                var dataMatch = {}
+            }
+
+            if(req.body.cardType){
+                var cardType = {'luckCardObject.chances' : req.body.cardType}
+            }
+            else{
+                var cardType = {}
+            }
+
+            if(req.body.couponStatus){
+                var couponStatus = {'coupon.couponStatus' : req.body.couponStatus}
+            }
+            else{
+                var couponStatus = {}
+            }
+            
+        var tempCond={};
+
+        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                    if (!(key == "paymentCardType" || key == "joinFrom" || key == "joinTo" || key == 'cardType' || key == 'couponStatus')) {
+                        tempCond[key]=req.body[key];
+                        console.log("tempCOndition===>"+JSON.stringify(tempCond))
+                        
+                    }
+        });
+    
+        Object.assign(tempCond, dataMatch)
+        Object.assign(tempCond, cardType)
+        Object.assign(tempCond, couponStatus)
+
+        callback(null, tempCond)
+    },
+      function(tempCond,callback){
+           var query = tempCond
+           if(data == 'soldLuckCard'){
+              module.exports.totalSoldLuckCard(req, res, query)
+           }
+           else if(data == 'soldCoupon'){
+               var matchQuery= { 'coupon.type': "PURCHASED" }
+               Object.assign(tempCond, matchQuery)
+               module.exports.soldCoupon(req, res, query)
+           }
+           else{
+             module.exports.totalSoldLuckCard(req, res, query)
+           }
+        }
+
+    ],function(err, result){
+       res.send({ responseCode: 200, responseMessage: 'Filtered Ads.',data:result
+      });
+    })
+},
+
+"dollorPaymentFilter":function(req, res){
+    var data = req.body.paymentCardType;
+
+    waterfall([
+        function(callback){
+            if(req.body.joinTo && req.body.joinTo){
+                var dataMatch = {createdAt: {$gte:new Date(req.body.joinFrom),$lte:new Date(req.body.joinTo)}}
+            }
+            else{
+                var dataMatch = {}
+            }
+
+            if(req.body.cardType){
+                var cardType = {'upgradeCardObject.viewers' : req.body.cardType}
+            }
+            else{
+                var cardType = {}
+            }
+
+            if(req.body.cashStatus){
+                var cashStatus = {'cashPrize.cashStatus' : req.body.cashStatus}
+            }
+            else{
+                var cashStatus = {}
+            }
+            
+        var tempCond={};
+
+        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                    if (!(key == "paymentCardType" || key == "joinFrom" || key == "joinTo" || key == 'cardType' )) {
+                        tempCond[key]=req.body[key];
+                        console.log("tempCOndition===>"+JSON.stringify(tempCond))
+                        
+                    }
+        });
+    
+        Object.assign(tempCond, dataMatch)
+        Object.assign(tempCond, cashStatus)
+        Object.assign(tempCond, cardType)
+        callback(null, tempCond)
+    },
+      function(tempCond,callback){
+        var query = tempCond
+        if(data == 'soldUpgradeCards'){
+                module.exports.totalSoldUpgradeCard(req, res, query)
+        }
+        else if(data == 'cashGifts'){
+            
+                module.exports.cashGift(req, res, query)
+        }
+        else{
+            module.exports.totalSoldUpgradeCard(req, res, query)
+        }
+    }
+
+    ],function(err, result,condition){
+       res.send({ responseCode: 200, responseMessage: 'Filtered Ads.',data:result
+      });
+    })
+},
+
 
     "showUserPage": function(req, res) {
         createNewPage.find({ userId: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
@@ -1715,18 +1846,28 @@ module.exports = {
     /* --------------------------------- Manage Gift Section ---------------------------------------*/
 
 
-    "totalBrolixGift": function(req, res) {
-        User.aggregate({ $unwind: "$brolix" }).exec(function(err, result) {
-            console.log("brolix--->>", result)
+    "totalBrolixGift": function(req, res, query) {
+        console.log(query.length)
+        console.log("totalBrolixGift query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { };
+        }
+        User.aggregate({ $unwind: "$brolix" }, {$match :updateData}).exec(function(err, result) {
+         //   console.log("brolix--->>", result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];
                 for (i = 0; i < result.length; i++) {
-                    console.log("data--->>>>", result[i].brolix, i);
+                    //console.log("data--->>>>", result[i].brolix, i);
                     arr.push(parseInt(result[i].brolix));
                 }
                 var sum = arr.reduce((a, b) => a + b, 0);
-                console.log("arrrrr", sum);
+                //console.log("arrrrr", sum);
                 res.send({
                     // result: result,
                     totalBrolix: sum,
@@ -1738,8 +1879,17 @@ module.exports = {
     },
 
     "totalCouponGifts": function(req, res, query) {
+        console.log(query.length)
         console.log("query===>"+JSON.stringify(query))
-        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER" } }).exec(function(err, result) {
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { 'coupon.type': "WINNER" };
+        }
+        User.aggregate({ $unwind: "$coupon" }, { $match: updateData }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
@@ -1763,9 +1913,20 @@ module.exports = {
         })
     },
 
-    "totalCashGifts": function(req, res) {
+    "totalCashGifts": function(req, res, query) { 
+        console.log(query.length)
+        console.log("query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { };
+        }
         User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
+                console.log(result)
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
@@ -1788,8 +1949,18 @@ module.exports = {
         })
     },
 
-    "totalHiddenGifts": function(req, res) {
-        User.aggregate({ $unwind: "$hiddenGifts" }).exec(function(err, result) {
+    "totalHiddenGifts": function(req, res, query) {
+        console.log(query.length)
+        console.log("query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { };
+        }
+        User.aggregate({ $unwind: "$hiddenGifts" },{$match:updateData}).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
@@ -1808,8 +1979,18 @@ module.exports = {
         })
     },
 
-    "totalExchangedCoupon": function(req, res) {
-        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.status': "EXCHANGED" } }).exec(function(err, result) {
+    "totalExchangedCoupon": function(req, res, query) {
+        console.log(query.length)
+        console.log("query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { 'coupon.status': "EXCHANGED" }
+        }
+        User.aggregate({ $unwind: "$coupon" }, { $match: updateData }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
@@ -1828,8 +2009,18 @@ module.exports = {
         })
     },
 
-    "totalSentCoupon": function(req, res) {
-        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.status': "SEND" } }).exec(function(err, result) {
+    "totalSentCoupon": function(req, res, query) {
+        console.log(query.length)
+        console.log("query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { 'coupon.status': "SEND" }
+        }
+        User.aggregate({ $unwind: "$coupon" }, { $match: updateData }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
@@ -1850,8 +2041,18 @@ module.exports = {
         })
     },
 
-    "totalSentCash": function(req, res) {
-        User.aggregate({ $unwind: "$sendCashListObject" }).exec(function(err, result) {
+    "totalSentCash": function(req, res, query) {
+        console.log(query.length)
+        console.log("query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { }
+        }
+        User.aggregate({ $unwind: "$sendCashListObject" },{$match : updateData}).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 var arr = [];
                 var count = 0;
@@ -1935,8 +2136,18 @@ module.exports = {
         })
     },
 
-    "cashGift": function(req, res) {
-        User.aggregate({ $unwind: "$cashPrize" }, function(err, results) {
+    "cashGift": function(req, res, query) {
+          console.log(query.length)
+        console.log("query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { }
+        }
+        User.aggregate({ $unwind: "$cashPrize" }, {$match:updateData}, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!results) { res.send({ responseCode: 404, responseMessage: "No result found." }); } else {
                 var arr = [];
@@ -1960,8 +2171,18 @@ module.exports = {
         });
     },
 
-    "soldCoupon": function(req, res) {
-        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "PURCHASED" } }, function(err, results) {
+    "soldCoupon": function(req, res, query) {
+          console.log(query.length)
+        console.log("query===>"+JSON.stringify(query))
+        if(!(query.length == 1)){
+            console.log("query")
+            var updateData = query;
+        }
+        else{
+            console.log("rather than query")
+            var updateData = { 'coupon.type': "PURCHASED" }
+        }
+        User.aggregate({ $unwind: "$coupon" }, { $match: updateData }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No result found." }); } else {
                 var count = 0;

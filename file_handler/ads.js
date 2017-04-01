@@ -400,8 +400,16 @@ module.exports = {
             for (var i = 0; i < files.images.length; i++) {
                 var img = files.images[i];
                 var fileName = files.images[i].originalFilename;
-                cloudinary.uploader.upload(img.path, function(result) {
+                cloudinary.uploader.upload(img.path,{ width: 100, height: 50, crop: "limit" }, function(result) {
+                    console.log(result)
+                    // cloudinary.image('ngdsjthoo4thilkrxpmw.png', { width: 100, height: 150, crop: "fill" },function(err, result){
+                    //     console.log("image result==>>"+result)
+                    // })
                    if (result.url) {
+                 //    cloudinary.image(result.url, { width: 100, height: 150, crop: 'fill', 
+                 // html_width: 50, html_height: 75 },function(ress){
+                 //    console.log("DFdfdf"+ress)
+                 // })                                                       
                       imageUrl.push(result.url);
                       a += i;
                       if (a == i * i) {
