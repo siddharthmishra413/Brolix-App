@@ -211,34 +211,34 @@ $(window).scrollTop(0,0);
 	//*********************** Used Ad **************************
 
 	$scope.upgradeCardUsedAd=function(id){
-		console.log(JSON.stringify(id))
+		//console.log(JSON.stringify(id))
 		$("#luckCardUsedAd").modal('show');
 		var data = {
 					"upgradeId":id
 					}
-		console.log(JSON.stringify(data))
+		//console.log(JSON.stringify(data))
 		userService.upgradeCardUsedAd(data).then(function(success) { 
 					$scope.usedAd=success.data.result;
 					//$scope.img=$scope.usedAd.coverImage;
-					console.log(JSON.stringify(success))
+					console.log("dadaddadadaa",JSON.stringify(success))
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    }) 
 	}
 	$scope.luckCardUsedAd=function(id){
-		console.log(JSON.stringify(id))
+		//console.log(JSON.stringify(id))
 		$("#luckCardUsedAd").modal('show');
 		var data = {
 					"luckId":id
      			}
-		console.log(JSON.stringify(data))
+		//console.log(JSON.stringify(data))
 		userService.luckCardUsedAd(data).then(function(success) { 
 					$scope.usedAd=success.data.result;
 					$scope.img=$scope.usedAd[0].coverImage;
-					console.log(JSON.stringify($scope.usedAd))
+					//console.log(JSON.stringify($scope.usedAd))
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    }) 
 	}
@@ -251,15 +251,15 @@ $(window).scrollTop(0,0);
 				$scope.upgradeUsedAd=[];
 				$scope.upgradeCardObject =[];
 					$("#upgradePayment").modal('show'); 
-					console.log(JSON.stringify(success.data.result))
+					//console.log(JSON.stringify(success.data.result))
 					for(i=0;i<success.data.result.length;i++) {
 							for(j=0;j<success.data.result[i].UpgradeUsedAd.length;j++){
 								 $scope.upgradeUsedAd.push(success.data.result[i].upgradeUsedAd[j].adId);
-								 console.log(JSON.stringify($scope.upgradeUsedAd))
+								 //console.log(JSON.stringify($scope.upgradeUsedAd))
 							}
                         	for(k=0;k<success.data.result[i].upgradeCardObject.length;k++){
                         		$scope.upgradeCardObject.push(success.data.result[i].upgradeCardObject[k]);
-                        		console.log(JSON.stringify($scope.upgradeCardObject))
+                        		//console.log(JSON.stringify($scope.upgradeCardObject))
                         	}
                             
                         }
@@ -273,20 +273,20 @@ $(window).scrollTop(0,0);
 				$scope.luckUsedAd=[];
 				$scope.luckCardObject=[];
 					$("#luckPayment").modal('show'); 
-					console.log(JSON.stringify(success.data.result))
+					//console.log(JSON.stringify(success.data.result))
 					for(i=0;i<success.data.result.length;i++) {
 							for(j=0;j<success.data.result[i].luckUsedAd.length;j++){
 								 $scope.luckUsedAd.push(success.data.result[i].luckUsedAd[j].adId);
-								 console.log(JSON.stringify($scope.luckUsedAd))
+								 //console.log(JSON.stringify($scope.luckUsedAd))
 							}
                         	for(k=0;k<success.data.result[i].luckCardObject.length;k++){
                         		$scope.luckCardObject.push(success.data.result[i].luckCardObject[k]);
-                        		console.log(JSON.stringify($scope.luckCardObject))
+                        		//console.log(JSON.stringify($scope.luckCardObject))
                         	}
                             
                         }
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    }) 
 	}
@@ -319,16 +319,16 @@ $(window).scrollTop(0,0);
     //**************************** Page Count *******************************
 
     $scope.pageCount=function(id){
-        console.log(JSON.stringify(id))
+        //console.log(JSON.stringify(id))
         $scope.page=[];
         $("#Pages").modal('show');
         userService.pageCount(id).then(function(success) { 
                     for(i=0;i<success.data.result.length;i++){
                         $scope.page.push(success.data.result[0]);
                     }
-                     console.log("pages>>>>>>"+JSON.stringify($scope.page))
+                     //console.log("pages>>>>>>"+JSON.stringify($scope.page))
                 },function(err){
-                    console.log(err);
+                    //console.log(err);
                      toastr.error('Connection error.');
             }) 
     }
@@ -336,7 +336,7 @@ $(window).scrollTop(0,0);
     //************************** Contact Buyers and Winners ******************
 
     $scope.total_user_message = function (modal) {
-        console.log("Contact Modal >>>>>>>>>>"+JSON.stringify(modal))
+        //console.log("Contact Modal >>>>>>>>>>"+JSON.stringify(modal))
         $scope.modalId = modal;
         $scope.modelData = modal;
         if($scope.modalId == '' || $scope.modalId == undefined || $scope.modalId == null){
@@ -689,7 +689,7 @@ app.filter("paymentFilter",function() {
 });
 app.filter("manageUsersFilter",function() {
     return function(items,nameValue){
-    	console.log(JSON.stringify(items))
+    	// console.log(JSON.stringify(items))
       if (!nameValue) {
         return retArray = items;
         }

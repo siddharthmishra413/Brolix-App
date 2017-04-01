@@ -171,7 +171,7 @@
                                               <tr ng-repeat="dollars in dollars  |manageUsersFilter:search |paymentFilter:dashBordFilter" >
                                                 <td>{{dollars.upgradeCardObject.viewers}} Viewers</td>
                                                 <td>{{dollars.upgradeCardObject.cash}}$</td>
-                                                <td class="skyblue-text" ng-click="userInfo(dollars._id)">{{dollars.firstName+" "+dollars.lastName}}</td>
+                                                <td class="skyblue-text" style="cursor:pointer;" ng-click="userInfo(dollars._id)">{{dollars.firstName+" "+dollars.lastName}}</td>
                                                 <td>{{dollars.email}}</td>
                                                 <td class="skyblue-text" ng-click="upgradeCardUsedAd(dollars.upgradeCardObject._id)">View</td>
                                                 <td class="skyblue-text" ng-click="pageCount(dollars._id)">{{dollars.pageCount}}</td>

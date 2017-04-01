@@ -65,6 +65,7 @@ module.exports = {
     },
 
     "adminProfile": function(req, res) {
+        console.log("req",req.session)
         if (req.session && req.session.user) {
             User.findOne({
                 email: req.session.user.email

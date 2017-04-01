@@ -1,4 +1,4 @@
- <div class="container">
+<div class="container">
         <div class="outer-block">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
@@ -18,13 +18,19 @@
                                     <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'image')" accept="image/*">
                                 </label>
                             </div>
-                            <form class="form-block" role="form">
+                            <form name="crtCard" class="form-block" role="form">
                                 <fieldset>
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-4">Viewers</label>
                                             <div class="col-md-8">
-                                                <input ng-model="createCard.viewers" ng-model="createCard.viewers" type="text" class="form-control text-center" placeholder="10,000"> 
+                                               <div class="input-group">
+                                                <input ng-model="createCard.viewers" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="10,000" required>
+                                                </div> 
+                                                <span style="color:red;" ng-show="crtCard.viewer.$dirty && crtCard.viewer.$invalid">
+                                                <span ng-show="crtCard.viewer.$error.required">Viewers is required.</span> 
+                                                <span ng-show="crtCard.viewer.$error.pattern">Only number are allowed.</span> 
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -33,16 +39,20 @@
                                             <label class="control-label col-md-4">Price</label>
                                             <div class="col-md-8">
                                                 <div class="input-group">
-                                                  <input ng-model="createCard.price" type="text" ng-model="createCard.price" class="form-control text-center" placeholder="25">
+                                                  <input ng-model="createCard.price" type="tel" name="prices"  ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" placeholder="25" required>
                                                   <span class="input-group-addon" id="basic-addon2"><i class="fa fa-usd" ></i></span>
                                                 </div>
+                                                 <span style="color:red;" ng-show="crtCard.prices.$dirty && crtCard.prices.$invalid">
+                                                  <span ng-show="crtCard.prices.$error.required">Price is required.</span> 
+                                                  <span ng-show="crtCard.prices.$error.pattern">Only number are allowed.</span>
+                                                 </span>
                                             </div>
                                         </div>
                                     </div>
                                 </fieldset>
                             </form>
                             <div class="btn2 text-center">
-                                <a class="btn btn-lg btn-green"  ng-disabled="createCard.image=='../dist/image/cover.jpg' ||createCard.viewers=='' || createCard.price==''" ng-click="addCard('upgrade_card')">Save</a>
+                                <a class="btn btn-lg btn-green"  ng-disabled="createCard.image=='../dist/image/cover.jpg' || crtCard.$invalid " ng-click="addCard('upgrade_card')">Save</a>
                                 <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
                             </div>
                         </div>
@@ -50,15 +60,25 @@
                         <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
                             <div class="cover-image" >
                                         <img class="profile-user-img img-responsive" ng-model="createCard.image2" ng-src="{{createCard.image2}}" id="output">
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this, 'image2')" accept="image/*">
+                                        <label class="fileContainer">
+                                            Choose File
+                                            <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'image2')" accept="image/*">
+                                        </label>
                                     </div>
-                            <form class="form-block" role="form">
+                            <form class="form-block" role="form" name="crtCard2">
                                 <fieldset>
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-4">Chances</label>
                                             <div class="col-md-8">
-                                                <input ng-model="createCard.chances" type="text" ng-model="createCard.chances" class="form-control text-center" placeholder="10,000"> 
+                                              <input ng-model="createCard.chance" type="text" class="form-control text-center" placeholder="10,000">
+
+                                              <!-- <input ng-model="createCard.chance" type="tel" name="chance" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="10,000" required> -->
+
+                                                <!-- <span style="color:red;" ng-show="crtCard2.chance.$dirty && crtCard2.chance.$invalid">
+                                                <span ng-show="crtCard2.chance.$error.required"> chances is required.</span> 
+                                                <span ng-show="crtCard2.chance.$error.pattern">Only number are allowed.</span>     
+                                                </span> -->
                                             </div>
                                         </div>
                                     </div>
@@ -67,20 +87,21 @@
                                             <label class="control-label col-md-4">Brolix</label>
                                             <div class="col-md-8">
                                                 <div class="input-group">
-                                                  <input ng-model="createCard.brolix" type="text"  ng-model="createCard.brolix" class="form-control text-center" placeholder="25">
+                                                  <input ng-model="createCard.brolix" type="tel" name="brolix" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="25" required>
                                                   <span class="input-group-addon" id="basic-addon2"><i class="fa fa-usd" ></i></span>
+                                                </div>
+                                                  <span style="color:red;" ng-show="crtCard2.brolix.$dirty && crtCard2.brolix.$invalid">
+                                                  <span ng-show="crtCard2.brolix.$error.required">Brolix is required.</span> 
+                                                  <span ng-show="crtCard2.brolix.$error.pattern">Only number are allowed.</span>  
                                                 </div>
                                             </div>
                                         </div>
+                                     <div class="btn2 text-center">
+                                        <a class="btn btn-lg btn-green" ng-click="addCard('luck_card')" ng-disabled="createCard.image2=='../dist/image/cover.jpg' || crtCard2.$invalid ">Save</a>
+                                        <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
                                     </div>
                                 </fieldset>
                             </form>
-                            <div class="btn2 text-center">
-
-
-                                <a class="btn btn-lg btn-green" ng-click="addCard('luck_card')" ng-disabled="createCard.image2=='../dist/image/cover.jpg' || createCard.chances=='' || createCard.brolix==''">Save</a>
-                                <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
-                            </div>
                         </div>     
                      </div>
                 </div>

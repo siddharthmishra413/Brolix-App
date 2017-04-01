@@ -3,7 +3,7 @@ this.userDetail="null";
 this.eventDetail="null";  
 
 });
-//var baseurl = "http://172.16.6.171"
+var baseurl = 'http://172.16.6.171:8082';
 
 app.service('uploadimgServeice', function($http, $q) {
     this.user = function(file) {
@@ -36,11 +36,11 @@ app.service('userService',function($http){
 
 	return{
 	  signup: function(data) {
-      return $http.post('/signup', data);
+      return $http.post(baseurl+'/signup', data);
     },
 
     forgotPassword: function(data) {
-      return $http.post('http://172.16.6.171:8082/user/forgotPassword', data);
+      return $http.post(baseurl+'/user/forgotPassword', data);
     },
 
     login: function(data) {
@@ -50,92 +50,96 @@ app.service('userService',function($http){
       return $http.get('/admin/adminProfile');
     },
     addUser: function(data) {
-      return $http.post('http://172.16.6.171:8082/admin/addNewUser', data);
+      return $http.post(baseurl+'/admin/addNewUser', data);
     },
     totalUser: function() {
-      return $http.get('http://172.16.6.171:8082/admin/showAllUser');
+      return $http.get(baseurl+'/admin/showAllUser');
     },
     showAllPersonalUser: function() {
-      return $http.get('http://172.16.6.171:8082/admin/showAllPersonalUser');
+      return $http.get(baseurl+'/admin/showAllPersonalUser');
     },
     showAllBusinessUser: function() {
-      return $http.get('http://172.16.6.171:8082/admin/showAllBusinessUser');
+      return $http.get(baseurl+'/admin/showAllBusinessUser');
     },
     totalWinners: function() {
-      return $http.get('http://172.16.6.171:8082/admin/winners');
+      return $http.get(baseurl+'/admin/winners');
     },
     countrys: function() {
-      return $http.get('/admin/countrys');
+      return $http.get(baseurl+'/admin/countrys');
     },
     userProfile: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/userProfile/'+id);
+      return $http.get(baseurl+'/admin/userProfile/'+id);
     },
     editUserProfile: function(id, data) {
-      return $http.put('http://172.16.6.171:8082/admin/editUserProfile/'+ id, data);
+      return $http.put(baseurl+'/admin/editUserProfile/'+ id, data);
     },
     
     showAllCashWinners: function() {
-      return $http.get('http://172.16.6.171:8082/admin/cashWinners');
+      return $http.get(baseurl+'/admin/cashWinners');
     },
     showAllCouponWinners: function() {
-      return $http.get('http://172.16.6.171:8082/admin/couponWinners');
+      return $http.get(baseurl+'/admin/couponWinners');
     },
     showAllBlockUser: function() {
-      return $http.get('http://172.16.6.171:8082/admin/showAllBlockUser');
+      return $http.get(baseurl+'/admin/showAllBlockUser');
     },
+    showListOFCoupon: function() {
+      return $http.get(baseurl+'/admin/showListOFCoupon');
+    },
+
 
     /*-------------------------Manage Cards---------------------*/
 
     totalSoldUpgradeCard: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalSoldUpgradeCard');
+      return $http.get(baseurl+'/admin/totalSoldUpgradeCard');
     },
     totalIncomeInCashFromUpgradeCard: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalIncomeInCashFromUpgradeCard');
+      return $http.get(baseurl+'/admin/totalIncomeInCashFromUpgradeCard');
     },
     usedUpgradeCard: function() {
-      return $http.get('http://172.16.6.171:8082/admin/usedUpgradeCard');
+      return $http.get(baseurl+'/admin/usedUpgradeCard');
     },
     unUsedUpgradeCard: function() {
-      return $http.get('http://172.16.6.171:8082/admin/unUsedUpgradeCard');
+      return $http.get(baseurl+'/admin/unUsedUpgradeCard');
     },
     totalSoldLuckCard: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalSoldLuckCard');
+      return $http.get(baseurl+'/admin/totalSoldLuckCard');
     },
     totalIncomeInBrolixFromLuckCard: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalIncomeInBrolixFromLuckCard');
+      return $http.get(baseurl+'/admin/totalIncomeInBrolixFromLuckCard');
     },
     usedLuckCard: function() {
-      return $http.get('http://172.16.6.171:8082/admin/usedLuckCard');
+      return $http.get(baseurl+'/admin/usedLuckCard');
     },
     unUsedLuckCard: function() {
-      return $http.get('http://172.16.6.171:8082/admin/unUsedLuckCard');
+      return $http.get(baseurl+'/admin/unUsedLuckCard');
     },
 
     /*-------------------------Manage ADS---------------------*/
 
     totalAds: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/totalAds');
+      return $http.get(baseurl+'/admin/totalAds');
     },
     totalActiveAds: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/totalActiveAds');
+      return $http.get(baseurl+'/admin/totalActiveAds');
     },
     totalExpiredAds: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/totalExpiredAds');
+      return $http.get(baseurl+'/admin/totalExpiredAds');
     },
     videoAds: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/videoAds');
+      return $http.get(baseurl+'/admin/videoAds');
     },
     slideshowAds: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/slideshowAds');
+      return $http.get(baseurl+'/admin/slideshowAds');
     },
     adUpgradedByDollor: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/adUpgradedByDollor');
+      return $http.get(baseurl+'/admin/adUpgradedByDollor');
     },
     adUpgradedByBrolix: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/adUpgradedByBrolix');
+      return $http.get(baseurl+'/admin/adUpgradedByBrolix');
     },
     showReportedAd: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/showReportedAd');
+      return $http.get(baseurl+'/admin/showReportedAd');
     },
 
 
@@ -143,19 +147,19 @@ app.service('userService',function($http){
     /*------------------------Manage Pages---------------------*/
 
     totalPages: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalPages');
+      return $http.get(baseurl+'/admin/totalPages');
     },
 
     allAdminPages: function() {
-      return $http.get('http://172.16.6.171:8082/admin/PagesAdmins');
+      return $http.get(baseurl+'/admin/PagesAdmins');
     },
 
     showAllBlockedPage: function() {
-      return $http.get('http://172.16.6.171:8082/admin/showAllBlockedPage');
+      return $http.get(baseurl+'/admin/showAllBlockedPage');
     },
 
     createPage: function(data) {
-      return $http.post('http://172.16.6.171:8082/page/createPage', data);
+      return $http.post(baseurl+'/page/createPage', data);
     },
 
     // showPageDetails: function(data) {
@@ -164,7 +168,7 @@ app.service('userService',function($http){
 
 
     viewPage: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/viewPage/'+id);
+      return $http.get(baseurl+'/admin/viewPage/'+id);
     },
 
     /*------------------------All Countries---------------------*/
@@ -186,11 +190,11 @@ app.service('userService',function($http){
     },
 
     BlockUser: function(userId) {
-      return $http.get('http://172.16.6.171:8082/admin/blockUser/'+userId);
+      return $http.get(baseurl+'/admin/blockUser/'+userId);
     },
 
     UnBlockUser: function(userId) {
-      return $http.get('http://172.16.6.171:8082/admin/unblockUser/'+userId);
+      return $http.get(baseurl+'/admin/unblockUser/'+userId);
     },
 
     viewCoupon: function(id){
@@ -198,57 +202,57 @@ app.service('userService',function($http){
     },
 
     unPublishedPage: function () {
-      return $http.get('http://172.16.6.171:8082/admin/unPublishedPage');  
+      return $http.get(baseurl+'/admin/unPublishedPage');  
     },
 
     showAllRemovedPage: function () {
-      return $http.get('http://172.16.6.171:8082/admin/showAllRemovedPage');  
+      return $http.get(baseurl+'/showAllRemovedPage');  
     },
 
     removePage: function (pageId) {
-      return $http.get('http://172.16.6.171:8082/admin/removePage/'+pageId);
+      return $http.get(baseurl+'/admin/removePage/'+pageId);
     },
 
      bloackUnblockPage: function(data) {
-      return $http.post('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/createCards', data);
+      return $http.post(baseurl+'/admin/createCards', data);
     },
 
     showAllBlockedPage: function(){
-      return $http.get('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/showAllBlockedPage');
+      return $http.get(baseurl+'/admin/showAllBlockedPage');
     },
 
     addcard: function(data) {
-      return $http.post('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/createCards', data);
+      return $http.post(baseurl+'/admin/createCards', data);
     },
 
     viewcard: function(type) {
-      return $http.get('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/viewCards/'+type);
+      return $http.get(baseurl+'/admin/viewCards/'+type);
     },
 
     showCardDetails: function(id){
-      return $http.get('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/showCardDetails/'+id);
+      return $http.get(baseurl+'/admin/showCardDetails/'+id);
     },
 
     editCards: function(data){
-      return $http.post('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/editCards', data);
+      return $http.post(baseurl+'/admin/editCards', data);
     },
 
     removeCard: function(id){
-      return $http.get('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/removeCard/'+id);
+      return $http.get(baseurl+'/admin/removeCard/'+id);
     },
 
     createOffer: function(data){
-      return $http.post('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/createOfferOnCard', data);
+      return $http.post(baseurl+'/admin/createOfferOnCard', data);
     },
 
     showOfferOnCards: function(data){
-      return $http.post('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/showOfferOnCards', data);
+      return $http.post(baseurl+'/admin/showOfferOnCards', data);
     },
 
     /*filter MangeUser section*/
 
     userfilter: function(data){
-      return $http.post('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1310/admin/userfilter', data);
+      return $http.post(baseurl+'/admin/userfilter', data);
     },
     // /*------ManageGiftSection-------*/
 
@@ -259,47 +263,47 @@ app.service('userService',function($http){
     /*------ManageGiftSection-------*/
 
     totalBrolixGift: function () {
-      return $http.get('http://172.16.6.171:8082/admin/totalBrolixGift');  
+      return $http.get(baseurl+'/admin/totalBrolixGift');  
     },
 
     totalCouponsGifts: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalCouponGifts');
+      return $http.get(baseurl+'/admin/totalCouponGifts');
     },
  
     totalCashGifts: function() {
-       return $http.get('http://172.16.6.171:8082/admin/totalCashGifts');
+       return $http.get(baseurl+'/admin/totalCashGifts');
     },
 
     totalHiddenGifts: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalHiddenGifts');
+      return $http.get(baseurl+'/admin/totalHiddenGifts');
     },
     
     totalExchangedCoupon: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalExchangedCoupon');
+      return $http.get(baseurl+'/admin/totalExchangedCoupon');
     },
     
     totalSentCash: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalSentCash');
+      return $http.get(baseurl+'/admin/totalSentCash');
     },
     
     totalSentCoupon: function() {
-      return $http.get('http://172.16.6.171:8082/admin/totalSentCoupon');
+      return $http.get(baseurl+'/admin/totalSentCoupon');
     },
      
     topFiftyBalances: function() {
-      return $http.get('http://172.16.6.171:8082/admin/topFiftyBalances');
+      return $http.get(baseurl+'/admin/topFiftyBalances');
     },
 
     topFiftyCouponProvider: function() {
-       return $http.get('http://172.16.6.171:8082/admin/topFiftyCouponProviders');
+       return $http.get(baseurl+'/admin/topFiftyCouponProviders');
     },
     
     topFiftyCashProvider: function() {
-      return $http.get('http://172.16.6.171:8082/admin/topFiftyCashProviders');
+      return $http.get(baseurl+'/admin/topFiftyCashProviders');
     },
     
     couponGiftAd: function(id) {
-      return $http.get('http://172.16.6.171:8082/admin/adInfo/'+id);
+      return $http.get(baseurl+'/admin/adInfo/'+id);
     },
 
   
@@ -309,19 +313,19 @@ app.service('userService',function($http){
      /*-------ManagePage Section----------*/
 
      showUserPage: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/showUserPage/'+id);
+      return $http.get(baseurl+'/admin/showUserPage/'+id);
     },
 
     showAdds: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/adsOnPage/'+id);
+      return $http.get(baseurl+'/admin/adsOnPage/'+id);
     },
 
     showPageWinner: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/winnersOnPage/'+id);
+      return $http.get(baseurl+'/admin/winnersOnPage/'+id);
     },
 
     showAdminPages: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/pageAdminsDetail/'+id);
+      return $http.get(baseurl+'/admin/pageAdminsDetail/'+id);
     },
 
     zipcodFunction: function(data){
@@ -331,118 +335,118 @@ app.service('userService',function($http){
     //******************** Manage Payment Section ******************************
 
      SoldUpgradeCard: function(){
-      return $http.get('http://172.16.6.171:8082/admin/totalSoldUpgradeCard');
+      return $http.get(baseurl+'/admin/totalSoldUpgradeCard');
     },
       userInfo: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/userInfo/'+id);
+      return $http.get(baseurl+'/admin/userInfo/'+id);
     },
      SoldLuckCard: function(){
-      return $http.get('http://172.16.6.171:8082/admin/totalSoldLuckCard');admin/luckCardUsedAd
+      return $http.get(baseurl+'/admin/totalSoldLuckCard');
     },
       luckCardUsedAd: function(data){
-      return $http.post('http://172.16.6.171:8082/admin/luckCardUsedAd',data);
+      return $http.post(baseurl+'/admin/luckCardUsedAd',data);
     },
     luckCardUsedAd: function(data){
-      return $http.post('http://172.16.6.171:8082/admin/luckCardUsedAd',data);
+      return $http.post(baseurl+'/admin/luckCardUsedAd',data);
     },
     upgradeCardUsedAd: function(data){
-      return $http.post('http://172.16.6.171:8082/admin/upgradeCardUsedAd',data);
+      return $http.post(baseurl+'/admin/upgradeCardUsedAd',data);
     },
     upgradeCardPayment: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/paymentHistoryUpgradeCard/'+id);
+      return $http.get(baseurl+'/admin/paymentHistoryUpgradeCard/'+id);
     },
     luckCardPayment: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/paymentHistoryLuckCard/'+id);
+      return $http.get(baseurl+'/admin/paymentHistoryLuckCard/'+id);
     },
     cashGift: function(){
-      return $http.get('http://172.16.6.171:8082/admin/cashGift');
+      return $http.get(baseurl+'/admin/cashGift');
     },
     soldCoupons: function(){
-      return $http.get('http://172.16.6.171:8082/admin/soldCoupon');
+      return $http.get(baseurl+'/admin/soldCoupon');
     },
      pageInfo: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/pageInfo/'+id);
+      return $http.get(baseurl+'/admin/pageInfo/'+id);
     }, 
     top_50_dollarsBuyers: function(){
-      return $http.get('http://172.16.6.171:8082/admin/topFiftyUpgradeCardBuyers');
+      return $http.get(baseurl+'/admin/topFiftyUpgradeCardBuyers');
     },
     top_50_brolixBuyers: function(){
-      return $http.get('http://172.16.6.171:8082/admin/topFiftyLuckCardBuyers');
+      return $http.get(baseurl+'/admin/topFiftyLuckCardBuyers');
     },
     top_50_Ads: function(){
-      return $http.get('http://172.16.6.171:8082/admin/topFiftyAds');
+      return $http.get(baseurl+'/admin/topFiftyAds');
     },
     totalDollarsPrice: function(){
-      return $http.get('http://172.16.6.171:8082/admin/totalCashPrice');
+      return $http.get(baseurl+'/admin/totalCashPrice');
     },
     totalBrolixPrice: function(){
-      return $http.get('http://172.16.6.171:8082/admin/totalBrolixPrice');
+      return $http.get(baseurl+'/admin/totalBrolixPrice');
     },
     adInfo: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/adInfo/'+id);
+      return $http.get(baseurl+'/admin/adInfo/'+id);
     },
     pageCount: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/showUserPage/'+id);
+      return $http.get(baseurl+'/admin/showUserPage/'+id);
     },
 
     /*Admin Tool Section*/
 
     createSystemUser: function(data){
-      return $http.post('http://172.16.6.171:8082/admin/createSystemUser', data);
+      return $http.post(baseurl+'/admin/createSystemUser', data);
     },
 
     listOfSystemAdmin: function(data){
-      return $http.get('http://172.16.6.171:8082/admin/listOfSystemAdmin');
+      return $http.get(baseurl+'/admin/listOfSystemAdmin');
     },
 
     removeSystemAdmin: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/removeSystemAdmin/'+id);
+      return $http.get(baseurl+'/admin/removeSystemAdmin/'+id);
     },
 
     viewProfile: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/viewProfile/'+id);
+      return $http.get(baseurl+'/admin/viewProfile/'+id);
     },
 
     editSystemAdmin: function(id,data){
-      return $http.put('http://172.16.6.171:8082/admin/editSystemAdmin/'+id, data);
+      return $http.put(baseurl+'/admin/editSystemAdmin/'+id, data);
     },
 
     showReport: function(data){
-      return $http.get('http://172.16.6.171:8082/report/showReport');
+      return $http.get(baseurl+'/report/showReport');
     },
 
     createTerms: function(data){
-      return $http.post('http://172.16.6.171:8082/terms/createTerms', data);
+      return $http.post(baseurl+'/terms/createTerms', data);
     },
 
     viewAllTerms: function(data){
-      return $http.get('http://172.16.6.171:8082/terms/viewAllTerms');
+      return $http.get(baseurl+'/terms/viewAllTerms');
     },
 
     editTermsCondition: function(type, data) {
-      return $http.put('http://172.16.6.171:8082/terms/editTermsCondition/'+ type, data);
+      return $http.put(baseurl+'/terms/editTermsCondition/'+ type, data);
     },
 
     addCoupon: function(data){
-      return $http.post('http://172.16.6.171:8082/admin/addNewCoupon', data);
+      return $http.post(baseurl+'/admin/addNewCoupon', data);
     },
     getPage: function(){
-      return $http.get('http://172.16.6.171:8082/admin/showPageName');
+      return $http.get(baseurl+'/admin/showPageName');
     },
     allCoupons: function(){
-      return $http.get('http://172.16.6.171:8082/admin/showListOFCoupon');
+      return $http.get(baseurl+'/admin/showListOFCoupon');
     },
     viewCoupon: function(id){
-      return $http.get('http://172.16.6.171:8082/admin/viewCoupon/'+id);
+      return $http.get(baseurl+'/admin/viewCoupon/'+id);
     },
     editCoupon: function(id,data){
-      return $http.put('http://172.16.6.171:8082/admin/editCoupon/'+id,data);
+      return $http.put(baseurl+'/admin/editCoupon/'+id,data);
     },
     postCoupon: function(id,data){
-      return $http.put('http://172.16.6.171:8082/admin/postCouponToStore/'+id, data);
+      return $http.put(baseurl+'/admin/postCouponToStore/'+id, data);
     },
      removeCoupon: function(id){
-      return $http.post('http://172.16.6.171:8082/admin/removeCoupon/',id);
+      return $http.post(baseurl+'/admin/removeCoupon/',id);
     }
 
 

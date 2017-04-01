@@ -1,4 +1,4 @@
-app.controller('editCardCtrl', function($scope, $window, userService, uploadimgServeice, $state, toastr, $stateParams, $http) {
+app.controller('editCardCtrl', function($scope, $window, userService,spinnerService,$timeout, uploadimgServeice, $state, toastr, $stateParams, $http) {
     $(window).scrollTop(0, 0);
     $scope.$emit('headerStatus', 'Manage Cards');
     $scope.$emit('SideMenu', 'Manage Cards');
@@ -18,13 +18,17 @@ app.controller('editCardCtrl', function($scope, $window, userService, uploadimgS
     })
 
     $scope.changeImage = function(input) {
+        spinnerService.show('html5spinner'); 
         var file = input.files[0];
         var ext = file.name.split('.').pop();
         if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
             $scope.imageName = file.name;
             uploadimgServeice.user(file).then(function(ObjS) {
+                 $timeout(function () {      
+                spinnerService.hide('html5spinner');     
             $scope.myForm.photo = ObjS.data.result.url;
             $scope.user.photo = ObjS.data.result.url;
+            }, 250); 
             console.log("pjototot",$scope.user.photo);
         })
         }else{

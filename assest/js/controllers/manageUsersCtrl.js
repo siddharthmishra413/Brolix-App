@@ -46,6 +46,12 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
         //console.log("UpgradeCard",$scope.UpgradeCard);
     })
 
+    userService.showListOFCoupon().success(function(res) {
+      //console.log("resssssssssssssss",res)
+        $scope.allCoupons = res.result;
+        console.log("allCoupons",$scope.allCoupons);
+    })
+
     $scope.export = function(){
         html2canvas(document.getElementById('manageUserTable'), {
             onrendered: function (canvas) {
@@ -1165,6 +1171,205 @@ $scope.dashBordFilter = function(){
                 
                 default: 
                 toastr.error("somthing wents to wroung");
+            }
+
+    }
+
+
+    $scope.total_user_coupons = function (modal) {
+        console.log("model",modal);
+        $scope.modalIdcoupon = modal;
+        $scope.modelDatacoupon = modal;
+        if($scope.modalIdcoupon == '' || $scope.modalIdcoupon == undefined || $scope.modalIdcoupon == null){
+        toastr.error("Please select user.")
+        $state.go('header.manageUsers')
+        }else {
+            $("#showAllCoupons").modal('show');
+        }
+    }
+
+    $scope.sendCoupons = function(couponId){
+         var array =[];
+         var data = {};
+         $scope.couponId = couponId;
+         switch ($scope.modelDatacoupon)
+            {
+                case 'totalUser': 
+                    for (var i = 0; i < $scope.totalUser.length; i++) {
+                        array.push($scope.totalUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    console.log("dataIn",data)
+                    // userService.sendMassageAllUser(data).success(function(res) {        
+                    //     if (res.responseCode == 200){
+                    //         toastr.success("Message Send Successfully to All User");
+                    //         $scope.sendMessage = '';
+                    //         $("#sendMessageModelAllUser").modal('hide'); 
+                    //     } else {
+                    //         toastr.error(res.responseMessage);
+                    //     }
+                    // })
+                break;
+
+                case 'PersonalUser': 
+                    for (var i = 0; i < $scope.personalUser.length; i++) {
+                        array.push($scope.personalUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    console.log("dataIn",data)
+                    // userService.sendMassageAllUser(data).success(function(res) {        
+                    //     if (res.responseCode == 200){
+                    //         toastr.success("Message Send Successfully to All Personal User");
+                    //         $scope.sendMessage = '';
+                    //         $("#sendMessageModelAllUser").modal('hide'); 
+                    //     } else {
+                    //         toastr.error(res.responseMessage);
+                    //     }
+                    // })
+                break;
+
+                case 'BusinessUser': 
+                    for (var i = 0; i < $scope.businessUser.length; i++) {
+                        array.push($scope.businessUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    console.log("dataIn",data)
+                    // userService.sendMassageAllUser(data).success(function(res) {        
+                    //     if (res.responseCode == 200){
+                    //         toastr.success("Message Send Successfully to All Business User");
+                    //         $scope.sendMessage = '';
+                    //         $("#sendMessageModelAllUser").modal('hide'); 
+                    //     } else {
+                    //         toastr.error(res.responseMessage);
+                    //     }
+                    // })
+                break;
+
+                case 'LiveUser': 
+                    for (var i = 0; i < $scope.LiveUser.length; i++) {
+                        array.push($scope.LiveUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    console.log("dataIn",data)
+                    // userService.sendMassageAllUser(data).success(function(res) {        
+                    //     if (res.responseCode == 200){
+                    //         toastr.success("Message Send Successfully to All Live User");
+                    //         $scope.sendMessage = '';
+                    //         $("#sendMessageModelAllUser").modal('hide'); 
+                    //     } else {
+                    //         toastr.error(res.responseMessage);
+                    //     }
+                    // })
+                break;
+
+                case 'WinnersUser': 
+                    for (var i = 0; i < $scope.totalWinners.length; i++) {
+                        array.push($scope.totalWinners[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    console.log("dataIn",data)
+                    // userService.sendMassageAllUser(data).success(function(res) {        
+                    //     if (res.responseCode == 200){
+                    //         toastr.success("Message Send Successfully to All Winners User");
+                    //         $scope.sendMessage = '';
+                    //         $("#sendMessageModelAllUser").modal('hide'); 
+                    //     } else {
+                    //         toastr.error(res.responseMessage);
+                    //     }
+                    // })
+                break;
+
+                case 'CashWinnersUser': 
+                    for (var i = 0; i < $scope.cashWinners.length; i++) {
+                        array.push($scope.cashWinners[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    console.log("dataIn",data)
+                    // userService.sendMassageAllUser(data).success(function(res) {        
+                    //     if (res.responseCode == 200){
+                    //         toastr.success("Message Send Successfully to All CashWinners User");
+                    //         $scope.sendMessage = '';
+                    //         $("#sendMessageModelAllUser").modal('hide'); 
+                    //     } else {
+                    //         toastr.error(res.responseMessage);
+                    //     }
+                    // })
+                break;
+
+                case 'CouponWinnersUser': 
+                    for (var i = 0; i < $scope.couponWinners.length; i++) {
+                        array.push($scope.couponWinners[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    console.log("dataIn",data)
+                    // userService.sendMassageAllUser(data).success(function(res) {        
+                    //     if (res.responseCode == 200){
+                    //         toastr.success("Message Send Successfully to All CouponWinners User");
+                    //         $scope.sendMessage = '';
+                    //         $("#sendMessageModelAllUser").modal('hide'); 
+                    //     } else {
+                    //         toastr.error(res.responseMessage);
+                    //     }
+                    // })
+                break;
+
+                case 'BlockedUser': 
+                    for (var i = 0; i < $scope.allblockUser.length; i++) {
+                        array.push($scope.allblockUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    console.log("dataIn",data)
+                    // userService.sendMassageAllUser(data).success(function(res) {        
+                    //     if (res.responseCode == 200){
+                    //         toastr.success("Message Send Successfully to All Blocked User");
+                    //         $scope.sendMessage = '';
+                    //         $("#sendMessageModelAllUser").modal('hide'); 
+                    //     } else {
+                    //         toastr.error(res.responseMessage);
+                    //     }
+                    // })
+                break;
+
+                default: 
+                array.push($scope.modalId)
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    console.log("dataIn",data)
+                    // userService.sendMassageAllUser(data).success(function(res) {        
+                    //     if (res.responseCode == 200){
+                    //         toastr.success("Message Send Successfully to User");
+                    //         $scope.sendMessage = '';
+                    //         $("#sendMessageModelAllUser").modal('hide'); 
+                    //     } else {
+                    //         toastr.error(res.responseMessage);
+                    //     }
+                    // })
             }
 
     }

@@ -9,33 +9,33 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     
 
     $scope.createOffer = function(type){
-    	console.log("ddddddddd",$scope.myForm.cardType)
-    	if(type=='upgradeCard'){
-    		$scope.first = false;
-	    	$scope.second = true;
-	    	$scope.third = false;
-    		userService.viewcard('upgrade_card').success(function(res){
-		    	console.log("darartara",$scope.myForm);
-		    	$scope.UpgradeCard = res.data;
-		    	console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
-    		})	
-    	}else if(type=='luckCard'){
-    		$scope.first = false;
-	    	$scope.second = false;
-	    	$scope.third = true;
-	    	userService.viewcard('luck_card').success(function(res){
-		    	console.log("darartara",$scope.myForm);
-		    	$scope.UpgradeCard = res.data;
-		    	console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
-    		})
-    	}
-    	else{
-    		toastr.error("Something Wents to wroung")
-    	}	
+        console.log("ddddddddd",$scope.myForm.cardType)
+        if(type=='upgradeCard'){
+            $scope.first = false;
+            $scope.second = true;
+            $scope.third = false;
+            userService.viewcard('upgrade_card').success(function(res){
+                console.log("darartara",$scope.myForm);
+                $scope.UpgradeCard = res.data;
+                console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
+            })  
+        }else if(type=='luckCard'){
+            $scope.first = false;
+            $scope.second = false;
+            $scope.third = true;
+            userService.viewcard('luck_card').success(function(res){
+                console.log("darartara",$scope.myForm);
+                $scope.UpgradeCard = res.data;
+                console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
+            })
+        }
+        else{
+            toastr.error("Something Wents to wroung")
+        }   
     }
 
     $scope.createOfferNext = function(id){
-    	$scope.myForm.id = id;
+        $scope.myForm.id = id;
         var date = new Date().getTime();
         date = date + $scope.myForm.offerTime*60*60*1000;
         // var utcDate = new Date(date).toUTCString();
@@ -58,7 +58,7 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
             }
 
         })
-    	
+        
     }
 
     $scope.showCardDetails = function(id){
