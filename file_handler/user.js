@@ -1152,7 +1152,8 @@ module.exports = {
             function(callback) {
                 var obj = req.body.upgradeId;
                 var adId = req.body.adId;
-                if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); } else {
+                if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); } 
+                else if (adId == null || adId == '' || adId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter adId' }); }else {
                     for (var i = 0; i < obj.length; i++) {
                         console.log("in loop")
                         User.update({ 'upgradeCardObject._id': obj[i] }, { $push: { 'UpgradeUsedAd': { upgradeId: obj[i], adId: adId } }, $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {

@@ -2139,31 +2139,36 @@ module.exports = {
         waterfall([
             function(callback) {
                 var array = [];
-                User.find({}).exec(function(err, result) {
+                User.find({}, 'firstName lastName email createdAt').exec(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
-                        array.push(result)
-                        console.log("array--->>>", array)
+                        for (var i = 0; i < result.length; i++) {
+                            array.push(result[i])
+                        }
                         callback(null, array)
                     }
                 })
             },
             function(array, callback) {
-                createNewAds.find({}).exec(function(err, result2) {
+                createNewAds.find({}, 'pageName adsType createdAt').exec(function(err, result2) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result2.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
-
-                        array.push(result2)
-
+                        for (var j = 0; j < result2.length; j++) {
+                            array.push(result2[j])
+                        }
                         callback(null, array)
                     }
-
                 })
 
             },
             function(array, callback) {
-                createNewPage.find({}).exec(function(err, result3) {
+                createNewPage.find({}, ' pageName createdAt').exec(function(err, result3) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result3.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
-                        array.push(result3)
-                        callback(null, array)
+                        for (var k = 0; k < result3.length; k++) {
+                            array.push(result3[k])
+                        }
+                        var sortArray = array.sort(function(obj1, obj2) {
+                            return obj2.createdAt - obj1.createdAt
+                        })
+                        callback(null, sortArray)
                     }
                 })
             },
@@ -2174,8 +2179,6 @@ module.exports = {
                 responseMessage: "All info shown successfully."
             })
         })
-
-
     }
 
 
