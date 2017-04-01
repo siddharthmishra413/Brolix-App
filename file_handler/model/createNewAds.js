@@ -185,6 +185,7 @@ var createNewAdsSchema = new Schema({
     uploadGiftImage:{
         type:String
     },
+    favouriteCoupon: [],
     createdAt: {
         type: Date,
         default: Date.now

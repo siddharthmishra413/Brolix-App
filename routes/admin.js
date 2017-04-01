@@ -121,6 +121,7 @@ app.put('/editSystemAdmin/:id', adminHandler.editSystemAdmin);
 app.get('/notificationToAdmin', adminHandler.notificationToAdmin);
 app.post('/userfilter', adminHandler.userfilter);
 app.post('/pagefilter', adminHandler.pagefilter);
+app.get('/adAdminUserList', adminHandler.adAdminUserList);
 
 
 module.exports = app;

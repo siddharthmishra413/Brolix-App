@@ -207,8 +207,7 @@ var userSchema = new Schema({
     cashStatus: [{
         adId: { type: String },
         cashStatus: { type: String, default: 'pending' }
-    }],
-    favouriteCoupon: [],
+    }],    
     userFollowers: [],
     UpgradeUsedAd: [{
         upgradeId: { type: String },

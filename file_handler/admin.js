@@ -58,6 +58,7 @@ module.exports = {
             } else {
                 // sets a cookie with the user's info
                 req.session.user = result;
+                console.log("requesr-->>", req.session)
                 return res.send({
                     responseCode: 200,
                     responseMessage: "Login successfully."
@@ -67,6 +68,7 @@ module.exports = {
     },
 
     "adminProfile": function(req, res) {
+        console.log("requesr-->>", req.session)
         if (req.session && req.session.user) {
             User.findOne({
                 email: req.session.user.email
@@ -591,9 +593,7 @@ module.exports = {
                 });
             }
         });
-
     },
-
 
     "unUsedLuckCard": function(req, res) {
         User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "ACTIVE" } }).exec(function(err, result) {
@@ -1797,9 +1797,9 @@ module.exports = {
         })
     },
 
-    "topFiftyAds": function(req, res) {
-        createNewAds.find({}).sort({ viewerLenght: -1 }).limit(50).populate('pageId', 'pageName').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+    "topFiftyAds": function(req, res) { //sort({ viewerLenght: -1 }).limit(50).populate('pageId', 'pageName')
+        createNewAds.find({}).sort({ viewerLenght: -1 }).limit(50).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -1808,6 +1808,7 @@ module.exports = {
             }
         })
     },
+
 
 
     /************************************ Admin tool sections *****************************************************************/
@@ -2338,7 +2339,8 @@ module.exports = {
                     createNewAds.find({}, 'pageId', function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No page found" })
                         var result = result.map(function(a) {
-                            return a.pageId; });
+                            return a.pageId;
+                        });
                         var allPageIds = _.uniq(result);
                         callback(null, allPageIds)
                             // createNewPage.find({_id:{$nin:allPageIds}},function(err, result){
@@ -2420,6 +2422,12 @@ module.exports = {
                 responseMessage: 'Filtered Users',
                 data: result
             });
+        })
+    },
+
+    "adAdminUserList": function(req, res) {
+        User.find({}, 'firstName lastName email', function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No user found" }) } else { res.send({ result: result, responseCode: 200, responseMessage: 'List of all user' }); }
         })
     }
 

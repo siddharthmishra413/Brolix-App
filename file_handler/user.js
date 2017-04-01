@@ -610,21 +610,15 @@ module.exports = {
     //API for Change Password
     "changePassword": function(req, res) {
         User.findOne({ _id: req.body.userId }, function(err, result) {
-            console.log("ddd---" + JSON.stringify(result));
-            if (!result) {
-                res.send({
-                    response_code: 400,
-                    response_message: "User doesn't exist."
-                });
-            } else {
-                var oldpassword = (req.body.oldpass);
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ response_code: 404, response_message: "User doesn't exist." }); } else {
+                var oldpassword = req.body.oldpass;
                 if (result.password != oldpassword) {
                     res.send({
                         response_code: 401,
                         response_message: "Old password doesn't match."
                     });
                 } else {
-                    var password = (req.body.newpass);
+                    var password = req.body.newpass;
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) {
                         res.send({
                             responseCode: 200,
@@ -634,7 +628,6 @@ module.exports = {
                 }
             }
         })
-
     },
 
     //API for user Profile
@@ -1152,8 +1145,7 @@ module.exports = {
             function(callback) {
                 var obj = req.body.upgradeId;
                 var adId = req.body.adId;
-                if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); } 
-                else if (adId == null || adId == '' || adId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter adId' }); }else {
+                if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); } else if (adId == null || adId == '' || adId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter adId' }); } else {
                     for (var i = 0; i < obj.length; i++) {
                         console.log("in loop")
                         User.update({ 'upgradeCardObject._id': obj[i] }, { $push: { 'UpgradeUsedAd': { upgradeId: obj[i], adId: adId } }, $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
@@ -1555,17 +1547,23 @@ module.exports = {
                 responseMessage: "successfully purchased the coupon."
             })
         })
-
     },
 
 
     "listOfFavouriteCoupon": function(req, res) {
-        User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
-                var array = result.favouriteCoupon;
-
+        var userId = req.body.userId
+        createNewAds.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                var array = [];
+                for (var i = 0; i < result.length; i++) {
+                    for (var j = 0; j < result[i].favouriteCoupon.length; j++) {
+                        if (result[i].favouriteCoupon[j] == userId) {
+                            array.push(result[i]._id)
+                        }
+                    }
+                }
                 createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon found in your favourites" }); } else {
                         res.send({
                             result: result,
                             responseCode: 200,
@@ -1579,16 +1577,17 @@ module.exports = {
 
     "addRemoveCouponFromFavourite": function(req, res) {
         var adId = req.body.adId;
+        var userId = req.body.userId;
         if (req.body.type == "favourite") {
-            User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
+            createNewAds.findOne({ _id: adId }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); }
                 var favouriteCoupon = result.favouriteCoupon;
 
                 var mySet = new Set(favouriteCoupon);
-                var has = mySet.has(adId)
+                var has = mySet.has(userId)
                 if (has) { res.send({ responseCode: 302, responseMessage: "Already added to favourites." }) } else if (!has) {
-                    User.findOneAndUpdate({ _id: req.body.userId }, { $push: { favouriteCoupon: adId } }, { new: true }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                    createNewAds.findOneAndUpdate({ _id: adId }, { $push: { favouriteCoupon: userId } }, { new: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                             res.send({
                                 // result: result1,
                                 responseCode: 200,
@@ -1599,14 +1598,14 @@ module.exports = {
                 }
             })
         } else {
-            User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
+            createNewAds.findOne({ _id: adId }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); }
                 var favouriteCoupon = result.favouriteCoupon;
                 var mySet = new Set(favouriteCoupon);
-                var has = mySet.has(adId)
+                var has = mySet.has(userId)
                 if (!has) { res.send({ responseCode: 302, responseMessage: "Already removed from favourites." }) } else if (has) {
-                    User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { favouriteCoupon: -adId } }, { new: true }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                    createNewAds.findOneAndUpdate({ _id: adId }, { $pop: { favouriteCoupon: -userId } }, { new: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                             res.send({
                                 //   result: result1,
                                 responseCode: 200,
