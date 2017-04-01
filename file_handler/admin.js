@@ -2139,7 +2139,7 @@ module.exports = {
         waterfall([
             function(callback) {
                 var array = [];
-                User.find({}, 'firstName lastName email createdAt').exec(function(err, result) {
+                User.find({}, 'firstName lastName email createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                         for (var i = 0; i < result.length; i++) {
                             array.push(result[i])
@@ -2149,7 +2149,7 @@ module.exports = {
                 })
             },
             function(array, callback) {
-                createNewAds.find({}, 'pageName adsType createdAt').exec(function(err, result2) {
+                createNewAds.find({}, 'pageName adsType createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, result2) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result2.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
                         for (var j = 0; j < result2.length; j++) {
                             array.push(result2[j])
@@ -2157,10 +2157,9 @@ module.exports = {
                         callback(null, array)
                     }
                 })
-
             },
             function(array, callback) {
-                createNewPage.find({}, ' pageName createdAt').exec(function(err, result3) {
+                createNewPage.find({}, ' pageName createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, result3) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result3.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
                         for (var k = 0; k < result3.length; k++) {
                             array.push(result3[k])
@@ -2178,6 +2177,249 @@ module.exports = {
                 responseCode: 200,
                 responseMessage: "All info shown successfully."
             })
+        })
+    },
+
+    "userfilter": function(req, res) {
+        var condition = { $and: [] };
+        var todayDate = new Date();
+        var newTodayDate = new Date();
+        var data = req.body.userType;
+
+        waterfall([
+            function(callback) {
+                if (data == "cashWinners" || data == "couponWinners" || data == "totalWinners") {
+                    switch (data) {
+                        case 'cashWinners':
+                            var query = { adsType: "cash" };
+                            break;
+
+                        case 'couponWinners':
+                            var query = { adsType: "coupon" };
+                            break;
+
+                        case 'totalWinners':
+                            var query = {};
+                            break;
+                    }
+                    var arrayWinner = [];
+                    createNewAds.find(query).exec(function(err, result) {
+                        console.log("dfgfg")
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                            var count = 0;
+                            for (i = 0; i < result.length; i++) {
+                                for (j = 0; j < result[i].winners.length; j++) {
+                                    arrayWinner.push(result[i].winners[j]);
+                                    count++;
+                                    console.log("count--", count)
+                                }
+                            }
+                            console.log("array--->" + arrayWinner)
+
+                            console.log("count-->>>", count)
+                            callback(null, arrayWinner)
+                        }
+                    })
+                } else {
+                    callback(null, "null")
+                }
+
+            },
+            function(arrayWinner, callback) {
+                switch (data) {
+                    case 'personalUsers':
+                        var updateData = { type: "USER" };
+                        condition.$and.push(updateData)
+                        break;
+
+                    case 'businessUsers':
+                        var updateData = { type: "Advertiser" };
+                        condition.$and.push(updateData)
+                        break;
+
+                    case 'liveUsers':
+                        var updateData = { type: "USER" };
+                        condition.$and.push(updateData)
+                        break;
+
+                    case 'totalWinners':
+                        var updateData = { _id: { $in: arrayWinner } };
+                        condition.$and.push(updateData)
+                        break;
+
+                    case 'cashWinners':
+                        var updateData = { _id: { $in: arrayWinner } };
+                        condition.$and.push(updateData)
+                        break;
+
+                    case 'couponWinners':
+                        var updateData = { _id: { $in: arrayWinner } };
+                        condition.$and.push(updateData)
+                        break;
+
+                    case 'blockedUsers':
+                        var updateData = { type: "BLOCK" };
+                        condition.$and.push(updateData)
+                        break;
+
+                    default:
+                        var updateData = { type: "USER" };
+                        condition.$and.push(updateData)
+                }
+                console.log("condition before callback==>>" + JSON.stringify(condition))
+                console.log("updated data===>." + updateData)
+                callback(null, updateData)
+            },
+            function(updateData, callback) {
+
+                console.log("todayDate==>" + todayDate)
+                if (req.body.ageFrom && req.body.ageTo) {
+                    //    data.setFullYear(data.getFullYear() + 1);
+
+                    var fromDate = todayDate.setFullYear(todayDate.getFullYear() - req.body.ageFrom)
+                    var toDate = newTodayDate.setFullYear(newTodayDate.getFullYear() - req.body.ageTo)
+
+                    var fromUtcDate = new Date(fromDate);
+                    var toUtcDate = new Date(toDate);
+                    condition.$and.push({
+                        dob: { $gte: fromUtcDate, $lte: toUtcDate }
+                    })
+                }
+                if (req.body.joinTo && req.body.joinTo) {
+                    condition.$and.push({
+                        createdAt: { $gte: new Date(req.body.joinFrom).toUTCString(), $lte: new Date(req.body.joinTo).toUTCString() }
+                    })
+                }
+
+                Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+
+                    if (!(key == "userType" || key == "ageFrom" || key == "ageTo" || key == "joinFrom" || key == "joinTo")) {
+                        var tempCond = {};
+                        tempCond[key] = req.body[key];
+                        condition.$and.push(tempCond)
+                    }
+                });
+                if (condition.$and.length == 0) {
+                    delete condition.$and;
+                }
+                callback(null, condition)
+            },
+            function(condition, callback) {
+
+
+                console.log("condition===>.." + JSON.stringify(condition))
+                User.find(condition, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        console.log("result;;;>" + result)
+                        callback(null, result, condition)
+                    }
+
+                })
+            }
+
+        ], function(err, result, condition) {
+            res.send({
+                responseCode: 200,
+                responseMessage: 'Filtered Users',
+                data: result
+            });
+        })
+    },
+
+    "pagefilter": function(req, res) {
+        var condition = { $and: [] };
+        var todayDate = new Date();
+        var newTodayDate = new Date();
+        var data = req.body.pageType;
+
+        waterfall([
+            function(callback) {
+                if (data == "unpublishedPages") {
+                    createNewAds.find({}, 'pageId', function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No page found" })
+                        var result = result.map(function(a) {
+                            return a.pageId; });
+                        var allPageIds = _.uniq(result);
+                        callback(null, allPageIds)
+                            // createNewPage.find({_id:{$nin:allPageIds}},function(err, result){
+                            // res.send({ responseCode: 200, responseMessage: 'Here all the Unsuscribe pages', data:result })
+                            // })
+                    })
+                } else {
+                    callback(null, "null")
+                }
+
+            },
+            function(allPageIds, callback) {
+                switch (data) {
+                    case 'blockedPages':
+                        var updateData = { status: "BLOCK" };
+                        condition.$and.push(updateData)
+                        break;
+
+                    case 'unpublishedPages':
+                        var updateData = { _id: { $nin: allPageIds } };
+                        condition.$and.push(updateData)
+                        break;
+
+                    case 'removedPages':
+                        var updateData = { status: "REMOVED" };
+                        condition.$and.push(updateData)
+                        break;
+
+                    case 'pagesAdmins':
+                        var updateData = {};
+                        condition.$and.push(updateData)
+                        break;
+
+                    default:
+                        var updateData = {};
+                        condition.$and.push(updateData)
+                }
+                console.log("condition before callback==>>" + JSON.stringify(condition))
+                console.log("updated data===>." + updateData)
+                callback(null, updateData)
+            },
+            function(updateData, callback) {
+
+                if (req.body.joinTo && req.body.joinTo) {
+                    condition.$and.push({
+                        createdAt: { $gte: new Date(req.body.joinFrom).toUTCString(), $lte: new Date(req.body.joinTo).toUTCString() }
+                    })
+                }
+
+                Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+
+                    if (!(key == "pageType" || key == "joinFrom" || key == "joinTo")) {
+                        var tempCond = {};
+                        tempCond[key] = req.body[key];
+                        condition.$and.push(tempCond)
+                    }
+                });
+                if (condition.$and.length == 0) {
+                    delete condition.$and;
+                }
+                callback(null, condition)
+            },
+            function(condition, callback) {
+
+
+                console.log("condition===>.." + JSON.stringify(condition))
+                createNewPage.find(condition, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        console.log("result;;;>" + result)
+                        callback(null, result, condition)
+                    }
+
+                })
+            }
+
+        ], function(err, result, condition) {
+            res.send({
+                responseCode: 200,
+                responseMessage: 'Filtered Users',
+                data: result
+            });
         })
     }
 

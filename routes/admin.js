@@ -119,6 +119,8 @@ app.get('/listOfSystemAdmin', adminHandler.listOfSystemAdmin);
 app.get('/removeSystemAdmin/:id', adminHandler.removeSystemAdmin);
 app.put('/editSystemAdmin/:id', adminHandler.editSystemAdmin);
 app.get('/notificationToAdmin', adminHandler.notificationToAdmin);
+app.post('/userfilter', adminHandler.userfilter);
+app.post('/pagefilter', adminHandler.pagefilter);
 
 
 module.exports = app;
