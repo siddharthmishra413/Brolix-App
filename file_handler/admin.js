@@ -2,6 +2,7 @@ var validator = require('validator');
 var User = require("./model/user");
 var createNewAds = require("./model/createNewAds");
 var createNewPage = require("./model/createNewPage");
+var adminCards = require("./model/cardsAdmin");
 var country = require('countryjs');
 var countries = require('country-list')();
 var allCountries = require('all-countries');
