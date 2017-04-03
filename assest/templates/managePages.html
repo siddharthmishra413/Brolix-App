@@ -10,7 +10,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='totalPages'">
-                                <a ng-click="userTypeName('totalPages')">Show</a>
+                                <a ng-click="pageTypeName('totalPages')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <div class="dropdown">
@@ -38,7 +38,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='unPublishedPage'">
-                                <a ng-click="userTypeName('unPublishedPage')">Show</a>
+                                <a ng-click="pageTypeName('unPublishedPage')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <div class="dropdown">
@@ -66,7 +66,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='showAllRemovedPage'">
-                                <a ng-click="userTypeName('removedPage')">Show</a>
+                                <a ng-click="pageTypeName('removedPage')">Show</a>
                             </div>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='showAllBlockedPage'">
-                                <a ng-click="userTypeName('blockedPage')">Show</a>
+                                <a ng-click="pageTypeName('blockedPage')">Show</a>
                             </div>
                         </div>
                     </div>
@@ -115,33 +115,27 @@
             <div class="col-md-3 col-sm-6 dwd-border">
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
+                    
                     <div class="form-group cus-select">
-                        <!-- <select ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" class="form-control" ng-click ="slectCountry()" >
-                         <option value="">All Countries</option>
-                             <option ng-options="p.name for p in country" value="{{country}}">{{country}}</option>
-                        </select> -->
-                        <select class="form-control" ng-options="p.name for p in allCountriesfind" ng-model="dashBordFilter.country" ng-change="dashBordFilter(dashBordFilter.country); catId(p)" required><option value="">Select Country</option>
-                        </select>
+                         <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
+                            <option value="">Select Country</option>
+                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <!-- <select ng-change="dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" ng-click ="slectState()" class="form-control">
-                            <option value="">All States</option>
-                            <option ng-repeat="state in allstatefind" value="{{state}}">{{state}}</option>
-                        </select> -->
-                        <select class="form-control" ng-change="dashBordFilter(dashBordFilter.state);" ng-options="state for state in allstates" ng-model="dashBordFilter.state" required><option value="">Select State</option>
-                        </select>
+                         <select class="form-control" ng-change="changeState(); dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" required>
+                            <option value="">Select State</option>
+                            <option ng-repeat="state in stateList">{{state.region}}</option>
+                         </select> 
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-change="dashBordFilter(dashBordFilter.cities);" ng-model="dashBordFilter.cities">
-                            <option value="">All Cities</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                         <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.city" required>
+                            <option value="">Select City</option>
+                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                         </select> 
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-model="dashBordFilter.categories">
+                        <select class="form-control" ng-model="dashBordFilter.categories" ng-change="dashBordFilter(dashBordFilter.category);">
                             <option value="">All Categories</option>
                             <option>2</option>
                             <option>3</option>

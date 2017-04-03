@@ -12,25 +12,25 @@ $(window).scrollTop(0,0);
    
     userService.SoldUpgradeCard().then(function(success) {       
 	            $scope.dollars=[];
-	            console.log("UpgradeCard>>>>>>>>"+JSON.stringify(success.data.result));
+	            //console.log("UpgradeCard>>>>>>>>"+JSON.stringify(success.data.result));
 	            for(i=0;i<success.data.result.length;i++) {
                             $scope.dollars.push(success.data.result[i]);
-                            console.log("dollars>>>>>>>>>"+JSON.stringify($scope.dollars))
+                            //console.log("dollars>>>>>>>>>"+JSON.stringify($scope.dollars))
                         }
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 	})
 	userService.cashGift().then(function(success) {       
-	            console.log("cashGift--->>>"+JSON.stringify(success))
+	            //console.log("cashGift--->>>"+JSON.stringify(success))
 	            $scope.count=success.data.count;
 	            $scope.dollarsCashGift=[];
 	            for(i=0;i<success.data.result.length;i++) {
                             $scope.dollarsCashGift.push(success.data.result[i]);
-                            console.log("dollarsCashGift>>>>>>>>>"+JSON.stringify($scope.dollarsCashGift[i].cashPrize.pageId._id))
+                            //console.log("dollarsCashGift>>>>>>>>>"+JSON.stringify($scope.dollarsCashGift[i].cashPrize.pageId._id))
                         }
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		     })
 
@@ -45,11 +45,11 @@ $(window).scrollTop(0,0);
         	$scope.clr1="#00B288";
         	$scope.clr=""
         	userService.SoldLuckCard().then(function(success) {       
-	            console.log(JSON.stringify(success))
+	            //console.log(JSON.stringify(success))
 	            $scope.brolix=[];
 	            for(i=0;i<success.data.result.length;i++) {
                             $scope.brolix.push(success.data.result[i]);
-                            console.log(JSON.stringify($scope.brolix[i].luckCardObject.status));
+                            //console.log(JSON.stringify($scope.brolix[i].luckCardObject.status));
                             if($scope.brolix[i].luckCardObject.status == "INACTIVE"){
                             	$scope.brolix[i].luckCardObject.status="Unused";
                             }
@@ -59,18 +59,18 @@ $(window).scrollTop(0,0);
                         }
 
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		     })
         	userService.soldCoupons().then(function(success) {       
-	            console.log("sold Coupon >>>>>>"+JSON.stringify(success))
+	            //console.log("sold Coupon >>>>>>"+JSON.stringify(success))
 	            $scope.SoldCouponsCount=success.data.count;
 		           $scope.brolixCoupon=[];
 		           for(i=0;i<success.data.result.length;i++)  {
 		           	$scope.brolixCoupon.push(success.data.result[i]);
 		           }
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		     })
         }  
@@ -86,20 +86,20 @@ $(window).scrollTop(0,0);
                             $scope.dollars.push(success.data.result[i]);
                         }
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    })
         } 
         userService.cashGift().then(function(success) {       
-	           console.log("Cash Giftttt--->>>"+JSON.stringify(success))
+	           //console.log("Cash Giftttt--->>>"+JSON.stringify(success))
 	            $scope.count=success.data.count;
 	            $scope.dollarsCashGift=[];
 	            for(i=0;i<success.data.result.length;i++) {
                             $scope.dollarsCashGift.push(success.data.result[i]);
-                            console.log(JSON.stringify($scope.dollarsCashGift[i].cashPrize.pageId.pageName))
+                            //console.log(JSON.stringify($scope.dollarsCashGift[i].cashPrize.pageId.pageName))
                         }
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		     })
 
@@ -113,9 +113,9 @@ $(window).scrollTop(0,0);
 		userService.userInfo(id).then(function(success) { 
 			//console.log(JSON.stringify($scope.userDetail))
 					$scope.userDetail=success.data.result
-					console.log(JSON.stringify($scope.userDetail))
+					//console.log(JSON.stringify($scope.userDetail))
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    }) 
 	}
@@ -128,9 +128,9 @@ $(window).scrollTop(0,0);
 		userService.adInfo(id).then(function(success) { 
 			//console.log(JSON.stringify($scope.userDetail))
 					$scope.userDetail=success.data.result;
-					console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
+					//console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    }) 
 	}
@@ -141,9 +141,9 @@ $(window).scrollTop(0,0);
 			$("#top_50_buyers").modal('show');
 			userService.top_50_dollarsBuyers().then(function(success) { 
 					$scope.userDetail=success.data.result;
-					console.log(JSON.stringify(success.data.result))
+					//console.log(JSON.stringify(success.data.result))
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    })
 	}
@@ -151,16 +151,16 @@ $(window).scrollTop(0,0);
 			$("#top_50_buyers").modal('show');
 			userService.top_50_brolixBuyers().then(function(success) { 
 					$scope.userDetail=success.data.result;
-					console.log(JSON.stringify(success.data.result))
+					//console.log(JSON.stringify(success.data.result))
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    })
 	}
 
 	//*******************Total Price****************
 	 userService.totalDollarsPrice().then(function(res) {
-    	console.log(JSON.stringify(res))
+    	//console.log(JSON.stringify(res))
         if (res.data.responseCode == 200){
             $scope.totalDollarsPrice = res.data.totalCash;
            //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalSoldLuckCardcount));
@@ -170,7 +170,7 @@ $(window).scrollTop(0,0);
         
     })
     userService.totalBrolixPrice().then(function(res) {
-    	console.log(JSON.stringify(res))
+    	//console.log(JSON.stringify(res))
         if (res.data.responseCode == 200){
             $scope.totalBrolixPrice = res.data.totalBrolix;
            //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalSoldLuckCardcount));
@@ -188,7 +188,7 @@ $(window).scrollTop(0,0);
 					$scope.adsDetail=success.data.result;
 					console.log("top 50 Ads>>>>>>>>>>>>"+JSON.stringify(success))
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    })
 	}
@@ -200,9 +200,9 @@ $(window).scrollTop(0,0);
 		$("#pageInfo").modal('show');
 		userService.pageInfo(id).then(function(success) { 
 					$scope.pageDetail=success.data.result
-					console.log(JSON.stringify($scope.pageDetail))
+					//console.log(JSON.stringify($scope.pageDetail))
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    }) 
 	}
@@ -220,7 +220,7 @@ $(window).scrollTop(0,0);
 		userService.upgradeCardUsedAd(data).then(function(success) { 
 					$scope.usedAd=success.data.result;
 					//$scope.img=$scope.usedAd.coverImage;
-					console.log("dadaddadadaa",JSON.stringify(success))
+					//console.log("dadaddadadaa",JSON.stringify(success))
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
@@ -264,7 +264,7 @@ $(window).scrollTop(0,0);
                             
                         }
         		},function(err){
-			        console.log(err);
+			        //console.log(err);
 			         toastr.error('Connection error.');
 		    }) 
 	}
@@ -509,7 +509,7 @@ $(window).scrollTop(0,0);
 			    $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
 			    $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
 			    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
-			    console.log("date",$scope.dashBordFilter.country);
+			    //console.log("date",$scope.dashBordFilter.country);
 			    var data = {};
 			        data = {
 			            userType:localStorage.getItem('userTypeName'),
@@ -522,78 +522,78 @@ $(window).scrollTop(0,0);
 			            joinTo:$scope.dobTo,
 			            joinFrom:$scope.dobFrom,
 			        }
-			        console.log("datatata",data)
+			        //console.log("datatata",data)
 
 			    switch (type)
 			            {
 			                case 'totalUsers':
-			                console.log("1"); 
+			                //console.log("1"); 
 			                    userService.userfilter(data).success(function(res){
 			                        $scope.totalUser = res.data;
-			                        console.log("ressssssss1",JSON.stringify($scope.totalUser));
+			                        //console.log("ressssssss1",JSON.stringify($scope.totalUser));
 			                    })
 			                    
 			                break;
 
 			                case 'personalUsers': 
-			                console.log("2");
+			                //console.log("2");
 			                    userService.userfilter(data).success(function(res){
 			                        $scope.personalUser = res.data;
-			                        console.log("ressssssss2",JSON.stringify($scope.personalUser));
+			                        //console.log("ressssssss2",JSON.stringify($scope.personalUser));
 			                    })
 			                    
 			                break;
 
 			                case 'businessUsers': 
-			                console.log("3");
+			                //console.log("3");
 			                    userService.userfilter(data).success(function(res){
 			                        $scope.businessUser = res.data;
-			                        console.log("ressssssss3",JSON.stringify($scope.businessUser));
+			                        //console.log("ressssssss3",JSON.stringify($scope.businessUser));
 			                    })
 			                    
 			                break;
 
 			                case 'liveUsers': 
-			                console.log("4");
+			                //console.log("4");
 			                    userService.userfilter(data).success(function(res){
 			                        $scope.liveUser = res.data;
-			                        console.log("ressssssss4",JSON.stringify($scope.liveUser));
+			                        //console.log("ressssssss4",JSON.stringify($scope.liveUser));
 			                    })
 			                    
 			                break;
 
 			                case 'totalWinners': 
-			                console.log("5");
+			                //console.log("5");
 			                    userService.userfilter(data).success(function(res){
 			                        $scope.totalWinners = res.data;
-			                        console.log("ressssssss5",JSON.stringify($scope.totalWinners));
+			                       // console.log("ressssssss5",JSON.stringify($scope.totalWinners));
 			                    })
 			                    
 			                break;
 
 			                case 'cashWinners':
-			                console.log("6"); 
+			                //console.log("6"); 
 			                    userService.userfilter(data).success(function(res){
 			                        $scope.cashWinners = res.data;
-			                        console.log("ressssssss6",JSON.stringify($scope.cashWinners));
+			                        //console.log("ressssssss6",JSON.stringify($scope.cashWinners));
 			                    })
 			                    
 			                break;
 
 			                case 'couponWinners': 
-			                console.log("7");
+			                //console.log("7");
 			                    userService.userfilter(data).success(function(res){
 			                        $scope.couponWinners = res.data;
-			                        console.log("ressssssss7",JSON.stringify($scope.couponWinners));
+			                        //console.log("ressssssss7",JSON.stringify($scope.couponWinners));
 			                    })
 			                    
 			                break;
 
 			                case 'blockedUsers': 
-			                console.log("8");
+			                //console.log("8");
 			                    userService.userfilter(data).success(function(res){
 			                        $scope.blockedUsers = res.data;
-			                        console.log("ressssssss8",JSON.stringify($scope.blockedUsers));
+			                       ///console.log("ressssssss8",JSON.stringify($scope.blockedUsers));
 			                    })
 			                    
 			                break;
@@ -637,11 +637,11 @@ app.filter("paymentFilter",function() {
 		 	return items;
 		 }
 		   if(nameValue.country!="" && nameValue.country!=undefined){
-			   	console.log(JSON.stringify(items.length))
+			   	//console.log(JSON.stringify(items.length))
 			   	
 			    	arr= items.filter(function(){
 			    		for(i=0;i< items.length; i++){
-			    		console.log(JSON.stringify(nameValue.country))
+			    		//console.log(JSON.stringify(nameValue.country))
 			    		return items[i].country==nameValue.country;
 			    		 }
 			    	})
@@ -649,40 +649,40 @@ app.filter("paymentFilter",function() {
 			    
 		   }
 			if(nameValue.state!="" && nameValue.state!=undefined){
-			   	console.log(JSON.stringify(items.length))
+			   	//console.log(JSON.stringify(items.length))
 			   	
 			    	arr= items.filter(function(){
 			    		for(i=0;i< items.length; i++){
-			    		console.log(JSON.stringify(nameValue.state))
+			    		//console.log(JSON.stringify(nameValue.state))
 			    		return items[i].state==nameValue.state; }
 			    	})
 			       // console.log(JSON.stringify(arr))
 			    
 		   }
 		   	if(nameValue.city!="" && nameValue.city!=undefined){
-		   		console.log(JSON.stringify(items.length))
+		   		//console.log(JSON.stringify(items.length))
 		   			// console.log(JSON.stringify(items[i].city))
-			      	console.log(JSON.stringify(nameValue.city))
+			      	//console.log(JSON.stringify(nameValue.city))
 			      arr= items.filter(function(){
 				      	for(i=0;i< items.length; i++){
-				      		console.log(JSON.stringify(items[i].city))
+				      		//console.log(JSON.stringify(items[i].city))
 				         return items[i].city == nameValue.city;
 				     	}
 			       }) 
-			      console.log(JSON.stringify(arr))
+			 // console.log(JSON.stringify(arr))
 			  
 			  
 		    }
-		 console.log("INPUT VALUE" + JSON.stringify(nameValue.dollarCardType))
+		 //console.log("INPUT VALUE" + JSON.stringify(nameValue.dollarCardType))
 		    if(nameValue.dollarCardType!="" && nameValue.dollarCardType!=undefined){
-		    	console.log(JSON.stringify(items.length))
+		    	//console.log(JSON.stringify(items.length))
 			    	arr= items.filter(function(){
 			    		for(i=0;i< items.length; i++){
-			    			console.log(JSON.stringify(items[i].upgradeCardObject.viewers))
+			    			//console.log(JSON.stringify(items[i].upgradeCardObject.viewers))
 				         	return items[i].upgradeCardObject.viewers.toString()==nameValue.dollarCardType;
 				         }
 			       })
-			    	console.log(JSON.stringify(arr))
+			    	//console.log(JSON.stringify(arr))
 		    }
            return arr;
         } 

@@ -145,7 +145,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     .state('header.managePayments', {
         url: '/managePayments',
         controller: 'managePaymentCtrl',
-        templateUrl: 'templates/managePayment.html'
+        templateUrl: 'templates/managePayments.html'
     })
 
     .state('header.manageAdminTools', {

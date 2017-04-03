@@ -13,7 +13,7 @@
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Admins</a>
+                                <a ng-click="sendMessagePage()">Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Admins</a>
+                                <a ng-click="sendMessagePage()">Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Admins</a>
+                                <a ng-click="sendMessagePage()">Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Admins</a>
+                                <a ng-click="sendMessagePage()">Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -70,14 +70,14 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Ads With Links</div>
-                            <div class="total-amt">10,000</div>
+                            <div class="total-amt">{{adsWithLinkscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage" ng-click="tab='adsWithLinks'">
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Admins</a>
+                                <a ng-click="sendMessagePage()">Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Admins</a>
+                                <a ng-click="sendMessagePage()">Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Admins</a>
+                                <a ng-click="sendMessagePage()">Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Admins</a>
+                                <a ng-click="sendMessagePage()">Contact Admins</a>
                             </div>
                         </div>
                     </div>
@@ -141,77 +141,96 @@
                                 <a>Show</a>
                             </div>
                             <div class="btn-manage">
-                                <a>Contact Admins</a>
+                                <a ng-click="sendMessagePage()">Contact Admins</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box-block  blk-drkgren">
+                 <div class="box-block blnk-bg">
+                        <div class="widget widget-stats divi-blk offerbtn-s">
+                            <div class="top-box">
+                                <div class="green-box">Top {{topFiftyAdscount}} Cash Providers</div>
+                            </div>
+                            <div class="bottom-box">
+                                <div class="btn-manage show-btn w-100" ng-click="tab='topFiftyAds'">
+                                    <a>Show</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+                
+                <!--<div class="box-block  blk-drkgren">
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Top</div>
-                            <div class="total-amt">50</div>
+                            <div class="total-amt">{{topFiftyAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage">
+                            <div class="btn-manage"  ng-click="tab='topFiftyAds'">
                                 <a>Show</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-sm-6 dwd-border">
+            </div>-->
+           <div class="col-md-3 col-sm-6 dwd-border">
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All Countries</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                         <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
+                            <option value="">Select Country</option>
+                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All States</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                         <select class="form-control"  ng-change="changeState(); dashBordFilter(dashBordFilter.state);"  ng-model="dashBordFilter.state" required>
+                            <option value="">Select State</option>
+                            <option ng-repeat="state in stateList">{{state.region}}</option>
+                         </select> 
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All Cities</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                         <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.city" required>
+                            <option value="">Select City</option>
+                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                         </select> 
                     </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Date From</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                   <div class="form-group cus-select">
+                        <div class="col-md-9">
+                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">  
+                        </div>
                     </div>
+
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Date To</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                        <div class="col-md-9">
+                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth"> 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+<div id="sendMessageModelAllUser" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send message to Admin</h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendMessage">
+                   <div class="form-group">
+                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
+                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
+                   </div>
+                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send message</button>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
     <div class="grp-search">
         <div class="row-search">
             <ul>
@@ -219,13 +238,19 @@
                     <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Ad</a>
                 </li>
                 <li class="">
+                    <a data-toggle="tab"   style="cursor: pointer;" ng-href="#header/editAds">Edit Ad</a>
+                </li>
+                 <li class="">
                     <a data-toggle="tab">Remove Ad</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab">Set on home page</a>
                 </li>
-                <li class="last">
+                <li class="">
                     <a data-toggle="tab">Contact Owner</a>
+                </li>
+                <li class="last">
+                    <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
                 </li>
             </ul>
         </div>
@@ -233,7 +258,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search By Page Name or Ad number">
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Ad number">
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -242,7 +267,7 @@
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalads">
-            <table class="table table-bordered table-striped">
+            <table id="manageAdsTable" class="table table-bordered table-striped" >
                 <thead>
                     <tr>
                         <th></th>
@@ -256,7 +281,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalAds |filter:test">
+                    <tr ng-repeat="x in totalAds | manageAdsFilter:test">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -275,7 +300,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="activeads">
-            <table class="table table-bordered table-striped">
+            <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -289,7 +314,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalActiveAds |filter:test">
+                    <tr ng-repeat="x in totalActiveAds| manageAdsFilter:test">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -308,7 +333,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="expiredAds">
-            <table class="table table-bordered table-striped">
+            <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -322,7 +347,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalExpiredAds |filter:test">
+                    <tr ng-repeat="x in totalExpiredAds | manageAdsFilter:test">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -341,7 +366,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="videoAds">
-            <table class="table table-bordered table-striped">
+            <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -355,7 +380,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in videoAds |filter:test">
+                    <tr ng-repeat="x in videoAds | manageAdsFilter:test">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -374,7 +399,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="slideShowAds">
-            <table class="table table-bordered table-striped">
+            <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -388,7 +413,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in slideshowAds |filter:test">
+                    <tr ng-repeat="x in slideshowAds | manageAdsFilter:test">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -407,7 +432,7 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="adUpgradedByBrolix">
-            <table class="table table-bordered table-striped">
+            <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -421,7 +446,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in adUpgradedByBrolix |filter:test">
+                    <tr ng-repeat="x in adUpgradedByBrolix | manageAdsFilter:test">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -439,8 +464,8 @@
     </div>
 
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="adUpgradedByBrolix">
-            <table class="table table-bordered table-striped">
+        <div class="row table-responsive cus-table" ng-switch-when="adUpgradedByDollor">
+            <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -454,7 +479,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in adUpgradedByBrolix |filter:test">
+                    <tr ng-repeat="x in adUpgradedByDollor | manageAdsFilter:test">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -470,10 +495,9 @@
             </table>
         </div>
     </div>
-
-    <div class="col-sm-12" ng-switch="tab">
+     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="showReportedAd">
-            <table class="table table-bordered table-striped">
+            <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -487,7 +511,73 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in showReportedAd |filter:test">
+                    <tr ng-repeat="x in showReportedAd |manageAdsFilter:test">
+                        <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
+                        <td class="skyblue-text">VIEW</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+     <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="adsWithLinks">
+            <table id="manageAdsTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>PAGE NAME</th>
+                        <th>OWNER MOBILE</th>
+                        <th>AD REPORTS</th>
+                        <th>DOWNLOAD LINKS</th>
+                        <th>SOLD COUPON</th>
+                        <th>DOLLARS PAIS</th>
+                        <th>CARD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in adsWithLinks | manageAdsFilter:test">
+                        <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td>{{x.userId.mobileNumber}}</td>
+                        <td class="skyblue-text">{{x.reportOnAd}}</td>
+                        <td class="skyblue-text">{{3}}</td>
+                        <td class="skyblue-text">VIEW</td>
+                        <td>{{x.cash}} $</td>
+                        <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+ <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="topFiftyAds">
+            <table id="manageAdsTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>PAGE NAME</th>
+                        <th>OWNER MOBILE</th>
+                        <th>AD REPORTS</th>
+                        <th>DOWNLOAD LINKS</th>
+                        <th>SOLD COUPON</th>
+                        <th>DOLLARS PAIS</th>
+                        <th>CARD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in topFiftyAds | manageAdsFilter:test">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
