@@ -7,14 +7,14 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Brolix Gifts</div>
-                                <div class="total-amt">{{totalBrolixGiftsCount}}</div>
+                                <div class="total-amt">{{totalBrolix | number}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="top_50_balanc('balances')">
+                                <div class="btn-manage" ng-click="top_50_balance()">
                                     <a>Top 50 Balances</a>
                                 </div>
                                 <div class="btn-manage" ng-click="tab='contectOwner'">
-                                    <a>Contact Winners</a>
+                                    <a ng-click="contact_winner_message('totalBrolixGiftWinner')">Contact Winners</a>
                                 </div>
                             </div>
                         </div>
@@ -23,14 +23,14 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Coupons Gifts</div>
-                                <div class="total-amt">27,000</div>
+                                <div class="total-amt">{{totalCouponsGift}}</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalCouponsGifts'">
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Winners</a>
+                                    <a ng-click="contact_winner_message('totalCouponGiftWinner')">Contact Winners</a>
                                 </div>
                             </div>
                         </div>
@@ -39,14 +39,14 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Cash Gifts</div>
-                                <div class="total-amt">3,000</div>
+                                <div class="total-amt">{{totalCashGift}}</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalCashGifts'">
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Winners</a>
+                                    <a ng-click="contact_winner_message('totalCashGiftWinner')">Contact Winners</a>
                                 </div>
                             </div>
                         </div>
@@ -55,14 +55,14 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Hidden Gifts</div>
-                                <div class="total-amt">3,000</div>
+                                <div class="total-amt">{{totalHiddenGift}}</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalHiddenGifts'">
                                     <a>Show</a>
                                 </div>
                                 <div class="btn-manage">
-                                    <a>Contact Winners</a>
+                                    <a ng-click="contact_winner_message('totalHiddenGiftWinner')">Contact Winners</a>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                                 <div class="green-box">Top 50 Coupons Providers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="top_50_balanc('coupons')">
+                                <div class="btn-manage show-btn w-100" ng-click="top_50_couponsProviders()">
                                     <a>Show</a>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Exchanged</div>
-                                <div class="total-amt">19,000</div>
+                                <div class="total-amt">{{totalExchangedCoupons}}</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalExchanged'">
@@ -98,7 +98,7 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Sent Coupons</div>
-                                <div class="total-amt">500</div>
+                                <div class="total-amt">{{totalSentCoupon}}</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalSentCoupons'">
@@ -111,7 +111,7 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Sent Cash</div>
-                                <div class="total-amt">18,500</div>
+                                <div class="total-amt">{{totalSentCash}}</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalSentCash'">
@@ -120,29 +120,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-block">
-                        <div class="widget widget-stats divi-blk">
-                            <!--<div class="top-box">
-                                <div class="total-add">Total Hidden Gifts</div>
-                                <div class="total-amt">3,000</div>
-                            </div>
-                            <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='totalHiddenGifts'">
-                                    <a>Show</a>
-                                </div>
-                                <div class="btn-manage">
-                                    <a>Contact Winners</a>
-                                </div>
-                            </div>-->
-                        </div>
-                    </div>
+
                     <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk offerbtn-s">
                             <div class="top-box">
                                 <div class="green-box">Top 50 Cash Providers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="top_50_balanc('cash')">
+                                <div class="btn-manage show-btn w-100" ng-click="top_50_cashProviders()">
                                     <a>Show</a>
                                 </div>
                             </div>
@@ -220,25 +205,31 @@
             </div>
         </div>
     </div>
-    <div class="grp-search">
+   </div>
+    
+    
+    <div id="tableData" class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalExchanged">
+        <div class="grp-search">
         <div class="row-search">
+            <ul>
+                <li class="last">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                </li>
+            </ul>
         </div>
-        <div class="search-bar-cus">
+          <div class="search-bar-cus">
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search By Page Name , Winner Name, Exch From, Exch To , Sent From, Sent To">
+                        <input type="text" class="form-control" ng-model="search" placeholder="Search By Exch From , Exch To">
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
-
-
-    <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="totalExchanged">
-            <table id="manageUserTable" class="table table-bordered table-striped">
+          </div>
+         </div> 
+            <table id="manageGiftTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Coupon Gift</th>
@@ -247,13 +238,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalUser |filter:test">
-                        <!-- <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td> -->
-                        <td class="skyblue-text">{{x.firstName}}</td>
-                        <td class="skyblue-text">{{x.lastName}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                    <tr ng-repeat="x in totalExchangedCouponShow1 | totalExchangedFilter:search">
+                        <td class="skyblue-text" ng-click="showCouponGift(x.id)">View</td>
+                        <td>{{x.exchToFirstName}} {{x.exchToLastName}}</td>
+                        <td>{{x.exchFromFirstName}} {{x.exchFromLastName}}</td>
                 </tbody>
             </table>
         </div>
@@ -261,7 +249,26 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalCouponsGifts">
-            <table id="manageUserTable" class="table table-bordered table-striped">
+        <div class="grp-search">
+        <div class="row-search">
+            <ul>
+                <li class="last">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                </li>
+            </ul>
+        </div>
+         <div class="search-bar-cus">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="search" placeholder="Search By Page Name , Winner Name">
+                        <div class="input-group-addon">Search</div>
+                    </div>
+                </div>
+            </form>
+          </div>
+        </div>
+            <table id="manageGiftTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Page Name</th>
@@ -271,14 +278,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalUser |filter:test">
-                        <!-- <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td> -->
-                        <td class="skyblue-text">{{x.firstName}}</td>
-                        <td class="skyblue-text">{{x.lastName}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                    <tr ng-repeat="x in totalCouponsGiftShow | totalCouponGiftFilter:search">
+                        <td>{{x.coupon.pageId.pageName}}</td>
+                        <td>{{x.firstName}} {{x.lastName}}</td>
+                        <td class="skyblue-text" ng-click="showCouponGift(x.coupon.adId)">View</td>
+                        <td>{{x.coupon.couponStatus}}</td>
                 </tbody>
             </table>
         </div>
@@ -286,7 +290,26 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalCashGifts">
-            <table id="manageUserTable" class="table table-bordered table-striped">
+        <div class="grp-search">
+        <div class="row-search">
+            <ul>
+                <li class="last">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                </li>
+            </ul>
+        </div>
+            <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="search" placeholder="Search By Page Name , Winner Name">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+            <table id="manageGiftTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Page Name</th>
@@ -296,14 +319,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalUser |filter:test">
-                        <!-- <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td> -->
-                        <td class="skyblue-text">{{x.firstName}}</td>
-                        <td class="skyblue-text">{{x.lastName}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                    <tr ng-repeat="x in totalCashGiftShow | totalCashGiftFilter:search">
+                        <td>{{x.cashPrize.pageId.pageName}}</td>
+                        <td>{{x.firstName}} {{x.lastName}}</td>
+                        <td class="skyblue-text" ng-click="showCouponGift(x.coupon.adId)">View</td>
+                        <td>{{x.cashPrize.cashStatus}}</td>
                 </tbody>
             </table>
         </div>
@@ -311,7 +331,26 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalHiddenGifts">
-            <table id="manageUserTable" class="table table-bordered table-striped">
+          <div class="grp-search">
+          <div class="row-search">
+            <ul>
+                <li class="last">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                </li>
+            </ul>
+        </div>
+            <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="search" placeholder="Search By Page Name , Winner Name">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+           </div> 
+            <table id="manageGiftTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Page Name</th>
@@ -321,14 +360,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalUser |filter:test">
-                        <!-- <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td> -->
-                        <td class="skyblue-text">{{x.firstName}}</td>
-                        <td class="skyblue-text">{{x.lastName}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                    <tr ng-repeat="x in totalHiddenGiftShow | totalHiddenGiftFilter:search">
+                        <td>{{x.hiddenGifts.pageId.pageName}}</td>
+                        <td>{{x.firstName}} {{x.lastName}}</td>
+                        <td class="skyblue-text" ng-click="showCouponGift(x.hiddenGifts.adId)">View</td>
+                        <td>{{x.hiddenGifts.status}}</td>
                 </tbody>
             </table>
         </div>
@@ -336,7 +372,26 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalSentCoupons">
-            <table id="manageUserTable" class="table table-bordered table-striped">
+         <div class="grp-search">
+             <div class="row-search">
+                <ul>
+                    <li class="last">
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                    </li>
+                </ul>
+            </div>
+             <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="search" placeholder="Search By Sent From , Sent To">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+         </div>    
+            <table id="manageGiftTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Coupon Gift</th>
@@ -345,13 +400,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalUser |filter:test">
-                        <!-- <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td> -->
-                        <td class="skyblue-text">{{x.firstName}}</td>
-                        <td class="skyblue-text">{{x.lastName}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                    <tr ng-repeat="x in totalSentCouponShow1 | totalSentCouponFilter:search">
+                        <td class="skyblue-text" ng-click="showCouponGift(x.id)">View</td>
+                        <td>{{x.sentFromFirstName}} {{x.sentFromLastName}}</td>
+                        <td >{{x.sentToFirstName}} {{x.sentToLastName}}</td>
+                     </tr>   
                 </tbody>
             </table>
         </div>
@@ -359,8 +412,28 @@
 
 
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="totalSentCash">
-            <table id="manageUserTable" class="table table-bordered table-striped">
+       <div class="row table-responsive cus-table" ng-switch-when="totalSentCash">
+         <div class="grp-search">
+          <div class="row-search">
+            <ul>
+                <li class="last">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                </li>
+            </ul>
+          </div>
+          <div class="search-bar-cus">
+              <div class="search-bar-cus">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="search" placeholder="Search By Sent From , Sent To">
+                            <div class="input-group-addon">Search</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+           </div> 
+            <table id="manageGiftTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Amount</th>
@@ -369,21 +442,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalUser |filter:test">
-                        <!-- <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td> -->
-                        <td class="skyblue-text">{{x.firstName}}</td>
-                        <td class="skyblue-text">{{x.lastName}}</td>
-                        <td class="skyblue-text">{{x.mobileNumber}}</td>
+                    <tr ng-repeat="x in totalSentCashShow | totalSentCashFilter:search">
+                        <td>{{totalCash}}</td>
+                        <td>{{x.sendCashListObject.senderId.firstName}} {{x.sendCashListObject.senderId.lastName}}</td>
+                        <td>{{x.firstName}} {{x.lastName}}</td>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
+<!--Top 50 balance model-->
 
-<div id="top_50_balance" class="modal fade" >
+<div id="top_50_balance" class="modal fade">
    <div class="modal-dialog cls_pop">
        <div class="modal-content">
            <div class="modal-header">
@@ -394,7 +465,7 @@
                 <div class="modal-outer-block">
                     <div class="add-user panel panel-default cust-panel" style="margin:0;">
                         <div class="table-responsive cus-table">
-                            <table id="manageUserTable" class="table table-bordered table-striped">
+                            <table id="manageGiftTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>Winner Name</th>
@@ -402,7 +473,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="x in totalBrolixGifts |filter:test">
+                                    <tr ng-repeat="x in top50balances">
                                         <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
                                         <td class="skyblue-text">{{x.brolix}}</td>
                                     </tr>
@@ -416,6 +487,7 @@
    </div>
 </div>
 
+<!--Coupon provider model-->
 
 <div id="top_50_couponsProviders" class="modal fade">
    <div class="modal-dialog cls_pop">
@@ -428,17 +500,17 @@
                 <div class="modal-outer-block">
                     <div class="add-user panel panel-default cust-panel" style="margin:0;">
                         <div class="table-responsive cus-table">
-                            <table id="manageUserTable" class="table table-bordered table-striped">
+                            <table id="manageGiftTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Winner Name</th>
-                                        <th>Balance</th>
+                                        <th>Page Name</th>
+                                        <th>CouponBuyer Length</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="x in totalBrolixGifts |filter:test">
-                                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
-                                        <td class="skyblue-text">{{x.brolix}}</td>
+                                    <tr ng-repeat="x in topFiftyCouponProvider">
+                                        <td class="skyblue-text">{{x.pageName}}</td>
+                                        <td class="skyblue-text">{{x.couponBuyersLength}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -449,6 +521,8 @@
        </div>
    </div>
 </div>
+
+<!--Cashprovider model-->
 
 <div id="top_50_cashProviders" class="modal fade">
    <div class="modal-dialog cls_pop">
@@ -461,17 +535,17 @@
                 <div class="modal-outer-block">
                     <div class="add-user panel panel-default cust-panel" style="margin:0;">
                         <div class="table-responsive cus-table">
-                            <table id="manageUserTable" class="table table-bordered table-striped">
+                            <table id="manageGiftTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Winner Name</th>
-                                        <th>Balance</th>
+                                        <th>Page Name</th>
+                                        <th>CashAdPrize</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="x in totalBrolixGifts |filter:test">
-                                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
-                                        <td class="skyblue-text">{{x.brolix}}</td>
+                                    <tr ng-repeat="x in topFiftyCashProvider">
+                                        <td class="skyblue-text">{{x.pageName}}</td>
+                                        <td class="skyblue-text">{{x.cashAdPrize}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -483,6 +557,46 @@
    </div>
 </div>
 
+<!--CouponGift Model-->
+
+<div id="showCouponGift" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Coupon Gift</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageGiftTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>PageName</th>
+                                        <th>Category</th>
+                                        <th>SubCategory</th>
+                                        <th>adsType</th>
+                                        <th>Cover Image</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{couponGiftAd.pageName}}</td>
+                                        <td>{{couponGiftAd.category}}</td>
+                                        <td>{{couponGiftAd.subCategory}}</td>
+                                        <td>{{couponGiftAd.adsType}}</td>
+                                        <td><img src={{couponGiftAd.coverImage}}/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
 
 <!-- contect owner -->
 
@@ -520,4 +634,23 @@
            </div>
        </div>
    </div>
+</div>
+
+<div id="sendMessageModelAllUser" class="modal fade">
+  <div class="modal-dialog cls_pop">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h4 class="modal-title">Send message to All User</h4>
+          </div>
+          <div class="modal-body">
+              <form name="sendMessage">
+                  <div class="form-group">
+                  <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage"/></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send massage</button>
+              </form>
+          </div>
+      </div>
+    </div>
 </div>

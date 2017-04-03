@@ -1,40 +1,9 @@
-
-
-
-<div class="col-sm-12" ng-if="tableData">
-    <a class="table-a" ng-click="showtable()">Add User</a>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped" >
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-            <tr ng-repeat="x in allSystemUser">
-                <td>{{x.firstName}}</td>
-                <td>{{x.lastName}}</td>
-                <td>{{x.email}}</td>
-                <td><a class="table-a" ng-href="#header/editSystemUser/{{x._id}}">Edit</a><a class="table-a" ng-click="Remove_User(x._id)">Remove</a></td>
-            </tr>
-           
-        </table>
-    </div>
-</div>
-
-
-
-
-
-
-
-
- <div class="container" ng-if="Systemuser">
+ <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Add System User</h3>
+                        <h3 class="panel-title">Edit System User</h3>
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
@@ -76,31 +45,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                     <div class="form-group">
-                                        <div class="row">
-                                            <label for="inputName" class="control-label col-md-3">Password</label>
-                                            <div class="col-md-9">
-                                                <input type="password" class="form-control" name="password" ng-model="myFrom.password" placeholder="Password" ng-minlength="8" ng-maxlength="18" maxlength="19" required>
-                                                <span style="color:red;" ng-show="!userFrom.password.$error.required && (userFrom.password.$error.minlength) && userFrom.password.$dirty">Short passwords are easy to guess. Try one with at least 8 characters.</span>
-                                                <span style="color:red;" ng-show="userFrom.password.$dirty && userFrom.password.$invalid">
-                                                <span style="color:red; " ng-show="userFrom.password.$error.required">Password is required.</span>
-                                                <span style="color:red;" ng-show="userFrom.password.$error.maxlength">Must have at most 18 characters.</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <label for="inputName" class="control-label col-md-3" ng-class="{'cls-pswrdMissmatch':myFrom.Cpassword!=myFrom.password && Cpassword.length>0}">Confirm Password</label>
-                                            <div class="col-md-9">
-                                                <input type="password" class="form-control" name="Cpassword" ng-model="myFrom.Cpassword" placeholder="Confirm Password" required> 
-                                                <span style="color:red;" ng-show="myFrom.Cpassword!=myFrom.password &&myFrom.Cpassword.length>0">These passwords don't match. Try again?</span>
-                                                <span style="color:red;" ng-show="userFrom.Cpassword.$dirty && userFrom.Cpassword.$invalid">
-                                                <span style="color:red;" ng-show="userFrom.Cpassword.$error.required">Confrim password is required.</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
                                     
                                     <div class="permission-block clearfix">
                                         <h3 class="permission-heading">Permissions</h3>
@@ -117,7 +61,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <button type="submit" class="btn btn-lg btn-green" ng-click="addSystemUser()">Add</button>
+                                        <button type="submit" class="btn btn-lg btn-green" ng-click="updateSystemUser()">Update</button>
                                         <button type="submit" class="btn btn-lg btn-green" ng-click="cancel()">Cancel</button>
                                        
                                     </div>

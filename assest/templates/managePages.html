@@ -99,7 +99,7 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="sendMessagePage('pagesAdmins')"><a>Message</a></li>
-                                        <li><a>Coupon</a></li>
+                                        <li ng-click="total_user_coupons()"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix()"><a>Brolix</a></li>
                                         <li ng-click="total_user_card()"><a>Card</a></li>
                                         <li ng-click="total_user_cash()"><a>Cash</a></li>
@@ -584,6 +584,27 @@
                    <button ng-disabled="sendCash.$invalid" type="submit" class="btn btn-danger" ng-click="send_cashall('totalUser')">Send Cash</button>
                </form>
            </div>
+       </div>
+   </div>
+</div>
+
+<div id="showAllCoupons" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send Coupons to All User</h4>
+           </div>
+           <div class="row-table" ng-repeat="data in allCoupons">
+            <div class="col-cell">
+                <div class="cover-image">
+                    <img ng-src="{{data.coverImage || '../dist/image/cover.jpg'}}" id="output">
+                </div>
+            </div>
+            <div class="col-cell add-remove">
+                <span class="fa fa-send" ng-click="sendCoupons(data._id)"></span>
+            </div>
+        </div>
        </div>
    </div>
 </div>

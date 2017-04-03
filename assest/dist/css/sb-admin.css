@@ -361,8 +361,25 @@ ul.alert-dropdown {
 .offerbtn-s .top-box{padding-top:0; padding-left: 0;}
 h4{color: #00b288;  font-family: "Open Sans",sans-serif !important;  font-size: 18px;   font-weight: 600;}
 
+.table-a{background: #35b387;color: #fff;min-width: 80px;display: inline-block;text-align: center;
+    padding: 5px;margin: 6px 5px 6px 0;}
+.table-a:hover{color: #fff;}
 
+.coupon-image{margin: 20px auto 50px;text-align: center;width: 100%;position: relative;}
+.coupon-image img {width: 100%;height: auto;border-radius: 0;border: 1px solid #ccc;}
+.coupon-upload .fileUpload {border-radius: 50%;width: 70px;height: 70px;text-align: center;line-height: 37px;position: absolute;left: 1%;bottom: -25px;right: 1%;margin: 0 auto;}
+.coupon-upload .fa {font-size: 37px;margin-top: 8px;}
+.outer-box-brolix-fee {border: 1px solid #171e54;padding: 10px;}
+.m-b-20{margin-bottom: 20px;}
 
+.heading-coupon{
+   font-size: 20px;
+   color:#00B288;
+   font-weight: bold;
+}
+
+.fltr{width: 151px; }
+.brdr{border-bottom: 1px solid #00B288}
 
 
 
