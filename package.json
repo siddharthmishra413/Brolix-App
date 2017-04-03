@@ -23,6 +23,7 @@
     "fcm-push": "^1.1.2",
     "fresh": "^0.3.0",
     "gps2zip": "^2.1.0",
+    "jimp": "^0.2.27",
     "js-sha512": "^0.3.0",
     "json-web-token": "^2.0.2",
     "jsonwebtoken": "^7.1.9",
