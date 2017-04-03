@@ -21,22 +21,27 @@ var avoid = {
 }
 module.exports = {
 
+
     "createAds": function(req, res) {
         if (req.body.adsType == "coupon") {
-            var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
-            req.body.couponCode = couponCode;
-            req.body.viewerLenght = 5;
-            req.body.couponStatus = 'VALID';
-            var Ads = new createNewAds(req.body);
-            Ads.save(function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
-                    createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
-                        }
-                    })
-                }
-            })
+            if (req.body.couponExpiryDate == undefined || req.body.couponExpiryDate == null || req.body.couponExpiryDate == '') {
+                res.send({ responseCode: 403, responseMessage: 'Coupon expiry date required' });
+            } else {
+                var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
+                req.body.couponCode = couponCode;
+                req.body.viewerLenght = 5;
+                req.body.couponStatus = 'VALID';
+                var Ads = new createNewAds(req.body);
+                Ads.save(function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
+                        createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+                            }
+                        })
+                    }
+                })
+            }
         } else {
             User.findOne({ _id: req.body.userId }).exec(function(err, result) {
                 console.log("result-->>", result)
@@ -370,25 +375,25 @@ module.exports = {
         });
     },
 
-     // var imageUrl = [];
-     //      var a = 0;
-     //      for (var i = 0; i < images.length; i++) {
-     //          var img_base64 = images[i];
-     //          binaryData = new Buffer(img_base64, 'base64');
-     //          require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {});
-     //          cloudinary.uploader.upload("test.jpeg", function(result) {
-     //              if (result.url) {
-     //                  imageUrl.push(result.url);
-     //                  a += i;
-     //                  if (a == i * i) {
-     //                      callback(null, imageUrl);
-     //                  }
-     //              } else {
-     //                  callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
-     //              }
+    // var imageUrl = [];
+    //      var a = 0;
+    //      for (var i = 0; i < images.length; i++) {
+    //          var img_base64 = images[i];
+    //          binaryData = new Buffer(img_base64, 'base64');
+    //          require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {});
+    //          cloudinary.uploader.upload("test.jpeg", function(result) {
+    //              if (result.url) {
+    //                  imageUrl.push(result.url);
+    //                  a += i;
+    //                  if (a == i * i) {
+    //                      callback(null, imageUrl);
+    //                  }
+    //              } else {
+    //                  callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+    //              }
 
-     //          });
-     //      }
+    //          });
+    //      }
 
     "uploads": function(req, res) {
 
@@ -400,8 +405,16 @@ module.exports = {
             for (var i = 0; i < files.images.length; i++) {
                 var img = files.images[i];
                 var fileName = files.images[i].originalFilename;
-                cloudinary.uploader.upload(img.path, function(result) {
+                cloudinary.uploader.upload(img.path,{ width: 100, height: 50, crop: "limit" }, function(result) {
+                    console.log(result)
+                    // cloudinary.image('ngdsjthoo4thilkrxpmw.png', { width: 100, height: 150, crop: "fill" },function(err, result){
+                    //     console.log("image result==>>"+result)
+                    // })
                    if (result.url) {
+                 //    cloudinary.image(result.url, { width: 100, height: 150, crop: 'fill', 
+                 // html_width: 50, html_height: 75 },function(ress){
+                 //    console.log("DFdfdf"+ress)
+                 // })                                                       
                       imageUrl.push(result.url);
                       a += i;
                       if (a == i * i) {

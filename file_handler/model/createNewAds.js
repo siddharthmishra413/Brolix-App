@@ -99,11 +99,11 @@ var createNewAdsSchema = new Schema({
     },
     couponSellViewers: { type: String },
     dawnloadPagePhoto: [],
-    whoWillSeeYourAdd: [{
+    whoWillSeeYourAdd: {
         country: { type: String },
         state: { type: String },
         city: { type: String }
-    }],
+    },
     gender: {
         type: String,
         trim: true
@@ -127,11 +127,18 @@ var createNewAdsSchema = new Schema({
     }],
     cash: { type: Number, default: 0 },
     viewers: { type: Number, default: 0 },
-    couponExchange: [{
+    couponExchangeReceived: [{
         senderId: { type: String },
         receiverId: { type: String },
         exchangedWithAdId: { type: String },
         senderCouponCode: { type: String },
+        couponExchangeStatus: { type: String, default: 'REQUESTED' },
+        exchangedDate: { type: Date, default: Date.now }
+    }],
+    couponExchangeSent: [{
+        senderId: { type: String },
+        receiverId: { type: String },
+        exchangedWithAdId: { type: String },
         couponExchangeStatus: { type: String, default: 'REQUESTED' },
         exchangedDate: { type: Date, default: Date.now }
     }],
@@ -172,7 +179,13 @@ var createNewAdsSchema = new Schema({
     adFollowers: [String],
     commentCount: { type: Number, default: 0 },
     reportOnAd: { type: Number, default: 0 },
-
+    promoteApp: {
+        type: Boolean
+    },
+    uploadGiftImage:{
+        type:String
+    },
+    favouriteCoupon: [],
     createdAt: {
         type: Date,
         default: Date.now
