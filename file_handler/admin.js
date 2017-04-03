@@ -70,11 +70,8 @@ module.exports = {
     },
 
     "adminProfile": function(req, res) {
-<<<<<<< HEAD
-        console.log("requesr-->>", req.session)
-=======
+
         console.log("req",req.session)
->>>>>>> surajAdmin
         if (req.session && req.session.user) {
             User.findOne({
                 email: req.session.user.email
