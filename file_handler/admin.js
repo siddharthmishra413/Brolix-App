@@ -10,12 +10,9 @@ var country = require('countryjs');
 var functionHandler = require('./functionHandler.js')
 var multiparty = require('multiparty');
 var cloudinary = require('cloudinary');
-<<<<<<< HEAD
-var gps = require('gps2zip'); 
-=======
 var gps = require('gps2zip');
 var _ = require('underscore-node');
->>>>>>> deepak
+
 var waterfall = require('async-waterfall');
 
 const cities = require("cities-list");
@@ -464,7 +461,6 @@ module.exports = {
             }
         });
     },
-<<<<<<< HEAD
 /*----------------------------------------------------------------------------------------------------*/
   "totalSoldUpgradeCard": function(req, res, query) {
         console.log(query.length)
@@ -520,43 +516,7 @@ module.exports = {
 
          })
      },
-=======
-    /*----------------------------------------------------------------------------------------------------*/
-    "totalSoldUpgradeCard": function(req, res) {
-        User.aggregate({ $unwind: "$upgradeCardObject" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Successfully shown list of upgrade card"
-                });
-            }
-        })
-    },
 
-    "totalSoldLuckCard": function(req, res) {
-        User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    count++;
-                }
-                res.status(200).send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "successfully shown list of luck card"
-                });
-            }
-
-        })
-    },
->>>>>>> deepak
 
     "totalIncomeInBrolixFromLuckCard": function(req, res) {
         User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, result) {
@@ -1063,7 +1023,6 @@ module.exports = {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
             } else {
-<<<<<<< HEAD
                 var page = new createNewPage(req.body);
                 page.save(function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
@@ -1080,8 +1039,8 @@ module.exports = {
                     }
                 })
             }
-        }
-    })
+        })
+   
     },
 
 "adsfilter":function(req, res){
@@ -1196,31 +1155,8 @@ module.exports = {
                 condition.$and.push({
                     createdAt: {$gte:new Date(req.body.joinFrom).toUTCString(),$lte:new Date(req.body.joinTo).toUTCString()}
                 })
-=======
-                if (!req.body.category || !req.body.subCategory) {
-                    res.send({ responseCode: 403, responseMessage: 'Category and Sub category required' });
-                } else {
-                    var page = new createNewPage(req.body);
-                    page.save(function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            User.findByIdAndUpdate({ _id: req.body.adminId }, { $inc: { pageCount: 1 } }).exec(function(err, result1) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                    res.send({
-                                        result: result,
-                                        responseCode: 200,
-                                        responseMessage: "Page create successfully."
-                                    });
-                                }
-                            })
-                        }
-                    })
-                }
->>>>>>> deepak
             }
-        })
-    },
-
-<<<<<<< HEAD
+    
             if(req.body.country){
                 var data = {'whoWillSeeYourAdd.country':req.body.country}
                condition.$and.push(data)
@@ -1268,129 +1204,8 @@ module.exports = {
                   //  console.log("result;;;>"+result)
                     callback(null,result,condition)
                 }
-=======
-    "adsfilter": function(req, res) {
-        var condition = { $and: [] };
-        var todayDate = new Date();
-        var newTodayDate = new Date();
-        var data = req.body.pageType;
-
-        waterfall([
-            function(callback) {
-                if (data == "unpublishedPages") {
-                    createNewAds.find({}, 'pageId', function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No page found" })
-                        var result = result.map(function(a) {
-                            return a.pageId;
-                        });
-                        var allPageIds = _.uniq(result);
-                        callback(null, allPageIds)
-                            // createNewPage.find({_id:{$nin:allPageIds}},function(err, result){
-                            // res.send({ responseCode: 200, responseMessage: 'Here all the Unsuscribe pages', data:result })
-                            // })
-                    })
-                } else {
-                    callback(null, "null")
-                }
-            },
-            function(allPageIds, callback) {
-                switch (data) {
-                    case 'totalAds':
-                        var updateData = { status: 'ACTIVE' };
-                        condition.$and.push(updateData)
-                        break;
-
-                    case 'activeAds':
-                        var updateData = { status: "ACTIVE" };
-                        condition.$and.push(updateData)
-                        break;
-
-                    case 'expiredAds':
-                        var updateData = { status: "EXPIRED" };
-                        condition.$and.push(updateData)
-                        break;
-
-                    case 'reportedAds':
-                        var updateData = {};
-                        condition.$and.push(updateData)
-                        break;
-
-                    case 'adsWithLinks':
-                        var updateData = {};
-                        condition.$and.push(updateData)
-                        break;
-
-                    case 'videoAds':
-                        var updateData = { adContentType: "video" };
-                        condition.$and.push(updateData)
-                        break;
-
-                    case 'slideShowAds':
-                        var updateData = { adContentType: "slideshow" };
-                        condition.$and.push(updateData)
-                        break;
-
-                    case 'upgradedAdsBy$':
-                        var updateData = {};
-                        condition.$and.push(updateData)
-                        break;
-
-                    case 'upgradedAdsByB':
-                        var updateData = {};
-                        condition.$and.push(updateData)
-                        break;
-
-                    default:
-                        var updateData = {};
-                        condition.$and.push(updateData)
-                }
-                console.log("condition before callback==>>" + JSON.stringify(condition))
-                console.log("updated data===>." + updateData)
-                callback(null, updateData)
-            },
-            function(updateData, callback) {
-
-                if (req.body.joinTo && req.body.joinTo) {
-                    condition.$and.push({
-                        createdAt: { $gte: new Date(req.body.joinFrom).toUTCString(), $lte: new Date(req.body.joinTo).toUTCString() }
-                    })
-                }
-
-
-                if (req.body.country && req.body.joinTo) {
-                    condition.$and.push({
-                        createdAt: { $gte: new Date(req.body.joinFrom).toUTCString(), $lte: new Date(req.body.joinTo).toUTCString() }
-                    })
-                }
-
-                Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-
-                    if (!(key == "pageType" || key == "joinFrom" || key == "joinTo")) {
-                        var tempCond = {};
-                        tempCond[key] = req.body[key];
-                        condition.$and.push(tempCond)
-                    }
-                });
-                if (condition.$and.length == 0) {
-                    delete condition.$and;
-                }
-                callback(null, condition)
-            },
-            function(condition, callback) {
-
-
-                console.log("condition===>.." + JSON.stringify(condition))
-                createNewAds.find(condition, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        console.log("result;;;>" + result)
-                        callback(null, result, condition)
-                    }
->>>>>>> deepak
-
                 })
             }
-
-<<<<<<< HEAD
     ],function(err, result,condition){
        res.send({ responseCode: 200, responseMessage: 'Filtered Ads.',data:result
       });
@@ -1627,20 +1442,10 @@ module.exports = {
         }
 
     ],function(err, result,condition){
-       res.send({ responseCode: 200, responseMessage: 'Filtered Ads.',data:result
+       res.send({ responseCode: 200, responseMessage: 'Filtered gifts.',data:result
       });
     })
 },
-=======
-        ], function(err, result, condition) {
-            res.send({
-                responseCode: 200,
-                responseMessage: 'Filtered Users',
-                data: result
-            });
-        })
-    },
->>>>>>> deepak
 
     
 "brolixPaymentFilter":function(req, res){
@@ -2025,7 +1830,7 @@ module.exports = {
     /* --------------------------------- Manage Gift Section ---------------------------------------*/
 
 
-<<<<<<< HEAD
+
     "totalBrolixGift": function(req, res, query) {
         console.log(query.length)
         console.log("totalBrolixGift query===>"+JSON.stringify(query))
@@ -2039,11 +1844,6 @@ module.exports = {
         }
         User.aggregate({ $unwind: "$brolix" }, {$match :updateData}).exec(function(err, result) {
          //   console.log("brolix--->>", result)
-=======
-    "totalBrolixGift": function(req, res) {
-        User.aggregate({ $unwind: "$brolix" }).sort({ brolix: -1 }).exec(function(err, result) {
-            console.log("brolix--->>", result)
->>>>>>> deepak
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];

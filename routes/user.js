@@ -8,13 +8,10 @@ app.post('/signup', userHandler.signup);
 app.post('/login', userHandler.login);
 app.post('/verifyOtp', userHandler.verifyOtp);
 app.get('/allUserDetails', authUser.authUser, userHandler.allUserDetails);
-<<<<<<< HEAD
-app.put('/editProfile/:id', userHandler.editProfile);
-app.post('/changePassword', authUser.authUser, userHandler.changePassword);
-=======
+
 app.put('/editProfile/:id', authUser.authUser, userHandler.editProfile);
 app.post('/changePassword', userHandler.changePassword);
->>>>>>> deepak
+
 app.post('/forgotPassword', userHandler.forgotPassword);
 app.post('/userProfile', authUser.authUser, userHandler.userProfile);
 app.get('/detailsOfAdvertiser/:id', authUser.authUser, userHandler.detailsOfAdvertiser);

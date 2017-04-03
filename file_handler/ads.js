@@ -405,7 +405,6 @@ module.exports = {
             for (var i = 0; i < files.images.length; i++) {
                 var img = files.images[i];
                 var fileName = files.images[i].originalFilename;
-<<<<<<< HEAD
                 cloudinary.uploader.upload(img.path,{ width: 100, height: 50, crop: "limit" }, function(result) {
                     console.log(result)
                     // cloudinary.image('ngdsjthoo4thilkrxpmw.png', { width: 100, height: 150, crop: "fill" },function(err, result){
@@ -428,22 +427,6 @@ module.exports = {
                    } else {
                        callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
                    }
-=======
-                cloudinary.uploader.upload(img.path, function(result) {
-                    if (result.url) {
-                        imageUrl.push(result.url);
-                        a += i;
-                        if (a == i * i) {
-                            res.send({
-                                result: imageUrl,
-                                responseCode: 200,
-                                responseMessage: "File uploaded successfully."
-                            });
-                        }
-                    } else {
-                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
-                    }
->>>>>>> deepak
                 }, {
                     resource_type: "auto",
                     chunk_size: 6000000
