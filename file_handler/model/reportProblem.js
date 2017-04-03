@@ -11,10 +11,11 @@ var Schema = mongoose.Schema;
 var reportProblemSchema = new Schema({
     userId: {
         type: String,
-        trim: true
+        trim: true,
+        ref: 'brolixUser'
     },
     adId: {
-        type: String
+        type: String, ref: 'createNewAds'
     },
     type: {
         type: String
