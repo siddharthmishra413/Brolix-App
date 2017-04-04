@@ -1,4 +1,4 @@
-app.controller('managePagesCtrl', function ($scope,$window,$state,userService,toastr,$http) {
+app.controller('managePagesCtrl', function ($scope,$window,$state,userService,toastr,$http,$timeout) {
 $(window).scrollTop(0,0);
 $scope.class = false;
  $scope.$emit('headerStatus', 'Manage Pages');
@@ -14,9 +14,59 @@ $scope.class = false;
  userService.showListOFCoupon().success(function(res) {
   //console.log("resssssssssssssss",res)
     $scope.allCoupons = res.result;
-    console.log("allCoupons",$scope.allCoupons);
+    //console.log("allCoupons",$scope.allCoupons);
 })
 
+
+//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+    var currentCities=[];
+    $scope.currentCountry= '';
+var BATTUTA_KEY="00000000000000000000000000000000"
+    // Populate country select box from battuta API
+  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+    $.getJSON(url,function(countries)
+    {
+      $timeout(function(){
+        $scope.countriesList=countries;
+        //console.log("data1",$scope.countriesList)
+      },100)
+      
+      
+    });
+  var countryCode;
+    $scope.changeCountry = function(){
+      for(var i=0;i<$scope.countriesList.length;i++){
+        console.log("$scope.dashBordFilter.country",$scope.dashBordFilter.country)
+        if($scope.countriesList[i].name==$scope.dashBordFilter.country){
+          countryCode=$scope.countriesList[i].code;
+          //console.log(countryCode)
+          break;
+        }
+      }
+      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+      $.getJSON(url,function(regions)
+      {
+        //console.log('state list:   '+JSON.stringify(regions))
+            $timeout(function(){
+             $scope.stateList = regions;
+             //console.log("data2",$scope.stateList)
+            },100)
+      });
+    }
+
+    $scope.changeState = function(){
+      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
+      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+      $.getJSON(url,function(cities)
+      {
+        // console.log('city list:   '+JSON.stringify(cities))
+            $timeout(function(){
+             $scope.cityList = cities;
+             console.log("data3",$scope.cityList)
+            },100)
+      })
+    }
+    //-------------------------------END OF SELECT CASCADING-------------------------//
 
 
  /*------------Send case---------------*/
@@ -141,7 +191,7 @@ $scope.sendCoupons = function(couponId){
 userService.viewcard($scope.cardType).success(function(res) {
       //console.log("resssssssssssssss",res)
         $scope.UpgradeCard = res.data;
-        console.log("UpgradeCard",$scope.UpgradeCard);
+        //console.log("UpgradeCard",$scope.UpgradeCard);
     })
 
 
@@ -163,8 +213,8 @@ $scope.active_tab=function(active_card){
 
 /*----------------------------------------------------*/
 
- $scope.userTypeName = function(val) {
-    localStorage.setItem('userTypeName',val);
+ $scope.pageTypeName = function(val) {
+    localStorage.setItem('pageTypeName',val);
  }
 
 userService.countrys().success(function(res) {
@@ -197,37 +247,37 @@ $scope.slectCountry = function(qq){
 
 $scope.dashBordFilter = function(){
 
-    var type = localStorage.getItem('userTypeName');
+    var type = localStorage.getItem('pageTypeName');
     $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
     $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
-    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
+    //$scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
     //console.log("date",$scope.dashBordFilter.country);
     var data = {};
         data = {
-            userType:localStorage.getItem('userTypeName'),
-            country:$scope.country,
+            pageType:localStorage.getItem('pageTypeName'),
+            country:$scope.dashBordFilter.country,
             state:$scope.dashBordFilter.state,
-            city:$scope.dashBordFilter.cities,
-            categories:$scope.dashBordFilter.categories,
+            city:$scope.dashBordFilter.city,
+            category:$scope.dashBordFilter.categories,
             joinTo:$scope.dobTo,
             joinFrom:$scope.dobFrom,
         }
-        //console.log("datatata",data)
+        console.log("datatata",data)
 
     switch (type)
             {
                 case 'totalPages':
-                //console.log("1"); 
-                    userService.userfilter(data).success(function(res){
+                console.log("1"); 
+                    userService.pagefilter(data).success(function(res){
                         $scope.totalUser = res.data;
-                        console.log("ressssssss1",JSON.stringify($scope.totalUser));
+                        console.log("ressssssss1",res);
                     })
                     
                 break;
 
                 case 'unPublishedPage': 
                 //console.log("2");
-                    userService.userfilter(data).success(function(res){
+                    userService.pagefilter(data).success(function(res){
                         $scope.personalUser = res.data;
                         console.log("ressssssss2",JSON.stringify($scope.personalUser));
                     })
@@ -236,7 +286,7 @@ $scope.dashBordFilter = function(){
 
                 case 'removedPage': 
                 //console.log("3");
-                    userService.userfilter(data).success(function(res){
+                    userService.pagefilter(data).success(function(res){
                         $scope.businessUser = res.data;
                         console.log("ressssssss3",JSON.stringify($scope.businessUser));
                     })
@@ -245,7 +295,7 @@ $scope.dashBordFilter = function(){
 
                 case 'blockedPage': 
                 //console.log("4");
-                    userService.userfilter(data).success(function(res){
+                    userService.pagefilter(data).success(function(res){
                         $scope.liveUser = res.data;
                         console.log("ressssssss4",JSON.stringify($scope.liveUser));
                     })
@@ -291,7 +341,7 @@ $scope.dashBordFilter = function(){
         }
     }
 
-
+// totalPages unPublishedPage pagesAdmins
     $scope.send_massage = function(){
          var array =[];
          var data = {};

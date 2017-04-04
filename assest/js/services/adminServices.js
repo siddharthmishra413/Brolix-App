@@ -141,13 +141,21 @@ app.service('userService',function($http){
     showReportedAd: function(id) {
       return $http.get(baseurl+'/admin/showReportedAd');
     },
+    adsWithLinks: function(id) {
+      return $http.get(baseurl+'/admin/adsWithLinks');
+    },
+    topFiftyAds: function(id) {
+      return $http.get(baseurl+'/admin/topFiftyAds');
+    },
+
+    //Url : http://localhost:8082/admin/adsWithLinks
 
 
 
     /*------------------------Manage Pages---------------------*/
 
     totalPages: function() {
-      return $http.get(baseurl+'/admin/totalPages');
+      return $http.get('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/totalPages');
     },
 
     allAdminPages: function() {
@@ -170,6 +178,12 @@ app.service('userService',function($http){
     viewPage: function(id) {
       return $http.get(baseurl+'/admin/viewPage/'+id);
     },
+
+    pagefilter: function(data) {
+      return $http.post(baseurl+'/page/pagefilter', data);
+    },
+
+    //Url : http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1310/admin/pagefilter
 
     /*------------------------All Countries---------------------*/
 
