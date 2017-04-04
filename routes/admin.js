@@ -103,6 +103,14 @@ app.get('/showListOFCoupon', adminHandler.showListOFCoupon);
 app.get('/showPageName', adminHandler.showPageName);
 app.post('/createSystemUser', adminHandler.createSystemUser);
 app.post('/checkPermission', adminHandler.checkPermission);
+
+app.post('/adsfilter', adminHandler.adsfilter);
+app.post('/luckUpgradeCardfilter', adminHandler.luckUpgradeCardfilter);
+app.post('/giftsFilter', adminHandler.giftsFilter);
+app.post('/brolixPaymentFilter', adminHandler.brolixPaymentFilter);
+app.post('/dollorPaymentFilter', adminHandler.dollorPaymentFilter);
+
+
 app.post('/listOfAds', adminHandler.listOfAds);
 app.get('/listOfAllAds', adminHandler.listOfAllAds);
 app.get('/allCountriesfind', adminHandler.allCountriesfind);

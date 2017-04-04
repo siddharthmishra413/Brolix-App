@@ -11,6 +11,14 @@ $scope.class = false;
 
 
 
+ userService.showListOFCoupon().success(function(res) {
+  //console.log("resssssssssssssss",res)
+    $scope.allCoupons = res.result;
+    console.log("allCoupons",$scope.allCoupons);
+})
+
+
+
  /*------------Send case---------------*/
 
  $scope.total_user_cash = function (modal) {
@@ -96,6 +104,32 @@ $scope.sendCard = function(id){
     // userService.sendMassageAllUser(data).success(function(res) {        
     //     if (res.responseCode == 200){
     //         toastr.success("Message Send Successfully to All User");
+    //         $scope.sendMessage = '';
+    //         $("#sendMessageModelAllUser").modal('hide'); 
+    //     } else {
+    //         toastr.error(res.responseMessage);
+    //     }
+    // })
+}
+
+$scope.total_user_coupons = function (modal) {
+    $("#showAllCoupons").modal('show');
+}
+
+$scope.sendCoupons = function(couponId){
+ var array =[];
+ var data = {};
+ for (var i = 0; i < $scope.allAdminPages.length; i++) {
+        array.push($scope.allAdminPages[i]._id)
+    }
+    data = {
+        couponId:$scope.couponId,
+        Id:array
+    }
+    console.log("dataIn",data)
+    // userService.sendMassageAllUser(data).success(function(res) {        
+    //     if (res.responseCode == 200){
+    //         toastr.success("Message Send Successfully to All CouponWinners User");
     //         $scope.sendMessage = '';
     //         $("#sendMessageModelAllUser").modal('hide'); 
     //     } else {

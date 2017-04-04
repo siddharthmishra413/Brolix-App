@@ -20,7 +20,7 @@
                                     </button>
                                     <ul ng-show="totalUser.length!=0" class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="total_user_message('totalUser')"><a>Message</a></li>
-                                        <li><a>Coupon</a></li>
+                                        <li ng-click="total_user_coupons('totalUser')"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix('totalUser')"><a>Brolix</a></li>
                                         <li ng-click="total_user_card('totalUser')"><a>Card</a></li>
                                         <li ng-click="total_user_cash('totalUser')""><a>Cash</a></li>
@@ -49,7 +49,7 @@
                                     </button>
                                     <ul ng-show="personalUser.length!=0" class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="total_user_message('PersonalUser')"><a>Message</a></li>
-                                        <li><a>Coupon</a></li>
+                                        <li ng-click="total_user_coupons('PersonalUser')"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix('PersonalUser')"><a>Brolix</a></li>
                                         <li ng-click="total_user_card('PersonalUser')"><a>Card</a></li>
                                         <li ng-click="total_user_cash('PersonalUser')"><a>Cash</a></li>
@@ -77,7 +77,7 @@
                                     </button>
                                     <ul ng-show="businessUser.length!=0" class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="total_user_message('BusinessUser')"><a>Message</a></li>
-                                        <li><a>Coupon</a></li>
+                                        <li ng-click="total_user_coupons('BusinessUser')"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix('BusinessUser')"><a>Brolix</a></li>
                                         <li ng-click="total_user_card('BusinessUser')"><a>Card</a></li>
                                         <li ng-click="total_user_cash('BusinessUser')"><a>Cash</a></li>
@@ -105,7 +105,7 @@
                                     </button>
                                     <ul ng-show="liveUser.length!=0" class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="total_user_message('LiveUser')"><a>Message</a></li>
-                                        <li><a>Coupon</a></li>
+                                        <li ng-click="total_user_coupons('LiveUser')"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix('LiveUser')"><a>Brolix</a></li>
                                         <li ng-click="total_user_card('LiveUser')"><a>Card</a></li>
                                         <li ng-click="total_user_cash('LiveUser')"><a>Cash</a></li>
@@ -133,7 +133,7 @@
                                     </button>
                                     <ul ng-show="totalWinners.length!=0" class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="total_user_message('WinnersUser')"><a>Message</a></li>
-                                        <li ><a>Coupon</a></li>
+                                        <li ng-click="total_user_coupons('WinnersUser')"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix('WinnersUser')"><a>Brolix</a></li>
                                         <li ng-click="total_user_card('WinnersUser')"><a>Card</a></li>
                                         <li ng-click="total_user_cash('WinnersUser')"><a>Cash</a></li>
@@ -161,7 +161,7 @@
                                     </button>
                                     <ul ng-show="cashWinners.length!=0" class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="total_user_message('CashWinnersUser')"><a>Message</a></li>
-                                        <li><a>Coupon</a></li>
+                                        <li ng-click="total_user_coupons('CashWinnersUser')"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix('CashWinnersUser')"><a>Brolix</a></li>
                                         <li ng-click="total_user_card('CashWinnersUser')"><a>Card</a></li>
                                         <li ng-click="total_user_cash('CashWinnersUser')"><a>Cash</a></li>
@@ -189,7 +189,7 @@
                                     </button>
                                     <ul ng-show="couponWinners.length!=0" class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="total_user_message('CouponWinnersUser')"><a>Message</a></li>
-                                        <li><a>Coupon</a></li>
+                                        <li ng-click="total_user_coupons('CouponWinnersUser')"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix('CouponWinnersUser')"><a>Brolix</a></li>
                                         <li ng-click="total_user_card('CouponWinnersUser')"><a>Card</a></li>
                                         <li ng-click="total_user_cash('CouponWinnersUser')"><a>Cash</a></li>
@@ -217,7 +217,7 @@
                                     </button>
                                     <ul ng-show="allblockUser.length!=0" class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li ng-click="total_user_message('BlockedUser')"><a>Message</a></li>
-                                        <li><a>Coupon</a></li>
+                                        <li ng-click="total_user_coupons('BlockedUser')"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix('BlockedUser')"><a>Brolix</a></li>
                                         <li ng-click="total_user_card('BlockedUser')"><a>Card</a></li>
                                         <li ng-click="total_user_cash('BlockedUser')"><a>Cash</a></li>
@@ -327,7 +327,7 @@
                     
                 </li>
                 <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                 </li>
                 <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
@@ -403,7 +403,7 @@
                         
                     </li>
                     <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
@@ -480,7 +480,7 @@
                         
                     </li>
                     <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
@@ -556,7 +556,7 @@
                         
                     </li>
                     <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
@@ -631,7 +631,7 @@
                         
                     </li>
                     <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
@@ -707,7 +707,7 @@
                         
                     </li>
                     <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
@@ -783,7 +783,7 @@
                         
                     </li>
                     <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="send_coupon(myForm.checkId)">Send Coupon</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
@@ -1142,6 +1142,29 @@
        </div>
    </div>
 </div>
+
+
+<div id="showAllCoupons" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send Coupons to All User</h4>
+           </div>
+           <div class="row-table" ng-repeat="data in allCoupons">
+            <div class="col-cell">
+                <div class="cover-image">
+                    <img ng-src="{{data.coverImage || '../dist/image/cover.jpg'}}" id="output">
+                </div>
+            </div>
+            <div class="col-cell add-remove">
+                <span class="fa fa-send" ng-click="sendCoupons(data._id)"></span>
+            </div>
+        </div>
+       </div>
+   </div>
+</div>
+
 
 
 

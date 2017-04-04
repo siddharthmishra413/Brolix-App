@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('MyApp', ['ui.router', 'ngCookies', 'toastr'])
+var app = angular.module('MyApp', ['ui.router', 'ngCookies', 'toastr', 'angularSpinners'])
 
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -160,11 +160,46 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: 'templates/addSystemUser.html'
     })
 
+  
+  .state('header.editSystemUser', {
+            url: '/editSystemUser/:id',
+            controller: 'editSystemUserCtrl',
+            templateUrl: 'templates/editSystemUser.html'
+        })
+  .state('header.adminReports', {
+            url: '/adminReports',
+            controller: 'adminReportsCtrl',
+            templateUrl: 'templates/adminReports.html'
+        })
+  .state('header.termsAndCondition', {
+            url: '/termsAndCondition',
+            controller: 'termsAndConditionCtrl',
+            templateUrl: 'templates/termsAndCondition.html'
+        })
+  .state('header.brolixAndDollars', {
+            url: '/brolixAndDollars',
+            controller: 'brolixAndDollarsCtrl',
+            templateUrl: 'templates/brolixAndDollars.html'
+        })
+
+
+  /*addCoupons-section*/
+
   .state('header.addAdminCoupon', {
             url: '/addAdminCoupon',
             controller: 'addAdminCouponCtrl',
             templateUrl: 'templates/addAdminCoupon.html'
         })
+  .state('header.editCoupon', {
+        url: '/editCoupon',
+        controller: 'editCouponCtrl',
+        templateUrl: 'templates/editCoupon.html'
+    })
+  .state('header.viewCoupon', {
+        url: '/viewCoupon',
+        controller: 'viewCouponCtrl',
+        templateUrl: 'templates/viewCoupon.html'
+    })
 
 
     $urlRouterProvider.otherwise('/login');

@@ -99,11 +99,11 @@ var createNewAdsSchema = new Schema({
     },
     couponSellViewers: { type: String },
     dawnloadPagePhoto: [],
-    whoWillSeeYourAdd: [{
+    whoWillSeeYourAdd: {
         country: { type: String },
         state: { type: String },
         city: { type: String }
-    }],
+    },
     gender: {
         type: String,
         trim: true
