@@ -405,28 +405,28 @@ module.exports = {
             for (var i = 0; i < files.images.length; i++) {
                 var img = files.images[i];
                 var fileName = files.images[i].originalFilename;
-                cloudinary.uploader.upload(img.path,{ width: 100, height: 50, crop: "limit" }, function(result) {
+                cloudinary.uploader.upload(img.path, function(result) {
                     console.log(result)
-                    // cloudinary.image('ngdsjthoo4thilkrxpmw.png', { width: 100, height: 150, crop: "fill" },function(err, result){
-                    //     console.log("image result==>>"+result)
-                    // })
-                   if (result.url) {
-                 //    cloudinary.image(result.url, { width: 100, height: 150, crop: 'fill', 
-                 // html_width: 50, html_height: 75 },function(ress){
-                 //    console.log("DFdfdf"+ress)
-                 // })                                                       
-                      imageUrl.push(result.url);
-                      a += i;
-                      if (a == i * i) {
-                           res.send({
-                            result: result.url,
-                            responseCode: 200,
-                            responseMessage: "File uploaded successfully."
-                        });
-                      }
-                   } else {
-                       callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
-                   }
+                        // cloudinary.image('ngdsjthoo4thilkrxpmw.png', { width: 100, height: 150, crop: "fill" },function(err, result){
+                        //     console.log("image result==>>"+result)
+                        // })
+                    if (result.url) {
+                        //    cloudinary.image(result.url, { width: 100, height: 150, crop: 'fill', 
+                        // html_width: 50, html_height: 75 },function(ress){
+                        //    console.log("DFdfdf"+ress)
+                        // })                                                       
+                        imageUrl.push(result.url);
+                        a += i;
+                        if (a == i * i) {
+                            res.send({
+                                result: result.url,
+                                responseCode: 200,
+                                responseMessage: "File uploaded successfully."
+                            });
+                        }
+                    } else {
+                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+                    }
                 }, {
                     width: 600,
                     height: 600,
@@ -806,7 +806,7 @@ module.exports = {
                 for (i = 0; i < result.coupon.length; i++) {
                     array.push(result.coupon[i].adId)
                 }
-                createNewAds.paginate({ _id: { $in: array }, couponStatus: { $in: status } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                createNewAds.paginate({ _id: { $in: array }, couponStatus: { $in: status } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
                         res.send({
                             result: result1,
@@ -832,7 +832,7 @@ module.exports = {
                         }
                     }
                 }
-                createNewAds.paginate({ _id: { $in: array }, cashStatus: { $in: status } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                createNewAds.paginate({ _id: { $in: array }, cashStatus: { $in: status } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
                         res.send({
                             result: result1,

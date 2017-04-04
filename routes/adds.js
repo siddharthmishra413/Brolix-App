@@ -31,8 +31,8 @@ app.put('/editAd/:id/:userId', authUser.authUser, adsHandler.editAd);
 app.post('/adsDateFilter', authUser.authUser, adsHandler.adsDateFilter);
 app.post('/searchAds', authUser.authUser, adsHandler.searchAds);
 app.post('/couponFilter', authUser.authUser, adsHandler.couponFilter);
-app.post('/couponGiftsFilter/:pageNumber', authUser.authUser, adsHandler.couponGiftsFilter);
-app.post('/cashGiftsFilter/:pageNumber', authUser.authUser, adsHandler.cashGiftsFilter);
+app.post('/couponGiftsFilter', authUser.authUser, adsHandler.couponGiftsFilter);
+app.post('/cashGiftsFilter', authUser.authUser, adsHandler.cashGiftsFilter);
 app.get('/storeCouponList/:pageNumber', authUser.authUser, adsHandler.storeCouponList);
 app.post('/viewCoupon', authUser.authUser, adsHandler.viewCoupon);
 

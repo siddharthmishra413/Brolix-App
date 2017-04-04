@@ -56,7 +56,8 @@ app.post('/couponRequestsSearch', authUser.authUser, userHandler.couponRequestsS
 app.post('/acceptDeclineCouponRequest', authUser.authUser, userHandler.acceptDeclineCouponRequest);
 app.post('/useCouponWithoutCode', authUser.authUser, userHandler.useCouponWithoutCode);
 app.post('/winnersFilterCodeBasis', authUser.authUser, userHandler.winnersFilterCodeBasis)
-app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode)
+app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode);
+app.post('/seeExchangeSentRequest', authUser.authUser, userHandler.seeExchangeSentRequest);
 
 app.post('/payU', userHandler.payU)
 

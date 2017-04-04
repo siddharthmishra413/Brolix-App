@@ -61,49 +61,49 @@ var https = require('https');
 // })
 
 var marchentKey = "gtKFFx";
-var txnid='4945398';
-var amount=1000;
-var productinfo='Product 1';
-var firstname='sakshi';
-var email='sakshigadia1994@gmail.com';
-var phone='9015426958';
-var surl='http://localhost/success';
-var furl='http://localhost/fail';
-var service_provider='payu_paisa';
+var txnid = '4945398';
+var amount = 1000;
+var productinfo = 'Product 1';
+var firstname = 'sakshi';
+var email = 'sakshigadia1994@gmail.com';
+var phone = '9015426958';
+var surl = 'http://localhost/success';
+var furl = 'http://localhost/fail';
+var service_provider = 'payu_paisa';
 var salt = 'eCwWELxi';
-var string = marchentKey +'|' +txnid+ '|' +amount+'|'+productinfo+'|'+firstname+'|'+email+'|||||||||||'+salt;
-var data1 = querystring.stringify({ 
-    marchentKey:"gtKFFx", 
-    txnid:'4945398',
-    amount:1000,
-    productinfo:'Product 1',
-    firstname:'sakshi',
-    email:'sakshigadia1994@gmail.com',
-    phone:'9015426958',
-    surl:'http://localhost/success',
-    furl:'http://localhost/fail',
-    service_provider:'payu_paisa',
+var string = marchentKey + '|' + txnid + '|' + amount + '|' + productinfo + '|' + firstname + '|' + email + '|||||||||||' + salt;
+var data1 = querystring.stringify({
+    marchentKey: "gtKFFx",
+    txnid: '4945398',
+    amount: 1000,
+    productinfo: 'Product 1',
+    firstname: 'sakshi',
+    email: 'sakshigadia1994@gmail.com',
+    phone: '9015426958',
+    surl: 'http://localhost/success',
+    furl: 'http://localhost/fail',
+    service_provider: 'payu_paisa',
     salt: 'eCwWELxi',
-    hash:sha512(string)
+    hash: sha512(string)
 
     // string : "qZSnc2tX" +'|' +"4944995"+ '|' +1000+'|'+"Product 1"+'|'+"susheel"+'|'+"susheelyadav95@gmail.com"+'|'+"8800418935"+'|'+ "http://localhost/success" +'|'+"http://localhost/fail"+'|'+"payu_paisa"+'|||||||'+"2PcI9FTyys",
     // hash:sha512("qZSnc2tX" +'|' +"4944995"+ '|' +1000+'|'+"Product 1"+'|'+"susheel"+'|'+"susheelyadav95@gmail.com"+'|'+"8800418935"+'|'+ "http://localhost/success" +'|'+"http://localhost/fail"+'|'+"payu_paisa"+'|||||||'+"2PcI9FTyys")
 })
 
 
-var optionsNew = { 
-        'Content-Type': 'application/json', 
-    hostname: 'test.payumoney.com', 
-    port: 443, 
-    path: '/payment/payment/createPayment'+data1, 
-    method: 'POST', 
-    headers: { 
-        'Content-Type': 'application/json', 
-        'Content-Length': Buffer.byteLength(data1), 
-        'content': data1, 
+var optionsNew = {
+    'Content-Type': 'application/json',
+    hostname: 'test.payumoney.com',
+    port: 443,
+    path: '/payment/payment/createPayment' + data1,
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data1),
+        'content': data1,
         'accept': '*/*'
-        
-    } 
+
+    }
 };
 
 // var data = querystring.stringify({ 
@@ -1504,7 +1504,7 @@ module.exports = {
         waterfall([
             function(callback) {
                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $inc: { couponPurchased: 1 } }, function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength <= result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength == result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
                         callback(null, result.couponCode, result.couponExpiryDate, result.pageId)
                     }
                 })
@@ -2085,8 +2085,31 @@ module.exports = {
                 })
             }
         })
+    },
 
-    }
+     "seeExchangeSentRequest": function(req, res) {
+        var array = [];
+        createNewAds.findOne({ _id: req.body.adId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); }            
+             else {
+                for (var i = 0; i < result.couponExchange.length; i++) {
+                    if (result.couponExchange[i].senderId == req.body.userId) {
+                        array.push(result.couponExchange[i].senderId);
+                    }
+                }
+                User.find({ _id: { $in: array } }, avoid).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "All request show successfully"
+                        })
+                    }
+                })
+            }
+        })
+    },
 
 
 

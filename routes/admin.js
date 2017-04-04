@@ -132,6 +132,8 @@ app.post('/pagefilter', adminHandler.pagefilter);
 app.get('/adAdminUserList', adminHandler.adAdminUserList);
 app.put('/editPage/:id', adminHandler.editPage);
 app.post('/systemAdminLogin', adminHandler.systemAdminLogin);
+app.get('/removeAds/:id', adminHandler.removeAds);
+app.put('/editAdminProfile/:id', adminHandler.editAdminProfile);
 
 
 module.exports = app;
