@@ -122,6 +122,8 @@ app.get('/notificationToAdmin', adminHandler.notificationToAdmin);
 app.post('/userfilter', adminHandler.userfilter);
 app.post('/pagefilter', adminHandler.pagefilter);
 app.get('/adAdminUserList', adminHandler.adAdminUserList);
+app.put('/editPage/:id', adminHandler.editPage);
+app.post('/systemAdminLogin', adminHandler.systemAdminLogin);
 
 
 module.exports = app;
