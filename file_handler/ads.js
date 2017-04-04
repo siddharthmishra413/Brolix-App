@@ -414,7 +414,7 @@ module.exports = {
                       a += i;
                       if (a == i * i) {
                            res.send({
-                            result: imageUrl,
+                            result: result.url,
                             responseCode: 200,
                             responseMessage: "File uploaded successfully."
                         });
@@ -422,9 +422,20 @@ module.exports = {
                    } else {
                        callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
                    }
+<<<<<<< HEAD
                 }, { width: 600, height: 600,
                              x: 100, y: 100, 
                              crop: "scale", format: "png" });
+=======
+                }, {
+                    width: 600,
+                    height: 600,
+                    x: 100,
+                    y: 100,
+                    crop: "scale",
+                    format: "png"
+                });
+>>>>>>> deepak
             }
         })
 

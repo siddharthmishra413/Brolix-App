@@ -12,5 +12,6 @@ app.post('/commentOnProduct', authUser.authUser, productHandler.commentOnProduct
 app.post('/productReplyOnComment', authUser.authUser, productHandler.productReplyOnComment);
 app.post('/tagOnProduct', authUser.authUser, productHandler.tagOnProduct);
 app.get('/productCommentList/:id/:pageNumber', authUser.authUser, productHandler.productCommentList);
+app.get('/removeProduct/:id', authUser.authUser, productHandler.removeProduct);
 
 module.exports = app;

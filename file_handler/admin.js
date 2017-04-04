@@ -23,55 +23,34 @@ console.log(cities["something else"]) // undefined
 
 module.exports = {
     "login": function(req, res) {
-        if (!validator.isEmail(req.body.email)) res.send({
-            responseCode: 403,
-            responseMessage: 'Please enter the correct email id.'
-        });
-        User.findOne({
-            $or: [{
-                email: req.body.email
-            }, {
-                password: req.body.password
-            }],
-            status: 'ACTIVE',
-            type: "ADMIN"
-        }).exec(function(err, result) {
-            if (err) {
-                res.send({
-                    responseCode: 500,
-                    responseMessage: 'Internal server error'
-                });
-            }
-            if (result == null) {
-                return res.send({
-                    responseCode: 404,
-                    responseMessage: "The email and password that you've entered doesn't match any account."
-                });
-            } else if (result.password != req.body.password) {
-                return res.send({
-                    responseCode: 404,
-                    responseMessage: "The password that you've entered is incorrect."
-                });
-            } else if (result.email != req.body.email) {
-                return res.send({
-                    responseCode: 404,
-                    responseMessage: "The email address that you've entered doesn't match any account."
-                });
-            } else {
-                // sets a cookie with the user's info
-                req.session.user = result;
-                console.log("requesr-->>", req.session)
-                return res.send({
-                    responseCode: 200,
-                    responseMessage: "Login successfully."
-                });
-            }
-        })
+        console.log("request-->>" + JSON.stringify(req.body))
+        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        else {
+            User.findOne({
+                $or: [{ email: req.body.email }, { password: req.body.password }, { type: 'ADMIN' }, { type: 'SYSTEMADMIN' }],
+                status: 'ACTIVE'
+            }).exec(function(err, result) {
+                console.log("result-->>", result)
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
+                    res.send({
+                        responseCode: 404,
+                        responseMessage: "The email address that you've entered doesn't match any account."
+                    });
+                } else {
+                    console.log("2")
+                        // sets a cookie with the user's info
+                    req.session.user = result;
+                    console.log("request-->>", req.session.user)
+                    res.send({
+                        responseCode: 200,
+                        responseMessage: "Login successfully."
+                    });
+                }
+            })
+        }
     },
 
     "adminProfile": function(req, res) {
-
-        console.log("req",req.session)
         if (req.session && req.session.user) {
             User.findOne({
                 email: req.session.user.email
@@ -81,12 +60,11 @@ module.exports = {
                         responseCode: 500,
                         responseMessage: 'Internal server error'
                     });
-                }
-                if (!result) {
+                } else if (!result) {
                     req.session.reset();
                 } else {
                     res.locals.user = result;
-                    return res.send({
+                    res.send({
                         result: result,
                         responseCode: 200,
                         responseMessage: "Login successfully."
@@ -94,7 +72,7 @@ module.exports = {
                 }
             })
         } else {
-            return res.send({
+            res.send({
                 responseCode: 404,
                 responseMessage: "session has been expried"
             });
@@ -749,14 +727,37 @@ module.exports = {
     },
 
     //API for user Profile
-    "editpage": function(req, res) {
-        createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Page Updated."
-            });
+    // "editpage": function(req, res) {
+    //     createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 409, responseMessage: 'No page found' }); }
+    //         else {
+    //             res.send({
+    //                 result: result,
+    //                 responseCode: 200,
+    //                 responseMessage: "Page Updated."
+    //             });
+    //         }
+    //     })
+    // },
+
+    "editPage": function(req, res) {
+        createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result) {
+                res.send({
+                    responseCode: 302,
+                    responseMessage: "Page name must be unique."
+                });
+            } else {
+                createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 302, responseMessage: "Page name must be unique." }); } else {
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "Pages details updated successfully."
+                        })
+                    }
+                })
+            }
         })
     },
 
@@ -2406,7 +2407,7 @@ module.exports = {
     "createSystemUser": function(req, res) {
         waterfall([
             function(callback) {
-                if (req.body.permissions.length == 0) { res.send({ responseCode: 403, responseMessage: 'Please give atleast one permission to system admin' }); } else {
+                if (!req.body.permissions) { res.send({ responseCode: 403, responseMessage: 'Please enter permission to system admin' }); } else if (req.body.permissions.length == 0) { res.send({ responseCode: 403, responseMessage: 'Please give atleast one permission to system admin' }); } else {
                     var obj = {
                         firstName: req.body.firstName,
                         lastName: req.body.lastName,
@@ -2942,6 +2943,35 @@ module.exports = {
         User.find({}, 'firstName lastName email', function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No user found" }) } else { res.send({ result: result, responseCode: 200, responseMessage: 'List of all user' }); }
         })
+    },
+
+    "systemAdminLogin": function(req, res) {
+        console.log("request-->>" + JSON.stringify(req.body))
+        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        else {
+            User.findOne({
+                $or: [{ email: req.body.email }, { password: req.body.password }],
+                status: 'ACTIVE',
+                type: 'SYSTEMADMIN'
+            }).exec(function(err, result) {
+                console.log("1")
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
+                    res.send({
+                        responseCode: 404,
+                        responseMessage: "The email address that you've entered doesn't match any account."
+                    });
+                } else {
+                    console.log("2")
+                        // sets a cookie with the user's info
+                    req.session.user = result;
+                    console.log("request-->>", req.session.user)
+                    res.send({
+                        responseCode: 200,
+                        responseMessage: "Login successfully."
+                    });
+                }
+            })
+        }
     }
 
 
