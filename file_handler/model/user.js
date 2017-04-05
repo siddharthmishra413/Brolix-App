@@ -178,12 +178,14 @@ var userSchema = new Schema({
     luckCardObject: [{
         brolix: { type: Number },
         chances: { type: Number },
-        status: { type: String, default: 'ACTIVE' }
+        status: { type: String, default: 'ACTIVE' },
+        type: { type: String }
     }],
     upgradeCardObject: [{
         cash: { type: Number },
         viewers: { type: Number },
-        status: { type: String, default: 'ACTIVE' }
+        status: { type: String, default: 'ACTIVE' },
+        type: { type: String }
     }],
     usedLuckCard: [],
     pageCount: {
@@ -207,7 +209,7 @@ var userSchema = new Schema({
     cashStatus: [{
         adId: { type: String },
         cashStatus: { type: String, default: 'pending' }
-    }],    
+    }],
     userFollowers: [],
     UpgradeUsedAd: [{
         upgradeId: { type: String },

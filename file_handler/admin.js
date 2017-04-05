@@ -29,7 +29,9 @@ module.exports = {
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
             User.findOne({
-                $or: [{ email: req.body.email }, { password: req.body.password }, { type: 'ADMIN' }, { type: 'SYSTEMADMIN' }],
+                email: req.body.email,
+                password: req.body.password,
+                $or: [{ 'type': 'ADMIN' }, { 'type': 'SYSTEMADMIN' }],
                 status: 'ACTIVE'
             }).exec(function(err, result) {
                 console.log("result-->>", result)
@@ -3069,61 +3071,144 @@ module.exports = {
         });
     },
 
-    "sendCardTOUSers": function(req, res) {
+    "sendLuckCardTOUsers": function(req, res) {
         waterfall([
-            function(callback) {
-                if (req.body.Id.length == 0) { res.send({ responseCode: 404, responseMessage: 'please enter atleast one user.' }); } else {
-                    var adId = req.body.couponId;
+                function(callback) {
+                    if (req.body.Id.length == 0) { res.send({ responseCode: 404, responseMessage: 'please enter atleast one user.' }); } else {
+                        var cardId = req.body.cardId;
+                        var userArray = req.body.Id;
+                        console.log("lenght-->>>", userArray)
+                        var arrayLenght = userArray.length;
+                        console.log("userArray-->>>", arrayLenght)
+                        adminCards.findOneAndUpdate({ _id: cardId }, { $inc: { sendCardToUser: arrayLenght } }, { new: true }).exec(function(err, result) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct cardId' }); } else {
+                                var brolix = result.brolix;
+                                var chances = result.chances;
+                                var type = "SENDBYADMIN";
+                                callback(null, brolix, chances, type)
+                            }
+                        })
+                    }
+                },
+                function(brolix, chances, type, callback) {
+                    var cardId = req.body.cardId;
                     var userArray = req.body.Id;
-                    console.log("lenght-->>>", userArray)
                     var arrayLenght = userArray.length;
-                    console.log("userArray-->>>", arrayLenght)
-                    createNewAds.findOneAndUpdate({ _id: adId }, { $inc: { sendCouponToUser: arrayLenght } }, { new: true }).exec(function(err, result) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
-                            var couponCode = result.couponCode;
-                            var couponAdId = result._id;
-                            var expirationTime = result.couponExpiryDate;
-                            var pageId = result.pageId;
-                            var type = "SENDBYADMIN";
-                            callback(null, couponCode, couponAdId, expirationTime, pageId, type)
-                        }
-                    })
-                }
-            },
-            function(couponCode, couponAdId, expirationTime, pageId, type, callback) {
-                var adId = req.body.couponId;
-                var userArray = req.body.Id;
-                console.log("lenght-->>>", userArray)
-                var arrayLenght = userArray.length;
 
-                var startTime = new Date().toUTCString();
-                var h = new Date(new Date(startTime).setHours(00)).toUTCString();
-                var m = new Date(new Date(h).setMinutes(00)).toUTCString();
-                var s = Date.now(m)
-                var actualTime = parseInt(s) + parseInt(expirationTime);
-                var data = {
-                    couponCode: couponCode,
-                    expirationTime: actualTime,
-                    adId: couponAdId,
-                    pageId: pageId,
-                    type: type
-                }
-                console.log("data-->>", data)
-                for (var i = 0; i < userArray.length; i++) {
-                    User.update({ _id: userArray[i] }, { $push: { coupon: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
-                            // callback(null)
+                    var data = {
+                        brolix: brolix,
+                        chances: chances,
+                        type: type
+                    }
+                    console.log("data-->>", data)
+                    for (var i = 0; i < userArray.length; i++) {
+                        User.update({ _id: userArray[i] }, { $push: { luckCardObject: data } }, { multi: true }, function(err, result1) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
+                                // callback(null)
+                            }
+                        })
+                    }
+                    callback(null)
+                },
+            ],
+            function(err, result) {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Card send successfully."
+                });
+            })
+    },
+
+    "sendUpgradeCardTOUsers": function(req, res) {
+        waterfall([
+                function(callback) {
+                    if (req.body.Id.length == 0) { res.send({ responseCode: 404, responseMessage: 'please enter atleast one user.' }); } else {
+                        var cardId = req.body.cardId;
+                        var userArray = req.body.Id;
+                        console.log("lenght-->>>", userArray)
+                        var arrayLenght = userArray.length;
+                        console.log("userArray-->>>", arrayLenght)
+                        adminCards.findOneAndUpdate({ _id: cardId }, { $inc: { sendCardToUser: arrayLenght } }, { new: true }).exec(function(err, result) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct cardId' }); } else {
+                                var price = result.price;
+                                var viewers = result.viewers;
+                                var type = "SENDBYADMIN";
+                                callback(null, price, viewers, type)
+                            }
+                        })
+                    }
+                },
+                function(price, viewers, type, callback) {
+                    var cardId = req.body.cardId;
+                    var userArray = req.body.Id;
+                    var arrayLenght = userArray.length;
+
+                    var data = {
+                        price: price,
+                        viewers: viewers,
+                        type: type
+                    }
+                    console.log("data-->>", data)
+                    for (var i = 0; i < userArray.length; i++) {
+                        User.update({ _id: userArray[i] }, { $push: { upgradeCardObject: data } }, { multi: true }, function(err, result1) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
+                                // callback(null)
+                            }
+                        })
+                    }
+                    callback(null)
+                },
+            ],
+            function(err, result) {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Card send successfully."
+                });
+            })
+    },
+
+    "uploads": function(req, res) {
+        console.log(req.files);
+        var imageUrl = [];
+        var form = new multiparty.Form();
+        form.parse(req, function(err, fields, files) {
+            var a = 0;
+            for (var i = 0; i < files.images.length; i++) {
+                var img = files.images[i];
+                var fileName = files.images[i].originalFilename;
+                cloudinary.uploader.upload(img.path, function(result) {
+                    console.log(result)
+                        // cloudinary.image('ngdsjthoo4thilkrxpmw.png', { width: 100, height: 150, crop: "fill" },function(err, result){
+                        //     console.log("image result==>>"+result)
+                        // })
+                    if (result.url) {
+                        //    cloudinary.image(result.url, { width: 100, height: 150, crop: 'fill', 
+                        // html_width: 50, html_height: 75 },function(ress){
+                        //    console.log("DFdfdf"+ress)
+                        // })                                                       
+                        imageUrl.push(result.url);
+                        a += i;
+                        if (a == i * i) {
+                            res.send({
+                                result: result.url,
+                                responseCode: 200,
+                                responseMessage: "File uploaded successfully."
+                            });
                         }
-                    })
-                }
-                callback(null)
-            },
-        ], function(err, result) {
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Coupon send successfully."
-            });
+                    } else {
+                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+                    }
+                }, {
+                    width: 600,
+                    height: 600,
+                    x: 100,
+                    y: 100,
+                    crop: "scale",
+                    format: "png"
+                });
+            }
         })
     },
 
