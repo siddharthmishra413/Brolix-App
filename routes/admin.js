@@ -134,6 +134,9 @@ app.put('/editPage/:id', adminHandler.editPage);
 app.post('/systemAdminLogin', adminHandler.systemAdminLogin);
 app.get('/removeAds/:id', adminHandler.removeAds);
 app.put('/editAdminProfile/:id', adminHandler.editAdminProfile);
+app.post('/sendCouponTOUSers', adminHandler.sendCouponTOUSers);
+app.get('/blockPage/:id', adminHandler.removeSystemAdmin);
+app.get('/unBlockPage/:id', adminHandler.removeSystemAdmin);
 
 
 module.exports = app;

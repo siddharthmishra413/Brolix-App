@@ -13,6 +13,7 @@ var multiparty = require('multiparty');
 var cloudinary = require('cloudinary');
 var gps = require('gps2zip');
 var _ = require('underscore-node');
+var voucher_codes = require('voucher-code-generator');
 
 var waterfall = require('async-waterfall');
 
@@ -966,7 +967,7 @@ module.exports = {
     "viewCards": function(req, res) {
         console.log(typeof(req.params.type))
         var cardType = req.params.type;
-        adminCards.find({ type: cardType, status: "active" }, function(err, result) {
+        adminCards.find({ type: cardType, status: "ACTIVE" }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
             }
@@ -1010,7 +1011,7 @@ module.exports = {
         var cardType = req.body.cardType;
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: cardType, 'offer.status': 'active' } },
+            { $match: { type: cardType, 'offer.status': 'ACTIVE' } },
             { $project: { offer: 1, _id: 0 } }
         ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -2310,6 +2311,7 @@ module.exports = {
     "addNewCoupon": function(req, res) {
         console.log("---addNewCoupon---")
         if (req.body.pageName == undefined || req.body.pageName == null || req.body.pageName == '') { res.send({ responseCode: 403, responseMessage: 'Please enter pageName' }); } else {
+            var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
             var obj = {
                 pageId: req.body.pageId,
                 pageName: req.body.pageName,
@@ -2319,8 +2321,11 @@ module.exports = {
                 adsType: "ADMINCOUPON",
                 couponBuyersLength: 0,
                 sellCoupon: false,
-                couponSellPrice: 0
+                couponSellPrice: 0,
+                couponStatus: 'VALID',
+                couponCode: couponCode
             };
+
             var coupon = createNewAds(obj)
             coupon.save(function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -2985,11 +2990,142 @@ module.exports = {
         })
     },
 
-    // "sendCouponTOUSers": function(req, res){
 
-    // }
+    // var couponCode = result3.coupon[i].couponCode;
+    //  var couponAdId = result3.coupon[i].adId;
+    //  var expirationTime = result3.coupon[i].expirationTime;
+    //  var pageId = result3.coupon[i].pageId;
+    //  var type = "SEND BY FOLLOWER";
 
 
+
+    "sendCouponTOUSers": function(req, res) {
+        waterfall([
+            function(callback) {
+                if (req.body.Id.length == 0) { res.send({ responseCode: 404, responseMessage: 'please enter atleast one user.' }); } else {
+                    var adId = req.body.couponId;
+                    var userArray = req.body.Id;
+                    console.log("lenght-->>>", userArray)
+                    var arrayLenght = userArray.length;
+                    console.log("userArray-->>>", arrayLenght)
+                    createNewAds.findOneAndUpdate({ _id: adId }, { $inc: { sendCouponToUser: arrayLenght } }, { new: true }).exec(function(err, result) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                            var couponCode = result.couponCode;
+                            var couponAdId = result._id;
+                            var expirationTime = result.couponExpiryDate;
+                            var pageId = result.pageId;
+                            var type = "SENDBYADMIN";
+                            callback(null, couponCode, couponAdId, expirationTime, pageId, type)
+                        }
+                    })
+                }
+            },
+            function(couponCode, couponAdId, expirationTime, pageId, type, callback) {
+                var adId = req.body.couponId;
+                var userArray = req.body.Id;
+                console.log("lenght-->>>", userArray)
+                var arrayLenght = userArray.length;
+
+                var startTime = new Date().toUTCString();
+                var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+                var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+                var s = Date.now(m)
+                var actualTime = parseInt(s) + parseInt(expirationTime);
+                var data = {
+                    couponCode: couponCode,
+                    expirationTime: actualTime,
+                    adId: couponAdId,
+                    pageId: pageId,
+                    type: type
+                }
+                console.log("data-->>", data)
+                for (var i = 0; i < userArray.length; i++) {
+                    User.update({ _id: userArray[i] }, { $push: { coupon: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
+                            // callback(null)
+                        }
+                    })
+                }
+                callback(null)
+            },
+        ], function(err, result) {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Coupon send successfully."
+            });
+        })
+    },
+
+    "blockPage": function(req, res) {
+        createNewPage.findByIdAndUpdate({ _id: req.params.pageId }, { $set: { status: 'BLOCK' } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }) } else { res.send({ responseCode: 200, responseMessage: "Page Blocked successfully." }); }
+        });
+    },
+
+    "unBlockPage": function(req, res) {
+        createNewPage.findByIdAndUpdate({ _id: req.params.pageId }, { $set: { status: 'ACTIVE' } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }) } else { res.send({ responseCode: 200, responseMessage: "Page unblocked successfully." }); }
+        });
+    },
+
+    "sendCardTOUSers": function(req, res) {
+        waterfall([
+            function(callback) {
+                if (req.body.Id.length == 0) { res.send({ responseCode: 404, responseMessage: 'please enter atleast one user.' }); } else {
+                    var adId = req.body.couponId;
+                    var userArray = req.body.Id;
+                    console.log("lenght-->>>", userArray)
+                    var arrayLenght = userArray.length;
+                    console.log("userArray-->>>", arrayLenght)
+                    createNewAds.findOneAndUpdate({ _id: adId }, { $inc: { sendCouponToUser: arrayLenght } }, { new: true }).exec(function(err, result) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                            var couponCode = result.couponCode;
+                            var couponAdId = result._id;
+                            var expirationTime = result.couponExpiryDate;
+                            var pageId = result.pageId;
+                            var type = "SENDBYADMIN";
+                            callback(null, couponCode, couponAdId, expirationTime, pageId, type)
+                        }
+                    })
+                }
+            },
+            function(couponCode, couponAdId, expirationTime, pageId, type, callback) {
+                var adId = req.body.couponId;
+                var userArray = req.body.Id;
+                console.log("lenght-->>>", userArray)
+                var arrayLenght = userArray.length;
+
+                var startTime = new Date().toUTCString();
+                var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+                var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+                var s = Date.now(m)
+                var actualTime = parseInt(s) + parseInt(expirationTime);
+                var data = {
+                    couponCode: couponCode,
+                    expirationTime: actualTime,
+                    adId: couponAdId,
+                    pageId: pageId,
+                    type: type
+                }
+                console.log("data-->>", data)
+                for (var i = 0; i < userArray.length; i++) {
+                    User.update({ _id: userArray[i] }, { $push: { coupon: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
+                            // callback(null)
+                        }
+                    })
+                }
+                callback(null)
+            },
+        ], function(err, result) {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Coupon send successfully."
+            });
+        })
+    },
 
 
 }

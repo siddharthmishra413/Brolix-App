@@ -34,9 +34,10 @@ var cardsSchema = new Schema({
         status:{type:String,default:"active"},
         createdAt:{type:Date,default:Date.now()}   
         }],
+    sendCouponToUser: { type: Number },
     status:{
         type:String,
-        default:"active"
+        default:"ACTIVE"
     }
 },{ versionKey: false });
 var cardsAdmin = mongoose.model('cardsAdmin', cardsSchema);
