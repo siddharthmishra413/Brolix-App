@@ -77,21 +77,25 @@ $scope.changeImage = function(input,type) {
       });   
     }
     
-    $scope.editProfile = function() {
+   $scope.editProfile = function() {
+      var id=$scope.adminId;
       var data = {
-           firstName:$scope.myFrom.firstName,
-           lastName:$scope.myFrom.lastName,
-           image:$scope.myFrom.image
-         }
-         var adminid = $scope.adminId;
-        console.log("ssssss",adminid,data);  
-       userService.editAdminProfile(adminid,data).then(function(success){    
-        if(success.data.responseCode==200){
-          $state.go('header.manageUsers');
-          toastr.success(success.data.responseMessage);  
+           "firstName":$scope.myForm.firstName,
+           "lastName":$scope.myForm.lastName, 
+           "image":$scope.myFrom.image           
+          }
+        console.log(data);  
+       userService.editAdminProfile(id,data).then(function(success) {    
+       console.log(JSON.stringify(success)) 
+        if(success.data.code==200){
+          console.log(success.data.message);
+          $state.go('login');
+          toastr.success(success.data.message);  
         }else{
-         toastr.error(success.data.responseMessage);  
+        console.log(success.data.message);
+         toastr.error(success.data.message);  
         }
+        console.log((success));
       },function(err){
        console.log("err----->"+err)
          toastr.error('Connection error.');  

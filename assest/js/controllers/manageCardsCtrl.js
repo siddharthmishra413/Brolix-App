@@ -1,4 +1,4 @@
-app.controller('manageCardsCtrl', function($scope, $window, userService, $state, toastr) {
+app.controller('manageCardsCtrl', function($scope, $window, userService, $state, toastr, $timeout) {
     $(window).scrollTop(0, 0);
     $scope.class = true;
     $scope.$emit('headerStatus', 'Manage Cards');
@@ -6,8 +6,53 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     $scope.myForm = {};
     var upgrade_card = {};
     var luck_card = {};
+    $scope.dashBordFilter = {};
 
 
+    //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+    var currentCities=[];
+   $scope.currentCountry= '';
+var BATTUTA_KEY="00000000000000000000000000000000"
+   // Populate country select box from battuta API
+ url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+   $.getJSON(url,function(countries)
+   {
+     $timeout(function(){
+       $scope.countriesList=countries;
+     },100)
+     
+     
+   });
+ var countryCode;
+   $scope.changeCountry = function(){
+     for(var i=0;i<$scope.countriesList.length;i++){
+       if($scope.countriesList[i].name==$scope.dashBordFilter.country){
+         countryCode=$scope.countriesList[i].code;
+         //console.log(countryCode)
+         break;
+       }
+     }
+     var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+     $.getJSON(url,function(regions)
+     {
+       //console.log('state list:   '+JSON.stringify(regions))
+           $timeout(function(){
+            $scope.stateList = regions;
+           },100)
+     });
+   }
+
+   $scope.changeState = function(){
+     //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
+     var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+     $.getJSON(url,function(cities)
+     {
+       // console.log('city list:   '+JSON.stringify(cities))
+           $timeout(function(){
+            $scope.cityList = cities;
+           },100)
+     })
+   }
 
     $scope.total_user_message = function (modal) {
 
@@ -209,7 +254,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     }
 
 
-    userService.showOfferOnCards(upgrade_card).success(function(res){
+    userService.showOfferOnCards(upgrade_card).success(function(res) {
         if(res.responseCode == 200){
             var resultUpgradeCardDiscount = res.data.filter(function( obj ) {
               return obj.offer.offerType == 'discount';
@@ -372,119 +417,131 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
         }
         
     })
+  $scope.cardTypeName = function(val) {
+        console.log(val)
+         localStorage.setItem('cardTypeName',val);
+    }
 
-    /*Country State Cities*/
+ 
+    $scope.dashBordFilter = function() {
 
-    var currentCities=[];
-    $scope.currentCountry= '';
+    var type = localStorage.getItem('cardTypeName');
+    console.log(type)
+    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
 
-// This is a demo API key that can only be used for a short period of time, and will be unavailable soon. You should rather request your API key (free)  from http://battuta.medunes.net/
-var BATTUTA_KEY="00000000000000000000000000000000"
-    // Populate country select box from battuta API
-  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-    $.getJSON(url,function(countries)
-    {
-      $scope.countryList = countries;
-      //console.log("$scope.countryList",JSON.stringify($scope.countryList))
-      //$('#country').material_select();
-      //loop through countries..
-      $.each(countries,function(key,country)
-      {
-          $("<option></option>")
-                  .attr("value",country.code)
-                  .append(country.name)
-                        .appendTo($("#country"));
+    var data = {};
+        data = {
+            cardType:localStorage.getItem('cardTypeName'),
+            country: $scope.dashBordFilter.country,
+            state:$scope.dashBordFilter.state,
+            city:$scope.dashBordFilter.city,
+            upgradeType:$scope.dashBordFilter.upgradeCard,
+            LuckCardType:$scope.dashBordFilter.luckCard,
+            joinTo:new Date($scope.dashBordFilter.dateTo).getTime(),
+            joinFrom:new Date($scope.dashBordFilter.dateFrom).getTime(),
+        }
+        console.log("datatata",data)
 
-      });
-      // trigger "change" to fire the #state section update process
-    //   $("#country").material_select('update');
-    //   $("#country").trigger("change");
+    switch (type)
+            {
+                case 'totalSoldCards':
+                console.log("1"); 
+                    userService.cardFilter(data).success(function(res){
+                        $scope.totalSoldUpgradeCard = res.data;
+                        console.log("ressssssss1",JSON.stringify($scope.totalSoldUpgradeCard));
+                    })
+                    
+                break;
 
+                case 'totalIncome$': 
+                console.log("2");
+                    userService.cardFilter(data).success(function(res){
+                        $scope.totalIncomeInCashFromUpgradeCard = res.data;
+                        console.log("ressssssss2",JSON.stringify($scope.totalIncomeInCashFromUpgradeCard));
+                    })
+                    
+                break;
 
-    });
+                case 'usedCards': 
+                console.log("3");
+                    userService.cardFilter(data).success(function(res){
+                        $scope.usedUpgradeCard = res.data;
+                        console.log("ressssssss3",JSON.stringify($scope.usedUpgradeCard));
+                    })
+                    
+                break;
 
-    $("#country").on("change",function()
-    {
+                case 'unusedCards': 
+                console.log("4");
+                    userService.cardFilter(data).success(function(res){
+                        $scope.unUsedUpgradeCard = res.data;
+                        console.log("ressssssss4",JSON.stringify($scope.unUsedUpgradeCard));
+                    })
+                    
+                break;
 
-      countryCode=$("#country").val();
-      $scope.currentCountry = countryCode;
-      // Populate country select box from battuta API
-      url="http://battuta.medunes.net/api/region/"
-      +countryCode
-      +"/all/?key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(regions)
-      {
-        //console.log('regions:   '+JSON.stringify(regions))
-        $scope.stateList = regions;
-        //console.log("$scope.stateList",$scope.stateList)
-        // $("#region option").remove();
-        //loop through regions..
-        // $.each(regions,function(key,region)
-        // {
-        //     $("<option></option>")
-        //             .attr("value",region.region)
-        //             .append(region.region)
-        //                   .appendTo($("#region"));
-        // });
-        // trigger "change" to fire the #state section update process
-        // $("#region").material_select('update');
-        // $("#region").trigger("change");
+                case 'totalSoldLuckCards': 
+                console.log("5");
+                    userService.cardFilter(data).success(function(res){
+                        $scope.totalSoldLuckCard = res.data;
+                        console.log("ressssssss5",JSON.stringify($scope.totalSoldLuckCard));
+                    })
+                    
+                break;
 
-      });
+                case 'totalIncome$LuckCards':
+                console.log("6"); 
+                    userService.cardFilter(data).success(function(res){
+                        $scope.totalIncomeInBrolixFromLuckCard = res.data;
+                        console.log("ressssssss6",JSON.stringify($scope.totalIncomeInBrolixFromLuckCard));
+                    })
+                    
+                break;
 
-    });
-    $("#region").on("change",function()
-    {
+                case 'usedCardsLuckCards': 
+                console.log("7");
+                    userService.cardFilter(data).success(function(res){
+                        $scope.usedLuckCard = res.data;
+                        console.log("ressssssss7",JSON.stringify($scope.usedLuckCard));
+                    })
+                    
+                break;
 
-      // Populate country select box from battuta API
+                case 'unusedCardsLuckCards': 
+                console.log("8");
+                    userService.cardFilter(data).success(function(res){
+                        $scope.unUsedLuckCard = res.data;
+                        console.log("ressssssss8",JSON.stringify($scope.unUsedLuckCard));
+                    })
+                    
+                break;
+                
+                default: 
+                toastr.error("something went to wrong");
+            }
 
-      //countryCode=$("#country").val();
-    region=$("#region").val();
-    // alert($scope.currentCountry+'\n'+region)
-      url="http://battuta.medunes.net/api/city/"
-      +$scope.currentCountry
-      +"/search/?region="
-      +region
-      +"&key="
-      +BATTUTA_KEY
-      +"&callback=?";
+    }
 
-      $.getJSON(url,function(cities)
-
-      {
-          //console.log('cities:   '+JSON.stringify(cities))
-        currentCities=cities;
-        //console.log("cities",cities)
-          var i=0;
-          $("#city option").remove();
-
-        //loop through regions..
-        $.each(cities,function(key,city)
-        {
-            $("<option></option>")
-                    .attr("value",i++)
-                    .append(city.city)
-                    .appendTo($("#city"));
-        });
-        // trigger "change" to fire the #state section update process
-        // $("#city").material_select('update');
-        // $("#city").trigger("change");
-
-      });
-
-    });
-    $("#city").on("change",function()
-    {
-      currentIndex=$("#city").val();
-      currentCity=currentCities[currentIndex];
-      city=currentCity.city;
-      region=currentCity.region;
-      country=currentCity.country;
-      // $scope.city=currentCity.city;
-      // $scope.region=currentCity.region;
-      // $scope.country=currentCity.country;
-
-      //console.log("lat,long",city,region,country)
-
-    });
 })
+
+
+/*----------ManageCardsCustomFilter----------*/
+
+app.filter("manageCardsFilter",function() {
+  var fullName = [];
+     return function(items,nameValue) {
+        if (!nameValue) {            
+         return retArray = items;
+           }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+               {
+              fullName.push(items[i].firstName+' '+items[i].lastName);
+              if (fullName[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) 
+               {
+                retArray.push(items[i])
+               }
+             }  
+         return retArray;
+        }
+});

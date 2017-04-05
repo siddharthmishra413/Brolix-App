@@ -141,6 +141,9 @@ app.service('userService',function($http){
     unUsedLuckCard: function() {
       return $http.get(baseurl+'/admin/unUsedLuckCard');
     },
+    cardFilter: function(data){
+     return $http.post(baseurl+'/admin/luckUpgradeCardfilter', data);
+   },
 
     /*-------------------------Manage ADS---------------------*/
 
@@ -193,12 +196,16 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/showAllBlockedPage');
     },
 
-    createPage: function(data) {
-      return $http.post(baseurl+'/page/createPage', data);
-    },
+    // createPage: function(data) {
+    //   return $http.post(baseurl+'/page/createPage', data);
+    // },
     pageAdmin: function() {
       return $http.get(baseurl+'/admin/adAdminUserList');
     },
+    editPage: function(id,data) {
+     console.log(id)
+     return $http.put(baseurl+'/admin/editPage/'+id,data);
+   },
 
     // showPageDetails: function(data) {
     //   return $http.post('http://172.16.6.41:8082/page/showPageDetails', data);
@@ -261,11 +268,11 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/removePage/'+pageId);
     },
 
-    blockPage: function(data) {
-      return $http.post(baseurl+'/admin/blockPage', data);
+    blockPage: function(pageId) {
+      return $http.get(baseurl+'/admin/blockPage/'+pageId);
     },
-    unblockPage: function(data) {
-      return $http.post(baseurl+'/admin/unblockPage', data);
+    unblockPage: function(pageId) {
+      return $http.get(baseurl+'/admin/unblockPage/'+pageId);
     },
     showAllBlockedPage: function(){
       return $http.get(baseurl+'/admin/showAllBlockedPage');
@@ -355,6 +362,9 @@ app.service('userService',function($http){
     couponGiftAd: function(id) {
       return $http.get(baseurl+'/admin/adInfo/'+id);
     },
+     giftFilter: function(data){
+     return $http.post(baseurl+'/admin/giftsFilter', data);
+   }
 
   
 

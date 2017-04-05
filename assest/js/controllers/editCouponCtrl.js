@@ -52,7 +52,7 @@ app.controller('editCouponCtrl', function($scope,uploadimgServeice, $window,toas
 					}
 		userService.editCoupon(id,data).then(function(success) { 
 					console.log("Updated>>>>>"+JSON.stringify(success))
-                    $state.go('header.addAdminCoupon');
+                    $state.go('header.adminCoupons');
                     toastr.success('Successfully Updated');
         		},function(err){
 			        console.log(err);

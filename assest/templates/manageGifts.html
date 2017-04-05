@@ -27,7 +27,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalCouponsGifts'">
-                                    <a>Show</a>
+                                    <a ng-click="giftTypeName('totalCouponsGifts')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="contact_winner_message('totalCouponGiftWinner')">Contact Winners</a>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalCashGifts'">
-                                    <a>Show</a>
+                                    <a ng-click="giftTypeName('totalCashGifts')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="contact_winner_message('totalCashGiftWinner')">Contact Winners</a>
@@ -59,7 +59,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalHiddenGifts'">
-                                    <a>Show</a>
+                                    <a ng-click="giftTypeName('totalHiddenGifts')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="contact_winner_message('totalHiddenGiftWinner')">Contact Winners</a>
@@ -89,7 +89,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalExchanged'">
-                                    <a>Show</a>
+                                    <a ng-click="giftTypeName('totalExchanged')">Show</a>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalSentCoupons'">
-                                    <a>Show</a>
+                                    <a ng-click="giftTypeName('totalSentCoupons')">Show</a>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalSentCash'">
-                                    <a>Show</a>
+                                    <a ng-click="giftTypeName('totalSentCash')">Show</a>
                                 </div>
                             </div>
                         </div>
@@ -138,68 +138,42 @@
             <div class="col-md-3 col-sm-6 dwd-border">
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
+                     <div class="form-group cus-select">
+                         <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
+                            <option value="">Select Country</option>
+                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                         </select>
+                    </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All Countries</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                         <select class="form-control"  ng-change="changeState(); dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" required>
+                            <option value="">Select State</option>
+                            <option ng-repeat="state in stateList">{{state.region}}</option>
+                         </select> 
+                    </div>
+                    <div class="form-group cus-select">
+                         <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.city);" ng-model="dashBordFilter.city" required>
+                            <option value="">Select City</option>
+                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                         </select> 
+                    </div>
+                    <div class="form-group cus-select">
+                        <select class="form-control" ng-model="dashBordFilter.couponStatus" ng-change="dashBordFilter();">
+                            <option value="">Coupon Status</option>
+                            <option>valid</option>
+                            <option>invalid</option>
                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All States</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select class="form-control" ng-model="dashBordFilter.cashStatus" ng-change="dashBordFilter();">
+                            <option value="">Cash Status</option>
+                            <option>Pending</option>
                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>All Cities</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                        <input style="height: 40px; background-color: #EAEAEA" class="form-control"  ng-model="dashBordFilter.dateFrom" ng-change="dashBordFilter()" type="date" placeholder="From">
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Coupon Status</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Cash Status</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Date From</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Date To</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                        <input style="height: 40px;background-color: #EAEAEA" class="form-control" type="date"  ng-model="dashBordFilter.dateTo" ng-change="dashBordFilter()" placeholder="To">
                     </div>
                 </div>
             </div>

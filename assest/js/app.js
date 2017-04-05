@@ -190,10 +190,10 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
   /*addCoupons-section*/
 
-  .state('header.addAdminCoupon', {
-            url: '/addAdminCoupon',
-            controller: 'addAdminCouponCtrl',
-            templateUrl: 'templates/addAdminCoupon.html'
+  .state('header.adminCoupons', {
+            url: '/adminCoupons',
+            controller: 'adminCouponCtrl',
+            templateUrl: 'templates/adminCoupons.html'
         })
   .state('header.editCoupon', {
         url: '/editCoupon',

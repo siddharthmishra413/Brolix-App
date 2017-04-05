@@ -53,6 +53,7 @@ app.controller('editSystemUserCtrl', function($scope, $stateParams, $window, use
                 $state.go('login')
             }else if(res.responseCode == 200) {
                 toastr.success(res.responseMessage);
+                $state.go('header.editSystemUser')
                 // $state.go('header.addSystemUser')
             }else if(res.responseCode == 400){
                 toastr.error(res.responseMessage);

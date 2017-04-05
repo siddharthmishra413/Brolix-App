@@ -718,3 +718,20 @@ $scope.showAdminPages = function(id){
 
 
 })
+
+app.filter("managePagesFilter",function() {
+     return function(items,nameValue)
+     {
+       if (!nameValue) {
+         return retArray = items;
+            }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+               {
+            if (items[i].userId.mobileNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toString().substr(0,nameValue.length) == nameValue.toString()) {
+                retArray.push(items[i]);
+               }
+           }
+           return retArray
+     }
+ })

@@ -116,12 +116,14 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">State</label>
                                             <div class="col-md-9">
-                                                <select class="form-control" ng-change="changeState();" ng-model="viewUserProfile.stateName" required>
-                                                    <option value="">Select State</option>
-                                                    <option ng-repeat="state in stateList" value="{{state.region}}">{{state.region}}</option>
+                                                <!-- <select class="form-control" " ng-model="viewUserProfile.statedfd" required>
+                                                    <option value="Select State">Select State</option>
+                                                    <option value="state.region" ng-repeat="state in stateList">{{state.region}}</option>
+                                                 </select>  -->
+                                                 <select class="form-control" ng-change="changeState();" ng-options="item.region for item in stateList" ng-model="viewUserProfile.statedfd" required>
                                                  </select> 
                                                 <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid">
-                                                <span ng-show="userFrom.state.$error.required">State is required.</span> 
+                                                <span  ng-show="userFrom.state.$error.required">State is required.</span> 
                                             </div>
                                         </div>
                                     </div>
@@ -129,9 +131,9 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">City</label>
                                             <div class="col-md-9">
-                                                <select  class="form-control" id="city" ng-model="viewUserProfile.cityName" required>
-                                                    <option value="">Select City</option>
-                                                    <option ng-repeat="city in cityList" value="{{city.city}}">{{city.city}}</option>
+                                                <select  class="form-control" id="city" ng-model="viewUserProfile.citysds" required>
+                                                    <option>Select City</option>
+                                                    <option ng-repeat="city in cityList">{{city.city}}</option>
                                                  </select>
                                                 <span style="color:red;" ng-show="userFrom.city.$dirty && userFrom.city.$invalid">
                                                 <span ng-show="userFrom.city.$error.required">City is required.</span> 

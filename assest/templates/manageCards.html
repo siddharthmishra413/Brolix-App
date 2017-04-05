@@ -24,7 +24,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='SoldUpgradeCard'">
-                                    <a>Show</a>
+                                    <a ng-click="cardTypeName('totalSoldCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="total_user_message('SoldUpgradeCard')">Contact Buyers</a>
@@ -40,7 +40,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalincomeUpgrade'">
-                                    <a>Show</a>
+                                    <a ng-click="cardTypeName('totalIncome$')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="total_user_message('totalincomeUpgrade')">Contact Buyers</a>
@@ -56,7 +56,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='usedUpgradeCard'">
-                                    <a>Show</a>
+                                    <a ng-click="cardTypeName('usedCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="total_user_message('usedUpgradeCard')">Contact Buyers</a>
@@ -72,7 +72,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='unUsedUpgradeCard'">
-                                    <a>Show</a>
+                                    <a ng-click="cardTypeName('unusedCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="total_user_message('unUsedUpgradeCard')">Contact Buyers</a>
@@ -90,7 +90,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage show-btn w-100" ng-click="tab='luckCardOffer'">
-                                    <a>Show</a>
+                                    <a >Show</a>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='SoldULuckCard'">
-                                    <a>Show</a>
+                                    <a ng-click="cardTypeName('totalSoldLuckCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="total_user_message('SoldULuckCard')">Contact Buyers</a>
@@ -119,7 +119,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalincomeLuck'">
-                                    <a>Show</a>
+                                    <a ng-click="cardTypeName('totalIncome$LuckCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="total_user_message('totalincomeLuck')">Contact Buyers</a>
@@ -135,7 +135,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='usedLuckCard'">
-                                    <a>Show</a>
+                                    <a ng-click="cardTypeName('usedCardsLuckCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="total_user_message('usedLuckCard')">Contact Buyers</a>
@@ -151,7 +151,7 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='unUsedLuckCard'">
-                                    <a>Show</a>
+                                    <a ng-click="cardTypeName('unusedCardsLuckCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
                                     <a ng-click="total_user_message('unUsedLuckCard')">Contact Buyers</a>
@@ -161,82 +161,57 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 dwd-border">
+             <div class="col-md-3 col-sm-6 dwd-border">
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
-                     <div class="form-group cus-select">
-                        <select class="form-control" id="country" ng-model="myFrom.country" required>
+                    <div class="form-group cus-select">
+                         <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
                             <option value="">Select Country</option>
-                            <option value="{{country.code}}" ng-repeat="country in countryList">{{country.name}}</option>
-                        </select>
-                        
-                    </div>
-                    <div class="form-group cus-select">
-                       
-                        <select class="form-control" id="region" ng-model="myFrom.state" required>
-                          <option value="">Select State</option>
-                          <option value="{{state.region}}" ng-repeat="state in stateList">{{state.region}}</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
-                       
-                         <select  class="form-control" id="city" ng-model="myFrom.city" required>
-                            <option value="">Select City</option>
+                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
                          </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
+                         <select class="form-control"  ng-change="changeState(); dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" required>
+                            <option value="">Select State</option>
+                            <option ng-repeat="state in stateList">{{state.region}}</option>
+                         </select> 
+                    </div>
+                    <div class="form-group cus-select">
+                         <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.city);" ng-model="dashBordFilter.city" required>
+                            <option value="">Select City</option>
+                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                         </select> 
+                    </div>
+                    <div class="form-group cus-select">
+                        <select class="form-control" ng-model="dashBordFilter.upgradeCard" ng-change="dashBordFilter()">
                             <option value="">Upgrade Card Type</option>
-                            <option>50 Viewers</option>
-                            <option>100 Viewers</option>
-                            <option>150 Viewers</option>
-                            <option>200 Viewers</option>
-                            <option>250 Viewers</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="150">150</option>
+                            <option value="200">200</option>
+                            <option value="250">250</option>
                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
+                        <select class="form-control" ng-model="dashBordFilter.luckCard" ng-change="dashBordFilter()">
                             <option value="">Luck Card Type</option>
-                            <option>5 Chances</option>
-                            <option>10 Chances</option>
-                            <option>15 Chances</option>
-                            <option>20 Chances</option>
-                            <option>25 Chances</option>
-                            <option>30 Chances</option>
-                            <option>35 Chances</option>
-                            <option>40 Chances</option>
-                            <option>45 Chances</option>
-                            <option>50 Chances</option>
-                        </select>
-                    </div>
-                    <!-- <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Date From</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="30">30</option>
+                            <option value="35">35</option>
+                            <option value="40">40</option>
+                            <option value="45">45</option>
+                            <option value="50">50</option>
                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control">
-                            <option>Date To</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div> -->
-                    <div class="form-group cus-select">
-                        <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">  
-                        </div>
+                        <input style="height: 40px; background-color: #EAEAEA" class="form-control"  ng-model="dashBordFilter.dateFrom" ng-change="dashBordFilter()" type="date" placeholder="From">
                     </div>
-
                     <div class="form-group cus-select">
-                        <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth"> 
-                        </div>
+                        <input style="height: 40px;background-color: #EAEAEA" class="form-control" type="date"  ng-model="dashBordFilter.dateTo" ng-change="dashBordFilter()" placeholder="To">
                     </div>
                 </div>
             </div>
@@ -297,7 +272,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldUpgradeCard |filter:test">
+                    <tr ng-repeat="x in totalSoldUpgradeCard |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -331,7 +306,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard |filter:test">
+                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -367,7 +342,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in usedUpgradeCard |filter:test">
+                    <tr ng-repeat="x in usedUpgradeCard |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -403,7 +378,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unUsedUpgradeCard |filter:test">
+                    <tr ng-repeat="x in unUsedUpgradeCard |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -440,7 +415,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldLuckCard |filter:test">
+                    <tr ng-repeat="x in totalSoldLuckCard |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -474,7 +449,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard |filter:test">
+                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -510,7 +485,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in usedLuckCard |filter:test">
+                    <tr ng-repeat="x in usedLuckCard |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -547,7 +522,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unUsedLuckCard |filter:test">
+                    <tr ng-repeat="x in unUsedLuckCard |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -580,7 +555,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultUpgradeCardDiscount |filter:test">
+                    <tr ng-repeat="x in resultUpgradeCardDiscount |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -610,7 +585,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultUpgradeCardBuyGet |filter:test">
+                    <tr ng-repeat="x in resultUpgradeCardBuyGet |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -642,7 +617,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultLuckCardDiscount |filter:test">
+                    <tr ng-repeat="x in resultLuckCardDiscount |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -673,7 +648,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultLuckCardBuyGet |filter:test">
+                    <tr ng-repeat="x in resultLuckCardBuyGet |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -709,7 +684,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="x in totalUpgradeOffer |filter:test">
+                <tr ng-repeat="x in totalUpgradeOffer |manageCardsFilter:test">
                     <td>
                         <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                     </td>

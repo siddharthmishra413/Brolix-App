@@ -20,6 +20,7 @@ app.controller('viewPageCtrl', function($scope, $window, userService, $state, to
                 for(i=0;i<$scope.viewPageDetails.socialMedia.length;i++){
                     $scope.socialMedia=$scope.viewPageDetails.socialMedia[i];
                 }
+                console.log(JSON.stringify($scope.socialMedia))
                 $scope.user.pagephoto = $scope.viewPageDetails.pageImage;
                 $scope.user.userphoto=$scope.viewPageDetails.coverImage;
                 console.log(JSON.stringify($scope.viewPageDetails ))

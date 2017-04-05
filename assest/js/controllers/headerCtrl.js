@@ -14,9 +14,12 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
     		//bootbox.alert(res.responseMessage);
     		$state.go('login')
     	}else {
+
     		$scope.user = res.result;
+            
+            localStorage.loginData=res.result._id;
+            console.log("dataaa",JSON.stringify(localStorage.loginData))
     		$scope.image = $scope.user.image
-            console.log("data",$scope.user,$scope.image)
     	}
     }).error(function(status, data) {
 

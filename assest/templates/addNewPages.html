@@ -1,6 +1,4 @@
-<!-- <div class="top-header">
-        <a href="" class="brand-logo">Brolix</a>
-    </div>  -->
+
 
     <div class="container" ng-if="Step1">
         <div class="row">
@@ -25,17 +23,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="form-group">
-                                        <div class="row">
-                                            <label class="control-label col-md-3">Page Owner</label>
-                                            <div class="col-md-9">
-                                                <div class="input-group">
-                                                  <input type="text" class="form-control" ng-model="myForm.pageowner">
-                                                  <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search" ></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Main Category</label>
@@ -73,7 +60,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Email</label>
                                             <div class="col-md-9">
-                                                <input type="email" class="form-control" name="email" ng-model="myForm.email" placeholder="Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" maxlength="71" ng-maxlength="70" required> 
+                                                <input type="email" class="form-control" name="email" ng-model="myForm.email" placeholder="Email" ng-pattern= "/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,4}$/" maxlength="71" ng-maxlength="70" required> 
                                                     <span style="color:red" ng-show="userFrom.email.$dirty && userFrom.email.$invalid ">
                                                     <span ng-show="userFrom.email.$error.required ">Email is required.</span>
                                                     <span ng-show="userFrom.email.$error.email && userFrom.email.$error.pattern">Invalid email address.</span>
@@ -85,10 +72,11 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Website</label>
                                             <div class="col-md-9">
-                                                 <input type="text" class="form-control" name="website" placeholder="Enter Website" ng-pattern ="/^[a-zA-Z.\s]*$/" ng-model="myForm.website" required> 
+                                                 <input type="text" class="form-control" name="website" placeholder="Enter Website" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" maxlength="50" ng-model="myForm.website" required> 
                                                  <span style="color:red;" ng-show="userFrom.website.$dirty && userFrom.website.$invalid">
                                                 <span ng-show="userFrom.website.$error.required">Website is required.</span>
-                                                <span class="error"  ng-if="userFrom.website.$error.pattern">Only letters are allowed.</span>
+                                                <span class="error"  ng-if="userFrom.website.$error.pattern">Invalid Url</span>
+                                                 <span ng-show="userFrom.website.$error.manlength">Url length can't be greater than 50</span>
                                             </div>
                                         </div>
                                     </div>
@@ -101,7 +89,7 @@
                                                 <span ng-show="userFrom.phone.$error.required">Phone Number is required.</span> 
                                                 <span ng-show="userFrom.phone.$error.minlength">Must have at atleast 10 digits.</span>
                                                 <span ng-show="userFrom.phone.$error.manlength">Must have at at most 10 digits.</span>
-                                                <span ng-show="userFrom.phone.$error.pattern">Only Numbers are allowed.
+                                                <span ng-show="userFrom.phone.$error.pattern">Only Numbers are allowed.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +98,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Location</label>
                                             <div class="col-md-9">
-                                                  <input type="text" name="address"  autocomplete="off" id="from" class="form-control" ng-model="myForm.address" ng-change="initFun()" ng-maxlength="95" maxlength="96" required/>
+                                                  <input type="text" name="address" placeholder="Enter Address"  autocomplete="off" id="from" class="form-control" ng-model="myForm.address" ng-change="initFun()" ng-maxlength="95" maxlength="96" required/>
                                                             <span class="error" style="color:red;" ng-show="userFrom.address.$dirty && userFrom.address.$invalid">
                                                                 <span class="error" style="color:red;" ng-show="userFrom.address.$error.required">Address is required.</span>
                                                                 <span style="color:red;" class="error" ng-show=" userFrom.address.$error.maxlength">Please enter Address  shorter than 95 characters</span>
@@ -120,7 +108,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green"  ng-click="click('Step1')">Next</a>
+                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid"  ng-click="click('Step1')">Next</a>
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                     </div>
                                 </fieldset>

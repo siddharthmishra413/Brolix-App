@@ -175,5 +175,3 @@ $scope.addNewPage = function(addNewPage){
     }
       
 })
-
-

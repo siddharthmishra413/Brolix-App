@@ -210,7 +210,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalPages |filter:test">
+                    <tr ng-repeat="x in totalPages |managePagesFilter:test">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -280,7 +280,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unPublishedPage |filter:test">
+                    <tr ng-repeat="x in unPublishedPage |managePagesFilter:test">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -340,7 +340,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in showAllRemovedPage |filter:test">
+                    <tr ng-repeat="x in showAllRemovedPage |managePagesFilter:test">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -404,7 +404,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in  |filter:test">
+                    <tr ng-repeat="x in  |managePagesFilter:test">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -468,7 +468,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="x in allAddsOnPage |filter:test">
+                                    <tr ng-repeat="x in allAddsOnPage |managePagesFilter:test">
                                         <td class="skyblue-text">{{x.pageType}}</td>
                                         <td class="skyblue-text">{{x.pageName}}</td>
                                         <td class="skyblue-text">{{x.category}}</td>

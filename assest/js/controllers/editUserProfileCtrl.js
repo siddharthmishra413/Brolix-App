@@ -5,6 +5,7 @@ app.controller('editUserProfileCtrl', function($scope, $window, userService, $st
    $scope.$emit('SideMenu', 'Manage User');
    $scope.myForm = {};
    $scope.viewUserProfile = {};
+   
    var id = $stateParams.id;
    console.log("Id====>>>" + id)
 
@@ -40,15 +41,17 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         //console.log('state list:   '+JSON.stringify(regions))
             $timeout(function(){
              $scope.stateList = regions;
+             $scope.stateList.unshift({region:'Select State'})
+             $scope.viewUserProfile.statedfd = $scope.stateList[0];;
              //console.log("data2",$scope.stateList)
             },100)
       });
     }
 
-    $scope.changeState = function(){
-      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
-      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.viewUserProfile.state+"&key="+BATTUTA_KEY+"&callback=?";
-      console.log($scope.viewUserProfile.state)
+    $scope.changeState = function(x) {
+      console.log('detail -> ',$scope.viewUserProfile.statedfd)
+      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.viewUserProfile.statedfd+"&key="+BATTUTA_KEY+"&callback=?";
+      console.log($scope.viewUserProfile.statedfd)
       $.getJSON(url,function(cities)
       {
         // console.log('city list:   '+JSON.stringify(cities))
@@ -70,8 +73,9 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                var updateDate = new Date($scope.viewUserProfile.dob);
                $scope.viewUserProfile.dob = moment(updateDate).format('MM/DD/YYYY');
                $scope.viewUserProfile.coufgdntry=$scope.viewUserProfile.country;
-               $scope.viewUserProfile.stateName=$scope.viewUserProfile.state;
-               $scope.viewUserProfile.cityName=$scope.viewUserProfile.city;
+               $scope.viewUserProfile.statedfd=$scope.viewUserProfile.state;
+               console.log('state->   '+$scope.viewUserProfile.statedfd);
+               $scope.viewUserProfile.citysds=$scope.viewUserProfile.city;
                console.log("rinku---",JSON.stringify($scope.viewUserProfile))
            } else {
                toastr.error(res.responseMessage)
