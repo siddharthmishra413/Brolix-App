@@ -23,22 +23,22 @@ var cardsSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    photo:{
-        type:String
+    photo: {
+        type: String
     },
-    offer:[{
-        offerType:{type:String},
-        buyCard:{type:Number},
-        freeCard:{type:Number},
-        offerTime:{type:Date},
-        status:{type:String,default:"active"},
-        createdAt:{type:Date,default:Date.now()}   
-        }],
-    sendCouponToUser: { type: Number },
-    status:{
-        type:String,
-        default:"ACTIVE"
+    offer: [{
+        offerType: { type: String },
+        buyCard: { type: Number },
+        freeCard: { type: Number },
+        offerTime: { type: Date },
+        status: { type: String, default: "active" },
+        createdAt: { type: Date, default: Date.now() }
+    }],
+    sendCardToUser: { type: Number },
+    status: {
+        type: String,
+        default: "ACTIVE"
     }
-},{ versionKey: false });
+}, { versionKey: false });
 var cardsAdmin = mongoose.model('cardsAdmin', cardsSchema);
 module.exports = cardsAdmin;

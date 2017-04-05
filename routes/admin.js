@@ -137,6 +137,9 @@ app.put('/editAdminProfile/:id', adminHandler.editAdminProfile);
 app.post('/sendCouponTOUSers', adminHandler.sendCouponTOUSers);
 app.get('/blockPage/:id', adminHandler.removeSystemAdmin);
 app.get('/unBlockPage/:id', adminHandler.removeSystemAdmin);
+app.post('/uploads', adminHandler.uploads);
+app.post('/sendLuckCardTOUsers', adminHandler.sendLuckCardTOUsers);
+app.post('/sendUpgradeCardTOUsers', adminHandler.sendUpgradeCardTOUsers);
 
 
 module.exports = app;

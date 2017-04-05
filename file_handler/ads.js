@@ -25,7 +25,7 @@ module.exports = {
         if (req.body.adsType == "coupon") {
             var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
             req.body.couponCode = couponCode;
-            req.body.viewerLenght = 5;
+            req.body.viewerLenght = 2;
             req.body.couponStatus = 'VALID';
             var Ads = new createNewAds(req.body);
             Ads.save(function(err, result) {
@@ -370,28 +370,27 @@ module.exports = {
         });
     },
 
-     // var imageUrl = [];
-     //      var a = 0;
-     //      for (var i = 0; i < images.length; i++) {
-     //          var img_base64 = images[i];
-     //          binaryData = new Buffer(img_base64, 'base64');
-     //          require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {});
-     //          cloudinary.uploader.upload("test.jpeg", function(result) {
-     //              if (result.url) {
-     //                  imageUrl.push(result.url);
-     //                  a += i;
-     //                  if (a == i * i) {
-     //                      callback(null, imageUrl);
-     //                  }
-     //              } else {
-     //                  callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
-     //              }
+    // var imageUrl = [];
+    //      var a = 0;
+    //      for (var i = 0; i < images.length; i++) {
+    //          var img_base64 = images[i];
+    //          binaryData = new Buffer(img_base64, 'base64');
+    //          require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {});
+    //          cloudinary.uploader.upload("test.jpeg", function(result) {
+    //              if (result.url) {
+    //                  imageUrl.push(result.url);
+    //                  a += i;
+    //                  if (a == i * i) {
+    //                      callback(null, imageUrl);
+    //                  }
+    //              } else {
+    //                  callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+    //              }
 
-     //          });
-     //      }
+    //          });
+    //      }
 
     "uploads": function(req, res) {
-
         console.log(req.files);
         var imageUrl = [];
         var form = new multiparty.Form();
@@ -432,7 +431,6 @@ module.exports = {
                 });
             }
         })
-
     },
 
     "viewAd": function(req, res) { //req.body.userId, adId
@@ -802,8 +800,7 @@ module.exports = {
                     array.push(result.coupon[i].adId)
                 }
                 createNewAds.find({ _id: { $in: array }, couponStatus: { $in: status } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
