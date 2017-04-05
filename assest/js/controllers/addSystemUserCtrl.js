@@ -11,7 +11,7 @@ app.controller('addSystemUserCtrl', function($scope, $window, userService, $stat
     userService.listOfSystemAdmin().success(function(res) {
             if (res.responseCode == 404) {
                 toastr.error(res.responseMessage);
-                $state.go('login')
+                //$state.go('login')
             }else if(res.responseCode == 200) {
                 $scope.allSystemUser = res.result;
                 //console.log("asassa",JSON.stringify($scope.allSystemUser))

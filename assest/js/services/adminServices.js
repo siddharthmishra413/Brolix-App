@@ -3,7 +3,7 @@ this.userDetail="null";
 this.eventDetail="null";  
 
 });
-var baseurl = 'http://172.16.6.171:8082';
+var baseurl = 'http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082';
 
 app.service('uploadimgServeice', function($http, $q) {
     this.user = function(file) {
@@ -29,6 +29,27 @@ app.service('uploadimgServeice', function($http, $q) {
     }
 })
 
+app.service('createPageService',function($http, $q){
+ this.createPage = function(data) {
+            var deff = $q.defer();
+            $http({
+                    method: "POST",
+                    url: baseurl+'/admin/createPage',
+                    data: data,
+                    headers: {
+                        "Content-Type": "application/json"
+                        }
+                })
+                .then(function(objS) {
+                    console.log("Data",JSON.stringify(objS.data));
+                    deff.resolve(objS);
+                }, function(objE) {
+                    deff.reject("server Error");
+                });
+            return deff.promise;
+        }
+})
+
 
 
 
@@ -42,12 +63,18 @@ app.service('userService',function($http){
     forgotPassword: function(data) {
       return $http.post(baseurl+'/user/forgotPassword', data);
     },
+     changePass: function(data) {
+      return $http.post(baseurl+'/user/changePassword',data);
+    },
 
     login: function(data) {
-      return $http.post('/admin/login', data);
+      return $http.post(baseurl+'/admin/login', data);
     },
     adminProfile: function() {
-      return $http.get('/admin/adminProfile');
+      return $http.get(baseurl+'/admin/adminProfile');
+    },
+    editAdminProfile: function(id,data) {
+      return $http.put(baseurl+'/admin/editAdminProfile/'+id, data);
     },
     addUser: function(data) {
       return $http.post(baseurl+'/admin/addNewUser', data);
@@ -67,9 +94,9 @@ app.service('userService',function($http){
     countrys: function() {
       return $http.get(baseurl+'/admin/countrys');
     },
-    userProfile: function(id) {
-      return $http.get(baseurl+'/admin/userProfile/'+id);
-    },
+    // userProfile: function(id) {
+    //   return $http.get(baseurl+'/admin/userProfile/'+id);
+    // },
     editUserProfile: function(id, data) {
       return $http.put(baseurl+'/admin/editUserProfile/'+ id, data);
     },
@@ -155,7 +182,7 @@ app.service('userService',function($http){
     /*------------------------Manage Pages---------------------*/
 
     totalPages: function() {
-      return $http.get('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/totalPages');
+      return $http.get(baseurl+'/admin/totalPages');
     },
 
     allAdminPages: function() {
@@ -168,6 +195,9 @@ app.service('userService',function($http){
 
     createPage: function(data) {
       return $http.post(baseurl+'/page/createPage', data);
+    },
+    pageAdmin: function() {
+      return $http.get(baseurl+'/admin/adAdminUserList');
     },
 
     // showPageDetails: function(data) {
@@ -203,6 +233,10 @@ app.service('userService',function($http){
       return $http.post('/admin/sendCashBrolix', data);
     },
 
+    sendCouponTOUSers: function(data) {
+      return $http.post('/admin/sendCouponTOUSers', data);
+    },
+
     BlockUser: function(userId) {
       return $http.get(baseurl+'/admin/blockUser/'+userId);
     },
@@ -212,7 +246,7 @@ app.service('userService',function($http){
     },
 
     viewCoupon: function(id){
-      return $http.get('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/sendcardAndcoupan/'+id);
+      return $http.get(baseurl+'/admin/sendcardAndcoupan/'+id);
     },
 
     unPublishedPage: function () {
@@ -220,17 +254,19 @@ app.service('userService',function($http){
     },
 
     showAllRemovedPage: function () {
-      return $http.get(baseurl+'/showAllRemovedPage');  
+      return $http.get(baseurl+'/admin/showAllRemovedPage');  
     },
 
     removePage: function (pageId) {
       return $http.get(baseurl+'/admin/removePage/'+pageId);
     },
 
-     bloackUnblockPage: function(data) {
-      return $http.post(baseurl+'/admin/createCards', data);
+    blockPage: function(data) {
+      return $http.post(baseurl+'/admin/blockPage', data);
     },
-
+    unblockPage: function(data) {
+      return $http.post(baseurl+'/admin/unblockPage', data);
+    },
     showAllBlockedPage: function(){
       return $http.get(baseurl+'/admin/showAllBlockedPage');
     },

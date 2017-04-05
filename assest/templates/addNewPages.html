@@ -1,6 +1,6 @@
 <!-- <div class="top-header">
-        <a href="#" class="brand-logo">Brolix</a>
-    </div> -->
+        <a href="" class="brand-logo">Brolix</a>
+    </div>  -->
 
     <div class="container" ng-if="Step1">
         <div class="row">
@@ -11,13 +11,17 @@
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
-                            <form class="form-block" role="form">
+                            <form class="form-block" role="form" name="userFrom">
                                 <fieldset>
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Page Name</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="pageName" ng-model="myForm.pageName" placeholder=""> 
+                                                <input type="text" class="form-control" name="pageName" ng-model="myForm.pageName" placeholder="Enter Page Name" maxlength="31" ng-maxlength="30" ng-pattern ="/^[a-zA-Z0-9\s]*$/" required> 
+                                                <span style="color:red;" ng-show="userFrom.pageName.$dirty && userFrom.pageName.$invalid">
+                                                <span ng-show="userFrom.pageName.$error.required">Page Name is required.</span>
+                                                <span class="error"  ng-if="userFrom.pageName.$error.pattern">Only alphanumeric characters allowed.</span>
+                                                <span ng-show="userFrom.pageName.$error.maxlength">Page Name should contain max 30 characters.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -36,7 +40,10 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Main Category</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="" ng-model="myForm.mainCategory"> 
+                                                <input type="text" class="form-control" name="category" placeholder="Enter Category" ng-model="myForm.mainCategory" maxlength="31" ng-maxlength="30" required> 
+                                                <span style="color:red;" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
+                                                <span ng-show="userFrom.category.$error.required">Category is required.</span>
+                                                <span ng-show="userFrom.category.$error.maxlength">Category should contain max 30 characters.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -44,7 +51,10 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Sub Categories</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="" ng-model="myForm.subCategory"> 
+                                                <input type="text" class="form-control" placeholder="Enter Subcategory" name="subCategory" ng-model="myForm.subCategory" maxlength="31" ng-maxlength="30" required> 
+                                                <span style="color:red;" ng-show="userFrom.subCategory.$dirty && userFrom.subCategory.$invalid">
+                                                <span ng-show="userFrom.subCategory.$error.required">Sub-Category is required.</span>
+                                                <span ng-show="userFrom.subCategory.$error.maxlength">Sub-Category should contain max 30 characters.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -52,7 +62,10 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Description</label>
                                             <div class="col-md-9">
-                                                <textarea class="form-control textarea-a" ng-model="myForm.description"></textarea>
+                                                <textarea class="form-control textarea-a" name="description" ng-model="myForm.description" maxlength="250" ng-maxlength="250" placeholder="Enter Description" required></textarea>
+                                                <span style="color:red;" ng-show="userFrom.description.$dirty && userFrom.description.$invalid">
+                                                <span ng-show="userFrom.description.$error.required">Description is required.</span>
+                                                <span ng-show="userFrom.description.$error.maxlength">Description should contain max 250 characters.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -60,7 +73,11 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Email</label>
                                             <div class="col-md-9">
-                                                <input type="email" class="form-control" placeholder="" ng-model="myForm.email"> 
+                                                <input type="email" class="form-control" name="email" ng-model="myForm.email" placeholder="Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" maxlength="71" ng-maxlength="70" required> 
+                                                    <span style="color:red" ng-show="userFrom.email.$dirty && userFrom.email.$invalid ">
+                                                    <span ng-show="userFrom.email.$error.required ">Email is required.</span>
+                                                    <span ng-show="userFrom.email.$error.email && userFrom.email.$error.pattern">Invalid email address.</span>
+                                                    </span>
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +85,10 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Website</label>
                                             <div class="col-md-9">
-                                                 <input type="text" class="form-control" placeholder="" ng-model="myForm.website"> 
+                                                 <input type="text" class="form-control" name="website" placeholder="Enter Website" ng-pattern ="/^[a-zA-Z.\s]*$/" ng-model="myForm.website" required> 
+                                                 <span style="color:red;" ng-show="userFrom.website.$dirty && userFrom.website.$invalid">
+                                                <span ng-show="userFrom.website.$error.required">Website is required.</span>
+                                                <span class="error"  ng-if="userFrom.website.$error.pattern">Only letters are allowed.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -76,37 +96,32 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Phone</label>
                                             <div class="col-md-9">
-                                                <input type="tel" class="form-control" placeholder="" ng-model="myForm.phon"> 
+                                                <input type="tel" class="form-control" name="phone" placeholder="Enter Phone No." ng-model="myForm.phon" maxlength="10" minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]{1,10}$/" required> 
+                                                <span style="color:red;" ng-show="userFrom.phone.$dirty && userFrom.phone.$invalid">
+                                                <span ng-show="userFrom.phone.$error.required">Phone Number is required.</span> 
+                                                <span ng-show="userFrom.phone.$error.minlength">Must have at atleast 10 digits.</span>
+                                                <span ng-show="userFrom.phone.$error.manlength">Must have at at most 10 digits.</span>
+                                                <span ng-show="userFrom.phone.$error.pattern">Only Numbers are allowed.
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="form-group">
-                                        <div class="row">
-                                            <label class="control-label col-md-3">Location</label>
-                                            <div class="col-md-9">
-                                                <select class="form-control" ng-model="myForm.location">
-                                                    <option>Location1</option>
-                                                    <option>Location2</option>
-                                                    <option>Location3</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div> -->
 
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Location</label>
                                             <div class="col-md-9">
-                                                 <input id="city_country" type="textbox" ng-click="codeAddress()" class="form-control" ng-model="myForm.location">
-                                                 <div id="mapCanvas"  ng-show = "IsVisible" style="height:300px;width: 300px;"></div>
+                                                  <input type="text" name="address"  autocomplete="off" id="from" class="form-control" ng-model="myForm.address" ng-change="initFun()" ng-maxlength="95" maxlength="96" required/>
+                                                            <span class="error" style="color:red;" ng-show="userFrom.address.$dirty && userFrom.address.$invalid">
+                                                                <span class="error" style="color:red;" ng-show="userFrom.address.$error.required">Address is required.</span>
+                                                                <span style="color:red;" class="error" ng-show=" userFrom.address.$error.maxlength">Please enter Address  shorter than 95 characters</span>
                                             </div>
                                         </div>
                                     </div>
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-click="click('Step1')">Next</a>
-                                        <a class="btn btn-lg btn-green">Cancel</a>
+                                        <a class="btn btn-lg btn-green"  ng-click="click('Step1')">Next</a>
+                                        <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                     </div>
                                 </fieldset>
                             </form>
@@ -146,7 +161,7 @@
 
                     <div class="btn2 text-center">
                         <a class="btn btn-lg btn-green" ng-click="click('Step2')">Next</a>
-                        <a class="btn btn-lg btn-green">Cancel</a>
+                        <a class="btn btn-lg btn-green" ng-click="cancel('Step2')">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -173,12 +188,15 @@
                                             <div class="col-sm-8">
                                                 <div class="row-table">
                                                     <div class="col-cell">
-                                                        <select class="form-control" ng-model="myForm.socialMedia">
+                                                        <select class="form-control" ng-model="myForm.socialMedia" name="social" required>
                                                             <option value="">Select Social Media</option>
-                                                            <option>Select Social Media1</option>
-                                                            <option>Select Social Media2</option>
-                                                            <option>Select Social Media3</option>
+                                                            <option value="Select Social Media1">Select Social Media1</option>
+                                                            <option value="Select Social Media2">Select Social Media2</option>
+                                                            <option value="Select Social Media3">Select Social Media3</option>
                                                         </select>
+                                                        <span class="error" ng-show="myForm.social.$dirty && myForm.social.$invalid">
+                                                             <span class="error" ng-show="myForm.social.$error.required">Please Select a Social Media</span>
+                                                        </span> 
                                                     </div>
                                                     <div class="col-cell add-remove">
                                                         <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia)"></span>
@@ -197,7 +215,7 @@
                                                         <!-- <input type="text" class="form-control"> -->
                                                     </div>
                                                     <div class="col-cell add-remove" >
-                                                        <span class="fa fa-minus-circle"></span>
+                                                        <span class="fa fa-minus-circle" ng-click="removeSocialMedia(myForm.socialMedia)"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -222,7 +240,7 @@
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
                                         <a class="btn btn-lg btn-green" ng-click="click('Step3')">Next</a>
-                                        <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
+                                        <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
                                     </div>
                                 </fieldset>
                             </form>
@@ -236,28 +254,32 @@
     <!-- pages Admin -->
 
 
-        <div class="outer-block" ng-if="Step4">
+    <div class="container" ng-if="Step4">
+            <div class="outer-block cus-addnew-page">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">Add New Page</h3>
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
-                            <form class="form-block" role="form">
+                            <form class="form-block" role="form" >
                                 <fieldset>
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="control-label col-md-12">Add Page Admins</label>
-                                            <div class="col-sm-12">
+                                            <label class="control-label col-md-12">Add New Page</label>
+                                            <div class="col-sm-8">
                                                 <div class="row-table">
                                                     <div class="col-cell">
-                                                        <div class="input-group">
-                                                          <input type="text" class="form-control" placeholder="Search for users" ng-model="myForm.pageAdmin">
-                                                          <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search" ></i></span>
-                                                        </div>
+                                                        <select class="form-control" ng-model="myForm.pageAdmin" name="pages" required>
+                                                            <option value="">Select</option>
+                                                            <option ng-repeat="page in pageAdmin" value="{{page}} " >{{page.firstName}} {{page.lastName}}</option>
+                                                        </select>
+                                                        <span class="error" ng-show="myForm.pages.$dirty && myForm.pages.$invalid">
+                                                             <span class="error" ng-show="myForm.pages.$error.required">Please Select a Page</span>
+                                                        </span> 
                                                     </div>
                                                     <div class="col-cell add-remove">
-                                                        <span class="fa fa-minus-circle"></span>
+                                                        <span class="fa fa-plus-circle" ng-click="addNewPage(myForm.pageAdmin)"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -267,27 +289,13 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-8">
-                                                <div class="row-table">
+                                                <div class="row-table" ng-repeat="y in arrayPage">
                                                     <div class="col-cell">
-                                                        <input type="text" class="form-control">
+                                                    <span class="form-control">{{y.firstName+" "+y.lastName}}</span>
+                                                        <!-- <input type="text" class="form-control"> -->
                                                     </div>
-                                                    <div class="col-cell add-remove">
-                                                        <span class="fa fa-minus-circle"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-8">
-                                                <div class="row-table">
-                                                    <div class="col-cell">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                    <div class="col-cell add-remove">
-                                                        <span class="fa fa-plus-circle"></span>
+                                                    <div class="col-cell add-remove" >
+                                                        <span class="fa fa-minus-circle" ng-click="removeNewPage(y.firstName+' '+y.lastName)"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -297,9 +305,9 @@
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
                                         <a class="btn btn-lg btn-green" ng-click="submitt()">Add Pages</a>
-                                        <a class="btn btn-lg btn-green">Cancel</a>
+                                        <a class="btn btn-lg btn-green" ng-click="cancel('Step4')">Cancel</a>
                                     </div>
-                                </fieldset>
+                                </fieldset> 
                             </form>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 <div class="container" >
-        <div class="col-sm-12" ng-if="couponDeatil">
+    <div class="col-sm-12" ng-if="couponDeatil">
                 <a class="table-a" ng-click="addCouponFun()">Add Coupon</a>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
@@ -49,20 +49,30 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">Expiry Date</label>
                                         <div class="col-sm-8">
-                                          <input type="date" class="form-control" ng-model="user.expDate">
+                                          <input type="date" class="form-control" ng-model="user.expDate" name="myDate" required>
+                                          <span style="color:red" ng-show="myForm.myDate.$dirty && myForm.myDate.$invalid">
+                                          <span style="color:red" ng-show="myForm.myDate.$error.required">
+                                           Please Select Expiry Date</span>
+                                          <span style="color:red" ng-show="myForm.myDate.$error.date">
+                                           Not a valid date!</span>
                                         </div>
                                       </div>
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">Gift Description</label>
                                         <div class="col-sm-8">
-                                            <textarea class="form-control" ng-model="user.description"></textarea>
+                                            <textarea class="form-control" ng-model="user.description" name="gift_Description"
+                                             required></textarea>
+                                            <span style="color:red;" ng-show="myForm.gift_Description.$dirty && myForm.gift_Description.$invalid">
+                                              <span ng-show="myForm.gift_Description.$error.required">Gift Description is required.</span>
                                         </div>
+
                                       </div>
                               
                                 </fieldset>
             <div class="btn2 text-center">
-                <a href="" class="btn btn-lg btn-green">Cancel</a>
-                <a  class="btn btn-lg btn-green" ng-click="addCoupon(user)">Add</a>
+            <a  class="btn btn-lg btn-green"  ng-click="addCoupon(user)">Add</a>
+                <a href="" class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
+                
             </div>
         </form >
     </div>
@@ -80,15 +90,19 @@
                    <table class="table table-bordered table-striped">                         
                           <tr>
                               <th>Available Coupons</th>
-                              <td><input type="text" name="" ng-model="availableCoupon"></td>
+                              <td><input type="text"price ng-model="availableCoupon" name="coupon" required>
+                               <span style="color:red;" ng-show="userFrom1.coupon.$dirty && userFrom1.coupon.$invalid">
+                                              <span ng-show="userFrom1.coupon.$error.required">Enter coupons</span></td>
                           </tr>
                           <tr>
                               <th>Coupon Price</th>
-                              <td><input type="text" name="" ng-model="couponPrice"></td>
+                              <td><input type="text" name="price" ng-model="couponPrice" required>
+                               <span style="color:red;" ng-show="userFrom1.price.$dirty && userFrom1.price.$invalid">
+                                              <span ng-show="userFrom1.price.$error.required">Enter Coupon Price</span></td>
                           </tr>
                           <tr>
                               <th></th>
-                              <td ><input class="table-a" type="submit" ng-click="submit()" name="Post">       </td>
+                              <td ><input class="table-a" type="submit" ng-click="submit()" name="Post"></td>
                           </tr>
                   </table>
                 </div>
@@ -97,3 +111,4 @@
        </div>
    </div>
 </div>
+

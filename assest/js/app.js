@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('MyApp', ['ui.router', 'ngCookies', 'toastr', 'angularSpinners'])
+var app = angular.module('MyApp', ['ui.router', 'ngCookies', 'toastr', 'angularSpinners', '720kb.datepicker'])
 
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -17,6 +17,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         controller: 'loginCtrl',
         templateUrl: 'templates/login.html'
     })
+      .state('header.adminProfile', {
+            url: '/adminProfile',
+            controller: 'adminProfileCtrl',
+            templateUrl: 'templates/adminProfile.html'
+        })
 
     .state('forgotPassword', {
         url: '/forgotPassword',

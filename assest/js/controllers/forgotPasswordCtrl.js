@@ -17,7 +17,7 @@ app.controller('forgotPasswordCtrl',function($scope, $state, $window, userServic
                     toastr.success(ObjS.data.responseMessage);
                     $state.go('login');
                   }else {
-                 //toastr.error(ObjS.data.message);
+                  toastr.error(ObjS.data.responseMessage);
                   }  
                 }, function (ObjE) {
                  //toastr.error(ObjS.data.responseMessage);
@@ -25,3 +25,4 @@ app.controller('forgotPasswordCtrl',function($scope, $state, $window, userServic
            })
       }
   })
+

@@ -10,9 +10,12 @@ app.controller('viewUserProfileCtrl', function($scope, $window, userService, $st
        toastr.error("Please select user.")
        $state.go('header.manageUsers')
    }else {
-    userService.userProfile(id).success(function(res) {
+
+    userService.viewProfile(id).success(function(res) {
         if (res.responseCode == 200) {
             $scope.viewUserProfile = res.result;
+            var updateDate = new Date($scope.viewUserProfile.dob);
+            $scope.viewUserProfile.dob = moment(updateDate).format('MM/DD/YYYY');
             console.log("datatatat",JSON.stringify($scope.viewUserProfile));
         } else {
             toastr.error(res.responseMessage)

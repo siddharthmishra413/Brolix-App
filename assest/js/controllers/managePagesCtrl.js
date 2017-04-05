@@ -177,15 +177,15 @@ $scope.sendCoupons = function(couponId){
         Id:array
     }
     console.log("dataIn",data)
-    // userService.sendMassageAllUser(data).success(function(res) {        
-    //     if (res.responseCode == 200){
-    //         toastr.success("Message Send Successfully to All CouponWinners User");
-    //         $scope.sendMessage = '';
-    //         $("#sendMessageModelAllUser").modal('hide'); 
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-    // })
+    userService.sendCouponTOUSers(data).success(function(res) {        
+        if (res.responseCode == 200){
+            toastr.success("Send Coupon to All User");
+            $scope.sendMessage = '';
+            $("#sendMessageModelAllUser").modal('hide'); 
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
 }
 
 userService.viewcard($scope.cardType).success(function(res) {
@@ -427,58 +427,128 @@ $scope.dashBordFilter = function(){
 
     }
 
-    $scope.blockUnblockPage = function (id) {
-        var data = {};
+    // $scope.blockPage = function (id) {
+    //     var data = {};
+    //     $scope.BlockId = id;
+    //     if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
+    //     toastr.error("Please select user.")
+    //     $state.go('header.managePages')
+    //     }else {
+    //     BootstrapDialog.show({
+    //         title: 'Block User',
+    //         message: 'Are you sure want to block this Page',
+    //         buttons: [{
+    //             label: 'Blocked',
+    //             action: function(dialog) {
+    //                 toastr.success("User Blocked");
+
+    //                 // var data = {};
+                    
+    //                 // data{
+    //                 //     pageId:$scope.BlockId,
+    //                 //     status:'Blocked'
+    //                 // }
+    //                 // console.log("aaaaaaaaaaaaaa",data);
+    //                 // userService.BlockUser(data).success(function(res) {        
+    //                 //     if (res.responseCode == 200){
+    //                 //         dialog.close();
+    //                 //         toastr.success("User Blocked");
+    //                 //     } else {
+    //                 //         toastr.error(res.responseMessage);
+    //                 //     }
+    //                 // }) 
+                    
+    //             }
+    //         }, {
+    //             label: 'UnBlocked',
+    //             action: function(dialog) {
+    //                 toastr.success("User UnBlocked");
+
+    //                 // var data = {};
+
+    //                 // data{
+    //                 //     pageId:$scope.BlockId,
+    //                 //     status:'UnBlocked'
+    //                 // }
+    //                 // console.log("bbbbbbbbbbbb",data);
+    //                 // userService.BlockUser(data).success(function(res) {        
+    //                 //     if (res.responseCode == 200){
+    //                 //         dialog.close();
+    //                 //         toastr.success("User Blocked");
+    //                 //     } else {
+    //                 //         toastr.error(res.responseMessage);
+    //                 //     }
+    //                 // })
+    //                 dialog.close();
+    //                 // toastr.success("User Blocked");
+    //             }
+    //         }]
+    //     });
+    // }
+    // }
+
+    $scope.blockPage = function (id) {
         $scope.BlockId = id;
+        var userId = $scope.BlockId;
+        console.log("Blockid",userId);
         if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
         toastr.error("Please select user.")
         $state.go('header.managePages')
         }else {
         BootstrapDialog.show({
-            title: 'Block User',
-            message: 'Are you sure want to block this User',
+            title: 'Block Page',
+            message: 'Are you sure want to block this page',
             buttons: [{
-                label: 'Blocked',
+                label: 'Yes',
                 action: function(dialog) {
-                    toastr.success("User Blocked");
-
-                    // var data = {};
-                    
-                    // data{
-                    //     pageId:$scope.BlockId,
-                    //     status:'Blocked'
-                    // }
-                    // console.log("aaaaaaaaaaaaaa",data);
-                    // userService.BlockUser(data).success(function(res) {        
-                    //     if (res.responseCode == 200){
-                    //         dialog.close();
-                    //         toastr.success("User Blocked");
-                    //     } else {
-                    //         toastr.error(res.responseMessage);
-                    //     }
-                    // }) 
-                    
+                    userService.blockPage(userId).success(function(res) {        
+                        if (res.responseCode == 200){
+                            dialog.close();
+                            toastr.success("Page Blocked");
+                            $state.reload();
+                        } else {
+                            toastr.error(res.responseMessage);
+                        }
+                    })    
                 }
             }, {
-                label: 'UnBlocked',
+                label: 'No',
                 action: function(dialog) {
-                    toastr.success("User UnBlocked");
+                    dialog.close();
+                    // toastr.success("User Blocked");
+                }
+            }]
+        });
+    }
+    }
 
-                    // var data = {};
-
-                    // data{
-                    //     pageId:$scope.BlockId,
-                    //     status:'UnBlocked'
-                    // }
-                    // console.log("bbbbbbbbbbbb",data);
-                    // userService.BlockUser(data).success(function(res) {        
-                    //     if (res.responseCode == 200){
-                    //         dialog.close();
-                    //         toastr.success("User Blocked");
-                    //     } else {
-                    //         toastr.error(res.responseMessage);
-                    //     }
-                    // })
+    $scope.unblockPage = function (id) {
+        $scope.BlockId = id;
+        var userId = $scope.BlockId;
+        console.log("Blockid",userId);
+        if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
+        toastr.error("Please select user.")
+        $state.go('header.managePages')
+        }else {
+        BootstrapDialog.show({
+            title: 'Block Page',
+            message: 'Are you sure want to block this page',
+            buttons: [{
+                label: 'Yes',
+                action: function(dialog) {
+                    userService.unblockPage(userId).success(function(res) {        
+                        if (res.responseCode == 200){
+                            dialog.close();
+                            toastr.success("Page Blocked");
+                            $state.reload();
+                        } else {
+                            toastr.error(res.responseMessage);
+                        }
+                    })    
+                }
+            }, {
+                label: 'No',
+                action: function(dialog) {
                     dialog.close();
                     // toastr.success("User Blocked");
                 }
@@ -541,14 +611,15 @@ $scope.dashBordFilter = function(){
     })
 
     userService.showAllRemovedPage().success(function(res){
+        console.log("aaaaaaaaaaa",JSON.stringify(res))
         if (res.responseCode == 200){
             $scope.showAllRemovedPage = res.result;
             $scope.showAllRemovedPageCount = res.count;
-            //console.log("lllllllllllll",JSON.stringify($scope.showAllRemovedPageCount))
+            //console.log("lllllllllllll",JSON.stringify(res))
             } else {
             //toastr.error(res.responseMessage);
             $scope.showAllRemovedPage = res.count;
-           // console.log("zxzxzxzxz",JSON.stringify($scope.showAllRemovedPage))
+           
         } 
     })
 
@@ -572,6 +643,7 @@ $scope.dashBordFilter = function(){
                     if (res.responseCode == 200){
                         dialog.close();
                         toastr.success("Page removed Successfully");
+                        $state.reload();
                     } else if(res.responseCode == 404){
                         toastr.error(res.responseMessage);
                     }

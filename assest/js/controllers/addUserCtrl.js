@@ -8,6 +8,7 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
     $scope.addUser = function() {
         $scope.myFrom.type = "USER";
         console.log("mmmmmm111111",$scope.myFrom)
+        console.log("dob>>>>>>>>>",JSON.stringify($scope.myFrom.dob))
         userService.addUser($scope.myFrom).success(function(res) {
             console.log("myform data",$scope.myFrom);
             if (res.responseCode == 200) {
@@ -57,6 +58,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     {
       $timeout(function(){
         $scope.countriesList=countries;
+        //console.log("data1",$scope.countriesList)
       },100)
       
       
@@ -64,6 +66,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
   var countryCode;
     $scope.changeCountry = function(){
       for(var i=0;i<$scope.countriesList.length;i++){
+        //console.log("$scope.dashBordFilter.country",$scope.dashBordFilter.country)
         if($scope.countriesList[i].name==$scope.myFrom.country){
           countryCode=$scope.countriesList[i].code;
           //console.log(countryCode)
@@ -74,20 +77,22 @@ var BATTUTA_KEY="00000000000000000000000000000000"
       $.getJSON(url,function(regions)
       {
         //console.log('state list:   '+JSON.stringify(regions))
-        $timeout(function(){
-        $scope.stateList = regions;
-          },100)
+            $timeout(function(){
+             $scope.stateList = regions;
+             //console.log("data2",$scope.stateList)
+            },100)
       });
     }
 
     $scope.changeState = function(){
-      //console.log('detail -> '+countryCode+' city name -> '+$scope.myFrom.state)
+      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.myFrom.state+"&key="+BATTUTA_KEY+"&callback=?";
       $.getJSON(url,function(cities)
       {
         // console.log('city list:   '+JSON.stringify(cities))
-        $timeout(function(){
-          $scope.cityList = cities;
+            $timeout(function(){
+             $scope.cityList = cities;
+             console.log("data3",$scope.cityList)
             },100)
       })
     }

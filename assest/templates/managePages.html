@@ -158,7 +158,10 @@
             </div>
         </div>
     </div>
-    <div class="grp-search">
+    
+    <div class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalPages">
+        <div class="grp-search">
         <div class="row-search">
             <ul>
                 <li class="active">
@@ -171,7 +174,7 @@
                      <a data-toggle="tab" style="cursor: pointer;" ng-click="Remove_User(myForm.pageId)">Remove</a>
                 </li>
                 <li class="">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="blockUnblockPage(myForm.pageId)">Block/Unblock</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="blockPage(myForm.pageId)">Block</a>
                 </li>
                 <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="sendMessagePage(myForm.pageId)">Send Message</a>
@@ -192,8 +195,6 @@
             </form>
         </div>
     </div>
-    <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="totalPages">
             <table id="managePageTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -230,6 +231,40 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="unPublishedPage">
+        <div class="grp-search">
+        <div class="row-search">
+            <ul>
+                <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
+                </li>
+                <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editPage/{{myForm.pageId}}">Edit Page</a>
+                </li>
+                <li class="active">
+                     <a data-toggle="tab" style="cursor: pointer;" ng-click="Remove_User(myForm.pageId)">Remove</a>
+                </li>
+                <li class="">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="blockPage(myForm.pageId)">Block</a>
+                </li>
+                <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="sendMessagePage(myForm.pageId)">Send Message</a>
+                </li>
+                <li class="last">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                </li>
+            </ul>
+        </div>
+        <div class="search-bar-cus">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search By Page Name or Mobile">
+                        <div class="input-group-addon">Search</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
             <table id="managePageTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -265,6 +300,31 @@
 
      <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="showAllRemovedPage">
+        <div class="grp-search">
+        <div class="row-search">
+            <ul>
+                <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
+                </li>
+                <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="sendMessagePage(myForm.pageId)">Send Message</a>
+                </li>
+                <li class="last">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                </li>
+            </ul>
+        </div>
+        <div class="search-bar-cus">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search By Page Name or Mobile">
+                        <div class="input-group-addon">Search</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
             <table id="managePageTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -300,6 +360,35 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="showAllBlockedPage">
+
+        <div class="grp-search">
+        <div class="row-search">
+            <ul>
+                <li class="active">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
+                </li>
+                <li class="active">
+                     <a data-toggle="tab" style="cursor: pointer;" ng-click="Remove_User(myForm.pageId)">Remove</a>
+                </li>
+                <li class="">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="unblockPage(myForm.pageId)">Unblock</a>
+                </li>
+                <li class="last">
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                </li>
+            </ul>
+        </div>
+        <div class="search-bar-cus">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search By Page Name or Mobile">
+                        <div class="input-group-addon">Search</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
             <table id="managePageTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>

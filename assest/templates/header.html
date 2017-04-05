@@ -30,13 +30,16 @@
                                 <h3 class="title-s">Welcome</h3>
                                 <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
                                 <div class="logout">
-                                    <a ng-click="logout()">Logout</a>
+                                    <a style="cursor:pointer;" ng-click="logout()">Logout</a>
                                 </div>
                             </div>
                         </div>
                     </li>
+                     <li>
+                        <a style="cursor:pointer;" ui-sref="header.adminProfile">ADMIN PROFILE</a>
+                    </li>
                     <li>
-                        <a ui-sref="header.addUser">ADD USER</a>
+                        <a style="cursor:pointer;" ui-sref="header.addUser">ADD USER</a>
                     </li>
                    <!--  <li>
                         <a>BLOCK USER</a>
@@ -59,13 +62,13 @@
                                 <h3 class="title-s">Welcome</h3>
                                 <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
                                 <div class="logout">
-                                    <a ng-click="logout()">Logout</a>
+                                    <a style="cursor:pointer;" ng-click="logout()">Logout</a>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li>
-                        <a ui-sref="header.addNewPages">ADD PAGE</a>
+                        <a style="cursor:pointer;" ui-sref="header.addNewPages">ADD PAGE</a>
                     </li>
                     <!-- <li>
                         <a>REMOVE PAGE</a>
@@ -91,25 +94,25 @@
                                 <h3 class="title-s">Welcome</h3>
                                 <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
                                 <div class="logout">
-                                    <a ng-click="logout()">Logout</a>
+                                    <a style="cursor:pointer;" ng-click="logout()">Logout</a>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li>
-                        <a>CREATE AD</a>
+                        <a style="cursor:pointer;" >CREATE AD</a>
                     </li>
                     <li>
-                        <a>EDIT AD</a>
+                        <a style="cursor:pointer;" >EDIT AD</a>
                     </li>
                     <li>
-                        <a>REMOVE AD</a>
+                        <a style="cursor:pointer;" >REMOVE AD</a>
                     </li>
                     <li>
-                        <a>HOME PAGE AD</a>
+                        <a style="cursor:pointer;">HOME PAGE AD</a>
                     </li>
                     <li>
-                        <a> CREATE REPORT</a>
+                        <a style="cursor:pointer;"> CREATE REPORT</a>
                     </li>                    
                 </ul>
             </div>
@@ -126,22 +129,22 @@
                                 <h3 class="title-s">Welcome</h3>
                                 <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
                                 <div class="logout">
-                                    <a ng-click="logout()">Logout</a>
+                                    <a style="cursor:pointer;" ng-click="logout()">Logout</a>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li>
-                        <a ui-sref="header.createCard">CREATE CARD</a>
+                        <a style="cursor:pointer;" ui-sref="header.createCard">CREATE CARD</a>
                     </li>
                     <li>
-                        <a ui-sref="header.editCard">EDIT CARD</a>
+                        <a style="cursor:pointer;"ui-sref="header.editCard">EDIT CARD</a>
                     </li>
                     <li>
-                        <a ui-sref="header.removeCard">REMOVE CARD</a>
+                        <a style="cursor:pointer;" ui-sref="header.removeCard">REMOVE CARD</a>
                     </li>
                     <li>
-                        <a ui-sref="header.createOffer">Create Offer</a>
+                        <a style="cursor:pointer;" ui-sref="header.createOffer">Create Offer</a>
                     </li>                    
                 </ul>
             </div>
@@ -158,7 +161,7 @@
                                 <h3 class="title-s">Welcome</h3>
                                 <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
                                 <div class="logout">
-                                    <a ng-click="logout()">Logout</a>
+                                    <a style="cursor:pointer;" ng-click="logout()">Logout</a>
                                 </div>
                             </div>
                         </div>
@@ -181,14 +184,14 @@
                                 <h3 class="title-s">Welcome</h3>
                                 <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
                                 <div class="logout">
-                                    <a ng-click="logout()">Logout</a>
+                                    <a style="cursor:pointer;" ng-click="logout()">Logout</a>
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <a> CREATE REPORT</a>
-                    </li>                    
+                    <!-- <li>
+                        <a style="cursor:pointer;"> CREATE REPORT</a>
+                    </li>   -->                  
                 </ul>
             </div>
             </div>
@@ -204,28 +207,28 @@
                                 <h3 class="title-s">Welcome</h3>
                                 <div class="sub-title">{{user.firstName}} {{user.lastName}}</div>
                                 <div class="logout">
-                                    <a ng-click="logout()">Logout</a>
+                                    <a style="cursor:pointer;" ng-click="logout()">Logout</a>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li>
-                        <a ui-sref="header.addSystemUser">System User</a>
+                        <a style="cursor:pointer;"ui-sref="header.addSystemUser">System User</a>
                     </li>
                     <li>
-                         <a ui-sref="header.addAdminCoupon">Add Coupons</a>
+                         <a style="cursor:pointer;" ui-sref="header.addAdminCoupon">Add Coupons</a>
                     </li>
                     <li>
-                         <a ui-sref="header.adminReports">Reports</a>
+                         <a style="cursor:pointer;" ui-sref="header.adminReports">Reports</a>
                     </li>
                     <li>
-                         <a ui-sref="header.termsAndCondition">Terms & conditions</a>
+                         <a style="cursor:pointer;" ui-sref="header.termsAndCondition">Terms & conditions</a>
                     </li>
                     <li>
-                         <a ui-sref="header.brolixAndDollars">Brolix & Dollars</a>
+                         <a style="cursor:pointer;" ui-sref="header.brolixAndDollars">Brolix & Dollars</a>
                     </li>
                     <li>
-                         <a ui-sref="header.addAdminCoupon">Default Values</a>
+                         <a style="cursor:pointer;" ui-sref="header.addAdminCoupon">Default Values</a>
                     </li>            
                 </ul>
             </div>

@@ -11,7 +11,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Page Name</label>
                         <div class="col-sm-8">
-                          <select class="form-control" ng-model="user.pageName" ng-change="isSelected(user.pageName)">
+                          <select class="form-control" ng-model="user.pageName" ng-change="isSelected(user.pageName)" required="">
                             <option value="">Select</option>
                             <option value="{{page.pageName}}" ng-repeat="page in pageDetail">{{page.pageName}}</option>
                           </select>
@@ -20,21 +20,28 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Expiry Date</label>
                         <div class="col-sm-8">
-                          <input type="date" class="form-control"  ng-model="user.expDate">
+                          <input type="date" class="form-control"  ng-model="user.expDate" name="myDate" required>
+                          <span style="color:red" ng-show="myForm.myDate.$dirty && myForm.myDate.$invalid">
+                          <span style="color:red" ng-show="myForm.myDate.$error.required">
+                           Please Select Expiry Date</span>
+                          <span style="color:red" ng-show="myForm.myDate.$error.date">
+                           Not a valid date!</span>
                         </div>
                       </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Gift Description</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control" ng-model="user.description"></textarea>
+                            <textarea class="form-control" ng-model="user.description" name="des" required></textarea>
+                            <span style="color:red" ng-show="myForm.des.$dirty && myForm.des.$invalid">
+                          <span style="color:red" ng-show="myForm.des.$error.required">
+                           Description is Required</span>
                         </div>
                       </div>
                 </fieldset>
         <div class="btn2 text-center">
-            <a href="" class="btn btn-lg btn-green">Cancel</a>
             <a  class="btn btn-lg btn-green" ng-click="upadteCoupon(user)">Update</a>
+            <a href="" class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
+            
         </div>
     </form >
 </div>
-
-

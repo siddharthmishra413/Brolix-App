@@ -291,7 +291,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group cus-select">
+                    <!-- <div class="form-group cus-select">
                         <div class="col-md-9">
                             <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">  
                         </div>
@@ -301,7 +301,26 @@
                         <div class="col-md-9">
                             <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth"> 
                         </div>
-                    </div>
+                    </div> -->
+
+                     <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                       <div class="input-group">
+                           <input class="form-control" placeholder="Choose a date" ng-model="dashBordFilter.dobTo"/>
+                           <span class="input-group-addon" style="cursor: pointer">
+                           <i class="fa fa-lg fa-calendar"></i>
+                           </span>
+                       </div>
+                    </datepicker>
+
+                    <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                       <div class="input-group">
+                           <input class="form-control" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose a date" ng-model="dashBordFilter.dobFrom"/>
+                           <span class="input-group-addon" style="cursor: pointer">
+                           <i class="fa fa-lg fa-calendar"></i>
+                           </span>
+                       </div>
+                    </datepicker>
+
 
                 </div>
             </div>
@@ -1160,6 +1179,48 @@
             <div class="col-cell add-remove">
                 <span class="fa fa-send" ng-click="sendCoupons(data._id)"></span>
             </div>
+        </div>
+       </div>
+   </div>
+</div>
+
+<div id="allCouponsDetails" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">All Coupons Details</h4>
+           </div>
+           <div class="row-table" ng-repeat="data in allCoupons">
+
+           <table id="manageUserTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Page Name</th>
+                        <th>Cover Image</th>
+                        <th>Gift Description</th>
+                        <th>Coupon ExpiryDate</th>
+                        <th>Coupon Buyers Length</th>
+                        <th>Coupon SellPrice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in allCoupons">
+                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"><img ng-src="{{x.coverImage}}" id="output"></td>
+                        <td class="skyblue-text">{{x.giftDescription}}</td>
+                        <td class="skyblue-text">{{x.couponExpiryDate}}</td>
+                        <td class="skyblue-text">{{x.couponBuyersLength}}</td>
+                        <td class="skyblue-text">{{x.couponSellPrice}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <div class="col-cell">
+                <div class="cover-image">
+                    <img ng-src="{{data.coverImage || '../dist/image/cover.jpg'}}" id="output">
+                </div>
+            </div> -->
+            
         </div>
        </div>
    </div>

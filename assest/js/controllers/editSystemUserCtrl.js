@@ -37,13 +37,17 @@ app.controller('editSystemUserCtrl', function($scope, $stateParams, $window, use
         //console.log("1")
         var data=[];
        angular.forEach($scope.myFrom.permissions,function(value,key){
-          data.push(key);
+         if(value==true){
+            data.push(key);
+         }
+          
+
        })
        $scope.myFrom.permissions = data;
         console.log("all",JSON.stringify($scope.myFrom));
        // console.log("data",JSON.stringify($scope.myFrom),$stateParams.id);
        userService.editSystemAdmin($stateParams.id,$scope.myFrom).success(function(res) {
-        //console.log("res",res)
+        console.log("res",res)
             if (res.responseCode == 404) {
                 toastr.error(res.responseMessage);
                 $state.go('login')

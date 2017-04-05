@@ -2,7 +2,7 @@
 
 
 <div class="col-sm-12" ng-if="tableData">
-    <a class="table-a" ng-click="showtable()">Add User</a>
+    <a class="table-a" style="cursor:pointer;" ng-click="showtable()">Add User</a>
     <div class="table-responsive">
         <table class="table table-bordered table-striped" >
             <tr>
@@ -15,7 +15,7 @@
                 <td>{{x.firstName}}</td>
                 <td>{{x.lastName}}</td>
                 <td>{{x.email}}</td>
-                <td><a class="table-a" ng-href="#header/editSystemUser/{{x._id}}">Edit</a><a class="table-a" ng-click="Remove_User(x._id)">Remove</a></td>
+                <td><a class="table-a" style="cursor:pointer;" ng-href="#header/editSystemUser/{{x._id}}">Edit</a><a style="cursor:pointer;" class="table-a" ng-click="Remove_User(x._id)">Remove</a></td>
             </tr>
            
         </table>

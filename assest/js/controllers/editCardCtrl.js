@@ -59,8 +59,9 @@ app.controller('editCardCtrl', function($scope, $window, userService,spinnerServ
         $scope.active_upgrade_card=false;
         $scope.active_luck_card=true;
         userService.viewcard(active_card).success(function(res) {
-        console.log("asassasa",res)
+        console.log("datatatatatata",res)
         $scope.LuckCard = res.data;
+        console.log("$scope.LuckCard",$scope.LuckCard)
     })
       }
       else{

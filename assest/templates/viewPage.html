@@ -17,7 +17,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Page Owner</label>
                                             <div class="col-md-9">
@@ -26,7 +26,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Main Category</label>
@@ -63,7 +63,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Website</label>
                                             <div class="col-md-9">
-                                                 <span class="form-control">{{viewUserProfile.firstName}}</span>
+                                                 <span class="form-control">{{viewPageDetails.website}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -71,7 +71,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Phone</label>
                                             <div class="col-md-9">
-                                                <span class="form-control">{{viewUserProfile.firstName}}</span>
+                                                <span class="form-control">{{viewPageDetails.phoneNumber}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -79,25 +79,25 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Location</label>
                                             <div class="col-md-9">
-                                                <span class="form-control">{{viewUserProfile.firstName}}</span>
+                                                <span class="form-control">{{myForm.address}}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="cover-image" >
-                                        <label class="control-label col-md-3">Cover Image</label>
+                                        <label class="control-label col-md-6">Cover Image</label>
                                         <img class="profile-user-img img-responsive" src="{{user.pagephoto || '../dist/image/cover.jpg'}}" id="output">
                                     </div>
 
                                     <div class="page-image clearfix">
-                                    <label class="control-label col-md-3">Page Image</label>
+                                    <label class="control-label col-md-6">Page Image</label>
                                         <img class="profile-user-img img-responsive" src="{{user.userphoto || '../dist/image/user-image.jpeg'}}" id="output">
                                     </div>
                                     <div class="row">
                                         <label class="control-label col-md-12">Social Media Accounts</label>
                                         <div class="col-sm-12">
                                             <div class="row-table">
-                                                <div class="col-cell">
-                                                   <span class="form-control">{{viewUserProfile.firstName}}</span>
+                                                <div class="col-cell" >
+                                                   <span class="form-control" >{{socialMedia}}</span>
                                                 </div>
                                                <!--  <div class="col-cell add-remove">
                                                     <span class="fa fa-plus-circle"></span>
@@ -129,14 +129,3 @@
                                         <a class="btn btn-lg btn-green" ng-click="click('Step1')">Next</a>
                                         <a class="btn btn-lg btn-green">Cancel</a>
                                     </div> -->
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    
