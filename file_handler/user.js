@@ -887,18 +887,20 @@ module.exports = {
                     arr.push(result.senderId)
                 })
                 User.find({ _id: { $in: arr }, "createdAt": { "$gte": req.body.toDate, "$lt": req.body.fromDate } }).exec(function(err, newResult) {
-                    for (var i = 0; i < newResult.length; i++) {
-                        var obj = {};
-                        obj.followStatus = results[0].followers[i].FollowStatus;
-                        console.log(obj);
-                        obj.result = newResult[i];
-                        newResult[i] = obj;
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (newResult.length == 0) { res.send({ responseCode: 400, responseMessage: 'No result found' }); } else {
+                        for (var i = 0; i < newResult.length; i++) {
+                            var obj = {};
+                            obj.followStatus = results[0].followers[i].FollowStatus;
+                            console.log(obj);
+                            obj.result = newResult[i];
+                            newResult[i] = obj;
+                        }
+                        res.send({
+                            result: newResult,
+                            responseCode: 200,
+                            responseMessage: "Show list all followers."
+                        });
                     }
-                    res.send({
-                        result: newResult,
-                        responseCode: 200,
-                        responseMessage: "Show list all followers."
-                    });
                 })
             }
         })
