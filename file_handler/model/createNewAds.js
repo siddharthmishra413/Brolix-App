@@ -182,11 +182,12 @@ var createNewAdsSchema = new Schema({
     promoteApp: {
         type: Boolean
     },
-    uploadGiftImage:{
-        type:String
+    uploadGiftImage: {
+        type: String
     },
-    linkCount:{type:Number, default:0},
+    linkCount: { type: Number, default: 0 },
     favouriteCoupon: [],
+    sendCouponToUser: { type: Number },
     createdAt: {
         type: Date,
         default: Date.now

@@ -2973,6 +2973,7 @@ module.exports = {
     },
 
     "editAdminProfile": function(req, res) {
+        console.log("editAdminProfile-->>" + JSON.stringify(req.body))
         User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
                 res.send({
@@ -2983,6 +2984,10 @@ module.exports = {
             }
         })
     },
+
+    // "sendCouponTOUSers": function(req, res){
+
+    // }
 
 
 

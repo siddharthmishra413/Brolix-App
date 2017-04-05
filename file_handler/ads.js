@@ -801,12 +801,13 @@ module.exports = {
                 for (i = 0; i < result.coupon.length; i++) {
                     array.push(result.coupon[i].adId)
                 }
-                createNewAds.paginate({ _id: { $in: array }, couponStatus: { $in: status } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                createNewAds.find({ _id: { $in: array }, couponStatus: { $in: status } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
-                            responseMessage: "result show successfully;"
+                            responseMessage: "result show successfully."
                         })
                     }
                 })
@@ -827,8 +828,8 @@ module.exports = {
                         }
                     }
                 }
-                createNewAds.paginate({ _id: { $in: array }, cashStatus: { $in: status } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                createNewAds.find({ _id: { $in: array }, cashStatus: { $in: status } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
