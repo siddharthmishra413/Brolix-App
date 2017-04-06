@@ -309,7 +309,7 @@ module.exports = {
     /*-------------------------Manage Ads API------------------------*/
 
     "totalAds": function(req, res) { // all ads cash and coupon type
-        createNewAds.find({ status:'ACTIVE'}).exec(function(err, result) {
+        createNewAds.find({ status: 'ACTIVE' }).exec(function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -728,37 +728,36 @@ module.exports = {
         })
     },
 
-    //API for user Profile
-    // "editpage": function(req, res) {
-    //     createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
-    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 409, responseMessage: 'No page found' }); }
-    //         else {
-    //             res.send({
-    //                 result: result,
-    //                 responseCode: 200,
-    //                 responseMessage: "Page Updated."
-    //             });
-    //         }
-    //     })
-    // },
-
     "editPage": function(req, res) {
-        createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result) {
-            if (err) throw err;
-            else if (result) {
-                res.send({
-                    responseCode: 302,
-                    responseMessage: "Page name must be unique."
-                });
-            } else {
-                createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, results) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    res.send({
-                        result: results,
-                        responseCode: 200,
-                        responseMessage: "Pages details updated successfully."
+        createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
+                if (result.pageName == req.body.pageName) {
+                    createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result1) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
+                            res.send({
+                                result: result1,
+                                responseCode: 200,
+                                responseMessage: "Pages details updated successfully rtwrttr."
+                            })
+                        }
                     })
-                })
+
+                } else {
+                    var pageName = req.body.pageName;
+                    createNewPage.findOne({ pageName: pageName, _id: { $ne: req.params.id } }).exec(function(err, result2) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) { res.send({ responseCode: 500, responseMessage: ' unique 11' }); } else {
+                            createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result3) {
+                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
+                                    res.send({
+                                        result: result3,
+                                        responseCode: 200,
+                                        responseMessage: "Pages details updated successfully. 544353"
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
             }
         })
     },
@@ -1019,18 +1018,25 @@ module.exports = {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         User.findByIdAndUpdate({ _id: req.body.adminId }, { $inc: { pageCount: 1 } }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                res.send({
-                                    result: result,
-                                    responseCode: 200,
-                                    responseMessage: "Page create successfully."
-                                });
+                                var adminlength = result.adAdmin.length;
+                                console.log("adminlength--11->>", adminlength)
+                                var pageId = result._id;
+                                console.log("pageId--->>", pageId)
+                                createNewPage.findOneAndUpdate({ _id: pageId }, { $inc: { adAdminCount: adminlength } }).exec(function(err, result2) {
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                        res.send({
+                                            result: result,
+                                            responseCode: 200,
+                                            responseMessage: "Page create successfully."
+                                        });
+                                    }
+                                })
                             }
                         })
                     }
                 })
             }
         })
-
     },
 
     "adsfilter": function(req, res) {
@@ -1656,7 +1662,7 @@ module.exports = {
     },
 
     "PagesAdmins": function(req, res) {
-        createNewPage.find({}, function(err, result) {
+        createNewPage.find({status:'ACTIVE'}, function(err, result) {
             var array = [];
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
                 for (var i = 0; i < result.length; i++) {
@@ -2190,7 +2196,7 @@ module.exports = {
     },
 
     "pageInfo": function(req, res) {
-        createNewPage.find({ _id: req.params.id }).exec(function(err, result) {
+        createNewPage.find({ _id: req.params.id }).populate('adAdmin.userId', 'firstName lastName').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
                 res.send({ responseCode: 404, responseMessage: "No page found" });
             } else {
@@ -2299,9 +2305,7 @@ module.exports = {
 
     "addNewCoupon": function(req, res) {
         console.log("---addNewCoupon---")
-        if (req.body.pageName == undefined || req.body.pageName == null || req.body.pageName == '') { res.send({ responseCode: 403, responseMessage: 'Please enter pageName' }); }
-        else if(req.body.pageId == undefined || req.body.pageId == null || req.body.pageId == '') { res.send({ responseCode: 403, responseMessage: 'Please enter pageId' }); }
-         else {
+        if (req.body.pageName == undefined || req.body.pageName == null || req.body.pageName == '') { res.send({ responseCode: 403, responseMessage: 'Please enter pageName' }); } else if (req.body.pageId == undefined || req.body.pageId == null || req.body.pageId == '') { res.send({ responseCode: 403, responseMessage: 'Please enter pageId' }); } else {
             var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
             var obj = {
                 pageId: req.body.pageId,
@@ -2632,9 +2636,7 @@ module.exports = {
                 var array = [];
                 User.find({}, 'firstName lastName email createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
-                        for (var i = 0; i < result.length; i++) {
-                            array.push(result[i])
-                        }
+                        array.push(result)
                         callback(null, array)
                     }
                 })
@@ -2642,9 +2644,7 @@ module.exports = {
             function(array, callback) {
                 createNewAds.find({}, 'pageName adsType createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, result2) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result2.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
-                        for (var j = 0; j < result2.length; j++) {
-                            array.push(result2[j])
-                        }
+                        array.push(result2)
                         callback(null, array)
                     }
                 })
@@ -2652,13 +2652,11 @@ module.exports = {
             function(array, callback) {
                 createNewPage.find({}, ' pageName createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, result3) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result3.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
-                        for (var k = 0; k < result3.length; k++) {
-                            array.push(result3[k])
-                        }
-                        var sortArray = array.sort(function(obj1, obj2) {
-                            return obj2.createdAt - obj1.createdAt
-                        })
-                        callback(null, sortArray)
+                        array.push(result3)
+                            // var sortArray = array.sort(function(obj1, obj2) {
+                            //     return obj2.createdAt - obj1.createdAt
+                            // })
+                        callback(null, array)
                     }
                 })
             },
@@ -2921,35 +2919,6 @@ module.exports = {
         })
     },
 
-    "systemAdminLogin": function(req, res) {
-        console.log("request-->>" + JSON.stringify(req.body))
-        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-        else {
-            User.findOne({
-                $or: [{ email: req.body.email }, { password: req.body.password }],
-                status: 'ACTIVE',
-                type: 'SYSTEMADMIN'
-            }).exec(function(err, result) {
-                console.log("1")
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
-                    res.send({
-                        responseCode: 404,
-                        responseMessage: "The email address that you've entered doesn't match any account."
-                    });
-                } else {
-                    console.log("2")
-                        // sets a cookie with the user's info
-                    req.session.user = result;
-                    console.log("request-->>", req.session.user)
-                    res.send({
-                        responseCode: 200,
-                        responseMessage: "Login successfully."
-                    });
-                }
-            })
-        }
-    },
-
     "removeAds": function(req, res) { // pageId in request
         createNewAds.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'status': 'REMOVED' } }, { new: true }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct adId" })
@@ -3050,9 +3019,7 @@ module.exports = {
 
     "blockPage": function(req, res) {
         createNewPage.findByIdAndUpdate({ _id: req.params.id }, { $set: { status: 'BLOCK' } }, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-             else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }) }
-             else { res.send({ responseCode: 200, responseMessage: "Page Blocked successfully." }); }
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }) } else { res.send({ responseCode: 200, responseMessage: "Page Blocked successfully." }); }
         });
     },
 

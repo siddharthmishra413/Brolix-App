@@ -146,25 +146,38 @@ module.exports = {
     },
     //API for Edit Page
     "editPage": function(req, res) {
-        createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result) {
-            if (err) throw err;
-            else if (result) {
-                res.send({
-                    responseCode: 302,
-                    responseMessage: "Page name must be unique."
-                });
-            } else {
-                createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "Pages details updated successfully."
+        createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
+                if (result.pageName == req.body.pageName) {
+                    createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result1) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
+                            res.send({
+                                result: result1,
+                                responseCode: 200,
+                                responseMessage: "Pages details updated successfully rtwrttr."
+                            })
+                        }
                     })
-                })
+                } else {
+                    var pageName = req.body.pageName;
+                    createNewPage.findOne({ pageName: pageName, _id: { $ne: req.params.id } }).exec(function(err, result2) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) { res.send({ responseCode: 500, responseMessage: ' unique 11' }); } else {
+                            createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result3) {
+                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
+                                    res.send({
+                                        result: result3,
+                                        responseCode: 200,
+                                        responseMessage: "Pages details updated successfully. 544353"
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
             }
         })
     },
+
     //API for Delete Page
     "deletePage": function(req, res) {
         createNewPage.findOne({ _id: req.body.pageId }).exec(function(err, result) {
@@ -993,6 +1006,20 @@ module.exports = {
                 })
             }
         })
+    },
+
+    "listOfCategory": function(req, res) {
+        var categoryList = ["Restaurant and Coffee Shop", "Fashion (Men-Women-Kids-Babies)", "Beauty & Health Care", "Fitness and Sports",
+          "Traveling Agencies","Cinema","Furniture","Home","Mobile and Computer Apps","Toys for kids and Babies","Electronics and Technology",
+          "Hotels and Apartments","Medical","Education","Motors","Hypermarkets","Events","Jewelry","Arts and Design","Pets","Insurance",
+          "Banks and Finance Companies","Real Estate","Books","Business and Services","Nightlife","Construction","Factories"];
+        console.log("categoryList-->>", categoryList)
+        res.send({
+            result: categoryList,
+            responseCode: 200,
+            responseMessage: "List of all category shown successfully."
+        })
+
     }
 
 }
