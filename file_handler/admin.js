@@ -309,7 +309,7 @@ module.exports = {
     /*-------------------------Manage Ads API------------------------*/
 
     "totalAds": function(req, res) { // all ads cash and coupon type
-        createNewAds.find({}).exec(function(err, result) {
+        createNewAds.find({ status:'ACTIVE'}).exec(function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -861,19 +861,6 @@ module.exports = {
                 });
             }
         })
-    },
-
-    "blockPage": function(req, res) { // pageId in request
-        createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $set: { status: req.body.status } }, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
-            else {
-                res.send({
-                    // result: result,
-                    responseCode: 200,
-                    responseMessage: "Page blocked successfully."
-                });
-            }
-        });
     },
 
     "showAllBlockedPage": function(req, res) { // pageId in request
@@ -2312,7 +2299,9 @@ module.exports = {
 
     "addNewCoupon": function(req, res) {
         console.log("---addNewCoupon---")
-        if (req.body.pageName == undefined || req.body.pageName == null || req.body.pageName == '') { res.send({ responseCode: 403, responseMessage: 'Please enter pageName' }); } else {
+        if (req.body.pageName == undefined || req.body.pageName == null || req.body.pageName == '') { res.send({ responseCode: 403, responseMessage: 'Please enter pageName' }); }
+        else if(req.body.pageId == undefined || req.body.pageId == null || req.body.pageId == '') { res.send({ responseCode: 403, responseMessage: 'Please enter pageId' }); }
+         else {
             var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
             var obj = {
                 pageId: req.body.pageId,
@@ -3060,13 +3049,15 @@ module.exports = {
     },
 
     "blockPage": function(req, res) {
-        createNewPage.findByIdAndUpdate({ _id: req.params.pageId }, { $set: { status: 'BLOCK' } }, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }) } else { res.send({ responseCode: 200, responseMessage: "Page Blocked successfully." }); }
+        createNewPage.findByIdAndUpdate({ _id: req.params.id }, { $set: { status: 'BLOCK' } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }) }
+             else { res.send({ responseCode: 200, responseMessage: "Page Blocked successfully." }); }
         });
     },
 
     "unBlockPage": function(req, res) {
-        createNewPage.findByIdAndUpdate({ _id: req.params.pageId }, { $set: { status: 'ACTIVE' } }, { new: true }, function(err, result) {
+        createNewPage.findByIdAndUpdate({ _id: req.params.id }, { $set: { status: 'ACTIVE' } }, { new: true }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }) } else { res.send({ responseCode: 200, responseMessage: "Page unblocked successfully." }); }
         });
     },
@@ -3168,6 +3159,17 @@ module.exports = {
                 });
             })
     },
+
+    // "homePageAds": function(req, res){
+    //      var obj = {
+    //                     firstName: req.body.firstName,
+    //                     lastName: req.body.lastName,
+    //                     email: req.body.email,
+    //                     password: req.body.password,
+    //                     type: 'SYSTEMADMIN'
+    //                 };
+
+    // }
 
     "uploads": function(req, res) {
         console.log(req.files);
