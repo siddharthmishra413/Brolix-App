@@ -109,10 +109,15 @@ $(window).scrollTop(0,0);
 
 	$scope.userInfo=function(id){
 		console.log(JSON.stringify(id))
-		$("#userInfo").modal('show');
 		userService.userInfo(id).then(function(success) { 
-			//console.log(JSON.stringify($scope.userDetail))
-					$scope.userDetail=success.data.result
+			 // console.log(JSON.stringify(success))
+                    if(success.data.responseCode == 200){
+                        $scope.userDetail=success.data.result
+                        $("#userInfo").modal('show');
+                    }
+                    else{
+                        toastr.error(success.data.responseMessage)
+                    }
 					//console.log(JSON.stringify($scope.userDetail))
         		},function(err){
 			        //console.log(err);
@@ -124,11 +129,16 @@ $(window).scrollTop(0,0);
 
 	$scope.adInfo=function(id){
 		console.log("adInfoId>>>"+JSON.stringify(id))
-		$("#adInfo").modal('show');
 		userService.adInfo(id).then(function(success) { 
 			//console.log(JSON.stringify($scope.userDetail))
-					$scope.userDetail=success.data.result;
-					//console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
+                    if(success.data.responseCode == 200){
+                        $scope.userDetail=success.data.result;
+                        $("#adInfo").modal('show');
+                        //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
+                    }
+                    else{
+                        toastr.error(success.data.responseMessage)
+                    }
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
@@ -138,20 +148,30 @@ $(window).scrollTop(0,0);
 	//******************** top 50 Buyers *********************
 
 	$scope.top_50_dollarsBuyers=function(){
-			$("#top_50_buyers").modal('show');
 			userService.top_50_dollarsBuyers().then(function(success) { 
-					$scope.userDetail=success.data.result;
-					//console.log(JSON.stringify(success.data.result))
+                    if(success.data.responseCode == 200){
+                        $scope.userDetail=success.data.result;
+                        $("#top_50_buyers").modal('show');
+                        //console.log(JSON.stringify(success.data.result))
+                    }
+    				else{
+                        toastr.error(success.data.responseMessage);
+                    }	
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
 		    })
 	}
 	$scope.top_50_brolixBuyers=function(){
-			$("#top_50_buyers").modal('show');
 			userService.top_50_brolixBuyers().then(function(success) { 
-					$scope.userDetail=success.data.result;
-					//console.log(JSON.stringify(success.data.result))
+                    if(success.data.responseCode == 200){
+                        $scope.userDetail=success.data.result;
+                        $("#top_50_buyers").modal('show');
+                        //console.log(JSON.stringify(success.data.result))
+                    }
+                    else{
+                        toastr.error(success.data.responseMessage)
+                    }
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
@@ -183,10 +203,15 @@ $(window).scrollTop(0,0);
 	//************************Top 50 Ads ***********************
 
 	$scope.top_50_Ads=function(){
-		$("#top_50_Ads").modal('show');
 			userService.top_50_Ads().then(function(success) { 
-					$scope.adsDetail=success.data.result;
-					console.log("top 50 Ads>>>>>>>>>>>>"+JSON.stringify(success))
+                // console.log("top 50 Ads>>>>>>>>>>>>"+JSON.stringify(success))
+                    if(success.data.responseCode == 200){
+                        $scope.adsDetail=success.data.result;
+                        $("#top_50_Ads").modal('show');
+                    }
+                    else{
+                        toastr.error(success.data.responseMessage);
+                    }
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
@@ -197,10 +222,15 @@ $(window).scrollTop(0,0);
 	//********************** page Name *************************
 
 	$scope.pageInfo=function(id){
-		$("#pageInfo").modal('show');
 		userService.pageInfo(id).then(function(success) { 
-					$scope.pageDetail=success.data.result
-					//console.log(JSON.stringify($scope.pageDetail))
+                    if(success.data.responseCode == 200){
+                        $scope.pageDetail=success.data.result;
+                        $("#pageInfo").modal('show');
+                        //console.log(JSON.stringify($scope.pageDetail))
+                    }
+                    else{
+                        toastr.error(success.data.responseMessage);
+                    }
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
@@ -212,31 +242,44 @@ $(window).scrollTop(0,0);
 
 	$scope.upgradeCardUsedAd=function(id){
 		//console.log(JSON.stringify(id))
-		$("#luckCardUsedAd").modal('show');
+		
 		var data = {
 					"upgradeId":id
 					}
 		//console.log(JSON.stringify(data))
 		userService.upgradeCardUsedAd(data).then(function(success) { 
-					$scope.usedAd=success.data.result;
-					//$scope.img=$scope.usedAd.coverImage;
-					//console.log("dadaddadadaa",JSON.stringify(success))
+            // console.log("dadaddadadaa",JSON.stringify(success))
+                        if(success.data.responseCode == 200){
+                            $scope.usedAd=success.data.result;
+                            $("#luckCardUsedAd").modal('show');
+                            //$scope.img=$scope.usedAd.coverImage;
+                        }
+                        else{
+                            toastr.error(success.data.responseMessage);
+                        }
+					
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
 		    }) 
 	}
 	$scope.luckCardUsedAd=function(id){
-		//console.log(JSON.stringify(id))
-		$("#luckCardUsedAd").modal('show');
 		var data = {
 					"luckId":id
      			}
 		//console.log(JSON.stringify(data))
-		userService.luckCardUsedAd(data).then(function(success) { 
-					$scope.usedAd=success.data.result;
-					$scope.img=$scope.usedAd[0].coverImage;
-					//console.log(JSON.stringify($scope.usedAd))
+		userService.luckCardUsedAd(data).then(function(success) {
+                    console.log(JSON.stringify(success))
+                     if(success.data.responseCode == 200){
+                        $scope.usedAd=success.data.result;
+                        for(i=0;i<success.data.result.length;i++){
+                            $scope.img=$scope.usedAd[i].coverImage;
+                        }   
+                        $("#luckCardUsedAd").modal('show');
+                     }
+                     else{
+                        toastr.error(success.data.responseMessage);
+                     }
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
@@ -248,21 +291,26 @@ $(window).scrollTop(0,0);
 
 	$scope.upgradePayment=function(id){
 			userService.upgradeCardPayment(id).then(function(success) {
-				$scope.upgradeUsedAd=[];
-				$scope.upgradeCardObject =[];
-					$("#upgradePayment").modal('show'); 
-					//console.log(JSON.stringify(success.data.result))
-					for(i=0;i<success.data.result.length;i++) {
-							for(j=0;j<success.data.result[i].UpgradeUsedAd.length;j++){
-								 $scope.upgradeUsedAd.push(success.data.result[i].upgradeUsedAd[j].adId);
-								 //console.log(JSON.stringify($scope.upgradeUsedAd))
-							}
-                        	for(k=0;k<success.data.result[i].upgradeCardObject.length;k++){
-                        		$scope.upgradeCardObject.push(success.data.result[i].upgradeCardObject[k]);
-                        		//console.log(JSON.stringify($scope.upgradeCardObject))
-                        	}
-                            
-                        }
+                console.log(JSON.stringify(success.data.responseCode))
+                    if(success.data.responseCode == 200){
+                        $scope.upgradeUsedAd=[];
+                        $scope.upgradeCardObject =[];
+                        $("#upgradePayment").modal('show'); 
+                        for(i=0;i<success.data.result.length;i++) {
+                                for(j=0;j<success.data.result[i].UpgradeUsedAd.length;j++){
+                                     $scope.upgradeUsedAd.push(success.data.result[i].upgradeUsedAd[j].adId);
+                                     //console.log(JSON.stringify($scope.upgradeUsedAd))
+                                }
+                                for(k=0;k<success.data.result[i].upgradeCardObject.length;k++){
+                                    $scope.upgradeCardObject.push(success.data.result[i].upgradeCardObject[k]);
+                                    //console.log(JSON.stringify($scope.upgradeCardObject))
+                                }
+                                
+                            }
+                    }
+                    else{
+                        toastr.error(success.data.responseMessage);
+                    }
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
@@ -270,21 +318,27 @@ $(window).scrollTop(0,0);
 	}
 	$scope.luckPayment=function(id){
 			userService.luckCardPayment(id).then(function(success) {
-				$scope.luckUsedAd=[];
-				$scope.luckCardObject=[];
-					$("#luckPayment").modal('show'); 
-					//console.log(JSON.stringify(success.data.result))
-					for(i=0;i<success.data.result.length;i++) {
-							for(j=0;j<success.data.result[i].luckUsedAd.length;j++){
-								 $scope.luckUsedAd.push(success.data.result[i].luckUsedAd[j].adId);
-								 //console.log(JSON.stringify($scope.luckUsedAd))
-							}
-                        	for(k=0;k<success.data.result[i].luckCardObject.length;k++){
-                        		$scope.luckCardObject.push(success.data.result[i].luckCardObject[k]);
-                        		//console.log(JSON.stringify($scope.luckCardObject))
-                        	}
-                            
-                        }
+                    if(success.data.responseCode == 200){
+                        $scope.luckUsedAd=[];
+                        $scope.luckCardObject=[];
+                        $("#luckPayment").modal('show'); 
+                        //console.log(JSON.stringify(success.data.result))
+                        for(i=0;i<success.data.result.length;i++) {
+                                for(j=0;j<success.data.result[i].luckUsedAd.length;j++){
+                                     $scope.luckUsedAd.push(success.data.result[i].luckUsedAd[j].adId);
+                                     //console.log(JSON.stringify($scope.luckUsedAd))
+                                }
+                                for(k=0;k<success.data.result[i].luckCardObject.length;k++){
+                                    $scope.luckCardObject.push(success.data.result[i].luckCardObject[k]);
+                                    //console.log(JSON.stringify($scope.luckCardObject))
+                                }
+                                
+                            }
+                    }
+                    else{
+                        toastr.error(success.data.responseMessage)
+                    }
+				
         		},function(err){
 			        //console.log(err);
 			         toastr.error('Connection error.');
@@ -321,12 +375,16 @@ $(window).scrollTop(0,0);
     $scope.pageCount=function(id){
         //console.log(JSON.stringify(id))
         $scope.page=[];
-        $("#Pages").modal('show');
         userService.pageCount(id).then(function(success) { 
-                    for(i=0;i<success.data.result.length;i++){
-                        $scope.page.push(success.data.result[0]);
+                    if(success.data.responseCode == 200){
+                         $("#Pages").modal('show');
+                            for(i=0;i<success.data.result.length;i++){
+                                $scope.page.push(success.data.result[0]);
+                            }
                     }
-                     //console.log("pages>>>>>>"+JSON.stringify($scope.page))
+                    else{
+                        toastr.error(success.data.responseMessage);
+                    }
                 },function(err){
                     //console.log(err);
                      toastr.error('Connection error.');
@@ -503,106 +561,106 @@ $(window).scrollTop(0,0);
 
 	// ******************DashBoard Filters *********************
 
-	$scope.dashBordFilter = function(){
+	// $scope.dashBordFilter = function(){
 
-			    var type = localStorage.getItem('userTypeName');
-			    $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
-			    $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
-			    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
-			    //console.log("date",$scope.dashBordFilter.country);
-			    var data = {};
-			        data = {
-			            userType:localStorage.getItem('userTypeName'),
-			            country:$scope.country,
-			            state:$scope.dashBordFilter.state,
-			            city:$scope.dashBordFilter.cities,
-			            gender:$scope.dashBordFilter.gender,
-			            ageTo:$scope.dashBordFilter.ageTo,
-			            ageFrom:$scope.dashBordFilter.ageFrom,
-			            joinTo:$scope.dobTo,
-			            joinFrom:$scope.dobFrom,
-			        }
-			        //console.log("datatata",data)
+	// 		    var type = localStorage.getItem('userTypeName');
+	// 		    $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
+	// 		    $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
+	// 		    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
+	// 		    //console.log("date",$scope.dashBordFilter.country);
+	// 		    var data = {};
+	// 		        data = {
+	// 		            userType:localStorage.getItem('userTypeName'),
+	// 		            country:$scope.country,
+	// 		            state:$scope.dashBordFilter.state,
+	// 		            city:$scope.dashBordFilter.cities,
+	// 		            gender:$scope.dashBordFilter.gender,
+	// 		            ageTo:$scope.dashBordFilter.ageTo,
+	// 		            ageFrom:$scope.dashBordFilter.ageFrom,
+	// 		            joinTo:$scope.dobTo,
+	// 		            joinFrom:$scope.dobFrom,
+	// 		        }
+	// 		        //console.log("datatata",data)
 
-			    switch (type)
-			            {
-			                case 'totalUsers':
-			                //console.log("1"); 
-			                    userService.userfilter(data).success(function(res){
-			                        $scope.totalUser = res.data;
-			                        //console.log("ressssssss1",JSON.stringify($scope.totalUser));
-			                    })
+	// 		    switch (type)
+	// 		            {
+	// 		                case 'totalUsers':
+	// 		                //console.log("1"); 
+	// 		                    userService.userfilter(data).success(function(res){
+	// 		                        $scope.totalUser = res.data;
+	// 		                        //console.log("ressssssss1",JSON.stringify($scope.totalUser));
+	// 		                    })
 			                    
-			                break;
+	// 		                break;
 
-			                case 'personalUsers': 
-			                //console.log("2");
-			                    userService.userfilter(data).success(function(res){
-			                        $scope.personalUser = res.data;
-			                        //console.log("ressssssss2",JSON.stringify($scope.personalUser));
-			                    })
+	// 		                case 'personalUsers': 
+	// 		                //console.log("2");
+	// 		                    userService.userfilter(data).success(function(res){
+	// 		                        $scope.personalUser = res.data;
+	// 		                        //console.log("ressssssss2",JSON.stringify($scope.personalUser));
+	// 		                    })
 			                    
-			                break;
+	// 		                break;
 
-			                case 'businessUsers': 
-			                //console.log("3");
-			                    userService.userfilter(data).success(function(res){
-			                        $scope.businessUser = res.data;
-			                        //console.log("ressssssss3",JSON.stringify($scope.businessUser));
-			                    })
+	// 		                case 'businessUsers': 
+	// 		                //console.log("3");
+	// 		                    userService.userfilter(data).success(function(res){
+	// 		                        $scope.businessUser = res.data;
+	// 		                        //console.log("ressssssss3",JSON.stringify($scope.businessUser));
+	// 		                    })
 			                    
-			                break;
+	// 		                break;
 
-			                case 'liveUsers': 
-			                //console.log("4");
-			                    userService.userfilter(data).success(function(res){
-			                        $scope.liveUser = res.data;
-			                        //console.log("ressssssss4",JSON.stringify($scope.liveUser));
-			                    })
+	// 		                case 'liveUsers': 
+	// 		                //console.log("4");
+	// 		                    userService.userfilter(data).success(function(res){
+	// 		                        $scope.liveUser = res.data;
+	// 		                        //console.log("ressssssss4",JSON.stringify($scope.liveUser));
+	// 		                    })
 			                    
-			                break;
+	// 		                break;
 
-			                case 'totalWinners': 
-			                //console.log("5");
-			                    userService.userfilter(data).success(function(res){
-			                        $scope.totalWinners = res.data;
-			                       // console.log("ressssssss5",JSON.stringify($scope.totalWinners));
-			                    })
+	// 		                case 'totalWinners': 
+	// 		                //console.log("5");
+	// 		                    userService.userfilter(data).success(function(res){
+	// 		                        $scope.totalWinners = res.data;
+	// 		                       // console.log("ressssssss5",JSON.stringify($scope.totalWinners));
+	// 		                    })
 			                    
-			                break;
+	// 		                break;
 
-			                case 'cashWinners':
-			                //console.log("6"); 
-			                    userService.userfilter(data).success(function(res){
-			                        $scope.cashWinners = res.data;
-			                        //console.log("ressssssss6",JSON.stringify($scope.cashWinners));
-			                    })
+	// 		                case 'cashWinners':
+	// 		                //console.log("6"); 
+	// 		                    userService.userfilter(data).success(function(res){
+	// 		                        $scope.cashWinners = res.data;
+	// 		                        //console.log("ressssssss6",JSON.stringify($scope.cashWinners));
+	// 		                    })
 			                    
-			                break;
+	// 		                break;
 
-			                case 'couponWinners': 
-			                //console.log("7");
-			                    userService.userfilter(data).success(function(res){
-			                        $scope.couponWinners = res.data;
-			                        //console.log("ressssssss7",JSON.stringify($scope.couponWinners));
-			                    })
+	// 		                case 'couponWinners': 
+	// 		                //console.log("7");
+	// 		                    userService.userfilter(data).success(function(res){
+	// 		                        $scope.couponWinners = res.data;
+	// 		                        //console.log("ressssssss7",JSON.stringify($scope.couponWinners));
+	// 		                    })
 			                    
-			                break;
+	// 		                break;
 
-			                case 'blockedUsers': 
-			                //console.log("8");
-			                    userService.userfilter(data).success(function(res){
-			                        $scope.blockedUsers = res.data;
-			                       ///console.log("ressssssss8",JSON.stringify($scope.blockedUsers));
-			                    })
+	// 		                case 'blockedUsers': 
+	// 		                //console.log("8");
+	// 		                    userService.userfilter(data).success(function(res){
+	// 		                        $scope.blockedUsers = res.data;
+	// 		                       ///console.log("ressssssss8",JSON.stringify($scope.blockedUsers));
+	// 		                    })
 			                    
-			                break;
+	// 		                break;
 			                
-			                default: 
-			                toastr.error("something went wrong");
-			            }
+	// 		                default: 
+	// 		                toastr.error("something went wrong");
+	// 		            }
 
-    }
+ //    }
 
 
 $scope.export = function(){

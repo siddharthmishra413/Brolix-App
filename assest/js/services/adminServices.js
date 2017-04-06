@@ -364,7 +364,7 @@ app.service('userService',function($http){
     },
      giftFilter: function(data){
      return $http.post(baseurl+'/admin/giftsFilter', data);
-   }
+   },
 
   
 

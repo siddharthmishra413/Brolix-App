@@ -53,31 +53,28 @@ $scope.changeImage = function(input,type) {
 	 }	
  }
     
-    $scope.changePass = function() {
+      $scope.changePass = function() {
       var data = {
-      	userid:$scope.adminId,
-        oldpass:$scope.myForm.oldpassword,  
-        newpass:$scope.myForm.password,   
+        "userid":$scope.adminId,
+        "oldpass":$scope.myForm.oldpassword,  
+        "newpass":$scope.myForm.password,   
       }
         console.log(data);  
-       userService.changePass(data).then(function(success){    
+       userService.changePass(data).then(function(ObjS){    
        console.log(JSON.stringify(success)) 
-        if(success.data.response_code==200){
-          console.log(success.data.response_message);
-          $state.go('header.manageUsers');
-          toastr.success(success.data.response_message);  
+        if(ObjS.responseCode==200){
+          $state.go('login');
+          toastr.success(ObjS.responseMessage);  
         }else{
-        console.log(success.data.response_message);
-         toastr.error(success.data.response_message);  
+         toastr.error(ObjS.responseMessage);  
         }
-        console.log((success));
       },function(err){
        console.log("err----->"+err)
          toastr.error('Connection error.');  
       });   
     }
     
-   $scope.editProfile = function() {
+    $scope.editProfile = function() {
       var id=$scope.adminId;
       var data = {
            "firstName":$scope.myForm.firstName,
@@ -85,17 +82,14 @@ $scope.changeImage = function(input,type) {
            "image":$scope.myFrom.image           
           }
         console.log(data);  
-       userService.editAdminProfile(id,data).then(function(success) {    
+       userService.editAdminProfile(id,data).then(function(ObjS) {    
        console.log(JSON.stringify(success)) 
-        if(success.data.code==200){
-          console.log(success.data.message);
+        if(ObjS.responseCode==200){
           $state.go('login');
-          toastr.success(success.data.message);  
+          toastr.success(ObjS.responseMessage);  
         }else{
-        console.log(success.data.message);
-         toastr.error(success.data.message);  
+         toastr.error(success.responseMessage);  
         }
-        console.log((success));
       },function(err){
        console.log("err----->"+err)
          toastr.error('Connection error.');  

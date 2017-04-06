@@ -73,6 +73,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                var updateDate = new Date($scope.viewUserProfile.dob);
                $scope.viewUserProfile.dob = moment(updateDate).format('MM/DD/YYYY');
                $scope.viewUserProfile.coufgdntry=$scope.viewUserProfile.country;
+               
                $scope.viewUserProfile.statedfd=$scope.viewUserProfile.state;
                console.log('state->   '+$scope.viewUserProfile.statedfd);
                $scope.viewUserProfile.citysds=$scope.viewUserProfile.city;
