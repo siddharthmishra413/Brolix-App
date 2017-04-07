@@ -21,7 +21,11 @@ var createEventsSchema = new Schema({
         type: String,
         trim: true
     },
-    eventDate: {
+    eventStartDate: {
+        type: Date,
+        trim: true
+    },
+    eventEndDate: {
         type: Date,
         trim: true
     },
@@ -29,7 +33,11 @@ var createEventsSchema = new Schema({
         type: String,
         trim: true
     },
-    eventTime: {
+    eventStartTime: {
+        type: String,
+        trim: true
+    },
+    eventEndTime: {
         type: String,
         trim: true
     },

@@ -129,7 +129,7 @@ module.exports = {
                     responseMessage: 'Internal server error'
                 });
             } else {
-                res.status(200).send({
+                res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Users show successfully."
@@ -146,7 +146,7 @@ module.exports = {
                     responseMessage: 'Internal server error'
                 });
             } else {
-                res.status(200).send({
+                res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Users show successfully."
@@ -164,7 +164,7 @@ module.exports = {
                     responseMessage: 'Internal server error'
                 });
             } else {
-                res.status(200).send({
+                res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Users show successfully."
@@ -1662,7 +1662,7 @@ module.exports = {
     },
 
     "PagesAdmins": function(req, res) {
-        createNewPage.find({status:'ACTIVE'}, function(err, result) {
+        createNewPage.find({ status: 'ACTIVE' }, function(err, result) {
             var array = [];
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
                 for (var i = 0; i < result.length; i++) {
