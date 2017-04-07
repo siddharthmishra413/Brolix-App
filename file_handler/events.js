@@ -3,34 +3,32 @@ var createEvents = require("./model/createEvents");
 module.exports = {
 
     "createEvent": function(req, res) {
+        console.log("request-->>>", JSON.stringify(req.body))
         var event = new createEvents(req.body);
         event.save(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                // User.findByIdAndUpdate({ _id: req.body.userId }, {
-                //     $set: {
-                //         type: "Advertiser"
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Event create successfully."
+                });
+                // createEvents.find({ userId: req.body.userId, status: "ACTIVE" }).exec(function(err, result1) {
+                //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                //      else if (!result1) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
+                //         res.send({
+                //             result: result,
+                //             responseCode: 200,
+                //             responseMessage: "All event show successfully."
+                //         })
                 //     }
-                // }, { new: true }).exec(function(err, results) {})
-                // res.send({
-                //     result:result,
-                //     responseCode: 200,
-                //     responseMessage: "Event create successfully."
-                // });
-                createEvents.find({ userId: req.body.userId, status: "ACTIVE" }).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "All event show successfully."
-                    })
-                })
+                // })
             }
         })
     },
 
     //API for create Page
     "showAllEvents": function(req, res) {
-        createEvents.find({ userId: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
+        createEvents.find({ _id: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,

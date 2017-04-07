@@ -62,7 +62,7 @@ var createNewPageSchema = new mongoose.Schema({
     totalRating: [{
         userId: { type: String },
         rating: { type: Number },
-        date:{type: Date}
+        date: { type: Date }
     }],
     permissions: [],
     linkSocialListObject: [{
@@ -71,12 +71,12 @@ var createNewPageSchema = new mongoose.Schema({
         link: { type: String }
     }],
     adAdmin: [{
-        userId: { type: String },
+        userId: { type: String, ref: 'brolixUser' },
         type: { type: String }
     }],
-    adAdminCount:{
-        type:Number,
-        default:0
+    adAdminCount: {
+        type: Number,
+        default: 0
     },
     pageFollowersUser: [{
         userId: { type: String, ref: 'brolixUser' }
@@ -112,20 +112,22 @@ var createNewPageSchema = new mongoose.Schema({
         type: String
     },
     state: {
-        type:String
+        type: String
     },
-    city:{
-        type:String
+    city: {
+        type: String
     },
-    adsCount:{
-     type: Number,
-     default:0
+    adsCount: {
+        type: Number,
+        default: 0
     },
-    winnersCount:{
-     type: Number,
-     default:0
+    winnersCount: {
+        type: Number,
+        default: 0
     },
-    socialMedia:[],
+    socialMedia: [],
+    countryCode:{ type:String},
+    locationDescription:{type:String},
     createdAt: {
         type: Date,
         default: Date.now
