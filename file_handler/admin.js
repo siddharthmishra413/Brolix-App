@@ -3061,7 +3061,8 @@ module.exports = {
                     console.log("data-->>", data)
                     for (var i = 0; i < userArray.length; i++) {
                         User.update({ _id: userArray[i] }, { $push: { luckCardObject: data } }, { multi: true }, function(err, result1) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } 
+                            else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
                                 // callback(null)
                             }
                         })
@@ -3180,6 +3181,19 @@ module.exports = {
             }
         })
     },
+  
+   "liveUser": function(req, res) {
+         User.find({status:'ACTIVE'}).exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'Internal server error' }); } else {
+                 res.send({
+                     result: result,
+                     responseCode: 200,
+                     responseMessage: "Ad removed successfully."
+                 });
+             }
+
+         })
+     }
 
 
 }

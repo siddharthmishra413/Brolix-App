@@ -2,42 +2,29 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 
-var cardsSchema = new Schema({
+// type : brolixPerFreeCouponAds, brolixPerFreeCashAds, brolixPerUpgradedCashAds, brolixForInvitation
+// type : viewerPriceForCashAds,  brolixFeeForCashAds, storeCouponPriceForFreeAds, storeCouponPriceForUpgradedAds
+// type :  freeViewersPerCouponAds, freeViewersPerCashAds
+
+
+var brolixAndDollors = new Schema({
+    userId: {
+        type: String
+    },
     type: {
-        type: String,
-        trim: true
+        type: String
     },
-    brolix: {
+    value: {
         type: Number
     },
-    chances: {
-        type: Number
-    },
-    viewers: {
-        type: Number
-    },
-    price: {
-        type: Number
+    authorType: {
+        type: String
     },
     createdAt: {
         type: Date,
         default: Date.now
-    },
-    photo:{
-        type:String
-    },
-    offer:[{
-        offerType:{type:String},
-        buyCard:{type:Number},
-        freeCard:{type:Number},
-        offerTime:{type:Date},
-        status:{type:String,default:"active"},
-        createdAt:{type:Date,default:Date.now()}   
-        }],
-    status:{
-        type:String,
-        default:"active"
     }
-},{ versionKey: false });
-var cardsAdmin = mongoose.model('cardsAdmin', cardsSchema);
-module.exports = cardsAdmin;
+});
+
+var brolixAndDollors = mongoose.model('brolixAndDollors', brolixAndDollors);
+module.exports = brolixAndDollors;
