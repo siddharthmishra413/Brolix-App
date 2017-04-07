@@ -369,7 +369,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                        <input type="text" class="form-control" ng-model="test1" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -389,7 +389,7 @@
                 </thead>
                 <tbody>
                     <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
-                    <tr ng-repeat="x in totalUser | manageUsersFilter:test">
+                    <tr ng-repeat="x in totalUser | manageUsersFilter:test1">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -445,7 +445,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <input type="text" class="form-control" ng-model="test1" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -466,7 +466,7 @@
                 </thead>
                 <tbody>
                     <!-- <tr ng-repeat="x in personalUser |filter:test"> -->
-                    <tr ng-repeat="x in personalUser | manageUsersFilter:test">
+                    <tr ng-repeat="x in personalUser | manageUsersFilter:test1">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -617,7 +617,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in liveUser  |manageUsersFilter:test">
+                    <tr ng-repeat="x in liveUser">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -692,7 +692,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalWinners | manageUsersFilter:test">
+                    <tr ng-repeat="x in totalWinners">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -769,7 +769,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in cashWinners |manageUsersFilter:test">
+                    <tr ng-repeat="x in cashWinners">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -844,7 +844,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in couponWinners | manageUsersFilter:test">
+                    <tr ng-repeat="x in couponWinners">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -897,7 +897,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in allblockUser |manageUsersFilter:test">
+                    <tr ng-repeat="x in allblockUser">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>

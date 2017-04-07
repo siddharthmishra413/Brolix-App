@@ -1568,12 +1568,29 @@ $scope.dashBordFilter = function(){
 
     }
 })
- 
+ /*----------ManageUserCustomFilter----------*/
+
+// app.filter("manageUsersFilter",function() {
+//      return function(items,nameValue) {
+//         console.log(JSON.stringify(items))
+//         console.log(nameValue)
+//        if (!nameValue) {
+//          return retArray = items;
+//          }
+//          var retArray = [];
+//            for(var i=0;i<items.length;i++) 
+//                 { 
+//                  if(items[i].firstName) {
+//                 if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].mobileNumber.toString().substr(0,nameValue.length) == nameValue.toString()) {
+//                     retArray.push(items[i]);
+//                 }
+//         }}
+//            return retArray
+//         } 
+//  })
+
 app.filter("manageUsersFilter",function() {
-    alert('a')
-     return function(items,nameValue) {
-        console.log(items);
-        console.log(nameValue);
+     return function(items,nameValue){
        if (!nameValue) {
          return retArray = items;
          }
@@ -1584,8 +1601,8 @@ app.filter("manageUsersFilter",function() {
                     retArray.push(items[i]);
                 }
            }
-           return retArray;
+           return retArray
         } 
- });
+ })
 
 

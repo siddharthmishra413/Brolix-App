@@ -5,12 +5,64 @@ $(window).scrollTop(0,0);
  $scope.tab = 'totalads';
 $scope.dashBordFilter = {};
  $scope.sendMessage = {};
+ $scope.myForm = {};
 
   $scope.sendMessagePage = function (modal) {
         $scope.modalId = modal;
         $scope.modelData = modal;
       $("#sendMessageModelAllUser").modal('show');
  }
+
+  $scope.showPageDetails = function(id){
+        console.log("id---------"+id);
+        userService.pageInfo(id).success(function(res) {
+             console.log("Show(res.result)",JSON.stringify(res.result))
+           $scope.allpageInfo = res.result;
+            $("#pageDetails").modal('show');
+          console.log("$scope.allpageInfo",JSON.stringify($scope.allpageInfo))
+             //console.log("$scope.allpageInfo",JSON.stringify(res))
+            //    console.log("$scope.allpageInfo",JSON.stringify(res.result))
+        })
+    }
+     $scope.adInfo=function(id){
+        console.log("adInfoId>>>"+JSON.stringify(id))
+        userService.adInfo($scope.myForm.checkId).then(function(success) { 
+            //console.log(JSON.stringify($scope.userDetail))
+                    $scope.userDetail=success.data.result;
+                    $("#adInfo").modal('show');
+                    console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
+                },function(err){
+                    console.log(err);
+                     toastr.error('Connection error.');
+            }) 
+    }
+
+         $scope.reportOnAd=function(id){
+        console.log("reportOnAdId>>>"+JSON.stringify(id))
+        userService.showReportOnAd($scope.myForm.checkId).then(function(success) { 
+            //console.log(JSON.stringify($scope.userDetail))
+                    $scope.userDetail=success.data.result;
+                    $("#adReport").modal('show');
+                    console.log("reportOnAd>>>>>>>>>>>>>"+JSON.stringify(success))
+                },function(err){
+                    console.log(err);
+                     toastr.error('Connection error.');
+            }) 
+    }
+
+        $scope.soldCoupon=function(id){
+         console.log("soldCouponId>>>"+JSON.stringify(id))
+         $("#soldCouponDetails").modal('show');
+         userService.soldCoupon(id).then(function(success) {
+         //console.log(JSON.stringify($scope.userDetail))
+         $scope.brolixCoupon=success.data.result;
+        console.log("soldCoupon>>>>>>>>>>>>>"+JSON.stringify(success))
+          },function(err){
+          console.log(err);
+        toastr.error('Connection error.');
+           })
+    }
+
 
 /*-------------------------Message send to all contact winners---------------------*/
     
@@ -228,7 +280,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     });
   var countryCode;
     $scope.changeCountry = function(){
-        console.log('Country:   '+JSON.stringify($scope.dashBordFilter.country))
+        //console.log('Country:   '+JSON.stringify($scope.dashBordFilter.country))
       for(var i=0;i<$scope.countriesList.length;i++){
         if($scope.countriesList[i].name==$scope.dashBordFilter.country){
           countryCode=$scope.countriesList[i].code;
@@ -283,7 +335,7 @@ userService.totalAds().success(function(res) {
         }else {
             $scope.totalAds = res.result;
             $scope.totalAdscount = res.count;
-            //console.log(JSON.stringify(res))
+            console.log(JSON.stringify(res))
         }
     }).error(function(status, data) {
 
@@ -431,7 +483,7 @@ $scope.dashBordFilter = function(){
     $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
     $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
     $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
-    console.log("date",$scope.dashBordFilter.country);
+    //console.log("date",$scope.dashBordFilter.country);
     var data = {};
         data = {
             adsType:localStorage.getItem('adsTypeName'),
@@ -543,8 +595,8 @@ $scope.dashBordFilter = function(){
 
 app.filter("manageAdsFilter",function() {
    return function(items,nameValue){
-   console.log(JSON.stringify(nameValue))
-   console.log(JSON.stringify(items))
+   //console.log(JSON.stringify(nameValue))
+   //console.log(JSON.stringify(items))
      if (!nameValue) {
        return retArray = items;
        }

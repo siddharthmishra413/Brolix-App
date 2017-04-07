@@ -95,7 +95,7 @@
                                         <div class="form-group cus-select" > 
                                            <select class="form-control" ng-change="changeCountry('1')" ng-model="dashBordFilter.country" required>
                                             <option value="">Select Country</option>
-                                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                                            <option ng-repeat="country in countriesList" >{{country.name}}</option>
                                          </select>
                                         </div>
                                     </div>
@@ -334,7 +334,7 @@
                                         <div class="form-group cus-select"> 
                                             <select class="form-control" id="country" ng-model="myFrom.country" ng-change="changeCountry('2')" required>
                                             <option value="">Select Country</option>
-                                            <option value="{{country.code}}" ng-repeat="country in brolixCountryList">{{country.name}}</option>
+                                            <option  ng-repeat="country in brolixCountryList">{{country.name}}</option>
                                         </select>
                                         </div>
                                     </div>
@@ -343,7 +343,7 @@
                                             <div class="form-group cus-select"> 
                                             <select class="form-control" id="region" ng-model="myFrom.state" ng-change="changeState('2')" required>
                                             <option value="">Select State</option>
-                                            <option value="{{state.region}}" ng-repeat="state in state2List">{{state.region}}</option>
+                                            <option  ng-repeat="state in state2List" >{{state.region}}</option>
                                           </select>
                                         </div>
                                         </div>
@@ -462,9 +462,13 @@
                    <table class="table table-bordered table-striped">                         
                           <tr>
                               <th>Buyer Name</th>
+                              <th>Email</th>
+                              <th>Mobile Number</th>
                           </tr>
                           <tr ng-repeat="buyer in userDetail">
-                            <td >{{buyer.firstName+" "+buyer.lastName}}</td>
+                            <td>{{buyer.firstName+" "+buyer.lastName}}</td>
+                            <td >{{buyer.email}}</td>
+                            <td>{{buyer.mobileNumber}}</td>
                           </tr>
                          
                   </table></div>
@@ -575,28 +579,31 @@
            <div class="modal-body">
                <form name="userFrom1">
                <div class="table-responsive cus-table">
-                   <table class="table table-bordered table-striped">                         
-                          <tr>
-                              <th>Page Name</th>
-                              <td>{{usedAd[0].pageName}}</td>
-                          </tr>
-                          <tr>
-                              <th>category</th>
-                              <td>{{usedAd[0].category}}</td>
-                          </tr>
-                          <tr>
-                              <th>subCategory</th>
-                              <td>{{usedAd[0].subCategory}}</td>
-                          </tr>
-                          <tr>
-                              <th>adsType</th>
-                              <td>{{usedAd[0].adsType}}</td>
-                          </tr>
-                          <tr>
-                              <th>coverImage</th>
-                              <td><img src="{{usedAd[0].coverImage}}" /></td>
-                          </tr>
-                  </table></div>
+                   <!-- <table class="table table-bordered table-striped" >                          -->
+                          <div class="gift-images" ng-repeat="usedAd in usedAd">
+                                    <img src="{{usedAd.coverImage}} " style="height:300px;" class="img-responsive">
+                                    <div class="gift-images-data">
+                                        <div class="top-row-c1">
+                                            <div class="top-row-c1-left">
+                                                <h4>{{usedAd.pageName}}</h4>
+                                                <div class="cus-date-c1"><label>Valid Thus : </label><span>{{usedAd.couponExipryDate |date:'MMMM dd, yyyy'}}</span></div>
+                                            </div>
+                                            <div class="top-row-c1-right">
+                                                <div class="c1-used">{{usedAd.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+                                            </div>
+                                            <div class="middle-row-c1">
+                                                <h3>Gift Description</h3>
+                                                <p>{{usedAd.giftDescription}}</p>
+                                            </div>
+                                            <div class="middle-row-c1">
+                                                <h3>Price</h3>
+                                                <p>{{usedAd.couponSellPrice}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                      </div></div>
                </form>
            </div>
        </div>
@@ -697,7 +704,7 @@
            </div><div style="height:400px;">
            <div class="col-sm-12">
                                 <div class="gift-images">
-                                    <img src="../dist/image/trolltunga.jpg " style="height:300px;" class="img-responsive">
+                                    <img src="{{userDetail.coverImage}}" style="height:300px;" class="img-responsive">
                                     <div class="gift-images-data">
                                         <div class="top-row-c1">
                                             <div class="top-row-c1-left">
@@ -716,21 +723,7 @@
                                                 <h3>Price</h3>
                                                 <p>{{userDetail.couponSellPrice}}</p>
                                             </div>
-                                            <!-- <div class="middle-row-c1">
-                                                <h3>Buyers</h3>
-                                                <p>{{userDetail.couponBuyersLength}}</p>
-                                            </div> -->
                                         </div>
-                                        <!-- <div class="bottom-row-c1">
-                                            <ul>
-                                                <li><i class="fa fa-expand" aria-hidden="true"></i><span>Exchange|<span style="color:red;display: inline;">off</span></span></li>
-                                                <li><i class="fa fa-heart" aria-hidden="true"></i><span>0</span></li>
-                                                <li><i class="fa fa-envelope" aria-hidden="true"></i><span>0</span></li>
-                                                <li><i class="fa fa-thumb-tack" aria-hidden="true"></i><span>Request</span></li>
-                                                <li><i class="fa fa-paperclip" aria-hidden="true"></i><span>Use</span></li>
-                                                <li><i class="fa fa-expand" aria-hidden="true"></i><span>Send</span></li>
-                                            </ul>
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -747,25 +740,33 @@
            </div>
            <div class="modal-body">
                <form name="userFrom1">
-               <div class="table-responsive cus-table"> 
-                   <table class="table table-bordered table-striped">                         
-                          <tr>
-                              <th>Ads Type</th>
-                              <th>Image</th>
-                              <th>Category</th>
-                              <th>Page Name</th>
-                          </tr>
-                          <tr ng-repeat="ads in adsDetail">
-                              <td >{{ads.adsType}}</td>
-                              <td ><img src="{{ads.coverImage}}" style="height: 100px; width:100px;"/></td>
-                              <td >{{ads.category}}</td>
-                              <td >{{ads.pageName}}</td>
-                          </tr>
-                          <tr ng-if="adsDetail== 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
-                  </table>
-                  </div>
-               </form>
-           </div>
+               <div class="col-sm-12" ng-repeat="ads in adsDetail">
+                                <div class="gift-images">
+                                    <img src="{{ads.coverImage}}" style="height:300px;" class="img-responsive">
+                                    <div class="gift-images-data">
+                                        <div class="top-row-c1">
+                                            <div class="top-row-c1-left">
+                                                <h4>{{ads.pageName}}</h4>
+                                                <h4>Type: {{ads.adsType}}</h4>
+                                                <div class="cus-date-c1"><label>Valid Thus : </label><span>{{ads.couponExipryDate }}</span></div>
+                                            </div>
+                                            <div class="top-row-c1-right">
+                                                <div class="c1-used">Status: {{ads.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+                                                <!-- <div class="c1-share"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</div> -->
+                                            </div>
+                                            <div class="middle-row-c1">
+                                                <h3>Gift Description</h3>
+                                                <p>{{ads.giftDescription}}</p>
+                                            </div>
+                                            <div class="middle-row-c1">
+                                                <h3>Category</h3>
+                                                <p>{{ads.category}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
        </div>
    </div>
 </div>

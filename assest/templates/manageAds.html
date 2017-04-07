@@ -3,14 +3,14 @@
         <div class="row ">
             <div class="col-md-9 col-sm-6 dwd-border-l">
                 <div class="box-block blk-blue">
-                    <div class="widget widget-stats divi-blk">
+                   <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Total Ads</div>
                             <div class="total-amt">{{totalAdscount}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='totalads'">
-                                <a>Show</a>
+                                <a ng-click="adsTypeName('totalAds')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <a ng-click="sendMessagePage()">Contact Admins</a>
@@ -26,7 +26,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='activeads'">
-                                <a>Show</a>
+                                <a ng-click="adsTypeName('totalActiveAds')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <a ng-click="sendMessagePage()">Contact Admins</a>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='expiredAds'">
-                                <a>Show</a>
+                                <a ng-click="adsTypeName('totalExpiredAds')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <a ng-click="sendMessagePage()">Contact Admins</a>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='showReportedAd'">
-                                <a>Show</a>
+                                <a ng-click="adsTypeName('showReportedAd')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <a ng-click="sendMessagePage()">Contact Admins</a>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='adsWithLinks'">
-                                <a>Show</a>
+                                <a ng-click="adsTypeName('adsWithLinks')"> Show</a>
                             </div>
                             <div class="btn-manage">
                                 <a ng-click="sendMessagePage()">Contact Admins</a>
@@ -90,7 +90,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='videoAds'">
-                                <a>Show</a>
+                                <a ng-click="adsTypeName('videoAds')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <a ng-click="sendMessagePage()">Contact Admins</a>
@@ -106,7 +106,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='slideShowAds'">
-                                <a>Show</a>
+                                <a ng-click="adsTypeName('slideShowAds')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <a ng-click="sendMessagePage()">Contact Admins</a>
@@ -122,7 +122,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='adUpgradedByDollor'">
-                                <a>Show</a>
+                                <a ng-click="adsTypeName('adUpgradedByDollor')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <a ng-click="sendMessagePage()">Contact Admins</a>
@@ -138,7 +138,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='adUpgradedByBrolix'">
-                                <a>Show</a>
+                                <a ng-click="adsTypeName('adUpgradedByBrolix')">Show</a>
                             </div>
                             <div class="btn-manage">
                                 <a ng-click="sendMessagePage()">Contact Admins</a>
@@ -153,27 +153,13 @@
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage show-btn w-100" ng-click="tab='topFiftyAds'">
-                                    <a>Show</a>
+                                    <a ng-click="adsTypeName('topFiftyAds')">Show</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-              </div>
-                
-                <!--<div class="box-block  blk-drkgren">
-                    <div class="widget widget-stats divi-blk">
-                        <div class="top-box">
-                            <div class="total-add">Top</div>
-                            <div class="total-amt">{{topFiftyAdscount}}</div>
-                        </div>
-                        <div class="bottom-box">
-                            <div class="btn-manage"  ng-click="tab='topFiftyAds'">
-                                <a>Show</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
+                 </div>
+
            <div class="col-md-3 col-sm-6 dwd-border">
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
@@ -187,23 +173,23 @@
                          <select class="form-control"  ng-change="changeState(); dashBordFilter(dashBordFilter.state);"  ng-model="dashBordFilter.state" required>
                             <option value="">Select State</option>
                             <option ng-repeat="state in stateList">{{state.region}}</option>
-                         </select> 
+                         </select>
                     </div>
                     <div class="form-group cus-select">
                          <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
                             <option ng-repeat="city in cityList">{{city.city}}</option>
-                         </select> 
+                         </select>
                     </div>
                    <div class="form-group cus-select">
                         <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">  
+                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">
                         </div>
                     </div>
 
                     <div class="form-group cus-select">
                         <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth"> 
+                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth">
                         </div>
                     </div>
                 </div>
@@ -235,10 +221,10 @@
         <div class="row-search">
             <ul>
                 <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Ad</a>
+                    <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(x._id)">View Ad</a>
                 </li>
                 <li class="">
-                    <a data-toggle="tab"   style="cursor: pointer;" ng-href="#header/editAds">Edit Ad</a>
+                    <a data-toggle="tab">Edit Ad</a>
                 </li>
                  <li class="">
                     <a data-toggle="tab">Remove Ad</a>
@@ -271,6 +257,7 @@
                 <thead>
                     <tr>
                         <th></th>
+
                         <th>PAGE NAME</th>
                         <th>OWNER MOBILE</th>
                         <th>AD REPORTS</th>
@@ -285,11 +272,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="soldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -594,3 +581,184 @@
         </div>
     </div>
 </div>
+
+<div id="pageDetails" class="modal fade" >
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Page Details</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Page Type</th>
+                                        <th>Page Name</th>
+                                        <th>Category</th>
+                                        <th>Sub Category</th>
+                                        <th>Page Discription</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="x in allpageInfo |filter:test">
+                                        <td class="skyblue-text">{{x.pageType}}</td>
+                                        <td class="skyblue-text">{{x.pageName}}</td>
+                                        <td class="skyblue-text">{{x.category}}</td>
+                                        <td class="skyblue-text">{{x.subCategory}}</td>
+                                        <td class="skyblue-text">{{x.pageDiscription}}</td>
+                                        <td class="skyblue-text">{{x.status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="adInfo" class="modal fade" >
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Ads Detail</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                     <tr>
+                                         <th>Category</th>
+                                        <td class="skyblue-text">{{userDetail.category}}</td>
+                                     </tr>
+                                     <tr>
+                                        <th>Sub Category</th>
+                                        <td class="skyblue-text">{{userDetail.subCategory}}</td>
+                                     </tr>  
+                                     <tr>
+                                        <th>Ad Type</th>
+                                        <td class="skyblue-text">{{userDetail.adContentType}}</td>
+                                     </tr>
+                                     <tr>   
+                                        <th>Cover Image</th>                               
+                                        <td class="skyblue-text"><img ng-src="{{userDetail.coverImage}}"height="50px" ></td>
+                                     </tr>  
+                                     <tr>                                       
+                                        <th>Status</th>
+                                        <td class="skyblue-text">{{userDetail.status}}</td>
+                                     </tr>
+                                     <tr>                                      
+                                        <th>CreatedAt</th>
+                                        <td class="skyblue-text">{{userDetail.createdAt | date:'MM-dd-yyyy'}}</td>
+                                     </tr>   
+                                     <tr>
+                                        <th>Updated At</th>
+                                        <td class="skyblue-text">{{userDetail.updatedAt | date:'MM-dd-yyyy'}}</td>
+                                     </tr>   
+                                     <tr>
+                                        <th>Reports on Ad</th>
+                                        <td class="skyblue-text">{{userDetail.reportOnAd}}</td>
+                                    </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="soldCouponDetails" class="modal fade" >
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Sold Coupon Details Details</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="tableData" class="table table-bordered table-striped">
+                                            <thead>
+                                              <tr>
+                                                <th>Page Name</th>
+                                                <th>Page Owner</th>
+                                                <th>Page Admins</th>
+                                                <th>Buyer Name</th>
+                                                <th>Sold Coupon</th>
+                                                <th>Coupon Price</th>
+                                                <th>Ad</th>
+                                                <th>Coupon Status</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="Coupon in brolixCoupon |filter:test" >
+                                                <td class="skyblue-text" ng-click="pageInfo(Coupon.coupon.pageId._id)">{{Coupon.coupon.pageId.pageName}}</td>
+                                                <td class="skyblue-text" ng-click="userInfo(Coupon.coupon.pageId.userId._id)">{{Coupon.coupon.pageId.userId.firstName+" "+Coupon.coupon.pageId.userId.lastName}}</td>
+                                                <td class="skyblue-text" ng-click="pageCount(Coupon._id)">{{Coupon.coupon.pageId.adAdminCount}}</td>
+                                                <td class="skyblue-text" ng-click="userInfo(Coupon._id)">{{Coupon.firstName+" "+Coupon.lastName}}</td>
+                                                <td class="skyblue-text" ng-click="adInfo(Coupon.coupon.adId._id)">View</td>
+                                                <td >{{Coupon.coupon.adId.couponSellPrice}}B</td>
+                                                <td class="skyblue-text" ng-click="adInfo(Coupon.coupon.adId._id)">View</td>
+                                                <td >{{Coupon.coupon.adId.couponStatus}}</td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                        </div>
+                    </div>
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+
+
+<div id="adReport" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Ad report Information</h4>
+           </div>
+                <div style="height:400px;">
+                      <div class="col-sm-12">
+                          <div class="gift-images-data">
+                                  <table id="manageUserTable" class="table table-bordered table-striped">
+                                     <tr>
+                                         <th>Ads Type</th>
+                                        <td class="skyblue-text">{{userDetail.adsType}}</td>
+                                     </tr>
+                                     <tr>
+                                        <th>Coupon Status</th>
+                                        <td class="skyblue-text">{{userDetail.couponStatus}}</td>
+                                     </tr>  
+                                     <tr>
+                                        <th>Expiry date</th>
+                                        <td class="skyblue-text">{{userDetail.couponExipryDate |date:'MMMM dd, yyyy'}}</td>
+                                     </tr>
+                                     <tr>   
+                                        <th>Cover Image</th>                               
+                                        <td class="skyblue-text"><img ng-src="{{userDetail.coverImage}}"height="50px" ></td>
+                                     </tr>  
+                                     <tr>                                       
+                                        <th>Gift Description</th>
+                                        <td class="skyblue-text">{{userDetail.giftDescription}}</td>
+                                     </tr>
+                                </table>
+                           </div>
+                      </div>
+                </div>
+           </div>
+       </div>
+</div>     

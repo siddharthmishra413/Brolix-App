@@ -177,6 +177,24 @@ app.service('userService',function($http){
     topFiftyAds: function(id) {
       return $http.get(baseurl+'/admin/topFiftyAds');
     },
+    pageInfo: function(id) {
+      return $http.get(baseurl+'/admin/pageInfo/'+id);
+    },
+
+    adInfo: function(id) {
+     return $http.get(baseurl+'/admin/adInfo/' +id);
+    },
+
+    soldCoupon: function(id) {
+     return $http.get(baseurl+'/admin/soldCoupon'+id);
+    },
+
+    showReportOnAd: function(id) {
+     return $http.get(baseurl+'/admin/showReportOnAd/'+id);
+    },
+    adsfilter: function(data){
+      return $http.post(baseurl+'/admin/adsfilter', data);
+    },
 
     //Url : http://localhost:8082/admin/adsWithLinks
 
