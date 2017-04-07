@@ -229,19 +229,27 @@ app.service('userService',function($http){
     // },
 
     allstatefind: function(data) {
-      return $http.post('/admin/allstatefind', data);
+      return $http.post(baseurl+'/admin/allstatefind', data);
     },
 
     sendMassageAllUser: function(data) {
-      return $http.post('/admin/messageBroadcast', data);
+      return $http.post(baseurl+'/admin/messageBroadcast', data);
     },
 
     sendBrolixAndCashAllUser: function(data) {
-      return $http.post('/admin/sendCashBrolix', data);
+      return $http.post(baseurl+'/admin/sendCashBrolix', data);
     },
 
     sendCouponTOUSers: function(data) {
-      return $http.post('/admin/sendCouponTOUSers', data);
+      return $http.post(baseurl+'/admin/sendCouponTOUSers', data);
+    },
+
+    sendUpgradeCardTOUsers: function(data) {
+      return $http.post(baseurl+'/admin/sendUpgradeCardTOUsers', data);
+    },
+
+    sendLuckCardTOUsers: function(data) {
+      return $http.post(baseurl+'/admin/sendLuckCardTOUsers', data);
     },
 
     BlockUser: function(userId) {
@@ -448,6 +456,12 @@ app.service('userService',function($http){
     pageCount: function(id){
       return $http.get(baseurl+'/admin/showUserPage/'+id);
     },
+    filterDollars: function(data){
+    return $http.post(baseurl+'/admin/dollorPaymentFilter',data);
+   },
+    filterBrolix: function(data){
+    return $http.post(baseurl+'/admin/brolixPaymentFilter',data);
+   },
 
     /*Admin Tool Section*/
 
@@ -513,3 +527,7 @@ app.service('userService',function($http){
   }
 
 });
+
+
+ 
+   

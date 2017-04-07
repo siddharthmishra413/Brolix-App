@@ -88,7 +88,7 @@
                                                 <span style="color:red;" ng-show="userFrom.phone.$dirty && userFrom.phone.$invalid">
                                                 <span ng-show="userFrom.phone.$error.required">Phone Number is required.</span> 
                                                 <span ng-show="userFrom.phone.$error.minlength">Must have at atleast 10 digits.</span>
-                                                <span ng-show="userFrom.phone.$error.manlength">Must have at at most 10 digits.</span>
+                                                <span ng-show="userFrom.phone.$error.maxlength">Must have at most 10 digits.</span>
                                                 <span ng-show="userFrom.phone.$error.pattern">Only Numbers are allowed.</span>
                                             </div>
                                         </div>
@@ -108,7 +108,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid"  ng-click="click('Step1')">Next</a>
+                                        <button class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid"  ng-click="click('Step1')">Next</button>
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                     </div>
                                 </fieldset>
@@ -130,28 +130,29 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Add New Page</h3>
                 </div>
-                <div class="panel-body">
-                    <div class="cover-image" >
-                        <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || '../dist/image/cover.jpg'}}" id="output">
-                        <label class="fileContainer">
-                            Choose File
-                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" accept="image/*">
-                        </label>
-                    </div>
+                <form class="form-block" role="form" name="myFrom">
+                    <div class="panel-body">
+                        <div class="cover-image" >
+                            <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || '../dist/image/cover.jpg'}}" id="output" >
+                            <label class="fileContainer">
+                                Choose File
+                            <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" accept="image/*" required>
+                            </label>
+                        </div>
 
-                    <div class="page-image clearfix">
-                        <img class="profile-user-img img-responsive" src="{{myForm.userphoto || '../dist/image/user-image.jpeg'}}" id="output">
-                        <label class="fileContainer">
-                            Choose File
-                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'userImage')" accept="image/*">
-                        </label>
-                    </div>
+                        <div class="page-image clearfix">
+                            <img class="profile-user-img img-responsive" src="{{myForm.userphoto || '../dist/image/user-image.jpeg'}}" id="output">
+                            <label class="fileContainer">
+                                Choose File
+                            <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'userImage')" accept="image/*" required>
+                            </label>
+                        </div>
 
-                    <div class="btn2 text-center">
-                        <a class="btn btn-lg btn-green" ng-click="click('Step2')">Next</a>
-                        <a class="btn btn-lg btn-green" ng-click="cancel('Step2')">Cancel</a>
+                        <div class="btn2 text-center">
+                            <button class="btn btn-lg btn-green" ng-disabled="myFrom.$invalid" ng-click="click('Step2')">Next</button> 
+                        </div>
                     </div>
-                </div>
+                    </form>
             </div>
         </div>
     </div>
@@ -164,11 +165,11 @@
             <div class="outer-block cus-addnew-page">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
+                        <h3 class="panel-title">Add Social Media</h3>
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
-                            <form class="form-block" role="form">
+                            <form class="form-block" role="form" name="myForm">
                                 <fieldset>
                                     <div class="form-group">
                                         <div class="row">
@@ -178,12 +179,12 @@
                                                     <div class="col-cell">
                                                         <select class="form-control" ng-model="myForm.socialMedia" name="social" required>
                                                             <option value="">Select Social Media</option>
-                                                            <option value="Select Social Media1">Select Social Media1</option>
-                                                            <option value="Select Social Media2">Select Social Media2</option>
-                                                            <option value="Select Social Media3">Select Social Media3</option>
+                                                            <option value="Select Social Media1">Gmail</option>
+                                                            <option value="Select Social Media2">Facebook</option>
+                                                            <option value="Select Social Media3">Twitter</option>
                                                         </select>
-                                                        <span class="error" ng-show="myForm.social.$dirty && myForm.social.$invalid">
-                                                             <span class="error" ng-show="myForm.social.$error.required">Please Select a Social Media</span>
+                                                        <span style="color:red;" class="error" ng-show="myForm.social.$dirty && myForm.social.$invalid">
+                                                             <span style="color:red;" class="error" ng-show="myForm.social.$error.required">Please Select a Social Media</span>
                                                         </span> 
                                                     </div>
                                                     <div class="col-cell add-remove">
@@ -227,7 +228,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-click="click('Step3')">Next</a>
+                                        <button class="btn btn-lg btn-green" ng-disabled="myForm.$invalid" ng-click="click('Step3')">Next</button>
                                         <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
                                     </div>
                                 </fieldset>
@@ -246,15 +247,15 @@
             <div class="outer-block cus-addnew-page">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
+                        <h3 class="panel-title">Add Page Admin</h3>
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
-                            <form class="form-block" role="form" >
+                            <form class="form-block" role="form" name="myForm">
                                 <fieldset>
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="control-label col-md-12">Add New Page</label>
+                                            <label class="control-label col-md-12">Add Page Admin</label>
                                             <div class="col-sm-8">
                                                 <div class="row-table">
                                                     <div class="col-cell">
@@ -262,8 +263,8 @@
                                                             <option value="">Select</option>
                                                             <option ng-repeat="page in pageAdmin" value="{{page}} " >{{page.firstName}} {{page.lastName}}</option>
                                                         </select>
-                                                        <span class="error" ng-show="myForm.pages.$dirty && myForm.pages.$invalid">
-                                                             <span class="error" ng-show="myForm.pages.$error.required">Please Select a Page</span>
+                                                        <span style="color:red;" class="error" ng-show="myForm.pages.$dirty && myForm.pages.$invalid">
+                                                             <span style="color:red;" class="error" ng-show="myForm.pages.$error.required">Please Select a Page</span>
                                                         </span> 
                                                     </div>
                                                     <div class="col-cell add-remove">
@@ -292,7 +293,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-click="submitt()">Add Pages</a>
+                                        <button class="btn btn-lg btn-green" ng-disabled="myForm.$invalid" ng-click="submitt()">Add Pages</button> 
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step4')">Cancel</a>
                                     </div>
                                 </fieldset> 

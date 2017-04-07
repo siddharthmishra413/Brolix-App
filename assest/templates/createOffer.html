@@ -6,77 +6,76 @@
                     </div>
                     <div class="panel-body">
                         <div class="offer-block">
-                            <form class="form-block" role="form"  name="createOffer">
+                            <form class="form-block" role="form" name="createOffer">
                                 <div class="radio-tab">
                                     <div class="radio-btn">
                                         <label>
-                                            <input type="radio" name="radio" value="upgradeCard" ng-model="myForm.cardType" checked>&nbsp; Upgrade Card
+                                            <input type="radio" name="radio" value="upgradeCard" ng-model="createOffer.cardType" required>&nbsp; Upgrade Card
                                         </label>
                                         <label>
-                                            <input type="radio" name="radio" value="luckCard" ng-model="myForm.cardType">&nbsp; Luck Cards
+                                            <input type="radio" name="radio" value="luckCard" ng-model="createOffer.cardType" required>&nbsp; Luck Cards
                                         </label>
-                                     </div>
-                                 </div>
+                                    </div>
+                                </div>
                                 
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <select class="form-control" ng-model="myForm.offerType">
+                                                <select class="form-control" ng-model="createOffer.offerType">
                                                     <option value="">Please select the offer type</option>
                                                     <option value="discount">Discount</option>
-                                                    <option value="buyGet">Buy & Get/option>
+                                                    <option value="buyGet">Buy & Get</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
 
-                                <div ng-show="myForm.offerType=='discount'">   
+                                <div ng-show="createOffer.offerType=='discount'">   
                                     <div class="form-group">
                                         <div class="row">
-                                          <label class="control-label col-sm-3">Buy Cards</label>
+                                            <label class="control-label col-sm-3">Buy Cards</label>
                                             <div class="col-sm-5">
                                                 <div class="input-group">
-                                                  <input ng-model="myForm.buyCard" type="tel" name="buyCard" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="50" required>
-                                                  <span class="input-group-addon" id="basic-addon2">%</span>
+                                                  <input ng-model="createOffer.buyCard" type="tel" name="buyCard" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="50" required>
                                                 </div>
-                                                  <span style="color:red;" ng-show="createOffer.buyCard.$dirty && createOffer.buyCard.$invalid">
-                                                  <span  ng-show="createOffer.buyCard.$error.required">Buy cards is required.</span> 
-                                                  <span ng-show="createOffer.buyCard.$error.pattern">Only number are allowed.</span>
-                                             </div>
-                                         </div>
+                                                    <span style="color:red;" ng-show="createOffer.buyCard.$dirty && createOffer.buyCard.$invalid">
+                                                    <span ng-show="createOffer.buyCard.$error.required">Buy cards is required.</span> 
+                                                    <span ng-show="createOffer.buyCard.$error.pattern">Only number are allowed.</span> 
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-sm-3">Offer Time</label>
                                             <div class="col-sm-5">
-                                                <div class="input-group">
-                                                  <input ng-model="myForm.offerTime" type="tel" name="offerTimes" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="48" required>
-                                                  <span class="input-group-addon txt-sm" id="basic-addon2">Hours</span>
-                                                </div>
-                                                  <span style="color:red;" ng-show="createOffer.offerTimes.$dirty && createOffer.offerTimes.$invalid">
-                                                  <span  ng-show="createOffer.offerTimes.$error.required">Offer time is required.</span> 
-                                                  <span ng-show="createOffer.offerTimes.$error.pattern">Only number are allowed.</span>
+                                              <div class="input-group">
+                                                 <input ng-model="createOffer.offerTime" type="tel" name="offerTime" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" placeholder="48" required>
                                               </div>
-                                            </div>
+                                                <span style="color:red;" ng-show="createOffer.offerTime.$dirty && createOffer.offerTime.$invalid">
+                                                <span ng-show="createOffer.offerTime.$error.required">Offer Time is required.</span> 
+                                                <span ng-show="createOffer.offerTime.$error.pattern">Only number are allowed.</span> 
+                                             </div>
                                         </div>
+                                    </div>
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a  class="btn btn-lg btn-green" ng-disabled="createOffer.$invalid" ng-click="createOffer(myForm.cardType)">Next</a>
+                                        <a  class="btn btn-lg btn-green" ng-click="createOffer(createOffer.cardType)" ng-disabled="createOffer$invalid">Next</a>
                                         <a  class="btn btn-lg btn-green">Cancel</a>
                                     </div>
                                 </div>
                                 
-                                <div ng-show="myForm.offerType=='buyGet'">
+                                <div ng-show="createOffer.offerType=='buyGet'">
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-sm-3">Buy Cards</label>
                                             <div class="col-sm-5">
-                                                  <input ng-model="myForm.buyCard" type="tel" name="buyCards" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" required>
-                                                <span style="color:red;" ng-show="createOffer.buyCards.$dirty && createOffer.buyCards.$invalid">
-                                                <span  ng-show="createOffer.buyCards.$error.required">Buy cards is required.</span> 
-                                                <span style="color:red;" ng-show="createOffer.buyCards.$error.pattern">Only number are allowed.</span>
+                                                <input ng-model="createOffer.buyCard" name="buyCard" type="tel" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" required>
                                             </div>
+                                                <span style="color:red;" ng-show="createOffer.buyCard.$dirty && createOffer.buyCard.$invalid">
+                                                <span ng-show="createOffer.buyCard.$error.required">Buy card is required.</span> 
+                                                <span ng-show="createOffer.buyCard.$error.pattern">Only number are allowed.</span> 
                                         </div>
                                     </div>
 
@@ -84,11 +83,11 @@
                                         <div class="row">
                                             <label class="control-label col-sm-3">Get Free Cards</label>
                                             <div class="col-sm-5">
-                                               <input ng-model="myForm.freeCard" type="tel" name="freeCard" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" required>
-                                                <span style="color:red;" ng-show="createOffer.freeCard.$dirty && createOffer.freeCard.$invalid">
-                                                <span  ng-show="createOffer.freeCard.$error.required">Get free cards is required.</span> 
-                                                <span style="color:red;" ng-show="createOffer.freeCard.$error.pattern">Only number are allowed.</span>
+                                                <input ng-model="createOffer.freeCard" type="tel" name="freeCard" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" required>
                                             </div>
+                                                <span style="color:red;" ng-show="createOffer.freeCard.$dirty && createOffer.freeCard.$invalid">
+                                                <span ng-show="createOffer.freeCard.$error.required">Get free card is required.</span> 
+                                                <span ng-show="createOffer.freeCard.$error.pattern">Only number are allowed.</span> 
                                         </div>
                                     </div>
                                     
@@ -97,20 +96,19 @@
                                             <label class="control-label col-sm-3">Offer Time</label>
                                             <div class="col-sm-5">
                                                 <div class="input-group">
-                                                  <input ng-model="myForm.offerTime" type="text" name="offerTime" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="48" required>
+                                                  <input ng-model="createOffer.offerTime" type="tel" name="offerTime" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" placeholder="48" required>
                                                   <span class="input-group-addon txt-sm" id="basic-addon2">Hours</span>
                                                 </div>
-                                                <span style="color:red;" ng-show="createOffer.offerTime.$dirty && createOffer.offerTime.$invalid">
-                                                <span  ng-show="createOffer.offerTime.$error.required">Offer time is required.</span> 
-                                            <span style="color:red;" ng-show="createOffer.offerTime.$error.pattern">Only number are allowed.</span>
-                                                </div>
+                                                  <span style="color:red;" ng-show="createOffer.offerTime.$dirty && createOffer.offerTime.$invalid">
+                                                  <span ng-show="createOffer.offerTime.$error.required">Offer Time is required.</span> 
+                                                  <span ng-show="createOffer.offerTime.$error.pattern">Only number are allowed.</span> 
                                             </div>
                                         </div>
-                              
+                                    </div>
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a  class="btn btn-lg btn-green"  ng-disabled="createOffer.$invalid " ng-click="createOffer(myForm.cardType)">Next</a>
+                                        <a  class="btn btn-lg btn-green" ng-click="createOffer(createOffer.cardType)" ng-disabled="createOffer.$invalid">Next</a>
                                         <a  class="btn btn-lg btn-green">Cancel</a>
                                     </div>
                                 </div>
@@ -175,7 +173,7 @@
                             <li class="active"><a data-toggle="pill" >Luck Card</a></li>
                         </ul>
                         <div class="tab-content add-card">
-                            <div id="home" class="tab-pane fade in active" >
+                            <div id="home" class="tab-pane fade in active">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="remove-card-block" >
@@ -202,3 +200,6 @@
             </div>
         </div>
     </div>
+
+
+    

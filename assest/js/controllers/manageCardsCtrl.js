@@ -417,6 +417,86 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         }
         
     })
+
+    $scope.userInfo=function(id) {
+    console.log(JSON.stringify(id))
+    userService.userInfo(id).then(function(success) { 
+        console.log(JSON.stringify(success))
+                if(success.data.responseCode == 200) {
+                        $scope.userDetail=success.data.result
+                        $("#userInfo").modal('show');
+                        console.log(JSON.stringify($scope.userDetail))
+                 } 
+                 else{
+                    toastr.error(success.data.responseMessage)
+                 }
+             },function(err){
+            console.log(err);
+            toastr.error('Connection error.');
+           }) 
+    }
+
+     $scope.pageCount=function(id) {
+        console.log(JSON.stringify(id))
+        $scope.page=[];
+        userService.pageCount(id).then(function(success) { 
+            if(success.data.responseCode == 200) {
+                    for(i=0;i<success.data.result.length;i++){
+                        $scope.page.push(success.data.result[0]);
+                    }
+                     console.log("pages>>>>>>"+JSON.stringify($scope.page))
+                     $("#Pages").modal('show');
+                 }
+                 else{
+                    toastr.error(success.data.responseMessage)
+                 }
+                },function(err){
+                    console.log(err);
+                     toastr.error('Connection error.');
+            }) 
+    }
+    
+    $scope.upgradeCardUsedAd=function(id){
+        console.log(JSON.stringify(id))
+        var data = {
+                    "upgradeId":id
+                    }
+        console.log(JSON.stringify(data))
+        userService.upgradeCardUsedAd(data).then(function(success) { 
+              if(success.data.responseCode == 200) {
+                    $scope.usedAd=success.data.result;
+                    //$scope.img=$scope.usedAd.coverImage;
+                    $("#luckCardUsedAd").modal('show');
+                  }else{
+                    toastr.error(success.data.responseMessage)
+                 }
+                },function(err){
+                    console.log(err);
+                     toastr.error('Connection error.');
+            }) 
+    }
+
+
+    $scope.luckCardUsedAd=function(id){
+        console.log(JSON.stringify(id))
+        var data = {
+                    "luckId":id
+                }
+        console.log(JSON.stringify(data))
+        userService.luckCardUsedAd(data).then(function(success) { 
+                 if(success.data.responseCode == 200) {
+                    $scope.usedAd=success.data.result;
+                    $scope.img=$scope.usedAd[0].coverImage;
+                    $("#luckCardUsedAd").modal('show');
+                   }else{
+                    toastr.error(success.data.responseMessage)
+                 }
+                },function(err){
+                    console.log(err);
+                     toastr.error('Connection error.');
+            }) 
+    }
+
   $scope.cardTypeName = function(val) {
         console.log(val)
          localStorage.setItem('cardTypeName',val);
@@ -541,7 +621,7 @@ app.filter("manageCardsFilter",function() {
                {
                 retArray.push(items[i])
                }
-             }  
+          }
          return retArray;
-        }
+     }
 });

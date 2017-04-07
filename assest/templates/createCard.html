@@ -52,8 +52,8 @@
                                 </fieldset>
                             </form>
                             <div class="btn2 text-center">
-                                <a class="btn btn-lg btn-green"  ng-disabled="createCard.image=='../dist/image/cover.jpg' || crtCard.$invalid " ng-click="addCard('upgrade_card')">Save</a>
-                                <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
+                                <button class="btn btn-lg btn-green"  ng-disabled="createCard.image=='../dist/image/cover.jpg' || crtCard.$invalid " ng-click="addCard('upgrade_card')">Save</button>
+                                <a class="btn btn-lg btn-green" ng-click="Reset('upgrade')">Cancel</a>
                             </div>
                         </div>
                        
@@ -97,8 +97,8 @@
                                             </div>
                                         </div>
                                      <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-click="addCard('luck_card')" ng-disabled="createCard.image2=='../dist/image/cover.jpg' || crtCard2.$invalid ">Save</a>
-                                        <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
+                                        <button class="btn btn-lg btn-green" ng-click="addCard('luck_card')" ng-disabled="createCard.image2=='../dist/image/cover.jpg' || crtCard2.$invalid ">Save</button> 
+                                        <a ng-click="Reset('luck')" class="btn btn-lg btn-green">Cancel</a>
                                     </div>
                                 </fieldset>
                             </form>

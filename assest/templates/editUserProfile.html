@@ -103,9 +103,12 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Country</label>
                                             <div class="col-md-9">
-                                                <select class="form-control" ng-change="changeCountry(viewUserProfile.country);" ng-model="viewUserProfile.coufgdntry" required>
+                                               <!--  <select class="form-control" ng-change="changeCountry(viewUserProfile.country);" ng-model="viewUserProfile.coufgdntry" required>
                                                     <option>Select Country</option>
                                                     <option ng-repeat="country in countriesList">{{country.name}}</option>
+                                                 </select> -->
+                                                  <select class="form-control" ng-change="changeCountry(viewUserProfile.country);" ng-model="viewUserProfile.name" ng-option="viewUserProfile.name as list.name for list in countriesList" required>
+                                                   
                                                  </select>
                                                 <span style="color:red;" ng-show="userFrom.country.$dirty && userFrom.country.$invalid">
                                                 <span ng-show="userFrom.country.$error.required">Country is required.</span>  

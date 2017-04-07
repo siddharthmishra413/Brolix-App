@@ -23,7 +23,6 @@ app.controller('addSystemUserCtrl', function($scope, $window, userService, $stat
         })
 
     $scope.showtable = function() {
-
         $scope.Systemuser=true;
         $scope.tableData=false;
     }
@@ -32,10 +31,10 @@ app.controller('addSystemUserCtrl', function($scope, $window, userService, $stat
         //console.log("1")
         var data=[];
        angular.forEach($scope.myFrom.permissions,function(value,key){
-          data.push(key);
+          data.push(value);
        })
        $scope.myFrom.permissions=data;
-       //console.log("data",$scope.myFrom);
+       console.log("data",$scope.myFrom);
        userService.createSystemUser($scope.myFrom).success(function(res) {
         //console.log("res",res)
             if (res.responseCode == 404) {

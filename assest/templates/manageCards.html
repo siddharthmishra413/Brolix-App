@@ -247,7 +247,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test.firstName" placeholder="Search By Buyer Name">
+                        <input type="text" class="form-control" ng-model="test" maxlength="15" ng-maxlength="15" placeholder="Search By Buyer Name" required>
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -272,16 +272,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldUpgradeCard |manageCardsFilter:test">
+                    <tr ng-repeat="x in totalSoldUpgradeCard | manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
                         <td >{{x.upgradeCardObject.viewers}} Viewers</td>
                         <td >{{x.upgradeCardObject.cash}}$</td>
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="buyerDetails(x.id)">{{x.firstName}} {{x.lastName}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="userInfo(x._id)">{{x.firstName}} {{x.lastName}}</td>
                         <td >{{x.email}}</td>
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="">View</td>
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="">{{x.pageCount}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(x._id)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
                     
                 </tbody>
@@ -306,7 +306,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard |manageCardsFilter:test">
+                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard | manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -342,7 +342,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in usedUpgradeCard |manageCardsFilter:test">
+                    <tr ng-repeat="x in usedUpgradeCard | manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -378,7 +378,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unUsedUpgradeCard |manageCardsFilter:test">
+                    <tr ng-repeat="x in unUsedUpgradeCard | manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -415,16 +415,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldLuckCard |manageCardsFilter:test">
+                    <tr ng-repeat="x in totalSoldLuckCard">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
                         <td >{{x.luckCardObject.chances}}</td>
                         <td>{{x.luckCardObject.brolix}}</td>
-                        <td class="skyblue-text" style="cursor: pointer;">{{x.firstName}} {{x.lastName}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="userInfo(x._id)">{{x.firstName}} {{x.lastName}}</td>
                         <td >{{x.mobileNumber}}</td>
-                        <td class="skyblue-text" style="cursor: pointer;">View</td>
-                        <td class="skyblue-text" style="cursor: pointer;">{{x.pageCount}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(x._id)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
                     
                 </tbody>
@@ -449,7 +449,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard |manageCardsFilter:test">
+                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard | manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -485,7 +485,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in usedLuckCard |manageCardsFilter:test">
+                    <tr ng-repeat="x in usedLuckCard | manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -522,7 +522,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unUsedLuckCard |manageCardsFilter:test">
+                    <tr ng-repeat="x in unUsedLuckCard | manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -555,7 +555,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultUpgradeCardDiscount |manageCardsFilter:test">
+                    <tr ng-repeat="x in resultUpgradeCardDiscount">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -585,7 +585,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultUpgradeCardBuyGet |manageCardsFilter:test">
+                    <tr ng-repeat="x in resultUpgradeCardBuyGet">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -601,9 +601,7 @@
         </div>
     </div>
 
-
-
-     <div class="col-sm-12" ng-switch="tab">
+    <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="luckCardOffer">
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
@@ -617,7 +615,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultLuckCardDiscount |manageCardsFilter:test">
+                    <tr ng-repeat="x in resultLuckCardDiscount">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -648,7 +646,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultLuckCardBuyGet |manageCardsFilter:test">
+                    <tr ng-repeat="x in resultLuckCardBuyGet">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -664,8 +662,6 @@
         </div>
     </div>
 </div>
-
-
 
 <!-- upgradeOffer Table -->
 
@@ -684,7 +680,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="x in totalUpgradeOffer |manageCardsFilter:test">
+                <tr ng-repeat="x in totalUpgradeOffer">
                     <td>
                         <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                     </td>
@@ -701,7 +697,117 @@
     </div>
 </div>
 
+<div id="userInfo" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Buyer/Owner Information</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+               <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Buyer/Owner Name</th>
+                              <td>{{userDetail.firstName+" "+userDetail.lastName}}</td>
+                          </tr>
+                          <tr>
+                              <th>Email</th>
+                              <td>{{userDetail.email}}</td>
+                          </tr>
+                          <tr>
+                              <th>Mobile No.</th>
+                              <td>{{userDetail.mobileNumber}}</td>
+                          </tr>
+                          <tr>
+                              <th>Gender</th>
+                              <td>{{userDetail.gender}}</td>
+                          </tr>
+                          <tr>
+                              <th>Country</th>
+                              <td>{{userDetail.country}}</td>
+                          </tr>
+                          <tr>
+                              <th>State</th>
+                              <td>{{userDetail.state}}</td>
+                          </tr>
+                          <tr>
+                              <th>City</th>
+                              <td>{{userDetail.city}}</td>
+                          </tr>
 
+                  </table></div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="Pages" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">All Pages</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+                   <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Page Name</th>
+                          </tr>
+                          <tr ng-repeat="page in page">
+                            <td >{{page.pageName}}</td>
+                          </tr>
+                          <tr ng-if="page.length== 0"><td style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                         
+                  </table></div>
+
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="luckCardUsedAd" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Used Ad Information</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+               <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Page Name</th>
+                              <td>{{usedAd[0].pageName}}</td>
+                          </tr>
+                          <tr>
+                              <th>category</th>
+                              <td>{{usedAd[0].category}}</td>
+                          </tr>
+                          <tr>
+                              <th>subCategory</th>
+                              <td>{{usedAd[0].subCategory}}</td>
+                          </tr>
+                          <tr>
+                              <th>adsType</th>
+                              <td>{{usedAd[0].adsType}}</td>
+                          </tr>
+                          <tr>
+                              <th>coverImage</th>
+                              <td><img src="{{usedAd[0].coverImage}}" /></td>
+                          </tr>
+                  </table></div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
 
 <div id="sendMessageModelAllUser" class="modal fade">
    <div class="modal-dialog cls_pop">

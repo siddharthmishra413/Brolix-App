@@ -16,7 +16,7 @@ app.controller('removeCardCtrl', function($scope, $window, userService, $state, 
     $scope.addcardId = function(id){
       userService.removeCard(id).success(function(res){
         if(res.responseCode ==  200) {
-          toastr.success(res.responseMessage);
+          toastr.success('Card Removed Successfully');
           $state.reload();
         }else{
           toastr.error(res.responseMessage);

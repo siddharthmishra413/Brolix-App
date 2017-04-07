@@ -2,20 +2,20 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     $(window).scrollTop(0, 0);
     $scope.$emit('headerStatus', 'Manage Cards');
     $scope.$emit('SideMenu', 'Manage Cards');
-    $scope.myForm = {};
+    $scope.createOffer = {};
     $scope.first = true;
     $scope.second = false;
     $scope.third = false;
     
 
     $scope.createOffer = function(type){
-        console.log("ddddddddd",$scope.myForm.cardType)
+        console.log("ddddddddd",type)
         if(type=='upgradeCard'){
             $scope.first = false;
             $scope.second = true;
             $scope.third = false;
             userService.viewcard('upgrade_card').success(function(res){
-                console.log("darartara",$scope.myForm);
+                console.log("darartara",$scope.createOffer);
                 $scope.UpgradeCard = res.data;
                 console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
             })  
@@ -24,7 +24,7 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
             $scope.second = false;
             $scope.third = true;
             userService.viewcard('luck_card').success(function(res){
-                console.log("darartara",$scope.myForm);
+                console.log("darartara",$scope.createOffer);
                 $scope.UpgradeCard = res.data;
                 console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
             })
@@ -35,15 +35,15 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     }
 
     $scope.createOfferNext = function(id){
-        $scope.myForm.id = id;
+        $scope.createOffer.id = id;
         var date = new Date().getTime();
-        date = date + $scope.myForm.offerTime*60*60*1000;
+        date = date + $scope.createOffer.offerTime*60*60*1000;
         // var utcDate = new Date(date).toUTCString();
         
-        $scope.myForm.offerTime = date;
+        $scope.createOffer.offerTime = date;
         
-        console.log("$scope.myForm",$scope.myForm);
-        userService.createOffer($scope.myForm).success(function(res){
+        console.log("$scope.createOffer",$scope.createOffer);
+        userService.createOffer($scope.createOffer).success(function(res){
             console.log("dataaaaaaaaaa",res.data)
             if (res.responseCode == 200){
                 $state.go('header.manageCards')

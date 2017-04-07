@@ -2,6 +2,7 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
     $(window).scrollTop(0, 0);
     $scope.$emit('headerStatus', 'Manage User');
     $scope.$emit('SideMenu', 'Manage User');
+    $scope.minDate = new Date().toDateString();
 
     $scope.myFrom = {};
 

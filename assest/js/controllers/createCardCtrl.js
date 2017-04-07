@@ -19,6 +19,23 @@ $scope.createCard.image2='../dist/image/cover.jpg';
             $scope.active_luck_card=true;
       }
     }
+    $scope.Reset = function(type){
+
+        if(type=='upgrade'){
+            $scope.createCard.viewers = "";
+            $scope.createCard.price = "";
+            $scope.createCard.image = '../dist/image/cover.jpg';
+        }
+        else{
+            $scope.createCard.chance = "";
+            $scope.createCard.brolix = "";
+            $scope.createCard.image2 = '../dist/image/cover.jpg';
+
+        }
+
+        
+
+    }
  
     $scope.changeImage = function(input,type) {
       spinnerService.show('html5spinner');  

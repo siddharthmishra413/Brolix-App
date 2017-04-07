@@ -11,13 +11,14 @@ $scope.$emit('SideMenu', 'Manage User');
  $scope.Step2 = false;
 
 userService.adminProfile().success(function(res) {
+  console.log(res);
     	if(res.responseCode == 404){
     		//bootbox.alert(res.responseMessage);
     		$state.go('login')
     	}else {
     		$scope.myFrom = res.result;
             $scope.adminId = $scope.myFrom._id;
-            console.log(res);
+            console.log("admin data",JSON.stringify(res));
     	}
     }).error(function(status, data) {
 
@@ -83,12 +84,12 @@ $scope.changeImage = function(input,type) {
           }
         console.log(data);  
        userService.editAdminProfile(id,data).then(function(ObjS) {    
-       console.log(JSON.stringify(success)) 
-        if(ObjS.responseCode==200){
-          $state.go('login');
-          toastr.success(ObjS.responseMessage);  
+       console.log("llllllllll",JSON.stringify(ObjS)) 
+        if(ObjS.data.responseCode==200){
+          $state.go('header.manageUsers');
+          toastr.success(ObjS.data.responseMessage);  
         }else{
-         toastr.error(success.responseMessage);  
+         toastr.error(ObjS.responseMessage);  
         }
       },function(err){
        console.log("err----->"+err)

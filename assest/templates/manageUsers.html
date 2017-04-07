@@ -369,7 +369,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                        <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -445,7 +445,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -522,7 +522,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -542,7 +542,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in businessUser |manageUsersFilter:test">
+                    <tr ng-repeat="x in businessUser | manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -598,7 +598,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -617,7 +617,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in liveUser |manageUsersFilter:test">
+                    <tr ng-repeat="x in liveUser  |manageUsersFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -673,7 +673,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -825,7 +825,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <input type="text" class="form-control" maxlength="16" ng-maxlength="15" ng-model="test" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -878,7 +878,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -1137,7 +1137,7 @@
                                             </div>
                                         </div>
                                         <div class="col-cell add-remove">
-                                            <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                            <span class="fa fa-send" ng-click="sendCard(data._id,'upgrade')"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -1149,7 +1149,7 @@
                                             </div>
                                         </div>
                                         <div class="col-cell add-remove">
-                                            <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                            <span class="fa fa-send" ng-click="sendCard(data._id,'luck')"></span>
                                         </div>
                                     </div>
                                 </div>

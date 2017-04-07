@@ -17,7 +17,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Page Name</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="pageName" ng-model="viewPageDetails.pageName" placeholder="Enter Page Name" maxlength="31" ng-pattern ="/^[a-zA-Z0-9\s]*$/" ng-maxlength="30" required> 
+                                                <input type="text" class="form-control" name="pageName" ng-model="viewPageDetails.pageName" placeholder="Enter Page Name" maxlength="31" ng-pattern ="/^[a-zA-Z0-9\s]*$/" ng-maxlength="30" required readonly> 
                                                 <span style="color:red;" ng-show="userFrom.pageName.$dirty && userFrom.pageName.$invalid">
                                                 <span ng-show="userFrom.pageName.$error.required">Page Name is required.</span>
                                                 <span class="error"  ng-if="userFrom.pageName.$error.pattern">Only alphanumeric characters allowed.</span>
