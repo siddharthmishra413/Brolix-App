@@ -149,7 +149,7 @@
                  <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk offerbtn-s">
                             <div class="top-box">
-                                <div class="green-box">Top {{topFiftyAdscount}} Cash Providers</div>
+                                <div class="green-box">Top 50 Cash Providers</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage show-btn w-100" ng-click="tab='topFiftyAds'">
@@ -197,26 +197,6 @@
         </div>
     </div>
 
-<div id="sendMessageModelAllUser" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Send message to Admin</h4>
-           </div>
-           <div class="modal-body">
-               <form name="sendMessage">
-                   <div class="form-group">
-                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
-                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
-                   </div>
-                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send message</button>
-               </form>
-           </div>
-       </div>
-   </div>
-</div>
-
     <div class="grp-search">
         <div class="row-search">
             <ul>
@@ -233,7 +213,7 @@
                     <a data-toggle="tab">Set on home page</a>
                 </li>
                 <li class="">
-                    <a data-toggle="tab">Contact Owner</a>
+                    <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
                 </li>
                 <li class="last">
                     <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
@@ -244,13 +224,14 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Ad number">
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Ad number" maxlength="10" >
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalads">
             <table id="manageAdsTable" class="table table-bordered table-striped" >
@@ -276,7 +257,7 @@
                         <td>{{x.userId.mobileNumber}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="soldCoupon(x._id)" >VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -305,11 +286,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -338,11 +319,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -371,11 +352,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -404,11 +385,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -437,11 +418,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                       <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -470,11 +451,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -502,11 +483,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -535,11 +516,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -568,11 +549,11 @@
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td class="skyblue-text">{{x.pageName}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId)" >{{x.pageName}}</td>
                         <td>{{x.userId.mobileNumber}}</td>
-                        <td class="skyblue-text">{{x.reportOnAd}}</td>
-                        <td class="skyblue-text">{{3}}</td>
-                        <td class="skyblue-text">VIEW</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
+                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -580,6 +561,46 @@
             </table>
         </div>
     </div>
+</div>
+
+<div id="sendMessageModelOwners" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send message to Owner</h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendMessage">
+                   <div class="form-group">
+                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
+                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
+                   </div>
+                   <button type="submit" class="btn btn-danger" ng-click="send_messageOwners(x._id)">Send message</button>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="sendMessageModelAllUser" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send message to Admin</h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendMessage">
+                   <div class="form-group">
+                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
+                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
+                   </div>
+                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send message</button>
+               </form>
+           </div>
+       </div>
+   </div>
 </div>
 
 <div id="pageDetails" class="modal fade" >
@@ -676,52 +697,6 @@
    </div>
 </div>
 
-<div id="soldCouponDetails" class="modal fade" >
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Sold Coupon Details Details</h4>
-           </div>
-           <div class="modal-body">
-                <div class="modal-outer-block">
-                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
-                        <div class="table-responsive cus-table">
-                            <table id="tableData" class="table table-bordered table-striped">
-                                            <thead>
-                                              <tr>
-                                                <th>Page Name</th>
-                                                <th>Page Owner</th>
-                                                <th>Page Admins</th>
-                                                <th>Buyer Name</th>
-                                                <th>Sold Coupon</th>
-                                                <th>Coupon Price</th>
-                                                <th>Ad</th>
-                                                <th>Coupon Status</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr ng-repeat="Coupon in brolixCoupon |filter:test" >
-                                                <td class="skyblue-text" ng-click="pageInfo(Coupon.coupon.pageId._id)">{{Coupon.coupon.pageId.pageName}}</td>
-                                                <td class="skyblue-text" ng-click="userInfo(Coupon.coupon.pageId.userId._id)">{{Coupon.coupon.pageId.userId.firstName+" "+Coupon.coupon.pageId.userId.lastName}}</td>
-                                                <td class="skyblue-text" ng-click="pageCount(Coupon._id)">{{Coupon.coupon.pageId.adAdminCount}}</td>
-                                                <td class="skyblue-text" ng-click="userInfo(Coupon._id)">{{Coupon.firstName+" "+Coupon.lastName}}</td>
-                                                <td class="skyblue-text" ng-click="adInfo(Coupon.coupon.adId._id)">View</td>
-                                                <td >{{Coupon.coupon.adId.couponSellPrice}}B</td>
-                                                <td class="skyblue-text" ng-click="adInfo(Coupon.coupon.adId._id)">View</td>
-                                                <td >{{Coupon.coupon.adId.couponStatus}}</td>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                        </div>
-                    </div>
-                </div>
-           </div>
-       </div>
-   </div>
-</div>
-
-
 
 
 <div id="adReport" class="modal fade">
@@ -746,11 +721,7 @@
                                      <tr>
                                         <th>Expiry date</th>
                                         <td class="skyblue-text">{{userDetail.couponExipryDate |date:'MMMM dd, yyyy'}}</td>
-                                     </tr>
-                                     <tr>   
-                                        <th>Cover Image</th>                               
-                                        <td class="skyblue-text"><img ng-src="{{userDetail.coverImage}}"height="50px" ></td>
-                                     </tr>  
+                                     </tr> 
                                      <tr>                                       
                                         <th>Gift Description</th>
                                         <td class="skyblue-text">{{userDetail.giftDescription}}</td>
@@ -762,3 +733,4 @@
            </div>
        </div>
 </div>     
+

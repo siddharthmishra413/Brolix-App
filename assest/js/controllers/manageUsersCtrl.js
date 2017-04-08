@@ -1399,7 +1399,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Send Coupon to All User");
+                            toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1419,7 +1419,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Send Coupon to All User");
+                            toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1439,7 +1439,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Send Coupon to All User");
+                            toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1459,7 +1459,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Send Coupon to All User");
+                            toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1479,7 +1479,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Send Coupon to All User");
+                            toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1499,7 +1499,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Send Coupon to All User");
+                            toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1519,7 +1519,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Send Coupon to All User");
+                            toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1539,7 +1539,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Send Coupon to All User");
+                            toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1557,7 +1557,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Send Coupon to All User");
+                            toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1567,13 +1567,10 @@ $scope.dashBordFilter = function(){
             }
 
     }
-})
- 
-app.filter("manageUsersFilter",function() {
-    alert('a')
+});
+
+ app.filter("customFilterUser",function() {
      return function(items,nameValue) {
-        console.log(items);
-        console.log(nameValue);
        if (!nameValue) {
          return retArray = items;
          }
@@ -1587,5 +1584,6 @@ app.filter("manageUsersFilter",function() {
            return retArray;
         } 
  });
+
 
 

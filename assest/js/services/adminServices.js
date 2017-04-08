@@ -480,6 +480,9 @@ app.service('userService',function($http){
     filterBrolix: function(data){
     return $http.post(baseurl+'/admin/brolixPaymentFilter',data);
    },
+   paymentPaypal: function(data){
+   return $http.post('http://172.16.16.159:8082/admin/paymentHistory',data);
+    },
 
     /*Admin Tool Section*/
 
@@ -539,9 +542,13 @@ app.service('userService',function($http){
     },
      removeCoupon: function(id){
       return $http.post(baseurl+'/admin/removeCoupon/',id);
-    }
-
-
+    },
+    viewAllBrolixAndDollors: function(){
+      return $http.get(baseurl+'/tool/viewAllBrolixAndDollors');
+    },
+    brolixPerFreeCouponAds: function(type,data){
+      return $http.put(baseurl+'/tool/editBrolixAndDollors/'+type, data);
+    },
   }
 
 });

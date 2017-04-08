@@ -6,7 +6,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="offer-block">
-                            <form class="form-block" role="form" name="createForm">
+                            <!-- <form class="form-block" role="form"  name="createForm"> -->
                                 <div class="radio-tab">
                                     <div class="radio-btn">
                                         <label>
@@ -15,8 +15,8 @@
                                         <label>
                                             <input type="radio" name="radio" value="luckCard" ng-model="myForm.cardType">&nbsp; Luck Cards
                                         </label>
-                                    </div>
-                                </div>
+                                     </div>
+                                 </div>
                                 
                                     <div class="form-group">
                                         <div class="row">
@@ -29,47 +29,57 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <form class="form-block" role="form"  name="First">
 
                                 <div ng-show="myForm.offerType=='discount'">   
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="control-label col-sm-3">Buy Cards</label>
+                                          <label class="control-label col-sm-3">Buy Cards</label>
                                             <div class="col-sm-5">
                                                 <div class="input-group">
-                                                  <input ng-model="myForm.buyCard" type="text" class="form-control text-center" placeholder="50" ng-pattern="/^[0-9]{1,11}$/" required>
+                                                  <input ng-model="myForm.buyCard" type="tel" name="buyCard" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="50" required>
                                                   <span class="input-group-addon" id="basic-addon2">%</span>
-                                                  <span style="color:red;" ng-show="createForm.buyCard.$dirty && createForm.buyCard.$invalid">
-                                                  <span  ng-show="createForm.buyCard.$error.required">Buy cards is required.</span> 
-                                                  <span ng-show="createForm.buyCard.$error.pattern">Only number are allowed.</span>
                                                 </div>
-                                            </div>
-                                        </div>
+                                                  <span style="color:red;" ng-show="First.buyCard.$dirty && First.buyCard.$invalid">
+                                                  <span  ng-show="First.buyCard.$error.required">Buy cards is required.</span> 
+                                                  <span ng-show="First.buyCard.$error.pattern">Only number are allowed.</span>
+                                             </div>
+                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-sm-3">Offer Time</label>
                                             <div class="col-sm-5">
                                                 <div class="input-group">
-                                              <input ng-model="myForm.offerTime" type="text" class="form-control text-center" placeholder="48">
-                                              <span class="input-group-addon txt-sm" id="basic-addon2">Hours</span>
-                                            </div>
+                                                  <input ng-model="myForm.offerTime" type="tel" name="offerTimes" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="48" required>
+                                                  <span class="input-group-addon txt-sm" id="basic-addon2">Hours</span>
+                                                </div>
+                                                  <span style="color:red;" ng-show="First.offerTimes.$dirty && First.offerTimes.$invalid">
+                                                  <span  ng-show="First.offerTimes.$error.required">Offer time is required.</span> 
+                                                  <span ng-show="First.offerTimes.$error.pattern">Only number are allowed.</span>
+                                              </div>
                                             </div>
                                         </div>
-                                    </div>
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a  class="btn btn-lg btn-green" ng-click="createOffer(myForm.cardType)">Next</a>
+                                        <button  class="btn btn-lg btn-green" ng-disabled="First.$invalid"  ng-click="createOffer(myForm.cardType)">Next</button>
                                         <a  class="btn btn-lg btn-green">Cancel</a>
                                     </div>
                                 </div>
-                                
+                                </form>
+
+
+                                <form class="form-block" role="form"  name="ssecond">
                                 <div ng-show="myForm.offerType=='buyGet'">
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-sm-3">Buy Cards</label>
                                             <div class="col-sm-5">
-                                                <input ng-model="myForm.buyCard" type="text" class="form-control text-center">
+                                                  <input ng-model="myForm.buyCard" type="tel" name="buyCards" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" required>
+                                                <span style="color:red;" ng-show="ssecond.buyCards.$dirty && ssecond.buyCards.$invalid">
+                                                <span  ng-show="ssecond.buyCards.$error.required">Buy cards is required.</span> 
+                                                <span style="color:red;" ng-show="ssecond.buyCards.$error.pattern">Only number are allowed.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -78,7 +88,10 @@
                                         <div class="row">
                                             <label class="control-label col-sm-3">Get Free Cards</label>
                                             <div class="col-sm-5">
-                                                <input ng-model="myForm.freeCard" type="text" class="form-control text-center">
+                                               <input ng-model="myForm.freeCard" type="tel" name="freeCard" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" required>
+                                                <span style="color:red;" ng-show="ssecond.freeCard.$dirty && ssecond.freeCard.$invalid">
+                                                <span  ng-show="ssecond.freeCard.$error.required">Get free cards is required.</span> 
+                                                <span style="color:red;" ng-show="ssecond.freeCard.$error.pattern">Only number are allowed.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -88,16 +101,20 @@
                                             <label class="control-label col-sm-3">Offer Time</label>
                                             <div class="col-sm-5">
                                                 <div class="input-group">
-                                                  <input ng-model="myForm.offerTime" type="text" class="form-control text-center" placeholder="48">
+                                                  <input ng-model="myForm.offerTime" type="text" name="offerTime" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="48" required>
                                                   <span class="input-group-addon txt-sm" id="basic-addon2">Hours</span>
+                                                </div>
+                                                <span style="color:red;" ng-show="ssecond.offerTime.$dirty && ssecond.offerTime.$invalid">
+                                                <span  ng-show="ssecond.offerTime.$error.required">Offer time is required.</span> 
+                                            <span style="color:red;" ng-show="ssecond.offerTime.$error.pattern">Only number are allowed.</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                              
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a  class="btn btn-lg btn-green" ng-click="createOffer(myForm.cardType)">Next</a>
+                                        <button  class="btn btn-lg btn-green"  ng-disabled="ssecond.$invalid" ng-click="createOffer(myForm.cardType)">Next</button>
                                         <a  class="btn btn-lg btn-green">Cancel</a>
                                     </div>
                                 </div>
@@ -189,6 +206,3 @@
             </div>
         </div>
     </div>
-
-
-    

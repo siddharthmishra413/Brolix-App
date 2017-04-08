@@ -7,7 +7,7 @@ $(window).scrollTop(0,0);
     $scope.type='dollars';
     $scope.clr="#00B288";
     $scope.clr1=""
-    $scope.myFrom={};
+    $scope.myForm={};
     $scope.dashBordFilter={};
 
     //******************** dollars data **********************
@@ -24,7 +24,7 @@ $(window).scrollTop(0,0);
                      toastr.error('Connection error.');
     })
     userService.cashGift().then(function(success) {       
-                // console.log("cashGift--->>>"+JSON.stringify(success))
+                 // console.log("cashGift--->>>"+JSON.stringify(success))
                 $scope.count=success.data.count;
                 $scope.dollarsCashGift=[];
                 for(i=0;i<success.data.result.length;i++) {
@@ -48,10 +48,15 @@ $(window).scrollTop(0,0);
             $scope.dashBordFilter.city="";
             $scope.dashBordFilter.country="";
             $scope.dashBordFilter.state="";
-            
-            $scope.myFrom.country="";
-            $scope.myFrom.state="";
-            $scope.myFrom.city="";
+            $scope.dashBordFilter.dobFrom="";
+            $scope.dashBordFilter.dobTo="";
+            $scope.myForm.dateFrom="";
+            $scope.myForm.dateTo="";
+            $scope.search="";
+            $scope.searchdata="";
+            $scope.myForm.country="";
+            $scope.myForm.state="";
+            $scope.myForm.city="";
             $scope.clr=""
             userService.SoldLuckCard().then(function(success) {       
                 // console.log(JSON.stringify(success))
@@ -89,9 +94,19 @@ $(window).scrollTop(0,0);
             $scope.dashBordFilter.country="";
             $scope.dashBordFilter.state="";
             $scope.dashBordFilter.city="";
-            $scope.myFrom.country="";
-            $scope.myFrom.state="";
-            $scope.myFrom.city="";
+            $scope.myForm.country="";
+            $scope.myForm.state="";
+            $scope.search="";
+            $scope.myForm.cashStatus="";
+            $scope.myForm.couponStatus="";
+            $scope.dashBordFilter.dollarCardType="";
+            $scope.dashBordFilter.brolixCardType="";
+            $scope.dashBordFilter.dobFrom="";
+            $scope.dashBordFilter.dobTo="";
+            $scope.myForm.dateFrom="";
+            $scope.myForm.dateTo="";
+            $scope.searchdata="";
+            $scope.myForm.city="";
             $scope.flag= 0;
             $scope.clr="#00B288";
             $scope.clr1="";
@@ -106,12 +121,13 @@ $(window).scrollTop(0,0);
             })
         } 
         userService.cashGift().then(function(success) {       
-               // console.log("Cash Giftttt--->>>"+JSON.stringify(success))
+                console.log("Cash Giftttt--->>>"+JSON.stringify(success))
                 $scope.count=success.data.count;
                 $scope.dollarsCashGift=[];
                 for(i=0;i<success.data.result.length;i++) {
                             $scope.dollarsCashGift.push(success.data.result[i]);
-                            // console.log(JSON.stringify($scope.dollarsCashGift[i].cashPrize.pageId.pageName))
+
+                             console.log(JSON.stringify($scope.dollarsCashGift[i].cashPrize.adId))
                         }
                 },function(err){
                     console.log(err);
@@ -128,10 +144,8 @@ $(window).scrollTop(0,0);
         userService.userInfo(id).then(function(success) { 
             // console.log(JSON.stringify(success))
                     if(success.data.responseCode== 200){
-                        //console.log(JSON.stringify($scope.userDetail))
                             $scope.userDetail=success.data.result
                             $("#userInfo").modal('show');
-                            // console.log(JSON.stringify($scope.userDetail))
                     }
                     else{
                         toastr.error(success.data.responseMessage);
@@ -149,11 +163,10 @@ $(window).scrollTop(0,0);
         console.log("adInfoId>>>"+JSON.stringify(id))
         userService.adInfo(id).then(function(success) { 
                     if(success.data.responseCode == 200){
-
-                        //console.log(JSON.stringify($scope.userDetail))
                             $scope.userDetail=success.data.result;
                             $("#adInfo").modal('show');
-                            // console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
+                            $scope.newDate = success.data.result.couponExpiryDate;
+                            console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success.data.result))
                     }
                     else{
                         toastr.error(success.data.responseMessage)
@@ -164,6 +177,23 @@ $(window).scrollTop(0,0);
                      toastr.error('Connection error.');
             }) 
     }
+    $scope.cashGift=function(id){
+        console.log("cashGiftId>>>"+JSON.stringify(id))
+        userService.adInfo(id).then(function(success) { 
+                    if(success.data.responseCode == 200){
+                            $scope.userDetail=success.data.result;
+                            $("#cashGift").modal('show');
+                    }
+                    else{
+                        toastr.error(success.data.responseMessage)
+                    }
+            
+                },function(err){
+                    console.log(err);
+                     toastr.error('Connection error.');
+            }) 
+    }
+
 
     //******************** top 50 Buyers *********************
 
@@ -201,9 +231,11 @@ $(window).scrollTop(0,0);
 
     //*******************Total Price****************
      userService.totalDollarsPrice().then(function(res) {
-        // console.log(JSON.stringify(res))
+         console.log(JSON.stringify(res))
         if (res.data.responseCode == 200){
             $scope.totalDollarsPrice = res.data.totalCash;
+            if(res.data.totalCash == null)
+                $scope.totalDollarsPrice =0;
            //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalSoldLuckCardcount));
         } else {
             toastr.error(res.responseMessage);
@@ -224,12 +256,16 @@ $(window).scrollTop(0,0);
     //************************Top 50 Ads ***********************
 
     $scope.top_50_Ads=function(){
+        $scope.adsDetail=[];
             userService.top_50_Ads().then(function(success) {
-            // console.log(JSON.stringify(success)) 
+             console.log(JSON.stringify(success)) 
                     if(success.data.responseCode == 200){
-                        $scope.adsDetail=success.data.result;
-                        $("#top_50_Ads").modal('show');
-                        // console.log("top 50 Ads>>>>>>>>>>>>"+JSON.stringify(success))
+                        for(i=0;i<success.data.result.length;i++){
+                            $scope.adsDetail.push(success.data.result[i]);
+                            $("#top_50_Ads").modal('show');
+                            success.data.result[i].couponExpiryDate = new Date(success.data.result[i].couponExpiryDate);
+                        }
+ 
                     }else{
                         toastr.error(success.data.responseCode);
                     }
@@ -263,6 +299,7 @@ $(window).scrollTop(0,0);
     //*********************** Used Ad **************************
 
     $scope.upgradeCardUsedAd=function(id){
+        $scope.usedAd=[];
         console.log(JSON.stringify(id))
         var data = {
                     "upgradeId":id
@@ -272,9 +309,10 @@ $(window).scrollTop(0,0);
                     if(success.data.responseCode == 200){
                         for(i=0;i<success.data.result.length;i++){
                             $scope.usedAd.push(success.data.result[i]);
-                            //$scope.img=$scope.usedAd.coverImage;
                             $("#luckCardUsedAd").modal('show');
-                            console.log(JSON.stringify(success))
+                            console.log(JSON.stringify($scope.usedAd))
+                            $scope.newDate = new Date((success.data.result[i].couponExpiryDate)*1000);
+                            console.log(JSON.stringify($scope.newDate))
                         } 
                     }
                     else{
@@ -287,17 +325,20 @@ $(window).scrollTop(0,0);
             }) 
     }
     $scope.luckCardUsedAd=function(id){
+        $scope.usedAd=[];
         console.log(JSON.stringify(id))
         var data = {
                     "luckId":id
                 }
-        // console.log(JSON.stringify(data))
         userService.luckCardUsedAd(data).then(function(success) { 
                     if(success.data.responseCode == 200){
-                            $scope.usedAd=success.data.result;
-                            $scope.img=$scope.usedAd[0].coverImage;
+                        for(i=0;i<success.data.result.length;i++){
+                            $scope.usedAd.push(success.data.result[i]);
                             $("#luckCardUsedAd").modal('show');
-                            // console.log(JSON.stringify($scope.usedAd))
+                            console.log(JSON.stringify($scope.usedAd))
+                            $scope.newDate = new Date((success.data.result[i].couponExpiryDate)*1000);
+                            console.log(JSON.stringify($scope.newDate ))
+                        } 
                     }else{
                             toastr.error(success.data.responseMessage);
                     }
@@ -395,7 +436,7 @@ $(window).scrollTop(0,0);
         userService.pageCount(id).then(function(success) { 
                     if(success.data.responseCode == 200){
                        for(i=0;i<success.data.result.length;i++){
-                                $scope.page.push(success.data.result[0]);
+                                $scope.page.push(success.data.result[i]);
                             }
                              // console.log("pages>>>>>>"+JSON.stringify($scope.page))
                              $("#Pages").modal('show'); 
@@ -408,12 +449,37 @@ $(window).scrollTop(0,0);
             }) 
     }
 
+    //**************************** Payment Paypal *******************************
+    $scope.paymentPaypal=function(type){
+        $scope.paymentPay=[];
+        var data = {
+                    "type":type
+                    }
+           userService.paymentPaypal(data).then(function(success) {
+           // console.log(JSON.stringify(success)) 
+                    if(success.data.responseCode == 200){
+                       for(i=0;i<success.data.result.length;i++){
+                                $scope.paymentPay.push(success.data.result[i]);
+                            }
+                             $("#paymentPaypal").modal('show');  
+                             console.log(JSON.stringify($scope.paymentPay))
+                    }else{
+                        toastr.error(success.data.responseMessage)
+                    }  
+                },function(err){
+                    console.log(err);
+                     toastr.error('Connection error.');
+            })          
+       
+    }
+
     //************************** Contact Buyers and Winners ******************
 
     $scope.total_user_message = function (modal) {
         // console.log("Contact Modal >>>>>>>>>>"+JSON.stringify(modal))
         $scope.modalId = modal;
         $scope.modelData = modal;
+        $scope.sendMessage.massage= '';
         if($scope.modalId == '' || $scope.modalId == undefined || $scope.modalId == null){
         toastr.error("Please select user.")
         $state.go('header.userServices')
@@ -425,12 +491,15 @@ $(window).scrollTop(0,0);
     $scope.send_massage = function(){
          var array =[];
          var data = {};
+
          switch ($scope.modelData)
             {
                 case 'dollars': 
+
                     for (var i = 0; i < $scope.dollars.length; i++) {
                         array.push($scope.dollars[i]._id)
                     }
+                    $scope.sendMessage.massage = '';
                     data = {
                         Message:$scope.sendMessage.massage,
                         Id:array
@@ -438,7 +507,6 @@ $(window).scrollTop(0,0);
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All Buyers");
-                            $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
@@ -457,7 +525,7 @@ $(window).scrollTop(0,0);
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All Buyers");
-                            $scope.sendMessage = '';
+                            $scope.sendMessage.massage= '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
@@ -476,7 +544,7 @@ $(window).scrollTop(0,0);
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All Winners");
-                            $scope.sendMessage = '';
+                            $scope.sendMessage.massage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
@@ -495,7 +563,7 @@ $(window).scrollTop(0,0);
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All Buyers");
-                            $scope.sendMessage = '';
+                            $scope.sendMessage.massage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
@@ -512,7 +580,7 @@ $(window).scrollTop(0,0);
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to User");
-                            $scope.sendMessage = '';
+                            $scope.sendMessage.massage= '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
@@ -552,7 +620,7 @@ $(window).scrollTop(0,0);
         }
         else{
             for(var i=0;i<$scope.brolixCountryList.length;i++) {
-                if($scope.brolixCountryList[i].name==$scope.myFrom.country) {
+                if($scope.brolixCountryList[i].name==$scope.myForm.country) {
                     $scope.country2Code=$scope.brolixCountryList[i].code;
                     break;
                 }
@@ -606,7 +674,6 @@ $(window).scrollTop(0,0);
          }
      
     }
-    //  console.log('City:   '+JSON.stringify($scope.dashBordFilter.city))
    
    //-------------------------------END OF SELECT CASCADING-------------------------//
 
@@ -615,15 +682,7 @@ $(window).scrollTop(0,0);
     // ******************DashBoard Filters *********************
 
     $scope.newdashBordFilter = function(type){
-
-                // var type = localStorage.getItem('userTypeName');
-                // $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
-                // $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
-       //          $scope.To =$scope.myForm.toDate==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
-       //          $scope.From =$scope.myForm.fromDate==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
-                // $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
                 console.log(JSON.stringify(type));
-
                 var data = {};
 
                 switch (type)
@@ -673,10 +732,10 @@ $(window).scrollTop(0,0);
                                         paymentCardType:"cashGifts",
                                         joinTo:new Date($scope.myForm.dateTo).getTime(),
                                         joinFrom:new Date($scope.myForm.dateFrom).getTime(),
-                                        country:myFrom.country,
-                                        state:myFrom.state,
-                                        city: myFrom.city,
-                                        cashStatus:myFrom.cashStatus
+                                        country:$scope.myForm.country,
+                                        state:$scope.myForm.state,
+                                        city: $scope.myForm.city,
+                                        cashStatus:$scope.myForm.cashStatus
                                      }
                                 userService.filterDollars(data).success(function(res){
                                     $scope.dollarsCashGift = res.result;
@@ -691,10 +750,10 @@ $(window).scrollTop(0,0);
                                         paymentCardType:"soldCoupon",
                                         joinTo:new Date($scope.myForm.dateTo).getTime(),
                                         joinFrom:new Date($scope.myForm.dateFrom).getTime(),
-                                        country:myFrom.country,
-                                        state:myFrom.state,
-                                        city: myFrom.city,
-                                        couponStatus:myFrom.couponStatus
+                                        country:$scope.myForm.country,
+                                        state:$scope.myForm.state,
+                                        city: $scope.myForm.city,
+                                        couponStatus:$scope.myForm.couponStatus
                                      }
                                 userService.filterBrolix(data).success(function(res){
                                     $scope.brolixCoupon = res.result;
@@ -727,7 +786,7 @@ $scope.export = function(){
 
 
 })
-app.filter("manageUsersFilter",function() {
+app.filter("manageFilter",function() {
     return function(items,nameValue){
         // console.log(JSON.stringify(items))
       if (!nameValue) {
@@ -735,11 +794,13 @@ app.filter("manageUsersFilter",function() {
         }
         var retArray = [];
           for(var i=0;i<items.length;i++) 
-               {
-               if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()  ) {
-                   retArray.push(items[i]);
+            {
+                if(items[i].firstName || items[i].lastName) {
+                   if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()  ) {
+                       retArray.push(items[i]);
+                   }
                }
-          }
+           }
           return retArray
        } 
 });
@@ -754,10 +815,11 @@ app.filter("managePaymentFilter",function() {
         var retArray = [];
           for(var i=0;i<items.length;i++) 
              {
-                // if(nameValue="")
-               if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].cashPrize.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ||items[i].cashPrize.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
-                   retArray.push(items[i]);
-               }
+                if(items[i].firstName || items[i].lastName || items[i].cashPrize.pageId.userId.firstName || items[i].cashPrize.pageId.pageName) {
+                   if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].cashPrize.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ||items[i].cashPrize.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
+                       retArray.push(items[i]);
+                   }
+                }
           }
           return retArray
         } 
@@ -772,9 +834,11 @@ app.filter("managePaymentSoldCouponFilter",function() {
         var retArray = [];
           for(var i=0;i<items.length;i++) 
              {
-                // if(nameValue="")
-               if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].coupon.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ||items[i].coupon.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
-                   retArray.push(items[i]);
+                if(items[i].firstName || items[i].lastName || items[i].coupon.pageId.userId.firstName || items[i].coupon.pageId.pageName){
+                    // if(nameValue="")
+                   if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].coupon.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ||items[i].coupon.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
+                       retArray.push(items[i]);
+                   }
                }
           }
           return retArray

@@ -3,15 +3,44 @@ $(window).scrollTop(0,0);
  $scope.$emit('headerStatus', 'Manage Ads');
  $scope.$emit('SideMenu', 'Manage Ads');
  $scope.tab = 'totalads';
-$scope.dashBordFilter = {};
+ $scope.dashBordFilter = {};
  $scope.sendMessage = {};
- $scope.myForm = {};
+ $scope.myForm={};
 
   $scope.sendMessagePage = function (modal) {
+      console.log($scope.myForm.checkId);
         $scope.modalId = modal;
         $scope.modelData = modal;
       $("#sendMessageModelAllUser").modal('show');
  }
+ 
+     $scope.contactOwner = function (modal) {
+        $scope.modalId = modal;
+        $scope.modelData = modal;
+          if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
+        toastr.error("Please select user.")
+          }
+          else{
+               $("#sendMessageModelOwners").modal('show');           
+          }       
+ }
+
+  $scope.send_messageOwners = function(id){
+        console.log($scope.myForm.checkId);
+        if ($scope.sendMessage.massage == '' || $scope.sendMessage.massage == undefined || $scope.sendMessage.massage == null) {
+            toastr.error('Please enter your message');
+            return;
+        }
+     userService.sendMassageAllUser(id).success(function(res) {
+         if (res.responseCode == 200){
+              toastr.success("Message Send Successfully to Owner");
+              $scope.sendMessage = '';
+              $("#sendMessageModelOwners").modal('hide');
+          } else {
+               toastr.error(res.responseMessage);
+           }
+     })
+  }
 
   $scope.showPageDetails = function(id){
         console.log("id---------"+id);
@@ -20,21 +49,39 @@ $scope.dashBordFilter = {};
            $scope.allpageInfo = res.result;
             $("#pageDetails").modal('show');
           console.log("$scope.allpageInfo",JSON.stringify($scope.allpageInfo))
-             //console.log("$scope.allpageInfo",JSON.stringify(res))
-            //    console.log("$scope.allpageInfo",JSON.stringify(res.result))
         })
     }
-     $scope.adInfo=function(id){
-        console.log("adInfoId>>>"+JSON.stringify(id))
-        userService.adInfo($scope.myForm.checkId).then(function(success) { 
+    
+     $scope.adInfo=function(){
+         console.log($scope.myForm.checkId)
+         if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
+        toastr.error("Please select user.")
+         }
+        else {
+            userService.adInfo($scope.myForm.checkId).then(function(success) { 
             //console.log(JSON.stringify($scope.userDetail))
                     $scope.userDetail=success.data.result;
                     $("#adInfo").modal('show');
-                    console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
+                    //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
                 },function(err){
                     console.log(err);
                      toastr.error('Connection error.');
             }) 
+        }
+    }
+
+     $scope.adInfoSoldCoupon=function(id){
+      
+            userService.adInfo(id).then(function(success) { 
+            //console.log(JSON.stringify($scope.userDetail))
+                    $scope.userDetail=success.data.result;
+                    $("#adInfo").modal('show');
+                    //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
+                },function(err){
+                    console.log(err);
+                     toastr.error('Connection error.');
+            }) 
+        
     }
 
          $scope.reportOnAd=function(id){
@@ -42,7 +89,17 @@ $scope.dashBordFilter = {};
         userService.showReportOnAd($scope.myForm.checkId).then(function(success) { 
             //console.log(JSON.stringify($scope.userDetail))
                     $scope.userDetail=success.data.result;
-                    $("#adReport").modal('show');
+                    
+                    if(success.data.responseCode == 404)
+                    {
+                        toastr.error(success.data.responseMessage);
+                    }
+                    else if(success.data.responseCode == 200){
+                        $("#adReport").modal('show');
+                    }
+                    else{
+                         toastr.error(success.data.responseMessage);
+                    }
                     console.log("reportOnAd>>>>>>>>>>>>>"+JSON.stringify(success))
                 },function(err){
                     console.log(err);
@@ -50,28 +107,19 @@ $scope.dashBordFilter = {};
             }) 
     }
 
-        $scope.soldCoupon=function(id){
-         console.log("soldCouponId>>>"+JSON.stringify(id))
-         $("#soldCouponDetails").modal('show');
-         userService.soldCoupon(id).then(function(success) {
-         //console.log(JSON.stringify($scope.userDetail))
-         $scope.brolixCoupon=success.data.result;
-        console.log("soldCoupon>>>>>>>>>>>>>"+JSON.stringify(success))
-          },function(err){
-          console.log(err);
-        toastr.error('Connection error.');
-           })
-    }
-
-
 /*-------------------------Message send to all contact winners---------------------*/
-    
+
     $scope.send_massage = function(){
+         if ($scope.sendMessage.massage == '' || $scope.sendMessage.massage == undefined || $scope.sendMessage.massage == null) {
+            toastr.error('Please enter your message');
+            return;
+        }
          var array =[];
          var data = {};
          switch ($scope.modelData)
             {
-                case 'totalads': 
+                case 'totalads':
+                
                     for (var i = 0; i < $scope.totalads.length; i++) {
                         array.push($scope.totalads[i]._id)
                     }
@@ -79,18 +127,22 @@ $scope.dashBordFilter = {};
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    if ($scope.sendMessage.massage == '' || $scope.sendMessage.massage == undefined || $scope.sendMessage.massage == null) {
+                        toastr.error('Please enter your message');
+                        return;
+                    }
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Send Successfully to Total Ads Admins");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'totalActiveAds': 
+                case 'totalActiveAds':
                     for (var i = 0; i < $scope.totalActiveAds.length; i++) {
                         array.push($scope.totalActiveAds[i]._id)
                     }
@@ -98,18 +150,18 @@ $scope.dashBordFilter = {};
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Send Successfully to Total Active Ads Admin");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'totalExpiredAds': 
+                case 'totalExpiredAds':
                     for (var i = 0; i < $scope.totalExpiredAds.length; i++) {
                         array.push($scope.totalExpiredAds[i]._id)
                     }
@@ -117,18 +169,18 @@ $scope.dashBordFilter = {};
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Winners");
+                            toastr.success("Message Send Successfully to Total Expired Ads Admin");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'videoAds': 
+                case 'videoAds':
                     for (var i = 0; i < $scope.videoAds.length; i++) {
                         array.push($scope.videoAds[i]._id)
                     }
@@ -136,11 +188,11 @@ $scope.dashBordFilter = {};
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Send Successfully to All Video Ads Admin");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
@@ -148,7 +200,7 @@ $scope.dashBordFilter = {};
                 break;
 
 
-                case 'slideshowAds': 
+                case 'slideshowAds':
                     for (var i = 0; i < $scope.slideshowAds.length; i++) {
                         array.push($scope.slideshowAds[i]._id)
                     }
@@ -156,18 +208,18 @@ $scope.dashBordFilter = {};
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Send Successfully to All Slide Shows Admin");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'adUpgradedByDollor': 
+                case 'adUpgradedByDollor':
                     for (var i = 0; i < $scope.adUpgradedByDollor.length; i++) {
                         array.push($scope.adUpgradedByDollor[i]._id)
                     }
@@ -175,18 +227,18 @@ $scope.dashBordFilter = {};
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Winners");
+                            toastr.success("Message Send Successfully to Ad Upgrade By Dollar Admin");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'adUpgradedByBrolix': 
+                case 'adUpgradedByBrolix':
                     for (var i = 0; i < $scope.adUpgradedByBrolix.length; i++) {
                         array.push($scope.adUpgradedByBrolix[i]._id)
                     }
@@ -194,18 +246,18 @@ $scope.dashBordFilter = {};
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Send Successfully to Ad Upgrade By Dollar Brolix");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                    case 'showReportedAd': 
+                    case 'showReportedAd':
                     for (var i = 0; i < $scope.showReportedAd.length; i++) {
                         array.push($scope.showReportedAd[i]._id)
                     }
@@ -213,11 +265,11 @@ $scope.dashBordFilter = {};
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Send Successfully to All Reported ads Admin");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
@@ -225,7 +277,7 @@ $scope.dashBordFilter = {};
                 break;
 
 
-                case 'adsWithLinks': 
+                case 'adsWithLinks':
                     for (var i = 0; i < $scope.adsWithLinks.length; i++) {
                         array.push($scope.adsWithLinks[i]._id)
                     }
@@ -233,29 +285,29 @@ $scope.dashBordFilter = {};
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Send Successfully to Ads With Links Admin");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-               
-                default: 
+
+                default:
                 array.push($scope.modalId)
                     data = {
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {        
+                    userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to User");
+                            toastr.success("Message Send Successfully to Admins");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
+                            $("#sendMessageModelAllUser").modal('hide');
                         } else {
                             toastr.error(res.responseMessage);
                         }
@@ -275,12 +327,12 @@ var BATTUTA_KEY="00000000000000000000000000000000"
       $timeout(function(){
         $scope.countriesList=countries;
       },100)
-      
-      
+
+
     });
   var countryCode;
     $scope.changeCountry = function(){
-        //console.log('Country:   '+JSON.stringify($scope.dashBordFilter.country))
+        console.log('Country:   '+JSON.stringify($scope.dashBordFilter.country))
       for(var i=0;i<$scope.countriesList.length;i++){
         if($scope.countriesList[i].name==$scope.dashBordFilter.country){
           countryCode=$scope.countriesList[i].code;
@@ -309,12 +361,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
           $scope.cityList = cities;
             },100)
       })
-     
+
     }
     //  console.log('City:   '+JSON.stringify($scope.dashBordFilter.city))
     //-------------------------------END OF SELECT CASCADING-------------------------//
 
  $scope.export = function(){
+    var type = localStorage.getItem('adsTypeName');
         html2canvas(document.getElementById('manageAdsTable'), {
             onrendered: function (canvas) {
                 var data = canvas.toDataURL();
@@ -324,7 +377,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         width: 500,
                     }]
                 };
-                pdfMake.createPdf(docDefinition).download("test.pdf");
+                pdfMake.createPdf(docDefinition).download(type+'.pdf');
             }
         });
     }
@@ -335,7 +388,7 @@ userService.totalAds().success(function(res) {
         }else {
             $scope.totalAds = res.result;
             $scope.totalAdscount = res.count;
-            console.log(JSON.stringify(res))
+            console.log("response-->>"+JSON.stringify(res))
         }
     }).error(function(status, data) {
 
@@ -352,7 +405,7 @@ userService.totalActiveAds().success(function(res) {
         }
     }).error(function(status, data) {
 
-}) 
+})
 
 userService.totalExpiredAds().success(function(res) {
         if(res.responseCode == 409){
@@ -388,7 +441,7 @@ userService.slideshowAds().success(function(res) {
         }
     }).error(function(status, data) {
 
-}) 
+})
 
 userService.adUpgradedByDollor().success(function(res) {
         if(res.responseCode == 409){
@@ -396,11 +449,11 @@ userService.adUpgradedByDollor().success(function(res) {
         }else {
             $scope.adUpgradedByDollor = res.result;
             $scope.adUpgradedByDollorcount = res.count;
-            // console.log("bbb",JSON.stringify(res))
+            console.log("adUpgradedByDollor",JSON.stringify(res))
         }
     }).error(function(status, data) {
 
-})  
+})
 
 userService.adUpgradedByBrolix().success(function(res) {
         if(res.responseCode == 409){
@@ -408,11 +461,11 @@ userService.adUpgradedByBrolix().success(function(res) {
         }else {
             $scope.adUpgradedByBrolix = res.result;
             $scope.adUpgradedByBrolixcount = res.count;
-            // console.log("bbb",JSON.stringify(res))
+            console.log("adUpgradedByBrolix",JSON.stringify(res))
         }
     }).error(function(status, data) {
 
-}) 
+})
 
 userService.showReportedAd().success(function(res) {
         if(res.responseCode == 409){
@@ -420,11 +473,11 @@ userService.showReportedAd().success(function(res) {
         }else {
             $scope.showReportedAd = res.result;
             $scope.showReportedAdcount = res.count;
-             //console.log("showReportedAd",JSON.stringify(res))
+            console.log("showReportedAd",JSON.stringify(res))
         }
     }).error(function(status, data) {
 
-})    
+})
 
 userService.adsWithLinks().success(function(res) {
         if(res.responseCode == 409){
@@ -435,7 +488,7 @@ userService.adsWithLinks().success(function(res) {
              //console.log("Ads",JSON.stringify(res))
         }
     }).error(function(status, data) {
-}) 
+})
 
 userService.topFiftyAds().success(function(res) {
         if(res.responseCode == 409){
@@ -446,44 +499,19 @@ userService.topFiftyAds().success(function(res) {
             // console.log("Ads",JSON.stringify(res))
         }
     }).error(function(status, data) {
-}) 
-
-
-
-// $scope.dashBordFilter = function(){
-
-//     var type = localStorage.getItem('userTypeName');
-//     $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
-//     $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
-//     $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
-//     console.log("date",$scope.dashBordFilter.country);
-//     var data = {};
-//         data = {
-//             userType:localStorage.getItem('userTypeName'),
-//             country:$scope.dashBordFilter.country,
-//             state:$scope.dashBordFilter.state,
-//             city:$scope.dashBordFilter.city,
-//             joinTo:$scope.dobTo,
-//             joinFrom:$scope.dobFrom,
-//         }
-//         console.log("datatata",data)
-//     }
-    
-    
-// })
+})
 
  $scope.adsTypeName = function(val) {
-        //$state.reload();
         localStorage.setItem('adsTypeName',val);
-    } 
-    
+    }
+
 $scope.dashBordFilter = function(){
 
     var type = localStorage.getItem('adsTypeName');
     $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
     $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
     $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
-    //console.log("date",$scope.dashBordFilter.country);
+    console.log("date",$scope.dashBordFilter.country);
     var data = {};
         data = {
             adsType:localStorage.getItem('adsTypeName'),
@@ -497,96 +525,96 @@ $scope.dashBordFilter = function(){
          switch (type)
             {
                 case 'totalAds':
-                console.log("1"); 
+                console.log("1");
                     userService.adsfilter(data).success(function(res){
                         $scope.totalAds = res.data;
                         console.log("ressssssss1",JSON.stringify($scope.totalAds));
                     })
-                    
+
                 break;
 
-                case 'totalActiveAds': 
+                case 'totalActiveAds':
                 console.log("2");
                     userService.adsfilter(data).success(function(res){
                         $scope.totalActiveAds = res.data;
                         console.log("ressssssss2",JSON.stringify($scope.totalActiveAds));
                     })
-                    
+
                 break;
 
-                case 'totalExpiredAds': 
+                case 'totalExpiredAds':
                 console.log("3");
                     userService.adsfilter(data).success(function(res){
                         $scope.totalExpiredAds = res.data;
                         console.log("ressssssss3",JSON.stringify($scope.totalExpiredAds));
                     })
-                    
+
                 break;
 
-                case 'showReportedAd': 
+                case 'showReportedAd':
                 console.log("4");
                     userService.adsfilter(data).success(function(res){
                         $scope.showReportedAd = res.data;
                         console.log("ressssssss4",JSON.stringify($scope.showReportedAd));
                     })
-                    
+
                 break;
 
-                case 'adsWithLinks': 
+                case 'adsWithLinks':
                 console.log("5");
                     userService.adsfilter(data).success(function(res){
                         $scope.adsWithLinks = res.data;
                         console.log("ressssssss5",JSON.stringify($scope.adsWithLinks));
                     })
-                    
+
                 break;
 
                 case 'videoAds':
-                console.log("6"); 
+                console.log("6");
                     userService.adsfilter(data).success(function(res){
                         $scope.videoAds = res.data;
                         console.log("ressssssss6",JSON.stringify($scope.videoAds));
                     })
-                    
+
                 break;
 
-                case 'slideshowAds': 
+                case 'slideshowAds':
                 console.log("7");
                     userService.adsfilter(data).success(function(res){
                         $scope.slideshowAds = res.data;
                         console.log("ressssssss7",JSON.stringify($scope.slideshowAds));
                     })
-                    
+
                 break;
 
-                case 'adUpgradedByDollor': 
-                console.log("8");
+                case 'adUpgradedByDollor':
+                console.log("9");
                     userService.adsfilter(data).success(function(res){
                         $scope.adUpgradedByDollor = res.data;
                         console.log("ressssssss8",JSON.stringify($scope.adUpgradedByDollor));
                     })
-                    
+
                 break;
 
-                case 'adUpgradedByBrolix': 
-                console.log("8");
+                case 'adUpgradedByBrolix':
+                console.log("10");
                     userService.adsfilter(data).success(function(res){
                         $scope.adUpgradedByBrolix = res.data;
                         console.log("ressssssss8",JSON.stringify($scope.adUpgradedByBrolix));
                     })
-                    
+
                 break;
 
-                case 'topFiftyAds': 
-                console.log("8");
+                case 'topFiftyAds':
+                console.log("11");
                     userService.adsfilter(data).success(function(res){
                         $scope.topFiftyAds = res.data;
                         console.log("ressssssss8",JSON.stringify($scope.topFiftyAds));
                     })
-                    
+
                 break;
-                
-                default: 
+
+                default:
                 toastr.error("somthing wents to wroung");
             }
 
@@ -595,13 +623,11 @@ $scope.dashBordFilter = function(){
 
 app.filter("manageAdsFilter",function() {
    return function(items,nameValue){
-   //console.log(JSON.stringify(nameValue))
-   //console.log(JSON.stringify(items))
      if (!nameValue) {
        return retArray = items;
        }
        var retArray = [];
-         for(var i=0;i<items.length;i++) 
+         for(var i=0;i<items.length;i++)
               {
                   if(items[i].pageName){
                     if (items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
@@ -610,5 +636,8 @@ app.filter("manageAdsFilter",function() {
                   }
          }
          return retArray
-      } 
+      }
 });
+
+
+
