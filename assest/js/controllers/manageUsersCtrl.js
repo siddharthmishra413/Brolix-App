@@ -147,7 +147,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
     $scope.currentPage = 1;
      $scope.nextTotalUserDetail = function(){
-       console.log('page number -> '+$scope.currentPage);
+       console.log('page number TotalUserDetail -> '+$scope.currentPage);
          userService.totalUser($scope.currentPage).success(function(res) {
             if (res.responseCode == 200){
                    $scope.noOfPages = res.result.pages;
@@ -172,15 +172,16 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
     //*******************Personal User****************
 
-     $scope.personalUser = 1;
+     $scope.currentPersonalUser = 1;
      $scope.nextpersonalUserDetail = function(){
-       console.log('page number -> '+$scope.currentPage);
-         userService.showAllPersonalUser($scope.personalUser).success(function(res) { 
+       console.log('page number personalUserDetail-> '+$scope.currentPersonalUser);
+         userService.showAllPersonalUser($scope.currentPersonalUser).success(function(res) { 
+            console.log("dddd",JSON.stringify(res))
             if (res.responseCode == 200){
-                   $scope.noOfPages = res.result.pages;
-                   $scope.pageNo = res.result.page;
-                   $scope.totalUser = res.result.docs;
-                   $scope.totalUserCount = res.result.total;
+                   $scope.noOfPagesPersonalUser = res.result.pages;
+                   $scope.pagePersonalUser= res.result.page;
+                   $scope.personalUser = res.result.docs;
+                   $scope.personalUserCount = res.result.total;
                } 
                else {
                 toastr.error(res.responseMessage);
@@ -189,54 +190,79 @@ var BATTUTA_KEY="00000000000000000000000000000000"
      }
      $scope.nextpersonalUserDetail();
      $scope.nextPersonalUser = function(){
-        $scope.personalUser++;
+        $scope.currentPersonalUser++;
         $scope.nextpersonalUserDetail();
      }
      $scope.prePersonalUser= function(){
-        $scope.personalUser--;
+        $scope.currentPersonalUser--;
         $scope.nextpersonalUserDetail();
      }
      
-    //*******************Total User****************
-    // userService.totalUser(2).success(function(res) {
-    //     console.log("data>>>>>>",JSON.stringify(res))
-    //     if (res.responseCode == 200){
-    //         $scope.totalUser = res.result;
-    //         $scope.totalUserCount = res.result.length;
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-        
-    // })
-    //*******************Personal User****************
-    // userService.showAllPersonalUser().success(function(res) {        
-    //     if (res.responseCode == 200){
-    //         $scope.personalUser = res.result;
-    //         $scope.personalUserCount = res.result.length;
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-    // })
-
+    
     //*******************Business User****************
-    userService.showAllBusinessUser().success(function(res) {        
-        if (res.responseCode == 200){
-            $scope.businessUser = res.result;
-            $scope.businessUserCount = res.result.length;
-        } else {
-            toastr.error(res.responseMessage);
-        }
-    })
+
+
+    $scope.currentBusinessUser = 1;
+     $scope.nextBusinessUserDetail = function(){
+       console.log('page number personalUserDetail-> '+$scope.currentBusinessUser);
+         userService.showAllBusinessUser($scope.currentBusinessUser).success(function(res) { 
+            console.log("dddd",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.noOfPagesBusinessUser = res.result.pages;
+                   $scope.pageBusinessUser= res.result.page;
+                   $scope.businessUser = res.result.docs;
+                   $scope.businessUserCount = res.result.total;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+     }
+     $scope.nextBusinessUserDetail();
+     $scope.nextBusinessUser = function(){
+        $scope.currentBusinessUser++;
+        $scope.nextBusinessUserDetail();
+     }
+     $scope.preBusinessUser= function(){
+        $scope.currentBusinessUser--;
+        $scope.nextBusinessUserDetail();
+     }
 
     //*******************Cash Winners****************
-    userService.showAllCashWinners().success(function(res) {        
-        if (res.responseCode == 200){
-            $scope.cashWinners = res.result;
-            $scope.cashWinnersCount = res.result.length;
-        } else {
-            toastr.error(res.responseMessage);
-        }
-    })
+
+    $scope.currentCashWinners = 1;
+     $scope.nextCashWinnersDetail = function(){
+       console.log('page number personalUserDetail-> '+$scope.currentCashWinners);
+         userService.showAllCashWinners($scope.currentCashWinners).success(function(res) { 
+            console.log("dddd",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.noOfPagesCashWinners = res.result.pages;
+                   $scope.pageCashWinners= res.result.page;
+                   $scope.cashWinners = res.result.docs;
+                   $scope.cashWinnersCount = res.result.total;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+     }
+     $scope.nextCashWinnersDetail();
+     $scope.nextCashWinners = function(){
+        $scope.currentCashWinners++;
+        $scope.nextCashWinnersDetail();
+     }
+     $scope.preCashWinners= function(){
+        $scope.currentCashWinners--;
+        $scope.nextCashWinnersDetail();
+     }
+    // userService.showAllCashWinners().success(function(res) {        
+    //     if (res.responseCode == 200){
+    //         $scope.cashWinners = res.result;
+    //         $scope.cashWinnersCount = res.result.length;
+    //     } else {
+    //         toastr.error(res.responseMessage);
+    //     }
+    // })
 
     //*******************Coupon Winners****************
     userService.showAllCouponWinners().success(function(res) {        

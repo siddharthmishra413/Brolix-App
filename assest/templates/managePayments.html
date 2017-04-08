@@ -2,35 +2,35 @@
             <div class="height-sm" data-scrollbar="true">
                 <div class="row ">
                 <div class="col-md-10 col-sm-12">
-                                <div class="grp-search m-t-0 bdr-0">
-                                    <div class="row">
-                                        <div class="col-md-9 col-sm-12">
-                                            <div class="row-search">
-                                                <ul class="brdr">
-                                                    <li class="active">
-                                                        <a style="color: {{clr}};font-size: 20px; cursor: pointer" data-toggle="tab" ng-click="payment('dollars')">Dollars Payments</a>
-                                                    </li>
-                                                    <li class="last">
-                                                        <a style="color: {{clr1}};font-size: 20px; cursor: pointer" data-toggle="tab" ng-click="payment('brolix')">Brolix Payments</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-
-                                            <div class="search-bar-cus">
-                                              <form class="form-inline">
-                                                  <div class="form-group">
-                                                    <div class="input-group">
-                                                      <input type="text" class="form-control" placeholder="Search By Buyer Name" ng-model="search">
-                                                      <div class="input-group-addon">Search</div>
-                                                    </div>
-                                                  </div>
-                                                </form>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
-                                    </div>
+                    <div class="grp-search m-t-0 bdr-0">
+                        <div class="row">
+                            <div class="col-md-9 col-sm-12">
+                                <div class="row-search">
+                                    <ul class="brdr">
+                                        <li class="active">
+                                            <a style="color: {{clr}};font-size: 20px; cursor: pointer" data-toggle="tab" ng-click="payment('dollars')">Dollars Payments</a>
+                                        </li>
+                                        <li class="last">
+                                            <a style="color: {{clr1}};font-size: 20px; cursor: pointer" data-toggle="tab" ng-click="payment('brolix')">Brolix Payments</a>
+                                        </li>
+                                    </ul>
                                 </div>
+
+                                <div class="search-bar-cus">
+                                  <form class="form-inline">
+                                      <div class="form-group">
+                                        <div class="input-group">
+                                          <input type="text" class="form-control" placeholder="Search By Buyer Name" ng-model="search">
+                                          <div class="input-group-addon">Search</div>
+                                        </div>
+                                      </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
+                        </div>
+                    </div>
                     <div class="col-md-10 col-sm-12" style=" width: 100%;">
                         <div class="row boder-bottom" style=" width: 106%;" >
                             <div class="col-md-2 col-sm-6">
@@ -87,9 +87,9 @@
                                             </div>
                                         </div>
                                   </div>
-                        </div>
+                              </div>
 
-                            
+                              <div class="col-md-10">
                                <div class="row">
                                     <div class="col-md-2 col-sm-6 col-p fltr" >
                                         <div class="form-group cus-select" > 
@@ -166,10 +166,12 @@
                                               </datepicker>
                                         </div>
                                     </div>
+                                  </div>
                                 <!-- </div> -->
-                                <!-- <div class="row"> -->
-                                    <div class="col-sm-9">
-                                    <div class="row table-responsive cus-table">                          
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                      <div class="row">
+                                    <div class="table-responsive cus-table">                          
                                         <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 0">
                                             <thead>
                                               <tr>
@@ -222,6 +224,8 @@
                                             </tbody>
                                           </table>
                                     </div>
+                                    </div>
+                                    </div>
                                   </div>
                                 </div>
                             </div>
@@ -268,26 +272,26 @@
         <div class="grp-search">
             <div class="row " >
               <div class="col-md-10 col-sm-12">
-                                <div class="grp-search m-t-0 bdr-0">
-                                    <div class="row" style="margin: 7px;">
-                                        <div class="col-md-9 col-sm-12">
-                                            <div class="search-bar-cus">
-                                                <form class="form-inline">
-                                                  <div class="form-group">
-                                                    <div class="input-group">
-                                                      <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdata">
-                                                      <div class="input-group-addon">Search</div>
-                                                    </div>
-                                                  </div>
-                                                </form>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
+                  <div class="grp-search m-t-0 bdr-0">
+                      <div class="row" style="margin: 7px;">
+                          <div class="col-md-9 col-sm-12">
+                              <div class="search-bar-cus">
+                                  <form class="form-inline">
+                                    <div class="form-group">
+                                      <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdata">
+                                        <div class="input-group-addon">Search</div>
+                                      </div>
                                     </div>
-                                </div>
-                    <div class="col-md-10 col-sm-12" style=" width: 100%;">
-                        <div class="row" style=" width: 106%;" >
+                                  </form>
+                              </div>
+
+                          </div>
+                          <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
+                      </div>
+                  </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="row">
                             <div class="col-md-2 col-sm-6">
                                 <div class="box-block wd100" style="background-color: #00b288" ng-if="flag == 0">
                                          <div class="top-box">
@@ -343,7 +347,7 @@
                                               </div>
                                     </div>
                             </div>
-                            
+                            <div class="col-md-10">
                                 <div class="row">
                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                         <div class="form-group cus-select"> 
@@ -409,9 +413,14 @@
                                               </datepicker>
                                         </div>
                                     </div>
-                                <!-- </div>
-                                <div class="row"> -->
-                                    <div class="col-sm-9">
+                                  </div>
+
+
+
+
+
+                                <div class="row"> 
+                                    <div class="col-sm-12">
                                     <div class="row table-responsive cus-table">                          
                                         <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 0">
                                             <thead>
@@ -466,6 +475,7 @@
                                             </tbody>
                                           </table>
                                     </div>
+                                  </div>
                                   </div>
                                 </div>
                             </div>
@@ -801,35 +811,36 @@
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                <h4 class="modal-title">Top 50 Ads</h4>
            </div>
-           <div class="modal-body">
-               <form name="userFrom1">
+           <div class="modal-body max-height-700">
+               <form name="userFrom1" class="clearfix">
                <div class="col-sm-12" ng-repeat="ads in adsDetail">
-                                <div class="gift-images">
-                                    <img src="{{ads.coverImage}}" style="height:300px;" class="img-responsive">
-                                    <div class="gift-images-data">
-                                        <div class="top-row-c1">
-                                            <div class="top-row-c1-left">
-                                                <h4>{{ads.pageName}}</h4>
-                                                <h4>Type: {{ads.adsType}}</h4>
-                                                <div class="cus-date-c1" ><label>Valid Till : </label><span>{{ads.couponExpiryDate | date:dd-MM-yyyy}}</span></div>
-                                            </div>
-                                            <div class="top-row-c1-right">
-                                                <div class="c1-used">Status: {{ads.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
-                                                <!-- <div class="c1-share"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</div> -->
-                                            </div>
-                                            <div class="middle-row-c1">
-                                                <h3>Gift Description</h3>
-                                                <p>{{ads.giftDescription}}</p>
-                                            </div>
-                                            <div class="middle-row-c1">
-                                                <h3>Category</h3>
-                                                <p>{{ads.category}}</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="gift-images">
+                        <img src="{{ads.coverImage}}" style="height:300px;" class="img-responsive">
+                        <div class="gift-images-data">
+                            <div class="top-row-c1">
+                                <div class="top-row-c1-left">
+                                    <h4>{{ads.pageName}}</h4>
+                                    <h4>Type: {{ads.adsType}}</h4>
+                                    <div class="cus-date-c1" ><label>Valid Till : </label><span>{{ads.couponExpiryDate | date:dd-MM-yyyy}}</span></div>
+                                </div>
+                                <div class="top-row-c1-right">
+                                    <div class="c1-used">Status: {{ads.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+                                    <!-- <div class="c1-share"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</div> -->
+                                </div>
+                                <div class="middle-row-c1">
+                                    <h3>Gift Description</h3>
+                                    <div class="gift-desc">{{ads.giftDescription}}</div> 
+                                </div>
+                                <div class="middle-row-c1">
+                                    <h3>Category</h3>
+                                    <div class="gift-desc">{{ads.category}}</div>
                                 </div>
                             </div>
+                        </div>
                       </div>
+                  </div>
+                </form>
+            </div>
        </div>
    </div>
 </div>

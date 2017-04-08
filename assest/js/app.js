@@ -186,6 +186,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'brolixAndDollarsCtrl',
             templateUrl: 'templates/brolixAndDollars.html'
         })
+  .state('header.deafultBrolixAndDollars', {
+            url: '/deafultBrolixAndDollars',
+            controller: 'deafultBrolixAndDollarsCtrl',
+            templateUrl: 'templates/deafultBrolixAndDollars.html'
+        })
   .state('header.adminNotification', {
             url: '/adminNotification',
             controller: 'adminNotificationCtrl',

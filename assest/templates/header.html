@@ -245,26 +245,26 @@
                     <ul class="nav nav-tabs nav-tabs-inverse nav-justified nav-justified-mobile" data-sortable-id="index-2">
                     <!-- <li class="first" ng-class="{'active':header=='Manage User'}" ng-if="user.indexOf('ManageUser')>-1"><a ng-href="#header/manageUsers">Manage Users</a> -->
                             <li class="first" ng-class="{'active':header=='Manage User'}">
-                                <a ng-href="#header/manageUsers">Manage Users</a>
+                                <a ng-href="#header/manageUsers" ng-click="checkPermission('manageUsers')">Manage Users</a>
                             </li>
                             <!-- <li class="first" ng-class="{'active':header=='Manage User'}" ng-if="user.indexOf('ManageUser')>-1"><a ng-href="#header/manageUsers">Manage Users</a> -->
                             <li class="" ng-class="{'active':header=='Manage Pages'}">
-                                <a ng-href="#header/managePages">Manage Pages</a>
+                                <a ng-href="#header/managePages" ng-click="checkPermission('managePages')">Manage Pages</a>
                             </li>
                             <li class="" ng-class="{'active':header=='Manage Ads'}">
-                                <a ng-href="#header/manageAds">Manage Ads</a>
+                                <a ng-href="#header/manageAds" ng-click="checkPermission('manageAds')">Manage Ads</a>
                             </li>
                              <li class="" ng-class="{'active':header=='Manage Cards'}">
-                                <a ng-href="#header/manageCards">Manage Cards</a>
+                                <a ng-href="#header/manageCards" ng-click="checkPermission('manageCards')">Manage Cards</a>
                             </li>
                             <li class="" ng-class="{'active':header=='Manage Gifts'}">
-                                <a ng-href="#header/manageGifts">Manage Gifts</a>
+                                <a ng-href="#header/manageGifts" ng-click="checkPermission('manageGifts')">Manage Gifts</a>
                             </li>
                              <li class="" ng-class="{'active':header=='Manage Payment'}">
-                                <a ng-href="#header/managePayments">Manage Payment</a>
+                                <a ng-href="#header/managePayments" ng-click="checkPermission('managePayment')">Manage Payment</a>
                             </li>
                             <li class="" ng-class="{'active':header=='Admin Tools'}">
-                                <a ng-href="#header/manageAdminTools">Admin Tools</a>
+                                <a ng-href="#header/manageAdminTools" ng-click="checkPermission('adminTools')">Admin Tools</a>
                             </li>
                         </ul>
                 </div>
