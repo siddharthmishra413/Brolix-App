@@ -17,6 +17,7 @@ var country = require('countryjs');
 var cron = require('node-cron');
 var yeast = require('yeast');
 var followerList = require("./model/followersList");
+var paypalPayment = require("./model/payment");
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -2110,7 +2111,19 @@ module.exports = {
             }
         })
     },
+    "savePaymentRequest": function(req, res){
 
+    var payment = paypalPayment(req.body)
+    payment.save(function(err, result) {
+        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+      //  var token = jwt.sign(result, config.secreteKey);
+        res.send({
+            result: result,
+            responseCode: 200,
+            responseMessage: "Data saved successfully."
+        });
+    })
+    }
 
 
 }

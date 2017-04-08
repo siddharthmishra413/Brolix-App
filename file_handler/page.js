@@ -3,6 +3,7 @@ var createNewAds = require("./model/createNewAds");
 var createEvents = require("./model/createEvents");
 var createNewReport = require("./model/reportProblem");
 //var notificationList = require("./model/notificationList");
+var subCategory = require("./subcategory.json");
 
 var Views = require("./model/views");
 var User = require("./model/user");
@@ -1020,6 +1021,15 @@ module.exports = {
             responseMessage: "List of all category shown successfully."
         })
 
+    },
+
+    "subCategoryData": function(req, res){
+       var matchData = req.body.subCat;
+       res.send({
+        responseCode:200,
+        responseMessage:"Subcategory lists.",
+        result:subCategory[matchData]
+       })
     }
 
 }

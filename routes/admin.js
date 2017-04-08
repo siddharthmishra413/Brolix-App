@@ -138,6 +138,7 @@ app.get('/unBlockPage/:id', adminHandler.unBlockPage);
 app.post('/uploads', adminHandler.uploads);
 app.post('/sendLuckCardTOUsers', adminHandler.sendLuckCardTOUsers);
 app.post('/sendUpgradeCardTOUsers', adminHandler.sendUpgradeCardTOUsers);
+app.post('/paymentHistory', adminHandler.paymentHistory);
 
 
 module.exports = app;

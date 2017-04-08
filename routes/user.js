@@ -58,6 +58,8 @@ app.post('/useCouponWithoutCode', authUser.authUser, userHandler.useCouponWithou
 app.post('/winnersFilterCodeBasis', authUser.authUser, userHandler.winnersFilterCodeBasis)
 app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode);
 app.post('/seeExchangeSentRequest', authUser.authUser, userHandler.seeExchangeSentRequest);
+app.post('/savePaymentRequest', userHandler.savePaymentRequest);
+
 
 app.post('/payU', userHandler.payU)
 

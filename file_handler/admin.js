@@ -4,6 +4,12 @@ var createNewAds = require("./model/createNewAds");
 var createNewPage = require("./model/createNewPage");
 var createNewReport = require("./model/reportProblem");
 var adminCards = require("./model/cardsAdmin");
+var Payment = require("./model/payment");
+
+//var countries = require ('countries-cities').getCountries(); // Returns an array of country names. 
+var citiess = require ('countries-cities').getCities("India"); // Returns an array of city names of the particualr country. 
+
+
 var country = require('countryjs');
 var countries = require('country-list')();
 var allCountries = require('all-countries');
@@ -644,7 +650,11 @@ module.exports = {
         var code = req.params.code;
         var states = country.states(name, code);
         if (!states) {
-            responseHandler.apiResponder(req, res, 404, "States not found");
+            res.send({
+            responseCode: 404,
+            responseMessage: "States not found."
+        });
+           // responseHandler.apiResponder(req, res, 404, "States not found");
         } else {
             res.send({
                 result: states,
@@ -3180,6 +3190,21 @@ module.exports = {
             }
         })
     },
+
+    "paymentHistory": function(req, res){
+      Payment.find({Type:req.body.type}).populate('userId','email firstName lastName').populate('adId','userId pageName').exec(function(err, result){
+        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+        else if (!result) { res.send({ responseCode: 404, responseMessage: "Data not found." }) } 
+        else { 
+            User.populate(result, {
+                   path: 'adId.userId',
+                   select: 'firstName lastName email'
+            }, function(err, dbres){
+                res.send({ responseCode: 200, responseMessage: "Payment details.", result: result}); 
+            })
+        }
+      })
+    }
 
 
 }

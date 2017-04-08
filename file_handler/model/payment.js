@@ -11,19 +11,21 @@ var Schema = mongoose.Schema;
 var paypalPaymentSchema = new Schema({
     userId: {
         type: String,
-        trim: true
+        ref: 'brolixUser'
     },
     amount: {
-        type: String,
-        trim: true
+        type: Number
     },
     transcationId: {
         type: String,
         trim: true
     },
-    paymentDate: {
-        type: String,
-        trim: true
+    adId:{
+        type:String,
+        ref: 'createNewAds'
+    },
+    Type:{
+        type:String
     },
     createdAt: {
         type: Date,
