@@ -12,7 +12,7 @@ app.get('/countrys', adminHandler.countrys);
 app.get('/getAllStates/:name/:code', adminHandler.getAllStates);
 app.get('/viewProfile/:id', adminHandler.viewProfile);
 app.put('/editUserProfile/:id', adminHandler.editUserProfile);
-app.get('/totalPages', adminHandler.totalPages);
+app.get('/totalPages/:pageNumber', adminHandler.totalPages);
 app.get('/viewPage/:id', adminHandler.viewPage);
 
 
@@ -42,13 +42,13 @@ app.get('/unUsedUpgradeCard', adminHandler.unUsedUpgradeCard);
 /*-------------------------Manage ADS---------------------*/
 
 app.get('/totalAds/:pageNumber', adminHandler.totalAds);
-app.get('/totalActiveAds', adminHandler.totalActiveAds);
-app.get('/totalExpiredAds', adminHandler.totalExpiredAds);
-app.get('/videoAds', adminHandler.videoAds);
-app.get('/slideshowAds', adminHandler.slideshowAds);
-app.get('/showAllBlockedPage', adminHandler.showAllBlockedPage);
+app.get('/totalActiveAds/:pageNumber', adminHandler.totalActiveAds);
+app.get('/totalExpiredAds/:pageNumber', adminHandler.totalExpiredAds);
+app.get('/videoAds/:pageNumber', adminHandler.videoAds);
+app.get('/slideshowAds/:pageNumber', adminHandler.slideshowAds);
+app.get('/showAllBlockedPage/:pageNumber', adminHandler.showAllBlockedPage);
 app.get('/removePage/:id', adminHandler.removePage);
-app.get('/showAllRemovedPage', adminHandler.showAllRemovedPage);
+app.get('/showAllRemovedPage/:pageNumber', adminHandler.showAllRemovedPage);
 app.get('/sendcardAndcoupan/:id', adminHandler.sendcardAndcoupan);
 app.get('/findAllCities', adminHandler.findAllCities);
 app.get('/unPublishedPage', adminHandler.unPublishedPage);
@@ -61,8 +61,8 @@ app.post('/createOfferOnCard', adminHandler.createOfferOnCard);
 app.post('/createPage', adminHandler.createPage);
 app.post('/showOfferOnCards', adminHandler.showOfferOnCards);
 app.get('/showUserPage/:id', adminHandler.showUserPage);
-app.get('/adsOnPage/:id', adminHandler.adsOnPage);
-app.get('/winnersOnPage/:id', adminHandler.winnersOnPage);
+app.get('/adsOnPage/:id/:pageNumber', adminHandler.adsOnPage);
+app.get('/winnersOnPage/:id/:pageNumber', adminHandler.winnersOnPage);
 app.get('/pageAdminsDetail/:id', adminHandler.pageAdminsDetail);
 app.get('/showReportOnAd/:id', adminHandler.showReportOnAd);
 app.get('/ownerDetails/:id', adminHandler.ownerDetails);
@@ -137,7 +137,7 @@ app.get('/unBlockPage/:id', adminHandler.unBlockPage);
 app.post('/uploads', adminHandler.uploads);
 app.post('/sendLuckCardTOUsers', adminHandler.sendLuckCardTOUsers);
 app.post('/sendUpgradeCardTOUsers', adminHandler.sendUpgradeCardTOUsers);
-app.get('/liveUser',adminHandler.liveUser);
+app.get('/liveUser', adminHandler.liveUser);
 
 
 module.exports = app;
