@@ -79,8 +79,8 @@ app.service('userService',function($http){
     addUser: function(data) {
       return $http.post(baseurl+'/admin/addNewUser', data);
     },
-    totalUser: function() {
-      return $http.get(baseurl+'/admin/showAllUser');
+    totalUser: function(pageNo) {
+     return $http.get(baseurl+'/admin/showAllUser/'+pageNo);
     },
     showAllPersonalUser: function() {
       return $http.get(baseurl+'/admin/showAllPersonalUser');

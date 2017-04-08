@@ -1,4 +1,4 @@
-<div class="container" >
+<div class="container">
 		<div class="col-sm-12" ng-if="couponDeatil">
                 <a class="table-a" ng-click="addCouponFun()">Add Coupon</a>
                 <div class="table-responsive">
@@ -28,53 +28,59 @@
                 </div>
         </div>
         <div class="col-sm-12" style="text-align: center" ng-if="addNewCoupon == true">
-            <span class="heading-coupon"><u>ADD NEW COUPON</u></span>
+        <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">ADD NEW COUPON</h3>
+                </div>
+                <div class="panel-body">
+            <!-- <span class="heading-coupon"><u>ADD NEW COUPON</u></span> -->
             <form class="form-block" role="form" name="myForm">
-                                <fieldset>
-                                    <div class="form-group">
-                                        <div class="cover-image" style="height:250px;">
-                                        <img style="height:200px;width:600px;border-radius: 70%;" class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">Page Name</label>
-                                        <div class="col-sm-8">
-                                          <select class="form-control" ng-model="user.pageName" ng-change="isSelected(user.pageName)">
-                                                <option value="">Select</option>
-                                                <option value="{{page.pageName}}" ng-repeat="page in pageDetail">{{page.pageName}}</option>
-                                          </select>
-                                        </div>
-                                      </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">Expiry Date</label>
-                                        <div class="col-sm-8">
-                                          <input type="date" class="form-control" ng-model="user.expDate" name="myDate" required>
-                                          <span style="color:red" ng-show="myForm.myDate.$dirty && myForm.myDate.$invalid">
-                                          <span style="color:red" ng-show="myForm.myDate.$error.required">
-                                           Please Select Expiry Date</span>
-                                          <span style="color:red" ng-show="myForm.myDate.$error.date">
-                                           Not a valid date!</span>
-                                        </div>
-                                      </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">Gift Description</label>
-                                        <div class="col-sm-8">
-                                            <textarea class="form-control" ng-model="user.description" name="gift_Description"
-                                             required></textarea>
-                                            <span style="color:red;" ng-show="myForm.gift_Description.$dirty && myForm.gift_Description.$invalid">
-                                              <span ng-show="myForm.gift_Description.$error.required">Gift Description is required.</span>
-                                        </div>
+              <fieldset>
+                  <div class="form-group clearfix">
+                      <div class="cover-image" style="height:250px;">
+                      <img style="height:200px;width:600px;border-radius: 70%;" class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                      <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                      </div>
+                  </div>
+                  <div class="form-group clearfix">
+                      <label class="col-sm-3 control-label">Page Name</label>
+                      <div class="col-sm-9">
+                        <select class="form-control" ng-model="user.pageName" ng-change="isSelected(user.pageName)">
+                              <option value="">Select</option>
+                              <option value="{{page.pageName}}" ng-repeat="page in pageDetail">{{page.pageName}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  <div class="form-group clearfix">
+                      <label class="col-sm-3 control-label">Expiry Date</label>
+                      <div class="col-sm-9">
+                        <input type="date" class="form-control" ng-model="user.expDate" name="myDate" required>
+                        <span style="color:red" ng-show="myForm.myDate.$dirty && myForm.myDate.$invalid">
+                        <span style="color:red" ng-show="myForm.myDate.$error.required">
+                         Please Select Expiry Date</span>
+                        <span style="color:red" ng-show="myForm.myDate.$error.date">
+                         Not a valid date!</span>
+                      </div>
+                    </div>
+                  <div class="form-group clearfix">
+                      <label class="col-sm-3 control-label">Gift Description</label>
+                      <div class="col-sm-9">
+                          <textarea class="form-control" ng-model="user.description" name="gift_Description"
+                           required></textarea>
+                          <span style="color:red;" ng-show="myForm.gift_Description.$dirty && myForm.gift_Description.$invalid">
+                            <span ng-show="myForm.gift_Description.$error.required">Gift Description is required.</span>
+                      </div>
 
-                                      </div>
-                              
-                                </fieldset>
+                    </div>
+            
+              </fieldset>
             <div class="btn2 text-center">
             <a  class="btn btn-lg btn-green"  ng-click="addCoupon(user)">Add</a>
                 <a href="" class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
                 
             </div>
-        </form >
+        </form>
+        </div>
     </div>
 </div>
 <div id="post" class="modal fade">

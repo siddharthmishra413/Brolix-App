@@ -311,7 +311,7 @@
                     <tr ng-repeat="x in totalCashGiftShow | totalCashGiftFilter:search">
                         <td>{{x.cashPrize.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text" ng-click="showCouponGift(x.coupon.adId)">View</td>
+                        <td class="skyblue-text" ng-click="showCouponGift(x.cashPrize.adId)">View</td>
                         <td>{{x.cashPrize.cashStatus}}</td>
                 </tbody>
             </table>

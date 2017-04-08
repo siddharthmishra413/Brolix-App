@@ -83,15 +83,30 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="cover-image" >
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Cover Image</label>
+                                            <div class="col-md-9">
+                                                <img class="profile-user-img img-responsive" src="{{user.pagephoto || '../dist/image/cover.jpg'}}" id="output">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="cover-image">
                                         <label class="control-label col-md-6">Cover Image</label>
                                         <img class="profile-user-img img-responsive" src="{{user.pagephoto || '../dist/image/cover.jpg'}}" id="output">
+                                    </div> -->
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Page Image</label>
+                                            <div class="col-md-9">
+                                                <img class="profile-user-img img-responsive" src="{{user.userphoto || '../dist/image/user-image.jpeg'}}" id="output">
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <div class="page-image clearfix">
+                                    <!-- <div class="page-image clearfix">
                                     <label class="control-label col-md-6">Page Image</label>
                                         <img class="profile-user-img img-responsive" src="{{user.userphoto || '../dist/image/user-image.jpeg'}}" id="output">
-                                    </div>
+                                    </div> -->
                                     <div class="row">
                                         <label class="control-label col-md-12">Social Media Accounts</label>
                                         <div class="col-sm-12">

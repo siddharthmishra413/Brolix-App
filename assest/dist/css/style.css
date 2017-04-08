@@ -117,7 +117,7 @@ body{margin: 0; padding: 0; font-family: 'Open Sans', sans-serif;}
 .btn-row{padding-top: 15px;}
 .form-block .input-group-addon{font-size: 20px; width: 45px; border-radius: 0;}
 .form-block .input-group{width: 100%;}
-.form-block .control-label{font-weight: 600; margin: 0 0 10px; font-size: 15px;}
+.form-block .control-label{font-weight: 600; margin: 0 0 10px; font-size: 15px;text-align: left;}
 .form-block .form-group{margin-bottom: 20px;}
 .add-user{margin: 10% 0;}
 .btn2{padding: 30px 0 15px;}
@@ -155,7 +155,7 @@ body{margin: 0; padding: 0; font-family: 'Open Sans', sans-serif;}
 .card-tabs.nav>li:last-child>a:after{content: '';}
 
 /************* remove-card *************/
-.remove-card-block{height: 465px; overflow-y: auto;}
+.remove-card-block{height: 550px; overflow-y: auto;}
 .form-block .input-group-addon.txt-sm{font-size: 16px;}
 .radio-tab{margin: 10px 0 20px; text-align: center;}
 .radio-tab .radio-btn label{font-size: 16px; font-weight: bold; width: 30%;}
@@ -293,3 +293,13 @@ form.well {
 .glyphicon-remove {
   cursor: pointer;
 }
+
+
+.c1-notfy-profile-img img{width: 80px;height: 80px;}
+.c1-notify-row:nth-child(odd){background: #ccebdd;}
+.c1-notify-row:nth-child(even){background: #ccc;}
+.c1-notify-row{margin: 10px 0;display: table;width: 100%;}
+.c1-notift-dtl{display: table-cell;vertical-align: middle;padding-left: 20px;}
+.c1-notfy-profile-img{display: table-cell;vertical-align: middle;width: 80px;}
+.c1-notift-dtl p{margin: 0;}
+.notify a{color: #35b387;}

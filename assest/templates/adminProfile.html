@@ -1,21 +1,20 @@
 <div class="container" ng-if="Step1">
   <div class="row">
-    <div class="cus-upload-photos">
-         <div class="page-image clearfix">
-            <img class="profile-user-img img-responsive" ng-model="createAds.adCover" src="{{myFrom.image || './dist/image/user-image.jpeg'}}" id="output">
-            <label class="fileContainer">
-                Choose File
-                <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-            </label>
-         </div>
-    </div>
-
     <div class="col-md-8 col-md-offset-2">
       <div class="add-user panel panel-default cust-panel">
         <div class="panel-heading">
             <h3 class="panel-title">Admin Profile</h3>
         </div>
         <div class="panel-body">
+            <div class="cus-upload-photos">
+                 <div class="page-image clearfix">
+                    <img class="profile-user-img img-responsive" ng-model="createAds.adCover" src="{{myFrom.image || './dist/image/user-image.jpeg'}}" id="output">
+                    <label class="fileContainer">
+                        Choose File
+                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                    </label>
+                 </div>
+            </div>
             <div class="login-block">
                 <form class="form-block" role="form" name="userFrom">
                     <fieldset>
@@ -107,10 +106,16 @@
          
   <!-- changePassword-->
 
-   <div class="container-fluid" ng-if="Step2">
-        <div class="col-sm-12">
+   <div class="container" ng-if="Step2">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="add-user panel panel-default cust-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">Change Password</h3>
+            </div>
+        <div class="panel-body">
             <div class="change-pass-bor clearfix">
-                <form  name="myForm1" class="form-horizontal col-sm-8 col-sm-offset-2">
+                <form  name="myForm1" class="form-horizontal">
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Old Password</label>
                     <div class="col-sm-9">
@@ -143,11 +148,14 @@
                   </div>
                   <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-9">
-                      <button type="submit" class="btn btn-primary" ng-click="changePass()" style="width:144px;" ng-disabled="myForm1.$invalid || myForm.cpwd!=myForm.password">Save</button>
+                      <button type="submit" class="btn btn-lg btn-green" ng-click="changePass()" style="width:144px;" ng-disabled="myForm1.$invalid || myForm.cpwd!=myForm.password">Save</button>
                     </div>
                   </div>
                 </form>
             </div>
+            </div>
+            </div>
         </div>
+      </div>
   </div>
 

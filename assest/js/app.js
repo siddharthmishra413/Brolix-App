@@ -186,6 +186,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'brolixAndDollarsCtrl',
             templateUrl: 'templates/brolixAndDollars.html'
         })
+  .state('header.adminNotification', {
+            url: '/adminNotification',
+            controller: 'adminNotificationCtrl',
+            templateUrl: 'templates/adminNotification.html'
+        })
 
 
   /*addCoupons-section*/

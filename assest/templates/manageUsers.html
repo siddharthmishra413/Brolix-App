@@ -401,6 +401,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalUser | customFilterUser:test).length != 0">
+                        <button ng-click="preClk()" ng-disabled="pageNo==1" class="btn paginationBtn" >Prev</button> {{pageNo}}/{{noOfPages}}
+                        <button ng-click="nextClk()" ng-disabled="pageNo==noOfPages" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div> 
     <div class="col-sm-12" ng-switch="tab">
@@ -478,6 +482,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUser:test).length != 0">
+                        <button ng-click="nextPersonalUser()" ng-disabled="pageNo==1" class="btn paginationBtn" >Prev</button> 
+                        {{pageNo}}/{{noOfPages}}
+                        <button ng-click="prePersonalUser()" ng-disabled="pageNo==noOfPages" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>  
     <div class="col-sm-12" ng-switch="tab">
