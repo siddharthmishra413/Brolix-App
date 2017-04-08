@@ -419,7 +419,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                res.status(200).send({
+                res.send({
                     result: result,
                     count: count,
                     responseCode: 200,
@@ -445,7 +445,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                res.status(200).send({
+                res.send({
                     result: result,
                     count: count,
                     responseCode: 200,
@@ -470,7 +470,7 @@ module.exports = {
                 }
                 var sum = arr.reduce((a, b) => a + b, 0);
                 console.log("arrrrr", sum);
-                res.status(200).send({
+                res.send({
                     result: result,
                     totalIncome: sum,
                     count: count,
@@ -493,7 +493,7 @@ module.exports = {
                 }
                 var sum = arr.reduce((a, b) => a + b, 0);
                 console.log("arrrrr", sum);
-                res.status(200).send({
+                res.send({
                     result: results,
                     totalIncome: sum,
                     count: count,
@@ -511,7 +511,7 @@ module.exports = {
                 for (var i = 0; i < result.length; i++) {
                     count++;
                 }
-                res.status(200).send({
+                res.send({
                     result: result,
                     count: count,
                     responseCode: 200,
@@ -529,7 +529,7 @@ module.exports = {
                 for (var i = 0; i < result.length; i++) {
                     count++;
                 }
-                res.status(200).send({
+                res.send({
                     result: result,
                     count: count,
                     responseCode: 200,
@@ -548,7 +548,7 @@ module.exports = {
                 for (var i = 0; i < result.length; i++) {
                     count++;
                 }
-                res.status(200).send({
+                res.send({
                     result: result,
                     count: count,
                     responseCode: 200,
@@ -566,7 +566,7 @@ module.exports = {
                 for (var i = 0; i < result.length; i++) {
                     count++;
                 }
-                res.status(200).send({
+                res.send({
                     result: result,
                     count: count,
                     responseCode: 200,
@@ -597,6 +597,7 @@ module.exports = {
             responseMessage: "All countrys list."
         });
     },
+
     "getAllStates": function(req, res) {
         var name = req.params.name;
         var code = req.params.code;
@@ -754,7 +755,8 @@ module.exports = {
 
     "videoAds": function(req, res) {
         createNewAds.paginate({ adContentType: "video" }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
                 var count = 0;
                 for (var i = 0; i < result.docs.length; i++) {
                     count++;
@@ -763,20 +765,21 @@ module.exports = {
                     path: 'pageId',
                     model: 'createNewPage',
                     select: 'pageName'
-                }, function(err, result1) {
+                }, 
+                function(err, result1) {
                     createNewAds.populate(result1, {
                         path: 'userId',
                         model: 'brolixUser',
                         select: 'mobileNumber'
                     }, function(err, result2) {
                         res.send({
-                            result: result1,
+                            result: result2,
                             count: count,
                             responseCode: 200,
                             responseMessage: "Video ads shows successfully."
                         });
                     })
-                })
+               })
             }
         })
     },
@@ -969,14 +972,25 @@ module.exports = {
         var cardType = req.body.cardType;
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: cardType, 'offer.status': 'ACTIVE' } },
-            { $project: { offer: 1, _id: 0 } }
-        ]).exec(function(err, result) {
+            { $match: { type: cardType} } ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
             }
         })
     },
+
+    // "showOfferOnCards": function(req, res) {
+    //     var cardType = req.body.cardType;
+    //     adminCards.aggregate([
+    //         { $unwind: '$offer' },
+    //         { $match: { type: cardType, 'offer.status': 'ACTIVE' } },
+    //         { $project: { offer: 1, _id: 0 } }
+    //     ]).exec(function(err, result) {
+    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+    //             res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
+    //         }
+    //     })
+    // },
 
     "createPage": function(req, res) {
         createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
@@ -1584,8 +1598,8 @@ module.exports = {
                 for (var i = 0; i < result.adAdmin.length; i++) {
                     array.push(result.adAdmin[i].userId)
                 }
-                User.find({ _id: { $in: array } }).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                User.paginate({ _id: { $in: array } },{ page: req.params.pageNumber, limit: 10 },function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
@@ -2329,9 +2343,9 @@ module.exports = {
     },
 
     "showListOFCoupon": function(req, res) {
-        createNewAds.find({ adsType: 'ADMINCOUPON', status: 'ACTIVE' }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 500, responseMessage: 'No coupon found' }); } else {
-                res.send({ result: result, responseCode: 200, responseMessage: "Coupon removed successfully." })
+        createNewAds.paginate({ adsType: 'ADMINCOUPON', status: 'ACTIVE' },{ page: req.params.pageNumber, limit: 10 },function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ count: 0, responseCode: 500, responseMessage: 'No coupon found' }); } else {
+                res.send({ result: result, responseCode: 200, responseMessage: "Coupon list successfully." })
             }
         })
     },
@@ -2471,8 +2485,8 @@ module.exports = {
     },
 
     "listOfSystemAdmin": function(req, res) {
-        User.find({ type: 'SYSTEMADMIN', status: 'ACTIVE' }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No System user found' }); } else {
+        User.paginate({ type: 'SYSTEMADMIN', status: 'ACTIVE' },{ page: req.params.pageNumber, limit: 10 },function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No System user found' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -3145,8 +3159,8 @@ module.exports = {
     },
 
     "liveUser": function(req, res) {
-        User.find({ status: 'ACTIVE' }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'Internal server error' }); } else {
+        User.paginate({ status: 'ACTIVE' },{ page: req.params.pageNumber, limit: 10 },function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
