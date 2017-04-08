@@ -18,13 +18,13 @@ app.get('/viewPage/:id', adminHandler.viewPage);
 
 /*----------------------Manage Users------------------------*/
 
-app.get('/showAllUser', adminHandler.showAllUser);
-app.get('/showAllPersonalUser', adminHandler.showAllPersonalUser);
-app.get('/showAllBusinessUser', adminHandler.showAllBusinessUser);
-app.get('/winners', adminHandler.winners);
-app.get('/couponWinners', adminHandler.couponWinners);
-app.get('/cashWinners', adminHandler.cashWinners);
-app.get('/showAllBlockUser', adminHandler.showAllBlockUser);
+app.get('/showAllUser/:pageNumber', adminHandler.showAllUser);
+app.get('/showAllPersonalUser/:pageNumber', adminHandler.showAllPersonalUser);
+app.get('/showAllBusinessUser/:pageNumber', adminHandler.showAllBusinessUser);
+app.get('/winners/:pageNumber', adminHandler.winners);
+app.get('/couponWinners/:pageNumber', adminHandler.couponWinners);
+app.get('/cashWinners/:pageNumber', adminHandler.cashWinners);
+app.get('/showAllBlockUser/:pageNumber', adminHandler.showAllBlockUser);
 app.get('/blockUser/:userId', adminHandler.blockUser);
 
 /*--------------------------Manage Cards--------------------------*/
@@ -41,12 +41,11 @@ app.get('/unUsedUpgradeCard', adminHandler.unUsedUpgradeCard);
 
 /*-------------------------Manage ADS---------------------*/
 
-app.get('/totalAds', adminHandler.totalAds);
+app.get('/totalAds/:pageNumber', adminHandler.totalAds);
 app.get('/totalActiveAds', adminHandler.totalActiveAds);
 app.get('/totalExpiredAds', adminHandler.totalExpiredAds);
 app.get('/videoAds', adminHandler.videoAds);
 app.get('/slideshowAds', adminHandler.slideshowAds);
-app.get('/totalPages/:pageNumber', adminHandler.totalPages);
 app.get('/showAllBlockedPage', adminHandler.showAllBlockedPage);
 app.get('/removePage/:id', adminHandler.removePage);
 app.get('/showAllRemovedPage', adminHandler.showAllRemovedPage);

@@ -67,8 +67,6 @@ module.exports = {
                 })
             },
             function(result, pageResult, callback) {
-                console.log("After pageResult pageResult====>>>>" + JSON.stringify(pageResult));
-                console.log("After result result  result  result====>>>>" + JSON.stringify(result));
                 var array = [];
                 var data = [];
                 for (var i = 0; i < result.pageFollowers.length; i++) {
