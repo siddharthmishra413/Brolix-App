@@ -252,7 +252,8 @@ function initDB() {
                     type: 'ADMIN',
                     firstName: 'Deepak',
                     lastName: 'Sharma',
-                    image: 'http://res.cloudinary.com/mobiloitte-in/image/upload/v1482579253/IMG_0768_f9b0nw.jpg'
+                    image: 'http://res.cloudinary.com/mobiloitte-in/image/upload/v1482579253/IMG_0768_f9b0nw.jpg',
+                    permissions: ["manageUser","managePages","manageAds","manageCards","manageGifts","managePayments","adminTool"]
                 }
 
                 var adminUser = new user(defaultUser);

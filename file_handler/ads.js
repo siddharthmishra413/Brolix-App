@@ -673,7 +673,7 @@ module.exports = {
                 }
                 User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                    else if(result1.docs.length ==0){ res.send({ responseCode: 500, responseMessage: "No cash winner found" }); }
+                    else if(result.docs.length ==0){ res.send({ responseCode: 500, responseMessage: "No cash winner found" }); }
                     else {
                         res.send({
                             result: result,
