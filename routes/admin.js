@@ -91,7 +91,7 @@ app.get('/totalBrolixPrice', adminHandler.totalBrolixPrice);
 app.get('/totalCashPrice', adminHandler.totalCashPrice);
 app.get('/adInfo/:id', adminHandler.adInfo);
 app.get('/topFiftyLuckCardBuyers', adminHandler.topFiftyLuckCardBuyers);
-app.get('/topFiftyAds', adminHandler.topFiftyAds);
+app.get('/topFiftyAds/:pageNumber', adminHandler.topFiftyAds);
 app.get('/unblockUser/:userId', adminHandler.unblockUser);
 app.post('/addNewCoupon', adminHandler.addNewCoupon);
 app.get('/viewCoupon/:id', adminHandler.viewCoupon);

@@ -2322,7 +2322,7 @@ module.exports = {
     },
 
     "topFiftyAds": function(req, res) { //sort({ viewerLenght: -1 }).limit(50).populate('pageId', 'pageName')
-        createNewAds.find({}).sort({ viewerLenght: -1 }).limit(50).exec(function(err, result) {
+        createNewAds.paginate({}).sort({ viewerLenght: -1 }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
@@ -2332,6 +2332,18 @@ module.exports = {
             }
         })
     },
+    // { page: req.params.pageNumber, limit: 10 },
+    //  "topFiftyAds": function(req, res) { //sort({ viewerLenght: -1 }).limit(50).populate('pageId', 'pageName')
+    //     createNewAds.find({}).sort({ viewerLenght: -1 }).limit(50).exec(function(err, result) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else {
+    //             var count = 0;
+    //             for (var i = 0; i < result.length; i++) {
+    //                 count++;
+    //             }
+    //             res.send({ result: result, count: count, responseCode: 200, responseMessage: "Top ads show successfully." });
+    //         }
+    //     })
+    // },
 
 
 
