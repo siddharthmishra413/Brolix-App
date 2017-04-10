@@ -91,7 +91,7 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Live Users</div>
-                            <div class="total-amt">10,000</div>
+                            <div class="total-amt">{{LiveUserCount}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='liveUser'">
@@ -632,18 +632,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in liveUser | customFilterUser:test">
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >{{x.firstName}}</td>
-                        <td >{{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td >{{x.email}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
-                    </tr>
-                </tbody>
+                   <tr ng-repeat="x in liveUser | customFilterUser:test">
+                       <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                       </td>
+                       <td >{{x.firstName}}</td>
+                       <td >{{x.lastName}}</td>
+                       <td >{{x.mobileNumber}}</td>
+                       <td >{{x.email}}</td>
+                       <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                   </tr>
+               </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(liveUser | customFilterUser:test).length != 0">
+                <button ng-click="preLiveUser()" ng-disabled="pageLiveUser==1" class="btn paginationBtn" >Prev</button> 
+                {{pageLiveUser}}/{{noOfPagesLiveUser}}
+                <button ng-click="nextLiveUser()" ng-disabled="pageLiveUser==noOfPagesLiveUser" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div> 
     <div class="col-sm-12" ng-switch="tab">
@@ -719,6 +724,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalWinners | customFilterUser:test).length != 0">
+                <button ng-click="preTotalWinners()" ng-disabled="pageTotalWinners ==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalWinners }}/{{noOfPagesTotalWinners }}
+                <button ng-click="nextTotalWinners ()" ng-disabled="pageTotalWinners ==noOfPagesTotalWinners " class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
     
@@ -876,6 +886,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test).length != 0">
+                <button ng-click="preCouponWinners()" ng-disabled="pageCouponWinners==1" class="btn paginationBtn" >Prev</button> 
+                {{pageCouponWinners}}/{{noOfPagesCouponWinners}}
+                <button ng-click="nextCouponWinners()" ng-disabled="pageCouponWinners==noOfPagesCouponWinners" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -929,6 +944,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test).length != 0">
+                <button ng-click="preBlockUser()" ng-disabled="pageBlockUser==1" class="btn paginationBtn" >Prev</button> 
+                {{pageBlockUser}}/{{noOfPagesBlockUser}}
+                <button ng-click="nextBlockUser()" ng-disabled="pageBlockUser==noOfPagesBlockUser" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>  
 </div>

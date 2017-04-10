@@ -88,8 +88,8 @@ app.service('userService',function($http){
     showAllBusinessUser: function(pageNo) {
       return $http.get(baseurl+'/admin/showAllBusinessUser/'+pageNo);
     },
-    totalWinners: function() {
-      return $http.get(baseurl+'/admin/winners');
+    totalWinners: function(pageNo) {
+      return $http.get(baseurl+'/admin/winners/'+pageNo);
     },
     countrys: function() {
       return $http.get(baseurl+'/admin/countrys');
@@ -104,12 +104,15 @@ app.service('userService',function($http){
     showAllCashWinners: function(pageNo) {
       return $http.get(baseurl+'/admin/cashWinners/'+pageNo);
     },
-    showAllCouponWinners: function() {
-      return $http.get(baseurl+'/admin/couponWinners');
+    showAllCouponWinners: function(pageNo) {
+      return $http.get(baseurl+'/admin/couponWinners/'+pageNo);
     },
-    showAllBlockUser: function() {
-      return $http.get(baseurl+'/admin/showAllBlockUser');
+    showAllBlockUser: function(pageNo) {
+      return $http.get(baseurl+'/admin/showAllBlockUser/'+pageNo);
     },
+     showAllLiveUsers: function(pageNo) {
+     return $http.get(baseurl+'/admin/liveUser/'+pageNo);
+   },
     showListOFCoupon: function() {
       return $http.get(baseurl+'/admin/showListOFCoupon');
     },
@@ -203,8 +206,8 @@ app.service('userService',function($http){
 
     /*------------------------Manage Pages---------------------*/
 
-    totalPages: function() {
-      return $http.get(baseurl+'/admin/totalPages');
+    totalPages: function(pageNo) {
+      return $http.get(baseurl+'/admin/totalPages/'+pageNo);
     },
 
     allAdminPages: function() {
@@ -287,8 +290,8 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/unPublishedPage');  
     },
 
-    showAllRemovedPage: function () {
-      return $http.get(baseurl+'/admin/showAllRemovedPage');  
+    showAllRemovedPage: function (pageNo) {
+      return $http.get(baseurl+'/admin/showAllRemovedPage/'+pageNo);  
     },
 
     removePage: function (pageId) {
