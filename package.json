@@ -15,6 +15,7 @@
     "cities-list": "^1.0.3",
     "client-sessions": "^0.7.0",
     "cloudinary": "^1.4.3",
+    "countries-cities": "0.0.11",
     "country-list": "^1.1.0",
     "countryjs": "^1.6.0",
     "coupon-code": "^0.4.4",

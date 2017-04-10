@@ -348,15 +348,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $scope.currentLiveUser--;
         $scope.nextLiveUserDetail();
      }
-   //  userService.showAllLiveUsers().success(function(res) {   
-   //  console.log("val",JSON.stringify(res))    
-   //     if (res.responseCode == 200){
-   //         $scope.liveUser = res.result;
-   //         $scope.LiveUserCount = res.result.length;
-   //     } else {
-   //         toastr.error(res.responseMessage);
-   //     }
-   // })
+  
 
     $scope.active_tab=function(active_card){
         if(active_card=='upgrade_card'){
