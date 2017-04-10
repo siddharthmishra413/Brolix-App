@@ -3257,7 +3257,6 @@ module.exports = {
                     responseMessage: "Ad removed successfully."
                 });
             }
-
         })
 
     }
