@@ -9,7 +9,7 @@ app.post('/login', userHandler.login);
 app.post('/verifyOtp', userHandler.verifyOtp);
 app.get('/allUserDetails', authUser.authUser, userHandler.allUserDetails);
 
-app.put('/editProfile/:id', authUser.authUser, userHandler.editProfile);
+app.put('/editProfile/:id', userHandler.editProfile);
 app.post('/changePassword', userHandler.changePassword);
 
 app.post('/forgotPassword', userHandler.forgotPassword);
