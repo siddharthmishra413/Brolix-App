@@ -321,7 +321,7 @@ module.exports = {
                         select: 'mobileNumber'
                     }, function(err, result2) {
                         res.send({
-                            result: result1,
+                            result: result,
                             count: count,
                             responseCode: 200,
                             responseMessage: "All ads shown successfully."
@@ -355,7 +355,7 @@ module.exports = {
                         select: 'mobileNumber'
                     }, function(err, result2) {
                         res.send({
-                            result: result1,
+                            result: result,
                             count: count,
                             responseCode: 200,
                             responseMessage: "All ads shown successfully."
@@ -648,7 +648,7 @@ module.exports = {
                     select: 'firstName lastName email mobileNumber'
                 }, function(err, result1) {
                     res.send({
-                        result: result1,
+                        result: result,
                         responseCode: 200,
                         responseMessage: "Total Pages."
                     });
@@ -755,31 +755,30 @@ module.exports = {
 
     "videoAds": function(req, res) {
         createNewAds.paginate({ adContentType: "video" }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-             else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
                 var count = 0;
                 for (var i = 0; i < result.docs.length; i++) {
                     count++;
                 }
                 createNewAds.populate(result.docs, {
-                    path: 'pageId',
-                    model: 'createNewPage',
-                    select: 'pageName'
-                }, 
-                function(err, result1) {
-                    createNewAds.populate(result1, {
-                        path: 'userId',
-                        model: 'brolixUser',
-                        select: 'mobileNumber'
-                    }, function(err, result2) {
-                        res.send({
-                            result: result2,
-                            count: count,
-                            responseCode: 200,
-                            responseMessage: "Video ads shows successfully."
-                        });
+                        path: 'pageId',
+                        model: 'createNewPage',
+                        select: 'pageName'
+                    },
+                    function(err, result1) {
+                        createNewAds.populate(result1, {
+                            path: 'userId',
+                            model: 'brolixUser',
+                            select: 'mobileNumber'
+                        }, function(err, result2) {
+                            res.send({
+                                result: result,
+                                count: count,
+                                responseCode: 200,
+                                responseMessage: "Video ads shows successfully."
+                            });
+                        })
                     })
-               })
             }
         })
     },
@@ -802,7 +801,7 @@ module.exports = {
                         select: 'mobileNumber'
                     }, function(err, result1) {
                         res.send({
-                            result: result1,
+                            result: result,
                             count: count,
                             responseCode: 200,
                             responseMessage: "Slideshow ads shown successfully."
@@ -815,7 +814,7 @@ module.exports = {
 
     "showAllBlockedPage": function(req, res) { // pageId in request
         createNewPage.paginate({ status: "BLOCK" }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 200, count: 0, responseMessage: "No blocked page found" }) } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 200, count: 0, responseMessage: "No blocked page found" }) } else {
                 var count = 0;
                 for (var i = 0; i < result.docs.length; i++) {
                     count++;
@@ -826,7 +825,7 @@ module.exports = {
                     select: 'firstName lastName email mobileNumber'
                 }, function(err, result1) {
                     res.send({
-                        result: result1,
+                        result: result,
                         count: count,
                         responseCode: 200,
                         responseMessage: "Blocked page shown successfully."
@@ -856,7 +855,7 @@ module.exports = {
 
     "showAllRemovedPage": function(req, res) { // pageId in request
         createNewPage.paginate({ status: "REMOVED" }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 200, count: 0, responseMessage: "No removed page found" }) } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 200, count: 0, responseMessage: "No removed page found" }) } else {
                 var count = 0;
                 for (var i = 0; i < result.docs.length; i++) {
                     count++;
@@ -867,7 +866,7 @@ module.exports = {
                     select: 'firstName lastName email mobileNumber'
                 }, function(err, result1) {
                     res.send({
-                        result: result1,
+                        result: result,
                         count: count,
                         responseCode: 200,
                         responseMessage: "Removed pages shown successfully."
@@ -902,8 +901,17 @@ module.exports = {
                 return a.pageId;
             });
             var allPageIds = _.uniq(result);
-            createNewPage.find({ _id: { $nin: allPageIds } }).populate('userId', 'firstName lastName email mobileNumber').exec(function(err, result) {
-                res.send({ responseCode: 200, responseMessage: 'Here all the Unsuscribe pages', data: result })
+            createNewPage.paginate({ _id: { $nin: allPageIds } }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    User.populate(result.docs, {
+                        path: 'userId',
+                        model: 'brolixUser',
+                        select: 'firstName lastName email mobileNumber'
+                    }, function(err, result2) {
+                        res.send({ result: result, responseCode: 200, responseMessage: 'Here all the Unpublished pages' })
+                    })
+                }
+
 
             })
         })
@@ -972,7 +980,8 @@ module.exports = {
         var cardType = req.body.cardType;
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: cardType} } ]).exec(function(err, result) {
+            { $match: { type: cardType } }
+        ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
             }
@@ -1598,7 +1607,7 @@ module.exports = {
                 for (var i = 0; i < result.adAdmin.length; i++) {
                     array.push(result.adAdmin[i].userId)
                 }
-                User.paginate({ _id: { $in: array } },{ page: req.params.pageNumber, limit: 10 },function(err, result1) {
+                User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                         res.send({
                             result: result1,
@@ -1651,18 +1660,24 @@ module.exports = {
                     if (result[i].adAdminCount > 0) {
                         array.push(result[i]._id)
                     }
-                }
-                createNewPage.find({ _id: { $in: array } }).populate('adAdmin.userId', 'firstName lastName').exec(function(err, result1) {
+                } //).populate('adAdmin.userId', 'firstName lastName').exec(
+                createNewPage.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
                         var count = 0;
                         for (var i = 0; i < result1.length; i++) {
                             count++;
                         }
-                        res.send({
-                            result: result1,
-                            count: count,
-                            responseCode: 200,
-                            responseMessage: "Page detail show successfully."
+                        createNewAds.populate(result1.docs, {
+                            path: 'adAdmin.userId',
+                            model: 'brolixUser',
+                            select: 'firstName lastName'
+                        }, function(err, result2) {
+                            res.send({
+                                result: result1,
+                                count: count,
+                                responseCode: 200,
+                                responseMessage: "Page detail show successfully."
+                            })
                         })
                     }
                 })
@@ -1692,17 +1707,29 @@ module.exports = {
                         array.push(result[i]._id)
                     }
                 }
-                createNewAds.find({ _id: { $in: array } }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result1) {
+                createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No ad found." }); } else {
                         var count = 0;
                         for (var i = 0; i < result1.length; i++) {
                             count++;
                         }
-                        res.send({
-                            result: result1,
-                            count: count,
-                            responseCode: 200,
-                            responseMessage: "Ad detail show successfully."
+                        createNewAds.populate(result1.docs, {
+                            path: 'pageId',
+                            model: 'createNewPage',
+                            select: 'pageName'
+                        }, function(err, result2) {
+                            createNewAds.populate(result2, {
+                                path: 'userId',
+                                model: 'brolixUser',
+                                select: 'mobileNumber'
+                            }, function(err, result3) {
+                                res.send({
+                                    result: result1,
+                                    count: count,
+                                    responseCode: 200,
+                                    responseMessage: "All ads shown successfully."
+                                });
+                            })
                         })
                     }
                 })
@@ -1718,22 +1745,35 @@ module.exports = {
                     if (result[i].cash > 0) {
                         array.push(result[i]._id)
                     }
-                }
+                } // .populate('pageId', 'pageName').populate('userId', 'mobileNumber')
                 console.log("array-->>" + array)
-                createNewAds.find({ _id: { $in: array } }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result1) {
+                createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                         var count = 0;
                         for (var i = 0; i < result1.length; i++) {
                             count++;
                         }
-                        res.send({
-                            result: result1,
-                            count: count,
-                            responseCode: 200,
-                            responseMessage: "Ad detail show successfully."
+                        createNewAds.populate(result1.docs, {
+                            path: 'pageId',
+                            model: 'createNewPage',
+                            select: 'pageName'
+                        }, function(err, result2) {
+                            createNewAds.populate(result2, {
+                                path: 'userId',
+                                model: 'brolixUser',
+                                select: 'mobileNumber'
+                            }, function(err, result3) {
+                                res.send({
+                                    result: result1,
+                                    count: count,
+                                    responseCode: 200,
+                                    responseMessage: "All ads shown successfully."
+                                });
+                            })
                         })
                     }
                 })
+
             }
         })
     },
@@ -1748,17 +1788,29 @@ module.exports = {
                     }
                 }
                 console.log("array-->>" + array)
-                createNewAds.find({ _id: { $in: array } }).populate('pageId', 'pageName').populate('userId', 'mobileNumber').exec(function(err, result1) {
+                createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                         var count = 0;
                         for (var i = 0; i < result1.length; i++) {
                             count++;
                         }
-                        res.send({
-                            result: result1,
-                            count: count,
-                            responseCode: 200,
-                            responseMessage: "Ad detail show successfully."
+                        createNewAds.populate(result1.docs, {
+                            path: 'pageId',
+                            model: 'createNewPage',
+                            select: 'pageName'
+                        }, function(err, result2) {
+                            createNewAds.populate(result2, {
+                                path: 'userId',
+                                model: 'brolixUser',
+                                select: 'mobileNumber'
+                            }, function(err, result3) {
+                                res.send({
+                                    result: result1,
+                                    count: count,
+                                    responseCode: 200,
+                                    responseMessage: "All ads shown successfully."
+                                });
+                            })
                         })
                     }
                 })
@@ -2343,7 +2395,7 @@ module.exports = {
     },
 
     "showListOFCoupon": function(req, res) {
-        createNewAds.paginate({ adsType: 'ADMINCOUPON', status: 'ACTIVE' },{ page: req.params.pageNumber, limit: 10 },function(err, result) {
+        createNewAds.paginate({ adsType: 'ADMINCOUPON', status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ count: 0, responseCode: 500, responseMessage: 'No coupon found' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: "Coupon list successfully." })
             }
@@ -2485,7 +2537,7 @@ module.exports = {
     },
 
     "listOfSystemAdmin": function(req, res) {
-        User.paginate({ type: 'SYSTEMADMIN', status: 'ACTIVE' },{ page: req.params.pageNumber, limit: 10 },function(err, result) {
+        User.paginate({ type: 'SYSTEMADMIN', status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No System user found' }); } else {
                 res.send({
                     result: result,
@@ -3159,7 +3211,7 @@ module.exports = {
     },
 
     "liveUser": function(req, res) {
-        User.paginate({ status: 'ACTIVE' },{ page: req.params.pageNumber, limit: 10 },function(err, result) {
+        User.paginate({ status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,
