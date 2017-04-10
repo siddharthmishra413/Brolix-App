@@ -120,8 +120,8 @@ app.service('userService',function($http){
 
     /*-------------------------Manage Cards---------------------*/
 
-    totalSoldUpgradeCard: function() {
-      return $http.get(baseurl+'/admin/totalSoldUpgradeCard');
+    totalSoldUpgradeCard: function(pageNo) {
+      return $http.get(baseurl+'/admin/totalSoldUpgradeCard/'+pageNo);
     },
     totalIncomeInCashFromUpgradeCard: function() {
       return $http.get(baseurl+'/admin/totalIncomeInCashFromUpgradeCard');
@@ -166,19 +166,19 @@ app.service('userService',function($http){
     slideshowAds: function(page) {
      return $http.get(baseurl+'/admin/slideshowAds/'+page);
     },
-    adUpgradedByDollor: function(id) {
-      return $http.get(baseurl+'/admin/adUpgradedByDollor');
+    adUpgradedByDollor: function(pageNo) {
+      return $http.get(baseurl+'/admin/adUpgradedByDollor/'+pageNo);
     },
-    adUpgradedByBrolix: function(id) {
-      return $http.get(baseurl+'/admin/adUpgradedByBrolix');
+    adUpgradedByBrolix: function(pageNo) {
+      return $http.get(baseurl+'/admin/adUpgradedByBrolix/'+pageNo);
     },
-    showReportedAd: function(id) {
-      return $http.get(baseurl+'/admin/showReportedAd');
+    showReportedAd: function(pageNo) {
+      return $http.get(baseurl+'/admin/showReportedAd/'+pageNo);
     },
-    adsWithLinks: function(id) {
-      return $http.get(baseurl+'/admin/adsWithLinks');
+    adsWithLinks: function(pageNo) {
+      return $http.get(baseurl+'/admin/adsWithLinks/'+pageNo);
     },
-    topFiftyAds: function(id) {
+    topFiftyAds: function(pageNo) {
       return $http.get(baseurl+'/admin/topFiftyAds');
     },
     pageInfo: function(id) {
@@ -286,8 +286,8 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/sendcardAndcoupan/'+id);
     },
 
-    unPublishedPage: function () {
-      return $http.get(baseurl+'/admin/unPublishedPage');  
+    unPublishedPage: function (pageNo) {
+      return $http.get(baseurl+'/admin/unPublishedPage/'+pageNo);  
     },
 
     showAllRemovedPage: function (pageNo) {
@@ -304,8 +304,8 @@ app.service('userService',function($http){
     unblockPage: function(pageId) {
       return $http.get(baseurl+'/admin/unblockPage/'+pageId);
     },
-    showAllBlockedPage: function(){
-      return $http.get(baseurl+'/admin/showAllBlockedPage');
+    showAllBlockedPage: function(pageNo){
+      return $http.get(baseurl+'/admin/showAllBlockedPage/'+pageNo);
     },
 
     addcard: function(data) {

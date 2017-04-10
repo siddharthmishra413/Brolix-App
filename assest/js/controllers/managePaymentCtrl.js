@@ -506,7 +506,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Sent Successfully to All Buyers");
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
@@ -524,7 +524,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Sent Successfully to All Buyers");
                             $scope.sendMessage.massage= '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -543,7 +543,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Winners");
+                            toastr.success("Message Sent Successfully to All Winners");
                             $scope.sendMessage.massage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -562,7 +562,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
+                            toastr.success("Message Sent Successfully to All Buyers");
                             $scope.sendMessage.massage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -807,7 +807,7 @@ app.filter("manageFilter",function() {
 
 app.filter("managePaymentFilter",function() {
       return function(items,nameValue){
-        //console.log(JSON.stringify(items))
+        console.log(JSON.stringify(items))
 
       if (!nameValue) {
         return retArray = items;
@@ -815,7 +815,7 @@ app.filter("managePaymentFilter",function() {
         var retArray = [];
           for(var i=0;i<items.length;i++) 
              {
-                if(items[i].firstName || items[i].lastName || items[i].cashPrize.pageId.userId.firstName || items[i].cashPrize.pageId.pageName) {
+                if(items[i].firstName || items[i].lastName || items[i].cashPrize.pageId.firstName || items[i].cashPrize.pageId.pageName) {
                    if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].cashPrize.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ||items[i].cashPrize.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
                        retArray.push(items[i]);
                    }

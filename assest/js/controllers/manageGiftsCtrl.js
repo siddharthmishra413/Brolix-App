@@ -2,6 +2,7 @@ app.controller('manageGiftsCtrl', function ($scope, $window, $state, toastr, $ti
 $(window).scrollTop(0,0);
 $scope.$emit('headerStatus', 'Manage Gifts');
 $scope.$emit('SideMenu', 'Manage Gifts');
+$scope.tab= 'totalCouponsGifts';
 $scope.array = [];
 
 //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
@@ -240,6 +241,7 @@ $scope.showCouponGift= function(id) {
  $scope.contact_winner_message = function (modal) {
         $scope.modalId = modal;
         $scope.modelData = modal;
+        $scope.sendMessage.massage= '';
         if($scope.modalId == '' || $scope.modalId == undefined || $scope.modalId == null){
         toastr.error("Please select user.")
         $state.go('header.manageGifts')

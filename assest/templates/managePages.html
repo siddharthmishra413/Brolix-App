@@ -34,7 +34,7 @@
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Unpublished Pages</div>
-                            <div class="total-amt">{{unPublishedPage.length}}</div>
+                            <div class="total-amt">{{unPublishedPageCount}}</div>
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='unPublishedPage'">
@@ -231,9 +231,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalPages | filter:test).length != 0">
-                <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button> 
-                {{pageBusinessUser}}/{{noOfPagesBusinessUser}}
-                <button ng-click="nextBusinessUser()" ng-disabled="pageBusinessUser==noOfPagesBusinessUser" class="btn paginationBtn">Next</button>
+                <button ng-click="preTotalPages()" ng-disabled="pageTotalPages==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalPages}}/{{noOfPagesTotalPages}}
+                <button ng-click="nextTotalPages()" ng-disabled="pageTotalPages==noOfPagesTotalPages" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -271,6 +271,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(unPublishedPage | filter:test).length != 0">
+                <button ng-click="preunPublishedPage()" ng-disabled="pageunPublishedPage==1" class="btn paginationBtn" >Prev</button> 
+                {{pageunPublishedPage}}/{{noOfPagesunPublishedPage}}
+                <button ng-click="nextunPublishedPage()" ng-disabled="pageunPublishedPage==noOfPagesunPublishedPage" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -307,9 +312,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(showAllRemovedPage | filter:test).length != 0">
-                <button ng-click="preRemovedPage()" ng-disabled="pageRemovedPage==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preRemovedPages()" ng-disabled="pageRemovedPage==1" class="btn paginationBtn" >Prev</button> 
                 {{pageRemovedPage}}/{{noOfPagesRemovedPage}}
-                <button ng-click="nextRemovedPage()" ng-disabled="pageRemovedPage==noOfPagesRemovedPage" class="btn paginationBtn">Next</button>
+                <button ng-click="nextRemovedPages()" ng-disabled="pageRemovedPage==noOfPagesRemovedPage" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -331,7 +336,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in  |filter:test">
+                    <tr ng-repeat="x in  showAllBlockedPage|filter:test">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -346,6 +351,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(showAllBlockedPage | filter:test).length != 0">
+                <button ng-click="preBlockedPage()" ng-disabled="pageBlockedPage==1" class="btn paginationBtn" >Prev</button> 
+                {{pageBlockedPage}}/{{noOfPagesBlockedPage}}
+                <button ng-click="nextBlockedPage()" ng-disabled="pageBlockedPage==noOfPagesBlockedPage" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 

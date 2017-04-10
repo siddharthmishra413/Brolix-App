@@ -3,6 +3,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     $scope.class = true;
     $scope.$emit('headerStatus', 'Manage Cards');
     $scope.$emit('SideMenu', 'Manage Cards');
+    $scope.tab = 'SoldUpgradeCard';
     $scope.myForm = {};
     var upgrade_card = {};
     var luck_card = {};
@@ -57,6 +58,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.total_user_message = function (modal) {
 
         $scope.modalId = modal;
+        $scope.sendMessage.massage= '';
         $("#sendMessageModelAllUser").modal('show');
     }
 
@@ -334,15 +336,40 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     // }
    
     //*******************Total Sold UpgradeCard****************
-    userService.totalSoldUpgradeCard().success(function(res) {
-        if (res.responseCode == 200){
-            $scope.totalSoldUpgradeCard = res.result;
-            //console.log("totalSoldUpgradeCardtotalSoldUpgradeCard",JSON.stringify($scope.totalSoldUpgradeCard));
-        } else {
-            toastr.error(res.responseMessage);
-        }
+
+    $scope.currentTotalSoldUpgradeCards = 1;
+     $scope.nextTotalSoldUpgradeCardsDetail = function(){
+         userService.totalSoldUpgradeCard($scope.currentTotalSoldUpgradeCards).success(function(res) { 
+             // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.noOfPagesTotalSoldUpgradeCards = res.result.pages;
+                   $scope.pageTotalSoldUpgradeCards= res.result.page;
+                   $scope.totalSoldUpgradeCard= res.result.docs;
+                   // $scope.showAllRemovedPageCount = res.result.total;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+     }
+     $scope.nextTotalSoldUpgradeCardsDetail();
+     $scope.nextTotalSoldUpgradeCards = function(){
+        $scope.currentTotalSoldUpgradeCards++;
+        $scope.nextTotalSoldUpgradeCardsDetail();
+     }
+     $scope.preTotalSoldUpgradeCards= function(){
+        $scope.currentTotalSoldUpgradeCards--;
+        $scope.nextTotalSoldUpgradeCardsDetail();
+     }
+    // userService.totalSoldUpgradeCard().success(function(res) {
+    //     if (res.responseCode == 200){
+    //         $scope.totalSoldUpgradeCard = res.result;
+    //         //console.log("totalSoldUpgradeCardtotalSoldUpgradeCard",JSON.stringify($scope.totalSoldUpgradeCard));
+    //     } else {
+    //         toastr.error(res.responseMessage);
+    //     }
         
-    })
+    // })
    
    userService.totalIncomeInCashFromUpgradeCard().success(function(res) {
         if (res.responseCode == 200){
@@ -468,7 +495,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
             }) 
     }
     
-    $scope.upgradeCardUsedAd=function(id){
+    $scope.upgradeCardUsedAd=function(id) {
         console.log(JSON.stringify(id))
         var data = {
                     "upgradeId":id
@@ -477,7 +504,6 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         userService.upgradeCardUsedAd(data).then(function(success) { 
               if(success.data.responseCode == 200) {
                     $scope.usedAd=success.data.result;
-                    //$scope.img=$scope.usedAd.coverImage;
                     $("#luckCardUsedAd").modal('show');
                   }else{
                     toastr.error(success.data.responseMessage)
@@ -489,8 +515,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     }
 
 
-    $scope.luckCardUsedAd=function(id){
-        console.log(JSON.stringify(id))
+    $scope.luckCardUsedAd=function(id) {
         var data = {
                     "luckId":id
                 }
@@ -506,7 +531,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                 },function(err){
                     console.log(err);
                      toastr.error('Connection error.');
-            }) 
+        }) 
     }
 
   $scope.cardTypeName = function(val) {

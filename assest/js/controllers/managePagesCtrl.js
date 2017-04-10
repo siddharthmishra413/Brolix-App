@@ -328,35 +328,71 @@ $scope.dashBordFilter = function(){
      }
   
 
-    userService.showAllBlockedPage().success(function(res) {
- 	if (res.responseCode == 200){
-            $scope.showAllBlockedPage = res.result;
-            $scope.showAllBlockedPageCount = res.count;
-            //console.log("showAllBlockedPage",JSON.stringify($scope.showAllBlockedPageCount))
-            } else {
-            	//console.log("zxzxzxzxz",JSON.stringify($scope.showAllBlockedPage))
-            toastr.error(res.responseMessage);
-        }        
-    })
+//*************** All Blocked Pages ****************
 
-    userService.unPublishedPage().success(function(res){
-        // console.log("val",JSON.stringify(res))
-        if (res.responseCode == 200){
-            $scope.unPublishedPage = res.data;
-            //console.log("zxzxzxzxz",JSON.stringify($scope.unPublishedPage))
-            } else {
-            toastr.error(res.responseMessage);
-        } 
-    })
+$scope.currentBlockedPage = 1;
+     $scope.nextBlockedPageDetail = function(){
+         userService.showAllBlockedPage($scope.currentBlockedPage).success(function(res) { 
+            // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.noOfPagesBlockedPage = res.result.pages;
+                   $scope.pageBlockedPage= res.result.page;
+                   $scope.showAllBlockedPage = res.result.docs;
+                   $scope.showAllBlockedPageCount = res.result.total;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+     }
+     $scope.nextBlockedPageDetail();
+     $scope.nextBlockedPage = function(){
+        $scope.currentBlockedPage++;
+        $scope.nextBlockedPageDetail();
+     }
+     $scope.preBlockedPage= function(){
+        $scope.currentBlockedPage--;
+        $scope.nextBlockedPageDetail();
+     }
+
+  
+
+    //******************** Unpublished Pages ****************
+
+     $scope.currentunPublishedPage = 1;
+     $scope.nextunPublishedPageDetail = function(){
+         userService.unPublishedPage($scope.currentunPublishedPage).success(function(res) { 
+             // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.noOfPagesunPublishedPage = res.result.pages;
+                   $scope.pageunPublishedPage= res.result.page;
+                   $scope.unPublishedPage= res.result.docs;
+                   $scope.unPublishedPageCount = res.result.total;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+     }
+     $scope.nextunPublishedPageDetail();
+     $scope.nextunPublishedPage = function(){
+        $scope.currentunPublishedPage++;
+        $scope.nextunPublishedPageDetail();
+     }
+     $scope.preunPublishedPage= function(){
+        $scope.currentunPublishedPage--;
+        $scope.nextunPublishedPageDetail();
+     }
+    
 
 //************ All Removed Pages*****************
       $scope.currentRemovedPages = 1;
      $scope.nextRemovedPagesDetail = function(){
-         userService.totalPages($scope.currentRemovedPages).success(function(res) { 
-             console.log("val",JSON.stringify(res))
+         userService.showAllRemovedPage($scope.currentRemovedPages).success(function(res) { 
+             // console.log("val",JSON.stringify(res))
             if (res.responseCode == 200){
-                   $scope.noOfPagesRemovedPages = res.result.pages;
-                   $scope.pageRemovedPages= res.result.page;
+                   $scope.noOfPagesRemovedPage = res.result.pages;
+                   $scope.pageRemovedPage= res.result.page;
                    $scope.showAllRemovedPage= res.result.docs;
                    $scope.showAllRemovedPageCount = res.result.total;
                } 
@@ -374,19 +410,7 @@ $scope.dashBordFilter = function(){
         $scope.currentRemovedPages--;
         $scope.nextRemovedPagesDetail();
      }
-    // userService.showAllRemovedPage().success(function(res){
-    //     console.log("val",JSON.stringify(res))
-    //     if (res.responseCode == 200){
-    //         $scope.showAllRemovedPage = res.result;
-    //         $scope.showAllRemovedPageCount = res.count;
-    //         console.log("lllllllllllll",JSON.stringify($scope.showAllRemovedPageCount))
-    //         } else {
-    //         //toastr.error(res.responseMessage);
-    //         $scope.showAllRemovedPage = res.count;
-    //        // console.log("zxzxzxzxz",JSON.stringify($scope.showAllRemovedPage))
-    //     } 
-    // })
-
+    
 
     $scope.Remove_User = function (id) {
         $scope.RemoveId = id;
