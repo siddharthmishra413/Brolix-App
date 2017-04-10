@@ -3232,7 +3232,7 @@ module.exports = {
         })
     },
 
-<<<<<<< HEAD
+
     "paymentHistory": function(req, res){
       Payment.find({Type:req.body.type}).populate('userId','email firstName lastName').populate('adId','userId pageName').exec(function(err, result){
         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
@@ -3246,7 +3246,8 @@ module.exports = {
             })
         }
       })
-=======
+  },
+
     "liveUser": function(req, res) {
         User.paginate({ status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'Internal server error' }); } else {
@@ -3258,7 +3259,7 @@ module.exports = {
             }
 
         })
->>>>>>> deepak
+
     }
 
 

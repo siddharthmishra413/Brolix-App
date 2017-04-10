@@ -137,11 +137,7 @@ app.get('/unBlockPage/:id', adminHandler.unBlockPage);
 app.post('/uploads', adminHandler.uploads);
 app.post('/sendLuckCardTOUsers', adminHandler.sendLuckCardTOUsers);
 app.post('/sendUpgradeCardTOUsers', adminHandler.sendUpgradeCardTOUsers);
-<<<<<<< HEAD
 app.post('/paymentHistory', adminHandler.paymentHistory);
-=======
 app.get('/liveUser/:pageNumber', adminHandler.liveUser);
->>>>>>> deepak
-
 
 module.exports = app;
