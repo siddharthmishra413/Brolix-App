@@ -1030,6 +1030,22 @@ module.exports = {
         responseMessage:"Subcategory lists.",
         result:subCategory[matchData]
        })
+    },
+
+    "winnerFilter": function(req, res){
+      var condition = { $and: [] };
+                Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+
+                    if (!(key == "pageType" || key == "joinFrom" || key == "joinTo")) {
+                        var tempCond = {};
+                        tempCond[key] = req.body[key];
+                        condition.$and.push(tempCond)
+                    }
+                });
+                if (condition.$and.length == 0) {
+                    delete condition.$and;
+                }
+               console.log("condition====>>"+JSON.stringify(condition))
     }
 
 }
