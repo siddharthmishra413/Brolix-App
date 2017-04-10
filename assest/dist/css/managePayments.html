@@ -2,35 +2,35 @@
             <div class="height-sm" data-scrollbar="true">
                 <div class="row ">
                 <div class="col-md-10 col-sm-12">
-                    <div class="grp-search m-t-0 bdr-0">
-                        <div class="row">
-                            <div class="col-md-9 col-sm-12">
-                                <div class="row-search">
-                                    <ul class="brdr">
-                                        <li class="active">
-                                            <a style="color: {{clr}};font-size: 20px; cursor: pointer" data-toggle="tab" ng-click="payment('dollars')">Dollars Payments</a>
-                                        </li>
-                                        <li class="last">
-                                            <a style="color: {{clr1}};font-size: 20px; cursor: pointer" data-toggle="tab" ng-click="payment('brolix')">Brolix Payments</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <div class="grp-search m-t-0 bdr-0">
+                                    <div class="row">
+                                        <div class="col-md-9 col-sm-12">
+                                            <div class="row-search">
+                                                <ul class="brdr">
+                                                    <li class="active">
+                                                        <a style="color: {{clr}};font-size: 20px; cursor: pointer" data-toggle="tab" ng-click="payment('dollars')">Dollars Payments</a>
+                                                    </li>
+                                                    <li class="last">
+                                                        <a style="color: {{clr1}};font-size: 20px; cursor: pointer" data-toggle="tab" ng-click="payment('brolix')">Brolix Payments</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
 
-                                <div class="search-bar-cus">
-                                  <form class="form-inline">
-                                      <div class="form-group">
-                                        <div class="input-group">
-                                          <input type="text" class="form-control" placeholder="Search By Buyer Name" ng-model="search">
-                                          <div class="input-group-addon">Search</div>
+                                            <div class="search-bar-cus">
+                                              <form class="form-inline">
+                                                  <div class="form-group">
+                                                    <div class="input-group">
+                                                      <input type="text" class="form-control" placeholder="Search By Buyer Name" ng-model="search">
+                                                      <div class="input-group-addon">Search</div>
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                            </div>
+
                                         </div>
-                                      </div>
-                                    </form>
+                                        <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
+                                    </div>
                                 </div>
-
-                            </div>
-                            <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
-                        </div>
-                    </div>
                     <div class="col-md-10 col-sm-12" style=" width: 100%;">
                         <div class="row boder-bottom" style=" width: 106%;" >
                             <div class="col-md-2 col-sm-6">
@@ -54,7 +54,7 @@
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                                       <li><a ng-click="export()" style="cursor: pointer">Create Report</a></li>
-                                                      <li><a ng-click="paymentPaypal('CARDTYPE')">PayPal Account</a></li>
+                                                      <li><a>PayPal Account</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -81,15 +81,15 @@
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                                       <li><a ng-click="export()" style="cursor: pointer">Create Report</a></li>
-                                                      <!-- <li><a>PayPal Account</a></li> -->
+                                                      <li><a>PayPal Account</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                   </div>
-                              </div>
+                        </div>
 
-                              <div class="col-md-10">
+                            
                                <div class="row">
                                     <div class="col-md-2 col-sm-6 col-p fltr" >
                                         <div class="form-group cus-select" > 
@@ -126,7 +126,7 @@
                                               <option value="250">250</option>
                                             </select>
                                             <select class="form-control" ng-model="dashBordFilter.brolixCardType" ng-if="flag == 1">
-                                              <option value="">Card Type</option>
+                                              <option>Card Type</option>
                                               <option>5</option>
                                               <option>10</option>
                                               <option>15</option>
@@ -143,35 +143,18 @@
 
                                     <div class="col-md-2 col-sm-6 col-p fltr" >
                                         <div class="form-group cus-select"> 
-                                            <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                               <div class="input-group">
-                                                   <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="From" ng-model="dashBordFilter.dobFrom" />
-                                                   <span class="input-group-addon" style="cursor: pointer">
-                                                   <i class="fa fa-lg fa-calendar"></i>
-                                                   </span>
-                                               </div>
-                                              </datepicker>
+                                            <input style="height: 40px; background-color: #EAEAEA" class="form-control" type="date" placeholder="From" ng-model="dashBordFilter.dobFrom" >
                                         </div>
                                     </div>
-                                    
                                     <div class="col-md-2 col-sm-6 col-p fltr" >
                                         <div class="form-group cus-select"> 
-                                            <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                               <div class="input-group">
-                                                   <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="To" ng-model="dashBordFilter.dobTo" />
-                                                   <span class="input-group-addon" style="cursor: pointer">
-                                                   <i class="fa fa-lg fa-calendar"></i>
-                                                   </span>
-                                               </div>
-                                              </datepicker>
+                                            <input style="height: 40px;background-color: #EAEAEA" class="form-control" type="date" placeholder="To" ng-model="dashBordFilter.dobTo">
                                         </div>
                                     </div>
-                                  </div>
                                 <!-- </div> -->
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                      <div class="row">
-                                    <div class="table-responsive cus-table">                          
+                                <!-- <div class="row"> -->
+                                    <div class="col-sm-9">
+                                    <div class="row table-responsive cus-table">                          
                                         <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 0">
                                             <thead>
                                               <tr>
@@ -224,8 +207,6 @@
                                             </tbody>
                                           </table>
                                     </div>
-                                    </div>
-                                    </div>
                                   </div>
                                 </div>
                             </div>
@@ -272,26 +253,26 @@
         <div class="grp-search">
             <div class="row " >
               <div class="col-md-10 col-sm-12">
-                  <div class="grp-search m-t-0 bdr-0">
-                      <div class="row" style="margin: 7px;">
-                          <div class="col-md-9 col-sm-12">
-                              <div class="search-bar-cus">
-                                  <form class="form-inline">
-                                    <div class="form-group">
-                                      <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdata">
-                                        <div class="input-group-addon">Search</div>
-                                      </div>
-                                    </div>
-                                  </form>
-                              </div>
+                                <div class="grp-search m-t-0 bdr-0">
+                                    <div class="row" style="margin: 7px;">
+                                        <div class="col-md-9 col-sm-12">
+                                            <div class="search-bar-cus">
+                                                <form class="form-inline">
+                                                  <div class="form-group">
+                                                    <div class="input-group">
+                                                      <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdata">
+                                                      <div class="input-group-addon">Search</div>
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                            </div>
 
-                          </div>
-                          <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
-                      </div>
-                  </div>
-                    <div class="col-md-12 col-sm-12">
-                        <div class="row">
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
+                                    </div>
+                                </div>
+                    <div class="col-md-10 col-sm-12" style=" width: 100%;">
+                        <div class="row" style=" width: 106%;" >
                             <div class="col-md-2 col-sm-6">
                                 <div class="box-block wd100" style="background-color: #00b288" ng-if="flag == 0">
                                          <div class="top-box">
@@ -313,7 +294,7 @@
                                                   </button>
                                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                                     <li><a ng-click="export()" style="cursor: pointer">Create Report</a></li>
-                                                    <li><a ng-click="paymentPaypal('ADTYPE')">PayPal Account</a></li>
+                                                    <li><a>PayPal Account</a></li>
                                                   </ul>
                                                 </div>
                                             </div>
@@ -340,18 +321,18 @@
                                                           </button>
                                                           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                                             <li><a ng-click="export()" style="cursor: pointer">Create Report</a></li>
-                                                            <!-- <li><a>PayPal Account</a></li> -->
+                                                            <li><a>PayPal Account</a></li>
                                                           </ul>
                                                       </div>
                                                   </div>
                                               </div>
                                     </div>
                             </div>
-                            <div class="col-md-10">
+                            
                                 <div class="row">
                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                         <div class="form-group cus-select"> 
-                                            <select class="form-control" id="country" ng-model="myForm.country" ng-change="changeCountry('2')" required>
+                                            <select class="form-control" id="country" ng-model="myFrom.country" ng-change="changeCountry('2')" required>
                                             <option value="">Select Country</option>
                                             <option  ng-repeat="country in brolixCountryList">{{country.name}}</option>
                                         </select>
@@ -360,7 +341,7 @@
                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                         <div class="form-group cus-select"> 
                                             <div class="form-group cus-select"> 
-                                            <select class="form-control" id="region" ng-model="myForm.state" ng-change="changeState('2')" required>
+                                            <select class="form-control" id="region" ng-model="myFrom.state" ng-change="changeState('2')" required>
                                             <option value="">Select State</option>
                                             <option  ng-repeat="state in state2List" >{{state.region}}</option>
                                           </select>
@@ -369,7 +350,7 @@
                                     </div>
                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                         <div class="form-group cus-select"> 
-                                            <select  class="form-control" id="city" ng-model="myForm.city" required>
+                                            <select  class="form-control" id="city" ng-model="myFrom.city" required>
                                             <option value="">Select City</option>
                                             <option ng-repeat="city in city2List">{{city.city}}</option>
                                          </select>
@@ -377,13 +358,15 @@
                                     </div>
                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                         <div class="form-group cus-select"> 
-                                            <select class="form-control" ng-model="myForm.cashStatus" ng-if="flag == 0">
-                                              <option value="">Cash Status</option>
+                                            <select class="form-control" ng-model="myFrom.cashStatus" ng-if="flag == 0">
+                                              <option>Cash Status</option>
                                               <option>Pending</option>
-                                              <option>Done</option>
+                                              <option>3</option>
+                                              <option>4</option>
+                                              <option>5</option>
                                             </select>
-                                            <select class="form-control" ng-model="myForm.couponStatus" ng-if="flag == 1">
-                                              <option value="">Coupon Status</option>
+                                            <select class="form-control" ng-model="myFrom.couponStatus" ng-if="flag == 1">
+                                              <option>Coupon Status</option>
                                               <option>Used</option>
                                               <option>Expired</option>
                                             </select>
@@ -391,36 +374,17 @@
                                     </div>
                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                         <div class="form-group cus-select"> 
-                                            <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                               <div class="input-group">
-                                                   <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="From" ng-model="myForm.dateFrom" />
-                                                   <span class="input-group-addon" style="cursor: pointer">
-                                                   <i class="fa fa-lg fa-calendar"></i>
-                                                   </span>
-                                               </div>
-                                              </datepicker>
+                                            <input style="height: 40px; background-color: #EAEAEA" class="form-control" type="date" ng-model="myForm.dateFrom" placeholder="From">
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                         <div class="form-group cus-select"> 
-                                            <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                               <div class="input-group">
-                                                   <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="To" ng-model="myForm.dateTo" />
-                                                   <span class="input-group-addon" style="cursor: pointer">
-                                                   <i class="fa fa-lg fa-calendar"></i>
-                                                   </span>
-                                               </div>
-                                              </datepicker>
+                                            <input style="height: 40px; background-color: #EAEAEA" class="form-control" type="date" ng-model="myForm.dateTo" placeholder="From">
                                         </div>
                                     </div>
-                                  </div>
-
-
-
-
-
-                                <div class="row"> 
-                                    <div class="col-sm-12">
+                                <!-- </div>
+                                <div class="row"> -->
+                                    <div class="col-sm-9">
                                     <div class="row table-responsive cus-table">                          
                                         <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 0">
                                             <thead>
@@ -439,7 +403,7 @@
                                                 <td class="skyblue-text" ng-click="pageInfo(dollarsCash.cashPrize.pageId._id)" style="cursor: pointer">{{dollarsCash.cashPrize.pageId.pageName}}</td>
                                                 <td class="skyblue-text" ng-click="userInfo(dollarsCash.cashPrize.pageId.userId._id)" style="cursor: pointer">{{dollarsCash.cashPrize.pageId.userId.firstName+" "+dollarsCash.cashPrize.pageId.userId.lastName}}</td>
                                                 <td >{{dollarsCash.cashPrize.pageId.userId.email}}</td>
-                                                <td class="skyblue-text" ng-click="cashGift(dollarsCash.cashPrize.adId)" style="cursor: pointer">View</td>
+                                                <td class="skyblue-text" ng-click="adInfo(dollarsCash.cashPrize.pageId.adId._id)" style="cursor: pointer">View</td>
                                                 <td >{{dollarsCash.firstName+" "+dollarsCash.lastName}}</td>
                                                 <td >{{dollarsCash.email}}</td>
                                                 <td >{{dollarsCash.cashPrize.cashStatus}}</td>
@@ -475,7 +439,6 @@
                                             </tbody>
                                           </table>
                                     </div>
-                                  </div>
                                   </div>
                                 </div>
                             </div>
@@ -551,9 +514,10 @@
            <div class="modal-body">
                <form name="sendMessage">
                    <div class="form-group">
-                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" required></textarea>
+                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" /></textarea>
+                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                    </div>
-                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send massage</button>
+                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send massage</button>
                </form>
            </div>
        </div>
@@ -622,7 +586,7 @@
                                         <div class="top-row-c1">
                                             <div class="top-row-c1-left">
                                                 <h4>{{usedAd.pageName}}</h4>
-                                                <div class="cus-date-c1"><label>Valid Till : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div>
+                                                <div class="cus-date-c1"><label>Valid Thus : </label><span>{{usedAd.couponExipryDate |date:'MMMM dd, yyyy'}}</span></div>
                                             </div>
                                             <div class="top-row-c1-right">
                                                 <div class="c1-used">{{usedAd.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
@@ -745,7 +709,7 @@
                                         <div class="top-row-c1">
                                             <div class="top-row-c1-left">
                                                 <h4>{{userDetail.adsType}}</h4>
-                                                <div class="cus-date-c1"><label>Valid Till : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div>
+                                                <div class="cus-date-c1"><label>Valid Thus : </label><span>{{userDetail.couponExipryDate |date:'MMMM dd, yyyy'}}</span></div>
                                             </div>
                                             <div class="top-row-c1-right">
                                                 <div class="c1-used">{{userDetail.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
@@ -767,43 +731,6 @@
        </div>
    </div>
 </div>
-<div id="cashGift" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Cash Gift</h4>
-           </div><div style="height:400px;">
-           <div class="col-sm-12">
-                                <div class="gift-images">
-                                    <img src="{{userDetail.coverImage}}" style="height:300px;" class="img-responsive">
-                                    <div class="gift-images-data">
-                                        <div class="top-row-c1">
-                                            <div class="top-row-c1-left">
-                                                <h4>{{userDetail.pageName}}</h4>
-                                                <h4>Type: {{userDetail.adsType}}</h4>
-                                                <!-- <div class="cus-date-c1"><label>Valid Till : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div> -->
-                                            </div>
-                                            <div class="top-row-c1-right">
-                                                <div class="c1-used">Cash Status: {{userDetail.cashStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
-                                                <!-- <div class="c1-share"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</div> -->
-                                            </div>
-                                            <div class="middle-row-c1">
-                                                <h3>Gift Description</h3>
-                                                <p>{{userDetail.giftDescription}}</p>
-                                            </div>
-                                            <div class="middle-row-c1">
-                                                <h3>Price</h3>
-                                                <p>{{userDetail.cashAdPrize}}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                      </div>
-       </div>
-   </div>
-</div>
 <div id="top_50_Ads" class="modal fade">
    <div class="modal-dialog cls_pop">
        <div class="modal-content">
@@ -811,66 +738,35 @@
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                <h4 class="modal-title">Top 50 Ads</h4>
            </div>
-           <div class="modal-body max-height-700">
-               <form name="userFrom1" class="clearfix">
-               <div class="col-sm-12" ng-repeat="ads in adsDetail">
-                    <div class="gift-images">
-                        <img src="{{ads.coverImage}}" style="height:300px;" class="img-responsive">
-                        <div class="gift-images-data">
-                            <div class="top-row-c1">
-                                <div class="top-row-c1-left">
-                                    <h4>{{ads.pageName}}</h4>
-                                    <h4>Type: {{ads.adsType}}</h4>
-                                    <div class="cus-date-c1" ><label>Valid Till : </label><span>{{ads.couponExpiryDate | date:dd-MM-yyyy}}</span></div>
-                                </div>
-                                <div class="top-row-c1-right">
-                                    <div class="c1-used">Status: {{ads.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
-                                    <!-- <div class="c1-share"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</div> -->
-                                </div>
-                                <div class="middle-row-c1">
-                                    <h3>Gift Description</h3>
-                                    <div class="gift-desc">{{ads.giftDescription}}</div> 
-                                </div>
-                                <div class="middle-row-c1">
-                                    <h3>Category</h3>
-                                    <div class="gift-desc">{{ads.category}}</div>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                  </div>
-                </form>
-            </div>
-       </div>
-   </div>
-</div>
-<div id="paymentPaypal" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Paypal History</h4>
-           </div>
            <div class="modal-body">
                <form name="userFrom1">
-               <div class="table-responsive cus-table">
-                   <table class="table table-bordered table-striped">                         
-                          <tr>
-                              <th>Name</th>
-                              <th>Amount</th>
-                              <th>Transaction Id</th>
-                              <th>Status</th>
-                          </tr>
-                          <tr ng-repeat="pay in paymentPay">
-                              <td>{{pay.userId.firstName}} {{pay.userId.lastName}}</td>
-                              <td>{{pay.amount}}</td>
-                              <td>{{pay.transcationId}}</td>
-                              <td>{{pay.status}}</td>
-                          </tr>
-                  </table>
-                  </div>
-               </form>
-           </div>
+               <div class="col-sm-12" ng-repeat="ads in adsDetail">
+                                <div class="gift-images">
+                                    <img src="{{ads.coverImage}}" style="height:300px;" class="img-responsive">
+                                    <div class="gift-images-data">
+                                        <div class="top-row-c1">
+                                            <div class="top-row-c1-left">
+                                                <h4>{{ads.pageName}}</h4>
+                                                <h4>Type: {{ads.adsType}}</h4>
+                                                <div class="cus-date-c1"><label>Valid Thus : </label><span>{{ads.couponExipryDate }}</span></div>
+                                            </div>
+                                            <div class="top-row-c1-right">
+                                                <div class="c1-used">Status: {{ads.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+                                                <!-- <div class="c1-share"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</div> -->
+                                            </div>
+                                            <div class="middle-row-c1">
+                                                <h3>Gift Description</h3>
+                                                <p>{{ads.giftDescription}}</p>
+                                            </div>
+                                            <div class="middle-row-c1">
+                                                <h3>Category</h3>
+                                                <p>{{ads.category}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
        </div>
    </div>
 </div>

@@ -302,7 +302,7 @@
                             <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth"> 
                         </div>
                     </div> -->
-
+                    <div class="form-group clearfix date-picker">
                      <datepicker date-format="yyyy-MM-dd" selector="form-control">
                        <div class="input-group">
                            <input class="form-control" placeholder="Choose a date" ng-model="dashBordFilter.dobTo"/>
@@ -311,7 +311,8 @@
                            </span>
                        </div>
                     </datepicker>
-
+                    </div>
+                    <div class="form-group clearfix date-picker">
                     <datepicker date-format="yyyy-MM-dd" selector="form-control">
                        <div class="input-group">
                            <input class="form-control" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose a date" ng-model="dashBordFilter.dobFrom"/>
@@ -320,7 +321,7 @@
                            </span>
                        </div>
                     </datepicker>
-
+                     </div>
 
                 </div>
             </div>
@@ -389,7 +390,7 @@
                 </thead>
                 <tbody>
                     <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
-                    <tr ng-repeat="x in totalUser | manageUsersFilter:test">
+                    <tr ng-repeat="x in totalUser | customFilterUser:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -401,6 +402,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalUser | customFilterUser:test).length != 0">
+                        <button ng-click="preClk()" ng-disabled="pageNo==1" class="btn paginationBtn" >Prev</button> {{pageNo}}/{{noOfPages}}
+                        <button ng-click="nextClk()" ng-disabled="pageNo==noOfPages" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div> 
     <div class="col-sm-12" ng-switch="tab">
@@ -466,7 +471,7 @@
                 </thead>
                 <tbody>
                     <!-- <tr ng-repeat="x in personalUser |filter:test"> -->
-                    <tr ng-repeat="x in personalUser | manageUsersFilter:test">
+                    <tr ng-repeat="x in personalUser | customFilterUser:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -478,6 +483,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUser:test).length != 0">
+                        <button ng-click="prePersonalUser()" ng-disabled="pagePersonalUser==1" class="btn paginationBtn" >Prev</button> 
+                        {{pagePersonalUser}}/{{noOfPagesPersonalUser}}
+                        <button ng-click="nextPersonalUser()" ng-disabled="pagePersonalUser==noOfPagesPersonalUser" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>  
     <div class="col-sm-12" ng-switch="tab">
@@ -542,7 +552,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in businessUser | manageUsersFilter:test">
+                    <tr ng-repeat="x in businessUser | customFilterUser:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -554,6 +564,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(businessUser | customFilterUser:test).length != 0">
+                <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button> 
+                {{pageBusinessUser}}/{{noOfPagesBusinessUser}}
+                <button ng-click="nextBusinessUser()" ng-disabled="pageBusinessUser==noOfPagesBusinessUser" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -617,7 +632,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in liveUser  |manageUsersFilter:test">
+                    <tr ng-repeat="x in liveUser | customFilterUser:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -692,7 +707,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalWinners | manageUsersFilter:test">
+                    <tr ng-repeat="x in totalWinners | customFilterUser:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -769,7 +784,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in cashWinners |manageUsersFilter:test">
+                    <tr ng-repeat="x in cashWinners | customFilterUser:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -781,6 +796,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test).length != 0">
+                <button ng-click="preCashWinners()" ng-disabled="pageCashWinners==1" class="btn paginationBtn" >Prev</button> 
+                {{pageCashWinners}}/{{noOfPagesCashWinners}}
+                <button ng-click="nextCashWinners()" ng-disabled="pageCashWinners==noOfPagesCashWinners" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -844,7 +864,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in couponWinners | manageUsersFilter:test">
+                    <tr ng-repeat="x in couponWinners | customFilterUser:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -897,7 +917,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in allblockUser |manageUsersFilter:test">
+                    <tr ng-repeat="x in allblockUser | customFilterUser: test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -1191,6 +1211,7 @@
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                <h4 class="modal-title">All Coupons Details</h4>
            </div>
+            <div class="modal-body">
            <div class="row-table" ng-repeat="data in allCoupons">
 
            <table id="manageUserTable" class="table table-bordered table-striped">
@@ -1207,7 +1228,7 @@
                 <tbody>
                     <tr ng-repeat="x in allCoupons">
                         <td class="skyblue-text">{{x.pageName}}</td>
-                        <td class="skyblue-text"><img ng-src="{{x.coverImage}}" id="output"></td>
+                        <td class="skyblue-text"><img class="img-responsive" ng-src="{{x.coverImage}}" id="output"></td>
                         <td class="skyblue-text">{{x.giftDescription}}</td>
                         <td class="skyblue-text">{{x.couponExpiryDate}}</td>
                         <td class="skyblue-text">{{x.couponBuyersLength}}</td>
@@ -1220,7 +1241,7 @@
                     <img ng-src="{{data.coverImage || '../dist/image/cover.jpg'}}" id="output">
                 </div>
             </div> -->
-            
+            </div>
         </div>
        </div>
    </div>

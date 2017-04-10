@@ -255,8 +255,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
 
     userService.showOfferOnCards(upgrade_card).success(function(res) {
+        console.log("res",JSON.stringify(res))
         if(res.responseCode == 200){
-            var resultUpgradeCardDiscount = res.data.filter(function( obj ) {
+            if(res.data.length == 0){
+                toastr.error("No data Found");
+
+            }else if(res.data.length != 0){
+                var resultUpgradeCardDiscount = res.data.filter(function( obj ) {
               return obj.offer.offerType == 'discount';
             });
             $scope.resultUpgradeCardDiscount = resultUpgradeCardDiscount;            
@@ -265,6 +270,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
             });
             $scope.resultUpgradeCardBuyGet=resultUpgradeCardBuyGet;
             $scope.totalOfferUpgradeCardCount=resultUpgradeCardDiscount.length+resultUpgradeCardBuyGet.length;
+            }
+            
 
         }
         else{
@@ -275,7 +282,11 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
     userService.showOfferOnCards(luck_card).success(function(res){
         if(res.responseCode == 200){
-            var resultLuckCardDiscount = res.data.filter(function( obj ) {
+            if(res.data.length == 0){
+                toastr.error("No data Found");
+
+            }else if(res.data.length != 0){
+                var resultLuckCardDiscount = res.data.filter(function( obj ) {
               return obj.offer.offerType == 'discount';
             });
             $scope.resultLuckCardDiscount = resultLuckCardDiscount;            
@@ -284,6 +295,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
             });
             $scope.resultLuckCardBuyGet=resultLuckCardBuyGet;
             $scope.totalOfferLuckCardCount=resultLuckCardDiscount.length+resultLuckCardBuyGet.length;
+            }
         }
         else{
             toastr.error(res.responseMessage);
@@ -506,7 +518,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.dashBordFilter = function() {
 
     var type = localStorage.getItem('cardTypeName');
-    console.log(type)
+    console.log(type);
     $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
 
     var data = {};
@@ -527,6 +539,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                 case 'totalSoldCards':
                 console.log("1"); 
                     userService.cardFilter(data).success(function(res){
+                        console.log(JSON.stringify(res));
                         $scope.totalSoldUpgradeCard = res.data;
                         console.log("ressssssss1",JSON.stringify($scope.totalSoldUpgradeCard));
                     })

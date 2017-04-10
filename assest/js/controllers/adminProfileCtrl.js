@@ -56,18 +56,18 @@ $scope.changeImage = function(input,type) {
     
       $scope.changePass = function() {
       var data = {
-        "userid":$scope.adminId,
+        "userId":$scope.adminId,
         "oldpass":$scope.myForm.oldpassword,  
         "newpass":$scope.myForm.password,   
       }
         console.log(data);  
        userService.changePass(data).then(function(ObjS){    
-       console.log(JSON.stringify(success)) 
-        if(ObjS.responseCode==200){
+       console.log(JSON.stringify(ObjS)) 
+        if(ObjS.data.responseCode==200){
           $state.go('login');
-          toastr.success(ObjS.responseMessage);  
+          toastr.success(ObjS.data.responseMessage);  
         }else{
-         toastr.error(ObjS.responseMessage);  
+         toastr.error(ObjS.data.responseMessage);  
         }
       },function(err){
        console.log("err----->"+err)
@@ -78,16 +78,16 @@ $scope.changeImage = function(input,type) {
     $scope.editProfile = function() {
       var id=$scope.adminId;
       var data = {
-           "firstName":$scope.myForm.firstName,
-           "lastName":$scope.myForm.lastName, 
+           "firstName":$scope.myFrom.firstName,
+           "lastName":$scope.myFrom.lastName, 
            "image":$scope.myFrom.image           
           }
-        console.log(data);  
+        console.log("ccccccc",data);  
        userService.editAdminProfile(id,data).then(function(ObjS) {    
        console.log("llllllllll",JSON.stringify(ObjS)) 
         if(ObjS.data.responseCode==200){
-          $state.go('header.manageUsers');
-          toastr.success(ObjS.data.responseMessage);  
+          toastr.success(ObjS.data.responseMessage);
+          $state.reload();  
         }else{
          toastr.error(ObjS.responseMessage);  
         }

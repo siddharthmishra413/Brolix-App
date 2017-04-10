@@ -79,14 +79,14 @@ app.service('userService',function($http){
     addUser: function(data) {
       return $http.post(baseurl+'/admin/addNewUser', data);
     },
-    totalUser: function() {
-      return $http.get(baseurl+'/admin/showAllUser');
+    totalUser: function(pageNo) {
+     return $http.get(baseurl+'/admin/showAllUser/'+pageNo);
     },
-    showAllPersonalUser: function() {
-      return $http.get(baseurl+'/admin/showAllPersonalUser');
+    showAllPersonalUser: function(pageNo) {
+     return $http.get(baseurl+'/admin/showAllPersonalUser/'+pageNo);
     },
-    showAllBusinessUser: function() {
-      return $http.get(baseurl+'/admin/showAllBusinessUser');
+    showAllBusinessUser: function(pageNo) {
+      return $http.get(baseurl+'/admin/showAllBusinessUser/'+pageNo);
     },
     totalWinners: function() {
       return $http.get(baseurl+'/admin/winners');
@@ -101,8 +101,8 @@ app.service('userService',function($http){
       return $http.put(baseurl+'/admin/editUserProfile/'+ id, data);
     },
     
-    showAllCashWinners: function() {
-      return $http.get(baseurl+'/admin/cashWinners');
+    showAllCashWinners: function(pageNo) {
+      return $http.get(baseurl+'/admin/cashWinners/'+pageNo);
     },
     showAllCouponWinners: function() {
       return $http.get(baseurl+'/admin/couponWinners');
@@ -147,20 +147,21 @@ app.service('userService',function($http){
 
     /*-------------------------Manage ADS---------------------*/
 
-    totalAds: function(id) {
-      return $http.get(baseurl+'/admin/totalAds');
-    },
-    totalActiveAds: function(id) {
-      return $http.get(baseurl+'/admin/totalActiveAds');
-    },
-    totalExpiredAds: function(id) {
-      return $http.get(baseurl+'/admin/totalExpiredAds');
-    },
-    videoAds: function(id) {
-      return $http.get(baseurl+'/admin/videoAds');
-    },
-    slideshowAds: function(id) {
-      return $http.get(baseurl+'/admin/slideshowAds');
+    totalAds: function(page) {
+     return $http.get(baseurl+'/admin/totalAds/'+page);
+     },
+     totalActiveAds: function(page) {
+       return $http.get(baseurl+'/admin/totalActiveAds/'+page);
+     },
+     totalExpiredAds: function(page) {
+       return $http.get(baseurl+'/admin/totalExpiredAds/'+page);
+     },
+     videoAds: function(page) {
+       return $http.get(baseurl+'/admin/videoAds/'+page);
+     },
+
+    slideshowAds: function(page) {
+     return $http.get(baseurl+'/admin/slideshowAds/'+page);
     },
     adUpgradedByDollor: function(id) {
       return $http.get(baseurl+'/admin/adUpgradedByDollor');
@@ -176,6 +177,24 @@ app.service('userService',function($http){
     },
     topFiftyAds: function(id) {
       return $http.get(baseurl+'/admin/topFiftyAds');
+    },
+    pageInfo: function(id) {
+      return $http.get(baseurl+'/admin/pageInfo/'+id);
+    },
+
+    adInfo: function(id) {
+     return $http.get(baseurl+'/admin/adInfo/' +id);
+    },
+
+    soldCoupon: function(id) {
+     return $http.get(baseurl+'/admin/soldCoupon'+id);
+    },
+
+    showReportOnAd: function(id) {
+     return $http.get(baseurl+'/admin/showReportOnAd/'+id);
+    },
+    adsfilter: function(data){
+      return $http.post(baseurl+'/admin/adsfilter', data);
     },
 
     //Url : http://localhost:8082/admin/adsWithLinks
@@ -462,6 +481,9 @@ app.service('userService',function($http){
     filterBrolix: function(data){
     return $http.post(baseurl+'/admin/brolixPaymentFilter',data);
    },
+   paymentPaypal: function(data){
+   return $http.post('http://172.16.16.159:8082/admin/paymentHistory',data);
+    },
 
     /*Admin Tool Section*/
 
@@ -521,12 +543,23 @@ app.service('userService',function($http){
     },
      removeCoupon: function(id){
       return $http.post(baseurl+'/admin/removeCoupon/',id);
-    }
-
-
+    },
+    viewAllBrolixAndDollors: function(){
+      return $http.get(baseurl+'/tool/viewAllBrolixAndDollors');
+    },
+    brolixPerFreeCouponAds: function(type,data){
+      return $http.put(baseurl+'/tool/editBrolixAndDollors/'+type, data);
+    },
+    checkPermission: function(data){
+     return $http.post(baseurl+'/admin/checkPermission', data)
+   },
   }
 
 });
+
+  
+
+
 
 
  

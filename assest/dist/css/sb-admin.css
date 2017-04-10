@@ -9,10 +9,11 @@
 
 body {
     margin-top: 100px;
-    background-color: #fff;
+    background-color: #fff !important;
     font-family: 'Open Sans', sans-serif!important;
     font-weight:400;
 }
+
 
 @media(min-width:768px) {
     body {
@@ -327,7 +328,7 @@ ul.alert-dropdown {
 .box-block .bottom-box .btn-manage{width:auto;display:inline-block;}
 .w-100{width: 100% !important;}
 .w-19{width:19%;}
-.cover-image {width: 300px;height: 300px;margin: 0 auto !important;text-align: center;}
+.cover-image {width: 300px;height: 300px;margin: 10px auto !important;text-align: center;}
 
 /*---------Finish------------*/
 
@@ -378,7 +379,7 @@ h4{color: #00b288;  font-family: "Open Sans",sans-serif !important;  font-size: 
    font-weight: bold;
 }
 
-.fltr{width: 151px; }
+/*.fltr{width: 151px; }*/
 .brdr{border-bottom: 1px solid #00B288}
 
 .gift-images{position: relative;margin: 20px 0;}
@@ -400,7 +401,22 @@ span.c1-dot {display: inline-block;background: #f87f07;margin-left: 8px;}
 span.c1-dot .fa.fa-circle{color: #fff;font-size: 0.8em;text-align: center;vertical-align: middle;}
 .c1-share {margin: 0 20px;}
 .middle-row-c1 {margin: 20px;}
-.middle-row-c1 h3{color: #30a882;text-decoration: underline;}
+.middle-row-c1 h3{color: #30a882;text-decoration: underline;font-size: 18px;}
 .c1-money{font-size: 40px;}
-
+.paginationBtn{
+    background-color: #00B288;
+}
+.form-horizontal .control-label {font-size: 15px;text-align: left;font-weight: 600;}
+.date-picker .form-control{background:#eaeaea;}
+._720kb-datepicker-calendar-header:nth-child(odd) {background: #eaeaea !important;}
+._720kb-datepicker-calendar-header:nth-child(even) {background: #eaeaea !important;}
+._720kb-datepicker-calendar-month span {font-size: 15px !important;color: #777 !important;font-weight: 500 !important;}
+._720kb-datepicker-calendar-month {color: #777 !important;}
+.form-control:focus{box-shadow:none;}
+.max-height-700{max-height:800px;overflow-y:auto;}
+.modal-body .col-cell.add-remove {width: 0% !important;}
+.cus-table.border-table{border: 1px solid #ccc;padding: 10px; margin: 0;}
+.table-headingg{margin:0 0 15px;font-size: 22px;}
+.gift-desc{word-wrap: break-word;height: 46px;overflow-y: auto;}
+.top-row-c1-left h4 {font-size: 14px;word-wrap: break-word;}
 

@@ -1,4 +1,4 @@
-<div class="tab-pane>
+<div class="tab-pane">
     <div class="height-sm" data-scrollbar="true">
         <div class="row ">
             <div class="col-md-9 col-sm-6 dwd-border-l">
@@ -208,11 +208,31 @@
                         </select>
                     </div>
                     <div class="form-group cus-select">
+                        <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
+                                              <div class="input-group">
+                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Choose a date" ng-model="dashBordFilter.dateFrom" />
+                                                  <span class="input-group-addon" style="cursor: pointer">
+                                                  <i class="fa fa-lg fa-calendar"></i>
+                                                  </span>
+                                              </div>
+                                             </datepicker>
+                    </div>
+                     <div class="form-group cus-select">
+                        <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
+                                              <div class="input-group">
+                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Choose a date" ng-model="dashBordFilter.dateTo"  />
+                                                  <span class="input-group-addon" style="cursor: pointer">
+                                                  <i class="fa fa-lg fa-calendar"></i>
+                                                  </span>
+                                              </div>
+                                             </datepicker>
+                    </div>
+                    <!-- <div class="form-group cus-select">
                         <input style="height: 40px; background-color: #EAEAEA" class="form-control"  ng-model="dashBordFilter.dateFrom" ng-change="dashBordFilter()" type="date" placeholder="From">
                     </div>
                     <div class="form-group cus-select">
                         <input style="height: 40px;background-color: #EAEAEA" class="form-control" type="date"  ng-model="dashBordFilter.dateTo" ng-change="dashBordFilter()" placeholder="To">
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -541,8 +561,9 @@
         </div>
     </div>
 
-    <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="upgradeCardOffer">
+    <div class="col-sm-6" ng-switch="tab">
+        <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
+            <h2 class="text-center table-headingg">Lorem Ipsum</h2>
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -570,8 +591,9 @@
         </div>
     </div>
 
-    <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="upgradeCardOffer">
+    <div class="col-sm-6" ng-switch="tab">
+        <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
+        <h2 class="text-center table-headingg">Lorem Ipsum</h2>
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -601,8 +623,9 @@
         </div>
     </div>
 
-    <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="luckCardOffer">
+    <div class="col-sm-6" ng-switch="tab">
+        <div class="row table-responsive border-table cus-table" ng-switch-when="luckCardOffer">
+        <h2 class="text-center table-headingg">Lorem Ipsum</h2>
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -631,8 +654,9 @@
     </div>
 
 
-    <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="luckCardOffer">
+    <div class="col-sm-6" ng-switch="tab">
+        <div class="row table-responsive border-table cus-table" ng-switch-when="luckCardOffer">
+        <h2 class="text-center table-headingg">Lorem Ipsum</h2>
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -819,10 +843,10 @@
            <div class="modal-body">
                <form name="sendMessage">
                    <div class="form-group">
-                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" /></textarea>
+                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" required></textarea>
                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                    </div>
-                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send massage</button>
+                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send massage</button>
                </form>
            </div>
        </div>

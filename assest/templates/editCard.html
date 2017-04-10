@@ -22,12 +22,16 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="cover-image" >
-                                    <img class="profile-user-img img-responsive" ng-model="cardDetails.image" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
-                                    <label class="fileContainer">
-                                        Choose File
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                    </label>
+                                    <div class="col-sm-12">
+                                        <div class="cover-image" >
+                                            <img class="profile-user-img img-responsive" ng-model="cardDetails.image" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output"/>
+                                            <label class="fileContainer">
+                                                Choose File
+                                                <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
                                     <form class="form-block" role="form" name="crtCard">
                                         <fieldset>
                                             <div class="form-group">
@@ -58,11 +62,12 @@
                                                 </div>
                                             </div>
                                             <div class="btn2 text-center">
-                                                <a class="btn btn-lg btn-green"    ng-disabled="cardDetails.image=='../dist/image/cover.jpg' || crtCard.$invalid " ng-click="updateCard('upgrade_card',cardDetails._id,cardDetails.photo)">Update</a>
-                                                <a href="index.html" class="btn btn-lg btn-green">Cancel</a>
+                                                <button class="btn btn-lg btn-green "    ng-disabled="cardDetails.image=='../dist/image/cover.jpg' || crtCard.$invalid " ng-click="updateCard('upgrade_card',cardDetails._id,cardDetails.photo)">Update</button>
+                                                <!-- <a href="index.html" class="btn btn-lg btn-green">Cancel</a> -->
                                             </div>
                                         </fieldset>
                                     </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -113,8 +118,8 @@
                                                 </div>
                                             </div>
                                             <div class="btn2 text-center">
-                                                <a ng-click="updateCard('luck_card',cardDetails._id)"  ng-disabled="createCard.image2=='../dist/image/cover.jpg' || crtCard2.$invalid " class="btn btn-lg btn-green">Update</a>
-                                                <a class="btn btn-lg btn-green">Cancel</a>
+                                                <button class="btn btn-lg btn-green " ng-click="updateCard('luck_card',cardDetails._id)"  ng-disabled="createCard.image2=='../dist/image/cover.jpg' || crtCard2.$invalid " class="btn btn-lg btn-green">Update</button>
+                                                <!-- <a class="btn btn-lg btn-green">Cancel</a> -->
                                             </div>
                                         </fieldset>
                                     </form>

@@ -28,7 +28,7 @@ module.exports = {
 
     //API for create Page
     "showAllEvents": function(req, res) {
-        createEvents.find({ _id: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
+        createEvents.find({ userId: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,

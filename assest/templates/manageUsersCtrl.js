@@ -142,127 +142,45 @@ var BATTUTA_KEY="00000000000000000000000000000000"
             $scope.user = res.result;
         }
     })
-
     //*******************Total User****************
-
-    $scope.currentPage = 1;
-     $scope.nextTotalUserDetail = function(){
-       console.log('page number TotalUserDetail -> '+$scope.currentPage);
-         userService.totalUser($scope.currentPage).success(function(res) {
-            if (res.responseCode == 200){
-                   $scope.noOfPages = res.result.pages;
-                   $scope.pageNo = res.result.page;
-                   $scope.totalUser = res.result.docs;
-                   $scope.totalUserCount = res.result.total;
-               } 
-               else {
-                toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextTotalUserDetail();
-     $scope.nextClk = function(){
-        $scope.currentPage++;
-        $scope.nextTotalUserDetail();
-     }
-     $scope.preClk = function(){
-        $scope.currentPage--;
-        $scope.nextTotalUserDetail();
-     }
-
+    userService.totalUser().success(function(res) {
+        if (res.responseCode == 200){
+            $scope.totalUser = res.result;
+            $scope.totalUserCount = res.result.length;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+        
+    })
     //*******************Personal User****************
+    userService.showAllPersonalUser().success(function(res) {        
+        if (res.responseCode == 200){
+            $scope.personalUser = res.result;
+            $scope.personalUserCount = res.result.length;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
 
-     $scope.currentPersonalUser = 1;
-     $scope.nextpersonalUserDetail = function(){
-       console.log('page number personalUserDetail-> '+$scope.currentPersonalUser);
-         userService.showAllPersonalUser($scope.currentPersonalUser).success(function(res) { 
-            console.log("dddd",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.noOfPagesPersonalUser = res.result.pages;
-                   $scope.pagePersonalUser= res.result.page;
-                   $scope.personalUser = res.result.docs;
-                   $scope.personalUserCount = res.result.total;
-               } 
-               else {
-                toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextpersonalUserDetail();
-     $scope.nextPersonalUser = function(){
-        $scope.currentPersonalUser++;
-        $scope.nextpersonalUserDetail();
-     }
-     $scope.prePersonalUser= function(){
-        $scope.currentPersonalUser--;
-        $scope.nextpersonalUserDetail();
-     }
-     
-    
     //*******************Business User****************
-
-
-    $scope.currentBusinessUser = 1;
-     $scope.nextBusinessUserDetail = function(){
-       console.log('page number personalUserDetail-> '+$scope.currentBusinessUser);
-         userService.showAllBusinessUser($scope.currentBusinessUser).success(function(res) { 
-            console.log("dddd",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.noOfPagesBusinessUser = res.result.pages;
-                   $scope.pageBusinessUser= res.result.page;
-                   $scope.businessUser = res.result.docs;
-                   $scope.businessUserCount = res.result.total;
-               } 
-               else {
-                toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextBusinessUserDetail();
-     $scope.nextBusinessUser = function(){
-        $scope.currentBusinessUser++;
-        $scope.nextBusinessUserDetail();
-     }
-     $scope.preBusinessUser= function(){
-        $scope.currentBusinessUser--;
-        $scope.nextBusinessUserDetail();
-     }
+    userService.showAllBusinessUser().success(function(res) {        
+        if (res.responseCode == 200){
+            $scope.businessUser = res.result;
+            $scope.businessUserCount = res.result.length;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
 
     //*******************Cash Winners****************
-
-    $scope.currentCashWinners = 1;
-     $scope.nextCashWinnersDetail = function(){
-       console.log('page number personalUserDetail-> '+$scope.currentCashWinners);
-         userService.showAllCashWinners($scope.currentCashWinners).success(function(res) { 
-            console.log("dddd",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.noOfPagesCashWinners = res.result.pages;
-                   $scope.pageCashWinners= res.result.page;
-                   $scope.cashWinners = res.result.docs;
-                   $scope.cashWinnersCount = res.result.total;
-               } 
-               else {
-                toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextCashWinnersDetail();
-     $scope.nextCashWinners = function(){
-        $scope.currentCashWinners++;
-        $scope.nextCashWinnersDetail();
-     }
-     $scope.preCashWinners= function(){
-        $scope.currentCashWinners--;
-        $scope.nextCashWinnersDetail();
-     }
-    // userService.showAllCashWinners().success(function(res) {        
-    //     if (res.responseCode == 200){
-    //         $scope.cashWinners = res.result;
-    //         $scope.cashWinnersCount = res.result.length;
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-    // })
+    userService.showAllCashWinners().success(function(res) {        
+        if (res.responseCode == 200){
+            $scope.cashWinners = res.result;
+            $scope.cashWinnersCount = res.result.length;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
 
     //*******************Coupon Winners****************
     userService.showAllCouponWinners().success(function(res) {        
@@ -1481,7 +1399,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
+                            toastr.success("Send Coupon to All User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1501,7 +1419,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
+                            toastr.success("Send Coupon to All User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1521,7 +1439,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
+                            toastr.success("Send Coupon to All User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1541,7 +1459,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
+                            toastr.success("Send Coupon to All User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1561,7 +1479,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
+                            toastr.success("Send Coupon to All User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1581,7 +1499,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
+                            toastr.success("Send Coupon to All User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1601,7 +1519,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
+                            toastr.success("Send Coupon to All User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1621,7 +1539,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
+                            toastr.success("Send Coupon to All User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1639,7 +1557,7 @@ $scope.dashBordFilter = function(){
                     console.log("dataIn",data)
                     userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
+                            toastr.success("Send Coupon to All User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -1649,10 +1567,30 @@ $scope.dashBordFilter = function(){
             }
 
     }
-});
+})
+ /*----------ManageUserCustomFilter----------*/
 
- app.filter("customFilterUser",function() {
-     return function(items,nameValue) {
+// app.filter("manageUsersFilter",function() {
+//      return function(items,nameValue) {
+//         console.log(JSON.stringify(items))
+//         console.log(nameValue)
+//        if (!nameValue) {
+//          return retArray = items;
+//          }
+//          var retArray = [];
+//            for(var i=0;i<items.length;i++) 
+//                 { 
+//                  if(items[i].firstName) {
+//                 if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].mobileNumber.toString().substr(0,nameValue.length) == nameValue.toString()) {
+//                     retArray.push(items[i]);
+//                 }
+//         }}
+//            return retArray
+//         } 
+//  })
+
+app.filter("manageUsersFilter",function() {
+     return function(items,nameValue){
        if (!nameValue) {
          return retArray = items;
          }
@@ -1663,9 +1601,8 @@ $scope.dashBordFilter = function(){
                     retArray.push(items[i]);
                 }
            }
-           return retArray;
+           return retArray
         } 
- });
-
+ })
 
 

@@ -111,9 +111,9 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Mobile No</label>
                                             <div class="col-md-9">
-                                                <input type="tel" class="form-control" name="mobileNumber" ng-model="myFrom.mobileNumber" placeholder="Mobile No" minlength="10" maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                                                <input type="tel" class="form-control" name="mobileNumber" ng-model="myFrom.mobileNumber" placeholder="Mobile No" minlength="10" maxlength="10" ng-pattern="/^[7-9][0-9]{9}$/" required> 
                                                 <span style="color:red;" ng-show="userFrom.mobileNumber.$dirty && userFrom.mobileNumber.$invalid">
-                                                <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required.</span> 
+                                                <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required</span> 
                                                 <span ng-show="userFrom.mobileNumber.$error.minlength">Must have atleast 10 digits.</span>
                                                 <span ng-show="userFrom.mobileNumber.$error.maxlength">Must have at most 10 digits.</span>
                                                 <span ng-show="userFrom.mobileNumber.$error.pattern">Only number are allowed.</span>  

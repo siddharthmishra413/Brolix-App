@@ -66,7 +66,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $scope.totalCouponsGift = success.data.count;
   }else if(success.data.responseCode == 200){
      $scope.totalCouponsGiftShow = success.data.result;
-
+     console.log(JSON.stringify(totalCouponsGiftShow))
        $scope.totalCouponsGift = success.data.count;
   }else{
     toastr.error(success.responseMessage);
@@ -74,7 +74,6 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 })
 
  userService.totalCashGifts().then(function(success) {
-  console.log(JSON.stringify(success))
   if(success.data.responseCode == 404){
        $scope.totalCashGift = success.data.count;
   }else if(success.data.responseCode == 200){
