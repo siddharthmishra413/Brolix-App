@@ -505,7 +505,7 @@ module.exports = {
 
         User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
+            else if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
@@ -546,7 +546,7 @@ module.exports = {
 
         User.aggregate({ $unwind: "$upgradeCardObject" }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+            else if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];
                 var count = 0;
                 for (i = 0; i < results.length; i++) {
@@ -586,7 +586,7 @@ module.exports = {
 
         User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "INACTIVE" } }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+            else if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
@@ -621,7 +621,7 @@ module.exports = {
 
         User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "INACTIVE" } }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ responseCode: 403, responseMessage: "No matching result available." }); } else {
+            else if (!result) { res.send({ responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
@@ -657,7 +657,7 @@ module.exports = {
 
         User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "ACTIVE" } }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
+            else if (!result) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
@@ -2016,7 +2016,7 @@ module.exports = {
         var page = String(pageNumber);
         User.aggregate({ $unwind: "$brolix" }, { $match: updateData }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
+            else if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
@@ -2457,7 +2457,7 @@ module.exports = {
         var page = String(pageNumber);
         User.aggregate({ $unwind: "$cashPrize" }, { $match: updateData }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!results) { res.send({ responseCode: 404, responseMessage: "No result found." }); } else {
+            else if (!results) { res.send({ responseCode: 404, responseMessage: "No result found." }); } else {
                 var arr = [];
                 var count = 0;
                 for (i = 0; i < results.length; i++) {
@@ -2469,7 +2469,7 @@ module.exports = {
                 console.log("arrrrr", sum);
                 User.aggregate({ $unwind: "$cashPrize" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                    if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No cash gift found." }); } else {
+                    else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No cash gift found." }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
                             limit++;
@@ -2519,7 +2519,7 @@ module.exports = {
 
         User.aggregate({ $unwind: "$coupon" }, { $match: updateData }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No result found." }); } else {
+            else if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No result found." }); } else {
                 var count = 0;
                 for (i = 0; i < results.length; i++) {
                     count++;
@@ -2529,7 +2529,7 @@ module.exports = {
                     $limit: limitData
                 }, { $skip: skips }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                    if (result1.length == 0) { res.send({ results: results, responseCode: 403, responseMessage: "No coupon found." }); } else {
+                    else if (result1.length == 0) { res.send({ results: results, responseCode: 403, responseMessage: "No coupon found." }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
                             limit++;
