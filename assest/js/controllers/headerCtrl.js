@@ -67,12 +67,12 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
            }
         }
 
-          // if($scope.type == "ADMIN")
-          //   {
-          //     $scope.addSystemUser = true;
-          //   }else {
-          //     $scope.addSystemUser = false;
-          //   }
+          if($scope.type == "ADMIN")
+            {
+              $scope.addSystemUser = true;
+            }else {
+              $scope.addSystemUser = false;
+            }
     	}
     }).error(function(status, data) {
 

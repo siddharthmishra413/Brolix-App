@@ -369,8 +369,8 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/totalExchangedCoupon');
     },
     
-    totalSentCash: function() {
-      return $http.get(baseurl+'/admin/totalSentCash');
+    totalSentCash: function(pageNo) {
+      return $http.get(baseurl+'/admin/totalSentCash/'+pageNo);
     },
     
     totalSentCoupon: function() {
@@ -430,8 +430,8 @@ app.service('userService',function($http){
       userInfo: function(id){
       return $http.get(baseurl+'/admin/userInfo/'+id);
     },
-     SoldLuckCard: function(){
-      return $http.get(baseurl+'/admin/totalSoldLuckCard');
+     SoldLuckCard: function(pageNo){
+      return $http.get(baseurl+'/admin/totalSoldLuckCard/'+pageNo);
     },
       luckCardUsedAd: function(data){
       return $http.post(baseurl+'/admin/luckCardUsedAd',data);
@@ -448,11 +448,11 @@ app.service('userService',function($http){
     luckCardPayment: function(id){
       return $http.get(baseurl+'/admin/paymentHistoryLuckCard/'+id);
     },
-    cashGift: function(){
-      return $http.get(baseurl+'/admin/cashGift');
+    cashGift: function(pageNo){
+      return $http.get(baseurl+'/admin/cashGift/'+pageNo);
     },
-    soldCoupons: function(){
-      return $http.get(baseurl+'/admin/soldCoupon');
+    soldCoupons: function(pageNo){
+      return $http.get(baseurl+'/admin/soldCoupon/'+pageNo);
     },
      pageInfo: function(id){
       return $http.get(baseurl+'/admin/pageInfo/'+id);

@@ -459,6 +459,11 @@
                         <td>{{x.firstName}} {{x.lastName}}</td>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalSentCashShow | totalSentCashFilter:search).length != 0">
+                <button ng-click="preTotalSentCash()" ng-disabled="pageTotalSentCash==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalSentCash}}/{{noOfPagesTotalSentCash}}
+                <button ng-click="nextTotalSentCash()" ng-disabled="pageTotalSentCash==noOfPagesTotalSentCash" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 </div>

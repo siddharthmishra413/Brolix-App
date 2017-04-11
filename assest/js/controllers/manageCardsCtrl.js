@@ -338,7 +338,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     //*******************Total Sold UpgradeCard****************
 
     $scope.currentTotalSoldUpgradeCards = 1;
-     $scope.nextTotalSoldUpgradeCardsDetail = function(){
+     $scope.nextTotalSoldUpgradeCardsDetail = function() {
          userService.totalSoldUpgradeCard($scope.currentTotalSoldUpgradeCards).success(function(res) { 
             if (res.responseCode == 200){
                    $scope.noOfPagesTotalSoldUpgradeCards = res.pages;
@@ -360,6 +360,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $scope.currentTotalSoldUpgradeCards--;
         $scope.nextTotalSoldUpgradeCardsDetail();
      }
+
     // userService.totalSoldUpgradeCard().success(function(res) {
     //     if (res.responseCode == 200){
     //         $scope.totalSoldUpgradeCard = res.result;
@@ -377,7 +378,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                    $scope.noOfPagesTotalIncomeUpgradeCard = res.pages;
                    $scope.pageTotalIncomeUpgradeCard= res.page;
                    $scope.totalIncomeInCashFromUpgradeCard= res.docs;
-                    $scope.totalIncomeFromUpgradeCard = res.total;
+                   $scope.totalIncomeFromUpgradeCard = res.total;
                } 
                else {
                 toastr.error(res.responseMessage);
@@ -409,7 +410,6 @@ var BATTUTA_KEY="00000000000000000000000000000000"
    $scope.currentUsedUpgradeCard = 1;
      $scope.nextUsedUpgradeCardDetail = function(){
          userService.usedUpgradeCard($scope.currentUsedUpgradeCard).success(function(res) { 
-             // console.log("val",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesUsedUpgradeCard = res.pages;
                    $scope.pageUsedUpgradeCard= res.page;
@@ -445,7 +445,6 @@ var BATTUTA_KEY="00000000000000000000000000000000"
    $scope.currentUnusedUpgradeCards = 1;
      $scope.nextUnusedUpgradeCardsDetail = function(){
          userService.unUsedUpgradeCard($scope.currentUnusedUpgradeCards).success(function(res) { 
-             // console.log("val",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesUnusedUpgradeCards = res.pages;
                    $scope.pageUnusedUpgradeCards= res.page;
@@ -466,6 +465,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $scope.currentUnusedUpgradeCards--;
         $scope.nextUnusedUpgradeCardsDetail();
      }
+
     // userService.unUsedUpgradeCard().success(function(res) {
     //     if (res.responseCode == 200){
     //         $scope.unUsedUpgradeCard = res.result;
@@ -482,12 +482,12 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.currentSoldLuckCard = 1;
      $scope.nextSoldLuckCardDetail = function(){
          userService.totalSoldLuckCard($scope.currentSoldLuckCard).success(function(res) { 
-             // console.log("val",JSON.stringify(res))
+                    console.log("In>>",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesSoldLuckCard = res.pages;
                    $scope.pageSoldLuckCard= res.page;
                    $scope.totalSoldLuckCard= res.docs;
-                    $scope.totalSoldLuckCardcount = res.total;
+                   $scope.totalSoldLuckCardcount = res.total;
                } 
                else {
                 toastr.error(res.responseMessage);
@@ -503,6 +503,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $scope.currentSoldLuckCard--;
         $scope.nextSoldLuckCardDetail();
      }
+
     // userService.totalSoldLuckCard().success(function(res) {
     //     if (res.responseCode == 200){
     //         $scope.totalSoldLuckCard = res.result;
@@ -517,12 +518,12 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.currentIncomeInBrolixFromLuckCard = 1;
      $scope.nextIncomeInBrolixFromLuckCardDetail = function(){
          userService.totalIncomeInBrolixFromLuckCard($scope.currentIncomeInBrolixFromLuckCard).success(function(res) { 
-              console.log("In>>",JSON.stringify(res))
+      
             if (res.responseCode == 200){
                    $scope.noOfPagesIncomeInBrolixFromLuckCard = res.pages;
                    $scope.pageIncomeInBrolixFromLuckCard= res.page;
-                   $scope.totalIncomeInBrolixFromLuckCard= res.result.docs;
-                    $scope.totalIncomeLuck = res.total;
+                   $scope.totalIncomeInBrolixFromLuckCard= res.result;
+                    $scope.totalIncomeLuck = res.totalIncome;
                } 
                else {
                 toastr.error(res.responseMessage);
@@ -552,7 +553,6 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.currentUsedLuckCard = 1;
      $scope.nextUsedLuckCardDetail = function(){
          userService.usedLuckCard($scope.currentUsedLuckCard).success(function(res) { 
-             // console.log("val",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesUsedLuckCard = res.pages;
                    $scope.pageUsedLuckCard= res.page;

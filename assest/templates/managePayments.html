@@ -38,7 +38,7 @@
                                     <!-- <div class="widget widget-stats divi-blk" >  -->
                                          <div class="top-box">
                                              <div class="total-add">Sold Upgrade Cards</div>
-                                             <div class="total-amt">{{totalSoldUpgradeCard.length}}</div>
+                                             <div class="total-amt">{{showAllSoldUpgradeCardCount}}</div>
                                          </div>
                                          <div class="bottom-box">
                                             <div class="btn-manage" >
@@ -65,7 +65,7 @@
                                  <div class="box-block wd100" style="background-color: #00b288" ng-if="flag == 1">
                                         <div class="top-box">
                                              <div class="total-add">Sold Luck Cards</div>
-                                             <div class="total-amt">{{totalSoldLuckCardcount}}</div>
+                                             <div class="total-amt">{{showAllSoldLuckCardCount}}</div>
                                          </div>
                                          <div class="bottom-box">
                                             <div class="btn-manage" >
@@ -197,7 +197,7 @@
                                               <tr ng-if="(dollars |manageFilter:search).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                                             </tbody>
                                           </table>
-                                          <div style="float:right; font-size: 20px;" ng-if="(dollars | manageFilter:search).length != 0">
+                                          <div style="float:right; font-size: 20px;" ng-if="(dollars | manageFilter:search).length != 0 && flag == 0">
                                             <button ng-click="preSoldUpgradeCard()" ng-disabled="pageSoldUpgradeCard==1" class="btn paginationBtn" >Prev</button> 
                                             {{pageSoldUpgradeCard}}/{{noOfPagesSoldUpgradeCard}}
                                             <button ng-click="nextSoldUpgradeCard()" ng-disabled="pageSoldUpgradeCard==noOfPagesSoldUpgradeCard" class="btn paginationBtn">Next</button>
@@ -228,6 +228,11 @@
                                               <tr ng-if="(brolix |manageFilter:search).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                                             </tbody>
                                           </table>
+                                          <div style="float:right; font-size: 20px;" ng-if="(brolix | manageFilter:search).length != 0 && flag == 1">
+                                            <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
+                                            {{pageSoldLuckCard}}/{{noOfPagesSoldLuckCard}}
+                                            <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button>
+                                        </div>
                                     </div>
                                     </div>
                                     </div>
@@ -448,6 +453,11 @@
                                               <tr ng-if="(dollarsCashGift |managePaymentFilter:searchdata).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                                             </tbody>
                                           </table>
+                                          <div style="float:right; font-size: 20px;" ng-if="(dollarsCashGift | managePaymentFilter:searchdata).length != 0 && flag == 0">
+                                              <button ng-click="preCashGifts()" ng-disabled="pageCashGifts==1" class="btn paginationBtn" >Prev</button> 
+                                              {{pageCashGifts}}/{{noOfPagesCashGifts}}
+                                              <button ng-click="nextCashGifts()" ng-disabled="pageCashGifts==noOfPagesCashGifts" class="btn paginationBtn">Next</button>
+                                         </div>
                                           <table id="managePayment" class="table table-bordered table-striped" ng-if="flag == 1">
                                             <thead>
                                               <tr>
@@ -475,6 +485,11 @@
                                               <tr ng-if="(brolixCoupon | managePaymentSoldCouponFilter:searchdata).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                                             </tbody>
                                           </table>
+                                          <div style="float:right; font-size: 20px;" ng-if="(brolixCoupon | managePaymentSoldCouponFilter:searchdata).length != 0 && flag == 1">
+                                            <button ng-click="preSoldCoupons()" ng-disabled="pageSoldCoupons==1" class="btn paginationBtn" >Prev</button> 
+                                            {{pageSoldCoupons}}/{{noOfPagesSoldCoupons}}
+                                            <button ng-click="nextSoldCoupons()" ng-disabled="pageSoldCoupons==noOfPagesSoldCoupons" class="btn paginationBtn">Next</button>
+                                        </div>
                                     </div>
                                   </div>
                                   </div>
