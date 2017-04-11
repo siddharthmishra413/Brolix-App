@@ -1676,7 +1676,7 @@ module.exports = {
                 } else if (data == 'soldCoupon') {
                     var matchQuery = { 'coupon.type': "PURCHASED" }
                     Object.assign(tempCond, matchQuery)
-                    module.exports.soldCoupon(req, res, query)
+                    module.exports.soldCouponFilter(req, res, query)
                 } else {
                     module.exports.totalSoldLuckCardFilter(req, res, query)
                 }
@@ -1735,7 +1735,7 @@ module.exports = {
                     module.exports.totalSoldUpgradeCardFilter(req, res, query)
                 } else if (data == 'cashGifts') {
 
-                    module.exports.cashGift(req, res, query)
+                    module.exports.cashGiftFilter(req, res, query)
                 } else {
                     module.exports.totalSoldUpgradeCardFilter(req, res, query)
                 }
@@ -2764,6 +2764,40 @@ module.exports = {
             }
         });
     },
+
+      "cashGiftFilter": function(req, res, query) {
+        console.log(query.length)
+        console.log("query===>" + JSON.stringify(query))
+        if (!(query.length == 1)) {
+            console.log("query")
+            var updateData = query;
+        } else {
+            console.log("rather than query")
+            var updateData = {}
+        }
+        User.aggregate({ $unwind: "$cashPrize" }, { $match: updateData }, function(err, results) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            if (!results) { res.send({ responseCode: 404, responseMessage: "No result found." }); } else {
+                var arr = [];
+                var count = 0;
+                for (i = 0; i < results.length; i++) {
+                    count++;
+                    arr.push(parseInt(results[i].cashPrize.cash));
+                }
+                var sum = arr.reduce((a, b) => a + b, 0);
+                console.log("arrrrr", sum);
+                User.populate(results, 'cashPrize.pageId', function(err, result1) {
+                    User.populate(result1, {
+                        path: 'cashPrize.pageId.userId',
+                        model: 'brolixUser',
+                        select: 'firstName lastName email'
+                    }, function(err, result2) {
+                        res.send({ result: result2, count: count, totalIncome: sum, responseCode: 200, responseMessage: "Cash gift shows successfully." });
+                    })
+                })
+            }
+        });
+    },
    
     "soldCoupon": function(req, res, query) {
         console.log(query.length)
@@ -2822,6 +2856,39 @@ module.exports = {
             }
         })
     },
+
+     "soldCouponFilter": function(req, res, query) {
+        console.log(query.length)
+        console.log("query===>" + JSON.stringify(query))
+        if (!(query.length == 1)) {
+            console.log("query")
+            var updateData = query;
+        } else {
+            console.log("rather than query")
+            var updateData = { 'coupon.type': "PURCHASED" }
+        }
+        User.aggregate({ $unwind: "$coupon" }, { $match: updateData }, function(err, results) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No result found." }); } else {
+                var count = 0;
+                for (i = 0; i < results.length; i++) {
+                    count++;
+                }
+                User.populate(results, 'coupon.pageId', function(err, result1) {
+                    User.populate(result1, 'coupon.adId', function(err, result2) {
+                        User.populate(result1, {
+                            path: 'coupon.pageId.userId',
+                            model: 'brolixUser',
+                            select: 'firstName lastName email'
+                        }, function(err, result2) {
+                            res.send({ result: result2, count: count, responseCode: 200, responseMessage: "Cash gift shows successfully." });
+                        })
+                    })
+                })
+            }
+        })
+    },
+
 
     "pageInfo": function(req, res) {
         createNewPage.find({ _id: req.params.id }).populate('adAdmin.userId', 'firstName lastName').exec(function(err, result) {
