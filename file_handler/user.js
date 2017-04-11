@@ -1969,7 +1969,7 @@ module.exports = {
                             type: type2
                         }
 
-                        User.findOneAndUpdate({ _id: receiverId }, { $push: { coupon: data1 } }, { new: true }).exec(function(err, result6) {
+                        User.findOneAndUpdate({ _id: senderId }, { $push: { coupon: data1 } }, { new: true }).exec(function(err, result6) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 77' }); } else if (!result6) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                                 callback(null, result6)
                             }
@@ -2111,18 +2111,18 @@ module.exports = {
             }
         })
     },
-    "savePaymentRequest": function(req, res){
+    "savePaymentRequest": function(req, res) {
 
-    var payment = paypalPayment(req.body)
-    payment.save(function(err, result) {
-        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-      //  var token = jwt.sign(result, config.secreteKey);
-        res.send({
-            result: result,
-            responseCode: 200,
-            responseMessage: "Data saved successfully."
-        });
-    })
+        var payment = paypalPayment(req.body)
+        payment.save(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            //  var token = jwt.sign(result, config.secreteKey);
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Data saved successfully."
+            });
+        })
     }
 
 
