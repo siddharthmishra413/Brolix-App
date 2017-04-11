@@ -128,7 +128,7 @@ module.exports = {
     "showAllUser": function(req, res) {
         User.paginate({
             $or: [{ type: "USER", status: 'ACTIVE' }, { type: "Advertiser", status: 'ACTIVE' }]
-        }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+        }, { page: req.params.pageNumber, limit: 5 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                 res.send({
                     result: result,
@@ -428,7 +428,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No card found' }); } else {
                         var limit = 0;
@@ -472,7 +472,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$luckCardObject" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No card found' }); } else {
                         var limit = 0;
@@ -486,7 +486,7 @@ module.exports = {
                             page: page,
                             pages: pages,
                             responseCode: 200,
-                            responseMessage: "Successfully shown list of upgrade card"
+                            responseMessage: "Successfully shown list of luck card"
                         });
                     }
 
@@ -513,7 +513,7 @@ module.exports = {
                     console.log("data--->>>>", result[i].luckCardObject.brolix, i);
                     arr.push(parseInt(result[i].luckCardObject.brolix));
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 var sum = arr.reduce((a, b) => a + b, 0);
                 console.log("arrrrr", sum);
                 User.aggregate({ $unwind: "$luckCardObject" }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
@@ -553,7 +553,7 @@ module.exports = {
                     count++;
                     arr.push(parseInt(results[i].upgradeCardObject.cash));
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 var sum = arr.reduce((a, b) => a + b, 0);
                 console.log("arrrrr", sum);
                 User.aggregate({ $unwind: "$upgradeCardObject" }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
@@ -591,7 +591,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "INACTIVE" } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No card found." }); } else {
                         var limit = 0;
@@ -626,7 +626,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "INACTIVE" } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No card found." }); } else {
                         var limit = 0;
@@ -662,7 +662,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "ACTIVE" } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No card found." }); } else {
                         var limit = 0;
@@ -696,7 +696,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$luckCardObject" }, { $match: { 'luckCardObject.status': "ACTIVE" } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No card found." }); } else {
                         var limit = 0;
@@ -2024,7 +2024,7 @@ module.exports = {
                     arr.push(parseInt(result[i].brolix));
                 }
                 var sum = arr.reduce((a, b) => a + b, 0);
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$brolix" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                     if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No gift found." }); } else {
@@ -2068,7 +2068,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$coupon" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
                         var limit = 0;
@@ -2120,7 +2120,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$cashPrize" }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No cash gift found' }); } else {
                         console.log(result)
@@ -2171,7 +2171,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$hiddenGifts" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No coupon found' }); } else {
                         var limit = 0;
@@ -2221,7 +2221,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$coupon" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No coupon found' }); } else {
                         var limit = 0;
@@ -2271,7 +2271,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$coupon" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No coupon found' }); } else {
                         var limit = 0;
@@ -2326,11 +2326,9 @@ module.exports = {
                     count++;
                 }
                 var sum = arr.reduce((a, b) => a + b, 0);
-                var pages = Math.ceil(count / limitData);
+                var pages = Math.ceil(count / 10);
                 console.log("arrrrr", sum);
-                User.aggregate({ $unwind: "$sendCashListObject" }, { $match: updateData }, {
-                    $limit: limitData
-                }, { $skip: skips }).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$sendCashListObject" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No coupon found' }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
@@ -2453,6 +2451,10 @@ module.exports = {
             console.log("rather than query")
             var updateData = {}
         }
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 10;
+        var skips = limitData - 10;
+        var page = String(pageNumber);
         User.aggregate({ $unwind: "$cashPrize" }, { $match: updateData }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!results) { res.send({ responseCode: 404, responseMessage: "No result found." }); } else {
@@ -2463,16 +2465,38 @@ module.exports = {
                     arr.push(parseInt(results[i].cashPrize.cash));
                 }
                 var sum = arr.reduce((a, b) => a + b, 0);
+                var pages = Math.ceil(count / 10);
                 console.log("arrrrr", sum);
-                User.populate(results, 'cashPrize.pageId', function(err, result1) {
-                    User.populate(result1, {
-                        path: 'cashPrize.pageId.userId',
-                        model: 'brolixUser',
-                        select: 'firstName lastName email'
-                    }, function(err, result2) {
-                        res.send({ result: result2, count: count, totalIncome: sum, responseCode: 200, responseMessage: "Cash gift shows successfully." });
-                    })
-                })
+                User.aggregate({ $unwind: "$cashPrize" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                    if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No cash gift found." }); } else {
+                        var limit = 0;
+                        for (i = 0; i < result1.length; i++) {
+                            limit++;
+                        }
+                        var sum = arr.reduce((a, b) => a + b, 0);
+                        console.log("arrrrr", sum);
+                        User.populate(result1, 'cashPrize.pageId', function(err, result2) {
+                            User.populate(result2, {
+                                path: 'cashPrize.pageId.userId',
+                                model: 'brolixUser',
+                                select: 'firstName lastName email'
+                            }, function(err, result3) {
+                                res.send({
+                                    docs: result3,
+                                    totalIncome: sum,
+                                    total: count,
+                                    limit: limit,
+                                    page: page,
+                                    pages: pages,
+                                    responseCode: 200,
+                                    responseMessage: "Cash gift shows successfully."
+                                });
+                            })
+
+                        })
+                    }
+                });
             }
         });
     },
@@ -2487,6 +2511,12 @@ module.exports = {
             console.log("rather than query")
             var updateData = { 'coupon.type': "PURCHASED" }
         }
+
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 10;
+        var skips = limitData - 10;
+        var page = String(pageNumber);
+
         User.aggregate({ $unwind: "$coupon" }, { $match: updateData }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
             if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No result found." }); } else {
@@ -2494,16 +2524,36 @@ module.exports = {
                 for (i = 0; i < results.length; i++) {
                     count++;
                 }
-                User.populate(results, 'coupon.pageId', function(err, result1) {
-                    User.populate(result1, 'coupon.adId', function(err, result2) {
-                        User.populate(result1, {
-                            path: 'coupon.pageId.userId',
-                            model: 'brolixUser',
-                            select: 'firstName lastName email'
-                        }, function(err, result2) {
-                            res.send({ result: result2, count: count, responseCode: 200, responseMessage: "Cash gift shows successfully." });
+                var pages = Math.ceil(count / 10);
+                User.aggregate({ $unwind: "$coupon" }, { $match: updateData }, {
+                    $limit: limitData
+                }, { $skip: skips }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                    if (result1.length == 0) { res.send({ results: results, responseCode: 403, responseMessage: "No coupon found." }); } else {
+                        var limit = 0;
+                        for (i = 0; i < result1.length; i++) {
+                            limit++;
+                        }
+                        User.populate(result1, 'coupon.pageId', function(err, result2) {
+                            User.populate(result2, 'coupon.adId', function(err, result3) {
+                                User.populate(result3, {
+                                    path: 'coupon.pageId.userId',
+                                    model: 'brolixUser',
+                                    select: 'firstName lastName email'
+                                }, function(err, result4) {
+                                    res.send({
+                                        docs: result4,
+                                        total: count,
+                                        limit: limit,
+                                        page: page,
+                                        pages: pages,
+                                        responseCode: 200,
+                                        responseMessage: "Cash gift shows successfully."
+                                    });
+                                })
+                            })
                         })
-                    })
+                    }
                 })
             }
         })
