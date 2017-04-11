@@ -3473,21 +3473,21 @@ module.exports = {
                         console.log("userArray-->>>", arrayLenght)
                         adminCards.findOneAndUpdate({ _id: cardId }, { $inc: { sendCardToUser: arrayLenght } }, { new: true }).exec(function(err, result) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct cardId' }); } else {
-                                var price = result.price;
+                                var cash = result.price;
                                 var viewers = result.viewers;
                                 var type = "SENDBYADMIN";
-                                callback(null, price, viewers, type)
+                                callback(null, cash, viewers, type)
                             }
                         })
                     }
                 },
-                function(price, viewers, type, callback) {
+                function(cash, viewers, type, callback) {
                     var cardId = req.body.cardId;
                     var userArray = req.body.Id;
                     var arrayLenght = userArray.length;
 
                     var data = {
-                        price: price,
+                        cash: cash,
                         viewers: viewers,
                         type: type
                     }
