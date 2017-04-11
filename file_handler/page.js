@@ -8,7 +8,7 @@ var subCategory = require("./subcategory.json");
 var Views = require("./model/views");
 var User = require("./model/user");
 var waterfall = require('async-waterfall');
-
+var _ = require('underscore')
 //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
@@ -1030,10 +1030,15 @@ module.exports = {
     },
 
     "winnerFilter": function(req, res){
+      console.log("req body===>"+JSON.stringify(req.body))
+      var arrayResults = [];
       var condition = { $and: [] };
-                Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+      var arrayId = [];
+      waterfall([
+        function(callback){
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
 
-                    if (!(key == "pageType" || key == "joinFrom" || key == "joinTo")) {
+                    if (!(key == "coupon.couponStatus" || key == "cashPrize.cashStatus" || key == "firstName")) {
                         var tempCond = {};
                         tempCond[key] = req.body[key];
                         condition.$and.push(tempCond)
@@ -1043,6 +1048,114 @@ module.exports = {
                     delete condition.$and;
                 }
                console.log("condition====>>"+JSON.stringify(condition))
-    }
+            createNewPage.find(condition, function(err, result){
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+                else if(result.length==0){ 
+                    res.send({ responseCode: 404, responseMessage: 'Data not found.' }); 
+                } 
+                else {
+                    result.forEach(function(key){
+                      arrayId.push(String(key._id))
+                    })
+                    console.log("arrayId===>>",arrayId)
+                    callback(null, arrayId)
+                }
+            })
+        },
+          function(arrayId, callback){
+            //var data = String(result._id)
+            if(!(arrayId.length == 0)){
+                var query = { $and: [{  'coupon.pageId':  {$in: arrayId} }] };
+            }
+            else{
+                var query = { $and: [] };
+            }
+            
+                Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                    if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'cashPrize.cashStatus')) {
+                        var temporayCond = {};
+                        temporayCond[key] = req.body[key];
+                        query.$and.push(temporayCond)
+                    }
+                });
+
+                if (query.$and.length == 0) {
+                    delete query.$and;
+                }
+                console.log("query====>>"+JSON.stringify(query))
+                User.aggregate(
+                    [
+                     { $unwind: '$coupon'},
+                     { $match :query}
+                      ]
+                ).exec(function(err, results){
+                    if(err){ res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                    else if (!results) {
+                        callback(null, "null")
+                    }
+                    else{
+                        callback(null, results, arrayId)
+                    }
+                    })
+          },
+          function(results, arrayId , callback){
+
+            if(!(arrayId.length == 0)){
+                var queryData = { $and: [{ 'cashPrize.pageId':  {$in: arrayId} }] };
+            }
+            else{
+                var queryData = { $and: [] };
+            }
+            
+                Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                    if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'coupon.couponStatus')) {
+                        var temporayCond = {};
+                        temporayCond[key] = req.body[key];
+                        queryData.$and.push(temporayCond)
+                    }
+                });
+                if (queryData.$and.length == 0) {
+                    delete queryData.$and;
+                }
+
+                console.log("queryData====>>"+JSON.stringify(queryData))
+                User.aggregate(
+                    [
+                      { $unwind: '$cashPrize'},
+                      { $match : queryData }
+                    ]
+                ).exec(function(err, resu){
+                    if(!(results.length == 0)){
+                        for(var i=0;i<results.length;i++){
+                            arrayResults.push(results[i])
+                        }
+                    }
+                    if(!(resu.length == 0)){
+                        for(var i=0;i<resu.length;i++){
+                            arrayResults.push(resu[i])
+                        }
+                    }
+                    if(_.isEmpty(req.body) ){
+                        console.log("FGhfhhh")
+                        arrayResults = []
+                    }
+
+                   // callback(null, results, data)
+                    res.send({
+                        result: arrayResults,
+                        responseCode: 200,
+                        responseMessage: "Result shown successfully."
+                    })
+                })
+          }
+      ])
+               
+                // if(req.body.pageName){
+                //    var query = { 'coupon.pageId': result._id }
+                // }
+          
+            }
+        //})
+    
 
 }
