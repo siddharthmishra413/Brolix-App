@@ -2027,7 +2027,7 @@ module.exports = {
                 var pages = Math.ceil(count / 10);
                 User.aggregate({ $unwind: "$brolix" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                    if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No gift found." }); } else {
+                    else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No gift found." }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
                             limit++;
