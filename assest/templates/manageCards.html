@@ -20,7 +20,7 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Sold Cards</div>
-                                <div class="total-amt">{{totalSoldUpgradeCard.length}}</div>
+                                <div class="total-amt">{{totalSoldUpgradeCardCount}}</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='SoldUpgradeCard'">
@@ -494,7 +494,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard | manageCardsFilter:test">
+                    <tr ng-repeat="x in totalIncomeInBrolixFromLuckCard | manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -510,7 +510,7 @@
                     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInCashFromUpgradeCard | manageCardsFilter:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInBrolixFromLuckCard | manageCardsFilter:test).length != 0">
                 <button ng-click="preIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageIncomeInBrolixFromLuckCard}}/{{noOfPagesIncomeInBrolixFromLuckCard}}
                 <button ng-click="nextIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==noOfPagesIncomeInBrolixFromLuckCard" class="btn paginationBtn">Next</button>

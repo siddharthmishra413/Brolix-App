@@ -1,7 +1,7 @@
 app.controller('headerCtrl', function($scope, $window, $state, userService) {
     $(window).scrollTop(0, 0);
     //console.log("headerCtrl");
-     $scope.image = "../dist/image/left-img.png"
+    $scope.image = "../dist/image/left-img.png"
     $scope.$on('headerStatus', function(event, data) {
         $scope.header = data;
     });
@@ -67,12 +67,12 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
            }
         }
 
-          if($scope.type == "ADMIN")
-            {
-              $scope.addSystemUser = true;
-            }else {
-              $scope.addSystemUser = false;
-            }
+          // if($scope.type == "ADMIN")
+          //   {
+          //     $scope.addSystemUser = true;
+          //   }else {
+          //     $scope.addSystemUser = false;
+          //   }
     	}
     }).error(function(status, data) {
 
