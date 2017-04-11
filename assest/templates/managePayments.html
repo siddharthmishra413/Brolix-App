@@ -146,9 +146,9 @@
                                             <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                                                <div class="input-group">
                                                    <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="From" ng-model="dashBordFilter.dobFrom" />
-                                                   <span class="input-group-addon" style="cursor: pointer">
-                                                   <i class="fa fa-lg fa-calendar"></i>
-                                                   </span>
+                                                   <!-- <span class="input-group-addon" style="cursor: pointer">
+                                                   <i class="fa fa-lg fa-calendar" ng-model="dashBordFilter.dobFrom"></i>
+                                                   </span> -->
                                                </div>
                                               </datepicker>
                                         </div>
@@ -159,9 +159,9 @@
                                             <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                                                <div class="input-group">
                                                    <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="To" ng-model="dashBordFilter.dobTo" />
-                                                   <span class="input-group-addon" style="cursor: pointer">
+                                                   <!-- <span class="input-group-addon" style="cursor: pointer">
                                                    <i class="fa fa-lg fa-calendar"></i>
-                                                   </span>
+                                                   </span> -->
                                                </div>
                                               </datepicker>
                                         </div>
@@ -172,7 +172,7 @@
                                     <div class="col-sm-12">
                                       <div class="row">
                                     <div class="table-responsive cus-table">                          
-                                        <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 0">
+                                        <table id="managePayment" class="table table-bordered table-striped" ng-if="flag == 0">
                                             <thead>
                                               <tr>
                                                 <th>Card Type</th>
@@ -197,7 +197,12 @@
                                               <tr ng-if="(dollars |manageFilter:search).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                                             </tbody>
                                           </table>
-                                          <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 1">
+                                          <div style="float:right; font-size: 20px;" ng-if="(dollars | manageFilter:search).length != 0">
+                                            <button ng-click="preSoldUpgradeCard()" ng-disabled="pageSoldUpgradeCard==1" class="btn paginationBtn" >Prev</button> 
+                                            {{pageSoldUpgradeCard}}/{{noOfPagesSoldUpgradeCard}}
+                                            <button ng-click="nextSoldUpgradeCard()" ng-disabled="pageSoldUpgradeCard==noOfPagesSoldUpgradeCard" class="btn paginationBtn">Next</button>
+                                        </div>
+                                          <table id="managePayment" class="table table-bordered table-striped" ng-if="flag == 1">
                                             <thead>
                                               <tr>
                                                 <th>Card Type</th>
@@ -394,9 +399,9 @@
                                             <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                                                <div class="input-group">
                                                    <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="From" ng-model="myForm.dateFrom" />
-                                                   <span class="input-group-addon" style="cursor: pointer">
+                                                   <!-- <span class="input-group-addon" style="cursor: pointer">
                                                    <i class="fa fa-lg fa-calendar"></i>
-                                                   </span>
+                                                   </span> -->
                                                </div>
                                               </datepicker>
                                         </div>
@@ -406,9 +411,9 @@
                                             <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                                                <div class="input-group">
                                                    <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="To" ng-model="myForm.dateTo" />
-                                                   <span class="input-group-addon" style="cursor: pointer">
+                                                   <!-- <span class="input-group-addon" style="cursor: pointer">
                                                    <i class="fa fa-lg fa-calendar"></i>
-                                                   </span>
+                                                   </span> -->
                                                </div>
                                               </datepicker>
                                         </div>
@@ -418,7 +423,7 @@
                                 <div class="row"> 
                                     <div class="col-sm-12">
                                     <div class="row table-responsive cus-table">                          
-                                        <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 0">
+                                        <table id="managePayment" class="table table-bordered table-striped" ng-if="flag == 0">
                                             <thead>
                                               <tr>
                                                 <th>Page Name</th>
@@ -443,7 +448,7 @@
                                               <tr ng-if="(dollarsCashGift |managePaymentFilter:searchdata).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                                             </tbody>
                                           </table>
-                                          <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 1">
+                                          <table id="managePayment" class="table table-bordered table-striped" ng-if="flag == 1">
                                             <thead>
                                               <tr>
                                                 <th>Page Name</th>

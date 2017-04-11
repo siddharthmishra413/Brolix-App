@@ -18,8 +18,8 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
          console.log("userDetails--->",JSON.stringify($scope.user))
         localStorage.loginData=res.result._id;
         $scope.image = $scope.user.image;
-
-         $scope.userPermissions = res.result.permissions;
+        $scope.type = res.result.type;
+        $scope.userPermissions = res.result.permissions;
               var data=[];
        angular.forEach($scope.userPermissions,function(value,key) {
           data.push(value);
@@ -33,6 +33,8 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
             $scope.manageGifts = false;
             $scope.managePayments = false;
             $scope.adminTool = false;
+            $scope.addSystemUser = false;
+          
         
         for (var i = 0; i<=data.length; i++) {
           if(data[i] == "manageUser")
@@ -64,7 +66,13 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
            $scope.adminTool = true;
            }
         }
-            
+
+          if($scope.type == "ADMIN")
+            {
+              $scope.addSystemUser = true;
+            }else {
+              $scope.addSystemUser = false;
+            }
     	}
     }).error(function(status, data) {
 

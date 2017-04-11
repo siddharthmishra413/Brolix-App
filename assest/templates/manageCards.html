@@ -347,6 +347,11 @@
                     
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInCashFromUpgradeCard | manageCardsFilter:test).length != 0">
+                <button ng-click="preTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalIncomeUpgradeCard}}/{{noOfPagesTotalIncomeUpgradeCard}}
+                <button ng-click="nextTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==noOfPagesTotalIncomeUpgradeCard" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -383,6 +388,11 @@
                     
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(usedUpgradeCard | manageCardsFilter:test).length != 0">
+                <button ng-click="preUsedUpgradeCard()" ng-disabled="pageUsedUpgradeCard==1" class="btn paginationBtn" >Prev</button> 
+                {{pageUsedUpgradeCard}}/{{noOfPagesUsedUpgradeCard}}
+                <button ng-click="nextUsedUpgradeCard()" ng-disabled="pageUsedUpgradeCard==noOfPagesUsedUpgradeCard" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -419,6 +429,11 @@
                     
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(unUsedUpgradeCard | manageCardsFilter:test).length != 0">
+                <button ng-click="preUnusedUpgradeCards()" ng-disabled="pageUnusedUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
+                {{pageUnusedUpgradeCards}}/{{noOfPagesUnusedUpgradeCards}}
+                <button ng-click="nextUnusedUpgradeCards()" ng-disabled="pageUnusedUpgradeCards==noOfPagesUnusedUpgradeCards" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
     <!--  -->
@@ -440,7 +455,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldLuckCard">
+                    <tr ng-repeat="x in totalSoldLuckCard |manageCardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -454,6 +469,11 @@
                     
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCard | manageCardsFilter:test).length != 0">
+                <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
+                {{pageSoldLuckCard}}/{{noOfPagesSoldLuckCard}}
+                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -490,6 +510,11 @@
                     
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInCashFromUpgradeCard | manageCardsFilter:test).length != 0">
+                <button ng-click="preIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==1" class="btn paginationBtn" >Prev</button> 
+                {{pageIncomeInBrolixFromLuckCard}}/{{noOfPagesIncomeInBrolixFromLuckCard}}
+                <button ng-click="nextIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==noOfPagesIncomeInBrolixFromLuckCard" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -526,6 +551,11 @@
                     
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(usedLuckCard | manageCardsFilter:test).length != 0">
+                <button ng-click="preUsedLuckCard()" ng-disabled="pageUsedLuckCard==1" class="btn paginationBtn" >Prev</button> 
+                {{pageUsedLuckCard}}/{{noOfPagesUsedLuckCard}}
+                <button ng-click="nextUsedLuckCard()" ng-disabled="pageUsedLuckCard==noOfPagesUsedLuckCard" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -563,6 +593,11 @@
                     
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(unUsedLuckCard | manageCardsFilter:test).length != 0">
+                <button ng-click="preUnusedLuckCard()" ng-disabled="pageUnusedLuckCard==1" class="btn paginationBtn" >Prev</button> 
+                {{pageUnusedLuckCard}}/{{noOfPagesUnusedLuckCard}}
+                <button ng-click="nextUnusedLuckCard()" ng-disabled="pageUnusedLuckCard==noOfPagesUnusedLuckCard" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 

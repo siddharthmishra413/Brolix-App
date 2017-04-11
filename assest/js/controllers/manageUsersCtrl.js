@@ -444,8 +444,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                 break;
 
                 case 'LiveUser': 
-                    for (var i = 0; i < $scope.LiveUser.length; i++) {
-                        array.push($scope.LiveUser[i]._id)
+                    for (var i = 0; i < $scope.liveUser.length; i++) {
+                        array.push($scope.liveUser[i]._id)
                     }
                     data = {
                         Message:$scope.sendMessage.massage,
@@ -636,8 +636,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                 break;
 
                 case 'LiveUser': 
-                    for (var i = 0; i < $scope.LiveUser.length; i++) {
-                        array.push($scope.LiveUser[i]._id)
+                    for (var i = 0; i < $scope.liveUser.length; i++) {
+                        array.push($scope.liveUser[i]._id)
                     }
                     data = {
                         Brolix:$scope.sendBrolix.brolix,
@@ -830,8 +830,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                 break;
 
                 case 'LiveUser': 
-                    for (var i = 0; i < $scope.LiveUser.length; i++) {
-                        array.push($scope.LiveUser[i]._id)
+                    for (var i = 0; i < $scope.liveUser.length; i++) {
+                        array.push($scope.liveUser[i]._id)
                     }
                     data = {
                         Cash:$scope.sendCash.Cash,
@@ -1104,8 +1104,8 @@ $scope.sendCard = function(cardId,type){
                 break;
 
                 case 'LiveUser': 
-                    for (var i = 0; i < $scope.LiveUser.length; i++) {
-                        array.push($scope.LiveUser[i]._id)
+                    for (var i = 0; i < $scope.liveUser.length; i++) {
+                        array.push($scope.liveUser[i]._id)
                     }
                     data = {
                         cardId:$scope.cardId,
@@ -1286,8 +1286,8 @@ $scope.sendCard = function(cardId,type){
                 break;
 
                 case 'LiveUser': 
-                    for (var i = 0; i < $scope.LiveUser.length; i++) {
-                        array.push($scope.LiveUser[i]._id)
+                    for (var i = 0; i < $scope.liveUser.length; i++) {
+                        array.push($scope.liveUser[i]._id)
                     }
                     data = {
                         cardId:$scope.cardId,
@@ -1594,8 +1594,8 @@ $scope.dashBordFilter = function(){
                 break;
 
                 case 'LiveUser': 
-                    for (var i = 0; i < $scope.LiveUser.length; i++) {
-                        array.push($scope.LiveUser[i]._id)
+                    for (var i = 0; i < $scope.liveUser.length; i++) {
+                        array.push($scope.liveUser[i]._id)
                     }
                     data = {
                         couponId:$scope.couponId,

@@ -632,7 +632,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                   <tr ng-repeat="x in liveUser | customFilterUser:test">
+                   <tr ng-repeat="x in liveUser | customFilterUser:test">BusinessUse
                        <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                        </td>
@@ -969,7 +969,7 @@
                    <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                    </div>
-                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send message</button>
+                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
                </form>
            </div>
        </div>
@@ -988,7 +988,7 @@
                <h4 class="modal-title">Enter Brolix to pay by admin </h4>
            </div>
            <div class="modal-body">
-               <form name="sendBrolix">
+               <form name="sendBrolix" name="sendMessage">
                    <div class="form-group">
                    <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
                     <span style="color:red;" ng-show="sendBrolix.brolixsend.$dirty && sendBrolix.brolixsend.$invalid">
@@ -996,7 +996,7 @@
                     <span ng-show="sendBrolix.brolixsend.$error.maxlength">Brolix have at most 10 digits.</span>
                     <span ng-show="sendBrolix.brolixsend.$error.pattern">Only number are allowed.</span>
                    </div>
-                   <button ng-disabled="sendBrolix.$invalid" type="submit" class="btn btn-danger" ng-click="send_brolix('totalUser')">Send Brolix</button>
+                   <button ng-disabled="sendBrolix.$invalid" type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_brolix('totalUser')">Send Brolix</button>
                </form>
            </div>
        </div>
@@ -1044,12 +1044,12 @@
                <h4 class="modal-title">Send message to All Blocked Users</h4>
            </div>
            <div class="modal-body">
-               <form>
+               <form  name="sendMessage">
                    <div class="form-group">
                    <textarea type="text" id="messageInput" class="form-control" ng-model="send.massage" placeholder="Enter Your message" /></textarea>
                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                    </div>
-                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send message</button>
+                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
                </form>
            </div>
        </div>
@@ -1064,12 +1064,12 @@
                <h4 class="modal-title">Send message to User</h4>
            </div>
            <div class="modal-body">
-               <form>
+               <form name="sendMessage">
                    <div class="form-group">
                    <textarea type="text" id="messageInput" class="form-control" ng-model="send.massageUser" placeholder="Enter Your message" /></textarea>
                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                    </div>
-                   <button type="submit" class="btn btn-danger" ng-click="send_massage('singleuser')">Send message</button>
+                   <button type="submit" class="btn btn-danger"  ng-disabled="sendMessage.$invalid" ng-click="send_massage('singleuser')">Send message</button>
                </form>
            </div>
        </div>
@@ -1266,8 +1266,6 @@
        </div>
    </div>
 </div>
-
-
 
 
 <div id="pageDetails" class="modal fade" >

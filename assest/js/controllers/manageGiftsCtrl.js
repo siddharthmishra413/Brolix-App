@@ -62,41 +62,116 @@ var BATTUTA_KEY="00000000000000000000000000000000"
   }
 })
 
- userService.totalCouponsGifts().then(function(success) {
-  if(success.data.responseCode == 404){
-        $scope.totalCouponsGift = success.data.count;
-  }else if(success.data.responseCode == 200){
-     $scope.totalCouponsGiftShow = success.data.result;
+$scope.currentTotalCouponsGift = 1;
+     $scope.nextTotalCouponsGiftDetail = function(){
+         userService.totalCouponsGifts($scope.currentTotalCouponsGift).success(function(res) { 
+             // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.noOfPagesTotalCouponsGift = res.result.pages;
+                   $scope.pageTotalCouponsGift= res.result.page;
+                   $scope.totalCouponsGiftShow= res.result.docs;
+                    $scope.totalCouponsGift = res.result.total;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
 
-       $scope.totalCouponsGift = success.data.count;
-  }else{
-    toastr.error(success.responseMessage);
-  }
-})
+     }
+     $scope.nextTotalCouponsGiftDetail();
+     $scope.nextTotalCouponsGift = function(){
+        $scope.currentTotalCouponsGift++;
+        $scope.nextTotalCouponsGiftDetail();
+     }
+     $scope.preTotalCouponsGift= function(){
+        $scope.currentTotalCouponsGift--;
+        $scope.nextTotalCouponsGiftDetail();
+     }
+//  userService.totalCouponsGifts().then(function(success) {
+//   if(success.data.responseCode == 404){
+//         $scope.totalCouponsGift = success.data.count;
+//   }else if(success.data.responseCode == 200){
+//      $scope.totalCouponsGiftShow = success.data.result;
 
- userService.totalCashGifts().then(function(success) {
-  console.log(JSON.stringify(success))
-  if(success.data.responseCode == 404){
-       $scope.totalCashGift = success.data.count;
-  }else if(success.data.responseCode == 200){
-     $scope.totalCashGiftShow = success.data.result;
-     console.log(JSON.stringify($scope.totalCashGiftShow))
-       $scope.totalCashGift=success.data.count;
-  }else{
-    toastr.error(success.responseMessage);
-  }
-})
+//        $scope.totalCouponsGift = success.data.count;
+//   }else{
+//     toastr.error(success.responseMessage);
+//   }
+// })
+  $scope.currentTotalCashGifts = 1;
+     $scope.nextTotalCashGiftsDetail = function(){
+         userService.totalCashGifts($scope.currentTotalCashGifts).success(function(res) { 
+             // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.noOfPagesTotalCashGifts = res.result.pages;
+                   $scope.pageTotalCashGifts= res.result.page;
+                   $scope.totalCashGiftShow= res.result.docs;
+                    $scope.totalCashGift = res.result.total;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+         
+     }
+     $scope.nextTotalCashGiftsDetail();
+     $scope.nextTotalCashGifts = function(){
+        $scope.currentTotalCashGifts++;
+        $scope.nextTotalCashGiftsDetail();
+     }
+     $scope.preTotalCashGifts= function(){
+        $scope.currentTotalCashGifts--;
+        $scope.nextTotalCashGiftsDetail();
+     }
 
- userService.totalHiddenGifts().then(function(success) {
-  if(success.data.responseCode == 404){
-       $scope.totalHiddenGift = success.data.count;
-  }else if(success.data.responseCode == 200){
-     $scope.totalHiddenGiftShow = success.data.result;
-       $scope.totalHiddenGift = success.data.count;
-  }else{
-    toastr.error(success.responseMessage);
-  }
-})
+//  userService.totalCashGifts().then(function(success) {
+//   console.log(JSON.stringify(success))
+//   if(success.data.responseCode == 404){
+//        $scope.totalCashGift = success.data.count;
+//   }else if(success.data.responseCode == 200){
+//      $scope.totalCashGiftShow = success.data.result;
+//      console.log(JSON.stringify($scope.totalCashGiftShow))
+//        $scope.totalCashGift=success.data.count;
+//   }else{
+//     toastr.error(success.responseMessage);
+//   }
+// })
+$scope.currentTotalHiddenGifts = 1;
+     $scope.nextTotalHiddenGiftsDetail = function(){
+         userService.totalHiddenGifts($scope.currentTotalHiddenGifts).success(function(res) { 
+             // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.noOfPagesTotalHiddenGifts = res.result.pages;
+                   $scope.pageTotalHiddenGifts= res.result.page;
+                   $scope.totalHiddenGiftShow= res.result.docs;
+                    $scope.totalHiddenGift = res.result.total;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+         
+     }
+     $scope.nextTotalHiddenGiftsDetail();
+     $scope.nextTotalHiddenGifts = function(){
+        $scope.currentTotalHiddenGifts++;
+        $scope.nextTotalHiddenGiftsDetail();
+     }
+     $scope.preTotalHiddenGifts= function(){
+        $scope.currentTotalHiddenGifts--;
+        $scope.nextTotalHiddenGiftsDetail();
+     }
+
+//  userService.totalHiddenGifts().then(function(success) {
+//   if(success.data.responseCode == 404){
+//        $scope.totalHiddenGift = success.data.count;
+//   }else if(success.data.responseCode == 200){
+//      $scope.totalHiddenGiftShow = success.data.result;
+//        $scope.totalHiddenGift = success.data.count;
+//   }else{
+//     toastr.error(success.responseMessage);
+//   }
+// })
 
  userService.totalExchangedCoupon().then(function(success) {
   if(success.data.responseCode == 404){
@@ -121,6 +196,45 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     toastr.error(success.responseMessage);
   }
 })
+
+// $scope.currentTotalHiddenGifts = 1;
+//      $scope.nextTotalHiddenGiftsDetail = function(){
+//          userService.totalSentCoupon($scope.currentTotalHiddenGifts).success(function(res) { 
+//              // console.log("val",JSON.stringify(res))
+//              $scope.totalSentCouponShow1=[];
+//             if (res.responseCode == 200){
+//                    $scope.noOfPagesTotalHiddenGifts = res.result.pages;
+//                    $scope.pageTotalHiddenGifts= res.result.page;
+//                    for(var i=0;i<success.data.result.length;i++)
+//                      {  
+//                         $scope.totalSentCouponShow = success.data.result;
+//                          for (var j=0;j<success.data.result[i].coupon.adId.couponSend.length;j++) {
+//                                $scope.totalSentCouponShow1.push({
+//                              "id":success.data.result.docs[i].coupon.adId._id,
+//                              "sentFromFirstName":success.data.result.docs[i].firstName,
+//                              "sentFromLastName":success.data.result.docs[i].lastName,
+//                              "sentToFirstName":success.data.result.docs[i].coupon.adId.couponSend[j].receiverId.firstName,
+//                              "sentToLastName":success.data.result.docs[i].coupon.adId.couponSend[j].receiverId.lastName,
+//                              });
+//                         }
+//                      }  
+//                     $scope.totalSentCoupon = res.result.total;
+//                } 
+//                else {
+//                 toastr.error(res.responseMessage);
+//                 }
+//           })
+         
+//      }
+//      $scope.nextTotalHiddenGiftsDetail();
+//      $scope.nextTotalHiddenGifts = function(){
+//         $scope.currentTotalHiddenGifts++;
+//         $scope.nextTotalHiddenGiftsDetail();
+//      }
+//      $scope.preTotalHiddenGifts= function(){
+//         $scope.currentTotalHiddenGifts--;
+//         $scope.nextTotalHiddenGiftsDetail();
+//      }
 
  userService.totalSentCoupon().then(function(success) {
   if(success.data.responseCode == 404){

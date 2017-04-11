@@ -3,16 +3,10 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     $scope.$emit('headerStatus', 'Manage Cards');
     $scope.$emit('SideMenu', 'Manage Cards');
     $scope.myForm = {};
-    $scope.myForm.offerTime = false;
     $scope.first = true;
     $scope.second = false;
     $scope.third = false;
 
-  if($scope.myForm.cardType == true)
-    {
-    $scope.myForm.offerType = true;
-    }
-    
 
     $scope.createOffer = function(type){
         console.log("ddddddddd",$scope.myForm.cardType)
@@ -36,7 +30,7 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
             })
         }
         else{
-            toastr.error("Something Wents to wroung")
+            toastr.error("Something Wents to wrong")
         }   
     }
 

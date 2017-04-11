@@ -11,18 +11,46 @@ $(window).scrollTop(0,0);
     $scope.dashBordFilter={};
 
     //******************** dollars data **********************
-   
-    userService.SoldUpgradeCard().then(function(success) {       
-                $scope.dollars=[];
-                // console.log("UpgradeCard>>>>>>>>"+JSON.stringify(success.data.result));
-                for(i=0;i<success.data.result.length;i++) {
+   $scope.currentSoldUpgradeCard = 1;
+     $scope.nextSoldUpgradeCardDetail = function(){
+         userService.SoldUpgradeCard($scope.currentSoldUpgradeCard).success(function(res) { 
+              console.log("val>>",JSON.stringify(res))
+             $scope.dollars=[];
+            if (res.responseCode == 200){
+                   $scope.noOfPagesRemovedPage = res.result.pages;
+                   $scope.pageRemovedPage= res.result.page;
+                   // $scope.showAllRemovedPage= res.result.docs;
+                   // $scope.showAllRemovedPageCount = res.result.total;
+                   for(i=0;i<success.data.result.length;i++) {
                             $scope.dollars.push(success.data.result[i]);
                             // console.log("dollars>>>>>>>>>"+JSON.stringify($scope.dollars))
                         }
-                },function(err){
-                    console.log(err);
-                     toastr.error('Connection error.');
-    })
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+     }
+     $scope.nextSoldUpgradeCardDetail();
+     $scope.nextSoldUpgradeCard = function(){
+        $scope.currentSoldUpgradeCard++;
+        $scope.nextSoldUpgradeCardDetail();
+     }
+     $scope.preSoldUpgradeCard= function(){
+        $scope.currentSoldUpgradeCard--;
+        $scope.nextSoldUpgradeCardDetail();
+     }
+    // userService.SoldUpgradeCard().then(function(success) {       
+    //             $scope.dollars=[];
+    //             // console.log("UpgradeCard>>>>>>>>"+JSON.stringify(success.data.result));
+    //             for(i=0;i<success.data.result.length;i++) {
+    //                         $scope.dollars.push(success.data.result[i]);
+    //                         // console.log("dollars>>>>>>>>>"+JSON.stringify($scope.dollars))
+    //                     }
+    //             },function(err){
+    //                 console.log(err);
+    //                  toastr.error('Connection error.');
+    // })
     userService.cashGift().then(function(success) {       
                  // console.log("cashGift--->>>"+JSON.stringify(success))
                 $scope.count=success.data.count;
@@ -769,8 +797,8 @@ $(window).scrollTop(0,0);
     }
 
 
-$scope.export = function(){
-        html2canvas(document.getElementById('tableData'), {
+    $scope.export = function() {
+        html2canvas(document.getElementById('managePayment'), {
             onrendered: function (canvas) {
                 var data = canvas.toDataURL();
                 var docDefinition = {
@@ -783,7 +811,6 @@ $scope.export = function(){
             }
         });
     }
-
 
 })
 app.filter("manageFilter",function() {

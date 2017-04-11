@@ -234,6 +234,7 @@
                         
                 </tbody>
             </table>
+
         </div>
     </div> 
 
@@ -275,6 +276,11 @@
                         <td>{{x.coupon.couponStatus}}</td>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalCouponsGiftShow | totalCouponGiftFilter:search).length != 0">
+                <button ng-click="preTotalCouponsGift()" ng-disabled="pageTotalCouponsGift==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalCouponsGift}}/{{noOfPagesTotalCouponsGift}}
+                <button ng-click="nextTotalCouponsGift()" ng-disabled="pageTotalCouponsGift==noOfPagesTotalCouponsGift" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -316,6 +322,11 @@
                         <td>{{x.cashPrize.cashStatus}}</td>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalCashGiftShow | totalCashGiftFilter:search).length != 0">
+                <button ng-click="preTotalCashGifts()" ng-disabled="pageTotalCashGifts==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalCashGifts}}/{{noOfPagesTotalCashGifts}}
+                <button ng-click="nextTotalCashGifts()" ng-disabled="pageTotalCashGifts==noOfPagesTotalCashGifts" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -357,6 +368,11 @@
                         <td>{{x.hiddenGifts.status}}</td>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length != 0">
+                <button ng-click="preTotalCashGifts()" ng-disabled="pageTotalHiddenGifts==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalHiddenGifts}}/{{noOfPagesTotalHiddenGifts}}
+                <button ng-click="nextTotalHiddenGifts()" ng-disabled="pageTotalHiddenGifts==noOfPagesTotalHiddenGifts" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -397,6 +413,11 @@
                      </tr>   
                 </tbody>
             </table>
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalSentCouponShow1 | totalSentCouponFilter:search).length != 0">
+                <button ng-click="preTotalCashGifts()" ng-disabled="pageTotalHiddenGifts==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalHiddenGifts}}/{{noOfPagesTotalHiddenGifts}}
+                <button ng-click="nextTotalHiddenGifts()" ng-disabled="pageTotalHiddenGifts==noOfPagesTotalHiddenGifts" class="btn paginationBtn">Next</button>
+            </div> -->
         </div>
     </div>
 

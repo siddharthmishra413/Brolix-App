@@ -123,26 +123,26 @@ app.service('userService',function($http){
     totalSoldUpgradeCard: function(pageNo) {
       return $http.get(baseurl+'/admin/totalSoldUpgradeCard/'+pageNo);
     },
-    totalIncomeInCashFromUpgradeCard: function() {
-      return $http.get(baseurl+'/admin/totalIncomeInCashFromUpgradeCard');
+    totalIncomeInCashFromUpgradeCard: function(pageNo) {
+      return $http.get(baseurl+'/admin/totalIncomeInCashFromUpgradeCard/'+pageNo);
     },
-    usedUpgradeCard: function() {
-      return $http.get(baseurl+'/admin/usedUpgradeCard');
+    usedUpgradeCard: function(pageNo) {
+      return $http.get(baseurl+'/admin/usedUpgradeCard/'+pageNo);
     },
-    unUsedUpgradeCard: function() {
-      return $http.get(baseurl+'/admin/unUsedUpgradeCard');
+    unUsedUpgradeCard: function(pageNo) {
+      return $http.get(baseurl+'/admin/unUsedUpgradeCard/'+pageNo);
     },
-    totalSoldLuckCard: function() {
-      return $http.get(baseurl+'/admin/totalSoldLuckCard');
+    totalSoldLuckCard: function(pageNo) {
+      return $http.get(baseurl+'/admin/totalSoldLuckCard/'+pageNo);
     },
-    totalIncomeInBrolixFromLuckCard: function() {
-      return $http.get(baseurl+'/admin/totalIncomeInBrolixFromLuckCard');
+    totalIncomeInBrolixFromLuckCard: function(pageNo) {
+      return $http.get(baseurl+'/admin/totalIncomeInBrolixFromLuckCard/'+pageNo);
     },
-    usedLuckCard: function() {
-      return $http.get(baseurl+'/admin/usedLuckCard');
+    usedLuckCard: function(pageNo) {
+      return $http.get(baseurl+'/admin/usedLuckCard/'+pageNo);
     },
-    unUsedLuckCard: function() {
-      return $http.get(baseurl+'/admin/unUsedLuckCard');
+    unUsedLuckCard: function(pageNo) {
+      return $http.get(baseurl+'/admin/unUsedLuckCard/'+pageNo);
     },
     cardFilter: function(data){
      return $http.post(baseurl+'/admin/luckUpgradeCardfilter', data);
@@ -353,16 +353,16 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/totalBrolixGift');  
     },
 
-    totalCouponsGifts: function() {
-      return $http.get(baseurl+'/admin/totalCouponGifts');
+    totalCouponsGifts: function(pageNo) {
+      return $http.get(baseurl+'/admin/totalCouponGifts/'+pageNo);
     },
  
-    totalCashGifts: function() {
-       return $http.get(baseurl+'/admin/totalCashGifts');
+    totalCashGifts: function(pageNo) {
+       return $http.get(baseurl+'/admin/totalCashGifts/'+pageNo);
     },
 
-    totalHiddenGifts: function() {
-      return $http.get(baseurl+'/admin/totalHiddenGifts');
+    totalHiddenGifts: function(pageNo) {
+      return $http.get(baseurl+'/admin/totalHiddenGifts/'+pageNo);
     },
     
     totalExchangedCoupon: function() {
@@ -424,8 +424,8 @@ app.service('userService',function($http){
 
     //******************** Manage Payment Section ******************************
 
-     SoldUpgradeCard: function(){
-      return $http.get(baseurl+'/admin/totalSoldUpgradeCard');
+     SoldUpgradeCard: function(pageNo){
+      return $http.get(baseurl+'/admin/totalSoldUpgradeCard/'+pageNo);
     },
       userInfo: function(id){
       return $http.get(baseurl+'/admin/userInfo/'+id);
