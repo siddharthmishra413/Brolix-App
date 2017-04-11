@@ -1476,7 +1476,7 @@ module.exports = {
 
                 var tempCond = {};
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                    if (!(key == "cardType" || key == "joinFrom" || key == "joinTo" || key == "upgradeType" || key == "luckCardType")) {
+                    if (!(key == "cardType" || key == "joinFrom" || key == "joinTo" || key == "upgradeType" || key == "luckCardType" || req.body[key] == "")) {
 
                         var conditions = {}
                         tempCond[key] = req.body[key];
@@ -1534,7 +1534,7 @@ module.exports = {
                 var tempCond = {};
 
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                    if (!(key == "giftsType" || key == "joinFrom" || key == "joinTo" || key == 'couponStatus' || key == 'cashStatus')) {
+                    if (!(key == "giftsType" || key == "joinFrom" || key == "joinTo" || key == 'couponStatus' || key == 'cashStatus' || req.body[key] == "")) {
                         tempCond[key] = req.body[key];
                         console.log("tempCOndition===>" + JSON.stringify(tempCond))
                         condition.$and.push(data)
@@ -1656,7 +1656,7 @@ module.exports = {
                 var tempCond = {};
 
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                    if (!(key == "paymentCardType" || key == "joinFrom" || key == "joinTo" || key == 'cardType' || key == 'couponStatus')) {
+                    if (!(key == "paymentCardType" || key == "joinFrom" || key == "joinTo" || key == 'cardType' || key == 'couponStatus' || req.body[key] == "")) {
                         tempCond[key] = req.body[key];
                         console.log("tempCOndition===>" + JSON.stringify(tempCond))
 
@@ -1717,7 +1717,7 @@ module.exports = {
                 var tempCond = {};
 
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                    if (!(key == "paymentCardType" || key == "joinFrom" || key == "joinTo" || key == 'cardType')) {
+                    if (!(key == "paymentCardType" || key == "joinFrom" || key == "joinTo" || key == 'cardType' || req.body[key] == "")) {
                         tempCond[key] = req.body[key];
                         console.log("tempCOndition===>" + JSON.stringify(tempCond))
 
@@ -3497,7 +3497,7 @@ module.exports = {
 
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
 
-                    if (!(key == "userType" || key == "ageFrom" || key == "ageTo" || key == "joinFrom" || key == "joinTo")) {
+                    if (!(key == "userType" || key == "ageFrom" || key == "ageTo" || key == "joinFrom" || key == "joinTo"  || req.body[key] == "")) {
                         var tempCond = {};
                         tempCond[key] = req.body[key];
                         condition.$and.push(tempCond)
@@ -3595,7 +3595,7 @@ module.exports = {
 
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
 
-                    if (!(key == "pageType" || key == "joinFrom" || key == "joinTo")) {
+                    if (!(key == "pageType" || key == "joinFrom" || key == "joinTo"  || req.body[key] == "")) {
                         var tempCond = {};
                         tempCond[key] = req.body[key];
                         condition.$and.push(tempCond)
