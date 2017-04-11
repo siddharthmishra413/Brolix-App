@@ -30,14 +30,14 @@ app.get('/blockUser/:userId', adminHandler.blockUser);
 /*--------------------------Manage Cards--------------------------*/
 
 
-app.get('/totalSoldUpgradeCard', adminHandler.totalSoldUpgradeCard);
-app.get('/totalSoldLuckCard', adminHandler.totalSoldLuckCard);
-app.get('/totalIncomeInBrolixFromLuckCard', adminHandler.totalIncomeInBrolixFromLuckCard);
-app.get('/totalIncomeInCashFromUpgradeCard', adminHandler.totalIncomeInCashFromUpgradeCard);
-app.get('/usedLuckCard', adminHandler.usedLuckCard);
-app.get('/unUsedLuckCard', adminHandler.unUsedLuckCard);
-app.get('/usedUpgradeCard', adminHandler.usedUpgradeCard);
-app.get('/unUsedUpgradeCard', adminHandler.unUsedUpgradeCard);
+app.get('/totalSoldUpgradeCard/:pageNumber', adminHandler.totalSoldUpgradeCard);
+app.get('/totalSoldLuckCard/:pageNumber', adminHandler.totalSoldLuckCard);
+app.get('/totalIncomeInBrolixFromLuckCard/:pageNumber', adminHandler.totalIncomeInBrolixFromLuckCard);
+app.get('/totalIncomeInCashFromUpgradeCard/:pageNumber', adminHandler.totalIncomeInCashFromUpgradeCard);
+app.get('/usedLuckCard/:pageNumber', adminHandler.usedLuckCard);
+app.get('/unUsedLuckCard/:pageNumber', adminHandler.unUsedLuckCard);
+app.get('/usedUpgradeCard/:pageNumber', adminHandler.usedUpgradeCard);
+app.get('/unUsedUpgradeCard/:pageNumber', adminHandler.unUsedUpgradeCard);
 
 /*-------------------------Manage ADS---------------------*/
 
@@ -72,18 +72,18 @@ app.post('/upgradeCardUsedAd', adminHandler.upgradeCardUsedAd);
 app.get('/paymentHistoryUpgradeCard/:id', adminHandler.paymentHistoryUpgradeCard);
 app.get('/paymentHistoryLuckCard/:id', adminHandler.paymentHistoryLuckCard);
 app.get('/userInfo/:id', adminHandler.userInfo);
-app.get('/totalBrolixGift', adminHandler.totalBrolixGift);
-app.get('/totalCouponGifts', adminHandler.totalCouponGifts);
+app.get('/totalBrolixGift/:pageNumber', adminHandler.totalBrolixGift);
+app.get('/totalCouponGifts/:pageNumber', adminHandler.totalCouponGifts);
 app.get('/cashGift', adminHandler.cashGift);
 app.get('/showReportedAd/:pageNumber', adminHandler.showReportedAd);
 app.get('/adUpgradedByDollor/:pageNumber', adminHandler.adUpgradedByDollor);
 app.get('/adUpgradedByBrolix/:pageNumber', adminHandler.adUpgradedByBrolix);
 app.get('/soldCoupon', adminHandler.soldCoupon);
-app.get('/totalCashGifts', adminHandler.totalCashGifts);
-app.get('/totalHiddenGifts', adminHandler.totalHiddenGifts);
-app.get('/totalExchangedCoupon', adminHandler.totalExchangedCoupon);
-app.get('/totalSentCoupon', adminHandler.totalSentCoupon);
-app.get('/totalSentCash', adminHandler.totalSentCash);
+app.get('/totalCashGifts/:pageNumber', adminHandler.totalCashGifts);
+app.get('/totalHiddenGifts/:pageNumber', adminHandler.totalHiddenGifts);
+app.get('/totalExchangedCoupon/:pageNumber', adminHandler.totalExchangedCoupon);
+app.get('/totalSentCoupon/:pageNumber', adminHandler.totalSentCoupon);
+app.get('/totalSentCash/:pageNumber', adminHandler.totalSentCash);
 app.get('/pageInfo/:id', adminHandler.pageInfo);
 app.get('/topFiftyBalances', adminHandler.topFiftyBalances);
 app.get('/topFiftyUpgradeCardBuyers', adminHandler.topFiftyUpgradeCardBuyers);
@@ -91,7 +91,7 @@ app.get('/totalBrolixPrice', adminHandler.totalBrolixPrice);
 app.get('/totalCashPrice', adminHandler.totalCashPrice);
 app.get('/adInfo/:id', adminHandler.adInfo);
 app.get('/topFiftyLuckCardBuyers', adminHandler.topFiftyLuckCardBuyers);
-app.get('/topFiftyAds/:pageNumber', adminHandler.topFiftyAds);
+app.get('/topFiftyAds', adminHandler.topFiftyAds);
 app.get('/unblockUser/:userId', adminHandler.unblockUser);
 app.post('/addNewCoupon', adminHandler.addNewCoupon);
 app.get('/viewCoupon/:id', adminHandler.viewCoupon);
@@ -119,7 +119,7 @@ app.post('/uploadImage', adminHandler.uploadImage);
 app.post('/zipcodFunction', adminHandler.zipcodFunction);
 app.get('/topFiftyCashProviders/:pageNumber', adminHandler.topFiftyCashProviders);
 app.get('/topFiftyCouponProviders/:pageNumber', adminHandler.topFiftyCouponProviders);
-app.get('/adsWithLinks', adminHandler.adsWithLinks);
+app.get('/adsWithLinks/:pageNumber', adminHandler.adsWithLinks);
 app.put('/postCouponToStore/:id', adminHandler.postCouponToStore);
 app.get('/listOfSystemAdmin/:pageNumber', adminHandler.listOfSystemAdmin);
 app.get('/removeSystemAdmin/:id', adminHandler.removeSystemAdmin);

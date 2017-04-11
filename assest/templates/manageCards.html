@@ -306,6 +306,11 @@
                     
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | manageCardsFilter:test).length != 0">
+                <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalSoldUpgradeCards}}/{{noOfPagesTotalSoldUpgradeCards}}
+                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -843,10 +848,10 @@
            <div class="modal-body">
                <form name="sendMessage">
                    <div class="form-group">
-                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" required></textarea>
+                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" required></textarea>
                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                    </div>
-                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send massage</button>
+                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
                </form>
            </div>
        </div>

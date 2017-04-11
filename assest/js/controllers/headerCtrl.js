@@ -15,23 +15,62 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
     	}else {
 
     		$scope.user = res.result;
-        $scope.userPermissions = res.result.permissions;
+         console.log("userDetails--->",JSON.stringify($scope.user))
+        localStorage.loginData=res.result._id;
+        $scope.image = $scope.user.image;
+
+         $scope.userPermissions = res.result.permissions;
               var data=[];
-       angular.forEach($scope.userPermissions,function(value,key){
+       angular.forEach($scope.userPermissions,function(value,key) {
           data.push(value);
-       })
-            localStorage.loginData=res.result._id;
-            console.log("userPermissions",JSON.stringify(data))
-    		$scope.image = $scope.user.image
+       }) 
+        console.log("userPermissions--->",JSON.stringify(data))
+
+            $scope.manageUser = false;
+            $scope.managePages = false;
+            $scope.manageAds = false;
+            $scope.manageCards = false;
+            $scope.manageGifts = false;
+            $scope.managePayments = false;
+            $scope.adminTool = false;
+        
+        for (var i = 0; i<=data.length; i++) {
+          if(data[i] == "manageUser")
+            {
+           $scope.manageUser = true;
+            }
+           if(data[i] == "managePages")
+           {
+           $scope.managePages = true;
+           }
+           if(data[i] == "manageAds")
+            {
+           $scope.manageAds = true;
+            }
+           if(data[i] == "manageCards")
+           {
+           $scope.manageCards = true;
+           }
+           if(data[i] == "manageGifts")
+            {
+           $scope.manageGifts = true;
+            }
+           if(data[i] == "managePayments")
+           {
+           $scope.managePayments = true;
+           }
+           if(data[i] == "adminTool")
+           {
+           $scope.adminTool = true;
+           }
+        }
+            
     	}
     }).error(function(status, data) {
 
 })
     
-    
-    
-
-    $scope.logout = function() {
+     $scope.logout = function() {
         $state.go('login')
     }
 

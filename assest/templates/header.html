@@ -18,7 +18,7 @@
                 </div>               
             </div> -->
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->            
-            <div ng-if="menu=='Manage User'">
+            <div ng-if="menu=='Manage User'" ng-hide="manageUser == false">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="prodata">
@@ -50,7 +50,7 @@
                 </ul>
             </div>
             </div>
-            <div ng-if="menu=='Manage Pages'">
+            <div ng-if="menu=='Manage Pages'" ng-hide="managePages == false">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="prodata">
@@ -82,7 +82,7 @@
                 </ul>
             </div>
             </div>
-            <div ng-if="menu=='Manage Ads'">
+            <div ng-if="menu=='Manage Ads'" ng-hide="manageAds == false">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="prodata">
@@ -117,7 +117,7 @@
                 </ul>
             </div>
             </div>
-            <div ng-if="menu=='Manage Cards'">
+            <div ng-if="menu=='Manage Cards'"  ng-hide="manageCards == false">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="prodata">
@@ -149,7 +149,7 @@
                 </ul>
             </div>
             </div>
-            <div ng-if="menu=='Manage Gifts'">
+            <div ng-if="menu=='Manage Gifts'" ng-hide="manageGifts == false">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="prodata">
@@ -172,7 +172,7 @@
                 </ul>
             </div>
             </div>
-            <div ng-if="menu=='Manage Payment'">
+            <div ng-if="menu=='Manage Payment'" ng-hide="managePayments == false">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="prodata">
@@ -195,7 +195,7 @@
                 </ul>
             </div>
             </div>
-             <div ng-if="menu=='Admin Tools'">
+             <div ng-if="menu=='Admin Tools'" ng-hide="adminTool == false">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="prodata">
@@ -244,27 +244,27 @@
                 <div class="col-lg-12">
                     <ul class="nav nav-tabs nav-tabs-inverse nav-justified nav-justified-mobile" data-sortable-id="index-2">
                     <!-- <li class="first" ng-class="{'active':header=='Manage User'}" ng-if="user.indexOf('ManageUser')>-1"><a ng-href="#header/manageUsers">Manage Users</a> -->
-                            <li class="first" ng-class="{'active':header=='Manage User'}">
-                                <a ng-href="#header/manageUsers" ng-click="checkPermission('manageUsers')">Manage Users</a>
+                            <li class="first" ng-class="{'active':header=='Manage User'}" ng-hide="manageUser == false">
+                                <a ng-href="#header/manageUsers">Manage Users</a>
                             </li>
                             <!-- <li class="first" ng-class="{'active':header=='Manage User'}" ng-if="user.indexOf('ManageUser')>-1"><a ng-href="#header/manageUsers">Manage Users</a> -->
-                            <li class="" ng-class="{'active':header=='Manage Pages'}">
-                                <a ng-href="#header/managePages" ng-click="checkPermission('managePages')">Manage Pages</a>
+                            <li class="" ng-class="{'active':header=='Manage Pages'}" ng-hide="managePages == false">
+                                <a ng-href="#header/managePages" >Manage Pages</a>
                             </li>
-                            <li class="" ng-class="{'active':header=='Manage Ads'}">
-                                <a ng-href="#header/manageAds" ng-click="checkPermission('manageAds')">Manage Ads</a>
+                            <li class="" ng-class="{'active':header=='Manage Ads'}" ng-hide="manageAds == false">
+                                <a ng-href="#header/manageAds">Manage Ads</a>
                             </li>
-                             <li class="" ng-class="{'active':header=='Manage Cards'}">
-                                <a ng-href="#header/manageCards" ng-click="checkPermission('manageCards')">Manage Cards</a>
+                             <li class="" ng-class="{'active':header=='Manage Cards'}" ng-hide="manageCards == false">
+                                <a ng-href="#header/manageCards">Manage Cards</a>
                             </li>
-                            <li class="" ng-class="{'active':header=='Manage Gifts'}">
-                                <a ng-href="#header/manageGifts" ng-click="checkPermission('manageGifts')">Manage Gifts</a>
+                            <li class="" ng-class="{'active':header=='Manage Gifts'}" ng-hide="manageGifts == false">
+                                <a ng-href="#header/manageGifts">Manage Gifts</a>
                             </li>
-                             <li class="" ng-class="{'active':header=='Manage Payment'}">
-                                <a ng-href="#header/managePayments" ng-click="checkPermission('managePayment')">Manage Payment</a>
+                             <li class="" ng-class="{'active':header=='Manage Payment'}" ng-hide="managePayments == false">
+                                <a ng-href="#header/managePayments">Manage Payment</a>
                             </li>
-                            <li class="" ng-class="{'active':header=='Admin Tools'}">
-                                <a ng-href="#header/manageAdminTools" ng-click="checkPermission('adminTools')">Admin Tools</a>
+                            <li class="" ng-class="{'active':header=='Admin Tools'}" ng-hide="adminTool == false">
+                                <a ng-href="#header/manageAdminTools">Admin Tools</a>
                             </li>
                         </ul>
                 </div>

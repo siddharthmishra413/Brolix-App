@@ -263,7 +263,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalAds | customFilterUser:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(totalAds | manageAdsFilter:test).length != 0">
                         <button ng-click="preClk()" ng-disabled="pageNo==1" class="btn paginationBtn" >Prev</button> {{pageNo}}/{{noOfPages}}
                         <button ng-click="nextClk()" ng-disabled="pageNo==noOfPages" class="btn paginationBtn">Next</button>
             </div>
@@ -300,9 +300,9 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalActiveAds | customFilterUser:test).length != 0">
-                        <button ng-click="preClk()" ng-disabled="pageNoActiveAds==1" class="btn paginationBtn" >Prev</button> {{pageNoActiveAds}}/{{noOfPagesActiveAds}}
-                        <button ng-click="nextClk()" ng-disabled="pageNoActiveAds==noOfPagesActiveAds" class="btn paginationBtn">Next</button>
+            <div style="float:right; font-size: 20px;" ng-if="(totalActiveAds | manageAdsFilter:test).length != 0">
+                        <button ng-click="preActiveAdsClk()" ng-disabled="pageNoActiveAds==1" class="btn paginationBtn" >Prev</button> {{pageNoActiveAds}}/{{noOfPagesActiveAds}}
+                        <button ng-click="nextActiveAdsClk()" ng-disabled="pageNoActiveAds==noOfPagesActiveAds" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -337,9 +337,9 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalExpiredAds | customFilterUser:test).length != 0">
-                        <button ng-click="preClk()" ng-disabled="pageNoActiveAds==1" class="btn paginationBtn" >Prev</button> {{pageNoActiveAds}}/{{noOfPagesActiveAds}}
-                        <button ng-click="nextClk()" ng-disabled="pageNoActiveAds==noOfPagesActiveAds" class="btn paginationBtn">Next</button>
+            <div style="float:right; font-size: 20px;" ng-if="(totalExpiredAds | manageAdsFilter:test).length != 0">
+                        <button ng-click="preExpiredAdsClk()" ng-disabled="pageNoExpiredAds==1" class="btn paginationBtn" >Prev</button> {{pageNoExpiredAds}}/{{noOfPagesExpiredAds}}
+                        <button ng-click="nextExpiredAdsClk()" ng-disabled="pageNoExpiredAds==noOfPagesExpiredAds" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -374,6 +374,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(videoAds | manageAdsFilter:test).length != 0">
+                        <button ng-click="preVideoAdsClk()" ng-disabled="pageNoVideoAds==1" class="btn paginationBtn" >Prev</button> {{pageNoVideoAds}}/{{noOfPagesVideoAds}}
+                        <button ng-click="nextVideoAdsClk()" ng-disabled="pageNoVideoAds==noOfPagesVideoAds" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -407,9 +411,9 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(slideshowAds | customFilterUser:test).length != 0">
-                        <button ng-click="preClk()" ng-disabled="pageNoActiveAds==1" class="btn paginationBtn" >Prev</button> {{pageNoActiveAds}}/{{noOfPagesActiveAds}}
-                        <button ng-click="nextClk()" ng-disabled="pageNoActiveAds==noOfPagesActiveAds" class="btn paginationBtn">Next</button>
+            <div style="float:right; font-size: 20px;" ng-if="(slideshowAds | manageAdsFilter:test).length != 0">
+                        <button ng-click="preSlideShowAdsClk()" ng-disabled="pageNoSlideShowAds==1" class="btn paginationBtn" >Prev</button> {{pageNoSlideShowAds}}/{{noOfPagesSlideShowAds}}
+                        <button ng-click="nextSlideShowAdsClk()" ng-disabled="pageNoSlideShowAds==noOfPagesSlideShowAds" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -444,6 +448,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(adUpgradedByBrolix | manageAdsFilter:test).length != 0">
+                <button ng-click="preUpgradedByBrolixClk()" ng-disabled="pageNoUpgradedByBrolix==1" class="btn paginationBtn" >Prev</button> {{pageNoUpgradedByBrolix}}/{{noOfPagesUpgradedByBrolix}}
+                <button ng-click="nextUpgradedByBrolixClk()" ng-disabled="pageNoUpgradedByBrolix==noOfPagesUpgradedByBrolix" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -477,6 +485,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(adUpgradedByDollor | manageAdsFilter:test).length != 0">
+                <button ng-click="preUpgradedByDollarsClk()" ng-disabled="pageNoUpgradedByDollars==1" class="btn paginationBtn" >Prev</button> {{pageNoUpgradedByDollars}}/{{noOfPagesUpgradedByDollars}}
+                <button ng-click="nextUpgradedByDollarsClk()" ng-disabled="pageNoUpgradedByDollars==noOfPagesUpgradedByDollars" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
      <div class="col-sm-12" ng-switch="tab">
@@ -509,6 +521,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(showReportedAd | manageAdsFilter:test).length != 0">
+                <button ng-click="preReportedAdsClk()" ng-disabled="pageNoReportedAds==1" class="btn paginationBtn" >Prev</button> {{pageNoReportedAds}}/{{noOfPagesReportedAds}}
+                <button ng-click="nextReportedAdsClk()" ng-disabled="pageNoReportedAds==noOfPagesReportedAds" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -542,6 +558,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(adsWithLinks | manageAdsFilter:test).length != 0">
+                <button ng-click="preAdsWithLinksClk()" ng-disabled="pageNoAdsWithLinks==1" class="btn paginationBtn" >Prev</button> {{pageNoAdsWithLinks}}/{{noOfPagesAdsWithLinks}}
+                <button ng-click="nextAdsWithLinksClk()" ng-disabled="pageNoAdsWithLinks==noOfPagesAdsWithLinks" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -575,6 +595,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(topFiftyAds | manageAdsFilter:test).length != 0">
+                <button ng-click="preTopFiftyAdsClk()" ng-disabled="pageNoTopFiftyAds==1" class="btn paginationBtn" >Prev</button> {{pageNoTopFiftyAds}}/{{noOfPagesTopFiftyAds}}
+                <button ng-click="nextTopFiftyAdsClk()" ng-disabled="pageNoTopFiftyAds==noOfPagesTopFiftyAds" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
 </div>
