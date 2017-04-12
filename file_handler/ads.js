@@ -620,54 +620,89 @@ module.exports = {
             })
         }
     },
+               
 
     "couponWinners": function(req, res) {
-        createNewAds.find({ adsType: "coupon" }).exec(function(err, result) {
-            var array = [];
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 8;
+        var skips = limitData - 8;
+        var page = String(pageNumber);
+
+        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER' } }).exec(function(err, result) {
+            console.log("1")
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: "No coupon winner found" }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
-                    for (j = 0; j < result[i].winners.length; j++) {
-                        array.push(result[i].winners[j]);
-                        count++;
-                    }
+                    count++;
                 }
-                User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 500, responseMessage: "No coupon winner found" }); } else {
-                        res.send({
-                            result: result1,
-                            responseCode: 200,
-                            count: count,
-                            responseMessage: "All coupon winner shown successfully."
+                var pages = Math.ceil(count / 8);
+                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER' } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                    console.log("2")
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
+                        User.populate(result1, {
+                            path: 'coupon.adId',
+                            model: 'createNewAds'
+                        }, function(err, result2) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
+                                 // var obj = result[0].coupon;
+                                 // var data = obj.filter(obj => obj.type == "ACTIVE");
+                                res.send({
+                                    docs: result2,
+                                    count: count,
+                                    limit: limitData,
+                                    page: page,
+                                    pages: pages,
+                                    responseCode: 200,
+                                    responseMessage: "All coupon winner shown successfully."
+                                })
+                            }
+
                         })
                     }
                 })
             }
+
         })
     },
 
     "cashWinners": function(req, res) {
-        createNewAds.find({ adsType: "cash" }).exec(function(err, result) {
-            var array = [];
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 8;
+        var skips = limitData - 8;
+        var page = String(pageNumber);
+
+        User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
+            console.log("1")
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
                 var count = 0;
-                for (var i = 0; i < result.length; i++) {
-                    for (var j = 0; j < result[i].winners.length; j++) {
-                        array.push(result[i].winners[j]);
-                        count++;
-                    }
+                for (i = 0; i < result.length; i++) {
+                    count++;
                 }
-                User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 500, responseMessage: "No cash winner found" }); } else {
-                        res.send({
-                            result: result,
-                            responseCode: 200,
-                            count: count,
-                            responseMessage: "All cash winner shown successfully."
+                var pages = Math.ceil(count / 8);
+                User.aggregate({ $unwind: "$cashPrize" }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                    console.log("2")
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
+                        User.populate(result1, {
+                            path: 'cashPrize.adId',
+                            model: 'createNewAds'
+                        }, function(err, result2) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
+                                res.send({
+                                    docs: result2,
+                                    count: count,
+                                    limit: limitData,
+                                    page: page,
+                                    pages: pages,
+                                    responseCode: 200,
+                                    responseMessage: "All cash winner shown successfully."
+                                })
+                            }
+
                         })
                     }
                 })
             }
+
         })
     },
 
@@ -744,9 +779,10 @@ module.exports = {
             }
             condition.$and.push(obj);
         }
-
+      console.log(condition)
         createNewAds.find(condition).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+             else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No result found' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
