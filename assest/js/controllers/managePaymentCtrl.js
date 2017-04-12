@@ -9,6 +9,13 @@ $(window).scrollTop(0,0);
     $scope.clr1=""
     $scope.myForm={};
     $scope.dashBordFilter={};
+    $scope.dashBordFilter.country="";
+    $scope.dashBordFilter.state="";
+    $scope.dashBordFilter.city="";
+    $scope.myForm.country="";
+    $scope.myForm.state="";
+    $scope.myForm.city="";
+
 
     //******************** dollars Sold Upgrade Card data **********************
    $scope.currentSoldUpgradeCard = 1;
@@ -73,18 +80,7 @@ $(window).scrollTop(0,0);
              }
     
     
-    // userService.cashGift().then(function(success) {       
-    //              // console.log("cashGift--->>>"+JSON.stringify(success))
-    //             $scope.count=success.data.count;
-    //             $scope.dollarsCashGift=[];
-    //             for(i=0;i<success.data.result.length;i++) {
-    //                         $scope.dollarsCashGift.push(success.data.result[i]);
-    //                         // console.log("dollarsCashGift>>>>>>>>>"+JSON.stringify($scope.dollarsCashGift[i].cashPrize.pageId._id))
-    //                     }
-    //             },function(err){
-    //                 console.log(err);
-    //                  toastr.error('Connection error.');
-    //          })
+    
 
     $scope.payment=function(data){
         $scope.type = data;
@@ -177,6 +173,7 @@ $(window).scrollTop(0,0);
                 $scope.nextSoldCouponsDetail();
              }
         }  
+
         //****************** dollars Data *********************
 
         else if($scope.string == 'dollars'){
@@ -199,7 +196,22 @@ $(window).scrollTop(0,0);
             $scope.flag= 0;
             $scope.clr="#00B288";
             $scope.clr1="";
-            $scope.nextCashGiftsDetail();
+
+            $scope.dollars=[];
+            $scope.currentSoldUpgradeCard = 1;
+            $scope.nextSoldUpgradeCardDetail();
+             $scope.nextSoldUpgradeCard = function(){
+                $scope.currentSoldUpgradeCard++;
+                $scope.nextSoldUpgradeCardDetail();
+             }
+             $scope.preSoldUpgradeCard= function(){
+                $scope.currentSoldUpgradeCard--;
+                $scope.nextSoldUpgradeCardDetail();
+             }
+        } 
+        $scope.dollarsCashGift =[];
+        $scope.currentCashGifts = 1;
+        $scope.nextCashGiftsDetail();
              $scope.nextCashGifts = function(){
                 $scope.currentCashGifts++;
                 $scope.nextCashGiftsDetail();
@@ -208,29 +220,6 @@ $(window).scrollTop(0,0);
                 $scope.currentCashGifts--;
                 $scope.nextCashGiftsDetail();
              }
-        //     userService.SoldUpgradeCard().then(function(success) {      
-        //         $scope.dollars=[];
-        //         for(i=0;i<success.data.result.length;i++) {
-        //                     $scope.dollars.push(success.data.result[i]);
-        //                 }
-        //         },function(err){
-        //             console.log(err);
-        //              toastr.error('Connection error.');
-        //     })
-        // } 
-        // userService.cashGift().then(function(success) {       
-        //         console.log("Cash Giftttt--->>>"+JSON.stringify(success))
-        //         $scope.count=success.data.count;
-        //         $scope.dollarsCashGift=[];
-        //         for(i=0;i<success.data.result.length;i++) {
-        //                     $scope.dollarsCashGift.push(success.data.result[i]);
-
-        //                      console.log(JSON.stringify($scope.dollarsCashGift[i].cashPrize.adId))
-        //                 }
-        //         },function(err){
-        //             console.log(err);
-        //              toastr.error('Connection error.');
-        //      })
 
     }
 
@@ -648,6 +637,7 @@ $(window).scrollTop(0,0);
                             toastr.error(res.responseMessage);
                         }
                     })
+
                 break;
 
                 case 'brolixCoupon': 
@@ -743,7 +733,7 @@ $(window).scrollTop(0,0);
               {
                  $timeout(function(){
                         $scope.state2List = regions;
-                        console.log("State2 List",JSON.stringify( $scope.state2List))
+                        // console.log("State2 List",JSON.stringify( $scope.state2List))
                   },100)
               });
             }
@@ -780,13 +770,39 @@ $(window).scrollTop(0,0);
     // ******************DashBoard Filters *********************
 
     $scope.newdashBordFilter = function(type){
+        console.log("country---"+$scope.dashBordFilter.country)
+        if($scope.dashBordFilter.country == 'undefined' || $scope.dashBordFilter.country == null || $scope.dashBordFilter.country == '' ){
+                $scope.dashBordFilter.country = ''
+
+        }
+        if($scope.dashBordFilter.state == 'undefined' || $scope.dashBordFilter.state == null || $scope.dashBordFilter.state == '' ){
+                $scope.dashBordFilter.state = ''
+
+        }
+        if($scope.dashBordFilter.city == 'undefined' || $scope.dashBordFilter.city == null || $scope.dashBordFilter.city == '' ){
+                $scope.dashBordFilter.city = ''
+
+        }
+         if($scope.myForm.country== 'undefined' || $scope.myForm.country== null || $scope.myForm.country== '' ){
+                $scope.myForm.country= ''
+
+        }
+        if($scope.myForm.state == 'undefined' || $scope.myForm.state == null || $scope.myForm.state == '' ){
+                $scope.myForm.state = ''
+
+        }
+        if($scope.myForm.city == 'undefined' || $scope.myForm.city == null ||$scope.myForm.city == '' ){
+                $scope.myForm.city = ''
+
+        }
                 console.log(JSON.stringify(type));
                 var data = {};
 
                 switch (type)
                         {
                             case 'dollars':
-                             console.log("1");
+                            $scope.dollars =[];
+                             // alert("1");
                              data = {
                                         paymentCardType:"soldUpgradeCards",
                                         joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
@@ -799,15 +815,22 @@ $(window).scrollTop(0,0);
                                      } 
                                      console.log(JSON.stringify(data))
                                 userService.filterDollars(data).success(function(res){
-                                    console.log(JSON.stringify(res))
-                                    $scope.dollars = res.result;
-                                    console.log("ressssssss1",JSON.stringify($scope.dollars));
+                                    console.log("hello"+JSON.stringify(res))
+                                    if(res.responseCode == 400){
+                                        $scope.dollars =[];
+                                    }
+                                    else if(res.responseCode == 200){
+                                        $scope.dollars = res.result;
+                                        console.log("ressssssss1"+JSON.stringify($scope.dollars));
+                                    }
+                                    
                                 })
                                 
                             break;
 
                             case 'brolix': 
-                            console.log("2");
+                            $scope.brolix =[];
+                            // alert("2");
                             data = {
                                         paymentCardType:"soldLuckCard",
                                         joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
@@ -817,15 +840,24 @@ $(window).scrollTop(0,0);
                                         city: $scope.dashBordFilter.city,
                                         cardType:$scope.dashBordFilter.dollarCardType
                                      }
+                                     console.log("brolix"+JSON.stringify(data))
                                 userService.filterBrolix(data).success(function(res){
-                                    $scope.brolix = res.result;
-                                    console.log("ressssssss2",JSON.stringify($scope.brolix));
+                                    console.log("hello"+JSON.stringify(res))
+                                    if(res.responseCode == 400){
+                                        $scope.brolix =[];
+                                    }
+                                    else if(res.responseCode == 200){
+                                        $scope.brolix = res.result;
+                                        console.log("ressssssss2"+JSON.stringify($scope.brolix));
+                                    }
+                                    
                                 })
                                 
                             break;
 
                             case 'dollarsCashGift': 
-                            console.log("3");
+                            $scope.dollarsCashGift=[];
+                            // alert("3");
                             data = {
                                         paymentCardType:"cashGifts",
                                         joinTo:new Date($scope.myForm.dateTo).getTime(),
@@ -835,14 +867,23 @@ $(window).scrollTop(0,0);
                                         city: $scope.myForm.city,
                                         cashStatus:$scope.myForm.cashStatus
                                      }
+                                     console.log("dollarsCashGift"+JSON.stringify(data))
                                 userService.filterDollars(data).success(function(res){
-                                    $scope.dollarsCashGift = res.result;
-                                    console.log("ressssssss3",JSON.stringify($scope.dollarsCashGift));
+                                    console.log("hello"+JSON.stringify(res))
+                                    if(res.responseCode == 400){
+                                        $scope.dollarsCashGift = [];
+                                    }
+                                    else if(res.responseCode == 200){
+                                       $scope.dollarsCashGift = res.result;
+                                        console.log("ressssssss3"+JSON.stringify($scope.dollarsCashGift));
+                                    }
+                                   
                                 })
                                 
                             break;
 
                             case 'brolixCoupon': 
+                            $scope.brolixCoupon =[];
                             console.log("4");
                             data = {
                                         paymentCardType:"soldCoupon",
@@ -853,9 +894,17 @@ $(window).scrollTop(0,0);
                                         city: $scope.myForm.city,
                                         couponStatus:$scope.myForm.couponStatus
                                      }
+                                    console.log("brolixCoupon"+JSON.stringify(data)) 
                                 userService.filterBrolix(data).success(function(res){
-                                    $scope.brolixCoupon = res.result;
-                                    console.log("ressssssss4",JSON.stringify($scope.brolixCoupon));
+                                    console.log("hello"+JSON.stringify(res))
+                                     if(res.responseCode == 400){
+                                        $scope.brolixCoupon  = [];
+                                    }
+                                    else if(res.responseCode == 200){
+                                      $scope.brolixCoupon = res.result;
+                                        console.log("ressssssss4"+JSON.stringify($scope.brolixCoupon));
+                                    }
+                                   
                                 })
                                 
                             break;

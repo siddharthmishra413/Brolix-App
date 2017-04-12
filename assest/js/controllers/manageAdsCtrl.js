@@ -33,7 +33,7 @@ $(window).scrollTop(0,0);
         }
      userService.sendMassageAllUser(id).success(function(res) {
          if (res.responseCode == 200){
-              toastr.success("Message Send Successfully to Owner");
+              toastr.success("Message sent successfully to Owner");
               $scope.sendMessage = '';
               $("#sendMessageModelOwners").modal('hide');
           } else {
@@ -133,7 +133,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to Total Ads Admins");
+                            toastr.success("Message sent successfully to Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -152,7 +152,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to Total Active Ads Admin");
+                            toastr.success("Message sent successfully to  Admina");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -171,7 +171,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to Total Expired Ads Admin");
+                            toastr.success("Message sent successfully to Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -190,7 +190,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Video Ads Admin");
+                            toastr.success("Message sent successfully to  Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -210,7 +210,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Slide Shows Admin");
+                            toastr.success("Message sent successfully to Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -229,7 +229,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to Ad Upgrade By Dollar Admin");
+                            toastr.success("Message sent successfully to Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -248,7 +248,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to Ad Upgrade By Dollar Brolix");
+                            toastr.success("Message sent successfully to Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -267,7 +267,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Reported ads Admin");
+                            toastr.success("Message sent successfully to Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -287,7 +287,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to Ads With Links Admin");
+                            toastr.success("Message sent successfully  Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -305,7 +305,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to Admins");
+                            toastr.success("Message sent successfully to Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {

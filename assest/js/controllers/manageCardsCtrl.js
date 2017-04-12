@@ -482,7 +482,6 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.currentSoldLuckCard = 1;
      $scope.nextSoldLuckCardDetail = function(){
          userService.totalSoldLuckCard($scope.currentSoldLuckCard).success(function(res) { 
-                    console.log("In>>",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesSoldLuckCard = res.pages;
                    $scope.pageSoldLuckCard= res.page;

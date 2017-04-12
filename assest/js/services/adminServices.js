@@ -365,8 +365,8 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/totalHiddenGifts/'+pageNo);
     },
     
-    totalExchangedCoupon: function() {
-      return $http.get(baseurl+'/admin/totalExchangedCoupon');
+    totalExchangedCoupon: function(pageNo) {
+      return $http.get(baseurl+'/admin/totalExchangedCoupon/'+pageNo);
     },
     
     totalSentCash: function(pageNo) {

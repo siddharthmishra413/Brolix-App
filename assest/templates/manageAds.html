@@ -181,16 +181,25 @@
                             <option ng-repeat="city in cityList">{{city.city}}</option>
                          </select>
                     </div>
-                   <div class="form-group cus-select">
-                        <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">
-                        </div>
-                    </div>
-
-                    <div class="form-group cus-select">
-                        <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth">
-                        </div>
+                   <div class="form-group clearfix date-picker">
+                    <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                      <div class="input-group">
+                          <input class="form-control" placeholder="Choose a date" ng-model="dashBordFilter.dobTo"/>
+                          <span class="input-group-addon" style="cursor: pointer">
+                          <i class="fa fa-lg fa-calendar"></i>
+                          </span>
+                      </div>
+                   </datepicker>
+                   </div>
+                   <div class="form-group clearfix date-picker">
+                   <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                      <div class="input-group">
+                          <input class="form-control" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose a date" ng-model="dashBordFilter.dobFrom"/>
+                          <span class="input-group-addon" style="cursor: pointer">
+                          <i class="fa fa-lg fa-calendar"></i>
+                          </span>
+                      </div>
+                   </datepicker>
                     </div>
                 </div>
             </div>

@@ -68,6 +68,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
        userService.viewProfile(id).success(function(res) {
            if (res.responseCode == 200) {
                $scope.viewUserProfile = res.result;
+               console.log("al ldta",res.result);
                $scope.viewUserProfile.state = res.result.state;
                console.log(JSON.stringify($scope.viewUserProfile.state)) 
                var updateDate = new Date($scope.viewUserProfile.dob);

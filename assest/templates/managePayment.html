@@ -1,0 +1,829 @@
+<div class="tab-pane manage-payment" id="Manage-Paymant">
+            <div class="height-sm" data-scrollbar="true">
+                <div class="row ">
+                <div class="col-md-10 col-sm-12">
+                                <div class="grp-search m-t-0 bdr-0">
+                                    <div class="row">
+                                        <div class="col-md-9 col-sm-12">
+                                            <div class="row-search">
+                                                <ul class="brdr">
+                                                    <li class="active">
+                                                        <a style="color: {{clr}};font-size: 20px;" data-toggle="tab" ng-click="payment('dollars')">Dollars Payments</a>
+                                                    </li>
+                                                    <li class="last">
+                                                        <a style="color: {{clr1}};font-size: 20px;" data-toggle="tab" ng-click="payment('brolix')">Brolix Payments</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="search-bar-cus">
+                                              <form class="form-inline">
+                                                  <div class="form-group">
+                                                    <div class="input-group">
+                                                      <input type="text" class="form-control" placeholder="Search By Buyer Name" ng-model="search">
+                                                      <div class="input-group-addon">Search</div>
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
+                                    </div>
+                                </div>
+                    <div class="col-md-10 col-sm-12" style=" width: 100%;">
+                        <div class="row boder-bottom" style=" width: 106%;" >
+                            <div class="col-md-2 col-sm-6">
+                                <div class="box-block wd100" style="background-color: #00b288" ng-if="flag == 0">
+                                    <!-- <div class="widget widget-stats divi-blk" >  -->
+                                         <div class="top-box">
+                                             <div class="total-add">Sold Upgrade Cards</div>
+                                             <div class="total-amt">{{totalSoldUpgradeCard.length}}</div>
+                                         </div>
+                                         <div class="bottom-box">
+                                            <div class="btn-manage" >
+                                                 <a ng-click="showUpgradeCards()">Show</a>
+                                            </div>
+                                            <div class="btn-manage">
+                                                 <a ng-click="total_user_message('dollars')">Contact Buyers</a>
+                                            </div>
+                                             <div class="btn-manage">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                      Options
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                      <li><a ng-click="export()">Create Report</a></li>
+                                                      <li><a>PayPal Account</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        <!-- </div> -->
+                                        
+                                    </div>
+                                 </div> 
+                                 <div class="box-block wd100" style="background-color: #00b288" ng-if="flag == 1">
+                                        <div class="top-box">
+                                             <div class="total-add">Sold Luck Cards</div>
+                                             <div class="total-amt">{{totalSoldLuckCardcount}}</div>
+                                         </div>
+                                         <div class="bottom-box">
+                                            <div class="btn-manage" >
+                                                 <a ng-click="showLuckCards()">Show</a>
+                                            </div>
+                                            <div class="btn-manage">
+                                                 <a ng-click="total_user_message('brolix')">Contact Buyers</a>
+                                            </div>
+                                             <div class="btn-manage">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                      Options
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                      <li><a ng-click="export()">Create Report</a></li>
+                                                      <li><a>PayPal Account</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  </div>
+                        </div>
+
+                            <div ng-if="flag == 0">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select" > 
+                                           <select class="form-control" ng-change="changeCountry()" ng-model="dashBordFilter.country" required>
+                                            <option value="">Select Country</option>
+                                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                                         </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select" > 
+                                            <select class="form-control" ng-change="changeState()" ng-model="dashBordFilter.state" required>
+                                            <option value="">Select State</option>
+                                            <option ng-repeat="state in stateList">{{state.region}}</option>
+                                         </select> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select"> 
+                                            <select  class="form-control" id="city" ng-model="dashBordFilter.city" required>
+                                            <option value="">Select City</option>
+                                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                                         </select> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select"> 
+                                            <select class="form-control" ng-if="flag == 0" ng-model="dashBordFilter.dollarCardType">
+                                              <option value="">Card Type</option>
+                                              <option value="50">50</option>
+                                              <option value="100">100</option>
+                                              <option value="150">150</option>
+                                              <option value="200">200</option>
+                                              <option value="250">250</option>
+                                            </select>
+                                            <select class="form-control" ng-if="flag == 1">
+                                              <option>Card Type</option>
+                                              <option>5</option>
+                                              <option>10</option>
+                                              <option>15</option>
+                                              <option>20</option>
+                                              <option>25</option>
+                                              <option>30</option>
+                                              <option>35</option>
+                                              <option>40</option>
+                                              <option>45</option>
+                                              <option>50</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="flag == 1">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select" > 
+                                           <select class="form-control" ng-change="changeCountry()" ng-model="dashBordFilter.country" required>
+                                            <option value="">Select Country</option>
+                                            <option ng-repeat="country in  brolixCountryList" value"{{country.code}}">{{country.name}}</option>
+                                         </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select" > 
+                                            <select class="form-control" ng-change="changeState()" ng-model="dashBordFilter.state" required>
+                                            <option value="">Select State</option>
+                                            <option ng-repeat="state in stateList">{{state.region}}</option>
+                                         </select> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select"> 
+                                            <select  class="form-control" id="city" ng-model="dashBordFilter.city" required>
+                                            <option value="">Select City</option>
+                                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                                         </select> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select"> 
+                                            <select class="form-control" ng-if="flag == 0" ng-model="dashBordFilter.dollarCardType">
+                                              <option value="">Card Type</option>
+                                              <option value="50">50</option>
+                                              <option value="100">100</option>
+                                              <option value="150">150</option>
+                                              <option value="200">200</option>
+                                              <option value="250">250</option>
+                                            </select>
+                                            <select class="form-control" ng-if="flag == 1">
+                                              <option>Card Type</option>
+                                              <option>5</option>
+                                              <option>10</option>
+                                              <option>15</option>
+                                              <option>20</option>
+                                              <option>25</option>
+                                              <option>30</option>
+                                              <option>35</option>
+                                              <option>40</option>
+                                              <option>45</option>
+                                              <option>50</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                   <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select"> 
+                                            <input style="height: 40px; background-color: #EAEAEA" class="form-control" type="date" placeholder="From">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr" >
+                                        <div class="form-group cus-select"> 
+                                            <input style="height: 40px;background-color: #EAEAEA" class="form-control" type="date" placeholder="To">
+                                        </div>
+                                    </div>
+                                <!-- </div> -->
+                                <!-- <div class="row"> -->
+                                    <div class="col-sm-9">
+                                    <div class="row table-responsive cus-table">                          
+                                        <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 0">
+                                            <thead>
+                                              <tr>
+                                                <th>Card Type</th>
+                                                <th>Price</th>
+                                                <th>Buyer Name</th>
+                                                <th>Buyer PayPal</th>
+                                                <th>Used Ad</th>
+                                                <th>Pages</th>
+                                                <th>Payment History</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr ng-repeat="dollars in dollars  |manageUsersFilter:search " >
+                                                <td>{{dollars.upgradeCardObject.viewers}} Viewers</td>
+                                                <td>{{dollars.upgradeCardObject.cash}}$</td>
+                                                <td class="skyblue-text" ng-click="userInfo(dollars._id)">{{dollars.firstName+" "+dollars.lastName}}</td>
+                                                <td>{{dollars.email}}</td>
+                                                <td class="skyblue-text" ng-click="upgradeCardUsedAd(dollars.upgradeCardObject._id)">View</td>
+                                                <td class="skyblue-text" ng-click="pageCount(dollars._id)">{{dollars.pageCount}}</td>
+                                                <td class="skyblue-text" ng-click="upgradePayment(dollars._id)">View</td>
+                                              </tr>
+                                              <tr ng-if="(dollars |manageUsersFilter:search).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                                            </tbody>
+                                          </table>
+                                          <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 1">
+                                            <thead>
+                                              <tr>
+                                                <th>Card Type</th>
+                                                <th>Price</th>
+                                                <th>Buyer Name</th>
+                                                <th>Buyer Mobile</th>
+                                                <th>Status</th>
+                                                <th>Used Ad</th>
+                                                <th>Payment History</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr ng-repeat="brolix in brolix |manageUsersFilter:search ">
+                                                <td>{{brolix.luckCardObject.chances}} Chances</td>
+                                                <td>{{brolix.luckCardObject.brolix}}B</td>
+                                                <td class="skyblue-text" ng-click="userInfo(brolix._id)">{{brolix.firstName+" "+brolix.lastName}}</td>
+                                                <td>{{brolix.mobileNumber}}</td>
+                                                <td >{{brolix.luckCardObject.status}}</td>
+                                                <td class="skyblue-text" ng-click="luckCardUsedAd(brolix.luckCardObject._id)">
+                                                <span>View</span></td>
+                                                <td class="skyblue-text" ng-click="luckPayment(brolix._id)">View</td>
+                                              </tr>
+                                              <tr ng-if="(brolix |manageUsersFilter:search).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                                            </tbody>
+                                          </table>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>                                                                              
+                    </div>
+                    <div class="col-md-2 col-sm-12">
+                        <div class="box-block blnk-bg wd100 ipad-50">
+                            <div class="widget widget-stats divi-blk offerbtn-s"> 
+                                <div class="top-box">
+                                     <div class="green-box">Top 50 Buyers</div>
+                                </div>
+                                <div class="bottom-box">
+                                    <div class="btn-manage show-btn w-100">
+                                         <a ng-click="top_50_dollarsBuyers()" ng-if="flag == 0">Show</a>
+                                         <a ng-click="top_50_brolixBuyers()" ng-if="flag == 1">Show</a>
+                                    </div>
+                                </div>
+                            </div>
+                         </div> 
+                        <div class="box-block blnk-bg wd100 ipad-50">
+                            <div class="widget widget-stats divi-blk offerbtn-s"> 
+                                <div class="top-box">
+                                    <div class="green-box" ng-if="flag == 0">{{totalDollarsPrice}}$ Total Price</div>
+                                     <div class="green-box" ng-if="flag == 1">{{totalBrolixPrice}}B Total Price</div>
+                                </div>
+                            </div>
+                         </div> 
+                         <div class="box-block blnk-bg wd100 ipad-50" ng-if="flag == 1">
+                            <div class="widget widget-stats divi-blk offerbtn-s"> 
+                                <div class="top-box">
+                                     <div class="green-box" style="height: 123px; width: 119px;">Top 50 Ads</div>
+                                </div>
+                                <div class="bottom-box">
+                                    <div class="btn-manage show-btn w-100">
+                                         <a ng-click="top_50_Ads()" >Show</a>
+                                    </div>
+                                </div>
+                            </div>
+                         </div> 
+                    </div>
+                </div>
+            </div>
+      
+        <div class="grp-search">
+            <div class="row " >
+              <div class="col-md-10 col-sm-12">
+                                <div class="grp-search m-t-0 bdr-0">
+                                    <div class="row" style="    margin: 7px;">
+                                        <div class="col-md-9 col-sm-12">
+                                            <div class="search-bar-cus">
+                                                <form class="form-inline">
+                                                  <div class="form-group">
+                                                    <div class="input-group">
+                                                      <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdata">
+                                                      <div class="input-group-addon">Search</div>
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-3 col-sm-12 cls"><div class="Dashboard-filter-text">DASHBOARD FILTER</div></div>
+                                    </div>
+                                </div>
+                    <div class="col-md-10 col-sm-12" style=" width: 100%;">
+                        <div class="row" style=" width: 106%;" >
+                            <div class="col-md-2 col-sm-6">
+                                <div class="box-block wd100" style="background-color: #00b288" ng-if="flag == 0">
+                                         <div class="top-box">
+                                             <div class="total-add">Cash Gifts</div>
+                                             <div class="total-amt">{{count}}</div>
+                                         </div>
+                                         <div class="bottom-box">
+                                            <div class="btn-manage" >
+                                                 <a  ng-click="showCashGifts()">Show</a>
+                                            </div>
+                                            <div class="btn-manage">
+                                                 <a  ng-click="total_user_message('dollarsCashGift')">Contact Winners</a>
+                                            </div>
+                                             <div class="btn-manage">
+                                                <div class="dropdown">
+                                                  <button class="btn btn-default dropdown-toggle " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    Options
+
+                                                  </button>
+                                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                    <li><a ng-click="export()">Create Report</a></li>
+                                                    <li><a>PayPal Account</a></li>
+                                                  </ul>
+                                                </div>
+                                            </div>
+                                        <!-- </div> -->
+
+                                    </div>
+                                 </div> 
+                                 <div class="box-block wd100" style="background-color: #00b288" ng-if="flag == 1">
+                                        <div class="top-box">
+                                                   <div class="total-add">Sold Coupons</div>
+                                                   <div class="total-amt">{{SoldCouponsCount}}</div>
+                                               </div>
+                                               <div class="bottom-box">
+                                                  <div class="btn-manage" >
+                                                       <a ng-click="showSoldCoupons()">Show</a>
+                                                  </div>
+                                                  <div class="btn-manage">
+                                                       <a ng-click="total_user_message('brolixCoupon')">Contact Buyers</a>
+                                                  </div>
+                                                   <div class="btn-manage">
+                                                      <div class="dropdown">
+                                                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                            Options
+                                                          </button>
+                                                          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                            <li><a ng-click="export()">Create Report</a></li>
+                                                            <li><a>PayPal Account</a></li>
+                                                          </ul>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                    </div>
+                            </div>
+                            
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-6 col-p fltr">
+                                        <div class="form-group cus-select"> 
+                                            <select class="form-control" id="country" ng-model="myFrom.country" required>
+                                            <option value="">Select Country</option>
+                                            <option value="{{country.code}}" ng-repeat="country in countryList">{{country.name}}</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr">
+                                        <div class="form-group cus-select"> 
+                                            <div class="form-group cus-select"> 
+                                            <select class="form-control" id="region" ng-model="myFrom.state" required>
+                                            <option value="">Select State</option>
+                                            <option value="{{state.region}}" ng-repeat="state in brolixStateList">{{state.region}}</option>
+                                          </select>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr">
+                                        <div class="form-group cus-select"> 
+                                            <select  class="form-control" id="city" ng-model="myFrom.city" required>
+                                            <option value="">Select City</option>
+                                         </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr">
+                                        <div class="form-group cus-select"> 
+                                            <select class="form-control" ng-if="flag == 0">
+                                              <option>Cash Status</option>
+                                              <option>2</option>
+                                              <option>3</option>
+                                              <option>4</option>
+                                              <option>5</option>
+                                            </select>
+                                            <select class="form-control" ng-if="flag == 1">
+                                              <option>Coupon Status</option>
+                                              <option>Used</option>
+                                              <option>Expired</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr">
+                                        <div class="form-group cus-select"> 
+                                            <input style="height: 40px; background-color: #EAEAEA" class="form-control" type="date" placeholder="From">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-6 col-p fltr">
+                                        <div class="form-group cus-select"> 
+                                            <input style="height: 40px; background-color: #EAEAEA" class="form-control" type="date" placeholder="From">
+                                        </div>
+                                    </div>
+                                <!-- </div>
+                                <div class="row"> -->
+                                    <div class="col-sm-9">
+                                    <div class="row table-responsive cus-table">                          
+                                        <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 0">
+                                            <thead>
+                                              <tr>
+                                                <th>Page Name</th>
+                                                <th>Page Owner/Admin</th>
+                                                <th>Owner/Admin PayPal</th>
+                                                <th>Cash Gift</th>
+                                                <th>Winner Name</th>
+                                                <th>Winner Paypal</th>
+                                                <th>Status</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="dollarsCash in dollarsCashGift |managePaymentFilter:searchdata" >
+                                                <td class="skyblue-text" ng-click="pageInfo(dollarsCash.cashPrize.pageId._id)">{{dollarsCash.cashPrize.pageId.pageName}}</td>
+                                                <td class="skyblue-text" ng-click="userInfo(dollarsCash.cashPrize.pageId.userId._id)">{{dollarsCash.cashPrize.pageId.userId.firstName+" "+dollarsCash.cashPrize.pageId.userId.lastName}}</td>
+                                                <td >{{dollarsCash.cashPrize.pageId.userId.email}}</td>
+                                                <td class="skyblue-text" ng-click="adInfo(dollarsCash.cashPrize.pageId.adId._id)">View</td>
+                                                <td >{{dollarsCash.firstName+" "+dollarsCash.lastName}}</td>
+                                                <td >{{dollarsCash.email}}</td>
+                                                <td >{{dollarsCash.cashPrize.cashStatus}}</td>
+                                              </tr>
+                                              <tr ng-if="(dollarsCashGift |managePaymentFilter:searchdata).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                                            </tbody>
+                                          </table>
+                                          <table id="tableData" class="table table-bordered table-striped" ng-if="flag == 1">
+                                            <thead>
+                                              <tr>
+                                                <th>Page Name</th>
+                                                <th>Page Owner</th>
+                                                <th>Page Admins</th>
+                                                <th>Buyer Name</th>
+                                                <th>Sold Coupon</th>
+                                                <th>Coupon Price</th>
+                                                <th>Ad</th>
+                                                <th>Coupon Status</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="Coupon in brolixCoupon |managePaymentSoldCouponFilter:searchdata" >
+                                                <td class="skyblue-text" ng-click="pageInfo(Coupon.coupon.pageId._id)">{{Coupon.coupon.pageId.pageName}}</td>
+                                                <td class="skyblue-text" ng-click="userInfo(Coupon.coupon.pageId.userId._id)">{{Coupon.coupon.pageId.userId.firstName+" "+Coupon.coupon.pageId.userId.lastName}}</td>
+                                                <td class="skyblue-text" ng-click="pageCount(Coupon._id)">{{Coupon.coupon.pageId.adAdminCount}}</td>
+                                                <td class="skyblue-text" ng-click="userInfo(Coupon._id)">{{Coupon.firstName+" "+Coupon.lastName}}</td>
+                                                <td class="skyblue-text" ng-click="adInfo(Coupon.coupon.adId._id)">View</td>
+                                                <td >{{Coupon.coupon.adId.couponSellPrice}}B</td>
+                                                <td class="skyblue-text" ng-click="adInfo(Coupon.coupon.adId._id)">View</td>
+                                                <td >{{Coupon.coupon.adId.couponStatus}}</td>
+                                              </tr>
+                                              <tr ng-if="(brolixCoupon | managePaymentSoldCouponFilter:searchdata).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                                            </tbody>
+                                          </table>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+ <div id="top_50_buyers" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Top 50 Buyers</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+                   <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Buyer Name</th>
+                          </tr>
+                          <tr ng-repeat="buyer in userDetail">
+                            <td >{{buyer.firstName+" "+buyer.lastName}}</td>
+                          </tr>
+                         
+                  </table></div>
+
+               </form>
+           </div>
+       </div>
+   </div>
+</div><div id="Pages" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">All Pages</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+                   <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Page Name</th>
+                          </tr>
+                          <tr ng-repeat="page in page">
+                            <td >{{page.pageName}}</td>
+                          </tr>
+                          <tr ng-if="page.length== 0"><td style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                         
+                  </table></div>
+
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="sendMessageModelAllUser" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Send message to All User</h4>
+           </div>
+           <div class="modal-body">
+               <form name="sendMessage">
+                   <div class="form-group">
+                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" /></textarea>
+                   </div>
+                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send massage</button>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+<div id="userInfo" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Buyer/Owner Information</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+               <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Buyer/Owner Name</th>
+                              <td>{{userDetail.firstName+" "+userDetail.lastName}}</td>
+                          </tr>
+                          <tr>
+                              <th>Email</th>
+                              <td>{{userDetail.email}}</td>
+                          </tr>
+                          <tr>
+                              <th>Mobile No.</th>
+                              <td>{{userDetail.mobileNumber}}</td>
+                          </tr>
+                          <tr>
+                              <th>Gender</th>
+                              <td>{{userDetail.gender}}</td>
+                          </tr>
+                          <tr>
+                              <th>Country</th>
+                              <td>{{userDetail.country}}</td>
+                          </tr>
+                          <tr>
+                              <th>State</th>
+                              <td>{{userDetail.state}}</td>
+                          </tr>
+                          <tr>
+                              <th>City</th>
+                              <td>{{userDetail.city}}</td>
+                          </tr>
+
+                  </table></div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+<div id="luckCardUsedAd" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Used Ad Information</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+               <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Page Name</th>
+                              <td>{{usedAd[0].pageName}}</td>
+                          </tr>
+                          <tr>
+                              <th>category</th>
+                              <td>{{usedAd[0].category}}</td>
+                          </tr>
+                          <tr>
+                              <th>subCategory</th>
+                              <td>{{usedAd[0].subCategory}}</td>
+                          </tr>
+                          <tr>
+                              <th>adsType</th>
+                              <td>{{usedAd[0].adsType}}</td>
+                          </tr>
+                          <tr>
+                              <th>coverImage</th>
+                              <td><img src="{{usedAd[0].coverImage}}" /></td>
+                          </tr>
+                  </table></div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+<div id="upgradePayment" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Payment History</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+               <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Used Ad</th>
+                              <td ng-repeat="Ad in upgradeUsedAd">{{Ad.pageName}}</td>
+                          </tr>
+                          <tr>
+                              <th>Card Type</th>
+                              <td ng-repeat="obj in upgradeCardObject">{{obj.viewers}} viewers</td>
+                          </tr>
+                          <tr ng-if="upgradeUsedAd== 0 && upgradeCardObject== 0"><td colspan="2" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                  </table></div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+<div id="luckPayment" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Payment History</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+               <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Used Ad</th>
+                              <td ng-repeat="Ad in luckUsedAd">{{Ad.pageName}}</td>
+                          </tr>
+                          <tr>
+                              <th>Card Type</th>
+                              <td ng-repeat="obj in luckCardObject">{{obj.chances}} Chances</td>
+                          </tr>
+                          <tr ng-if="luckUsedAd== 0 && luckCardObject== 0"><td colspan="2" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                  </table></div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+<div id="pageInfo" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Page Information</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+               <div class="table-responsive cus-table">
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Page Name</th>
+                              <td ng-repeat="detail in pageDetail">{{detail.pageName}}</td>
+                          </tr>
+                          <tr>
+                              <th>category</th>
+                              <td ng-repeat="detail in pageDetail">{{detail.pageType}}</td>
+                          </tr>
+                          <tr>
+                              <th>subCategory</th>
+                              <td ng-repeat="detail in pageDetail">{{detail.category}}</td>
+                          </tr>
+                          <tr>
+                              <th>adsType</th>
+                              <td ng-repeat="detail in pageDetail">{{detail.subCategory}}</td>
+                          </tr>
+                  </table>
+                  </div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+<div id="adInfo" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Ad Information</h4>
+           </div><div style="height:400px;">
+           <div class="col-sm-12">
+                                <div class="gift-images">
+                                    <img src="../dist/image/trolltunga.jpg " style="height:300px;" class="img-responsive">
+                                    <div class="gift-images-data">
+                                        <div class="top-row-c1">
+                                            <div class="top-row-c1-left">
+                                                <h4>{{userDetail.adsType}}</h4>
+                                                <div class="cus-date-c1"><label>Valid Thus : </label><span>{{userDetail.couponExipryDate |date:'MMMM dd, yyyy'}}</span></div>
+                                            </div>
+                                            <div class="top-row-c1-right">
+                                                <div class="c1-used">{{userDetail.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+                                                <!-- <div class="c1-share"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</div> -->
+                                            </div>
+                                            <div class="middle-row-c1">
+                                                <h3>Gift Description</h3>
+                                                <p>{{userDetail.giftDescription}}</p>
+                                            </div>
+                                            <div class="middle-row-c1">
+                                                <h3>Price</h3>
+                                                <p>{{userDetail.couponSellPrice}}</p>
+                                            </div>
+                                            <!-- <div class="middle-row-c1">
+                                                <h3>Buyers</h3>
+                                                <p>{{userDetail.couponBuyersLength}}</p>
+                                            </div> -->
+                                        </div>
+                                        <!-- <div class="bottom-row-c1">
+                                            <ul>
+                                                <li><i class="fa fa-expand" aria-hidden="true"></i><span>Exchange|<span style="color:red;display: inline;">off</span></span></li>
+                                                <li><i class="fa fa-heart" aria-hidden="true"></i><span>0</span></li>
+                                                <li><i class="fa fa-envelope" aria-hidden="true"></i><span>0</span></li>
+                                                <li><i class="fa fa-thumb-tack" aria-hidden="true"></i><span>Request</span></li>
+                                                <li><i class="fa fa-paperclip" aria-hidden="true"></i><span>Use</span></li>
+                                                <li><i class="fa fa-expand" aria-hidden="true"></i><span>Send</span></li>
+                                            </ul>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
+       </div>
+   </div>
+</div>
+<div id="top_50_Ads" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Top 50 Ads</h4>
+           </div>
+           <div class="modal-body">
+               <form name="userFrom1">
+               <div class="table-responsive cus-table"> 
+                   <table class="table table-bordered table-striped">                         
+                          <tr>
+                              <th>Ads Type</th>
+                              <th>Image</th>
+                              <th>Category</th>
+                              <th>Page Name</th>
+                          </tr>
+                          <tr ng-repeat="ads in adsDetail">
+                              <td >{{ads.adsType}}</td>
+                              <td ><img src="{{ads.coverImage}}" style="height: 100px; width:100px;"/></td>
+                              <td >{{ads.category}}</td>
+                              <td >{{ads.pageName}}</td>
+                          </tr>
+                          <tr ng-if="adsDetail== 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                  </table>
+                  </div>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+
+
+
+
+

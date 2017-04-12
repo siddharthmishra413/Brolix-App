@@ -36,7 +36,7 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Income $</div>
-                                <div class="total-amt">{{totalIncomeFromUpgradeCard}}$</div>
+                                <div class="total-amt">{{totalIncome$}}$</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalincomeUpgrade'">
@@ -207,7 +207,7 @@
                             <option value="50">50</option>
                         </select>
                     </div>
-                    <div class="form-group cus-select">
+                    <!-- <div class="form-group cus-select">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                                               <div class="input-group">
                                                   <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Choose a date" ng-model="dashBordFilter.dateFrom" />
@@ -226,7 +226,7 @@
                                                   </span>
                                               </div>
                                              </datepicker>
-                    </div>
+                    </div> -->
                     <!-- <div class="form-group cus-select">
                         <input style="height: 40px; background-color: #EAEAEA" class="form-control"  ng-model="dashBordFilter.dateFrom" ng-change="dashBordFilter()" type="date" placeholder="From">
                     </div>
@@ -303,7 +303,7 @@
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(x._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
-                    
+                       <tr ng-if="(totalSoldUpgradeCard | manageCardsFilter:test).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>   
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | manageCardsFilter:test).length != 0">
@@ -344,6 +344,7 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
+                    <tr ng-if="(totalIncomeInCashFromUpgradeCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
                     
                 </tbody>
             </table>
@@ -385,6 +386,7 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
+                    <tr ng-if="(usedUpgradeCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                     
                 </tbody>
             </table>
@@ -426,6 +428,7 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
+                    <tr ng-if="(unUsedUpgradeCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                     
                 </tbody>
             </table>
@@ -466,6 +469,7 @@
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(x._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
+                    <tr ng-if="(totalSoldLuckCard | manageCardsFilter:test).length == 0"><td colspan="8" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                     
                 </tbody>
             </table>
@@ -507,7 +511,7 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
-                    
+                     <tr ng-if="(totalIncomeInBrolixFromLuckCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInBrolixFromLuckCard | manageCardsFilter:test).length != 0">
@@ -548,7 +552,7 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
-                    
+                     <tr ng-if="(usedLuckCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(usedLuckCard | manageCardsFilter:test).length != 0">
@@ -590,7 +594,7 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
-                    
+                    <tr ng-if="(unUsedLuckCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(unUsedLuckCard | manageCardsFilter:test).length != 0">
@@ -625,7 +629,8 @@
                         <td class="skyblue-text">{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
                         <td class="skyblue-text">{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
                         <td class="skyblue-text">{{x.offer.status}}</td>
-                    </tr>   
+                    </tr>  
+
                 </tbody>
             </table>
         </div>
