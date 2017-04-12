@@ -228,6 +228,7 @@ $scope.currentTotalSentCoupon= 1;
                            });
                       }
                     }
+                    $scope.totalSentCoupon = res.total;
                } 
                else {
                 toastr.error(res.responseMessage);
@@ -515,6 +516,27 @@ $scope.top_50_balanc = function(type){
   $scope.giftTypeName = function(val) {
         console.log(val)
         localStorage.setItem('giftTypeName',val);
+
+        $scope.currentTotalCouponsGift = 1;
+        $scope.nextTotalCouponsGiftDetail();
+
+        $scope.currentTotalCashGifts = 1;
+        $scope.nextTotalCashGiftsDetail();
+
+        $scope.currentTotalHiddenGifts = 1;
+        $scope.nextTotalHiddenGiftsDetail();
+
+          $scope.currentTotalExchangedCoupon= 1;
+        $scope.nextTotalExchangedCouponDetail();
+
+        $scope.currentTotalSentCoupon= 1;
+        $scope.nextTotalSentCouponDetail();
+
+        $scope.currentTotalSentCash = 1;
+        $scope.nextTotalSentCashDetail();
+
+        $scope.currentTotalSentCash = 1;
+        $scope.nextTotalSentCashDetail();
     }
 
  

@@ -8,14 +8,39 @@ $scope.addCouponFun=function(){
 	$scope.couponDeatil=false;
 	$scope.addNewCoupon=true;
 }
-    $scope.Detail=[];
-   	 userService.allCoupons().then(function(success) { 
-   	 				$scope.Detail=success.data.result;
-					console.log("List>>>>>>>>>>"+JSON.stringify($scope.Detail))
-        		},function(err){
-			        console.log(err);
-			         toastr.error('Connection error.');
-		    })
+
+$scope.currentAllCoupons = 1;
+     $scope.nextAllCouponsDetail = function(){
+         userService.allCoupons($scope.currentAllCoupons).success(function(res) { 
+            $scope.Detail=[];
+              console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.noOfPagesAllCoupons = res.result.pages;
+                   $scope.pageAllCoupons= res.result.page;
+                   $scope.Detail= res.result.docs;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+     }
+     $scope.nextAllCouponsDetail();
+     $scope.nextAllCoupons = function(){
+        $scope.currentAllCoupons++;
+        $scope.nextAllCouponsDetail();
+     }
+     $scope.preAllCoupons= function(){
+        $scope.currentAllCoupons--;
+        $scope.nextAllCouponsDetail();
+     }
+    // $scope.Detail=[];
+   	//  userService.allCoupons().then(function(success) { 
+   	//  				$scope.Detail=success.data.result;
+				// 	console.log("List>>>>>>>>>>"+JSON.stringify($scope.Detail))
+    //     		},function(err){
+			 //        console.log(err);
+			 //         toastr.error('Connection error.');
+		  //   })
 
 	$scope.user={};
     $scope.pageDetail=[];

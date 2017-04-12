@@ -717,6 +717,33 @@ userService.topFiftyAds().success(function(res) {
 
  $scope.adsTypeName = function(val) {
         localStorage.setItem('adsTypeName',val);
+
+        $scope.currentTotalAds = 1;
+        $scope.nextTotalAds();
+
+         $scope.currentActiveAds = 1;
+        $scope.nextActiveAds();
+
+        $scope.currentExpiredAds = 1;
+        $scope.nextExpiredAds();
+
+        $scope.currentVideoAds = 1;
+        $scope.nextVideoAds();
+
+        $scope.currentSlideShowAds = 1;
+        $scope.nextSlideShowAds();
+
+        $scope.currentUpgradedByDollars = 1;
+        $scope.nextUpgradedByDollars();
+
+        $scope.currentUpgradedByBrolix = 1;
+        $scope.nextUpgradedByBrolix();
+
+        $scope.currentReportedAds = 1;
+        $scope.nextReportedAds();
+
+        $scope.currentAdsWithLinks = 1;
+        $scope.nextAdsWithLinks();
     }
 
 $scope.dashBordFilter = function(){

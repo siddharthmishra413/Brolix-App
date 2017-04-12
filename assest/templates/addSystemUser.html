@@ -19,15 +19,13 @@
             </tr>
            
         </table>
+        <div style="float:right; font-size: 20px;" ng-if="(allSystemUser).length != 0">
+                <button ng-click="preSystemAdmin()" ng-disabled="pageSystemAdmin==1" class="btn paginationBtn" >Prev</button> 
+                {{pageSystemAdmin}}/{{noOfPagesSystemAdmin}}
+                <button ng-click="nextSystemAdmin()" ng-disabled="pageSystemAdmin==noOfPagesSystemAdmin" class="btn paginationBtn">Next</button>
+            </div>
     </div>
 </div>
-
-
-
-
-
-
-
 
  <div class="container" ng-if="Systemuser">
         <div class="row">

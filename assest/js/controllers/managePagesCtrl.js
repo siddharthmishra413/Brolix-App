@@ -1,4 +1,4 @@
-app.controller('managePagesCtrl', function ($scope,$window,$state,userService,toastr,$http) {
+app.controller('managePagesCtrl', function ($scope,$window,$state,userService,toastr,$http,$timeout) {
 $(window).scrollTop(0,0);
 $scope.class = false;
  $scope.$emit('headerStatus', 'Manage Pages');
@@ -6,19 +6,227 @@ $scope.class = false;
  $scope.tab = 'totalPages';
  $scope.myForm = {};
  $scope.sendMessage = {};
+ $scope.active_upgrade_card=true;
+ $scope.cardType = 'upgrade_card';
 
 
- $scope.userTypeName = function(val) {
-    localStorage.setItem('userTypeName',val);
 
-     $scope.currentTotalPages = 1;
-     alert($scope.currentTotalPages);
+ userService.showListOFCoupon().success(function(res) {
+  //console.log("resssssssssssssss",res)
+    $scope.allCoupons = res.result;
+    //console.log("allCoupons",$scope.allCoupons);
+})
+
+
+//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+    var currentCities=[];
+    $scope.currentCountry= '';
+var BATTUTA_KEY="00000000000000000000000000000000"
+    // Populate country select box from battuta API
+  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+    $.getJSON(url,function(countries)
+    {
+      $timeout(function(){
+        $scope.countriesList=countries;
+        //console.log("data1",$scope.countriesList)
+      },100)
+      
+      
+    });
+  var countryCode;
+    $scope.changeCountry = function(){
+      for(var i=0;i<$scope.countriesList.length;i++){
+        console.log("$scope.dashBordFilter.country",$scope.dashBordFilter.country)
+        if($scope.countriesList[i].name==$scope.dashBordFilter.country){
+          countryCode=$scope.countriesList[i].code;
+          //console.log(countryCode)
+          break;
+        }
+      }
+      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+      $.getJSON(url,function(regions)
+      {
+        //console.log('state list:   '+JSON.stringify(regions))
+            $timeout(function(){
+             $scope.stateList = regions;
+             //console.log("data2",$scope.stateList)
+            },100)
+      });
+    }
+
+    $scope.changeState = function(){
+      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
+      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+      $.getJSON(url,function(cities)
+      {
+        // console.log('city list:   '+JSON.stringify(cities))
+            $timeout(function(){
+             $scope.cityList = cities;
+             console.log("data3",$scope.cityList)
+            },100)
+      })
+    }
+    //-------------------------------END OF SELECT CASCADING-------------------------//
+
+
+ /*------------Send case---------------*/
+
+ $scope.total_user_cash = function (modal) {
+    $("#sendcashModelAllUser").modal('show'); 
+}
+
+$scope.send_cashall = function(modal){ 
+var array =[];
+var data = {};
+for (var i = 0; i < $scope.allAdminPages.length; i++) {
+        array.push($scope.allAdminPages[i]._id)
+    }
+    data = {
+        Cash:$scope.sendCash.Cash,
+        Id:array
+    }
+    console.log("data",data)
+    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
+        if (res.responseCode == 200){
+            toastr.success("Cash Send successfully to All User");
+            $scope.sendCash = '';
+            $("#sendcashModelAllUser").modal('hide'); 
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+}
+
+/*-----------------------------------------*/
+
+
+/*----------send Brolix------------------*/
+
+ $scope.total_user_brolix = function (modal) {
+        $("#sendbrolixModelAllUser").modal('show'); 
+    }
+
+
+$scope.send_brolix = function(modal){
+var array =[];
+var data = {};
+
+for (var i = 0; i < $scope.allAdminPages.length; i++) {
+        array.push($scope.allAdminPages[i]._id)
+    }
+    data = {
+        Brolix:$scope.sendBrolix.brolix,
+        Id:array
+    }
+    console.log("seccccccccccccccccccc",data)
+    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
+        if (res.responseCode == 200){
+            toastr.success("Brolix Send successfully to All User");
+            $scope.sendBrolix = '';
+            $("#sendbrolixModelAllUser").modal('hide'); 
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+}
+/*----------------------------------------*/
+
+
+/*------------------Send Card------------------*/
+ $scope.total_user_card = function () {
+        $("#showAllCard").modal('show');
+    }
+
+$scope.sendCard = function(id){
+ console.log("id",id);
+ $scope.cardID = id;
+ var array =[];
+ var data = {};
+
+ for (var i = 0; i < $scope.allAdminPages.length; i++) {
+        array.push($scope.allAdminPages[i]._id)
+    }
+    data = {
+        cardId:$scope.cardID,
+        Id:array
+    }
+    console.log("dataIn",data)
+    // userService.sendMassageAllUser(data).success(function(res) {        
+    //     if (res.responseCode == 200){
+    //         toastr.success("Message Send Successfully to All User");
+    //         $scope.sendMessage = '';
+    //         $("#sendMessageModelAllUser").modal('hide'); 
+    //     } else {
+    //         toastr.error(res.responseMessage);
+    //     }
+    // })
+}
+
+$scope.total_user_coupons = function (modal) {
+    $("#showAllCoupons").modal('show');
+}
+
+$scope.sendCoupons = function(couponId){
+ var array =[];
+ var data = {};
+ for (var i = 0; i < $scope.allAdminPages.length; i++) {
+        array.push($scope.allAdminPages[i]._id)
+    }
+    data = {
+        couponId:$scope.couponId,
+        Id:array
+    }
+    console.log("dataIn",data)
+    userService.sendCouponTOUSers(data).success(function(res) {        
+        if (res.responseCode == 200){
+            toastr.success("Send Coupon to All User");
+            $scope.sendMessage = '';
+            $("#sendMessageModelAllUser").modal('hide'); 
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+}
+
+userService.viewcard($scope.cardType).success(function(res) {
+      //console.log("resssssssssssssss",res)
+        $scope.UpgradeCard = res.data;
+        //console.log("UpgradeCard",$scope.UpgradeCard);
+    })
+
+
+$scope.active_tab=function(active_card){
+        if(active_card=='upgrade_card'){
+        $scope.active_upgrade_card=true;
+         $scope.active_luck_card=false;
+      }else{
+        userService.viewcard(active_card).success(function(res) {
+        console.log("resssssssssssssss",res)
+        $scope.LuckCard = res.data;
+        console.log("LuckCard",$scope.LuckCard);
+    })
+         $scope.active_upgrade_card=false;
+            $scope.active_luck_card=true;
+      }
+    }
+
+
+/*----------------------------------------------------*/
+
+ $scope.pageTypeName = function(val) {
+    localStorage.setItem('pageTypeName',val);
+
+    $scope.currentTotalPages = 1;
      $scope.nextTotalPagesDetail();
     
-
      $scope.currentunPublishedPage = 1;
      $scope.nextunPublishedPageDetail();
-     
+
+     $scope.currentBlockedPage = 1;
+     $scope.nextBlockedPageDetail();
+
+     $scope.currentRemovedPages = 1;
+     $scope.nextRemovedPagesDetail();
  }
 
 userService.countrys().success(function(res) {
@@ -26,17 +234,25 @@ userService.countrys().success(function(res) {
     }).error(function(status, data) {
 })
 
+userService.allAdminPages().success(function(res) {
+    $scope.allAdminPages = res.result;
+     $scope.allAdminPagesCount = res.count;
+     console.log("ffffffff",res)
+     
+    }).error(function(status, data) {
+})
+
 $scope.catId = function() {
     //console.log($scope.dashBordFilter.country);
     var country = $scope.dashBordFilter.country
     $http.get('/admin/getAllStates/' + country.code + '/ISO2').success(function(res) {
-        console.log(res);
+        //console.log(res);
         $scope.allstates = res.result;
     }, function(err) {});
 }
 
 $scope.slectCountry = function(qq){
-        console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
+        //console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
         userService.allstatefind($scope.dashBordFilter.country).success(function(res) {
         $scope.allstatefind = res.result;
     })
@@ -44,18 +260,18 @@ $scope.slectCountry = function(qq){
 
 $scope.dashBordFilter = function(){
 
-    var type = localStorage.getItem('userTypeName');
+    var type = localStorage.getItem('pageTypeName');
     $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
     $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
-    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
-    console.log("date",$scope.dashBordFilter.country);
+    //$scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
+    //console.log("date",$scope.dashBordFilter.country);
     var data = {};
         data = {
-            userType:localStorage.getItem('userTypeName'),
-            country:$scope.country,
+            pageType:localStorage.getItem('pageTypeName'),
+            country:$scope.dashBordFilter.country,
             state:$scope.dashBordFilter.state,
-            city:$scope.dashBordFilter.cities,
-            categories:$scope.dashBordFilter.categories,
+            city:$scope.dashBordFilter.city,
+            category:$scope.dashBordFilter.categories,
             joinTo:$scope.dobTo,
             joinFrom:$scope.dobFrom,
         }
@@ -65,16 +281,16 @@ $scope.dashBordFilter = function(){
             {
                 case 'totalPages':
                 console.log("1"); 
-                    userService.userfilter(data).success(function(res){
+                    userService.pagefilter(data).success(function(res){
                         $scope.totalUser = res.data;
-                        console.log("ressssssss1",JSON.stringify($scope.totalUser));
+                        console.log("ressssssss1",res);
                     })
                     
                 break;
 
                 case 'unPublishedPage': 
-                console.log("2");
-                    userService.userfilter(data).success(function(res){
+                //console.log("2");
+                    userService.pagefilter(data).success(function(res){
                         $scope.personalUser = res.data;
                         console.log("ressssssss2",JSON.stringify($scope.personalUser));
                     })
@@ -82,8 +298,8 @@ $scope.dashBordFilter = function(){
                 break;
 
                 case 'removedPage': 
-                console.log("3");
-                    userService.userfilter(data).success(function(res){
+                //console.log("3");
+                    userService.pagefilter(data).success(function(res){
                         $scope.businessUser = res.data;
                         console.log("ressssssss3",JSON.stringify($scope.businessUser));
                     })
@@ -91,8 +307,8 @@ $scope.dashBordFilter = function(){
                 break;
 
                 case 'blockedPage': 
-                console.log("4");
-                    userService.userfilter(data).success(function(res){
+                //console.log("4");
+                    userService.pagefilter(data).success(function(res){
                         $scope.liveUser = res.data;
                         console.log("ressssssss4",JSON.stringify($scope.liveUser));
                     })
@@ -116,7 +332,7 @@ $scope.dashBordFilter = function(){
                     width: 500,
                 }]
             };
-            pdfMake.createPdf(docDefinition).download("test.pdf");
+            pdfMake.createPdf(docDefinition).download("Report.pdf");
         }
     });
  }
@@ -130,7 +346,6 @@ $scope.dashBordFilter = function(){
 
         $scope.modalId = modal;
         $scope.modelData = modal;
-       //console.log("111111",$scope.modelData);
         if($scope.modalId == '' || $scope.modalId == undefined || $scope.modalId == null){
         toastr.error("Please select user.")
         $state.go('header.managePages')
@@ -139,7 +354,7 @@ $scope.dashBordFilter = function(){
         }
     }
 
-
+// totalPages unPublishedPage pagesAdmins
     $scope.send_massage = function(){
          var array =[];
          var data = {};
@@ -186,23 +401,23 @@ $scope.dashBordFilter = function(){
                 break;
 
                 case 'pagesAdmins': 
-                    // for (var i = 0; i < $scope.unPublishedPage.length; i++) {
-                    //     array.push($scope.unPublishedPage[i]._id)
-                    // }
+                    for (var i = 0; i < $scope.allAdminPages.length; i++) {
+                        array.push($scope.allAdminPages[i]._id)
+                    }
                     data = {
                         Message:$scope.sendMessage.massage,
-                        //Id:array
+                        Id:array
                     }
-                    //console.log("sssss",data)
-                    // userService.sendMassageAllUser(data).success(function(res) {        
-                    //     if (res.responseCode == 200){
-                    //         toastr.success("Message Send Successfully to All UnPublished Page Owner");
-                    //         $scope.sendMessage = '';
-                             $("#sendMessageModelAllUser").modal('hide'); 
-                    //     } else {
-                    //         toastr.error(res.responseMessage);
-                    //     }
-                    // })
+                    console.log("luuuuuuuuuuuuuu",data)
+                    userService.sendMassageAllUser(data).success(function(res) {        
+                        if (res.responseCode == 200){
+                            toastr.success("Message Send Successfully to All UnPublished Page Owner");
+                            $scope.sendMessage = '';
+                            $("#sendMessageModelAllUser").modal('hide'); 
+                        } else {
+                            toastr.error(res.responseMessage);
+                        }
+                    })
                 break;
 
                 default: 
@@ -225,58 +440,128 @@ $scope.dashBordFilter = function(){
 
     }
 
-    $scope.blockUnblockPage = function (id) {
-        var data = {};
+    // $scope.blockPage = function (id) {
+    //     var data = {};
+    //     $scope.BlockId = id;
+    //     if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
+    //     toastr.error("Please select user.")
+    //     $state.go('header.managePages')
+    //     }else {
+    //     BootstrapDialog.show({
+    //         title: 'Block User',
+    //         message: 'Are you sure want to block this Page',
+    //         buttons: [{
+    //             label: 'Blocked',
+    //             action: function(dialog) {
+    //                 toastr.success("User Blocked");
+
+    //                 // var data = {};
+                    
+    //                 // data{
+    //                 //     pageId:$scope.BlockId,
+    //                 //     status:'Blocked'
+    //                 // }
+    //                 // console.log("aaaaaaaaaaaaaa",data);
+    //                 // userService.BlockUser(data).success(function(res) {        
+    //                 //     if (res.responseCode == 200){
+    //                 //         dialog.close();
+    //                 //         toastr.success("User Blocked");
+    //                 //     } else {
+    //                 //         toastr.error(res.responseMessage);
+    //                 //     }
+    //                 // }) 
+                    
+    //             }
+    //         }, {
+    //             label: 'UnBlocked',
+    //             action: function(dialog) {
+    //                 toastr.success("User UnBlocked");
+
+    //                 // var data = {};
+
+    //                 // data{
+    //                 //     pageId:$scope.BlockId,
+    //                 //     status:'UnBlocked'
+    //                 // }
+    //                 // console.log("bbbbbbbbbbbb",data);
+    //                 // userService.BlockUser(data).success(function(res) {        
+    //                 //     if (res.responseCode == 200){
+    //                 //         dialog.close();
+    //                 //         toastr.success("User Blocked");
+    //                 //     } else {
+    //                 //         toastr.error(res.responseMessage);
+    //                 //     }
+    //                 // })
+    //                 dialog.close();
+    //                 // toastr.success("User Blocked");
+    //             }
+    //         }]
+    //     });
+    // }
+    // }
+
+    $scope.blockPage = function (id) {
         $scope.BlockId = id;
+        var userId = $scope.BlockId;
+        console.log("Blockid",userId);
         if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
         toastr.error("Please select user.")
         $state.go('header.managePages')
         }else {
         BootstrapDialog.show({
-            title: 'Block User',
-            message: 'Are you sure want to block this User',
+            title: 'Block Page',
+            message: 'Are you sure want to block this page',
             buttons: [{
-                label: 'Blocked',
+                label: 'Yes',
                 action: function(dialog) {
-                    toastr.success("User Blocked");
-
-                    // var data = {};
-                    
-                    // data{
-                    //     pageId:$scope.BlockId,
-                    //     status:'Blocked'
-                    // }
-                    // console.log("aaaaaaaaaaaaaa",data);
-                    // userService.BlockUser(data).success(function(res) {        
-                    //     if (res.responseCode == 200){
-                    //         dialog.close();
-                    //         toastr.success("User Blocked");
-                    //     } else {
-                    //         toastr.error(res.responseMessage);
-                    //     }
-                    // }) 
-                    
+                    userService.blockPage(userId).success(function(res) {        
+                        if (res.responseCode == 200){
+                            dialog.close();
+                            toastr.success("Page Blocked");
+                            $state.reload();
+                        } else {
+                            toastr.error(res.responseMessage);
+                        }
+                    })    
                 }
             }, {
-                label: 'UnBlocked',
+                label: 'No',
                 action: function(dialog) {
-                    toastr.success("User UnBlocked");
+                    dialog.close();
+                    // toastr.success("User Blocked");
+                }
+            }]
+        });
+    }
+    }
 
-                    // var data = {};
-
-                    // data{
-                    //     pageId:$scope.BlockId,
-                    //     status:'UnBlocked'
-                    // }
-                    // console.log("bbbbbbbbbbbb",data);
-                    // userService.BlockUser(data).success(function(res) {        
-                    //     if (res.responseCode == 200){
-                    //         dialog.close();
-                    //         toastr.success("User Blocked");
-                    //     } else {
-                    //         toastr.error(res.responseMessage);
-                    //     }
-                    // })
+    $scope.unblockPage = function (id) {
+        $scope.BlockId = id;
+        var userId = $scope.BlockId;
+        console.log("Blockid",userId);
+        if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
+        toastr.error("Please select user.")
+        $state.go('header.managePages')
+        }else {
+        BootstrapDialog.show({
+            title: 'Block Page',
+            message: 'Are you sure want to block this page',
+            buttons: [{
+                label: 'Yes',
+                action: function(dialog) {
+                    userService.unblockPage(userId).success(function(res) {        
+                        if (res.responseCode == 200){
+                            dialog.close();
+                            toastr.success("Page Blocked");
+                            $state.reload();
+                        } else {
+                            toastr.error(res.responseMessage);
+                        }
+                    })    
+                }
+            }, {
+                label: 'No',
+                action: function(dialog) {
                     dialog.close();
                     // toastr.success("User Blocked");
                 }
@@ -309,13 +594,11 @@ $scope.dashBordFilter = function(){
     //     })
     // }
 
-//******************** Total Pages***************
-
     $scope.currentTotalPages = 1;
      $scope.nextTotalPagesDetail = function(){
          userService.totalPages($scope.currentTotalPages).success(function(res) { 
-            // console.log("val",JSON.stringify(res))
-            alert($scope.currentTotalPages)
+             console.log("val",JSON.stringify(res))
+            
             if (res.responseCode == 200){
                    $scope.noOfPagesTotalPages = res.result.pages;
                    $scope.pageTotalPages= res.result.page;
@@ -338,9 +621,16 @@ $scope.dashBordFilter = function(){
      }
   
 
-//*************** All Blocked Pages ****************
+ // userService.totalPages().success(function(res) {
+ //    if (res.responseCode == 200){
+ //            $scope.totalPages = res.result;
+ //            //console.log("totalllllpage",JSON.stringify($scope.totalPages));
+ //        } else {
+ //            toastr.error(res.responseMessage);
+ //        }        
+ //    })
 
-$scope.currentBlockedPage = 1;
+ $scope.currentBlockedPage = 1;
      $scope.nextBlockedPageDetail = function(){
          userService.showAllBlockedPage($scope.currentBlockedPage).success(function(res) { 
             // console.log("val",JSON.stringify(res))
@@ -365,11 +655,20 @@ $scope.currentBlockedPage = 1;
         $scope.nextBlockedPageDetail();
      }
 
-  
 
-    //******************** Unpublished Pages ****************
+    // userService.showAllBlockedPage().success(function(res) {
+    // if (res.responseCode == 200){
+    //         $scope.showAllBlockedPage = res.result;
+    //         $scope.showAllBlockedPageCount = res.count;
+    //         //console.log("showAllBlockedPage",JSON.stringify($scope.showAllBlockedPageCount))
+    //         } else {
+    //             //console.log("zxzxzxzxz",JSON.stringify($scope.showAllBlockedPage))
+    //         toastr.error(res.responseMessage);
+    //     }        
+    // })
 
-     $scope.currentunPublishedPage = 1;
+
+    $scope.currentunPublishedPage = 1;
      $scope.nextunPublishedPageDetail = function(){
          userService.unPublishedPage($scope.currentunPublishedPage).success(function(res) { 
              // console.log("val",JSON.stringify(res))
@@ -393,10 +692,17 @@ $scope.currentBlockedPage = 1;
         $scope.currentunPublishedPage--;
         $scope.nextunPublishedPageDetail();
      }
-    
 
-//************ All Removed Pages*****************
-      $scope.currentRemovedPages = 1;
+    // userService.unPublishedPage().success(function(res){
+    //     if (res.responseCode == 200){
+    //         $scope.unPublishedPage = res.data;
+    //         //console.log("zxzxzxzxz",JSON.stringify($scope.unPublishedPage))
+    //         } else {
+    //         toastr.error(res.responseMessage);
+    //     } 
+    // })
+
+    $scope.currentRemovedPages = 1;
      $scope.nextRemovedPagesDetail = function(){
          userService.showAllRemovedPage($scope.currentRemovedPages).success(function(res) { 
              // console.log("val",JSON.stringify(res))
@@ -420,12 +726,25 @@ $scope.currentBlockedPage = 1;
         $scope.currentRemovedPages--;
         $scope.nextRemovedPagesDetail();
      }
-    
+
+    // userService.showAllRemovedPage().success(function(res){
+    //     console.log("aaaaaaaaaaa",JSON.stringify(res))
+    //     if (res.responseCode == 200){
+    //         $scope.showAllRemovedPage = res.result;
+    //         $scope.showAllRemovedPageCount = res.count;
+    //         //console.log("lllllllllllll",JSON.stringify(res))
+    //         } else {
+    //         //toastr.error(res.responseMessage);
+    //         $scope.showAllRemovedPage = res.count;
+           
+    //     } 
+    // })
+
 
     $scope.Remove_User = function (id) {
         $scope.RemoveId = id;
         var userId = $scope.RemoveId;
-        console.log("Blockidvcbc");
+        //console.log("Blockidvcbc");
 
         if ($scope.RemoveId == '' || $scope.RemoveId == undefined || $scope.RemoveId == null) {
        toastr.error("Please select user.")
@@ -441,6 +760,7 @@ $scope.currentBlockedPage = 1;
                     if (res.responseCode == 200){
                         dialog.close();
                         toastr.success("Page removed Successfully");
+                        $state.reload();
                     } else if(res.responseCode == 404){
                         toastr.error(res.responseMessage);
                     }
@@ -463,7 +783,7 @@ $scope.showAdds = function(id){
     userService.showAdds(id).success(function(res){
         if(res.responseCode == 200){
             $scope.allAddsOnPage=res.result;
-            console.log("res",JSON.stringify(res));
+            //console.log("res",JSON.stringify(res));
             $("#adsDetails").modal('show');
 
         }else{
@@ -476,35 +796,35 @@ $scope.showAdds = function(id){
 /*ownerDetails*/
 
 $scope.ownerDetails = function(id){
-    console.log("id",id);
+    //console.log("id",id);
 
 }
 
 /*show winners*/
 
 $scope.showWinners = function(id){
-    console.log("iddddd",id);
+    //console.log("iddddd",id);
     userService.showPageWinner(id).success(function(res){
         if(res.responseCode == 200){
             $scope.allWinnerOnPage=res.result;
-            console.log("res",JSON.stringify(res.result));
+            //console.log("res",JSON.stringify(res.result));
             $("#pageWinnerDetails").modal('show');
 
         }else{
            toastr.error(res.responseMessage);
         }
-        console.log("res",res);
+       // console.log("res",res);
     })
 }
 
 /*show Admin Pages*/
 
 $scope.showAdminPages = function(id){
-    console.log("iddddd",id);
+    //console.log("iddddd",id);
     userService.showAdminPages(id).success(function(res){
         if(res.responseCode == 200){
             $scope.allAdminOnPages=res.result;
-            console.log("res----------------",JSON.stringify(res.result));
+            //console.log("res----------------",JSON.stringify(res.result));
             $("#pageAdminDetails").modal('show');
 
         }else{
@@ -515,3 +835,20 @@ $scope.showAdminPages = function(id){
 
 
 })
+
+app.filter("managePagesFilter",function() {
+     return function(items,nameValue)
+     {
+       if (!nameValue) {
+         return retArray = items;
+            }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+               {
+            if (items[i].userId.mobileNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toString().substr(0,nameValue.length) == nameValue.toString()) {
+                retArray.push(items[i]);
+               }
+           }
+           return retArray
+     }
+ })
