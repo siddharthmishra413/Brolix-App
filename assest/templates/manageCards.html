@@ -606,7 +606,6 @@
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th></th>
                         <th>Offer Type</th>
                         <th>Offer In %</th>
                         <th>Offer Created Time</th>
@@ -616,14 +615,11 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in resultUpgradeCardDiscount">
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td class="skyblue-text">{{x.offer.offerType}}</td>
+                        <td >{{x.offer.offerType}}</td>
                         <td>{{x.offer.buyCard}} %</td>
-                        <td class="skyblue-text">{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                        <td class="skyblue-text">{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                        <td class="skyblue-text">{{x.offer.status}}</td>
+                        <td >{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                        <td >{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
+                        <td >{{x.offer.status}}</td>
                     </tr>  
 
                 </tbody>
@@ -637,7 +633,7 @@
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th></th>
+                        
                         <th>Offer Type</th>
                         <th>BuyCard</th>
                         <th>FreeCard</th>
@@ -648,15 +644,13 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in resultUpgradeCardBuyGet">
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td class="skyblue-text">{{x.offer.offerType}}</td>
+                        
+                        <td >{{x.offer.offerType}}</td>
                         <td>{{x.offer.buyCard}}</td>
                         <td>{{x.offer.freeCard}}</td>
-                        <td class="skyblue-text">{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                        <td class="skyblue-text">{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                        <td class="skyblue-text">{{x.offer.status}}</td>
+                        <td >{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                        <td >{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
+                        <td >{{x.offer.status}}</td>
                     </tr>   
                 </tbody>
             </table>
@@ -669,7 +663,7 @@
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th></th>
+                        
                         <th>Offer Type</th>
                         <th>Offer In %</th>
                         <th>Offer Created Time</th>
@@ -679,14 +673,12 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in resultLuckCardDiscount">
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td class="skyblue-text">{{x.offer.offerType}}</td>
+                        
+                        <td >{{x.offer.offerType}}</td>
                         <td>{{x.offer.buyCard}} %</td>
-                        <td class="skyblue-text">{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                        <td class="skyblue-text">{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                        <td class="skyblue-text">{{x.offer.status}}</td>
+                        <td >{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                        <td >{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
+                        <td >{{x.offer.status}}</td>
                     </tr>   
                 </tbody>
             </table>
@@ -700,7 +692,6 @@
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th></th>
                         <th>Offer Type</th>
                         <th>BuyCard</th>
                         <th>FreeCard</th>
@@ -711,15 +702,13 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in resultLuckCardBuyGet">
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td class="skyblue-text">{{x.offer.offerType}}</td>
+                       
+                        <td >{{x.offer.offerType}}</td>
                         <td>{{x.offer.buyCard}}</td>
                         <td>{{x.offer.freeCard}}</td>
-                        <td class="skyblue-text">{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                        <td class="skyblue-text">{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                        <td class="skyblue-text">{{x.offer.status}}</td>
+                        <td >{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                        <td >{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
+                        <td >{{x.offer.status}}</td>
                     </tr>   
                 </tbody>
             </table>

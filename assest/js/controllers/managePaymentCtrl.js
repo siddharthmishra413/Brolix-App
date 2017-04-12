@@ -960,9 +960,10 @@ app.filter("managePaymentFilter",function() {
         }
         var retArray = [];
           for(var i=0;i<items.length;i++) 
-             {
-                if(items[i].firstName || items[i].lastName || items[i].cashPrize.pageId.firstName || items[i].cashPrize.pageId.pageName) {
-                   if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].cashPrize.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ||items[i].cashPrize.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
+             { //items[i].cashPrize.pageId.firstName ||
+                if(items[i].firstName || items[i].lastName || items[i].cashPrize.pageId.pageName) {
+                    // items[i].cashPrize.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ||
+                   if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].cashPrize.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
                        retArray.push(items[i]);
                    }
                 }
@@ -972,17 +973,19 @@ app.filter("managePaymentFilter",function() {
 });
 app.filter("managePaymentSoldCouponFilter",function() {
       return function(items,nameValue){
-        //console.log(JSON.stringify(items))
+        console.log(JSON.stringify(items))
 
       if (!nameValue) {
         return retArray = items;
         }
         var retArray = [];
           for(var i=0;i<items.length;i++) 
-             {
-                if(items[i].firstName || items[i].lastName || items[i].coupon.pageId.userId.firstName || items[i].coupon.pageId.pageName){
-                    // if(nameValue="")
-                   if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].coupon.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ||items[i].coupon.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
+             {//||  items[i].coupon.pageId.pageName || items[i].coupon.pageId.userId.firstName || items[i].coupon.pageId.userId.lastName
+                console.log(JSON.stringify(items[i].coupon));
+                if(items[i].firstName || items[i].lastName )
+                {
+                    //||items[i].coupon.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].coupon.pageId.userId.lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].coupon.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()
+                   if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ) {
                        retArray.push(items[i]);
                    }
                }
