@@ -29,8 +29,8 @@ app.get('/adsCommentList/:id/:pageNumber', authUser.authUser, adsHandler.adsComm
 app.post('/tagOnads', authUser.authUser, adsHandler.tagOnads);
 app.put('/editAd/:id/:userId',  adsHandler.editAd);
 app.post('/adsDateFilter', authUser.authUser, adsHandler.adsDateFilter);
-app.post('/searchAds', authUser.authUser, adsHandler.searchAds);
-app.post('/couponFilter', authUser.authUser, adsHandler.couponFilter);
+app.post('/searchAds/:pageNumber', adsHandler.searchAds);
+app.post('/couponFilter', adsHandler.couponFilter);
 app.post('/couponGiftsFilter', authUser.authUser, adsHandler.couponGiftsFilter);
 app.post('/cashGiftsFilter', authUser.authUser, adsHandler.cashGiftsFilter);
 app.get('/storeCouponList/:pageNumber', authUser.authUser, adsHandler.storeCouponList);

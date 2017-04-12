@@ -1039,9 +1039,24 @@ module.exports = {
             Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
 
                     if (!(key == "coupon.couponStatus" || key == "cashPrize.cashStatus" || key == "firstName")) {
-                        var tempCond = {};
-                        tempCond[key] = req.body[key];
-                        condition.$and.push(tempCond)
+                        // var subCatData = { $or: [] };
+                        // var subCatDataObj ={}
+                        // if(key == 'subCategory'){
+                        //    console.log("ddddddddD",req.body[key].length)
+                        //    for(var i=0;i<req.body[key].length;i++){
+                        //     var data = req.body[key][i];
+                        //     subCatDataObj[key] = data;
+                        //      subCatData.$or.push(subCatDataObj)
+                        //    }
+                        //  //  console.log(queryOrData)
+                        //    condition.$and.push(subCatData)
+                        // }
+                      //  else{
+                            var tempCond = {};
+                            tempCond[key] = req.body[key];
+                            condition.$and.push(tempCond) 
+                     //   }
+
                     }
                 });
                 if (condition.$and.length == 0) {
@@ -1073,10 +1088,33 @@ module.exports = {
             
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                     if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'cashPrize.cashStatus')) {
-                        var temporayCond = {};
-                        temporayCond[key] = req.body[key];
-                        query.$and.push(temporayCond)
-                    }
+                        var queryOrData = { $or: [] };
+                        var temporayCondData ={}
+
+                        if(key == 'coupon.couponStatus'){
+                           console.log("ddddddddD",req.body[key].length)
+                         for(var i=0;i<req.body[key].length;i++){
+
+                            if(req.body[key].length == 1){
+                               var queryOrData = { $or: [{'coupon.couponStatus':req.body[key][0]}] };
+                            }
+                            else if(req.body[key].length == 2){
+                                var queryOrData = { $or: [{'coupon.couponStatus':req.body[key][0]},{'coupon.couponStatus':req.body[key][1]}] };
+                            }
+                            else if(req.body[key].length == 3){
+                                     var queryOrData = { $or: [{'coupon.couponStatus':req.body[key][0]},{'coupon.couponStatus':req.body[key][1]},{'coupon.couponStatus':req.body[key][2]}] };
+                            }
+                           console.log("queryOrData",queryOrData)
+                          
+                        }
+                         query.$and.push(queryOrData)
+                       }
+                        else{
+                            var temporayCond = {};
+                            temporayCond[key] = req.body[key];
+                            query.$and.push(temporayCond)
+                        }}
+                    
                 });
 
                 if (query.$and.length == 0) {
@@ -1087,7 +1125,7 @@ module.exports = {
                     [
                      { $unwind: '$coupon'},
                      { $match :query}
-                      ]
+                    ]
                 ).exec(function(err, results){
                     if(err){ res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                     else if (!results) {
@@ -1109,9 +1147,32 @@ module.exports = {
             
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                     if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'coupon.couponStatus')) {
-                        var temporayCond = {};
-                        temporayCond[key] = req.body[key];
-                        queryData.$and.push(temporayCond)
+                       // var queryOrData = { $or: [] };
+                        var temporayCondData ={}
+                        if(key == 'cashPrize.cashStatus'){
+                           console.log("ddddddddD",req.body[key].length)
+
+                            for(var i=0;i<=2;i++){
+
+                                if(req.body[key].length == 1){
+                                var queryOrData = { $or: [{'cashPrize.cashStatus':req.body[key][0]}] };
+                                }
+                                else if(req.body[key].length == 2){
+                                    var queryOrData = { $or: [{'cashPrize.cashStatus':req.body[key][0]},{'cashPrize.cashStatus':req.body[key][1]}] };
+                                }
+
+                              // var queryOrData = { $or: [{'cashPrize.cashStatus':req.body[key][0]},{'cashPrize.cashStatus':req.body[key][1]},{'cashPrize.cashStatus':req.body[key][2]}] };
+                            }
+                           //  console.log("temporayCondData",temporayCondData)
+                           console.log("queryOrData",queryOrData)
+                           queryData.$and.push(queryOrData)
+                        }
+                        else{
+                             var temporayCond = {};
+                             temporayCond[key] = req.body[key];
+                             queryData.$and.push(temporayCond)
+                        }
+                     
                     }
                 });
                 if (queryData.$and.length == 0) {
