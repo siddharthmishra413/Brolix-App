@@ -648,7 +648,7 @@ module.exports = {
                                  // var data = obj.filter(obj => obj.type == "ACTIVE");
                                 res.send({
                                     docs: result2,
-                                    total: count,
+                                    count: count,
                                     limit: limitData,
                                     page: page,
                                     pages: pages,
@@ -689,7 +689,7 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
                                 res.send({
                                     docs: result2,
-                                    total: count,
+                                    count: count,
                                     limit: limitData,
                                     page: page,
                                     pages: pages,
