@@ -97,7 +97,7 @@ app.post('/addNewCoupon', adminHandler.addNewCoupon);
 app.get('/viewCoupon/:id', adminHandler.viewCoupon);
 app.put('/editCoupon/:id', adminHandler.editCoupon);
 app.post('/removeCoupon', adminHandler.removeCoupon);
-app.get('/showListOFCoupon/:pageNumber', adminHandler.showListOFCoupon);
+app.get('/showListOFCoupon', adminHandler.showListOFCoupon);
 app.get('/showPageName', adminHandler.showPageName);
 app.post('/createSystemUser', adminHandler.createSystemUser);
 app.post('/checkPermission', adminHandler.checkPermission);
