@@ -139,5 +139,6 @@ app.post('/sendLuckCardTOUsers', adminHandler.sendLuckCardTOUsers);
 app.post('/sendUpgradeCardTOUsers', adminHandler.sendUpgradeCardTOUsers);
 app.post('/paymentHistory', adminHandler.paymentHistory);
 app.get('/liveUser/:pageNumber', adminHandler.liveUser);
+app.get('/showUserAllPages/:id', adminHandler.showUserAllPages);
 
 module.exports = app;

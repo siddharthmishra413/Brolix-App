@@ -1507,7 +1507,8 @@ module.exports = {
         waterfall([
             function(callback) {
                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $inc: { couponPurchased: 1 } }, function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength == result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } 
+                    else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength == result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
                         callback(null, result.couponCode, result.couponExpiryDate, result.pageId)
                     }
                 })
