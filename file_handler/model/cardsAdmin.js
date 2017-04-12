@@ -31,7 +31,7 @@ var cardsSchema = new Schema({
         buyCard: { type: Number },
         freeCard: { type: Number },
         offerTime: { type: Date },
-        status: { type: String, default: "active" },
+        status: { type: String, default: 'ACTIVE' },
         createdAt: { type: Date, default: Date.now() }
     }],
     sendCardToUser: { type: Number },
