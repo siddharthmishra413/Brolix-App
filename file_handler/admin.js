@@ -1815,7 +1815,6 @@ module.exports = {
         })
     },
 
-
     "showReportOnAd": function(req, res) {
         createNewReport.find({ adId: req.params.id }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No report found on this ad." }); } else {
@@ -1902,7 +1901,8 @@ module.exports = {
                     }
                 }
                 createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No ad found." }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                    else if (result1.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No ad found." }); } else {
                         var count = 0;
                         for (var i = 0; i < result1.length; i++) {
                             count++;
@@ -3057,7 +3057,8 @@ module.exports = {
 
     "showListOFCoupon": function(req, res) {
         createNewAds.find({ adsType: 'ADMINCOUPON', status: 'ACTIVE' }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ count: 0, responseCode: 500, responseMessage: 'No coupon found' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+             else if (result.length == 0) { res.send({ count: 0, responseCode: 500, responseMessage: 'No coupon found' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: "Coupon list successfully." })
             }
         })
