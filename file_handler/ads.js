@@ -755,35 +755,32 @@ module.exports = {
     },
 
     "searchAds": function(req, res) {
-        // Object.getOwnPropertyNames(req.body).{}
-        var condition = { $and: [] };
-        if (req.body.adsType == 'all') {
-            var obj = {
-                $or: [{ adsType: 'cash' }, { adsType: 'coupon' }]
-            }
-            condition.$and.push(obj);
-        } else {
-            var obj = {
-                adsType: req.body.adsType
-            }
-            condition.$and.push(obj);
-        }
 
-        if (req.body.status == 'all') {
-            var obj = {
-                $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }]
+         var condition = { $or: [] };
+        var obj = req.body;
+        Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+            if (key == 'adsType' || key == 'status') {
+                var cond = { $or: [] };
+                if (key == "adsType") {
+                    for (data in obj[key]) {
+                        condition.$or.push({ adsType: obj[key][data] })
+                    }
+                }
+                if(key == "status"){
+                    for (data in obj[key]) {
+                        condition.$or.push({ status: obj[key][data] })
+                    }
+                }
+            } else {
+                condition[key] = obj[key];
             }
-            condition.$and.push(obj);
-        } else {
-            var obj = {
-                status: req.body.status
-            }
-            condition.$and.push(obj);
+        });
+        if (condition.$or.length == 0) {
+            delete condition.$or;
         }
-
-        createNewAds.find(condition).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-             else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No result found' }); } else {
+         console.log("condition==>"+JSON.stringify(condition))
+        createNewAds.paginate(condition,{ page: req.params.pageNumber, limit: 10 },function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -792,7 +789,6 @@ module.exports = {
             }
         })
     },
-
     "couponFilter": function(req, res) {
         var condition = { $or: [] };
         var obj = req.body;
@@ -816,6 +812,7 @@ module.exports = {
         if (condition.$or.length == 0) {
             delete condition.$or;
         }
+        console.log("condition==>"+JSON.stringify(condition))
         createNewAds.find(condition).exec(function(err, result) {
             // console.log("result--->>",result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
