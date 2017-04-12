@@ -66,7 +66,7 @@ app.get('/winnersOnPage/:id/:pageNumber', adminHandler.winnersOnPage);
 app.get('/pageAdminsDetail/:id/:pageNumber', adminHandler.pageAdminsDetail);
 app.get('/showReportOnAd/:id', adminHandler.showReportOnAd);
 app.get('/ownerDetails/:id', adminHandler.ownerDetails);
-app.get('/PagesAdmins/:pageNumber', adminHandler.PagesAdmins);
+app.get('/PagesAdmins', adminHandler.PagesAdmins);
 app.post('/luckCardUsedAd', adminHandler.luckCardUsedAd);
 app.post('/upgradeCardUsedAd', adminHandler.upgradeCardUsedAd);
 app.get('/paymentHistoryUpgradeCard/:id', adminHandler.paymentHistoryUpgradeCard);
@@ -140,5 +140,7 @@ app.post('/sendUpgradeCardTOUsers', adminHandler.sendUpgradeCardTOUsers);
 app.post('/paymentHistory', adminHandler.paymentHistory);
 app.get('/liveUser/:pageNumber', adminHandler.liveUser);
 app.get('/showUserAllPages/:id', adminHandler.showUserAllPages);
+app.get('/listOfCategory',  adminHandler.listOfCategory);
+app.post('/subCategoryData', adminHandler.subCategoryData);
 
 module.exports = app;

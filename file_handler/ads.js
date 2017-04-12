@@ -755,6 +755,7 @@ module.exports = {
     },
 
     "searchAds": function(req, res) {
+        // Object.getOwnPropertyNames(req.body).{}
         var condition = { $and: [] };
         if (req.body.adsType == 'all') {
             var obj = {
@@ -779,7 +780,7 @@ module.exports = {
             }
             condition.$and.push(obj);
         }
-      console.log(condition)
+
         createNewAds.find(condition).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
              else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No result found' }); } else {

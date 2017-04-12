@@ -1008,7 +1008,7 @@ module.exports = {
 
     "listOfCategory": function(req, res) {
         var categoryList = ["Restaurant and Coffee Shop", "Fashion (Men-Women-Kids-Babies)", "Beauty & Health Care", "Fitness and Sports",
-          "Traveling Agencies","Cinema","Furniture","Home","Mobile and Computer Apps","Toys for kids and Babies","Electronics and Technology",
+          "Traveling Agencies","Cinemas","Furniture","Home","Mobile and Computer Apps","ToysforkidsandBabies","Electronics and Technology",
           "Hotels and Apartments","Medical","Education","Motors","Hypermarkets","Events","Jewelry","Arts and Design","Pets","Insurance",
           "Banks and Finance Companies","Real Estate","Books","Business and Services","Nightlife","Construction","Factories"];
         console.log("categoryList-->>", categoryList)

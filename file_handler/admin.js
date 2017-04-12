@@ -1855,7 +1855,7 @@ module.exports = {
                         array.push(result[i]._id)
                     }
                 } //).populate('adAdmin.userId', 'firstName lastName').exec(
-                createNewPage.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
+                createNewPage.find({ _id: { $in: array } },function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
                         var count = 0;
                         for (var i = 0; i < result1.length; i++) {
@@ -1867,7 +1867,7 @@ module.exports = {
                             select: 'firstName lastName'
                         }, function(err, result2) {
                             res.send({
-                                result: result1,
+                                result: result2,
                                 count: count,
                                 responseCode: 200,
                                 responseMessage: "Page detail show successfully."
@@ -3907,8 +3907,30 @@ module.exports = {
                 });
             }
         })
+    },
 
-    }
+     "listOfCategory": function(req, res) {
+        var categoryList = ["Restaurant and Coffee Shop", "Fashion (Men-Women-Kids-Babies)", "Beauty & Health Care", "Fitness and Sports",
+          "Traveling Agencies","Cinema","Furniture","Home","Mobile and Computer Apps","Toys for kids and Babies","Electronics and Technology",
+          "Hotels and Apartments","Medical","Education","Motors","Hypermarkets","Events","Jewelry","Arts and Design","Pets","Insurance",
+          "Banks and Finance Companies","Real Estate","Books","Business and Services","Nightlife","Construction","Factories"];
+        console.log("categoryList-->>", categoryList)
+        res.send({
+            result: categoryList,
+            responseCode: 200,
+            responseMessage: "List of all category shown successfully."
+        })
+
+    },
+
+    "subCategoryData": function(req, res){
+       var matchData = req.body.subCat;
+       res.send({
+        responseCode:200,
+        responseMessage:"Subcategory lists.",
+        result:subCategory[matchData]
+       })
+    },
 
 
 }
