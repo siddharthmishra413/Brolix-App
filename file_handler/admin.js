@@ -3056,7 +3056,7 @@ module.exports = {
     },
 
     "showListOFCoupon": function(req, res) {
-        createNewAds.paginate({ adsType: 'ADMINCOUPON', status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+        createNewAds.find({ adsType: 'ADMINCOUPON', status: 'ACTIVE' }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ count: 0, responseCode: 500, responseMessage: 'No coupon found' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: "Coupon list successfully." })
             }
