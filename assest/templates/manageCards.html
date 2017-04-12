@@ -36,7 +36,7 @@
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
                                 <div class="total-add">Total Income $</div>
-                                <div class="total-amt">{{totalIncome$}}$</div>
+                                <div class="total-amt">{{totalIncomeFromUpgradeCard}}$</div>
                             </div>
                             <div class="bottom-box">
                                 <div class="btn-manage" ng-click="tab='totalincomeUpgrade'">
@@ -207,26 +207,21 @@
                             <option value="50">50</option>
                         </select>
                     </div>
-                    <!-- <div class="form-group cus-select">
+                    <div class="form-group cus-select">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                              <div class="input-group">
-                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Choose a date" ng-model="dashBordFilter.dateFrom" />
-                                                  <span class="input-group-addon" style="cursor: pointer">
-                                                  <i class="fa fa-lg fa-calendar"></i>
-                                                  </span>
+                                              <div class="form-group">
+                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date From" ng-model="dashBordFilter.dateFrom" />
                                               </div>
                                              </datepicker>
                     </div>
+                    
                      <div class="form-group cus-select">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                              <div class="input-group">
-                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Choose a date" ng-model="dashBordFilter.dateTo"  />
-                                                  <span class="input-group-addon" style="cursor: pointer">
-                                                  <i class="fa fa-lg fa-calendar"></i>
-                                                  </span>
+                                              <div class="form-group">
+                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date To" ng-model="dashBordFilter.dateTo" />
                                               </div>
                                              </datepicker>
-                    </div> -->
+                    </div>
                     <!-- <div class="form-group cus-select">
                         <input style="height: 40px; background-color: #EAEAEA" class="form-control"  ng-model="dashBordFilter.dateFrom" ng-change="dashBordFilter()" type="date" placeholder="From">
                     </div>

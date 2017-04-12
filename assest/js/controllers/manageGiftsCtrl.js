@@ -4,6 +4,11 @@ $scope.$emit('headerStatus', 'Manage Gifts');
 $scope.$emit('SideMenu', 'Manage Gifts');
 $scope.tab= 'totalCouponsGifts';
 $scope.array = [];
+$scope.dashBordFilter = {};
+$scope.dashBordFilter.country="";
+$scope.dashBordFilter.state="";
+$scope.dashBordFilter.city="";
+
 
 //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
     var currentCities=[];
@@ -514,6 +519,21 @@ $scope.top_50_balanc = function(type){
 
  
     $scope.dashBordFilter = function() {
+
+      if($scope.dashBordFilter.country == 'undefined' || $scope.dashBordFilter.country == null || $scope.dashBordFilter.country == '' ){
+               $scope.dashBordFilter.country = ''
+
+       }
+       if($scope.dashBordFilter.state == 'undefined' || $scope.dashBordFilter.state == null || $scope.dashBordFilter.state == '' ){
+               $scope.dashBordFilter.state = ''
+
+       }
+       if($scope.dashBordFilter.city == 'undefined' || $scope.dashBordFilter.city == null || $scope.dashBordFilter.city == '' ){
+               $scope.dashBordFilter.city = ''
+
+       }
+
+
 
     var type1 = localStorage.getItem('giftTypeName');
     console.log(type1);

@@ -14,7 +14,7 @@ app.controller('addSystemUserCtrl', function($scope, $window, userService, $stat
                 //$state.go('login')
             }else if(res.responseCode == 200) {
                 $scope.allSystemUser = res.result;
-                //console.log("asassa",JSON.stringify($scope.allSystemUser))
+                console.log("asassa",JSON.stringify($scope.allSystemUser))
             }else if(res.responseCode == 400){
                 toastr.error(res.responseMessage);
             }else{
@@ -28,24 +28,28 @@ app.controller('addSystemUserCtrl', function($scope, $window, userService, $stat
     }
 
     $scope.addSystemUser = function() {
-        //console.log("1")
+        console.log("alll data ",$scope.myFrom)
         var data=[];
        angular.forEach($scope.myFrom.permissions,function(value,key){
-          data.push(value);
+          data.push(key);
        })
        $scope.myFrom.permissions=data;
        console.log("data",$scope.myFrom);
        userService.createSystemUser($scope.myFrom).success(function(res) {
         //console.log("res",res)
             if (res.responseCode == 404) {
+                console.log("1")
                 toastr.error(res.responseMessage);
                 $state.go('login')
             }else if(res.responseCode == 200) {
+                console.log("2")
                 toastr.success(res.responseMessage);
                 $state.reload();
             }else if(res.responseCode == 400){
+                console.log("3")
                 toastr.error(res.responseMessage);
             }else{
+                console.log("4")
                 toastr.error(res.responseMessage);
             }
         })

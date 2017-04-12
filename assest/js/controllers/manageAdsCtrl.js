@@ -107,7 +107,7 @@ $(window).scrollTop(0,0);
             }) 
     }
 
-/*-------------------------Message send to all contact winners---------------------*/
+/*-------------------------Message send to all contact Admins---------------------*/
 
     $scope.send_massage = function(){
          if ($scope.sendMessage.massage == '' || $scope.sendMessage.massage == undefined || $scope.sendMessage.massage == null) {
@@ -152,7 +152,7 @@ $(window).scrollTop(0,0);
                     }
                     userService.sendMassageAllUser(data).success(function(res) {
                         if (res.responseCode == 200){
-                            toastr.success("Message sent successfully to  Admina");
+                            toastr.success("Message sent successfully to  Admins");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -722,6 +722,7 @@ userService.topFiftyAds().success(function(res) {
 $scope.dashBordFilter = function(){
 
     var type = localStorage.getItem('adsTypeName');
+
     $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
     $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
     $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
@@ -736,7 +737,11 @@ $scope.dashBordFilter = function(){
             joinFrom:$scope.dobFrom,
         }
         console.log("datatata",data)
-         switch (type)
+        if(type == undefined || type == null  || type == "" )
+        {
+            toastr.error("First you click on show Ads button")
+        }else {
+            switch (type)
             {
                 case 'totalAds':
                 console.log("1");
@@ -831,7 +836,7 @@ $scope.dashBordFilter = function(){
                 default:
                 toastr.error("somthing wents to wroung");
             }
-
+        }         
     }
 })
 

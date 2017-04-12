@@ -44,9 +44,9 @@
                                             <div class="col-md-9">
                                                  <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                                                <div class="input-group">
-                                                   <input class="form-control"  placeholder="Choose a date" ng-model="myFrom.dob" max="2017-04-05" />
-                                                   <span class="input-group-addon" style="cursor: pointer">
-                                                   <i class="fa fa-lg fa-calendar"></i>
+                                                   <input class="form-control" style="cursor:pointer;" placeholder="Choose a date" ng-model="myFrom.dob" max="2017-04-05" />
+                                                   <span class="input-group-addon">
+                                                   <!-- <i class="fa fa-lg fa-calendar"></i> -->
                                                    </span>
                                                </div>
                                               </datepicker>
@@ -79,19 +79,19 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
+                                        </div>
+                                        <div class="form-group">
                                         <div class="row">
                                             <label for="inputName" class="control-label col-md-3" ng-class="{'cls-pswrdMissmatch':myFrom.Cpassword!=myFrom.password && Cpassword.length>0}">Confirm Password</label>
                                             <div class="col-md-9">
-                                                <input type="password" class="form-control" name="Cpassword" placeholder="Confirm Password" required> 
+                                                <input type="password" class="form-control" name="Cpassword" ng-model="myFrom.Cpassword" placeholder="Confirm Password" required> 
                                                 <span style="color:red;" ng-show="myFrom.Cpassword!=myFrom.password &&myFrom.Cpassword.length>0">These passwords don't match. Try again?</span>
                                                 <span style="color:red;" ng-show="userFrom.Cpassword.$dirty && userFrom.Cpassword.$invalid">
                                                 <span style="color:red;" ng-show="userFrom.Cpassword.$error.required">Confrim password is required.</span>
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
+                                        </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Gender</label>

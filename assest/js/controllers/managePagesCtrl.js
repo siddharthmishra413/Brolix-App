@@ -10,6 +10,15 @@ $scope.class = false;
 
  $scope.userTypeName = function(val) {
     localStorage.setItem('userTypeName',val);
+
+     $scope.currentTotalPages = 1;
+     alert($scope.currentTotalPages);
+     $scope.nextTotalPagesDetail();
+    
+
+     $scope.currentunPublishedPage = 1;
+     $scope.nextunPublishedPageDetail();
+     
  }
 
 userService.countrys().success(function(res) {
@@ -306,6 +315,7 @@ $scope.dashBordFilter = function(){
      $scope.nextTotalPagesDetail = function(){
          userService.totalPages($scope.currentTotalPages).success(function(res) { 
             // console.log("val",JSON.stringify(res))
+            alert($scope.currentTotalPages)
             if (res.responseCode == 200){
                    $scope.noOfPagesTotalPages = res.result.pages;
                    $scope.pageTotalPages= res.result.page;

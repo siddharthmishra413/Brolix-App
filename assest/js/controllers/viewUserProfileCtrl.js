@@ -16,7 +16,7 @@ app.controller('viewUserProfileCtrl', function($scope, $window, userService, $st
             $scope.viewUserProfile = res.result;
             var updateDate = new Date($scope.viewUserProfile.dob);
             $scope.viewUserProfile.dob = moment(updateDate).format('MM/DD/YYYY');
-            console.log("datatatat",JSON.stringify($scope.viewUserProfile));
+            console.log("datatatat",JSON.stringify(res.result));
         } else {
             toastr.error(res.responseMessage)
         }

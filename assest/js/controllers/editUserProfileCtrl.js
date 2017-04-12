@@ -68,17 +68,22 @@ var BATTUTA_KEY="00000000000000000000000000000000"
        userService.viewProfile(id).success(function(res) {
            if (res.responseCode == 200) {
                $scope.viewUserProfile = res.result;
-               console.log("al ldta",res.result);
+               console.log("al ldta",JSON.stringify(res.result));
+               $scope.viewUserProfile.country = res.result.country;
                $scope.viewUserProfile.state = res.result.state;
-               console.log(JSON.stringify($scope.viewUserProfile.state)) 
+               console.log("res.result.state",res.result.state);
+               console.log("$scope.viewUserProfile.state",$scope.viewUserProfile.state);
+
+
+               // console.log(JSON.stringify($scope.viewUserProfile.state)) 
                var updateDate = new Date($scope.viewUserProfile.dob);
                $scope.viewUserProfile.dob = moment(updateDate).format('MM/DD/YYYY');
                $scope.viewUserProfile.coufgdntry=$scope.viewUserProfile.country;
-               
                $scope.viewUserProfile.statedfd=$scope.viewUserProfile.state;
-               console.log('state->   '+$scope.viewUserProfile.statedfd);
-               $scope.viewUserProfile.citysds=$scope.viewUserProfile.city;
-               console.log("rinku---",JSON.stringify($scope.viewUserProfile))
+               console.log("$scope.viewUserProfile.statedfd",$scope.viewUserProfile.statedfd);
+               // console.log('state->   '+$scope.viewUserProfile.statedfd);
+               // $scope.viewUserProfile.citysds=$scope.viewUserProfile.city;
+               // console.log("rinku---",JSON.stringify($scope.viewUserProfile))
            } else {
                toastr.error(res.responseMessage)
            }

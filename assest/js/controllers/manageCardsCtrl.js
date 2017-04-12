@@ -697,6 +697,30 @@ var BATTUTA_KEY="00000000000000000000000000000000"
   $scope.cardTypeName = function(val) {
         console.log(val)
          localStorage.setItem('cardTypeName',val);
+
+        $scope.currentTotalSoldUpgradeCards = 1;
+        $scope.nextTotalSoldUpgradeCardsDetail();
+
+        $scope.currentTotalIncomeUpgradeCard = 1;
+        $scope.nextTotalIncomeUpgradeCardDetail();
+
+        $scope.currentUsedUpgradeCard = 1;
+        $scope.nextUsedUpgradeCardDetail();
+
+        $scope.currentUnusedUpgradeCards = 1;
+        $scope.nextUnusedUpgradeCardsDetail();
+
+         $scope.currentSoldLuckCard = 1;
+         $scope.nextSoldLuckCardDetail();
+
+         $scope.currentIncomeInBrolixFromLuckCard = 1;
+        $scope.nextIncomeInBrolixFromLuckCardDetail();
+
+        $scope.currentUsedLuckCard = 1;
+        $scope.nextUsedLuckCardDetail();
+
+        $scope.currentUnusedLuckCard = 1;
+        $scope.nextUnusedLuckCardDetail();
     }
 
  

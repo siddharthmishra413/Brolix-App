@@ -403,7 +403,7 @@ app.service('userService',function($http){
      /*-------ManagePage Section----------*/
 
      showUserPage: function(id){
-      return $http.get(baseurl+'/admin/showUserPage/'+id);
+      return $http.get(baseurl+'/admin/showUserAllPages/'+id);
     },
 
     showAdds: function(id){

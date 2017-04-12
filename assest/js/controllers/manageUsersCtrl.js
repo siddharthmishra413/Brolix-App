@@ -16,10 +16,16 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
 
     $scope.showPageDetails = function(id){
         console.log("id---------",id);
-        userService.showUserPage(id).success(function(res) {        
+        userService.showUserPage(id).success(function(res) {
+           if(res.responseCode ==  200) {
             $scope.allshowUserPage = res.result;
             $("#pageDetails").modal('show');
             console.log("$scope.allshowUserPage",JSON.stringify($scope.allshowUserPage))
+        }else{
+          toastr.error(res.responseMessage);
+          
+        }        
+            
         })
     }
 
@@ -70,6 +76,30 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.userTypeName = function(val) {
         //$state.reload();
         localStorage.setItem('userTypeName',val);
+
+        $scope.currentTotalWinners = 1;
+        $scope.nextTotalWinnersDetail();
+
+        $scope.currentPage = 1;
+        $scope.nextTotalUserDetail();
+
+        $scope.currentPersonalUser = 1;
+        $scope.nextpersonalUserDetail();
+
+        $scope.currentBusinessUser = 1;
+         $scope.nextBusinessUserDetail();
+         
+         $scope.currentCashWinners = 1;
+         $scope.nextCashWinnersDetail();  
+
+         $scope.currentCouponWinners = 1;
+         $scope.nextCouponWinnersDetail();
+
+         $scope.currentBlockUser = 1;
+         $scope.nextBlockUserDetail();
+
+          $scope.currentLiveUser = 1;
+           $scope.nextLiveUserDetail();   
     }
 
 
@@ -131,6 +161,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.currentTotalWinners = 1;
      $scope.nextTotalWinnersDetail = function(){
          userService.totalWinners($scope.currentTotalWinners).success(function(res) { 
+
             if (res.responseCode == 200){
                    $scope.noOfPagesTotalWinners = res.result.pages;
                    $scope.pageTotalWinners= res.result.page;
@@ -169,6 +200,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
      $scope.nextTotalUserDetail = function(){
        // console.log('page number TotalUserDetail -> '+$scope.currentPage);
          userService.totalUser($scope.currentPage).success(function(res) {
+          console.log(JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPages = res.result.pages;
                    $scope.pageNo = res.result.page;
@@ -1416,10 +1448,10 @@ $scope.sendCard = function(cardId,type){
 $scope.dashBordFilter = function(){
 
     var type = localStorage.getItem('userTypeName');
-    $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
-    $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
+    // $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
+    // $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
     $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
-    console.log("date",$scope.dashBordFilter.country);
+    console.log("dateczx",$scope.dobFrom,$scope.dobFrom);
     var data = {};
         data = {
             userType:localStorage.getItem('userTypeName'),
@@ -1429,8 +1461,8 @@ $scope.dashBordFilter = function(){
             gender:$scope.dashBordFilter.gender,
             ageTo:$scope.dashBordFilter.ageTo,
             ageFrom:$scope.dashBordFilter.ageFrom,
-            joinTo:$scope.dobTo,
-            joinFrom:$scope.dobFrom,
+            joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
+            joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
         console.log("datatata",JSON.stringify(data))
 
