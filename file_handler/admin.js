@@ -1180,26 +1180,13 @@ module.exports = {
         var cardType = req.body.cardType;
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: cardType } }
+            { $match: { type: cardType, 'offer.status': 'ACTIVE' } }
         ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
             }
         })
     },
-
-    // "showOfferOnCards": function(req, res) {
-    //     var cardType = req.body.cardType;
-    //     adminCards.aggregate([
-    //         { $unwind: '$offer' },
-    //         { $match: { type: cardType, 'offer.status': 'ACTIVE' } },
-    //         { $project: { offer: 1, _id: 0 } }
-    //     ]).exec(function(err, result) {
-    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-    //             res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
-    //         }
-    //     })
-    // },
 
     "createPage": function(req, res) {
         createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
@@ -2399,7 +2386,7 @@ module.exports = {
                         }
                         User.populate(result1, 'coupon.adId', function(err, result2) {
                             User.populate(result2, {
-                                path: 'coupon.adId.couponExchange.receiverId',
+                                path: 'coupon.adId.couponExchangeReceived.receiverId',
                                 model: 'brolixUser',
                                 select: 'firstName lastName email'
                             }, function(err, result3) {
@@ -2438,7 +2425,7 @@ module.exports = {
                 }
                 User.populate(result, 'coupon.adId', function(err, result1) {
                     User.populate(result1, {
-                        path: 'coupon.adId.couponExchange.receiverId',
+                        path: 'coupon.adId.couponExchangeReceived.receiverId',
                         model: 'brolixUser',
                         select: 'firstName lastName email'
                     }, function(err, result2) {
