@@ -35,7 +35,7 @@ app.post('/userFavouratePages', pageHandler.userFavouratePages);
 app.get('/listOfCategory', authUser.authUser, pageHandler.listOfCategory);
 app.post('/subCategoryData', pageHandler.subCategoryData);
 
-app.post('/winnerFilter', pageHandler.winnerFilter);
+app.post('/winnerFilter/:pageNumber', pageHandler.winnerFilter);
 
 
 module.exports = app;
