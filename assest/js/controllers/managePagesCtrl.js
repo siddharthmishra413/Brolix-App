@@ -846,11 +846,14 @@ app.filter("pagesFilter",function() {
          var retArray = [];
            for(var i=0;i<items.length;i++) 
                {
-               
-            if (items[i].phoneNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {
+               console.log(typeof items[i].phoneNumber);
+             if(items[i].phoneNumber == '' || items[i].phoneNumber == 'undefined' || items[i].pageName == null || items[i].pageName == 'undefined' || items[i].pageName == null || items[i].phoneNumber == null)
+              {
+             }else if(items[i].phoneNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {
                 retArray.push(items[i]);
                }
-           }
+           
+       }
            return retArray
      }
  })

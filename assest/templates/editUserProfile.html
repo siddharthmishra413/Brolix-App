@@ -126,7 +126,7 @@
                                             <label class="control-label col-md-3">State</label>
                                             <div class="col-md-9">
                                                 <select class="form-control" ng-change="changeState();" ng-model="viewUserProfile.state" ng-init="viewUserProfile.state = viewUserProfile.state" required>
-                                                    <option value="">{{viewUserProfile.state}}</option>
+                                                    <option selected="">{{viewUserProfile.state}}</option>
                                                     <option ng-repeat="state in stateList">{{state.region}}</option>
                                                  </select> 
                                                 <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid">
@@ -139,7 +139,7 @@
                                             <label class="control-label col-md-3">City</label>
                                             <div class="col-md-9">
                                                 <select  class="form-control" id="city" ng-model="viewUserProfile.city" required>
-                                                    <option value="">Select City</option>
+                                                    <option selected="">{{viewUserProfile.city}}</option>
                                                     <option ng-repeat="city in cityList">{{city.city}}</option>
                                                  </select>
                                                 <span style="color:red;" ng-show="userFrom.city.$dirty && userFrom.city.$invalid">

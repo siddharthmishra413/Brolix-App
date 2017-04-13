@@ -288,11 +288,12 @@ $(window).scrollTop(0,0);
 
     //******************** top 50 Buyers *********************
 
+
     $scope.top_50_dollarsBuyers=function(){
-            userService.top_50_dollarsBuyers().then(function(success) {
-                // console.log(JSON.stringify(success))
+            userService.top_50_dollarsBuyers(1).then(function(success) {
+                 console.log("x"+JSON.stringify(success))
                     if(success.data.responseCode == 200){
-                        $scope.userDetail=success.data.result;
+                        $scope.userDetail=success.data.result.docs;
                             $("#top_50_buyers").modal('show');
                             // console.log(JSON.stringify(success.data.result))
                     } else{

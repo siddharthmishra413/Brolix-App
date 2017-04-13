@@ -464,8 +464,8 @@ app.service('userService',function($http){
      pageInfo: function(id){
       return $http.get(baseurl+'/admin/pageInfo/'+id);
     }, 
-    top_50_dollarsBuyers: function(){
-      return $http.get(baseurl+'/admin/topFiftyUpgradeCardBuyers');
+    top_50_dollarsBuyers: function(pageNo){
+      return $http.get(baseurl+'/admin/topFiftyUpgradeCardBuyers/'+pageNo);
     },
     top_50_brolixBuyers: function(){
       return $http.get(baseurl+'/admin/topFiftyLuckCardBuyers');
