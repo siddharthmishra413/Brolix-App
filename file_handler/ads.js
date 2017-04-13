@@ -756,26 +756,26 @@ module.exports = {
 
     "searchAds": function(req, res) {
 
-         var condition = { $or: [] };
+         var condition = { $and: [] };
         var obj = req.body;
         Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-            if (key == 'adsType' || key == 'status') {
+            if ( key == 'status') {
                 var cond = { $or: [] };
-                if (key == "adsType") {
-                    for (data in obj[key]) {
-                        condition.$or.push({ adsType: obj[key][data] })
-                    }
-                }
+            
                 if(key == "status"){
                     for (data in obj[key]) {
-                        condition.$or.push({ status: obj[key][data] })
+                        cond.$or.push({ status: obj[key][data] })
                     }
+                    condition.$and.push(cond)
                 }
             } else {
-                condition[key] = obj[key];
+                 var tempCond = {};
+                        tempCond[key] = req.body[key];
+                        condition.$and.push(tempCond)
+                //condition[key] = obj[key];
             }
         });
-        if (condition.$or.length == 0) {
+        if (condition.$and.length == 0) {
             delete condition.$or;
         }
          console.log("condition==>"+JSON.stringify(condition))
