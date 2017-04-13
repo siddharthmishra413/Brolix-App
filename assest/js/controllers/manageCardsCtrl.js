@@ -232,7 +232,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
 
     $scope.export = function(){
-        html2canvas(document.getElementById('managePayment'), {
+        html2canvas(document.getElementById('manageCardTable'), {
             onrendered: function (canvas) {
                 var data = canvas.toDataURL();
                 var docDefinition = {

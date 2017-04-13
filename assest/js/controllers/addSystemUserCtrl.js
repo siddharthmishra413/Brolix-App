@@ -7,20 +7,45 @@ app.controller('addSystemUserCtrl', function($scope, $window, userService, $stat
     $scope.tableData=true;
     $scope.permissions = [];
 
+    $scope.currentSystemAdmin = 1;
+     $scope.nextSystemAdminDetail = function(){
+         userService.listOfSystemAdmin($scope.currentSystemAdmin).success(function(res) { 
+            // console.log("val",JSON.stringify(res))
+            
+            if (res.responseCode == 200){
+                   $scope.noOfPagesSystemAdmin = res.result.pages;
+                   $scope.pageSystemAdmin= res.result.page;
+                   $scope.allSystemUser= res.result.docs;
+                   $scope.totalPagesCount = res.result.total;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+     }
+     $scope.nextSystemAdminDetail();
+     $scope.nextSystemAdmin = function(){
+        $scope.currentSystemAdmin++;
+        $scope.nextSystemAdminDetail();
+     }
+     $scope.preSystemAdmin= function(){
+        $scope.currentSystemAdmin--;
+        $scope.nextSystemAdminDetail();
+     }
 
-    userService.listOfSystemAdmin().success(function(res) {
-            if (res.responseCode == 404) {
-                toastr.error(res.responseMessage);
-                //$state.go('login')
-            }else if(res.responseCode == 200) {
-                $scope.allSystemUser = res.result;
-                console.log("asassa",JSON.stringify($scope.allSystemUser))
-            }else if(res.responseCode == 400){
-                toastr.error(res.responseMessage);
-            }else{
-                toastr.error(res.responseMessage);
-            }
-        })
+    // userService.listOfSystemAdmin().success(function(res) {
+    //         if (res.responseCode == 404) {
+    //             toastr.error(res.responseMessage);
+    //             //$state.go('login')
+    //         }else if(res.responseCode == 200) {
+    //             $scope.allSystemUser = res.result;
+    //             console.log("asassa",JSON.stringify($scope.allSystemUser))
+    //         }else if(res.responseCode == 400){
+    //             toastr.error(res.responseMessage);
+    //         }else{
+    //             toastr.error(res.responseMessage);
+    //         }
+    //     })
 
     $scope.showtable = function() {
         $scope.Systemuser=true;

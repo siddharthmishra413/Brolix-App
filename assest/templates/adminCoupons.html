@@ -25,6 +25,11 @@
                              </td>
                         </tr>
                     </table>
+                    <div style="float:right; font-size: 20px;" ng-if="(Detail).length != 0">
+                      <button ng-click="preAllCoupons()" ng-disabled="pageAllCoupons==1" class="btn paginationBtn" >Prev</button> 
+                      {{pageAllCoupons}}/{{noOfPagesAllCoupons}}
+                      <button ng-click="nextAllCoupons()" ng-disabled="pageAllCoupons==noOfPagesAllCoupons" class="btn paginationBtn">Next</button>
+                  </div>
                 </div>
         </div>
         <div class="col-sm-12" style="text-align: center" ng-if="addNewCoupon == true">

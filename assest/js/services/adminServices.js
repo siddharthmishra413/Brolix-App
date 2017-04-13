@@ -373,9 +373,9 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/totalSentCash/'+pageNo);
     },
     
-    totalSentCoupon: function() {
-      return $http.get(baseurl+'/admin/totalSentCoupon');
-    },
+    totalSentCoupon: function(pageNo) {
+     return $http.get(baseurl+'/admin/totalSentCoupon/'+pageNo);
+   },
      
     topFiftyBalances: function() {
       return $http.get(baseurl+'/admin/topFiftyBalances');
@@ -494,8 +494,8 @@ app.service('userService',function($http){
       return $http.post(baseurl+'/admin/createSystemUser', data);
     },
 
-    listOfSystemAdmin: function(data){
-      return $http.get(baseurl+'/admin/listOfSystemAdmin');
+    listOfSystemAdmin: function(pageNo){
+      return $http.get(baseurl+'/admin/listOfSystemAdmin/'+pageNo);
     },
 
     removeSystemAdmin: function(id){
@@ -532,8 +532,8 @@ app.service('userService',function($http){
     getPage: function(){
       return $http.get(baseurl+'/admin/showPageName');
     },
-    allCoupons: function(){
-      return $http.get(baseurl+'/admin/showListOFCoupon');
+    allCoupons: function(pageNo){
+      return $http.get(baseurl+'/admin/showListOFCoupon/'+pageNo);
     },
     viewCoupon: function(id){
       return $http.get(baseurl+'/admin/viewCoupon/'+id);
