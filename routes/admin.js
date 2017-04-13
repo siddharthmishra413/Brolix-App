@@ -90,7 +90,7 @@ app.get('/topFiftyUpgradeCardBuyers/:pageNumber', adminHandler.topFiftyUpgradeCa
 app.get('/totalBrolixPrice', adminHandler.totalBrolixPrice);
 app.get('/totalCashPrice', adminHandler.totalCashPrice);
 app.get('/adInfo/:id', adminHandler.adInfo);
-app.get('/topFiftyLuckCardBuyers', adminHandler.topFiftyLuckCardBuyers);
+app.get('/topFiftyLuckCardBuyers/:pageNumber', adminHandler.topFiftyLuckCardBuyers);
 app.get('/topFiftyAds', adminHandler.topFiftyAds);
 app.get('/unblockUser/:userId', adminHandler.unblockUser);
 app.post('/addNewCoupon', adminHandler.addNewCoupon);
@@ -140,7 +140,7 @@ app.post('/sendUpgradeCardTOUsers', adminHandler.sendUpgradeCardTOUsers);
 app.post('/paymentHistory', adminHandler.paymentHistory);
 app.get('/liveUser/:pageNumber', adminHandler.liveUser);
 app.get('/showUserAllPages/:id', adminHandler.showUserAllPages);
-app.get('/listOfCategory',  adminHandler.listOfCategory);
+app.get('/listOfCategory', adminHandler.listOfCategory);
 app.post('/subCategoryData', adminHandler.subCategoryData);
 
 module.exports = app;

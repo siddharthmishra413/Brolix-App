@@ -1035,7 +1035,7 @@ module.exports = {
         var array1 = [];
         for (j = 0; j < req.body.upgradeCardArr.length; j++) {
             for (var i = 0; i < req.body.upgradeCardArr[j].numberOfCount; i++) {
-                var obj = { cash: 0, viewers: 0 }
+                var obj = { cash: 0, viewers: 0, type: 'PURCHASED' }
                 obj.viewers = req.body.upgradeCardArr[j].cash * 20;
                 obj.cash = req.body.upgradeCardArr[j].cash;
                 array.push(obj);
@@ -1074,7 +1074,7 @@ module.exports = {
         var array1 = [];
         for (j = 0; j < req.body.luckCardArr.length; j++) {
             for (var i = 0; i < req.body.luckCardArr[j].numberOfCount; i++) {
-                var obj = { brolix: 0, chances: 0 }
+                var obj = { brolix: 0, chances: 0, type: 'PURCHASED' }
                 obj.chances = req.body.luckCardArr[j].brolix / 50;
                 obj.brolix = req.body.luckCardArr[j].brolix;
                 array.push(obj);
@@ -1507,8 +1507,7 @@ module.exports = {
         waterfall([
             function(callback) {
                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $inc: { couponPurchased: 1 } }, function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } 
-                    else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength == result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength == result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
                         callback(null, result.couponCode, result.couponExpiryDate, result.pageId)
                     }
                 })
@@ -1678,11 +1677,11 @@ module.exports = {
 
                                 createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode } } }, { new: true }).exec(function(err, result3) {
 
-                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 44' }) } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 44' }) } else if (!result3) { res.send({ responseCode: 404, responseMessage: "Receiver ad not found." }); } else {
 
                                         createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId } } }, { new: true }).exec(function(err, result4) {
 
-                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 55' }) } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 55' }) } else if (!result4) { res.send({ responseCode: 404, responseMessage: "Sender ad not found." }); } else {
                                                 //  callback(null, result3)
                                             }
                                         })
@@ -1692,11 +1691,11 @@ module.exports = {
                             }
                         } else {
                             createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode } } }, { new: true }).exec(function(err, result5) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 66' }) } else if (!result5) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 66' }) } else if (!result5) { res.send({ responseCode: 404, responseMessage: "Receiver ad not found." }); } else {
 
                                     createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId } } }, { new: true }).exec(function(err, result6) {
 
-                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 77' }) } else if (!result6) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 77' }) } else if (!result6) { res.send({ responseCode: 404, responseMessage: "Sender ad not found." }); } else {
                                             //  callback(null, result3)
                                         }
                                     })
