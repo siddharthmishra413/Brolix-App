@@ -655,14 +655,14 @@ module.exports = {
             var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) } } }
         }
         if (req.body.dateFilter == 'today') {
-            var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) }, pageId: req.body.pageId } }
+            var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
         }
         if (req.body.dateFilter == 'weekly') {
             var condition;
-            var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) }, pageId: req.body.pageId } }
+            var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
         }
         if (req.body.dateFilter == 'monthly') {
-            var query = { $match: { "month": mm, "year": yy } }
+            var queryCondition = { $match: { "month": mm, "year": yy } }
         }
         if (req.body.dateFilter == 'yearly') {
             var condition = { $project: { pageView: "$pageView", productView: "$productView", callUsClick: "$callUsClick", date: "$date", year: { $year: "$date" }, month: { $month: "$date" } } };
@@ -711,6 +711,7 @@ module.exports = {
                     responseMessage: "Data not found."
                 });
             } else {
+                console.log("aggregate result===>.",result)
                 createNewPage.aggregate(
                         [
                             //  { $match: {_id:req.body.pageId} },
@@ -721,7 +722,7 @@ module.exports = {
 
                             var totalRating = pages.length;
                             console.log("totalRating====>>" + totalRating)
-                            result[0].totalRating = totalRating;
+                            //result[0].totalRating = totalRating;
                             res.send({
                                 result: result,
                                 responseCode: 200,
@@ -759,7 +760,8 @@ module.exports = {
                     updatedAt: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, result) {
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (!result) { res.send({ result: result, responseCode: 404, responseMessage: "Data not found." }); } else {
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
+                    else if (result.length == 0) { res.send({ result: result, responseCode: 404, responseMessage: "Data not found." }); } else {
                         console.log(result)
                         var winnersLength = 0;
 
@@ -1038,12 +1040,19 @@ module.exports = {
         function(callback){
             Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
 
-                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key =="type")) {
- 
-                            var tempCond = {};
+                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key =="type" || req.body[key] == "" || req.body[key]== undefined)) {
+                        var cond = { $or: [] };
+                        if(key == "subCategory"){
+                            for (data in req.body[key]) {
+                                cond.$or.push({ subCategory: req.body[key][data] })
+                            }
+                            condition.$and.push(cond)
+                        }
+                        else{
+                             var tempCond = {};
                             tempCond[key] = req.body[key];
                             condition.$and.push(tempCond) 
-
+                        }
                     }
                 });
                 if (condition.$and.length == 0) {
@@ -1074,7 +1083,7 @@ module.exports = {
             }
             
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                    if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'cashStatus' || key =="type")) {
+                    if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'cashStatus' || key =="type" || req.body[key] == "" || req.body[key]== undefined )) {
                         var queryOrData = { $or: [] };
                         var temporayCondData ={}
 
@@ -1162,7 +1171,7 @@ module.exports = {
             }
             
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                    if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'couponStatus' || key =="type")) {
+                    if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'couponStatus' || key =="type" || req.body[key] == "" || req.body[key]== undefined )) {
                        // var queryOrData = { $or: [] };
                         var temporayCondData ={}
                         if(key == 'cashStatus'){
@@ -1177,7 +1186,7 @@ module.exports = {
                                     var queryOrData = { $or: [{'cashPrize.cashStatus':req.body[key][0]},{'cashPrize.cashStatus':req.body[key][1]}] };
                                 }
                             }
-                           console.log("queryOrData",queryOrData)
+                          // console.log("queryOrData",queryOrData)
                            queryData.$and.push(queryOrData)
                         }
                         else{
@@ -1202,7 +1211,7 @@ module.exports = {
                     if(err){ res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                     else{
                         var countCash = Cashresults.length;
-                        console.log("Cashresults====>>"+JSON.stringify(Cashresults))
+                        //console.log("Cashresults====>>"+JSON.stringify(Cashresults))
                         var pageNumber = Number(req.params.pageNumber)
                         var limitDataCash = pageNumber * 10;
                         var skips = limitDataCash - 10;
@@ -1215,7 +1224,7 @@ module.exports = {
                           { $limit: limitDataCash }, { $skip: skips }
                         ]
                         ).exec(function(err, resu){
-                            console.log("resu====>>"+JSON.stringify(resu))
+                           // console.log("resu====>>"+JSON.stringify(resu))
                           if(err){ res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                    
                             else{
