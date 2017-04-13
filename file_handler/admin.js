@@ -5,6 +5,8 @@ var createNewPage = require("./model/createNewPage");
 var createNewReport = require("./model/reportProblem");
 var adminCards = require("./model/cardsAdmin");
 var Payment = require("./model/payment");
+var subCategory = require("./subcategory.json");
+
 
 //var countries = require ('countries-cities').getCountries(); // Returns an array of country names. 
 var citiess = require('countries-cities').getCities("India"); // Returns an array of city names of the particualr country. 
@@ -1854,7 +1856,7 @@ module.exports = {
                         array.push(result[i]._id)
                     }
                 } //).populate('adAdmin.userId', 'firstName lastName').exec(
-                createNewPage.find({ _id: { $in: array } },function(err, result1) {
+                createNewPage.find({ _id: { $in: array } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
                         var count = 0;
                         for (var i = 0; i < result1.length; i++) {
@@ -1901,8 +1903,7 @@ module.exports = {
                     }
                 }
                 createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                    else if (result1.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No ad found." }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No ad found." }); } else {
                         var count = 0;
                         for (var i = 0; i < result1.length; i++) {
                             count++;
@@ -2901,15 +2902,25 @@ module.exports = {
 
     "topFiftyUpgradeCardBuyers": function(req, res) {
         User.find({}).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                var sortArray = result.sort(function(obj1, obj2) {
-                    return obj2.upgradeCardObject.length - obj1.upgradeCardObject.length
-                })
-                var count = 0;
-                for (var i = 0; i < sortArray.length; i++) {
-                    count++;
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
+                var array = [];
+                for (var i = 0; i < result.length; i++) {
+                    console.log("result-->>", result.length, i)
+                    for (var j = 0; j < result[i].upgradeCardObject.length; j++) {
+                        console.log("result-->>", result[i].upgradeCardObject.length, j)
+                        if (result[i].upgradeCardObject.length > 0) {
+                            array.push(result[i]._id)
+                        }
+                    }
                 }
-                res.send({ result: sortArray, count: count, responseCode: 200, responseMessage: "Data show successfully." });
+                User.paginate({ _id: { $in: array }, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
+                        // var sortArray = result1.docs.sort(function(obj1, obj2) {
+                        //     return obj2.upgradeCardObject.length - obj1.upgradeCardObject.length
+                        // })
+                        res.send({ result: result1, responseCode: 200, responseMessage: "Data show successfully." });
+                    }
+                })
             }
         })
     },
@@ -3057,8 +3068,7 @@ module.exports = {
 
     "showListOFCoupon": function(req, res) {
         createNewAds.find({ adsType: 'ADMINCOUPON', status: 'ACTIVE' }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-             else if (result.length == 0) { res.send({ count: 0, responseCode: 500, responseMessage: 'No coupon found' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 500, responseMessage: 'No coupon found' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: "Coupon list successfully." })
             }
         })
@@ -3910,11 +3920,12 @@ module.exports = {
         })
     },
 
-     "listOfCategory": function(req, res) {
+    "listOfCategory": function(req, res) {
         var categoryList = ["Restaurant and Coffee Shop", "Fashion (Men-Women-Kids-Babies)", "Beauty & Health Care", "Fitness and Sports",
-          "Traveling Agencies","Cinema","Furniture","Home","Mobile and Computer Apps","Toys for kids and Babies","Electronics and Technology",
-          "Hotels and Apartments","Medical","Education","Motors","Hypermarkets","Events","Jewelry","Arts and Design","Pets","Insurance",
-          "Banks and Finance Companies","Real Estate","Books","Business and Services","Nightlife","Construction","Factories"];
+            "Traveling Agencies", "Cinema", "Furniture", "Home", "Mobile and Computer Apps", "Toys for kids and Babies", "Electronics and Technology",
+            "Hotels and Apartments", "Medical", "Education", "Motors", "Hypermarkets", "Events", "Jewelry", "Arts and Design", "Pets", "Insurance",
+            "Banks and Finance Companies", "Real Estate", "Books", "Business and Services", "Nightlife", "Construction", "Factories"
+        ];
         console.log("categoryList-->>", categoryList)
         res.send({
             result: categoryList,
@@ -3924,13 +3935,13 @@ module.exports = {
 
     },
 
-    "subCategoryData": function(req, res){
-       var matchData = req.body.subCat;
-       res.send({
-        responseCode:200,
-        responseMessage:"Subcategory lists.",
-        result:subCategory[matchData]
-       })
+    "subCategoryData": function(req, res) {
+        var matchData = req.body.subCat;
+        res.send({
+            responseCode: 200,
+            responseMessage: "Subcategory lists.",
+            result: subCategory[matchData]
+        })
     },
 
 

@@ -1,4 +1,4 @@
-app.controller('addNewPagesCtrl', function ($scope, $state,createPageService, $window, userService, uploadimgServeice, $http, toastr) {
+app.controller('addNewPagesCtrl', function ($scope, spinnerService, $timeout, $state,createPageService, $window, userService, uploadimgServeice, $http, toastr) {
 $(window).scrollTop(0,0);
 $scope.$emit('headerStatus', 'Manage Pages');
  $scope.$emit('SideMenu', 'Manage Pages');
@@ -25,12 +25,45 @@ $scope.$emit('headerStatus', 'Manage Pages');
     
  }
   userService.pageAdmin().success(function(res) {
-    console.log(JSON.stringify(res))
+    //console.log(JSON.stringify(res))
         if (res.responseCode == 200){
             $scope.pageAdmin= res.result;
+        }else{
+        	toastr.error("Something went wrong")
         } 
 
     })
+
+   userService.listOfCategory().success(function(res) {
+    console.log(JSON.stringify(res))
+        if (res.responseCode == 200){
+            $scope.category= res.result;
+            console.log("category",JSON.stringify(res))
+        }else{
+        	toastr.error("Something went wrong")
+        } 
+
+    })
+
+   $scope.subCategoryData = function(){
+   	console.log("bbb",$scope.myForm.mainCategory);
+   	var data ={};
+   	data = {
+			subCat:$scope.myForm.mainCategory
+	}
+	userService.subCategoryData(data).success(function(res) {
+    console.log(JSON.stringify(res))
+        if (res.responseCode == 200){
+            $scope.subCategoryData= res.result;
+            console.log("subCategoryData",JSON.stringify(subCategoryData))
+        }else{
+        	toastr.error("Something went wrong")
+        } 
+
+    })
+
+   }
+
 $scope.addNewPage = function(addNewPage){
   console.log(addNewPage)
   var d=JSON.parse(addNewPage);
@@ -67,25 +100,47 @@ $scope.addNewPage = function(addNewPage){
         toastr.error("Somthing Went wrong")
      }  
  }
+	$scope.changeImage = function(input,key) {
+		spinnerService.show('html5spinner');  
+		var file = input.files[0];
+		var ext = file.name.split('.').pop();
+		if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
+		$scope.imageName = file.name;
 
-    $scope.changeImage = function(input,key) {
-        var file = input.files[0];
-        var ext = file.name.split('.').pop();
-        if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
-            $scope.imageName = file.name;
-            uploadimgServeice.user(file).then(function(ObjS) {
-                if(key=='pageImage'){
+		uploadimgServeice.user(file).then(function(ObjS) {
+		        $timeout(function () {      
+		    spinnerService.hide('html5spinner');     
+		        if(key=='pageImage'){
                     $scope.myForm.pagephoto = ObjS.data.result.url;
                     $scope.user.pagephoto = ObjS.data.result.url;
                 }else{
                     $scope.myForm.userphoto = ObjS.data.result.url;
                     $scope.user.userphoto = ObjS.data.result.url;
-                }  
-        })
-        }else{
-            toastr.error("Only image supported.")
-        }        
-    }
+                }
+		          }, 250);  
+		        // $scope.user.photo1 = ObjS.data.result.url;
+		        //console.log("image1",$scope.myFrom.image)
+		    })
+
+		}else{
+		toastr.error("Only image supported.")
+		}        
+	}
+
+    // $scope.changeImage = function(input,key) {
+    //     var file = input.files[0];
+    //     var ext = file.name.split('.').pop();
+    //     if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
+    //         $scope.imageName = file.name;
+    //         uploadimgServeice.user(file).then(function(ObjS) {
+                  
+    //     })
+    //     }else{
+    //         toastr.error("Only image supported.")
+    //     }        
+    // }
+
+
   $scope.initFun=function(){
    var inputFrom = document.getElementById('from');
       var autocompleteFrom = new google.maps.places.Autocomplete(inputFrom);

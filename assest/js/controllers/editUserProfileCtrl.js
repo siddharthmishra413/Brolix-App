@@ -19,7 +19,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     {
       $timeout(function(){
         $scope.countriesList=countries;
-        //console.log("data1",$scope.countriesList)
+        console.log("data1",$scope.countriesList)
       },100)
       
       
@@ -71,10 +71,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                console.log("al ldta",JSON.stringify(res.result));
                $scope.viewUserProfile.country = res.result.country;
                $scope.viewUserProfile.state = res.result.state;
-               console.log("res.result.state",res.result.state);
+               console.log("res.result.country",res.result.country);
                console.log("$scope.viewUserProfile.state",$scope.viewUserProfile.state);
-
-
                // console.log(JSON.stringify($scope.viewUserProfile.state)) 
                var updateDate = new Date($scope.viewUserProfile.dob);
                $scope.viewUserProfile.dob = moment(updateDate).format('MM/DD/YYYY');

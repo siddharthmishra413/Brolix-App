@@ -86,7 +86,7 @@ app.get('/totalSentCoupon/:pageNumber', adminHandler.totalSentCoupon);
 app.get('/totalSentCash/:pageNumber', adminHandler.totalSentCash);
 app.get('/pageInfo/:id', adminHandler.pageInfo);
 app.get('/topFiftyBalances', adminHandler.topFiftyBalances);
-app.get('/topFiftyUpgradeCardBuyers', adminHandler.topFiftyUpgradeCardBuyers);
+app.get('/topFiftyUpgradeCardBuyers/:pageNumber', adminHandler.topFiftyUpgradeCardBuyers);
 app.get('/totalBrolixPrice', adminHandler.totalBrolixPrice);
 app.get('/totalCashPrice', adminHandler.totalCashPrice);
 app.get('/adInfo/:id', adminHandler.adInfo);

@@ -261,8 +261,8 @@ $scope.slectCountry = function(qq){
 $scope.dashBordFilter = function(){
 
     var type = localStorage.getItem('pageTypeName');
-    $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
-    $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
+    $scope.dobTo =$scope.dashBordFilter.dobTo==null?undefined : new Date($scope.dashBordFilter.dobTo).getTime();
+    $scope.dobFrom =$scope.dashBordFilter.dobFrom==null?undefined : new Date($scope.dashBordFilter.dobFrom).getTime();
     //$scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
     //console.log("date",$scope.dashBordFilter.country);
     var data = {};
@@ -275,7 +275,7 @@ $scope.dashBordFilter = function(){
             joinTo:$scope.dobTo,
             joinFrom:$scope.dobFrom,
         }
-        console.log("datatata",data)
+        console.log("datatata",JSON.stringify(data))
 
     switch (type)
             {
@@ -597,7 +597,7 @@ $scope.dashBordFilter = function(){
     $scope.currentTotalPages = 1;
      $scope.nextTotalPagesDetail = function(){
          userService.totalPages($scope.currentTotalPages).success(function(res) { 
-             console.log("val",JSON.stringify(res))
+             //console.log("val",JSON.stringify(res))
             
             if (res.responseCode == 200){
                    $scope.noOfPagesTotalPages = res.result.pages;
@@ -710,6 +710,7 @@ $scope.dashBordFilter = function(){
                    $scope.noOfPagesRemovedPage = res.result.pages;
                    $scope.pageRemovedPage= res.result.page;
                    $scope.showAllRemovedPage= res.result.docs;
+                   console.log(JSON.stringify($scope.showAllRemovedPage))
                    $scope.showAllRemovedPageCount = res.result.total;
                } 
                else {
@@ -831,24 +832,26 @@ $scope.showAdminPages = function(id){
            toastr.error(res.responseMessage);
         }
     })
-}
-
-
+   }
 })
 
-app.filter("managePagesFilter",function() {
+app.filter("pagesFilter",function() {
      return function(items,nameValue)
      {
+        console.log(JSON.stringify(items));
+        console.log(nameValue);
        if (!nameValue) {
          return retArray = items;
             }
          var retArray = [];
            for(var i=0;i<items.length;i++) 
                {
-            if (items[i].userId.mobileNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toString().substr(0,nameValue.length) == nameValue.toString()) {
+               
+            if (items[i].phoneNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {
                 retArray.push(items[i]);
                }
            }
            return retArray
      }
  })
+

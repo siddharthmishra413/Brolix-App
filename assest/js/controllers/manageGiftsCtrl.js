@@ -579,9 +579,13 @@ $scope.top_50_balanc = function(type){
                 case 'totalCouponsGifts': 
                 console.log("1");
                     userService.giftFilter(data).success(function(res){
-                      console.log(res);
-                        $scope.totalCouponsGiftShow = res.result;
-                        console.log("ressssssss2",JSON.stringify($scope.totalCoponsGiftShow));
+                       
+                        if(res.responseCode == 200) {
+                            $scope.totalCouponsGiftShow = res.result;
+                            console.log("ressssssss1",JSON.stringify($scope.totalCouponsGiftShow));
+                         }else {
+                            $scope.totalCouponsGiftShow = [];
+                        }
                     })
                     
                 break;
@@ -589,8 +593,13 @@ $scope.top_50_balanc = function(type){
                 case 'totalCashGifts': 
                 console.log("2");
                     userService.giftFilter(data).success(function(res){
-                        $scope.totalCashGiftShow = res.result;
-                        console.log("ressssssss3",JSON.stringify($scope.totalCashGiftShow));
+                        
+                         if(res.responseCode == 200) {
+                           $scope.totalCashGiftShow = res.result;
+                           console.log("ressssssss2",JSON.stringify($scope.totalCashGiftShow));
+                         }else {
+                           $scope.totalCashGiftShow = [];
+                        }
                     })
                     
                 break;
@@ -598,9 +607,14 @@ $scope.top_50_balanc = function(type){
                 case 'totalHiddenGifts': 
                 console.log("3");
                     userService.giftFilter(data).success(function(res){
-                      console.log("res",JSON.stringify(res))
-                        $scope.totalHiddenGiftShow = res.result;
-                        //console.log("ressssssss4",JSON.stringify($scope.totalHiddenGiftShow));
+                      
+                      if(res.responseCode == 200) {
+                         $scope.totalHiddenGiftShow = res.result;
+                          console.log("ressssssss3",JSON.stringify($scope.totalHiddenGiftShow));
+                      }else {
+                         $scope.totalHiddenGiftShow = [];
+                      }
+
                     })
                     
                 break;
@@ -608,8 +622,14 @@ $scope.top_50_balanc = function(type){
                 case 'totalExchanged': 
                 console.log("4");
                     userService.giftFilter(data).success(function(res){
-                        $scope.totalExchangedCouponShow1 = res.result;
-                        //console.log("ressssssss5",JSON.stringify($scope.totalExchangedCouponShow1));
+                       
+                        if(res.responseCode == 200) {
+                         $scope.totalExchangedCouponShow1 = res.result;
+                          console.log("ressssssss4",JSON.stringify($scope.totalExchangedCouponShow1));
+                      }else {
+                         $scope.totalExchangedCouponShow1 = [];
+                      }
+
                     })
                     
                 break;
@@ -617,8 +637,13 @@ $scope.top_50_balanc = function(type){
                 case 'totalSentCoupons':
                 console.log("5"); 
                     userService.giftFilter(data).success(function(res){
-                        $scope.totalSentCouponShow1 = res.result;
-                        //console.log("ressssssss6",JSON.stringify($scope.totalSentCouponShow1));
+                       
+                         if(res.responseCode == 200) {
+                         $scope.totalSentCouponShow1 = res.result;
+                          console.log("ressssssss4",JSON.stringify($scope.totalSentCouponShow1));
+                         }else {
+                           $scope.totalSentCouponShow1 = [];
+                         }
                     })
                     
                 break;
@@ -627,7 +652,14 @@ $scope.top_50_balanc = function(type){
                 console.log("6");
                     userService.giftFilter(data).success(function(res){
                         $scope.totalSentCashShow = res.result;
-                        //console.log("ressssssss7",JSON.stringify($scope.totalSentCashShow));
+
+                         if(res.responseCode == 200) {
+                         $scope.totalSentCashShow = res.result;
+                          console.log("ressssssss4",JSON.stringify($scope.totalSentCashShow));
+                         }else {
+                           $scope.totalSentCashShow = [];
+                         }
+                      
                     })
                     
                 break;
