@@ -2257,7 +2257,7 @@ module.exports = {
             console.log("rather than query")
             var updateData = {};
         }
-        User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$cashPrize" },{ $match: updateData }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 console.log(result)
                 var count = 0;
