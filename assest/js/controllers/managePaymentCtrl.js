@@ -15,6 +15,10 @@ $(window).scrollTop(0,0);
     $scope.myForm.country="";
     $scope.myForm.state="";
     $scope.myForm.city="";
+    $scope.dashBordFilter.dollarCardType ="";
+    $scope.dashBordFilter.brolixCardType ="";
+        $scope.myForm.cashStatus ="";
+    $scope.myForm.couponStatus ="";
 
 
     //******************** dollars Sold Upgrade Card data **********************
@@ -838,7 +842,7 @@ $(window).scrollTop(0,0);
                                         country:$scope.dashBordFilter.country,
                                         state:$scope.dashBordFilter.state,
                                         city: $scope.dashBordFilter.city,
-                                        cardType:$scope.dashBordFilter.dollarCardType
+                                        cardType:$scope.dashBordFilter.brolixCardType
                                      }
                                      console.log("brolix"+JSON.stringify(data))
                                 userService.filterBrolix(data).success(function(res){
@@ -973,7 +977,7 @@ app.filter("managePaymentFilter",function() {
 });
 app.filter("managePaymentSoldCouponFilter",function() {
       return function(items,nameValue){
-        console.log(JSON.stringify(items))
+        // console.log(JSON.stringify(items))
 
       if (!nameValue) {
         return retArray = items;

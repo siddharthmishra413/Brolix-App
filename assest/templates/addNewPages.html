@@ -26,22 +26,45 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Main Category</label>
-                                            <div class="col-md-9">
+                                            <!-- <div class="col-md-9">
                                                 <input type="text" class="form-control" name="category" placeholder="Enter Category" ng-model="myForm.mainCategory" maxlength="31" ng-maxlength="30" required> 
                                                 <span style="color:red;" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
                                                 <span ng-show="userFrom.category.$error.required">Category is required.</span>
                                                 <span ng-show="userFrom.category.$error.maxlength">Category should contain max 30 characters.</span>
+                                            </div> -->
+
+                                            <div class="col-md-9">
+                                                <!-- <select class="form-control" ng-model="myForm.mainCategory" name="category" required ng-change="subCategoryData();">
+                                                    <option value="">Select Category</option>
+                                                    <option ng-repeat="category in category" value="category" >{{category}}</option>
+                                                </select> -->
+                                                <select class="form-control" ng-change="subCategoryData();" ng-model="myForm.mainCategory" required>
+                                                    <option value="">Select Category</option>
+                                                    <option ng-repeat="category in category">{{category}}</option>
+                                                 </select> 
+                                                <span style="color:red;" class="error" ng-show="myForm.category.$dirty && myForm.category.$invalid">
+                                                     <span style="color:red;" class="error" ng-show="myForm.category.$error.required">Please Select a Category</span>
+                                                </span> 
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Sub Categories</label>
-                                            <div class="col-md-9">
+                                           <!--  <div class="col-md-9">
                                                 <input type="text" class="form-control" placeholder="Enter Subcategory" name="subCategory" ng-model="myForm.subCategory" maxlength="31" ng-maxlength="30" required> 
                                                 <span style="color:red;" ng-show="userFrom.subCategory.$dirty && userFrom.subCategory.$invalid">
                                                 <span ng-show="userFrom.subCategory.$error.required">Sub-Category is required.</span>
                                                 <span ng-show="userFrom.subCategory.$error.maxlength">Sub-Category should contain max 30 characters.</span>
+                                            </div> -->
+                                            <div class="col-md-9">
+                                                <select class="form-control" ng-model="myForm.subCategory" name="subCategory" >
+                                                    <option value="">Select Category</option>
+                                                    <option ng-repeat="subCategoryData in subCategoryData" value="" >{{subCategoryData}}</option>
+                                                </select>
+                                                <span style="color:red;" class="error" ng-show="myForm.subCategory.$dirty && myForm.subCategory.$invalid">
+                                                     <span style="color:red;" class="error" ng-show="myForm.subCategory.$error.required">Please Select a subCategory</span>
+                                                </span> 
                                             </div>
                                         </div>
                                     </div>

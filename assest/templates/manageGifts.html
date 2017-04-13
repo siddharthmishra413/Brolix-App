@@ -226,7 +226,7 @@
                         <td>{{x.exchToFirstName}} {{x.exchToLastName}}</td>
                         <td>{{x.exchFromFirstName}} {{x.exchFromLastName}}</td>
                     </tr> 
-                     <tr ng-if="(totalExchangedCouponShow1 |totalExchangedFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                     <tr ng-if="(totalExchangedCouponShow1 | totalExchangedFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                         
                 </tbody>
             </table>
@@ -371,7 +371,7 @@
                         <td class="skyblue-text" ng-click="showCouponGift(x.hiddenGifts.adId)">View</td>
                         <td>{{x.hiddenGifts.status}}</td>
                      </tr>
-                      <tr ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
+                      <tr ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length != 0">

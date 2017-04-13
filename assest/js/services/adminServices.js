@@ -229,9 +229,16 @@ app.service('userService',function($http){
      return $http.put(baseurl+'/admin/editPage/'+id,data);
    },
 
-    // showPageDetails: function(data) {
-    //   return $http.post('http://172.16.6.41:8082/page/showPageDetails', data);
-    // },
+    listOfCategory: function() {
+      return $http.get(baseurl+'/admin/listOfCategory');
+    },
+
+    subCategoryData: function(data) {
+      console.log("dataaabb",data)
+      return $http.post(baseurl+'/admin/subCategoryData', data);
+    },
+
+    //http://localhost:8082/page/listOfCategory
 
 
     viewPage: function(id) {
@@ -239,7 +246,7 @@ app.service('userService',function($http){
     },
 
     pagefilter: function(data) {
-      return $http.post(baseurl+'/page/pagefilter', data);
+      return $http.post(baseurl+'/admin/pagefilter', data);
     },
 
     //Url : http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1310/admin/pagefilter
