@@ -2257,7 +2257,7 @@ module.exports = {
             console.log("rather than query")
             var updateData = {};
         }
-        User.aggregate({ $unwind: "$cashPrize" },{ $match: updateData }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 console.log(result)
                 var count = 0;
@@ -2898,26 +2898,23 @@ module.exports = {
                 res.send({ result: result, count: count, responseCode: 200, responseMessage: "Data show successfully." });
             }
         })
-    },
+    }, // 'upgradeCardObject.type':'PURCHASED'
 
     "topFiftyUpgradeCardBuyers": function(req, res) {
-        User.find({}).exec(function(err, result) {
+        User.aggregate({ $unwind: '$upgradeCardObject' }, { $match: { 'upgradeCardObject.type': 'PURCHASED' } }, {
+            $group: { _id: '$_id', list: { $push: 'upgradeCardObject.PURCHASED' } }
+        }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
+                var sortArray = result.sort(function(obj1, obj2) {
+                    return obj2.list.length - obj1.list.length
+                })
                 var array = [];
-                for (var i = 0; i < result.length; i++) {
-                    console.log("result-->>", result.length, i)
-                    for (var j = 0; j < result[i].upgradeCardObject.length; j++) {
-                        console.log("result-->>", result[i].upgradeCardObject.length, j)
-                        if (result[i].upgradeCardObject.length > 0) {
-                            array.push(result[i]._id)
-                        }
-                    }
+                for (var i = 0; i < sortArray.length; i++) {
+                    array.push(sortArray[i]._id)
                 }
                 User.paginate({ _id: { $in: array }, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
-                        // var sortArray = result1.docs.sort(function(obj1, obj2) {
-                        //     return obj2.upgradeCardObject.length - obj1.upgradeCardObject.length
-                        // })
+
                         res.send({ result: result1, responseCode: 200, responseMessage: "Data show successfully." });
                     }
                 })
@@ -2966,16 +2963,23 @@ module.exports = {
     },
 
     "topFiftyLuckCardBuyers": function(req, res) {
-        User.find({}).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+        User.aggregate({ $unwind: '$luckCardObject' }, { $match: { 'luckCardObject.type': 'PURCHASED' } }, {
+            $group: { _id: '$_id', list: { $push: 'luckCardObject.PURCHASED' } }
+        }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
                 var sortArray = result.sort(function(obj1, obj2) {
-                    return obj2.luckCardObject.length - obj1.luckCardObject.length
+                    return obj2.list.length - obj1.list.length
                 })
-                var count = 0;
+                var array = [];
                 for (var i = 0; i < sortArray.length; i++) {
-                    count++;
+                    array.push(sortArray[i]._id)
                 }
-                res.send({ result: sortArray, count: count, responseCode: 200, responseMessage: "Data show successfully." });
+                User.paginate({ _id: { $in: array }, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
+
+                        res.send({ result: result1, responseCode: 200, responseMessage: "Data show successfully." });
+                    }
+                })
             }
         })
     },
@@ -3794,7 +3798,8 @@ module.exports = {
     "sendUpgradeCardTOUsers": function(req, res) {
         waterfall([
                 function(callback) {
-                    if (req.body.Id.length == 0) { res.send({ responseCode: 404, responseMessage: 'please enter atleast one user.' }); } else {
+                    var id = req.body.Id;
+                    if (id == 0) { res.send({ responseCode: 404, responseMessage: 'please enter atleast one user.' }); } else {
                         var cardId = req.body.cardId;
                         var userArray = req.body.Id;
                         console.log("lenght-->>>", userArray)
