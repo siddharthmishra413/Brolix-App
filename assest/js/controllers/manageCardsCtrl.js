@@ -834,14 +834,14 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 app.filter("cardsFilter",function() {
 
   var fullName = [];
-  var retArray = [];
-     return function(items,nameValue) {
+     
+      return function(items,nameValue) {
         console.log(JSON.stringify(items))
         console.log(nameValue)
         if (!nameValue) {            
          return retArray = items;
            }
-        // var retArray = [];
+         var retArray = [];
            for(var i=0;i<items.length;i++) 
                {
               fullName.push(items[i].firstName+' '+items[i].lastName);
@@ -849,8 +849,8 @@ app.filter("cardsFilter",function() {
                {
                 retArray.push(items[i])
                }
-            } 
-            console.log("arr"+JSON.stringify(retArray))
+            }
+
          return retArray;
 
      }

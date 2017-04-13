@@ -101,32 +101,34 @@ $scope.addNewPage = function(addNewPage){
 	console.log("ssssss",JSON.stringify(addNewPage));
 	var adminInfo=JSON.parse(addNewPage);
 	console.log("adminInfo",adminInfo.firstName,adminInfo.lastName)
+	var name = adminInfo.firstName + adminInfo.lastName;
 	var flag = false;
- 	// if(addNewPage == "" || addNewPage ==null || addNewPage == undefined){
- 	// 	toastr.error("Please select at least on admin");
- 	// }else{
- 	// 	console.log("000")
- 	// 	if($scope.pageAdminss.length == 0){
- 	// 		console.log("111");
- 	// 		$scope.pageAdminss.push(addNewPage);
- 	// 		console.log("$scope.pageAdmin",$scope.pageAdminss)
- 	// 	}else{
- 	// 		console.log("pageAdmin",$scope.pageAdminss);
- 	// 		for(var i=0; i<$scope.pageAdminss.length; i++){
- 	// 			if($scope.pageAdminss[i] == addNewPage){
- 	// 				flag = true;
- 	// 				break;
- 	// 			}
- 	// 		}
- 	// 		if(flag){
- 	// 			toastr.error("You have already chosen this admin");
- 	// 		}else{
- 	// 			console.log("jjjjj");
- 	// 			$scope.pageAdminss.push(addNewPage);
- 	// 		}
- 	// 	}
+ 	if(name == "" || name ==null || name == undefined){
+ 		toastr.error("Please select at least on admin");
+ 	}else{
+ 		console.log("000")
+ 		if($scope.pageAdminss.length == 0){
+ 			console.log("111");
+ 			$scope.pageAdminss.push(name);
+ 			console.log("$scope.pageAdmin",$scope.pageAdminss)
+ 		}else{
+ 			console.log("pageAdmin",$scope.pageAdminss);
+ 			for(var i=0; i<$scope.pageAdminss.length; i++){
+ 				if($scope.pageAdminss[i] == name){
+ 					flag = true;
+ 					break;
+ 				}
+ 			}
+ 			if(flag){
+ 				toastr.error("You have already chosen this admin");
+ 			}else{
+ 				console.log("jjjjj");
+ 				$scope.pageAdminss.push(name);
+ 			}
+ 		}
 
- 	// }
+ 	}
+ 	console.log("final arr",$scope.pageAdminss)
  }
 
  $scope.removeNewPage = function(removeNewPage){
