@@ -1,12 +1,12 @@
 
     <div class="row">
-        <div class="col-sm-4 m-b-20">
+        <div class="col-sm-3 m-b-20">
             <form name="first">
                 <div class="outer-box-brolix-fee">
                     <!-- <div class="form-group">
                         <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
                     </div> -->
-                    <div class="input-group">
+                    <div class="form-group">
                         <input ng-model="brolixPerFreeCouponAds" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
                         </div> 
                         <span style="color:red;" ng-show="first.viewer.$dirty && first.viewer.$invalid">
@@ -14,15 +14,211 @@
                         <span ng-show="first.viewer.$error.pattern">Only number are allowed.</span> 
                         </span>
                     <div class="form-group">
-                        <span class="form-control">B</span>
+                        <span class="form-control text-center">B</span>
                     </div>
                 </div>
-                <h3>Brolix Per Free Ads</h3>
-                <div class="text-center"><button style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('brolixPerFreeCouponAds')">Edit</button>
+                <h3 class="text-center">Brolix Per Free Ads</h3>
+                <div class="text-center"><button ng-disabled="first.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('brolixPerFreeCouponAds')">Edit</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-sm-3 m-b-20">
+            <form name="second">
+                <div class="outer-box-brolix-fee">
+                    <!-- <div class="form-group">
+                        <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
+                    </div> -->
+                    <div class="form-group">
+                        <input ng-model="brolixPerFreeCashAds" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
+                        </div> 
+                        <span style="color:red;" ng-show="second.viewer.$dirty && second.viewer.$invalid">
+                        <span ng-show="second.viewer.$error.required">Viewers is required.</span> 
+                        <span ng-show="second.viewer.$error.pattern">Only number are allowed.</span> 
+                        </span>
+                    <div class="form-group">
+                        <span class="form-control text-center">B</span>
+                    </div>
+                </div>
+                <h3 class="text-center">Brolix Per Cash Ads</h3>
+                <div class="text-center"><button ng-disabled="second.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('brolixPerFreeCashAds')">Edit</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-sm-3 m-b-20">
+            <form name="third">
+                <div class="outer-box-brolix-fee">
+                    <!-- <div class="form-group">
+                        <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
+                    </div> -->
+                    <div class="form-group">
+                        <input ng-model="brolixPerUpgradedCashAds" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
+                        </div> 
+                        <span style="color:red;" ng-show="third.viewer.$dirty && third.viewer.$invalid">
+                        <span ng-show="third.viewer.$error.required">Viewers is required.</span> 
+                        <span ng-show="third.viewer.$error.pattern">Only number are allowed.</span> 
+                        </span>
+                    <div class="form-group">
+                        <span class="form-control text-center">B</span>
+                    </div>
+                </div>
+                <h3 class="text-center">Brolix Per Upgraded Ads</h3>
+                <div class="text-center"><button ng-disabled="third.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('brolixPerUpgradedCashAds')">Edit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-3 m-b-20">
+            <form name="four">
+                <div class="outer-box-brolix-fee">
+                    <!-- <div class="form-group">
+                        <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
+                    </div> -->
+                    <div class="form-group">
+                        <input ng-model="brolixForInvitation" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
+                        </div> 
+                        <span style="color:red;" ng-show="four.viewer.$dirty && four.viewer.$invalid">
+                        <span ng-show="four.viewer.$error.required">Viewers is required.</span> 
+                        <span ng-show="four.viewer.$error.pattern">Only number are allowed.</span> 
+                        </span>
+                    <div class="form-group">
+                        <span class="form-control text-center">B</span>
+                    </div>
+                </div>
+                <h3 class="text-center">Brolix Per Invitation</h3>
+                <div class="text-center"><button ng-disabled="four.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('brolixForInvitation')">Edit</button>
+                </div>
             </form>
         </div>
     </div>
-        <div class="col-sm-4 m-b-20">
+
+    <div class="row">
+        <div class="col-sm-3 m-b-20">
+            <form name="five">
+                <div class="outer-box-brolix-fee">
+                    <!-- <div class="form-group">
+                        <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
+                    </div> -->
+                    <div class="form-group">
+                        <input ng-model="viewerPriceForCashAds" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
+                        </div> 
+                        <span style="color:red;" ng-show="five.viewer.$dirty && five.viewer.$invalid">
+                        <span ng-show="five.viewer.$error.required">Viewers is required.</span> 
+                        <span ng-show="five.viewer.$error.pattern">Only number are allowed.</span> 
+                        </span>
+                    <div class="form-group">
+                        <span class="form-control text-center">B</span>
+                    </div>
+                </div>
+                 <h3 class="text-center">Viewer Price (Cash Ads)</h3>
+                <div class="text-center"><button ng-disabled="five.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('viewerPriceForCashAds')">Edit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-3 m-b-20">
+            <form name="six">
+                <div class="outer-box-brolix-fee">
+                    <!-- <div class="form-group">
+                        <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
+                    </div> -->
+                    <div class="form-group">
+                        <input ng-model="brolixFeeForCashAds" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
+                        </div> 
+                        <span style="color:red;" ng-show="six.viewer.$dirty && six.viewer.$invalid">
+                        <span ng-show="six.viewer.$error.required">Viewers is required.</span> 
+                        <span ng-show="six.viewer.$error.pattern">Only number are allowed.</span> 
+                        </span>
+                    <div class="form-group">
+                        <span class="form-control text-center">B</span>
+                    </div>
+                </div>
+                <h3 class="text-center">Brolix Fees (Cash Ads)</h3>
+                <div class="text-center"><button ng-disabled="six.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('brolixFeeForCashAds')">Edit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-3 m-b-20">
+            <form name="seven">
+                <div class="outer-box-brolix-fee">
+                    <!-- <div class="form-group">
+                        <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
+                    </div> -->
+                    <div class="form-group">
+                        <input ng-model="storeCouponPriceForFreeAds" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
+                        </div> 
+                        <span style="color:red;" ng-show="seven.viewer.$dirty && seven.viewer.$invalid">
+                        <span ng-show="seven.viewer.$error.required">Viewers is required.</span> 
+                        <span ng-show="seven.viewer.$error.pattern">Only number are allowed.</span> 
+                        </span>
+                    <div class="form-group">
+                        <span class="form-control text-center">B</span>
+                    </div>
+                </div>
+                <h3 class="text-center">Coupon price (free Ads)</h3>
+                <div class="text-center"><button ng-disabled="seven.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('storeCouponPriceForFreeAds')">Edit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-3 m-b-20">
+            <form name="eight">
+                <div class="outer-box-brolix-fee">
+                    <!-- <div class="form-group">
+                        <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
+                    </div> -->
+                    <div class="form-group">
+                        <input ng-model="storeCouponPriceForUpgradedAds" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
+                        </div> 
+                        <span style="color:red;" ng-show="eight.viewer.$dirty && eight.viewer.$invalid">
+                        <span ng-show="eight.viewer.$error.required">Viewers is required.</span> 
+                        <span ng-show="eight.viewer.$error.pattern">Only number are allowed.</span> 
+                        </span>
+                    <div class="form-group">
+                        <span class="form-control text-center">B</span>
+                    </div>
+                </div>
+                 <h3 class="text-center">Coupon price (upgraded Ads)</h3>
+                <div class="text-center"><button ng-disabled="eight.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('storeCouponPriceForUpgradedAds')">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+       
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+   <!--  <div class="row">
+         -->
+
+
+
+
+
+
+
+
+
+
+
+        
+        <!-- <div class="col-sm-4 m-b-20">
             <form>
                 <div class="outer-box-brolix-fee">
                     <div class="form-group">
@@ -123,4 +319,4 @@
 
 
 
- 
+  -->

@@ -25,11 +25,11 @@ var BATTUTA_KEY="00000000000000000000000000000000"
       
     });
   var countryCode;
-    $scope.changeCountry = function(x){
+    $scope.changeCountry = function(){
       for(var i=0;i<$scope.countriesList.length;i++){
         //console.log("$scope.dashBordFilter.country",$scope.dashBordFilter.country)
         console.log($scope.countriesList[i].name)
-        if($scope.countriesList[i].name==x){
+        if($scope.countriesList[i].name==$scope.viewUserProfile.country){
           countryCode=$scope.countriesList[i].code;
           //console.log(countryCode)
           break;
@@ -48,9 +48,9 @@ var BATTUTA_KEY="00000000000000000000000000000000"
       });
     }
 
-    $scope.changeState = function(x) {
+    $scope.changeState = function() {
       console.log('detail -> ',$scope.viewUserProfile.statedfd)
-      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.viewUserProfile.statedfd+"&key="+BATTUTA_KEY+"&callback=?";
+      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.viewUserProfile.state+"&key="+BATTUTA_KEY+"&callback=?";
       console.log($scope.viewUserProfile.statedfd)
       $.getJSON(url,function(cities)
       {

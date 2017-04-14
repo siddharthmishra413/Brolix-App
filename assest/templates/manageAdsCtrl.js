@@ -879,7 +879,9 @@ app.filter("manageAdsFilter",function() {
        var retArray = [];
          for(var i=0;i<items.length;i++)
               {
-              if(items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].userId.mobileNumber.toString().substr(0,nameValue.length) == nameValue.toString()) {
+             if(items[i].userId.mobileNumber == '' || items[i].userId.mobileNumber == 'undefined' || items[i].pageName == null || items[i].pageName == 'undefined' || items[i].pageName == null || items[i].userId.mobileNumber == null)
+              {
+               }else  if(items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].userId.mobileNumber.toString().substr(0,nameValue.length) == nameValue.toString()) {
                         retArray.push(items[i]);
                     }
          }

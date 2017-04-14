@@ -60,7 +60,6 @@ $scope.currentAllCoupons = 1;
             uploadimgServeice.user(file).then(function(ObjS) {
             $scope.user.photo = ObjS.data.result.url;
             $scope.user.photo = ObjS.data.result.url;
-            console.log("pjototot",$scope.user.photo);
         })
         }else{
             toastr.error("Only image supported.")
@@ -76,6 +75,7 @@ $scope.currentAllCoupons = 1;
 					"couponExpiryDate":info.expDate,
 					"giftDescription":info.description
 					}
+          console.log("data",data)
 		userService.addCoupon(data).then(function(success) { 
 					console.log(JSON.stringify(success))
 					$state.reload();

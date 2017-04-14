@@ -222,6 +222,7 @@ app.service('userService',function($http){
     //   return $http.post(baseurl+'/page/createPage', data);
     // },
     pageAdmin: function() {
+      console.log("llalala")
       return $http.get(baseurl+'/admin/adAdminUserList');
     },
     editPage: function(id,data) {
