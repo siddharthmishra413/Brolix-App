@@ -113,7 +113,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Country</label>
                                             <div class="col-md-9">
-                                                <select class="form-control" ng-change="changeCountry();" ng-model="viewUserProfile.country" required>
+                                                <select class="form-control" ng-change="changeCountry(viewUserProfile.country);" ng-model="viewUserProfile.country" required>
                                                     <option selected="">{{viewUserProfile.country}}</option>
                                                     <option ng-repeat="country in countriesList">{{country.name}}</option>
                                                  </select>

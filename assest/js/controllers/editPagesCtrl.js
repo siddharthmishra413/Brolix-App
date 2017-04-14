@@ -16,6 +16,71 @@ app.controller('editPagesCtrl', function($scope, $window, userService, $state, t
  $scope.Step4 = false;
  $scope.array = [];
  $scope.arrayPage = [];
+ $scope.SocialMedia = ['Gmail','Facebook','Twitter'];
+
+
+ userService.listOfCategory().success(function(res) {
+    console.log(JSON.stringify(res))
+        if (res.responseCode == 200){
+            $scope.category= res.result;
+            console.log("category",JSON.stringify(res))
+        }else{
+          toastr.error("Something went wrong")
+        } 
+
+    })
+
+
+ $scope.addSocialMedia = function(addSocialMedia){
+  console.log("addSocialMedia",addSocialMedia);
+  
+  var flag = false;
+  if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined){
+    toastr.error("Please select social media");
+  }else{
+    console.log("000")
+    if($scope.array.length == 0){
+      console.log("111");
+      $scope.array.push(addSocialMedia);
+    }else{
+      console.log("array",$scope.array);
+      for(var i=0; i<$scope.array.length; i++){
+        if($scope.array[i] == addSocialMedia){
+          flag = true;
+          break;
+        }
+      }
+      if(flag){
+        toastr.error("You have already chosen this social media");
+      }else{
+        console.log("jjjjj");
+        $scope.array.push(addSocialMedia);
+      }
+    }
+
+  }
+ }
+
+
+
+ $scope.subCategoryData = function(){
+    console.log("bbb",$scope.viewPageDetails.category);
+    var data ={};
+    data = {
+      subCat:$scope.viewPageDetails.category
+      }
+      userService.subCategoryData(data).success(function(res) {
+        console.log(JSON.stringify(res))
+            if (res.responseCode == 200){
+                $scope.subCategoryData= res.result;
+                console.log("subCategoryData",JSON.stringify($scope.subCategoryData))
+            }else{
+              toastr.error("Something went wrong")
+            } 
+
+        })
+
+    }
 
  $scope.addSocialMedia = function(addSocialMedia){
     if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined){
@@ -133,6 +198,8 @@ $scope.addNewPage = function(addNewPage){
         userService.viewPage($scope.id).success(function(res) {
             if (res.responseCode == 200) {
                 $scope.viewPageDetails = res.result;
+                console.log("all the data",JSON.stringify(res.result));
+
                 $scope.myForm.pagephoto = $scope.viewPageDetails.pageImage;
                 $scope.myForm.userphoto=$scope.viewPageDetails.coverImage;
                 for(i=0;i<$scope.viewPageDetails.socialMedia.length;i++){

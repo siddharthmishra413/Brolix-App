@@ -25,13 +25,15 @@ var BATTUTA_KEY="00000000000000000000000000000000"
       
     });
   var countryCode;
-    $scope.changeCountry = function(){
+    $scope.changeCountry = function(cont){
+      var contry = cont;
+      console.log("contcont",contry);
       for(var i=0;i<$scope.countriesList.length;i++){
-        //console.log("$scope.dashBordFilter.country",$scope.dashBordFilter.country)
+        console.log("$scope.dashBordFilter.country",$scope.dashBordFilter.country)
         console.log($scope.countriesList[i].name)
         if($scope.countriesList[i].name==$scope.viewUserProfile.country){
           countryCode=$scope.countriesList[i].code;
-          //console.log(countryCode)
+          console.log(countryCode)
           break;
         }
       }

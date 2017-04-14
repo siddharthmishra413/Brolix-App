@@ -17,13 +17,14 @@ $scope.$emit('headerStatus', 'Manage Pages');
  $scope.pageId = [];
 
  $scope.SocialMedia = ['Gmail','Facebook','Twitter'];
+ console.log("pageAdmin")
 
  userService.pageAdmin().success(function(res) {
   console.log("dsfsdfsdfsd")
     console.log(JSON.stringify(res))
         if (res.responseCode == 200){
-            $scope.pageAdmin= res.result;
-            console.log("resresres",JSON.stringify(res))
+            $scope.pagesAdmin= res.result;
+            console.log("resresres",JSON.stringify($scope.pagesAdmin))
         }else{
           toastr.error("Something went wrong")
         } 
@@ -314,7 +315,7 @@ $scope.submitt = function(){
 		//console.log("allllllll data",JSON.stringify($scope.myForm));
 		  var data={
 	           "type": "ADMIN",
-	           "adminId":adminIdss,
+	           "userId":adminIdss,
 	           "pageType": "Business",
 	           "pageName": $scope.myForm.pageName,
 	           "category": $scope.myForm.mainCategory,
@@ -341,7 +342,7 @@ $scope.submitt = function(){
 	              toastr.success("successfully Created");
 	              $state.go('header.managePages');
 	           }else{
-	           	toastr.error(res.responseMessage);
+	           	toastr.error(success.responseMessage);
 	           } 
 	   })
 	}

@@ -1,13 +1,9 @@
-<div class="top-header">
-        <a href="" class="brand-logo">Brolix</a>
-    </div> 
-
     <div class="container" ng-if="Step1">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
+                        <h3 class="panel-title">Edit Page</h3>
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
@@ -36,7 +32,7 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Main Category</label>
                                             <div class="col-md-9">
@@ -57,7 +53,38 @@
                                                 <span ng-show="userFrom.subCategory.$error.maxlength">Sub-Category should contain max 30 characters.</span>
                                             </div>
                                         </div>
+                                    </div> -->
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Main Category</label>
+                                            <div class="col-md-9"> 
+                                                <select name="category" class="form-control" ng-change="subCategoryData();" ng-model="viewPageDetails.category" required>
+                                                <option selected="">{{viewPageDetails.category}}</option>
+                                                    <!-- <option value="">Select Category</option> -->
+                                                    <option ng-repeat="category in category">{{category}}</option>
+                                                 </select> 
+                                                <span style="color:red;" class="error" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
+                                                     <span style="color:red;" class="error" ng-show="userFrom.category.$error.required">Please Select a Category</span>
+                                                </span> 
+                                            </div>
+                                        </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-md-3">Sub Categories</label>
+                                            <div class="col-md-9">
+                                                <select class="form-control" ng-model="viewPageDetails.subCategory" name="subCategory" required>
+                                                     <option selected="">{{viewPageDetails.subCategory}}</option>
+                                                    <option ng-repeat="subCategoryData in subCategoryData">{{subCategoryData}}</option>
+                                                </select>
+                                                <span style="color:red;" class="error" ng-show="userFrom.subCategory.$dirty && userFrom.subCategory.$invalid">
+                                                     <span style="color:red;" class="error" ng-show="userFrom.subCategory.$error.required">Please Select a subCategory</span>
+                                                </span> 
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3"> Description</label>
@@ -141,7 +168,7 @@
         <div class="outer-block">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add New Page</h3>
+                    <h3 class="panel-title">Edit Page</h3>
                 </div>
                 <div class="panel-body">
                     <div class="cover-image" >
@@ -174,81 +201,62 @@
 
 
     <div class="container" ng-if="Step3">
-            <div class="outer-block cus-addnew-page">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-                            <form class="form-block" role="form">
-                                <fieldset>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <label class="control-label col-md-12">Add Social Media Accounts</label>
-                                            <div class="col-sm-8">
-                                                <div class="row-table">
-                                                    <div class="col-cell">
-                                                        <select class="form-control" ng-model="myForm.socialMedia" name="social" required>
-                                                            <option value="">Select Social Media</option>
-                                                            <option value="Select Social Media1">Select Social Media1</option>
-                                                            <option value="Select Social Media2">Select Social Media2</option>
-                                                            <option value="Select Social Media3">Select Social Media3</option>
-                                                        </select>
-                                                        <span class="error" ng-show="myForm.social.$dirty && myForm.social.$invalid">
-                                                             <span class="error" ng-show="myForm.social.$error.required">Please Select a Social Media</span>
-                                                        </span> 
-                                                    </div>
-                                                    <div class="col-cell add-remove">
-                                                        <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia)"></span>
-                                                    </div>
+        <div class="outer-block cus-addnew-page">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add Social Media</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                        <form class="form-block" role="form" name="media">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="control-label col-md-12">Add Social Media Accounts</label>
+                                        <div class="col-sm-8">
+                                            <div class="row-table">
+                                                <div class="col-cell">
+                                                    <select class="form-control" ng-model="myForm.socialMedia" name="social" required>
+                                                        <option value="">Select Social Media</option>
+                                                        <option ng-repeat="SocialMedia in SocialMedia" value="{{SocialMedia}}">{{SocialMedia}}</option>
+                                                    </select>
+                                                    <span style="color:red;" class="error" ng-show="media.social.$dirty && media.social.$invalid">
+                                                         <span style="color:red;" class="error" ng-show="media.social.$error.required">Please Select a Social Media</span>
+                                                    </span> 
+                                                </div>
+                                                <div class="col-cell add-remove">
+                                                    <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia)"></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-8">
-                                                <div class="row-table" ng-repeat="x in array">
-                                                    <div class="col-cell">
-                                                    <span class="form-control">{{x}}</span>
-                                                        <!-- <input type="text" class="form-control"> -->
-                                                    </div>
-                                                    <div class="col-cell add-remove" >
-                                                        <span class="fa fa-minus-circle" ng-click="removeSocialMedia(myForm.socialMedia)"></span>
-                                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="row-table" ng-repeat="x in viewPageDetails.socialMedia">
+                                                <div class="col-cell">
+                                                <span class="form-control">{{x}}</span>
+                                                    <!-- <input type="text" class="form-control"> -->
+                                                </div>
+                                                <div class="col-cell add-remove" >
+                                                    <span class="fa fa-minus-circle" ng-click="removeSocialMedia(myForm.socialMedia)"></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <!-- <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-8">
-                                                <div class="row-table">
-                                                    <div class="col-cell">
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                    <div class="col-cell add-remove">
-                                                        <span class="fa fa-minus-circle"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    
-                                    <!-- Change this to a button or input when using this as a form -->
-                                    <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-click="click('Step3')">Next</a>
-                                        <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
+                                </div>
+                                <div class="btn2 text-center">
+                                    <button class="btn btn-lg btn-green" ng-disabled="media.$invalid" ng-click="click('Step3')">Next</button>
+                                    <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
+                                </div>
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 
 
@@ -259,7 +267,7 @@
             <div class="outer-block cus-addnew-page">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
+                        <h3 class="panel-title">Edit Page</h3>
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
@@ -267,7 +275,7 @@
                                 <fieldset>
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="control-label col-md-12">Add New Page</label>
+                                            <label class="control-label col-md-12">Edit Page</label>
                                             <div class="col-sm-8">
                                                 <div class="row-table">
                                                     <div class="col-cell">
