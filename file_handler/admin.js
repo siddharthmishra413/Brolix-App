@@ -856,7 +856,7 @@ module.exports = {
 
     //API for user Profile
     "viewPage": function(req, res) {
-        createNewPage.findOne({ _id: req.params.id }).populate('userId', 'firstName lastName').exec(function(err, result) {
+        createNewPage.findOne({ _id: req.params.id }).populate('userId', 'firstName lastName').populate('adAdmin.userId', 'firstName lastName').sort({ createdAt: -1 }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                 res.send({
                     result: result,
