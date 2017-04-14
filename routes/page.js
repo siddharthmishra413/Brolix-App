@@ -13,7 +13,7 @@ app.get('/showPageBusinessType/:id/:pageNumber', authUser.authUser, pageHandler.
 app.get('/showPageFavouriteType/:id/:pageNumber', authUser.authUser, pageHandler.showPageFavouriteType);
 app.put('/editPage/:id', authUser.authUser, pageHandler.editPage);
 app.post('/deletePage', authUser.authUser, pageHandler.deletePage);
-app.post('/pagesSearch/:pageNumber', authUser.authUser, pageHandler.pagesSearch); //Not Update in Docs
+app.post('/allPagesSearch/:pageNumber', authUser.authUser, pageHandler.allPagesSearch); //Not Update in Docs
 app.post('/pageFollowUnfollow', pageHandler.pageFollowUnfollow); //Not Update in Docs
 app.post('/searchForPages/:pageNumber', authUser.authUser, pageHandler.searchForPages); //Not Upadte in Docs
 app.post('/pageRating', authUser.authUser, pageHandler.pageRating);
