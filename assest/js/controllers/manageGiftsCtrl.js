@@ -150,7 +150,7 @@ $scope.currentTotalHiddenGifts = 1;
      $scope.currentTotalExchangedCoupon= 1;
      $scope.nextTotalExchangedCouponDetail = function(){
          userService.totalExchangedCoupon($scope.currentTotalExchangedCoupon).success(function(res) { 
-              console.log("valu",JSON.stringify(res))
+              console.log("totalExchanged----->",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesTotalExchangedCoupon = res.pages;
                    $scope.pageTotalExchangedCoupon= res.page;
@@ -158,15 +158,15 @@ $scope.currentTotalHiddenGifts = 1;
                     $scope.totalExchangedCouponShow1=[];
                   for(var i=0;i<res.docs.length;i++)
                      {  
-                         // for (var j=0;j<res.docs[i].coupon.adId.couponExchange.length;j++) {
-                         //       $scope.totalExchangedCouponShow1.push({
-                         //     "id":res.docs[i].coupon.adId._id,  
-                         //     "exchToFirstName":res.docs[i].firstName,
-                         //     "exchToLastName":res.docs[i].lastName,
-                         //     "exchFromFirstName":res.docs[i].coupon.adId.couponExchange[j].receiverId.firstName,
-                         //     "exchFromLastName":res.docs[i].coupon.adId.couponExchange[j].receiverId.lastName,
-                         //     });
-                       // }
+                         for (var j=0;j<res.docs[i].coupon.adId.couponExchangeReceived.length;j++) {
+                               $scope.totalExchangedCouponShow1.push({
+                             "id":res.docs[i].coupon.adId._id,  
+                             "exchToFirstName":res.docs[i].firstName,
+                             "exchToLastName":res.docs[i].lastName,
+                             "exchFromFirstName":res.docs[i].coupon.adId.couponExchangeReceived[j].receiverId.firstName,
+                             "exchFromLastName":res.docs[i].coupon.adId.couponExchangeReceived[j].receiverId.lastName,
+                             });
+                        }
                      }  
                } 
                else {
@@ -568,8 +568,8 @@ $scope.top_50_balanc = function(type){
             city:$scope.dashBordFilter.city,
             couponStatus:$scope.dashBordFilter.couponStatus,
             cashStatus:$scope.dashBordFilter.cashStatus,
-            joinTo:new Date($scope.dashBordFilter.dateTo).getTime(),
-            joinFrom:new Date($scope.dashBordFilter.dateFrom).getTime(),
+            joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
+            joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
         console.log("datatata",data)
 

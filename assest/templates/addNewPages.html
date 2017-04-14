@@ -58,9 +58,9 @@
                                                 <span ng-show="userFrom.subCategory.$error.maxlength">Sub-Category should contain max 30 characters.</span>
                                             </div> -->
                                             <div class="col-md-9">
-                                                <select class="form-control" ng-model="myForm.subCategory" name="subCategory" >
+                                                <select class="form-control" ng-model="myForm.subCategory" name="subCategory" required>
                                                     <option value="">Select Category</option>
-                                                    <option ng-repeat="subCategoryData in subCategoryData" value="" >{{subCategoryData}}</option>
+                                                    <option ng-repeat="subCategoryData in subCategoryData">{{subCategoryData}}</option>
                                                 </select>
                                                 <span style="color:red;" class="error" ng-show="myForm.subCategory.$dirty && myForm.subCategory.$invalid">
                                                      <span style="color:red;" class="error" ng-show="myForm.subCategory.$error.required">Please Select a subCategory</span>
@@ -131,7 +131,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <button class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid"  ng-click="click('Step1')">Next</button>
+                                        <button class="btn btn-lg btn-green"  ng-click="click('Step1')">Next</button>
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                     </div>
                                 </fieldset>
@@ -184,7 +184,7 @@
     <!-- page Social Media -->
 
 
-    <div class="container" ng-if="Step3">
+   <div class="container" ng-if="Step3">
             <div class="outer-block cus-addnew-page">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
@@ -202,9 +202,7 @@
                                                     <div class="col-cell">
                                                         <select class="form-control" ng-model="myForm.socialMedia" name="social" required>
                                                             <option value="">Select Social Media</option>
-                                                            <option value="Select Social Media1">Gmail</option>
-                                                            <option value="Select Social Media2">Facebook</option>
-                                                            <option value="Select Social Media3">Twitter</option>
+                                                            <option ng-repeat="SocialMedia in SocialMedia" value="{{SocialMedia}}">{{SocialMedia}}</option>
                                                         </select>
                                                         <span style="color:red;" class="error" ng-show="myForm.social.$dirty && myForm.social.$invalid">
                                                              <span style="color:red;" class="error" ng-show="myForm.social.$error.required">Please Select a Social Media</span>
@@ -263,6 +261,7 @@
     </div>
 
 
+
     <!-- pages Admin -->
 
 
@@ -274,7 +273,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
-                            <form class="form-block" role="form" name="myForm">
+                            <form class="form-block" role="form" name="myForma">
                                 <fieldset>
                                     <div class="form-group">
                                         <div class="row">
@@ -283,11 +282,11 @@
                                                 <div class="row-table">
                                                     <div class="col-cell">
                                                         <select class="form-control" ng-model="myForm.pageAdmin" name="pages" required>
-                                                            <option value="">Select</option>
-                                                            <option ng-repeat="page in pageAdmin" value="{{page}} " >{{page.firstName}} {{page.lastName}}</option>
+                                                            <option value="">Select Page Admin</option>
+                                                            <option ng-repeat="page in pageAdmin" value="{{page}} ">{{page.firstName}} {{page.lastName}}</option>
                                                         </select>
-                                                        <span style="color:red;" class="error" ng-show="myForm.pages.$dirty && myForm.pages.$invalid">
-                                                             <span style="color:red;" class="error" ng-show="myForm.pages.$error.required">Please Select a Page</span>
+                                                        <span style="color:red;" class="error" ng-show="myForma.pages.$dirty && myForma.pages.$invalid">
+                                                             <span style="color:red;" class="error" ng-show="myForma.pages.$error.required">Please Select a Page</span>
                                                         </span> 
                                                     </div>
                                                     <div class="col-cell add-remove">
@@ -301,13 +300,13 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-8">
-                                                <div class="row-table" ng-repeat="y in arrayPage">
+                                                <div class="row-table" ng-repeat="y in pageAdminss">
                                                     <div class="col-cell">
-                                                    <span class="form-control">{{y.firstName+" "+y.lastName}}</span>
+                                                    <span class="form-control">{{y}}</span>
                                                         <!-- <input type="text" class="form-control"> -->
                                                     </div>
                                                     <div class="col-cell add-remove" >
-                                                        <span class="fa fa-minus-circle" ng-click="removeNewPage(y.firstName+' '+y.lastName)"></span>
+                                                        <span class="fa fa-minus-circle" ng-click="removeNewPage(y)"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -316,7 +315,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <button class="btn btn-lg btn-green" ng-disabled="myForm.$invalid" ng-click="submitt()">Add Pages</button> 
+                                        <button class="btn btn-lg btn-green" ng-disabled="myForm.$invalid" ng-click="submitt();">Add Pages</button> 
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step4')">Cancel</a>
                                     </div>
                                 </fieldset> 

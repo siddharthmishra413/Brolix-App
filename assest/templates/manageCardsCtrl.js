@@ -834,8 +834,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 app.filter("cardsFilter",function() {
 
   var fullName = [];
-     
-      return function(items,nameValue) {
+     return function(items,nameValue) {
         console.log(JSON.stringify(items))
         console.log(nameValue)
         if (!nameValue) {            
@@ -849,9 +848,7 @@ app.filter("cardsFilter",function() {
                {
                 retArray.push(items[i])
                }
-            }
-
+            } 
          return retArray;
-
      }
 });
