@@ -1736,28 +1736,6 @@ module.exports = {
         })
     },
 
-    // "seeExchangeRequest": function(req, res) {
-    //     var array = [];
-    //     createNewAds.findOne({ _id: req.body.adId, 'couponExchangeReceived.couponExchangeStatus': "REQUESTED" }, function(err, result) {
-    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "No ad found." }); } else {
-    //             for (var i = 0; i < result.couponExchangeReceived.length; i++) {
-    //                 if (result.couponExchangeReceived[i].receiverId == req.body.receiverId) {
-    //                     array.push(result.couponExchangeReceived[i].receiverId);
-    //                 }
-    //             }
-    //             User.find({ _id: { $in: array } }, avoid).exec(function(err, result1) {
-    //                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-    //                     res.send({
-    //                         result: result1,
-    //                         responseCode: 200,
-    //                         responseMessage: "All request show successfully"
-    //                     })
-    //                 }
-    //             })
-    //         }
-    //     })
-    // },
-
     "couponRequestsSearch": function(req, res) {
         //console.log("req======>>>" + JSON.stringify(req.body))
         var re = new RegExp(req.body.firstName, 'i');
@@ -2132,30 +2110,7 @@ module.exports = {
         })
     },
 
-    // "seeExchangeSentRequest": function(req, res) {
-    //     var array = [];
-    //     createNewAds.findOne({ _id: req.body.adId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" }, function(err, result) {
-    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); } else {
-    //             for (var i = 0; i < result.couponExchangeSent.length; i++) {
-    //                 if (result.couponExchangeSent[i].senderId == req.body.userId) {
-    //                     array.push(result.couponExchangeSent[i].senderId);
-    //                 }
-    //             }
-    //             User.find({ _id: { $in: array } }, avoid).exec(function(err, result1) {
-    //                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-    //                     res.send({
-    //                         result: result1,
-    //                         responseCode: 200,
-    //                         responseMessage: "All request show successfully"
-    //                     })
-    //                 }
-    //             })
-    //         }
-    //     })
-    // },
-
     "savePaymentRequest": function(req, res) {
-
         var payment = paypalPayment(req.body)
         payment.save(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
