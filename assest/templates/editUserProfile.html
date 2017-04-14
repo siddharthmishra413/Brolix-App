@@ -28,7 +28,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Last Name</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="category" ng-model="viewUserProfile.lastName" placeholder="Last Name" maxlength="41" ng-maxlength="40" required> 
+                                                <input type="text" class="form-control" name="lastName" ng-model="viewUserProfile.lastName" placeholder="Last Name" maxlength="41" ng-maxlength="40" required> 
                                                 <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid">
                                                 <span ng-show="userFrom.lastName.$error.required">Last name is required.</span>
                                                 <span ng-show="userFrom.lastName.$error.maxlength">Your last name should contain max 40 characters.</span>
@@ -39,7 +39,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Date of Birth</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="dob" ng-model="viewUserProfile.dob" placeholder="Date of Birth"> 
+                                                <input type="text" class="form-control" name="dob" ng-model="viewUserProfile.dob" placeholder="Date of Birth" required> 
                                                 <span style="color:red;" ng-show="userFrom.dob.$dirty && userFrom.dob.$invalid">
                                                 <span ng-show="userFrom.dob.$error.required">Date of birth is required.</span> 
                                             </div>
@@ -113,7 +113,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Country</label>
                                             <div class="col-md-9">
-                                                <select class="form-control" ng-change="changeCountry();" ng-model="viewUserProfile.country" >
+                                                <select class="form-control" ng-change="changeCountry();" ng-model="viewUserProfile.country" required>
                                                     <option selected="">{{viewUserProfile.country}}</option>
                                                     <option ng-repeat="country in countriesList">{{country.name}}</option>
                                                  </select>
@@ -129,7 +129,7 @@
                                                     <option selected="">{{viewUserProfile.state}}</option>
                                                     <option ng-repeat="state in stateList">{{state.region}}</option>
                                                  </select> 
-                                                <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid">
+                                                <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid"></span> 
                                                 <span ng-show="userFrom.state.$error.required">State is required.</span> 
                                             </div>
                                         </div>
@@ -142,7 +142,7 @@
                                                     <option selected="">{{viewUserProfile.city}}</option>
                                                     <option ng-repeat="city in cityList">{{city.city}}</option>
                                                  </select>
-                                                <span style="color:red;" ng-show="userFrom.city.$dirty && userFrom.city.$invalid">
+                                                <span style="color:red;" ng-show="userFrom.city.$dirty && userFrom.city.$invalid"></span> 
                                                 <span ng-show="userFrom.city.$error.required">City is required.</span> 
                                             </div>
                                         </div>

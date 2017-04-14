@@ -9,11 +9,52 @@ $scope.$emit('headerStatus', 'Manage Pages');
  $scope.Step4 = false;
  $scope.array = [];
  $scope.arrayPage = [];
+ $scope.adminsIdd;
  // $scope.arrayPage = [];
  var arr =[];
+ var cond = []
  $scope.pageAdminss = [];
+ $scope.pageId = [];
 
  $scope.SocialMedia = ['Gmail','Facebook','Twitter'];
+
+ userService.pageAdmin().success(function(res) {
+  console.log("dsfsdfsdfsd")
+    console.log(JSON.stringify(res))
+        if (res.responseCode == 200){
+            $scope.pageAdmin= res.result;
+            console.log("resresres",JSON.stringify(res))
+        }else{
+          toastr.error("Something went wrong")
+        } 
+
+    })
+
+
+ userService.adminProfile().success(function(res) {
+        if (res.responseCode == 200) {
+            $scope.userId = res.result._id; 
+            localStorage.setItem('userId',$scope.userId);
+        } else {
+        	toastr.error(res.responseMessage);
+            $state.go('login')
+            
+        }
+        console.log("resss",$scope.userId);
+    })
+  
+
+ // userService.adminProfile().success(function(res) {
+ //        if (res.responseCode == 404) {
+ //            toastr.error(res.responseMessage);
+ //            $state.go('login')
+ //        } else if(res.responseCode == 200) {
+ //            $scope.adminsIdd = res.result._id;
+ //            console.log("resss",$scope.adminsIdd);
+ //        }else{
+ //        	toastr.error(res.responseMessage);
+ //        }
+ //    })
 
  $scope.addSocialMedia = function(addSocialMedia){
  	console.log("addSocialMedia",addSocialMedia);
@@ -56,16 +97,7 @@ $scope.$emit('headerStatus', 'Manage Pages');
  }
 
 
-  userService.pageAdmin().success(function(res) {
-    //console.log(JSON.stringify(res))
-        if (res.responseCode == 200){
-            $scope.pageAdmin= res.result;
-            console.log("resresres",JSON.stringify(res))
-        }else{
-        	toastr.error("Something went wrong")
-        } 
-
-    })
+  
 
    userService.listOfCategory().success(function(res) {
     console.log(JSON.stringify(res))
@@ -83,38 +115,43 @@ $scope.$emit('headerStatus', 'Manage Pages');
    	var data ={};
    	data = {
 			subCat:$scope.myForm.mainCategory
-	}
-	userService.subCategoryData(data).success(function(res) {
-    console.log(JSON.stringify(res))
-        if (res.responseCode == 200){
-            $scope.subCategoryData= res.result;
-            //console.log("subCategoryData",JSON.stringify(subCategoryData))
-        }else{
-        	toastr.error("Something went wrong")
-        } 
+    	}
+    	userService.subCategoryData(data).success(function(res) {
+        console.log(JSON.stringify(res))
+            if (res.responseCode == 200){
+                $scope.subCategoryData= res.result;
+                //console.log("subCategoryData",JSON.stringify(subCategoryData))
+            }else{
+            	toastr.error("Something went wrong")
+            } 
 
-    })
+        })
 
-   }
+    }
 
 $scope.addNewPage = function(addNewPage){
 	console.log("ssssss",JSON.stringify(addNewPage));
 	var adminInfo=JSON.parse(addNewPage);
-	console.log("adminInfo",adminInfo.firstName,adminInfo.lastName)
-	var name = adminInfo.firstName + adminInfo.lastName;
-	var flag = false;
- 	if(name == "" || name ==null || name == undefined){
+	console.log("id",adminInfo)
+
+	// var name = adminInfo.firstName + adminInfo.lastName;
+	 var flag = false;
+	 console.log("firstName",adminInfo.firstName)
+ 	if(adminInfo.firstName == "" || adminInfo.firstName ==null || adminInfo.firstName == undefined){
  		toastr.error("Please select at least on admin");
  	}else{
  		console.log("000")
  		if($scope.pageAdminss.length == 0){
  			console.log("111");
- 			$scope.pageAdminss.push(name);
+ 			$scope.pageAdminss.push(adminInfo);
+ 			//$scope.pageId.push(adminInfo._id);
  			console.log("$scope.pageAdmin",$scope.pageAdminss)
+ 			//console.log("$scope.pageId",$scope.pageId)
+ 			// $scope.pageId.push(addNewPage._id);
  		}else{
  			console.log("pageAdmin",$scope.pageAdminss);
  			for(var i=0; i<$scope.pageAdminss.length; i++){
- 				if($scope.pageAdminss[i] == name){
+ 				if($scope.pageAdminss[i].firstName == adminInfo.firstName){
  					flag = true;
  					break;
  				}
@@ -123,12 +160,14 @@ $scope.addNewPage = function(addNewPage){
  				toastr.error("You have already chosen this admin");
  			}else{
  				console.log("jjjjj");
- 				$scope.pageAdminss.push(name);
+ 				$scope.pageAdminss.push(adminInfo);
+ 				//$scope.pageId.push(adminInfo._id);
  			}
  		}
 
  	}
- 	console.log("final arr",$scope.pageAdminss)
+ 	console.log("final arr",JSON.stringify($scope.pageAdminss))
+ 	//console.log("final arr",$scope.pageId)
  }
 
  $scope.removeNewPage = function(removeNewPage){
@@ -249,68 +288,62 @@ $scope.addNewPage = function(addNewPage){
       }
       
     }
-    $scope.submitt = function(){
-    	console.log("allllllll data",JSON.stringify($scope.myForm));
-    	  var data={
-               "type": "ADMIN",
-               "adminId":"12121212" ,
-               "pageType": "Business",
-               "pageName": $scope.myForm.pageName,
-               "category": $scope.myForm.mainCategory,
-               "subCategory": $scope.myForm.subCategory,
-               "pageDiscription": $scope.myForm.description,
-               "email": $scope.myForm.email,
-               "phoneNumber": $scope.myForm.phon,
-               "location": [$scope.myForm.lattitude,$scope.myForm.longitude],
-               "website":$scope.myForm.website,
-               "country":$scope.myForm.country,
-               "state":$scope.myForm.state,
-               "city":$scope.myForm.city, 
-               "pageImage":$scope.myForm.userphoto,
-               "coverImage": $scope.myForm.pagephoto,
-               "socialMedia":$scope.pageAdminss,
-               // "adAdmin":[{"userId":adminInfo._id,"type":"add"}] 
-               "adAdmin":[{"userId":"343434","type":"add"}]   
-        }
-        console.log("allllllll data",JSON.stringify(data));
-       //  var Info = {};
-       //  var address = $scope.myForm.address;
-       //  console.log("allllllll data",JSON.parse($scope.myForm));
-       //  console.log(address)
-       //  Info = $scope.myForm;
-       //  var adminInfo=JSON.parse($scope.myForm.pageAdmin);
-       //  console.log(adminInfo._id);
-       //  var id=localStorage.loginData;
-       //  console.log("all var",JSON.stringify(id));
-       //  var data={
-       //         "type": "ADMIN",
-       //         "adminId":id ,
-       //         "pageType": "Business",
-       //         "pageName": Info.pageName,
-       //         "category": Info.mainCategory,
-       //         "subCategory": Info.subCategory,
-       //         "pageDiscription": Info.description,
-       //         "email": Info.email,
-       //         "phoneNumber": Info.phon,
-       //         "location": [$scope.myForm.lattitude,$scope.myForm.longitude],
-       //         "website":Info.website,
-       //         "country":$scope.myForm.country,
-       //         "state":$scope.myForm.state,
-       //         "city":$scope.myForm.city, 
-       //         "pageImage":Info.pagephoto,
-       //         "coverImage": Info.userphoto,
-       //         "socialMedia":[$scope.myForm.socialMedia],
-       //         "adAdmin":[{"userId":adminInfo._id,"type":"add"}]   
-       //  }
-       //  console.log(JSON.stringify(data))
-       //  createPageService.createPage(data).then(function(success) {
-       //    console.log(JSON.stringify(success))
-       //         if (success.data.responseCode == 200){
-       //            $scope.createPageData = success.result;
-       //            toastr.success("successfully Created");
-       //            $state.go('header.managePages');
-       //         } 
-       // })
-    }
-      
+
+$scope.submitt = function(){
+	var adminIdss = localStorage.getItem('userId');
+	console.log("adminIdss",adminIdss)
+	var id = [];
+	for(var i=0; i<$scope.pageAdminss.length;i++){
+		id.push($scope.pageAdminss[i]._id);
+	}
+
+	var datas ={
+	    page :id
+	  }
+	Object.getOwnPropertyNames(datas).forEach(function(key, idx, array) {
+	       if ( key == 'page') {
+	          
+	               for (data in datas[key]) {
+	                   cond.push({ userId: datas[key][data] , type :"add"})
+	               }
+	               console.log("cond data--->>",JSON.stringify(cond));    
+	       } 
+	   });
+
+
+		//console.log("allllllll data",JSON.stringify($scope.myForm));
+		  var data={
+	           "type": "ADMIN",
+	           "adminId":adminIdss,
+	           "pageType": "Business",
+	           "pageName": $scope.myForm.pageName,
+	           "category": $scope.myForm.mainCategory,
+	           "subCategory": $scope.myForm.subCategory,
+	           "pageDiscription": $scope.myForm.description,
+	           "email": $scope.myForm.email,
+	           "phoneNumber": $scope.myForm.phon,
+	           "location": [$scope.myForm.lattitude,$scope.myForm.longitude],
+	           "website":$scope.myForm.website,
+	           "country":$scope.myForm.country,
+	           "state":$scope.myForm.state,
+	           "city":$scope.myForm.city, 
+	           "pageImage":$scope.myForm.userphoto,
+	           "coverImage": $scope.myForm.pagephoto,
+	           "socialMedia":$scope.array, 
+	           "adAdmin":cond   
+	    }
+	   
+	    console.log("allllllll data",JSON.stringify(data));
+	    createPageService.createPage(data).then(function(success) {
+	      console.log(JSON.stringify(success))
+	           if (success.data.responseCode == 200){
+	              $scope.createPageData = success.result;
+	              toastr.success("successfully Created");
+	              $state.go('header.managePages');
+	           }else{
+	           	toastr.error(res.responseMessage);
+	           } 
+	   })
+	}
+	  
 })

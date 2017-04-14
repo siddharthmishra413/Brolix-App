@@ -288,6 +288,35 @@ $(window).scrollTop(0,0);
 
     //******************** top 50 Buyers *********************
 
+    //   $scope.counter =1; 
+    //      $scope.loadMore=function(){
+    //         $scope.userDetail=[];
+    //         userService.top_50_dollarsBuyers($scope.counter).then(function(success) {
+    //              console.log("x"+JSON.stringify(success))
+    //                 if(success.data.responseCode == 200){
+    //                     var last = success.data.result.limit -1;
+    //                         for(var i = 1; i <= success.data.result.total; i++) {
+    //                           $scope.userDetail.push(last + i);
+    //                         }
+    //                     // $scope.userDetail=success.data.result.docs;
+                            
+                            
+    //                         $scope.counter++;
+    //                         // console.log(JSON.stringify(success.data.result))
+    //                 } else{
+    //                     toastr.error(success.data.responseMessage);
+    //                 }
+                    
+    //             },function(err){
+    //                 console.log(err);
+    //                  toastr.error('Connection error.');
+    //         })
+    //       } 
+
+    // $scope.top_50_dollarsBuyers=function(){
+        
+    //       $("#top_50_buyers").modal('show');
+    // }
 
     $scope.top_50_dollarsBuyers=function(){
             userService.top_50_dollarsBuyers(1).then(function(success) {
@@ -306,7 +335,7 @@ $(window).scrollTop(0,0);
             })
     }
     $scope.top_50_brolixBuyers=function(){
-            userService.top_50_brolixBuyers().then(function(success) { 
+            userService.top_50_brolixBuyers(1).then(function(success) { 
                     if(success.data.responseCode == 200){
                         $scope.userDetail=success.data.result;
                         $("#top_50_buyers").modal('show');

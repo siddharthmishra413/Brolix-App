@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-sm-6 m-b-20">
+        <form name="first">
+            <div class="outer-box-brolix-fee">
+                <!-- <div class="form-group">
+                    <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
+                </div> -->
+                <div class="form-group">
+                    <input ng-model="freeViewersPerCouponAds" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
+                    </div> 
+                    <span style="color:red;" ng-show="first.viewer.$dirty && first.viewer.$invalid">
+                    <span ng-show="first.viewer.$error.required">Viewers is required.</span> 
+                    <span ng-show="first.viewer.$error.pattern">Only number are allowed.</span> 
+                    </span>
+                <div class="form-group">
+                    <span class="form-control text-center">B</span>
+                </div>
+            </div>
+            <h3 class="text-center">Free Viewers Per Coupon Ad</h3>
+            <div class="text-center"><button ng-disabled="first.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('freeViewersPerCouponAds')">Edit</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-6 m-b-20">
+        <form name="second">
+            <div class="outer-box-brolix-fee">
+                <!-- <div class="form-group">
+                    <input type="text" class="form-control" ng-model="brolixPerFreeCouponAds">
+                </div> -->
+                <div class="form-group">
+                    <input ng-model="freeViewersPerCashAds" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" required>
+                    </div> 
+                    <span style="color:red;" ng-show="second.viewer.$dirty && second.viewer.$invalid">
+                    <span ng-show="second.viewer.$error.required">Viewers is required.</span> 
+                    <span ng-show="second.viewer.$error.pattern">Only number are allowed.</span> 
+                    </span>
+                <div class="form-group">
+                    <span class="form-control text-center">B</span>
+                </div>
+            </div>
+            <h3 class="text-center">Free Viewers Per Cash Ad</h3>
+            <div class="text-center"><button ng-disabled="second.$invalid" style="cursor:pointer;" class="table-a" ng-click="editBrolixAndDollors('freeViewersPerCashAds')">Edit</button>
+            </div>
+        </form>
+    </div>
+</div>
