@@ -1724,7 +1724,7 @@ module.exports = {
                 createNewAds.populate(result, {
                     path: 'couponExchangeReceived.senderId',
                     model: 'brolixUser',
-                    select: 'firstName lastName country state city'
+                    select: 'firstName lastName image country state city'
                 }, function(err, result1) {
                     res.send({
                         result: result1,
@@ -2098,7 +2098,7 @@ module.exports = {
                 createNewAds.populate(result, {
                     path: 'couponExchangeSent.receiverId',
                     model: 'brolixUser',
-                    select: 'firstName lastName country state city'
+                    select: 'firstName lastName image country state city'
                 }, function(err, result1) {
                     res.send({
                         result: result1,
