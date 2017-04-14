@@ -1713,7 +1713,7 @@ module.exports = {
                 responseMessage: "Coupon exchange request send successfully."
             });
         })
-    }, //'upgradeCardObject UpgradeUsedAd'
+    }, 
 
     "seeExchangeRequest": function(req, res) {
         var receiverId = req.body.userId;

@@ -226,7 +226,6 @@ module.exports = {
     },
 
     "allPagesSearch": function(req, res) {
-        //console.log("req======>>>" + JSON.stringify(req.body))
         var re = new RegExp(req.body.search, 'i');
         createNewPage.paginate({ 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
@@ -270,7 +269,6 @@ module.exports = {
     "pageRating": function(req, res) {
         var avrg = 0;
         createNewPage.findOne({ _id: req.body.pageId, totalRating: { $elemMatch: { userId: req.body.userId } } }).exec(function(err, result) {
-            console.log("result========================" + JSON.stringify(result));
             if (!result) {
                 console.log("If");
                 createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "totalRating": { userId: req.body.userId, rating: req.body.rating, date: req.body.date } } }, { new: true }).exec(function(err, results) {
