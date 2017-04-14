@@ -64,7 +64,6 @@
     "Sneakers",
     "Lace Ups",
     "Slip Ons",
-    "Boots",
     "Sandals",
     "Eyewear",
     "Belts",
@@ -540,7 +539,7 @@
       "ProductLaunches",
       "TradeFairs"
     ],
-    "TravelingAgencies": [
+    "Traveling Agencies": [
       "TravelingAgency",
       "Travel",
       "Vacation",
