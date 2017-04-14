@@ -1019,7 +1019,6 @@ module.exports = {
             responseCode: 200,
             responseMessage: "List of all category shown successfully."
         })
-
     },
 
     "subCategoryData": function(req, res){

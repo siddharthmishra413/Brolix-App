@@ -633,7 +633,7 @@ module.exports = {
     //API for user Profile
     "userProfile": function(req, res) {
         User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); }
             res.send({
                 result: result,
                 responseCode: 200,
@@ -1716,22 +1716,21 @@ module.exports = {
     }, //'upgradeCardObject UpgradeUsedAd'
 
     "seeExchangeRequest": function(req, res) {
-        var array = [];
-        createNewAds.findOne({ _id: req.body.adId, 'couponExchangeReceived.couponExchangeStatus': "REQUESTED" }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "No ad found." }); } else {
-                for (var i = 0; i < result.couponExchangeReceived.length; i++) {
-                    if (result.couponExchangeReceived[i].receiverId == req.body.receiverId) {
-                        array.push(result.couponExchangeReceived[i].receiverId);
-                    }
-                }
-                User.find({ _id: { $in: array } }, avoid).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-                        res.send({
-                            result: result1,
-                            responseCode: 200,
-                            responseMessage: "All request show successfully"
-                        })
-                    }
+        var receiverId = req.body.userId;
+        console.log("receiverId-->>", receiverId)
+        createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { 'couponExchangeReceived.receiverId': receiverId } }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+
+                createNewAds.populate(result, {
+                    path: 'couponExchangeReceived.senderId',
+                    model: 'brolixUser',
+                    select: 'firstName lastName country state city'
+                }, function(err, result1) {
+                    res.send({
+                        result: result1,
+                        responseCode: 200,
+                        responseMessage: "All request show successfully"
+                    })
                 })
             }
         })
@@ -2089,30 +2088,29 @@ module.exports = {
             }
         })
     },
-
+    //{  $group: { _id: '$_id', list: { $push: 'upgradeCardObject.PURCHASED' } } },
     "seeExchangeSentRequest": function(req, res) {
-        var array = [];
-        createNewAds.findOne({ _id: req.body.adId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" }, function(err, result) {
+        var senderId = req.body.userId;
+        console.log("receiverId-->>", senderId)
+        createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { 'couponExchangeSent.senderId': senderId } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); } else {
-                for (var i = 0; i < result.couponExchangeSent.length; i++) {
-                    if (result.couponExchangeSent[i].senderId == req.body.userId) {
-                        array.push(result.couponExchangeSent[i].senderId);
-                    }
-                }
-                User.find({ _id: { $in: array } }, avoid).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-                        res.send({
-                            result: result1,
-                            responseCode: 200,
-                            responseMessage: "All request show successfully"
-                        })
-                    }
+
+                createNewAds.populate(result, {
+                    path: 'couponExchangeSent.receiverId',
+                    model: 'brolixUser',
+                    select: 'firstName lastName country state city'
+                }, function(err, result1) {
+                    res.send({
+                        result: result1,
+                        responseCode: 200,
+                        responseMessage: "All request show successfully"
+                    })
                 })
             }
         })
     },
-    "savePaymentRequest": function(req, res) {
 
+    "savePaymentRequest": function(req, res) {
         var payment = paypalPayment(req.body)
         payment.save(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }

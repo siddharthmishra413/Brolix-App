@@ -2908,10 +2908,12 @@ module.exports = {
                 var sortArray = result.sort(function(obj1, obj2) {
                     return obj2.list.length - obj1.list.length
                 })
+                console.log("sortArray---->>>", sortArray)
                 var array = [];
                 for (var i = 0; i < sortArray.length; i++) {
                     array.push(sortArray[i]._id)
                 }
+                console.log("array---->>>", array)
                 User.paginate({ _id: { $in: array }, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
 
@@ -2970,10 +2972,12 @@ module.exports = {
                 var sortArray = result.sort(function(obj1, obj2) {
                     return obj2.list.length - obj1.list.length
                 })
+                console.log("sortArray---->>>", sortArray)
                 var array = [];
                 for (var i = 0; i < sortArray.length; i++) {
                     array.push(sortArray[i]._id)
                 }
+                console.log("array---->>>", array)
                 User.paginate({ _id: { $in: array }, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
 
@@ -3927,7 +3931,7 @@ module.exports = {
 
     "listOfCategory": function(req, res) {
         var categoryList = ["Restaurant and Coffee Shop", "Fashion (Men-Women-Kids-Babies)", "Beauty & Health Care", "Fitness and Sports",
-            "Traveling Agencies", "Cinema", "Furniture", "Home", "Mobile and Computer Apps", "Toys for kids and Babies", "Electronics and Technology",
+            "Traveling Agencies", "Cinemas", "Furniture", "Home", "Mobile and Computer Apps", "ToysforkidsandBabies", "Electronics and Technology",
             "Hotels and Apartments", "Medical", "Education", "Motors", "Hypermarkets", "Events", "Jewelry", "Arts and Design", "Pets", "Insurance",
             "Banks and Finance Companies", "Real Estate", "Books", "Business and Services", "Nightlife", "Construction", "Factories"
         ];
@@ -3937,7 +3941,6 @@ module.exports = {
             responseCode: 200,
             responseMessage: "List of all category shown successfully."
         })
-
     },
 
     "subCategoryData": function(req, res) {
