@@ -571,6 +571,9 @@ app.service('userService',function($http){
     checkPermission: function(data){
      return $http.post(baseurl+'/admin/checkPermission', data)
    },
+   notificationToAdmin: function(){
+      return $http.get(baseurl+'/admin/notificationToAdmin');
+    },
   }
 
 });
