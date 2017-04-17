@@ -50,12 +50,19 @@ app.service('createPageService',function($http, $q){
         }
 })
 
+http://172.16.6.171:8082/admin/editPage/5832e29349df9c04411e252d
+
 
 
 
 app.service('userService',function($http){
 
 	return{
+
+    editPage: function(id,data){
+      return $http.put(baseurl+'/admin/editPage/'+id, data);
+    },
+
 	  signup: function(data) {
       return $http.post(baseurl+'/signup', data);
     },
@@ -222,6 +229,7 @@ app.service('userService',function($http){
     //   return $http.post(baseurl+'/page/createPage', data);
     // },
     pageAdmin: function() {
+      console.log("llalala")
       return $http.get(baseurl+'/admin/adAdminUserList');
     },
     editPage: function(id,data) {
@@ -464,8 +472,8 @@ app.service('userService',function($http){
      pageInfo: function(id){
       return $http.get(baseurl+'/admin/pageInfo/'+id);
     }, 
-    top_50_dollarsBuyers: function(){
-      return $http.get(baseurl+'/admin/topFiftyUpgradeCardBuyers');
+    top_50_dollarsBuyers: function(pageNo){
+      return $http.get(baseurl+'/admin/topFiftyUpgradeCardBuyers/'+pageNo);
     },
     top_50_brolixBuyers: function(){
       return $http.get(baseurl+'/admin/topFiftyLuckCardBuyers');

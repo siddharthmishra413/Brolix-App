@@ -128,16 +128,16 @@ var createNewAdsSchema = new Schema({
     cash: { type: Number, default: 0 },
     viewers: { type: Number, default: 0 },
     couponExchangeReceived: [{
-        senderId: { type: String },
-        receiverId: { type: String },
+        senderId: { type: String, ref: 'brolixUser' },
+        receiverId: { type: String, ref: 'brolixUser' },
         exchangedWithAdId: { type: String },
         senderCouponCode: { type: String },
         couponExchangeStatus: { type: String, default: 'REQUESTED' },
         exchangedDate: { type: Date, default: Date.now }
     }],
     couponExchangeSent: [{
-        senderId: { type: String },
-        receiverId: { type: String },
+        senderId: { type: String, ref: 'brolixUser' },
+        receiverId: { type: String, ref: 'brolixUser' },
         exchangedWithAdId: { type: String },
         couponExchangeStatus: { type: String, default: 'REQUESTED' },
         exchangedDate: { type: Date, default: Date.now }

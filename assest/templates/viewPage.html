@@ -87,7 +87,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Cover Image</label>
                                             <div class="col-md-9">
-                                                <img class="profile-user-img img-responsive" src="{{user.pagephoto || '../dist/image/cover.jpg'}}" id="output">
+                                                <img class="profile-user-img img-responsive" src="{{viewPageDetails.coverImage || '../dist/image/cover.jpg'}}" id="output">
                                             </div>
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Page Image</label>
                                             <div class="col-md-9">
-                                                <img class="profile-user-img img-responsive" src="{{user.userphoto || '../dist/image/user-image.jpeg'}}" id="output">
+                                                <img class="profile-user-img img-responsive" src="{{viewPageDetails.pageImage || '../dist/image/user-image.jpeg'}}" id="output">
                                             </div>
                                         </div>
                                     </div>
@@ -112,7 +112,7 @@
                                         <div class="col-sm-12">
                                             <div class="row-table">
                                                 <div class="col-cell" >
-                                                   <span class="form-control" >{{socialMedia}}</span>
+                                                   <span class="form-control" ng-repeat="x in viewPageDetails.socialMedia" >{{x}}</span>
                                                 </div>
                                                <!--  <div class="col-cell add-remove">
                                                     <span class="fa fa-plus-circle"></span>
@@ -127,7 +127,7 @@
                                                 <div class="row-table">
                                                     <div class="col-cell">
                                                         <div class="input-group">
-                                                         <span class="form-control">{{viewUserProfile.firstName}}</span>
+                                                         <span ng-repeat="y in viewPageDetails.adAdmin" class="form-control">{{y.userId.firstName}} {{y.userId.lastName}}</span>
                                                         </div>
                                                     </div>
                                                     <!-- <div class="col-cell add-remove">

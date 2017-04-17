@@ -603,6 +603,7 @@ $scope.dashBordFilter = function(){
                    $scope.noOfPagesTotalPages = res.result.pages;
                    $scope.pageTotalPages= res.result.page;
                    $scope.totalPages = res.result.docs;
+                   console.log("$scope.totalPages",JSON.stringify($scope.totalPages));
                    $scope.totalPagesCount = res.result.total;
                } 
                else {
@@ -780,11 +781,11 @@ $scope.dashBordFilter = function(){
 /*show Adds*/
 
 $scope.showAdds = function(id){
-    console.log("iddddd",id);
+    console.log("llllllllllll",id);
     userService.showAdds(id).success(function(res){
         if(res.responseCode == 200){
             $scope.allAddsOnPage=res.result;
-            //console.log("res",JSON.stringify(res));
+            console.log("res",JSON.stringify(res));
             $("#adsDetails").modal('show');
 
         }else{
@@ -797,7 +798,20 @@ $scope.showAdds = function(id){
 /*ownerDetails*/
 
 $scope.ownerDetails = function(id){
-    //console.log("id",id);
+    console.log("iddddd",id)
+
+
+userService.userInfo(id).success(function(res) { 
+    console.log("resssssssss",JSON.stringify(res))
+        
+        // if (res.responseCode == 200){
+            
+        //    } 
+        //    else {
+        //     toastr.error(res.responseMessage);
+        //     }
+      })
+
 
 }
 
@@ -846,12 +860,17 @@ app.filter("pagesFilter",function() {
          var retArray = [];
            for(var i=0;i<items.length;i++) 
                {
-               
-            if (items[i].phoneNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {
+               console.log(typeof items[i].phoneNumber);
+             if(items[i].phoneNumber == '' || items[i].phoneNumber == 'undefined' || items[i].pageName == null || items[i].pageName == 'undefined' || items[i].pageName == null || items[i].phoneNumber == null)
+              {
+             }else if(items[i].phoneNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {
                 retArray.push(items[i]);
                }
-           }
+           
+       }
            return retArray
      }
  })
+
+
 

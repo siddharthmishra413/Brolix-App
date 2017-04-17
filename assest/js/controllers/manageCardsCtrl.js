@@ -231,7 +231,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     }
 
 
-    $scope.export = function(){
+    $scope.export = function() {
         html2canvas(document.getElementById('manageCardTable'), {
             onrendered: function (canvas) {
                 var data = canvas.toDataURL();
@@ -242,6 +242,21 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     }]
                 };
                 pdfMake.createPdf(docDefinition).download("test.pdf");
+            }
+        });
+    }
+
+     $scope.export1 = function() {
+        html2canvas(document.getElementById('manageCardTable1'), {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500,
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download("test1.pdf");
             }
         });
     }
@@ -414,6 +429,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                    $scope.noOfPagesUsedUpgradeCard = res.pages;
                    $scope.pageUsedUpgradeCard= res.page;
                    $scope.usedUpgradeCard= res.docs;
+                   console.log(JSON.stringify($scope.usedUpgradeCard));
                     $scope.usedUpgradeCardcount = res.total;
                } 
                else {
@@ -697,6 +713,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
   $scope.cardTypeName = function(val) {
         console.log(val)
          localStorage.setItem('cardTypeName',val);
+         $scope.test = '';
 
         $scope.currentTotalSoldUpgradeCards = 1;
         $scope.nextTotalSoldUpgradeCardsDetail();
@@ -710,10 +727,10 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $scope.currentUnusedUpgradeCards = 1;
         $scope.nextUnusedUpgradeCardsDetail();
 
-         $scope.currentSoldLuckCard = 1;
-         $scope.nextSoldLuckCardDetail();
+        $scope.currentSoldLuckCard = 1;
+        $scope.nextSoldLuckCardDetail();
 
-         $scope.currentIncomeInBrolixFromLuckCard = 1;
+        $scope.currentIncomeInBrolixFromLuckCard = 1;
         $scope.nextIncomeInBrolixFromLuckCardDetail();
 
         $scope.currentUsedLuckCard = 1;
@@ -738,8 +755,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
             city:$scope.dashBordFilter.city,
             upgradeType:$scope.dashBordFilter.upgradeCard,
             LuckCardType:$scope.dashBordFilter.luckCard,
-            joinTo:new Date($scope.dashBordFilter.dateTo).getTime(),
-            joinFrom:new Date($scope.dashBordFilter.dateFrom).getTime(),
+            joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
+            joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
         console.log("datatata",data)
 
@@ -829,9 +846,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
 /*----------ManageCardsCustomFilter----------*/
 
-app.filter("manageCardsFilter",function() {
+app.filter("cardsFilter",function() {
+
   var fullName = [];
-     return function(items,nameValue) {
+     
+      return function(items,nameValue) {
+        console.log(JSON.stringify(items))
+        console.log(nameValue)
         if (!nameValue) {            
          return retArray = items;
            }
@@ -839,11 +860,38 @@ app.filter("manageCardsFilter",function() {
            for(var i=0;i<items.length;i++) 
                {
               fullName.push(items[i].firstName+' '+items[i].lastName);
-              if (fullName[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) 
+              if(fullName[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())
                {
                 retArray.push(items[i])
                }
-          }
+            }
+
          return retArray;
+
+     }
+})
+
+app.filter("manageCardsFilter",function() {
+
+  var name = [];
+     
+      return function(items,nameValue) {
+        console.log(JSON.stringify(items))
+        console.log(nameValue)
+        if (!nameValue) {            
+         return retArray = items;
+           }
+         var retArrayy = [];
+           for(var i=0;i<items.length;i++) 
+               {
+              name.push(items[i].firstName+' '+items[i].lastName);
+              if(name[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())
+               {
+                retArrayy.push(items[i])
+               }
+            }
+
+         return retArrayy;
+
      }
 });

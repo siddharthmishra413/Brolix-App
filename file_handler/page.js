@@ -9,7 +9,7 @@ var Views = require("./model/views");
 var User = require("./model/user");
 var waterfall = require('async-waterfall');
 var _ = require('underscore')
-//var mongoosePaginate = require('mongoose-paginate');
+    //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
 module.exports = {
@@ -114,7 +114,7 @@ module.exports = {
         })
     },
     //API for Business Type
-    "showPageBusinessType": function(req, res) {
+    "myPages": function(req, res) {
         createNewPage.paginate({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); }
             res.send({
@@ -124,6 +124,28 @@ module.exports = {
             })
         })
     },
+
+    "myPagesSearch": function(req, res) {
+        createNewPage.find({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+                var myPagesArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    console.log(typeof(result[i]._id))
+                    myPagesArray.push(String(result[i]._id))
+                }
+                // console.log(typeof(result[i]._id))
+                console.log("myPagesArray-->>", myPagesArray)
+                var re = new RegExp(req.body.search, 'i');
+                createNewPage.paginate({ $and: [{ _id: { $in: myPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
+                    function(err, result1) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
+                            res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
+                        }
+                    })
+            }
+        })
+    },
+
     //API for Favourite Type
     "showPageFavouriteType": function(req, res) {
         User.find({ _id: req.params.id }).exec(function(err, results) {
@@ -224,20 +246,20 @@ module.exports = {
             })
         }
     },
-    //API for Show Page Search
-    "pagesSearch": function(req, res) {
-        //console.log("req======>>>" + JSON.stringify(req.body))
+
+    "allPagesSearch": function(req, res) {
         var re = new RegExp(req.body.search, 'i');
-        createNewPage.find({ status: 'ACTIVE', pageType: "Business" }).or([{ 'pageName': { $regex: re } }]).sort({ pageName: -1 }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+        createNewPage.paginate({ 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                 res.send({
+                    result: result,
                     responseCode: 200,
-                    responseMessage: "Show pages successfully.",
-                    result: result
+                    responseMessage: "Show pages successfully."
                 });
             }
         })
     },
+
     //API for Show Search
     "searchForPages": function(req, res) {
         var data = {
@@ -269,7 +291,6 @@ module.exports = {
     "pageRating": function(req, res) {
         var avrg = 0;
         createNewPage.findOne({ _id: req.body.pageId, totalRating: { $elemMatch: { userId: req.body.userId } } }).exec(function(err, result) {
-            console.log("result========================" + JSON.stringify(result));
             if (!result) {
                 console.log("If");
                 createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "totalRating": { userId: req.body.userId, rating: req.body.rating, date: req.body.date } } }, { new: true }).exec(function(err, results) {
@@ -711,7 +732,7 @@ module.exports = {
                     responseMessage: "Data not found."
                 });
             } else {
-                console.log("aggregate result===>.",result)
+                console.log("aggregate result===>.", result)
                 createNewPage.aggregate(
                         [
                             //  { $match: {_id:req.body.pageId} },
@@ -722,7 +743,7 @@ module.exports = {
 
                             var totalRating = pages.length;
                             console.log("totalRating====>>" + totalRating)
-                            //result[0].totalRating = totalRating;
+                                //result[0].totalRating = totalRating;
                             res.send({
                                 result: result,
                                 responseCode: 200,
@@ -760,8 +781,7 @@ module.exports = {
                     updatedAt: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, result) {
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
-                    else if (result.length == 0) { res.send({ result: result, responseCode: 404, responseMessage: "Data not found." }); } else {
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (result.length == 0) { res.send({ result: result, responseCode: 404, responseMessage: "Data not found." }); } else {
                         console.log(result)
                         var winnersLength = 0;
 
@@ -1037,25 +1057,25 @@ module.exports = {
 
     "listOfCategory": function(req, res) {
         var categoryList = ["Restaurant and Coffee Shop", "Fashion (Men-Women-Kids-Babies)", "Beauty & Health Care", "Fitness and Sports",
-          "Traveling Agencies","Cinemas","Furniture","Home","Mobile and Computer Apps","ToysforkidsandBabies","Electronics and Technology",
-          "Hotels and Apartments","Medical","Education","Motors","Hypermarkets","Events","Jewelry","Arts and Design","Pets","Insurance",
-          "Banks and Finance Companies","Real Estate","Books","Business and Services","Nightlife","Construction","Factories"];
+            "Traveling Agencies", "Cinemas", "Furniture", "Home", "Mobile and Computer Apps", "ToysforkidsandBabies", "Electronics and Technology",
+            "Hotels and Apartments", "Medical", "Education", "Motors", "Hypermarkets", "Events", "Jewelry", "Arts and Design", "Pets", "Insurance",
+            "Banks and Finance Companies", "Real Estate", "Books", "Business and Services", "Nightlife", "Construction", "Factories"
+        ];
         console.log("categoryList-->>", categoryList)
         res.send({
             result: categoryList,
             responseCode: 200,
             responseMessage: "List of all category shown successfully."
         })
-
     },
 
-    "subCategoryData": function(req, res){
-       var matchData = req.body.subCat;
-       res.send({
-        responseCode:200,
-        responseMessage:"Subcategory lists.",
-        result:subCategory[matchData]
-       })
+    "subCategoryData": function(req, res) {
+        var matchData = req.body.subCat;
+        res.send({
+            responseCode: 200,
+            responseMessage: "Subcategory lists.",
+            result: subCategory[matchData]
+        })
     },
 
     "winnerFilter": function(req, res){
@@ -1340,7 +1360,6 @@ module.exports = {
                 // }
           
             }
-        //})
-    
+
 
 }

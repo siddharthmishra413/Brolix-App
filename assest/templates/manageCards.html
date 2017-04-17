@@ -210,17 +210,17 @@
                     <div class="form-group cus-select">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                                               <div class="form-group">
-                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date From" ng-model="dashBordFilter.dateFrom" />
+                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date From" ng-model="dashBordFilter.dobFrom" />
                                               </div>
-                                             </datepicker>
+                        </datepicker>
                     </div>
                     
                      <div class="form-group cus-select">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                                               <div class="form-group">
-                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date To" ng-model="dashBordFilter.dateTo" />
+                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date To" ng-model="dashBordFilter.dobTo" />
                                               </div>
-                                             </datepicker>
+                        </datepicker>
                     </div>
                     <!-- <div class="form-group cus-select">
                         <input style="height: 40px; background-color: #EAEAEA" class="form-control"  ng-model="dashBordFilter.dateFrom" ng-change="dashBordFilter()" type="date" placeholder="From">
@@ -287,7 +287,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldUpgradeCard | manageCardsFilter:test">
+                    <tr ng-repeat="x in totalSoldUpgradeCard | cardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -298,10 +298,10 @@
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(x._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
-                       <tr ng-if="(totalSoldUpgradeCard | manageCardsFilter:test).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>   
+                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>   
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | manageCardsFilter:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | cardsFilter:test).length != 0">
                 <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldUpgradeCards}}/{{noOfPagesTotalSoldUpgradeCards}}
                 <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button>
@@ -326,7 +326,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard | manageCardsFilter:test">
+                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard | cardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -339,11 +339,11 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
-                    <tr ng-if="(totalIncomeInCashFromUpgradeCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
+                    <tr ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
                     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInCashFromUpgradeCard | manageCardsFilter:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length != 0">
                 <button ng-click="preTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalIncomeUpgradeCard}}/{{noOfPagesTotalIncomeUpgradeCard}}
                 <button ng-click="nextTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==noOfPagesTotalIncomeUpgradeCard" class="btn paginationBtn">Next</button>
@@ -410,7 +410,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unUsedUpgradeCard | manageCardsFilter:test">
+                    <tr ng-repeat="x in unUsedUpgradeCard | cardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -423,11 +423,11 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
-                    <tr ng-if="(unUsedUpgradeCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                    <tr ng-if="(unUsedUpgradeCard | cardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(unUsedUpgradeCard | manageCardsFilter:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(unUsedUpgradeCard | cardsFilter:test).length != 0">
                 <button ng-click="preUnusedUpgradeCards()" ng-disabled="pageUnusedUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
                 {{pageUnusedUpgradeCards}}/{{noOfPagesUnusedUpgradeCards}}
                 <button ng-click="nextUnusedUpgradeCards()" ng-disabled="pageUnusedUpgradeCards==noOfPagesUnusedUpgradeCards" class="btn paginationBtn">Next</button>
@@ -453,7 +453,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldLuckCard |manageCardsFilter:test">
+                    <tr ng-repeat="x in totalSoldLuckCard |cardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -464,11 +464,11 @@
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(x._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
-                    <tr ng-if="(totalSoldLuckCard | manageCardsFilter:test).length == 0"><td colspan="8" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length == 0"><td colspan="8" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCard | manageCardsFilter:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCard | cardsFilter:test).length != 0">
                 <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageSoldLuckCard}}/{{noOfPagesSoldLuckCard}}
                 <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button>
@@ -493,7 +493,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalIncomeInBrolixFromLuckCard | manageCardsFilter:test">
+                    <tr ng-repeat="x in totalIncomeInBrolixFromLuckCard | cardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -506,10 +506,10 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
-                     <tr ng-if="(totalIncomeInBrolixFromLuckCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                     <tr ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInBrolixFromLuckCard | manageCardsFilter:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length != 0">
                 <button ng-click="preIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageIncomeInBrolixFromLuckCard}}/{{noOfPagesIncomeInBrolixFromLuckCard}}
                 <button ng-click="nextIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==noOfPagesIncomeInBrolixFromLuckCard" class="btn paginationBtn">Next</button>
@@ -576,7 +576,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unUsedLuckCard | manageCardsFilter:test">
+                    <tr ng-repeat="x in unUsedLuckCard | cardsFilter:test">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -589,10 +589,10 @@
                         <td >{{x.email}}</td>
                         <td >{{x.mobileNumber}}</td>
                     </tr>
-                    <tr ng-if="(unUsedLuckCard | manageCardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                    <tr ng-if="(unUsedLuckCard | cardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(unUsedLuckCard | manageCardsFilter:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(unUsedLuckCard | cardsFilter:test).length != 0">
                 <button ng-click="preUnusedLuckCard()" ng-disabled="pageUnusedLuckCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageUnusedLuckCard}}/{{noOfPagesUnusedLuckCard}}
                 <button ng-click="nextUnusedLuckCard()" ng-disabled="pageUnusedLuckCard==noOfPagesUnusedLuckCard" class="btn paginationBtn">Next</button>
