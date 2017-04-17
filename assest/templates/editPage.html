@@ -262,29 +262,28 @@
 
     <!-- pages Admin -->
 
-
     <div class="container" ng-if="Step4">
             <div class="outer-block cus-addnew-page">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Edit Page</h3>
+                        <h3 class="panel-title">Add Page Admin</h3>
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
-                            <form class="form-block" role="form" >
+                            <form class="form-block" role="form" name="pageAdmin">
                                 <fieldset>
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="control-label col-md-12">Edit Page</label>
+                                            <label class="control-label col-md-12">Add Page Admin</label>
                                             <div class="col-sm-8">
                                                 <div class="row-table">
                                                     <div class="col-cell">
                                                         <select class="form-control" ng-model="myForm.pageAdmin" name="pages" required>
-                                                            <option value="">Select</option>
-                                                            <option ng-repeat="page in pageAdmin" value="{{page}} " >{{page.firstName}} {{page.lastName}}</option>
+                                                            <option value="">Select Page Admin</option>
+                                                            <option ng-repeat="page in pagesAdmin" value="{{page}} ">{{page.firstName}} {{page.lastName}}</option>
                                                         </select>
-                                                        <span class="error" ng-show="myForm.pages.$dirty && myForm.pages.$invalid">
-                                                             <span class="error" ng-show="myForm.pages.$error.required">Please Select a Page</span>
+                                                        <span style="color:red;" class="error" ng-show="pageAdmin.pages.$dirty && pageAdmin.pages.$invalid">
+                                                             <span style="color:red;" class="error" ng-show="pageAdmin.pages.$error.required">Please Select a Page</span>
                                                         </span> 
                                                     </div>
                                                     <div class="col-cell add-remove">
@@ -298,13 +297,13 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-8">
-                                                <div class="row-table" ng-repeat="y in arrayPage">
+                                                <div class="row-table" ng-repeat="y in viewPageDetails.adAdmin">
                                                     <div class="col-cell">
-                                                    <span class="form-control">{{y.firstName+" "+y.lastName}}</span>
+                                                    <span class="form-control">{{y.userId.firstName}} {{y.userId.lastName}}</span>
                                                         <!-- <input type="text" class="form-control"> -->
                                                     </div>
                                                     <div class="col-cell add-remove" >
-                                                        <span class="fa fa-minus-circle" ng-click="removeNewPage(y.firstName+' '+y.lastName)"></span>
+                                                        <span class="fa fa-minus-circle" ng-click="removeNewPage(y)"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -313,7 +312,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-click="update()">Update</a>
+                                        <button class="btn btn-lg btn-green" ng-click="submitt();">Add Pages</button> 
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step4')">Cancel</a>
                                     </div>
                                 </fieldset> 
@@ -323,3 +322,6 @@
                 </div>
             </div>
     </div>
+
+
+   

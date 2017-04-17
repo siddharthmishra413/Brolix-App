@@ -25,12 +25,12 @@ var BATTUTA_KEY="00000000000000000000000000000000"
       
     });
   var countryCode;
-    $scope.changeCountry = function(cont){
-      var contry = cont;
-      console.log("contcont",contry);
+    $scope.changeCountry = function(){
+
+      console.log("viewUserProfile.country",$scope.viewUserProfile.country);
       for(var i=0;i<$scope.countriesList.length;i++){
-        console.log("$scope.dashBordFilter.country",$scope.dashBordFilter.country)
-        console.log($scope.countriesList[i].name)
+        //console.log("$scope.dashBordFilter.country",$scope.dashBordFilter.country)
+        //console.log($scope.countriesList[i].name)
         if($scope.countriesList[i].name==$scope.viewUserProfile.country){
           countryCode=$scope.countriesList[i].code;
           console.log(countryCode)
@@ -45,13 +45,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
              $scope.stateList = regions;
              $scope.stateList.unshift({region:'Select State'})
              $scope.viewUserProfile.statedfd = $scope.stateList[0];;
-             //console.log("data2",$scope.stateList)
+             console.log("data2",JSON.stringify($scope.stateList))
             },100)
       });
     }
 
     $scope.changeState = function() {
-      console.log('detail -> ',$scope.viewUserProfile.statedfd)
+      console.log('detail -> ',viewUserProfile.state)
       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.viewUserProfile.state+"&key="+BATTUTA_KEY+"&callback=?";
       console.log($scope.viewUserProfile.statedfd)
       $.getJSON(url,function(cities)

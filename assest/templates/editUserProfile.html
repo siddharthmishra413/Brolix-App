@@ -113,10 +113,16 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Country</label>
                                             <div class="col-md-9">
-                                                <select class="form-control" ng-change="changeCountry(viewUserProfile.country);" ng-model="viewUserProfile.country" required>
-                                                    <option selected="">{{viewUserProfile.country}}</option>
+                                                <select name="category" class="form-control" ng-change="changeCountry();" ng-model="viewUserProfile.country" required>
+                                                <option selected="">{{viewUserProfile.country}}</option>
+                                                    <!-- <option value="">Select Category</option> -->
                                                     <option ng-repeat="country in countriesList">{{country.name}}</option>
                                                  </select>
+
+                                                <!-- <select class="form-control" ng-change="changeCountry(viewUserProfile.country);" ng-model="viewUserProfile.country" required>
+                                                    <option selected="">{{viewUserProfile.country}}</option>
+                                                    <option ng-repeat="country in countriesList">{{country.name}}</option>
+                                                 </select> -->
                                                 
                                             </div>
                                         </div>
@@ -125,12 +131,17 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">State</label>
                                             <div class="col-md-9">
-                                                <select class="form-control" ng-change="changeState();" ng-model="viewUserProfile.state" ng-init="viewUserProfile.state = viewUserProfile.state" required>
+                                             <select name="category" class="form-control" ng-change="changeState();" ng-model="viewUserProfile.state" required>
+                                                <option selected="">{{viewUserProfile.state}}</option>
+                                                    <!-- <option value="">Select Category</option> -->
+                                                    <option ng-repeat="state in stateList">{{state.region}}</option>
+                                                 </select>
+                                                <!-- <select class="form-control" ng-change="changeState();" ng-model="viewUserProfile.state" ng-init="viewUserProfile.state = viewUserProfile.state" required>
                                                     <option selected="">{{viewUserProfile.state}}</option>
                                                     <option ng-repeat="state in stateList">{{state.region}}</option>
-                                                 </select> 
-                                                <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid"></span> 
-                                                <span ng-show="userFrom.state.$error.required">State is required.</span> 
+                                                 </select> --> 
+                                                <!-- <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid"></span> 
+                                                <span ng-show="userFrom.state.$error.required">State is required.</span> --> 
                                             </div>
                                         </div>
                                     </div>

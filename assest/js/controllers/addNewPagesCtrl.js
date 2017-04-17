@@ -12,7 +12,7 @@ $scope.$emit('headerStatus', 'Manage Pages');
  $scope.adminsIdd;
  // $scope.arrayPage = [];
  var arr =[];
- var cond = []
+ var cond = [];
  $scope.pageAdminss = [];
  $scope.pageId = [];
 
@@ -94,7 +94,6 @@ $scope.$emit('headerStatus', 'Manage Pages');
  	console.log("a",a)
     // $scope.array.splice(removeSocialMedia,1);
     console.log("arrrrr",$scope.array);
-    
  }
 
 
