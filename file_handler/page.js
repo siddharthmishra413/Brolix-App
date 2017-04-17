@@ -114,7 +114,7 @@ module.exports = {
         })
     },
     //API for Business Type
-    "showPageBusinessType": function(req, res) {
+    "myPages": function(req, res) {
         createNewPage.paginate({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); }
             res.send({
@@ -124,6 +124,28 @@ module.exports = {
             })
         })
     },
+
+    "myPagesSearch": function(req, res) {
+        createNewPage.find({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+                var myPagesArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    console.log(typeof(result[i]._id))
+                    myPagesArray.push(String(result[i]._id))
+                }
+                // console.log(typeof(result[i]._id))
+                console.log("myPagesArray-->>", myPagesArray)
+                var re = new RegExp(req.body.search, 'i');
+                createNewPage.paginate({ $and: [{ _id: { $in: myPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
+                    function(err, result1) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
+                            res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
+                        }
+                    })
+            }
+        })
+    },
+
     //API for Favourite Type
     "showPageFavouriteType": function(req, res) {
         User.find({ _id: req.params.id }).exec(function(err, results) {
