@@ -768,7 +768,6 @@ module.exports = {
                         for (var i = 0; i < result.length; i++) {
                             winnersLength += result[i].winners.length;
                             console.log(winnersLength);
-
                         }
                         callback(null, winnersLength)
                     }
@@ -783,31 +782,59 @@ module.exports = {
                         total_winners: winnersLength,
                         total_buyers: totalBuyers
                     }
-                    callback(null, data)
+                    callback(null, winnersLength,totalBuyers)
                 })
             },
             function(winnersLength, totalBuyers, callback) {
                 createNewAds.find({
-                    couponStatus: 'used',
-                    couponUsedDate: { $gte: startTime, $lte: endTime }
+                    cashStatus: 'DELIVERED',
+                    couponUsedDate: { $gte: startTime, $lte: endTime } ,
+                    pageId: req.body.pageId
+                }).exec(function(err, couponUsedResult) {
+                    callback(null, winnersLength, totalBuyers, couponUsedResult)
+                })
+            },
+            function(winnersLength, totalBuyers, callback) {
+                createNewAds.find({
+                    cashStatus: 'PENDING',
+                    couponUsedDate: { $gte: startTime, $lte: endTime },
+                     pageId: req.body.pageId
+                }).exec(function(err, couponUsedResult) {
+                    callback(null, winnersLength, totalBuyers, couponUsedResult)
+                })
+            },
+            function(winnersLength, totalBuyers, callback) {
+                createNewAds.find({
+                    couponStatus: 'USED',
+                    couponUsedDate: { $gte: startTime, $lte: endTime },
+                    pageId: req.body.pageId
                 }).exec(function(err, couponUsedResult) {
                     callback(null, winnersLength, totalBuyers, couponUsedResult)
                 })
             },
             function(winnersLength, totalBuyers, couponUsedResult, callback) {
                 createNewAds.find({
-                    couponStatus: 'expired',
-                    couponUsedDate: { $gte: startTime, $lte: endTime }
+                    couponStatus: 'EXPIRED',
+                    couponUsedDate: { $gte: startTime, $lte: endTime },
+                    pageId: req.body.pageId
                 }).exec(function(err, couponExpResult) {
                     callback(null, winnersLength, totalBuyers, couponUsedResult, couponExpResult);
                 })
             },
             function(winnersLength, totalBuyers, couponUsedResult, couponExpResult, callback) {
                 createNewAds.find({
-                    couponStatus: 'valid',
-                    couponUsedDate: { $gte: startTime, $lte: endTime }
+                    couponStatus: 'VALID',
+                    couponUsedDate: { $gte: startTime, $lte: endTime },
+                    pageId: req.body.pageId
                 }).exec(function(err, couponValidResult) {
-                    callback(null, winnersLength, totalBuyers, couponUsedResult, couponExpResult, couponValidResult);
+                    var data = {
+                        winnersLength:winnersLength ,
+                        totalBuyers: totalBuyers,
+                        couponUsedResult:couponUsedResult,
+                        couponExpResult: couponExpResult , 
+                        couponValidResult:couponValidResult
+                    }
+                    callback(null, data);
                 })
             }
         ], function(err, result) {
@@ -1135,8 +1162,8 @@ module.exports = {
                     var pages = Math.ceil(count / 10);
                     User.aggregate(
                         [
-                         { $unwind: '$coupon'},
-                         { $match :query},
+                          { $unwind: '$coupon'},
+                          { $match :query},
                           { $limit: limitData }, { $skip: skips }
                         ]
                     ).exec(function(err, results){
@@ -1172,7 +1199,7 @@ module.exports = {
             
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                     if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'couponStatus' || key =="type" || req.body[key] == "" || req.body[key]== undefined )) {
-                       // var queryOrData = { $or: [] };
+                       //   queryOrData = { $or: [] };
                         var temporayCondData ={}
                         if(key == 'cashStatus'){
                            console.log("ddddddddD",req.body[key].length)

@@ -890,7 +890,7 @@ module.exports = {
                                     res.send({
                                         result: result3,
                                         responseCode: 200,
-                                        responseMessage: "Pages details updated successfully. 544353"
+                                        responseMessage: "Pages details updated successfully."
                                     })
                                 }
                             })
