@@ -37,6 +37,8 @@ app.post('/subCategoryData', pageHandler.subCategoryData);
 
 app.post('/winnerFilter/:pageNumber', pageHandler.winnerFilter);
 app.post('/myPagesSearch/:id/:pageNumber', pageHandler.myPagesSearch);
+app.post('/PageCashWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCashWinnersFilter);
+app.post('/PageCouponWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCouponWinnersFilter);
 
 
 module.exports = app;
