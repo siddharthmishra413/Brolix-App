@@ -3354,30 +3354,28 @@ module.exports = {
     "notificationToAdmin": function(req, res) {
         waterfall([
             function(callback) {
-                var array = [];
-                User.find({}, 'firstName lastName email createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
-                        array.push(result)
-                        callback(null, array)
+                User.find({}, 'firstName lastName email createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, user) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (user.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
+                        callback(null, user)
                     }
                 })
             },
-            function(array, callback) {
-                createNewAds.find({}, 'pageName adsType createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, result2) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result2.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
-                        array.push(result2)
-                        callback(null, array)
+            function(user, callback) {
+                createNewAds.find({}, 'pageName adsType createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, ads) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (ads.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
+                        callback(null, user, ads)
                     }
                 })
             },
-            function(array, callback) {
-                createNewPage.find({}, ' pageName createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, result3) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result3.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
-                        array.push(result3)
-                            // var sortArray = array.sort(function(obj1, obj2) {
-                            //     return obj2.createdAt - obj1.createdAt
-                            // })
-                        callback(null, array)
+            function(user, ads, callback) {
+                createNewPage.find({}, ' pageName createdAt').sort({ 'createdAt': -1 }).limit(10).exec(function(err, page) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (page.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
+                        var data = {
+                            userResult: user,
+                            adsResult: ads,
+                            pageResult: page
+                        }
+                        callback(null, data)
                     }
                 })
             },
