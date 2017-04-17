@@ -803,7 +803,7 @@ $scope.ownerDetails = function(id){
 
 userService.userInfo(id).success(function(res) { 
     console.log("resssssssss",JSON.stringify(res))
-        
+         $("#ownerDetails").modal('show');
         // if (res.responseCode == 200){
             
         //    } 

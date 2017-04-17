@@ -732,3 +732,38 @@
        </div>
    </div>
 </div>
+
+<div id="ownerDetails" class="modal fade" >
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Owner Details</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageUserTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Owner Name</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="skyblue-text">{{ownerDetails.firstName}} {{ownerDetails.lastName}}</td>
+                                        <td class="skyblue-text">{{ownerDetails.email}}</td>
+                                        <td class="skyblue-text">{{ownerDetails.status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>

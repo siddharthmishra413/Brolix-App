@@ -897,6 +897,113 @@ module.exports = {
                 })
             }
         })
+    },
+
+    "PageCouponFilter": function(req, res) {
+        waterfall([
+           function(callback){
+                var condition = { $and: [] };
+                var obj = req.body;
+                Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+                    //if (key == 'cashStatus' || key == 'couponStatus') {
+                var cond = { $or: [] };
+                    if (key == "subCategory") {
+                        for (data in obj[key]) {
+                            cond.$or.push({ subCategory: obj[key][data] })
+                        }
+                        condition.$and.push(cond)
+                    } 
+                    else {
+                        var tempCond = {};
+                        tempCond[key] = obj[key];
+                        condition.$and.push(tempCond) 
+                    }
+                });
+                if (condition.$and.length == 0) {
+                    delete condition.$and;
+                }
+                console.log("condition==>"+JSON.stringify(condition))
+                createNewPage.find(condition).exec(function(err, result) {
+                    // console. 0000000("result--->>",result)
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                    else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) }
+                    else {
+                        console.log("array result",result)
+                        var array =[];
+                        for(var i=0; i<result.length;i++){
+                            array.push(String(result[i]._id))
+                        }
+                        console.log(array)
+                        callback(null,array)
+                    }
+                })
+            },
+            function(arrayId, callback){
+                console.log("arrayId=========>...",arrayId)
+                createNewAds.paginate({ $and: [{pageId:{$in: arrayId},sellCoupon: true, status: 'ACTIVE' }] },{ page: req.params.pageNumber, limit: 10 },function(err, result){
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                    else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) }
+                    else {
+                        res.send({ responseCode: 200, responseMessage: "Success.", result: result })
+                    }
+                })
+            }
+        ])
+    },
+
+
+    "StoreFavCouponFilter": function(req, res) {
+        waterfall([
+           function(callback){
+                var condition = { $and: [] };
+                var obj = req.body;
+                Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+                if (!(key == 'userId')){
+                var cond = { $or: [] };
+                    if (key == "subCategory") {
+                        for (data in obj[key]) {
+                            cond.$or.push({ subCategory: obj[key][data] })
+                        }
+                        condition.$and.push(cond)
+                    } 
+                    else {
+                        var tempCond = {};
+                        tempCond[key] = obj[key];
+                        condition.$and.push(tempCond) 
+                    }
+                }
+                });
+                if (condition.$and.length == 0) {
+                    delete condition.$and;
+                }
+                console.log("condition==>"+JSON.stringify(condition))
+                createNewPage.find(condition).exec(function(err, result) {
+                    // console. 0000000("result--->>",result)
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                    else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) }
+                    else {
+                        console.log("array result",result)
+                        var array =[];
+                        for(var i=0; i<result.length;i++){
+                            array.push(String(result[i]._id))
+                        }
+                        console.log(array)
+                        callback(null,array)
+                    }
+                })
+            },
+            function(arrayId, callback){
+                console.log("arrayId=========>...",arrayId)
+                createNewAds.paginate({ $and: [{pageId:{$in: arrayId},sellCoupon: true, status: 'ACTIVE',favouriteCoupon:req.body.userId }] },{ page: req.params.pageNumber, limit: 10 },function(err, result){
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                    else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) }
+                    else {
+                        res.send({ responseCode: 200, responseMessage: "Success.", result: result })
+                    }
+                })
+            }
+        ])
     }
+
 
 }
