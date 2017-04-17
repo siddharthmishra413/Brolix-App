@@ -50,12 +50,19 @@ app.service('createPageService',function($http, $q){
         }
 })
 
+http://172.16.6.171:8082/admin/editPage/5832e29349df9c04411e252d
+
 
 
 
 app.service('userService',function($http){
 
 	return{
+
+    editPage: function(id,data){
+      return $http.put(baseurl+'/admin/editPage/'+id, data);
+    },
+
 	  signup: function(data) {
       return $http.post(baseurl+'/signup', data);
     },

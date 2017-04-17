@@ -89,10 +89,18 @@ app.controller('editPagesCtrl', function($scope, $window, userService, $state, t
   }
  }
 $scope.removeSocialMedia = function(removeSocialMedia){
-  console.log("removeSocialMedia",removeSocialMedia)
-  var a = $scope.viewPageDetails.socialMedia.indexOf(removeSocialMedia);
-  $scope.viewPageDetails.socialMedia.splice(a);
-  console.log("a",a)
+    console.log("removeSocialMedia",removeSocialMedia)
+
+  for(var i=0;i<$scope.viewPageDetails.socialMedia.length;i++){
+    if($scope.viewPageDetails.socialMedia[i] == removeSocialMedia){
+      console.log("dadadad",JSON.stringify($scope.viewPageDetails.adAdmin[i]))
+      $scope.viewPageDetails.socialMedia.splice(i,1);
+    }
+  }
+
+  // var a = $scope.viewPageDetails.socialMedia.indexOf(removeSocialMedia);
+  // $scope.viewPageDetails.socialMedia.splice(a);
+  // console.log("a",a)
     // $scope.array.splice(removeSocialMedia,1);
     console.log("arrrrr",$scope.viewPageDetails.socialMedia);
     
@@ -265,7 +273,7 @@ $scope.removeSocialMedia = function(removeSocialMedia){
       var autocompleteFrom = new google.maps.places.Autocomplete(inputFrom);
       google.maps.event.addListener(autocompleteFrom, 'place_changed', function() {
               var place = autocompleteFrom.getPlace();
-              $scope.myForm.lattitude = place.geometry.location.lat();
+              $scope.myForm.latitude = place.geometry.location.lat();
               $scope.myForm.longitude = place.geometry.location.lng();
               $scope.myForm.address = place.formatted_address;
              
@@ -323,6 +331,10 @@ $scope.removeSocialMedia = function(removeSocialMedia){
                                $scope.myForm.address=responses[0].formatted_address; 
                                $scope.myForm.latitude=latitude;
                                $scope.myForm.longitude=longitude;
+                               console.log("$scope.myForm.latitude=latitude",$scope.myForm.latitude);
+                               console.log("$scope.myForm.$scope.myForm.longitude",$scope.myForm.longitude);
+                               
+
                                for(i=0;i<responses[0].address_components.length;i++)
                                   {
                                     if(responses[0].address_components[i].types[0]=="country")
@@ -444,7 +456,7 @@ $scope.removeSocialMedia = function(removeSocialMedia){
              "pageDiscription": $scope.myForm.description,
              "email": $scope.myForm.email,
              "phoneNumber": $scope.myForm.phon,
-             "location": [$scope.myForm.lattitude,$scope.myForm.longitude],
+             "location": [$scope.myForm.latitude,$scope.myForm.longitude],
              "website":$scope.myForm.website,
              "country":$scope.myForm.country,
              "state":$scope.myForm.state,
@@ -456,16 +468,16 @@ $scope.removeSocialMedia = function(removeSocialMedia){
       }
      
       console.log("allllllll data",JSON.stringify(data));
-     //  createPageService.createPage($scope.viewPageDetails._id,data).then(function(success) {
-     //    console.log(JSON.stringify(success))
-     //         if (success.data.responseCode == 200){
-     //            $scope.createPageData = success.result;
-     //            toastr.success("successfully Created");
-     //            $state.go('header.managePages');
-     //         }else{
-     //          toastr.error(success.responseMessage);
-     //         } 
-     // })
+      userService.editPage($scope.viewPageDetails._id,data).then(function(success) {
+        console.log(JSON.stringify(success))
+             if (success.data.responseCode == 200){
+                $scope.createPageData = success.result;
+                toastr.success("successfully Created");
+                $state.go('header.managePages');
+             }else{
+              toastr.error(success.responseMessage);
+             } 
+     })
   }
 
 })
