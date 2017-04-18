@@ -895,7 +895,7 @@ module.exports = {
                 var condition = { $and: [] };
                 var obj = req.body;
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-                    //if (key == 'cashStatus' || key == 'couponStatus') {
+                if (!(obj[key] == '' || obj[key] == undefined)) {
                 var cond = { $or: [] };
                     if (key == "subCategory") {
                         for (data in obj[key]) {
@@ -908,6 +908,7 @@ module.exports = {
                         tempCond[key] = obj[key];
                         condition.$and.push(tempCond) 
                     }
+                }
                 });
                 if (condition.$and.length == 0) {
                     delete condition.$and;
@@ -948,7 +949,7 @@ module.exports = {
                 var condition = { $and: [] };
                 var obj = req.body;
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-                if (!(key == 'userId')){
+                if (!(key == 'userId' || obj[key] == '' || obj[key] == undefined)){
                 var cond = { $or: [] };
                     if (key == "subCategory") {
                         for (data in obj[key]) {
