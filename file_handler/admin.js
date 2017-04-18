@@ -3591,7 +3591,7 @@ module.exports = {
             },
             function(updateData, callback) {
 
-                if (req.body.joinTo && req.body.joinTo) {
+                if (req.body.joinFrom && req.body.joinTo) {
                     condition.$and.push({
                         createdAt: { $gte: new Date(req.body.joinFrom).toUTCString(), $lte: new Date(req.body.joinTo).toUTCString() }
                     })
