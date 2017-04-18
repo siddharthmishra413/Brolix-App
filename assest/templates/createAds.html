@@ -11,7 +11,12 @@
                                     <h4>Please select the the page that you want:</h4>
                                 </div>
                             <div class="cus-content-row"  >
-                                  <select class="form-control" ng-model="createAds.StepFirst" ng-change="click('StepFirst')" >
+                                <select class="form-control"  ng-model="createAds.StepFirst" ng-change="click('StepFirst')" required>
+                                  <option value="">Select Page Name</option>
+                                  <option ng-repeat="page in pageDetail" value="{{page}}" >{{page.pageName}}</option>
+                                </select>
+
+                                  <!-- <select class="form-control" ng-model="createAds.StepFirst" ng-change="click('StepFirst')" >
                                          <option value="">Select Page</option>
                                             <option>Page 23 </option>
                                             <option>Page 77</option>
@@ -23,7 +28,7 @@
                                             <option>Page 13</option>
                                             <option>Page 39</option>
                                             <option>Page 25</option>
-                                  </select>
+                                  </select> -->
                             </div>   
                         </div>
                     </div>

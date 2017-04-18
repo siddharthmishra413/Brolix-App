@@ -10,6 +10,18 @@ $scope.class = false;
  $scope.cardType = 'upgrade_card';
 
 
+ userService.listOfCategory().success(function(res) {
+    console.log(JSON.stringify(res))
+        if (res.responseCode == 200){
+            $scope.category= res.result;
+            console.log("category",JSON.stringify(res))
+        }else{
+            toastr.error("Something went wrong")
+        } 
+
+    })
+
+
 
  userService.showListOFCoupon().success(function(res) {
   //console.log("resssssssssssssss",res)

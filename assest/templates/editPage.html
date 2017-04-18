@@ -248,7 +248,7 @@
                                     </div>
                                 </div>
                                 <div class="btn2 text-center">
-                                    <button class="btn btn-lg btn-green" ng-disabled="media.$invalid" ng-click="click('Step3')">Next</button>
+                                    <button ng-disabled="viewPageDetails.socialMedia.length == 0" class="btn btn-lg btn-green" ng-disabled="media.$invalid" ng-click="click('Step3')">Next</button>
                                     <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
                                 </div>
                             </fieldset>
@@ -312,7 +312,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <button class="btn btn-lg btn-green" ng-click="submitt();">Update Pages</button> 
+                                        <button ng-disabled="viewPageDetails.adAdmin.length == 0" class="btn btn-lg btn-green" ng-click="submitt();">Update Pages</button> 
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step4')">Cancel</a>
                                     </div>
                                 </fieldset> 

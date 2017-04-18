@@ -4,6 +4,14 @@ $scope.$emit('headerStatus', 'Manage Ads');
 $scope.$emit('SideMenu', 'Manage Ads');
 $scope.createAds = {};
 
+userService.getPage().then(function(success) { 
+        $scope.pageDetail=success.data.result;
+        console.log("Page>>>>>>>>>>"+JSON.stringify($scope.pageDetail))
+    },function(err){
+        console.log(err);
+         toastr.error('Connection error.');
+}) 
+
  
  $scope.createAds.photo1='./dist/image/user-image.jpeg';
  $scope.createAds.photo2='./dist/image/user-image.jpeg';

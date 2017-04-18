@@ -166,11 +166,8 @@ $scope.removeSocialMedia = function(removeSocialMedia){
   //console.log("final arr",$scope.pageId)
   }else{
     toastr.error("Please select admin")
-
-  
  }
-
-  }
+}
 
  $scope.removeNewPage = function(removeNewPage){
   //console.log("removeSocialMedia",JSON.stringify(removeNewPage))

@@ -136,11 +136,8 @@
                     </div>
                     <div class="form-group cus-select">
                         <select class="form-control" ng-model="dashBordFilter.categories" ng-change="dashBordFilter(dashBordFilter.category);">
-                            <option value="">All Categories</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option value="">Select Category</option>
+                            <option ng-repeat="category in category">{{category}}</option>
                         </select>
                     </div>
                     

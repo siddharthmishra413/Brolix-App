@@ -56,7 +56,7 @@
                           <option ng-repeat="page in pageDetail" value="{{page}}" >{{page.pageName}}</option>
                        </select> 
                       <span style="color:red;" ng-show="myForm.state.$dirty && myForm.state.$invalid">
-                      <span ng-show="myForm.state.$error.required">State is required.</span> 
+                      <span ng-show="myForm.state.$error.required">Page is required.</span> 
                         <!-- <select class="form-control" ng-model="user.pageName" ng-change="isSelected(user.pageName)">
                               <option value="">Select</option>
                               <option value="{{page.pageName}}" ng-repeat="page in pageDetail">{{page.pageName}}</option>

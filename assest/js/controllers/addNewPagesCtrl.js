@@ -130,6 +130,7 @@ $scope.$emit('headerStatus', 'Manage Pages');
     }
 
 $scope.addNewPage = function(addNewPage){
+   if(addNewPage){
 	console.log("ssssss",JSON.stringify(addNewPage));
 	var adminInfo=JSON.parse(addNewPage);
 	console.log("id",adminInfo)
@@ -167,6 +168,9 @@ $scope.addNewPage = function(addNewPage){
 
  	}
  	console.log("final arr",JSON.stringify($scope.pageAdminss))
+  else{
+    toastr.error("Please select admin")
+  }
  	//console.log("final arr",$scope.pageId)
  }
 
@@ -227,7 +231,7 @@ $scope.addNewPage = function(addNewPage){
 	}
 
     // $scope.changeImage = function(input,key) {
-    //     var file = input.files[0];
+    //    0 var file = input.files[0];
     //     var ext = file.name.split('.').pop();
     //     if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
     //         $scope.imageName = file.name;
