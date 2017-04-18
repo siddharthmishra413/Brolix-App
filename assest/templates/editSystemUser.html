@@ -7,7 +7,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
-                            <form class="form-block" role="form">
+                            <form class="form-block" name="userFrom">
                                 <fieldset>
                                      <div class="form-group">
                                         <div class="row">
@@ -48,7 +48,7 @@
                                     
                                     <div class="permission-block clearfix">
                                         <h3 class="permission-heading">Permissions</h3>
-                                        <div class="checkbox-a">
+                                        <div class="checkbox-a" >
                                             <label><input name="manageUser" ng-model="myFrom.permissions.manageUser" type="checkbox" > Manage users</label>
                                             <label><input name="managePages" ng-model="myFrom.permissions.managePages" type="checkbox" > Manage pages</label>
                                             <label><input name="manageAdds" ng-model="myFrom.permissions.manageAdds" type="checkbox" > Manage adds</label>
@@ -61,7 +61,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <button type="submit" class="btn btn-lg btn-green" ng-click="updateSystemUser()">Update</button>
+                                        <button ng-disabled="userFrom.$invalid" type="submit" class="btn btn-lg btn-green" ng-click="updateSystemUser()">Update</button>
                                         <button type="submit" class="btn btn-lg btn-green" ng-click="cancel()">Cancel</button>
                                        
                                     </div>

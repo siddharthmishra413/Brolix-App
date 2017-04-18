@@ -1,9 +1,10 @@
-app.controller('adminCouponCtrl', function ($scope,uploadimgServeice,userService, $window,userService,toastr,$state) {
+app.controller('adminCouponCtrl', function ($scope,spinnerService,$timeout,uploadimgServeice,userService, $window,userService,toastr,$state) {
 $(window).scrollTop(0,0);
 $scope.$emit('headerStatus', 'Admin Tools');
 $scope.$emit('SideMenu', 'Admin Tools');
 $scope.couponDeatil=true;
 $scope.addNewCoupon=false;
+  $scope.user={};
 $scope.addCouponFun=function(){
 	$scope.couponDeatil=false;
 	$scope.addNewCoupon=true;
@@ -42,8 +43,8 @@ $scope.currentAllCoupons = 1;
 			 //         toastr.error('Connection error.');
 		  //   })
 
-	$scope.user={};
-    $scope.pageDetail=[];
+
+    // $scope.pageDetail=[];
    	 userService.getPage().then(function(success) { 
    	 				$scope.pageDetail=success.data.result;
 					console.log("Page>>>>>>>>>>"+JSON.stringify($scope.pageDetail))
@@ -58,19 +59,28 @@ $scope.currentAllCoupons = 1;
         if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
             $scope.imageName = file.name;
             uploadimgServeice.user(file).then(function(ObjS) {
-            $scope.user.photo = ObjS.data.result.url;
-            $scope.user.photo = ObjS.data.result.url;
+              $timeout(function () {      
+              spinnerService.hide('html5spinner');     
+                  $scope.user.photo = ObjS.data.result.url;
+                  console.log("$scope.user.photo",$scope.user.photo)
+              }, 250);
         })
         }else{
             toastr.error("Only image supported.")
         }        
     }
 
+
+    
+
     $scope.addCoupon=function(info){
-    	console.log(info)
+        var couponData=JSON.parse(info.pageName);
+      console.log("info",JSON.stringify(couponData))
+    	//console.log("info",$scope.user.pageName)
+
 		var data = {
-					"pageId":$scope.pageDetail._id,
-					"pageName":info.pageName,
+					"pageId":couponData._id,
+					"pageName":couponData.pageName,
 					"coverImage":$scope.user.photo,
 					"couponExpiryDate":info.expDate,
 					"giftDescription":info.description
@@ -78,7 +88,11 @@ $scope.currentAllCoupons = 1;
           console.log("data",data)
 		userService.addCoupon(data).then(function(success) { 
 					console.log(JSON.stringify(success))
-					$state.reload();
+          if(success.data.responseCode == 200){
+            console.log("dadadda")
+            toastr.success(success.data.responseMessage);
+            $state.reload();
+          }
         		},function(err){
 			        console.log(err);
 			         toastr.error('Connection error.');
