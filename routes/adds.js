@@ -38,5 +38,7 @@ app.get('/storeCouponList/:pageNumber', authUser.authUser, adsHandler.storeCoupo
 app.post('/viewCoupon', authUser.authUser, adsHandler.viewCoupon);
 app.post('/PageCouponFilter/:pageNumber',adsHandler.PageCouponFilter);
 app.post('/StoreFavCouponFilter/:pageNumber',adsHandler.StoreFavCouponFilter);
+app.post('/couponWinnersDateFilter/:pageNumber',adsHandler.couponWinnersDateFilter);
+
 
 module.exports = app;

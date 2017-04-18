@@ -657,6 +657,75 @@ module.exports = {
         })
     },
 
+     "couponWinnersDateFilter": function(req, res) {
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 8;
+        var skips = limitData - 8;
+        var page = String(pageNumber);
+
+        var startDateKey = '';
+        var endDateKey = '';
+        var tempCond = {};
+        var tempEndDate = {};
+        var data;
+
+        var condition = { $or: [] };
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                    if (key == 'startDate') {
+                        tempCond['$gte'] = req.body[key];
+                        console.log("startDate--->>>", tempCond)
+                    }
+                    if (key == 'endDate') {
+                        tempEndDate['$lte'] = req.body[key];
+                        console.log("gte--->>>", tempEndDate)
+                    }
+                }
+                if (tempCond != '' || tempEndDate != '') {
+                    data = Object.assign(tempCond, tempEndDate)
+                }
+            });
+
+            console.log("startDate", tempCond)
+            console.log("endDate", tempEndDate)
+            console.log("dta===>>", data)
+
+        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER' } }).exec(function(err, result) {
+            console.log("1")
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: "No coupon winner found" }); } else {
+                var count = 0;
+                for (i = 0; i < result.length; i++) {
+                    count++;
+                }
+                var pages = Math.ceil(count / 8);
+                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER' } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                    console.log("2")
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
+                        User.populate(result1, {
+                            path: 'coupon.adId',
+                            model: 'createNewAds'
+                        }, function(err, result2) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
+                                 // var obj = result[0].coupon;
+                                 // var data = obj.filter(obj => obj.type == "ACTIVE");
+                                res.send({
+                                    docs: result2,
+                                    count: count,
+                                    limit: limitData,
+                                    page: page,
+                                    pages: pages,
+                                    responseCode: 200,
+                                    responseMessage: "All coupon winner shown successfully."
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    },
+
+
     "cashWinners": function(req, res) {
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
@@ -895,7 +964,7 @@ module.exports = {
                 var condition = { $and: [] };
                 var obj = req.body;
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-                if (!(obj[key] == '' || obj[key] == undefined)) {
+                    //if (key == 'cashStatus' || key == 'couponStatus') {
                 var cond = { $or: [] };
                     if (key == "subCategory") {
                         for (data in obj[key]) {
@@ -908,7 +977,6 @@ module.exports = {
                         tempCond[key] = obj[key];
                         condition.$and.push(tempCond) 
                     }
-                }
                 });
                 if (condition.$and.length == 0) {
                     delete condition.$and;
@@ -949,7 +1017,7 @@ module.exports = {
                 var condition = { $and: [] };
                 var obj = req.body;
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-                if (!(key == 'userId' || obj[key] == '' || obj[key] == undefined)){
+                if (!(key == 'userId')){
                 var cond = { $or: [] };
                     if (key == "subCategory") {
                         for (data in obj[key]) {
