@@ -335,7 +335,6 @@ module.exports = {
                     responseMessage: "Blocked page shown successfully."
                 });
             }
-
         });
     },
 
@@ -349,7 +348,6 @@ module.exports = {
                     responseMessage: "Page removed successfully."
                 });
             }
-
         });
     },
 
@@ -368,7 +366,6 @@ module.exports = {
                     responseMessage: "Removed page shown successfully."
                 });
             }
-
         });
     },
 
@@ -456,13 +453,71 @@ module.exports = {
         }
     },
 
+    //  var condition = { $or: [] };
+    // var obj = req.body;
+    // Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+    //     if (key == 'cashStatus' || key == 'couponStatus') {
+    //         var cond = { $or: [] };
+    //         if (key == "cashStatus") {
+    //             for (data in obj[key]) {
+    //                 condition.$or.push({ cashStatus: obj[key][data] })
+    //             }
+    //         } else {
+    //             for (data in obj[key]) {
+    //                 condition.$or.push({ couponStatus: obj[key][data] })
+    //             }
+    //         }
+    //         //condition[key] = cond;
+    //     } else {
+    //         condition[key] = obj[key];
+    //     }
+    // });
+    // if (condition.$or.length == 0) {
+    //     delete condition.$or;
+    // }
+
+    // Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+    //             if (!(req.body[key] == "" || req.body[key] == undefined)) {
+    //                 if(key == 'startDate'){
+    //                     var startDateKey = req.body[key];
+    //                 }
+    //                 if(key == 'endDate'){
+    //                     var endDateKey = req.body[key];
+    //                 }                                               
+    //             }
+    //         });
+
     "PageCouponWinnersFilter": function(req, res) {
         var pageId = req.params.id;
+        var startDateKey = '';
+        var endDateKey = '';
+        var tempCond = {};
+        var tempEndDate = {};
+        var data;
         if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
             var array = [];
+            var condition = { $or: [] };
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                    if (key == 'startDate') {
+                        tempCond['$gte'] = req.body[key];
+                        console.log("startDate--->>>", tempCond)
+                    }
+                    if (key == 'endDate') {
+                        tempEndDate['$lte'] = req.body[key];
+                        console.log("gte--->>>", tempEndDate)
+                    }
+                }
+                if (tempCond != '' || tempEndDate != '') {
+                    data = Object.assign(tempCond, tempEndDate)
+                }
+            });
+            console.log("startDate", tempCond)
+            console.log("endDate", tempEndDate)
+            console.log("dta===>>", data)
+
             createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
-                console.log("result1-->>", JSON.stringify(result))
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else {
                     var couponType = result.filter(result => result.adsType == "coupon");
                     for (i = 0; i < couponType.length; i++) {
                         for (j = 0; j < couponType[i].winners.length; j++, j) {
@@ -470,9 +525,8 @@ module.exports = {
                         }
                     }
                     console.log("array-->>", array)
-                    User.paginate({ _id: { $in: array }, 'createdAt': { $gte: req.body.startDate, $lte: req.body.endDate } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                        console.log("result1-->>", JSON.stringify(result1))
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
+                    User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
                             res.send({
                                 result: result1,
                                 responseCode: 200,
@@ -488,8 +542,32 @@ module.exports = {
 
     "particularPageCashWinners": function(req, res) {
         var pageId = req.body.pageId;
+        var startDateKey = '';
+        var endDateKey = '';
+        var tempCond = {};
+        var tempEndDate = {};
+        var data;
         if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
             var array = [];
+            var condition = { $or: [] };
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                    if (key == 'startDate') {
+                        tempCond['$gte'] = req.body[key];
+                        console.log("startDate--->>>", tempCond)
+                    }
+                    if (key == 'endDate') {
+                        tempEndDate['$lte'] = req.body[key];
+                        console.log("gte--->>>", tempEndDate)
+                    }
+                }
+                if (tempCond != '' || tempEndDate != '') {
+                    data = Object.assign(tempCond, tempEndDate)
+                }
+            });
+            console.log("startDate", tempCond)
+            console.log("endDate", tempEndDate)
+            console.log("dta===>>", data)
             createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                     var cashType = result.filter(result => result.adsType == "cash");
@@ -498,7 +576,7 @@ module.exports = {
                             array.push(cashType[i].winners[j]);
                         }
                     }
-                    User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                    User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
                             res.send({
                                 result: result1,
@@ -537,54 +615,6 @@ module.exports = {
             });
         }
     },
-
-    // "pageFilter": function(req, res) {
-    //     var date = req.body.date;
-    //       function daysInMonth(month,year) {
-    //          return new Date(year, month, 0).getDate();
-    //       }
-    //         var startTime = new Date(parseInt(req.body.date)).toUTCString();
-    //         var endTimeHour = parseInt(req.body.date) + 86400000;
-    //         var endTime = new Date(endTimeHour).toUTCString();
-
-    //         var week = endTimeHour + 604800000;
-    //         var weekly = new Date(week).toUTCString();
-
-
-    //         var month_date = new Date(parseInt(req.body.date))
-    //         var mm = month_date.getMonth();
-    //         var yy = month_date.getFullYear();
-    //         console.log("year==>"+yy)
-    //         var days = daysInMonth(mm,yy);
-    //         console.log("days-----------  ",days);
-
-    //         var month = parseInt(req.body.date) + (86400000 * days)
-    //         var monthly = new Date(month).toUTCString();
-
-    //         console.log("startTime"+startTime);
-    //         console.log("endTime"+endTime);
-    //         console.log("weekly"+weekly);
-    //         console.log("monthly"+monthly);
-
-
-
-
-
-
-
-
-
-
-
-    //     createNewPage.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-    //         res.send({
-    //             result: result,
-    //             responseCode: 200,
-    //             responseMessage: "All pages show successfully."
-    //         })
-    //     })
-    // },
 
     "pageViewClick": function(req, res) {
         var startTime = new Date(req.body.date).toUTCString();
@@ -1247,9 +1277,6 @@ module.exports = {
                             })
                         }
                     })
-
-
-
                 } else {
                     callback(null, [], arrayId, "null", "null", "null", "null")
                 }
@@ -1327,9 +1354,6 @@ module.exports = {
                             })
                         }
                     })
-
-
-
                 } else {
                     callback(null, [], arrayId, "null", "null", "null", "null")
                 }

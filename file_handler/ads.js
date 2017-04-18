@@ -43,7 +43,6 @@ module.exports = {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash <= req.body.cashAdPrize) {
                     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                 } else {
-
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
                         req.body.viewerLenght = 2;
                         req.body.cashStatus = 'PENDING';
@@ -251,7 +250,6 @@ module.exports = {
                         });
                     }
                 })
-
             }
         })
     },
@@ -271,8 +269,8 @@ module.exports = {
                 });
             }
         })
-
     },
+
     // Api for Social Share
     "socialShare": function(req, res) {
         var userId = req.body.userId;
@@ -328,7 +326,6 @@ module.exports = {
                     responseMessage: "List of ads show successfully!!"
                 });
             }
-
         });
     },
 
@@ -469,9 +466,7 @@ module.exports = {
                                             console.log("in else")
                                         }
                                     })
-
                                 }
-
                             })
                             console.log("raffleCount--111->>>" + raffleCount.length);
                             for (var n = 0; n < luckUsers.length; n++) {
@@ -496,7 +491,6 @@ module.exports = {
                                     })
                                 }
                             });
-
                         }
                     }
                 })
@@ -656,12 +650,10 @@ module.exports = {
                                     responseMessage: "All coupon winner shown successfully."
                                 })
                             }
-
                         })
                     }
                 })
             }
-
         })
     },
 
@@ -697,12 +689,10 @@ module.exports = {
                                     responseMessage: "All cash winner shown successfully."
                                 })
                             }
-
                         })
                     }
                 })
             }
-
         })
     },
 

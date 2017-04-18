@@ -1892,9 +1892,7 @@ module.exports = {
                                         callback(null, couponCode, couponAdId, expirationTime, pageId, type)
                                     }
                                 })
-
                             }
-
                         })
                     }
                 },
@@ -2122,6 +2120,8 @@ module.exports = {
             });
         })
     }
+
+    
 
 
 }
