@@ -40,7 +40,7 @@
   
   
        <!---Screen1 Start-->
-  <div class="container"ng-if="Step1">
+  <div class="container" ng-if="Step1">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="add-user panel panel-default cust-panel">
@@ -62,7 +62,7 @@
                                         <label>
                                             <input type="radio" name="radio" ng-model="createAds.giftType" value="Coupon Gift"  ng-click="click('giftTypeStepA')"  checked>&nbsp; Coupon Gift
                                         </label>
-                                        <i class="fa fa-hourglass-o" aria-hidden="true"></i>
+                                        <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal10"></i>
                                     </div>
                                 </div>
                                 <div class="details">
@@ -81,7 +81,7 @@
                                             <label>
                                                 <input type="radio" name="radio" ng-model="createAds.giftType" value="Cash Gift" ng-click="click('giftTypeStepB')" checked>&nbsp; Cash Gift
                                             </label>
-                                            <i class="fa fa-hourglass-o" aria-hidden="true"></i>
+                                            <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal10"></i>
                                         </div>
                                     </div>
                                     <div class="details">
@@ -107,10 +107,18 @@
     </div>
           <!--  End Of Screen1 -->
                             
-
+<div class="container" ng-if="Step2">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add New Page</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
 
                      <!-- Screen2 Start -->
-                          <div class="cus-content-row" ng-if="Step2">
+                          <div class="cus-content-row" >
                                 <div class="top-content-head text-center">
                                     <h4>Please Select the type of your ad.</h4>
                                 </div>
@@ -131,11 +139,28 @@
                                     <a  class="btn btn-lg btn-green">Cancel</a>
                                 </div>-->
                             </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                  </div>
+               </div>
                    <!---End Of Screen2 -->
 
 
                      <!--Cash Screen2 Start -->
-                          <div class="cus-content-row" ng-if="cashStep2">
+
+<div class="container" ng-if="cashStep2">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add New Page</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
+
+                          <div class="cus-content-row">
                                 <div class="top-content-head text-center">
                                     <h4>Please Select the type of your ad.</h4>
                                 </div>
@@ -156,15 +181,35 @@
                                     <a  class="btn btn-lg btn-green">Cancel</a>
                                 </div>-->
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
+
                    <!---End Of Cash Screen2 -->
                             
-
                          
-                <!--- Video Screen Start-->   
-                            <div class="video-container"  ng-if="Step3">
+                <!--- Video Screen Start-->  
+
+<div class="container" ng-if="Step3">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add New Page</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
+
+                            <div class="video-container new-video1">
                                 <div class="video-part text-center">
+                                	<div class="new-top-banner">
+                                		<img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
+                                	</div>
                                    <!--  <img src="../dist/image/video-img1.png"  class="img-responsive"> -->
-                                    <p>Please upload the advertisement cover, it will appear in home page.</p>
+                                    <p class="global-text">Please upload the advertisement cover, it will appear in home page.</p>
                                     <!--<div class="cus-upload-photos">
                                         <div class="page-image clearfix">
                                             <img class="profile-user-img img-responsive" src="{{user.photo || './dist/image/user-image.jpeg'}}" id="output">
@@ -209,30 +254,59 @@
                                         <div class="form-group">
 								          <label for="inputName" class="col-sm-2 control-label"></label>
 
-								          <div class="col-sm-5">
-								            <label class="btn btn-default btn-file">
+								          <div class="col-sm-12">
+								            <!-- <label class="btn btn-default btn-file">
 								              Upload Image/Video
 								              <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*">
-								            </label>
+								            </label> -->
+								            <div class="text-center new-upload-btns">
+									            <label class="fileContainer">
+			                                    Upload Image/Video
+			                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*">
+			                                	</label>
+		                                	</div>
 								          </div>
 								          <div class="col-xs-6 col-md-4 border-div uploadfile-3">
 								                <label ng-click="clear()">{{Name}}<i ng-if="Name" style="font-size: x-large; cursor: pointer;" class="fa fa-times"></i></label>
 								            </div>
 								        </div>
-                                        <a class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
+								        <div class="col-sm-12">
+	                                        <div class="text-center cus-new-btn">
+	                                        	<a class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
+	                                        </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="btn2 text-center">
+                                <div class="btn2 text-center col-sm-12">
                                     <a class="btn btn-lg btn-green"  ng-click="click('Step5')" >Next</a>
                                     <a class="btn btn-lg btn-green">Cancel</a>
                                 </div>
                             </div>
+                            </div>
+                            </div>
+                              </div>
+                                </div>
+                                  </div>
+                                    </div>
             
                <!--End Of Video Screen-->
 
 
          <!---Cash Video Screen Start-->   
-                            <div class="video-container"  ng-if="cashStep3">
+
+
+ <div class="container" ng-if="cashStep3">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add New Page</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
+
+
+                            <div class="video-container"  >
                                 <div class="video-part text-center">
                                     <img src="../dist/image/video-img1.png"  class="img-responsive">
                                     <p>Please upload the advertisement cover, it will appear in home page.</p>
@@ -266,13 +340,29 @@
                                     <a class="btn btn-lg btn-green">Cancel</a>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
             
                <!--End Of Cash Video Screen-->
 
 
                       <!--- slideShow Screen Start-->
+
+ <div class="container" ng-if="Step4">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="add-user panel panel-default cust-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add New Page</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="login-block">
                         
-                            <div class="cus-content-row"  ng-if="Step4">
+                            <div class="cus-content-row"  >
                                 <div class="top-content-head text-center">
                                     <h4>Please Upload the Ad image maximum 6;</h4>
                                 </div>
@@ -330,6 +420,13 @@
                                 </div>
                                 </div>
                             </div>
+                        </div>
+                                </div>
+                            </div>
+
+                        </div>
+                                </div>
+                            
                             
                   <!--End Of slideShow Screen-->
                   
@@ -972,3 +1069,24 @@
     </div>
   </div>
 </div>
+
+
+
+<div id="myModal10" class="modal fade" role="dialog">
+	<div class="modal-dialog cls_pop">
+	    <div class="modal-content">
+	       <!-- <div class="modal-header">
+	           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	           <h4 class="modal-title"></h4>
+	       </div> -->
+	       <div class="modal-body">
+	       		<div class="text-center c1-modal10"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+	            <div class="detail-s">Through "Coupon Gift" you will be able to post your advertisements on home page & promote your, products and all other details by providing coupons gifts which could includes big discounts or something free for one or more winners. The winners could be one up to all and they will be elected by an auto raffle. The raffle will contain only the users who watched your Ad.
+				</div>
+	       </div>
+	    </div>
+	</div>
+</div>
+
+
+

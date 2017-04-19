@@ -303,3 +303,21 @@ form.well {
 .c1-notfy-profile-img{display: table-cell;vertical-align: middle;width: 80px;}
 .c1-notift-dtl p{margin: 0;}
 .notify a{color: #35b387;}
+i.fa.fa-lightbulb-o { font-size: 2em; color: #00b288; }
+.modal-body .c1-modal10 i.fa.fa-lightbulb-o { font-size: 4em; color: #00b288; 
+margin: 10px 0 30px; }
+.modal-body .detail-s{font-size: 16px;}
+.cus-content-row .radio-tab .radio-btn label { font-size: 20px;  width: 49%;}
+.cus-content-row .radio-tab .radio-btn i.fa.fa-video-camera { 
+font-size: 1.4em; }
+.cus-content-row  .radio-tab {margin: 20px 0 20px;}
+.cus-content-row input[type=radio] {margin: 0 10px 0;}
+.global-text{color:rgb(53,179,135);font-size: 20px;margin: 20px 0 30px;text-align: left;}
+.new-video1 .cover-image {width: 200px;height: 200px;}
+.new-video1 .cover-image img {height: 200px;}
+.new-upload-btns .fileContainer { overflow: hidden; position: 
+relative; background: rgb(53,179,135); color: #fff; padding: 12px; 
+border-radius: 0; margin-top: 10px; font-size: 18px; font-weight: 500
+; min-width: 400px; }
+.cus-new-btn .btn-green{min-width: 400px;height:45px;}
+.new-top-banner img{margin:0 auto;}
