@@ -614,7 +614,7 @@ module.exports = {
             })
         }
     },
-               
+
 
     "couponWinners": function(req, res) {
         var pageNumber = Number(req.params.pageNumber)
@@ -638,8 +638,8 @@ module.exports = {
                             model: 'createNewAds'
                         }, function(err, result2) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
-                                 // var obj = result[0].coupon;
-                                 // var data = obj.filter(obj => obj.type == "ACTIVE");
+                                // var obj = result[0].coupon;
+                                // var data = obj.filter(obj => obj.type == "ACTIVE");
                                 res.send({
                                     docs: result2,
                                     count: count,
@@ -657,7 +657,7 @@ module.exports = {
         })
     },
 
-     "couponWinnersDateFilter": function(req, res) {
+    "couponWinnersDateFilter": function(req, res) {
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
         var skips = limitData - 8;
@@ -670,25 +670,25 @@ module.exports = {
         var data;
 
         var condition = { $or: [] };
-            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                if (!(req.body[key] == "" || req.body[key] == undefined)) {
-                    if (key == 'startDate') {
-                        tempCond['$gte'] = req.body[key];
-                        console.log("startDate--->>>", tempCond)
-                    }
-                    if (key == 'endDate') {
-                        tempEndDate['$lte'] = req.body[key];
-                        console.log("gte--->>>", tempEndDate)
-                    }
+        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+            if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                if (key == 'startDate') {
+                    tempCond['$gte'] = req.body[key];
+                    console.log("startDate--->>>", tempCond)
                 }
-                if (tempCond != '' || tempEndDate != '') {
-                    data = Object.assign(tempCond, tempEndDate)
+                if (key == 'endDate') {
+                    tempEndDate['$lte'] = req.body[key];
+                    console.log("gte--->>>", tempEndDate)
                 }
-            });
+            }
+            if (tempCond != '' || tempEndDate != '') {
+                data = Object.assign(tempCond, tempEndDate)
+            }
+        });
 
-            console.log("startDate", tempCond)
-            console.log("endDate", tempEndDate)
-            console.log("dta===>>", data)
+        console.log("startDate", tempCond)
+        console.log("endDate", tempEndDate)
+        console.log("dta===>>", data)
 
         User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER' } }).exec(function(err, result) {
             console.log("1")
@@ -706,8 +706,8 @@ module.exports = {
                             model: 'createNewAds'
                         }, function(err, result2) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
-                                 // var obj = result[0].coupon;
-                                 // var data = obj.filter(obj => obj.type == "ACTIVE");
+                                // var obj = result[0].coupon;
+                                // var data = obj.filter(obj => obj.type == "ACTIVE");
                                 res.send({
                                     docs: result2,
                                     count: count,
@@ -791,6 +791,31 @@ module.exports = {
         });
     },
 
+    //  "adsDateFilter": function(req, res) {
+    //     createNewAds.find({pageId:req.params.id}).exec(function(err,result){
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }) } 
+    //                     else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No ad found" }) } 
+    //                         else {
+    //                             var adsArray = [];
+    //                             for(var i =0; i<result.length;i++){
+    //                                 adsArray.push(result[0]._id)
+    //                             }
+    //                             console.log("array-->>",adsArray)
+    //                User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+    //                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
+    //                         res.send({
+    //                             result: result1,
+    //                             responseCode: 200,
+    //                             responseMessage: "result show successfully;"
+    //                         })
+    //                     }
+    //                 })
+    //            }
+
+    //     })
+    // },
+
+
     "adsDateFilter": function(req, res) {
         var startDateKey = '';
         var endDateKey = '';
@@ -800,25 +825,25 @@ module.exports = {
         var type = req.body.type;
         console.log(type)
         var condition = { $or: [] };
-            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                if (!(req.body[key] == "" || req.body[key] == undefined)) {
-                    if (key == 'startDate') {
-                        tempCond['$gte'] = req.body[key];
-                        console.log("startDate--->>>", tempCond)
-                    }
-                    if (key == 'endDate') {
-                        tempEndDate['$lte'] = req.body[key];
-                        console.log("gte--->>>", tempEndDate)
-                    }
+        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+            if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                if (key == 'startDate') {
+                    tempCond['$gte'] = req.body[key];
+                    console.log("startDate--->>>", tempCond)
                 }
-                if (tempCond != '' || tempEndDate != '') {
-                    data = Object.assign(tempCond, tempEndDate)
+                if (key == 'endDate') {
+                    tempEndDate['$lte'] = req.body[key];
+                    console.log("gte--->>>", tempEndDate)
                 }
-            });
-            console.log("startDate", tempCond)
-            console.log("endDate", tempEndDate)
-            console.log("dta===>>", data)
-        createNewAds.paginate({ 'createdAt': data, adsType: type, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            }
+            if (tempCond != '' || tempEndDate != '') {
+                data = Object.assign(tempCond, tempEndDate)
+            }
+        });
+        console.log("startDate", tempCond)
+        console.log("endDate", tempEndDate)
+        console.log("dta===>>", data)
+        createNewAds.paginate({ pageId: req.params.id, 'createdAt': data, adsType: type, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }) } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No ad found" }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
@@ -834,34 +859,32 @@ module.exports = {
         })
     },
 
-        //   User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-
     "searchAds": function(req, res) {
 
-         var condition = { $and: [] };
+        var condition = { $and: [] };
         var obj = req.body;
         Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-            if ( key == 'status') {
+            if (key == 'status') {
                 var cond = { $or: [] };
-            
-                if(key == "status"){
+
+                if (key == "status") {
                     for (data in obj[key]) {
                         cond.$or.push({ status: obj[key][data] })
                     }
                     condition.$and.push(cond)
                 }
             } else {
-                 var tempCond = {};
-                        tempCond[key] = req.body[key];
-                        condition.$and.push(tempCond)
-                //condition[key] = obj[key];
+                var tempCond = {};
+                tempCond[key] = req.body[key];
+                condition.$and.push(tempCond)
+                    //condition[key] = obj[key];
             }
         });
         if (condition.$and.length == 0) {
             delete condition.$or;
         }
-         console.log("condition==>"+JSON.stringify(condition))
-        createNewAds.paginate(condition,{ page: req.params.pageNumber, limit: 10 },function(err, result) {
+        console.log("condition==>" + JSON.stringify(condition))
+        createNewAds.paginate(condition, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,
@@ -895,7 +918,7 @@ module.exports = {
         if (condition.$or.length == 0) {
             delete condition.$or;
         }
-        console.log("condition==>"+JSON.stringify(condition))
+        console.log("condition==>" + JSON.stringify(condition))
         createNewAds.find(condition).exec(function(err, result) {
             // console.log("result--->>",result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
@@ -984,49 +1007,44 @@ module.exports = {
 
     "PageCouponFilter": function(req, res) {
         waterfall([
-           function(callback){
+            function(callback) {
                 var condition = { $and: [] };
                 var obj = req.body;
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
                     //if (key == 'cashStatus' || key == 'couponStatus') {
-                var cond = { $or: [] };
+                    var cond = { $or: [] };
                     if (key == "subCategory") {
                         for (data in obj[key]) {
                             cond.$or.push({ subCategory: obj[key][data] })
                         }
                         condition.$and.push(cond)
-                    } 
-                    else {
+                    } else {
                         var tempCond = {};
                         tempCond[key] = obj[key];
-                        condition.$and.push(tempCond) 
+                        condition.$and.push(tempCond)
                     }
                 });
                 if (condition.$and.length == 0) {
                     delete condition.$and;
                 }
-                console.log("condition==>"+JSON.stringify(condition))
+                console.log("condition==>" + JSON.stringify(condition))
                 createNewPage.find(condition).exec(function(err, result) {
                     // console. 0000000("result--->>",result)
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                    else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) }
-                    else {
-                        console.log("array result",result)
-                        var array =[];
-                        for(var i=0; i<result.length;i++){
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
+                        console.log("array result", result)
+                        var array = [];
+                        for (var i = 0; i < result.length; i++) {
                             array.push(String(result[i]._id))
                         }
                         console.log(array)
-                        callback(null,array)
+                        callback(null, array)
                     }
                 })
             },
-            function(arrayId, callback){
-                console.log("arrayId=========>...",arrayId)
-                createNewAds.paginate({ $and: [{pageId:{$in: arrayId},sellCoupon: true, status: 'ACTIVE' }] },{ page: req.params.pageNumber, limit: 10 },function(err, result){
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                    else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) }
-                    else {
+            function(arrayId, callback) {
+                console.log("arrayId=========>...", arrayId)
+                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, sellCoupon: true, status: 'ACTIVE' }] }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         res.send({ responseCode: 200, responseMessage: "Success.", result: result })
                     }
                 })
@@ -1037,50 +1055,45 @@ module.exports = {
 
     "StoreFavCouponFilter": function(req, res) {
         waterfall([
-           function(callback){
+            function(callback) {
                 var condition = { $and: [] };
                 var obj = req.body;
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-                if (!(key == 'userId')){
-                var cond = { $or: [] };
-                    if (key == "subCategory") {
-                        for (data in obj[key]) {
-                            cond.$or.push({ subCategory: obj[key][data] })
+                    if (!(key == 'userId')) {
+                        var cond = { $or: [] };
+                        if (key == "subCategory") {
+                            for (data in obj[key]) {
+                                cond.$or.push({ subCategory: obj[key][data] })
+                            }
+                            condition.$and.push(cond)
+                        } else {
+                            var tempCond = {};
+                            tempCond[key] = obj[key];
+                            condition.$and.push(tempCond)
                         }
-                        condition.$and.push(cond)
-                    } 
-                    else {
-                        var tempCond = {};
-                        tempCond[key] = obj[key];
-                        condition.$and.push(tempCond) 
                     }
-                }
                 });
                 if (condition.$and.length == 0) {
                     delete condition.$and;
                 }
-                console.log("condition==>"+JSON.stringify(condition))
+                console.log("condition==>" + JSON.stringify(condition))
                 createNewPage.find(condition).exec(function(err, result) {
                     // console. 0000000("result--->>",result)
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                    else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) }
-                    else {
-                        console.log("array result",result)
-                        var array =[];
-                        for(var i=0; i<result.length;i++){
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
+                        console.log("array result", result)
+                        var array = [];
+                        for (var i = 0; i < result.length; i++) {
                             array.push(String(result[i]._id))
                         }
                         console.log(array)
-                        callback(null,array)
+                        callback(null, array)
                     }
                 })
             },
-            function(arrayId, callback){
-                console.log("arrayId=========>...",arrayId)
-                createNewAds.paginate({ $and: [{pageId:{$in: arrayId},sellCoupon: true, status: 'ACTIVE',favouriteCoupon:req.body.userId }] },{ page: req.params.pageNumber, limit: 10 },function(err, result){
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                    else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) }
-                    else {
+            function(arrayId, callback) {
+                console.log("arrayId=========>...", arrayId)
+                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         res.send({ responseCode: 200, responseMessage: "Success.", result: result })
                     }
                 })
