@@ -122,6 +122,14 @@ module.exports = {
                 })
             }
         })
+    },
+
+    "editProduct": function(req, res) {
+        pageProductList.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct product id' }); } else {
+                res.send({ result: result, responseCode: 200, responseMessage: "Product updated successfully." })
+            }
+        })
     }
 
 }
