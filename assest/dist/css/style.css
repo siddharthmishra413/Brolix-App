@@ -321,3 +321,9 @@ border-radius: 0; margin-top: 10px; font-size: 18px; font-weight: 500
 ; min-width: 400px; }
 .cus-new-btn .btn-green{min-width: 400px;height:45px;}
 .new-top-banner img{margin:0 auto;}
+.new-cus-step5 .cus-upload-photos .page-image{display:inline-block;    margin: 50px 15px 20px;}
+.new-cus-step5 .cus-upload-photos {text-align: center;}
+.form-control.c-new-textarea{height:auto;}
+.cus-step-6 .page-image{width:100%;height:250px;overflow:hidden;}
+.cus-step-6 .page-image img{width:100%;height:auto;}
+.cus-para-text p{color:rgb(53,179,135);font-size: 16px;}
