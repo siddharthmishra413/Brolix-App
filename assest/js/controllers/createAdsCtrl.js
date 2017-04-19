@@ -3,6 +3,7 @@ $(window).scrollTop(0,0);
 $scope.$emit('headerStatus', 'Manage Ads');
 $scope.$emit('SideMenu', 'Manage Ads');
 $scope.createAds = {};
+$scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
 userService.getPage().then(function(success) { 
         $scope.pageDetail=success.data.result;
@@ -399,13 +400,13 @@ userService.getPage().then(function(success) {
 //       }).error(function(status, data) {});
 //     }
 //   }
-$scope.uploadVideo = function() {
-    console.log("file111",$scope.filevideo);
-    var file = $scope.filevideo;
+// $scope.uploadVideo = function() {
+//     console.log("file111",$scope.filevideo);
+//     var file = $scope.filevideo;
   
   
   
-}
+// }
 
 /*function uploadVideo() {
     console.log("file111",$scope.filevideo);
@@ -433,16 +434,58 @@ $scope.uploadVideo = function() {
 //     }
 //   }
 
+
+
+// $scope.changeVideo = function(input) {
+//         console.log("input---- ", input);
+//         var file = input.files[0];
+//         var ext = file.name.split('.').pop();
+//         // console.log(ext)
+//         if (ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png" || ext == "3gp" || ext == "mp4" || ext == "flv" || ext == "avi" || ext == "wmv") {
+//             // console.log(file.name)
+//             $scope.myForm.type = file.type;
+//             $scope.Name = file.name;
+//             if(file.type.split('/')[0]=='image') {
+//                 uploadimgServeice.user(file).then(function(ObjS) {
+//                     $scope.myForm.url = ObjS.data.result.url
+//                     console.log(JSON.stringify(ObjS.data.result.url));
+//                 })
+//             } else {
+//                 videoServeice.user(file).then(function(ObjS) {
+//                     $scope.myForm.url = ObjS.data.fileName;
+//                     console.log($scope.myForm.url);
+//                 })
+//             }
+//         } else {
+//             toastr.error("Only image and video supported.")
+//         }
+//     }
 $scope.changeImage = function(input,type) {
      spinnerService.show('html5spinner');  
        var file = input.files[0];
        var ext = file.name.split('.').pop();
-       if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
+       if (ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png" || ext == "3gp" || ext == "mp4" || ext == "flv" || ext == "avi" || ext == "wmv") {
            $scope.imageName = file.name;
-          switch (type)
+           console.log("$scope.imageName",$scope.imageName)
+           $scope.createAds.type = file.type;
+           console.log("$scope.createAds.type",$scope.createAds.type)
+           if(file.type.split('/')[0]=='image') {
+                switch (type)
             {
-                case 'photo1': 
+                
+                case 'advertismentCover': 
+                uploadimgServeice.user(file).then(function(ObjS) {
+                     $timeout(function () {      
+                spinnerService.hide('html5spinner');   
+                    $scope.createAds.advertismentCover = ObjS.data.result.url;
+                    
+                        }, 250);  
+                    // $scope.user.photo1 = ObjS.data.result.url;
+                    console.log("advertismentCover",$scope.createAds.advertismentCover)
+                })  
+                break;
 
+                case 'photo1': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                      $timeout(function () {      
                 spinnerService.hide('html5spinner');   
@@ -455,7 +498,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'photo2': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -467,7 +509,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'photo3': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -478,7 +519,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'photo4': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner');
@@ -489,7 +529,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'photo5': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -500,7 +539,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'photo6': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -511,7 +549,6 @@ $scope.changeImage = function(input,type) {
                 })  
                 break;
                 case 'adCover': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -523,7 +560,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'appIcon': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -534,7 +570,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'downloadPhoto1': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -545,7 +580,6 @@ $scope.changeImage = function(input,type) {
                 })  
                 break;
                 case 'downloadPhoto2': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -556,7 +590,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'downloadPhoto3': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -567,7 +600,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'downloadPhoto4': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -579,7 +611,6 @@ $scope.changeImage = function(input,type) {
                 break;
 
                 case 'giftImage': 
-
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -594,6 +625,12 @@ $scope.changeImage = function(input,type) {
                 toastr.error("Somthing wents to wroung")
                 
             }
+            } else {
+                uploadimgServeice.user(file).then(function(ObjS) {
+                    $scope.createAds.url = ObjS.data.fileName;
+                    console.log($scope.myForm.url);
+                })
+            }          
        }else{
            toastr.error("Only image supported.")
        }        

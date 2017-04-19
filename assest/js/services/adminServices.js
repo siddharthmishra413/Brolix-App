@@ -11,7 +11,7 @@ app.service('uploadimgServeice', function($http, $q) {
         fd.append('file', file);
 
         var deferred = $q.defer();
-        $http.post('/admin/uploadImage', fd, {
+        $http.post('/admin/uploads', fd, {
                 transformRequest: angular.identity,
                 headers: {
                     'Content-Type': undefined
