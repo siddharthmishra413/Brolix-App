@@ -461,8 +461,10 @@ userService.getPage().then(function(success) {
 //         }
 //     }
 $scope.changeImage = function(input,type) {
+
      spinnerService.show('html5spinner');  
        var file = input.files[0];
+       console.log("input type",input.files[0])
        var ext = file.name.split('.').pop();
        if (ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png" || ext == "3gp" || ext == "mp4" || ext == "flv" || ext == "avi" || ext == "wmv") {
            $scope.imageName = file.name;
@@ -627,8 +629,8 @@ $scope.changeImage = function(input,type) {
             }
             } else {
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $scope.createAds.url = ObjS.data.fileName;
-                    console.log($scope.myForm.url);
+                    $scope.createAds.url = ObjS.data.result.url;
+                    console.log("$scope.createAds.url",$scope.createAds.url);
                 })
             }          
        }else{
