@@ -99,7 +99,7 @@ module.exports = {
             if (err) {
                 res.send({
                     responseCode: 409,
-                    responseMessage: 'Something went worng'
+                    responseMessage: 'Internal server error'
                 });
             } else if (result) {
                 res.send({
