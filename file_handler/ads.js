@@ -725,7 +725,6 @@ module.exports = {
         })
     },
 
-
     "cashWinners": function(req, res) {
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
@@ -793,11 +792,33 @@ module.exports = {
     },
 
     "adsDateFilter": function(req, res) {
-        var startDate = req.body.startDate;
-        var endDate = req.body.endDate;
+        var startDateKey = '';
+        var endDateKey = '';
+        var tempCond = {};
+        var tempEndDate = {};
+        var data;
         var type = req.body.type;
         console.log(type)
-        createNewAds.paginate({ 'createdAt': { $gte: startDate, $lte: endDate }, adsType: type, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        var condition = { $or: [] };
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                    if (key == 'startDate') {
+                        tempCond['$gte'] = req.body[key];
+                        console.log("startDate--->>>", tempCond)
+                    }
+                    if (key == 'endDate') {
+                        tempEndDate['$lte'] = req.body[key];
+                        console.log("gte--->>>", tempEndDate)
+                    }
+                }
+                if (tempCond != '' || tempEndDate != '') {
+                    data = Object.assign(tempCond, tempEndDate)
+                }
+            });
+            console.log("startDate", tempCond)
+            console.log("endDate", tempEndDate)
+            console.log("dta===>>", data)
+        createNewAds.paginate({ 'createdAt': data, adsType: type, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }) } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No ad found" }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
@@ -812,6 +833,8 @@ module.exports = {
             }
         })
     },
+
+        //   User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
 
     "searchAds": function(req, res) {
 
@@ -848,6 +871,7 @@ module.exports = {
             }
         })
     },
+
     "couponFilter": function(req, res) {
         var condition = { $or: [] };
         var obj = req.body;
