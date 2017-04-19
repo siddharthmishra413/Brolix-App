@@ -163,7 +163,7 @@
                 <!--- Video Screen Start-->   
                             <div class="video-container"  ng-if="Step3">
                                 <div class="video-part text-center">
-                                    <img src="../dist/image/video-img1.png"  class="img-responsive">
+                                   <!--  <img src="../dist/image/video-img1.png"  class="img-responsive"> -->
                                     <p>Please upload the advertisement cover, it will appear in home page.</p>
                                     <!--<div class="cus-upload-photos">
                                         <div class="page-image clearfix">
@@ -176,7 +176,7 @@
                                             </div>
                                         </div>
                                     </div>-->
-                                    <div class="cus-upload-photos">
+                                    <!-- <div class="cus-upload-photos">
                                        <div class="page-image clearfix">
                                           <img class="profile-user-img img-responsive" ng-model="createAds.adCover" src="{{createAds.adCover|| './dist/image/user-image.jpeg'}}" id="output">
                                           <label class="fileContainer">
@@ -184,9 +184,18 @@
                                               <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'adCover')" accept="image/*">
                                           </label>
                                        </div>
-                                   </div>
+                                   </div> -->
+
+                                   <div class="cover-image">
+		                                <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
+		                                <label class="fileContainer">
+		                                    Choose File
+		                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*">
+		                                </label>
+		                            </div>
+
                                     <div class="btn2 text-center">           
-                                        <div> 
+                                        <!-- <div> 
                                              <a style="margin-right: 33%;" class="btn btn-lg btn-green">  Upload Video</a>
                                               <div class="col-xs-6 col-md-4 border-div">
                                                     <div class="col-md-10 namebind">{{videoName}}</div>
@@ -195,7 +204,21 @@
                                             <div class="file_upload  frm2" onchange="angular.element(this).scope().uploadVideo()">
                                                 <input  type="file" style=" margin: 2px; padding-bottom: 0%; margin-left: 59%; font: inherit;color: inherit;" accept="video/*" file-model = "filevideo" id="file_upload2" name="file_upload2" >
                                             </div> 
-                                        </div>
+                                        </div> -->
+
+                                        <div class="form-group">
+								          <label for="inputName" class="col-sm-2 control-label"></label>
+
+								          <div class="col-sm-5">
+								            <label class="btn btn-default btn-file">
+								              Upload Image/Video
+								              <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*">
+								            </label>
+								          </div>
+								          <div class="col-xs-6 col-md-4 border-div uploadfile-3">
+								                <label ng-click="clear()">{{Name}}<i ng-if="Name" style="font-size: x-large; cursor: pointer;" class="fa fa-times"></i></label>
+								            </div>
+								        </div>
                                         <a class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
                                     </div>
                                 </div>

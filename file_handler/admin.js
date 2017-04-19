@@ -3296,20 +3296,24 @@ module.exports = {
     },
 
     "uploadImage": function(req, res) {
-        var form = new multiparty.Form();
-        form.parse(req, function(err, fields, files) {
-            console.log("Image_Path=======>>>> " + JSON.stringify(files.file[0].path));
-            cloudinary.uploader.upload(files.file[0].path, function(result) {
-                console.log(result)
-                console.log("Url====>>>>" + result.url);
-                res.send({
-                    result: result,
-                    serverStatus: 200,
-                    response_message: "Image Uploaded"
-                });
-            });
-        })
-    },
+       console.log(req.files)
+       var form = new multiparty.Form();
+       form.parse(req, function(err, fields, files) {
+          console.log("Image_Path=======>>>> " + JSON.stringify(files.file[0].path));
+           cloudinary.uploader.upload(files.file[0].path, function(result) {
+               console.log(result)
+               console.log("Url====>>>>" + result.url);
+               res.send({
+                   result: result,
+                   serverStatus: 200,
+                   response_message: "Image Uploaded"
+               });
+           },{
+                     resource_type: "auto",
+                     chunk_size: 6000000
+                 });
+       })
+   },
 
     "zipcodFunction": function(req, res) {
         console.log("req", req.body)

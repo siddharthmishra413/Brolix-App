@@ -14,18 +14,13 @@ var pageProductSchema = new Schema({
         type: String,
         trim: true
     },
-    image: {
-        type: String,
-        trim: true,
+    productType:{
+        type:String
     },
-    discription: {
-        type: String,
-        trim: true
-    },
-    // totalLike: [{
-    //     userId: { type: String },
-    //     like: { type: Boolean }
-    // }],
+    media: [{
+        image: { type: String, trim: true },
+        description: { type: String, trim: true },
+    }],
     like: [],
     totalComments: [{
         userId: { type: String, trim: true },
@@ -41,7 +36,7 @@ var pageProductSchema = new Schema({
         userId: { type: String },
         senderId: []
     }],
-    commentCount:{type:Number, default:0},
+    commentCount: { type: Number, default: 0 },
     createdAt: {
         type: Date,
         default: Date.now

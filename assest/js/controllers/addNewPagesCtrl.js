@@ -167,7 +167,8 @@ $scope.addNewPage = function(addNewPage){
  		}
 
  	}
- 	console.log("final arr",JSON.stringify($scope.pageAdminss))
+    console.log("final arr",JSON.stringify($scope.pageAdminss))
+ }
   else{
     toastr.error("Please select admin")
   }
