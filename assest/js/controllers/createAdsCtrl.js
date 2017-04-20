@@ -167,6 +167,8 @@ userService.getPage().then(function(success) {
         $scope.cashStep7 = false;
         $scope.cashStep8 = false;
         $scope.cashStep9 = false;
+        console.log("promoteAppGame",$scope.promoteAppGame)
+        console.log("createAds",$scope.createAds)
 
 
      }
@@ -566,47 +568,47 @@ $scope.changeImage = function(input,type) {
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.appIcon = ObjS.data.result.url;
+                    $scope.promoteAppGame.appIcon = ObjS.data.result.url;
                     }, 250);  
                     // $scope.user.appIcon = ObjS.data.result.url;
                 })  
                 break;
 
-                case 'downloadPhoto1': 
+                case 'appPhoto1': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.downloadPhoto1 = ObjS.data.result.url;
+                   $scope.promoteAppGame.appPhoto1 = ObjS.data.result.url;
                     }, 250);  
                     // $scope.user.downloadPhoto1 = ObjS.data.result.url;
 
                 })  
                 break;
-                case 'downloadPhoto2': 
+                case 'appPhoto2': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.downloadPhoto2 = ObjS.data.result.url;
+                    $scope.promoteAppGame.appPhoto2 = ObjS.data.result.url;
                     }, 250);  
                     // $scope.user.downloadPhoto2 = ObjS.data.result.url;
                 })  
                 break;
 
-                case 'downloadPhoto3': 
+                case 'appPhoto3': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.downloadPhoto3 = ObjS.data.result.url;
+                    $scope.promoteAppGame.appPhoto3 = ObjS.data.result.url;
                     }, 250);  
                     //$scope.user.downloadPhoto3 = ObjS.data.result.url;
                 })  
                 break;
 
-                case 'downloadPhoto4': 
+                case 'appPhoto4': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.downloadPhoto4 = ObjS.data.result.url;
+                    $scope.promoteAppGame.appPhoto4 = ObjS.data.result.url;
                     }, 250);  
                     //$scope.user.downloadPhoto4 = ObjS.data.result.url;
 

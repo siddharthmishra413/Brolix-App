@@ -1,35 +1,33 @@
+<div class="container-fluid">
+    <div class="col-sm-12" ng-if="tableData">
+        <a class="table-a" style="cursor:pointer;" ng-click="showtable()">Add User</a>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" >
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+                <tr ng-repeat="x in allSystemUser">
+                    <td>{{x.firstName}}</td>
+                    <td>{{x.lastName}}</td>
+                    <td>{{x.email}}</td>
+                    <td><a class="table-a" style="cursor:pointer;" ng-href="#header/editSystemUser/{{x._id}}">Edit</a><a style="cursor:pointer;" class="table-a" ng-click="Remove_User(x._id)">Remove</a></td>
+                </tr>
 
-
-
-<div class="col-sm-12" ng-if="tableData">
-    <a class="table-a" style="cursor:pointer;" ng-click="showtable()">Add User</a>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped" >
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-            <tr ng-repeat="x in allSystemUser">
-                <td>{{x.firstName}}</td>
-                <td>{{x.lastName}}</td>
-                <td>{{x.email}}</td>
-                <td><a class="table-a" style="cursor:pointer;" ng-href="#header/editSystemUser/{{x._id}}">Edit</a><a style="cursor:pointer;" class="table-a" ng-click="Remove_User(x._id)">Remove</a></td>
-            </tr>
-           
-        </table>
-        <div style="float:right; font-size: 20px;" ng-if="(allSystemUser).length != 0">
-                <button ng-click="preSystemAdmin()" ng-disabled="pageSystemAdmin==1" class="btn paginationBtn" >Prev</button> 
-                {{pageSystemAdmin}}/{{noOfPagesSystemAdmin}}
-                <button ng-click="nextSystemAdmin()" ng-disabled="pageSystemAdmin==noOfPagesSystemAdmin" class="btn paginationBtn">Next</button>
-            </div>
+            </table>
+            <div style="float:right; font-size: 20px;" ng-if="(allSystemUser).length != 0">
+                    <button ng-click="preSystemAdmin()" ng-disabled="pageSystemAdmin==1" class="btn paginationBtn" >Prev</button> 
+                    {{pageSystemAdmin}}/{{noOfPagesSystemAdmin}}
+                    <button ng-click="nextSystemAdmin()" ng-disabled="pageSystemAdmin==noOfPagesSystemAdmin" class="btn paginationBtn">Next</button>
+                </div>
+        </div>
     </div>
-</div>
 
- <div class="container" ng-if="Systemuser">
+ <div class="container-fluid" ng-if="Systemuser">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">Add System User</h3>
@@ -127,3 +125,4 @@
             </div>
         </div>
     </div>
+</div>
