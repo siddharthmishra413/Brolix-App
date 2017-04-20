@@ -1540,7 +1540,7 @@ module.exports = {
                 for (var i = 0; i < result[0].pageFollowersUser.length; i++) {
                     userArray.push(result[0].pageFollowersUser[i].userId)
                 }
-                User.paginate({ _id: { $in: userArray } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                User.find({ _id: { $in: userArray } }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 400, responseMessage: "No follower found" }); } else {
                         res.send({
                             result: result1,
@@ -1553,30 +1553,38 @@ module.exports = {
         })
     },
 
-     "particularPageCouponWinners": function(req, res) {
-        var pageId = req.body.pageId;
-        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
-            var array = [];
-            createNewAds.find({ pageId: pageId, status: "EXPIRED" }, function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                    var couponType = result.filter(result => result.adsType == "coupon");
-                    for (i = 0; i < couponType.length; i++) {
-                        for (j = 0; j < couponType[i].winners.length; j++, j) {
-                            array.push(couponType[i].winners[j]);
-                        }
-                    }
-                    User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
-                            res.send({
-                                result: result1,
-                                responseCode: 200,
-                                responseMessage: "result show successfully;"
-                            })
-                        }
-                    })
+    "CouponInboxWinners": function(req, res) {
+        var pageId = req.params.id;
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 8;
+        var skips = limitData - 8;
+        var page = String(pageNumber);
+        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId } }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct pageId." }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
+                var count = 0;
+                for (i = 0; i < result.length; i++) {
+                    count++;
                 }
-            })
-        }
+                var pages = Math.ceil(count / 8);
+                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId } }, { $limit: limitData }, { $skip: skips }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
+                        var limit = 0;
+                        for (i = 0; i < result1.length; i++) {
+                            limit++;
+                        }
+                        res.send({
+                            docs: result1,
+                            total: count,
+                            limit: limit,
+                            page: page,
+                            pages: pages,
+                            responseCode: 200,
+                            responseMessage: "All request show successfully"
+                        })
+                    }
+                })
+            }
+        })
     },
 
 }
