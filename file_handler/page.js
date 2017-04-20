@@ -1555,33 +1555,14 @@ module.exports = {
 
     "CouponInboxWinners": function(req, res) {
         var pageId = req.params.id;
-        var pageNumber = Number(req.params.pageNumber)
-        var limitData = pageNumber * 8;
-        var skips = limitData - 8;
-        var page = String(pageNumber);
         User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId } }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct pageId." }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    count++;
-                }
-                var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId } }, { $limit: limitData }, { $skip: skips }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
-                        var limit = 0;
-                        for (i = 0; i < result1.length; i++) {
-                            limit++;
-                        }
-                        res.send({
-                            docs: result1,
-                            total: count,
-                            limit: limit,
-                            page: page,
-                            pages: pages,
-                            responseCode: 200,
-                            responseMessage: "All request show successfully"
-                        })
-                    }
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else if(!result){ res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' });}
+              else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All request show successfully"
                 })
             }
         })
