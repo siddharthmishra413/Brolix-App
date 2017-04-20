@@ -327,3 +327,23 @@ border-radius: 0; margin-top: 10px; font-size: 18px; font-weight: 500
 .cus-step-6 .page-image{width:100%;height:250px;overflow:hidden;}
 .cus-step-6 .page-image img{width:100%;height:auto;}
 .cus-para-text p{color:rgb(53,179,135);font-size: 16px;}
+.hidden-gifts_r{display: table;margin: 20px 0;}
+.hidden-gifts_r div{display: table-cell;}
+.hidden-gifts_r .h-gifts-text {font-size: 17px;font-weight: 700;padding-right: 50px;}
+.bulb_icn{padding-left:25px;}
+.bor_btm{border-bottom:1px solid #00b288;}
+.m-t-30{margin-top:30px;}
+.sell-coupon.new_coupon .radio-tab .radio-btn label {font-size: 16px;font-weight: normal;width: 100%;}
+.qty-value span{border: 1px solid #00b288;padding: 5px 10px;margin: 0 5px;border-radius: 4px;}
+.sell-coupon.new_coupon{border-top: 1px solid #00b288;padding-top: 0px;margin-top: 20px;border-bottom: 1px solid #00b288;
+    padding-bottom: 30px;}
+.fa.fa-lightbulb-o.font-s{font-size: 2em;margin: 15px 0 0;}
+.gbl-table {display: table;}
+.global-tble-cell{display: table-cell;vertical-align: middle;padding: 0 15px;}
+.global-tble-cell .gbl-input{width:60px;}
+.gbl-label{width:auto !important;}
+.sell-coupon.new_sell label{font-weight:500;}
+.sell-coupon.new_sell{border-bottom:1px solid #00b288;}
+.input-group-age{display: table;}
+.input-group-age div{display:table-cell;}
+.new_gender .radio-tab .radio-btn label {font-size: 16px;font-weight: 500;width: 18%;}

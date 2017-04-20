@@ -205,9 +205,9 @@
 
                             <div class="video-container new-video1">
                                 <div class="video-part text-center">
-                                	<div class="new-top-banner">
-                                		<img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
-                                	</div>
+                                    <div class="new-top-banner">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
+                                    </div>
                                    <!--  <img src="../dist/image/video-img1.png"  class="img-responsive"> -->
                                     <p class="global-text">Please upload the advertisement cover, it will appear in home page.</p>
                                     <!--<div class="cus-upload-photos">
@@ -232,12 +232,12 @@
                                    </div> -->
 
                                    <div class="cover-image">
-		                                <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
-		                                <label class="fileContainer">
-		                                    Choose File
-		                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*">
-		                                </label>
-		                            </div>
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
+                                        <label class="fileContainer">
+                                            Choose File
+                                            <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*">
+                                        </label>
+                                    </div>
 
                                     <div class="btn2 text-center">           
                                         <!-- <div> 
@@ -252,28 +252,29 @@
                                         </div> -->
 
                                         <div class="form-group">
-								          <label for="inputName" class="col-sm-2 control-label"></label>
+                                          <label for="inputName" class="col-sm-2 control-label"></label>
 
-								          <div class="col-sm-12">
-								            <!-- <label class="btn btn-default btn-file">
-								              Upload Image/Video
-								              <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*">
-								            </label> -->
-								            <div class="text-center new-upload-btns">
-									            <label class="fileContainer">
-			                                    Upload Image/Video
-			                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*">
-			                                	</label>
-		                                	</div>
-								          </div>
-								          <div class="col-xs-6 col-md-4 border-div uploadfile-3">
-								                <label ng-click="clear()">{{Name}}<i ng-if="Name" style="font-size: x-large; cursor: pointer;" class="fa fa-times"></i></label>
-								            </div>
-								        </div>
-								        <div class="col-sm-12">
-	                                        <div class="text-center cus-new-btn">
-	                                        	<a class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
-	                                        </div>
+                                          <div class="col-sm-12">
+                                            <!-- <label class="btn btn-default btn-file">
+                                              Upload Image/Video
+                                              <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*">
+                                            </label> -->
+                                            <div class="text-center new-upload-btns">
+                                                <label class="fileContainer">
+                                                Upload Image/Video
+                                                <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*">
+                                                <!-- <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*"> -->
+                                                </label>
+                                            </div>
+                                          </div>
+                                          <div class="col-xs-6 col-md-4 border-div uploadfile-3">
+                                                <label ng-click="clear()">{{Name}}<i ng-if="Name" style="font-size: x-large; cursor: pointer;" class="fa fa-times"></i></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="text-center cus-new-btn">
+                                                <a class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -517,7 +518,7 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
+                        <h3 class="panel-title">Promote App, Game</h3>
                     </div>
                     <div class="panel-body">
                         <div class="login-block">
@@ -534,16 +535,16 @@
                                                         <option>Window Store Link</option>
                                                     </select> -->
                                                     <div class="form-group">
-                                                    	 <input type="text" class="form-control" placeholder="App Name">
+                                                         <input ng-model="promoteAppGame.appName" type="text" class="form-control" placeholder="App Name">
                                                     </div>
                                                     <div class="form-group">
-                                                    	 <input type="text" class="form-control" placeholder="Google Play Link">
+                                                         <input ng-model="promoteAppGame.googlePlayLink"type="text" class="form-control" placeholder="Google Play Link">
                                                     </div>
                                                     <div class="form-group">
-                                                    	 <input type="text" class="form-control" placeholder="App Store Link">
+                                                         <input ng-model="promoteAppGame.appStoreLink" type="text" class="form-control" placeholder="App Store Link">
                                                     </div>
                                                     <div class="form-group">
-                                                    	 <input type="text" class="form-control" placeholder="Window Store Link">
+                                                         <input ng-model="promoteAppGame.windowStoreLink" type="text" class="form-control" placeholder="Window Store Link">
                                                     </div>
                                                 </div>
                                             </div>
@@ -735,7 +736,7 @@
                                     </label>
                                 </div>
 
-                                <div class="form-horizontal">
+                                <div class="form-horizontal clearfix">
                                     <label class="control-label col-sm-4">Gift Description</label>
                                     <div class="col-sm-8">
                                         <textarea class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
@@ -749,47 +750,64 @@
                                     <textarea class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
                                 </div> -->
                                     <!-- <input type="text" data-toggle="modal" ng-model="createAds.desciption"  placeholder="Description...">  -->
-                                </div>
+                                
                                 <!-- <div class="col-sm-12">
                                     <img src="../dist/image/image1.png" class="img-responsive cus-img1">
                                 </div> -->
-                                <div class="col-sm-4 text-center">
+                                <div class="col-sm-12 bor_btm">
+                                    <div class="hidden-gifts_r">
+                                        <div class="h-gifts-text">Hidden Gifts</div>
+                                        <div class="add-code_btn"><button type="submit" class="btn btn-green" data-toggle="modal" data-target="#myModal1">Add Code</button></div>
+                                        <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-sm-4 text-center">
                                     <label class="m-t-15">Hidden Gifts</label>
                                 </div>
                                 <div class="col-sm-6 text-center">
                                     <a href=""  data-toggle="modal" data-target="#myModal1" class="btn btn-lg btn-green">Add Code</a>
                                 </div>
-                                <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
-                                <div class="cus-btm-div col-sm-12">
+                                <i class="fa fa-lightbulb-o" aria-hidden="true"></i> -->
+                                <div class="cus-btm-div col-sm-12 m-t-30">
                                     <div class="col-sm-6">
-                                        <label class="coupon-date">Coupon Expiry Date</label>
-                                        <select ng-model="createAds.couponExpiryDate" class="form-control" >
-                                         <option value=""> Never</option>
-                                            <option>1 Week </option>
-                                            <option>2 Weeks</option>
-                                            <option>3 Weeks</option>
-                                            <option>1 Month</option>
-                                            <option>2 Months</option>
-                                            <option>3 Months</option>
-                            
-                                  </select>
+                                        <div class="text-center">
+                                            <label class="coupon-date col-sm-12">Coupon Expiry Date</label>
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <select ng-model="createAds.couponExpiryDate" class="form-control">
+                                                 <option value=""> Never</option>
+                                                    <option>1 Week </option>
+                                                    <option>2 Weeks</option>
+                                                    <option>3 Weeks</option>
+                                                    <option>1 Month</option>
+                                                    <option>2 Months</option>
+                                                    <option>3 Months</option>
+                                    
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label ng-model="createAds.viewers" class="coupon-date">Number of Viewers</label>
-                                         <input type="text" />
-                                    </div>
-                                    <div class="col-sm-12 cus-para-text">
-                                        <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
-                                        <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
-                                        <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
-                                        <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <img src="../dist/image/image1.png" class="img-responsive cus-img1">
+                                        <div class="text-center">
+                                            <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <input type="text" class="form-control text-center"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 sell-coupon">
-                                    <h3>Sell this coupon</h3>
+                                <div class="col-sm-12 cus-para-text m-t-30">
+                                    <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
+                                    <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
+                                    <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
+                                    <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <img src="../dist/image/image1.png" class="img-responsive cus-img1">
+                                </div>
+                                
+                                <div class="col-sm-12 sell-coupon new_coupon">
+                                    <div class="text-center"><i class="fa fa-lightbulb-o font-s" aria-hidden="true"></i></div>
+                                    <h3>Sell this coupon </h3>
                                     <div class="radio-tab">
                                         <div class="radio-btn text-left">
                                             <label>
@@ -806,18 +824,29 @@
                                     </div>
                                     <div class="qty-value">Qty <span>100</span> Coupon or End of ad validity</div>
                                 </div>
-                                <div class="col-sm-12 sell-coupon">
+                                <div class="col-sm-12 sell-coupon new_sell">
                                     <h3>Winner</h3>
                                     <div class="radio-tab cus-inline-fld">
-                                        <div class="radio-btn text-left">
-                                            <label>
-                                                <input type="radio" ng-model="createAds.winner"  name="radio" ng-model="createAds.winner" checked>&nbsp;
-                                            </label>
-                                            <div class="cus-input-text">
+                                        <div class="radio-btn text-left gbl-table">
+                                            <div class="global-tble-cell">
+                                                <label class="gbl-label">
+                                                    <input type="radio" ng-model="createAds.winner"  name="radio" ng-model="createAds.winner" checked>&nbsp;
+                                                </label>
+                                            </div>
+                                            <div class="global-tble-cell">
+                                                <input type="text" ng-model="createAds.winner1" value="" class="form-control gbl-input">
+                                            </div>
+                                            <div class="global-tble-cell">
+                                                <input type="text" ng-model="createAds.winner2" value=""  class="form-control gbl-input">
+                                            </div>
+                                            <div class="global-tble-cell">
+                                                <label>Coupon</label>
+                                            </div>
+                                            <!-- <div class="cus-input-text">
                                                 <input type="text" ng-model="createAds.winner1" value="" class="form-control">
                                                 <input type="text"   ng-model="createAds.winner2" value=""  class="form-control">
                                                 <label>Coupon</label>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="radio-tab">
@@ -848,8 +877,9 @@
                                           <option ng-repeat="city in cityList">{{city.city}}</option>
                                         </select> 
                                     </div>
-                                    <div class="radio-tab cus-gender-radio col-sm-12">
+                                    <div class="radio-tab cus-gender-radio new_gender clearfix">
                                         <div class="radio-btn text-left">
+                                            <label>Gender : </label>
                                             <label>
                                                 <input type="radio" name="radio" ng-model="createAds.gender" checked>&nbsp; Both
                                             </label>
@@ -861,14 +891,15 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 age-row">
+                                </div>
+                                    <div class="col-sm-12 age-row new-age-row">
                                         <label class="col-sm-2 m-t-7">Age</label>
                                         <div class=" col-sm-10 age-row-fld">
-                                            <div class="input-group">
-                                                <label>From</label>
-                                                <input type="text" ng-model="createAds.ageFrom" class="form-control">
-                                                <label>To</label>
-                                                <input type="text" ng-model="createAds.ageTo" class="form-control">
+                                            <div class="input-group-age">
+                                                <div><label>From</label></div>
+                                                 <div><input type="text" ng-model="createAds.ageFrom" class="form-control"></div>
+                                                 <div><label>To</label></div>
+                                                 <div><input type="text" ng-model="createAds.ageTo" class="form-control"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1245,19 +1276,19 @@
 
 
 <div id="myModal10" class="modal fade" role="dialog">
-	<div class="modal-dialog cls_pop">
-	    <div class="modal-content">
-	       <!-- <div class="modal-header">
-	           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	           <h4 class="modal-title"></h4>
-	       </div> -->
-	       <div class="modal-body">
-	       		<div class="text-center c1-modal10"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
-	            <div class="detail-s">Through "Coupon Gift" you will be able to post your advertisements on home page & promote your, products and all other details by providing coupons gifts which could includes big discounts or something free for one or more winners. The winners could be one up to all and they will be elected by an auto raffle. The raffle will contain only the users who watched your Ad.
-				</div>
-	       </div>
-	    </div>
-	</div>
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+           <!-- <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title"></h4>
+           </div> -->
+           <div class="modal-body">
+                <div class="text-center c1-modal10"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+                <div class="detail-s">Through "Coupon Gift" you will be able to post your advertisements on home page & promote your, products and all other details by providing coupons gifts which could includes big discounts or something free for one or more winners. The winners could be one up to all and they will be elected by an auto raffle. The raffle will contain only the users who watched your Ad.
+                </div>
+           </div>
+        </div>
+    </div>
 </div>
 
 

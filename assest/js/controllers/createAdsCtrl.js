@@ -3,6 +3,7 @@ $(window).scrollTop(0,0);
 $scope.$emit('headerStatus', 'Manage Ads');
 $scope.$emit('SideMenu', 'Manage Ads');
 $scope.createAds = {};
+$scope.promoteAppGame = {};
 $scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
 userService.getPage().then(function(success) { 
