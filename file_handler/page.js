@@ -1541,7 +1541,7 @@ module.exports = {
                     userArray.push(result[0].pageFollowersUser[i].userId)
                 }
                 User.find({ _id: { $in: userArray } }).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 400, responseMessage: "No follower found" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No follower found" }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
