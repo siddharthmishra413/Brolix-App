@@ -2130,7 +2130,7 @@ module.exports = {
 
 
 
-cron.schedule('00 12 * * *', function() {
+cron.schedule('12 * * * *', function() {
 
     User.find({ 'coupon.couponStatus': "valid" }).exec(function(err, result) {
         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }

@@ -39,6 +39,7 @@ app.post('/viewCoupon', authUser.authUser, adsHandler.viewCoupon);
 app.post('/PageCouponFilter/:pageNumber',adsHandler.PageCouponFilter);
 app.post('/StoreFavCouponFilter/:pageNumber',adsHandler.StoreFavCouponFilter);
 app.post('/couponWinnersDateFilter/:pageNumber',adsHandler.couponWinnersDateFilter);
+app.post('/cashWinnersDateFilter/:pageNumber',adsHandler.cashWinnersDateFilter);
 
 
 module.exports = app;
