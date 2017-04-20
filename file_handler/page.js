@@ -1555,7 +1555,7 @@ module.exports = {
 
     "CouponInboxWinners": function(req, res) {
         var pageId = req.params.id;
-        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId } }, function(err, result) {
+        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type':"WINNER", 'coupon.status':'ACTIVE' } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             else if(!result){ res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' });}
               else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
