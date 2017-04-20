@@ -658,72 +658,138 @@ module.exports = {
     },
 
     "couponWinnersDateFilter": function(req, res) {
-        var pageNumber = Number(req.params.pageNumber)
-        var limitData = pageNumber * 8;
-        var skips = limitData - 8;
-        var page = String(pageNumber);
+        if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: 'Please enter atleast start date or end date' }); } else {
+            var pageNumber = Number(req.params.pageNumber)
+            var limitData = pageNumber * 8;
+            var skips = limitData - 8;
+            var page = String(pageNumber);
 
-        var startDateKey = '';
-        var endDateKey = '';
-        var tempCond = {};
-        var tempEndDate = {};
-        var data;
+            var startDateKey = '';
+            var endDateKey = '';
+            var tempCond = {};
+            var tempEndDate = {};
+            var data;
 
-        var condition = { $or: [] };
-        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-            if (!(req.body[key] == "" || req.body[key] == undefined)) {
-                if (key == 'startDate') {
-                    tempCond['$gte'] = req.body[key];
-                    console.log("startDate--->>>", tempCond)
-                }
-                if (key == 'endDate') {
-                    tempEndDate['$lte'] = req.body[key];
-                    console.log("gte--->>>", tempEndDate)
-                }
-            }
-            if (tempCond != '' || tempEndDate != '') {
-                data = Object.assign(tempCond, tempEndDate)
-            }
-        });
-
-        console.log("startDate", tempCond)
-        console.log("endDate", tempEndDate)
-        console.log("dta===>>", data)
-
-        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER' } }).exec(function(err, result) {
-            console.log("1")
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: "No coupon winner found" }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    count++;
-                }
-                var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER' } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
-                    console.log("2")
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
-                        User.populate(result1, {
-                            path: 'coupon.adId',
-                            model: 'createNewAds'
-                        }, function(err, result2) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
-                                // var obj = result[0].coupon;
-                                // var data = obj.filter(obj => obj.type == "ACTIVE");
-                                res.send({
-                                    docs: result2,
-                                    count: count,
-                                    limit: limitData,
-                                    page: page,
-                                    pages: pages,
-                                    responseCode: 200,
-                                    responseMessage: "All coupon winner shown successfully."
-                                })
-                            }
-                        })
+            var condition = { $or: [] };
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                    if (key == 'startDate') {
+                        tempCond['$gte'] = new Date(req.body[key]);
+                        console.log("startDate--->>>", tempCond)
                     }
-                })
-            }
-        })
+                    if (key == 'endDate') {
+                        tempEndDate['$lte'] = new Date(req.body[key]);
+                        console.log("gte--->>>", tempEndDate)
+                    }
+                }
+                if (tempCond != '' || tempEndDate != '') {
+                    data = Object.assign(tempCond, tempEndDate)
+                }
+            });
+            console.log("startDate", tempCond)
+            console.log("endDate", tempEndDate)
+            console.log("data===>>", data)
+            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }).exec(function(err, result) {
+                console.log("1")
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon winner found" }); } else {
+                    var count = 0;
+                    for (i = 0; i < result.length; i++) {
+                        count++;
+                    }
+                    var pages = Math.ceil(count / 8);
+                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                        console.log("2")
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
+                            User.populate(result1, {
+                                path: 'coupon.adId',
+                                model: 'createNewAds'
+                            }, function(err, result2) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
+                                    res.send({
+                                        docs: result2,
+                                        count: count,
+                                        limit: limitData,
+                                        page: page,
+                                        pages: pages,
+                                        responseCode: 200,
+                                        responseMessage: "All coupon winner shown successfully."
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
     },
+
+    "cashWinnersDateFilter": function(req, res) {
+        if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: 'Please enter atleast start date or end date' }); } else {
+            var pageNumber = Number(req.params.pageNumber)
+            var limitData = pageNumber * 8;
+            var skips = limitData - 8;
+            var page = String(pageNumber);
+
+            var startDateKey = '';
+            var endDateKey = '';
+            var tempCond = {};
+            var tempEndDate = {};
+            var data;
+
+            var condition = { $or: [] };
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                    if (key == 'startDate') {
+                        tempCond['$gte'] = new Date(req.body[key]);
+                        console.log("startDate--->>>", tempCond)
+                    }
+                    if (key == 'endDate') {
+                        tempEndDate['$lte'] = new Date(req.body[key]);
+                        console.log("gte--->>>", tempEndDate)
+                    }
+                }
+                if (tempCond != '' || tempEndDate != '') {
+                    data = Object.assign(tempCond, tempEndDate)
+                }
+            });
+            console.log("startDate", tempCond)
+            console.log("endDate", tempEndDate)
+            console.log("data===>>", data)
+
+            User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data } }).exec(function(err, result) {
+                console.log("1")
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
+                    var count = 0;
+                    for (i = 0; i < result.length; i++) {
+                        count++;
+                    }
+                    var pages = Math.ceil(count / 8);
+                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                        console.log("2")
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
+                            User.populate(result1, {
+                                path: 'cashPrize.adId',
+                                model: 'createNewAds'
+                            }, function(err, result2) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
+                                    res.send({
+                                        docs: result2,
+                                        count: count,
+                                        limit: limitData,
+                                        page: page,
+                                        pages: pages,
+                                        responseCode: 200,
+                                        responseMessage: "All cash winner shown successfully."
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    },
+
 
     "cashWinners": function(req, res) {
         var pageNumber = Number(req.params.pageNumber)
@@ -791,76 +857,52 @@ module.exports = {
         });
     },
 
-    //  "adsDateFilter": function(req, res) {
-    //     createNewAds.find({pageId:req.params.id}).exec(function(err,result){
-    //                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }) } 
-    //                     else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No ad found" }) } 
-    //                         else {
-    //                             var adsArray = [];
-    //                             for(var i =0; i<result.length;i++){
-    //                                 adsArray.push(result[0]._id)
-    //                             }
-    //                             console.log("array-->>",adsArray)
-    //                User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-    //                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
-    //                         res.send({
-    //                             result: result1,
-    //                             responseCode: 200,
-    //                             responseMessage: "result show successfully;"
-    //                         })
-    //                     }
-    //                 })
-    //            }
-
-    //     })
-    // },
-
-
     "adsDateFilter": function(req, res) {
-        var startDateKey = '';
-        var endDateKey = '';
-        var tempCond = {};
-        var tempEndDate = {};
-        var data;
-        var type = req.body.type;
-        console.log(type)
-        var condition = { $or: [] };
-        Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-            if (!(req.body[key] == "" || req.body[key] == undefined)) {
-                if (key == 'startDate') {
-                    tempCond['$gte'] = req.body[key];
-                    console.log("startDate--->>>", tempCond)
+        if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: "Please enter atleast startDate or endDate" }); } else {
+            var startDateKey = '';
+            var endDateKey = '';
+            var tempCond = {};
+            var tempEndDate = {};
+            var data;
+            var type = req.body.type;
+            console.log(type)
+            var condition = { $or: [] };
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                    if (key == 'startDate') {
+                        tempCond['$gte'] = req.body[key];
+                        console.log("startDate--->>>", tempCond)
+                    }
+                    if (key == 'endDate') {
+                        tempEndDate['$lte'] = req.body[key];
+                        console.log("gte--->>>", tempEndDate)
+                    }
                 }
-                if (key == 'endDate') {
-                    tempEndDate['$lte'] = req.body[key];
-                    console.log("gte--->>>", tempEndDate)
+                if (tempCond != '' || tempEndDate != '') {
+                    data = Object.assign(tempCond, tempEndDate)
                 }
-            }
-            if (tempCond != '' || tempEndDate != '') {
-                data = Object.assign(tempCond, tempEndDate)
-            }
-        });
-        console.log("startDate", tempCond)
-        console.log("endDate", tempEndDate)
-        console.log("dta===>>", data)
-        createNewAds.paginate({ pageId: req.params.id, 'createdAt': data, adsType: type, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }) } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No ad found" }) } else {
-                var count = 0;
-                for (var i = 0; i < result.length; i++) {
-                    count++;
+            });
+            console.log("startDate", tempCond)
+            console.log("endDate", tempEndDate)
+            console.log("dta===>>", data)
+            createNewAds.paginate({ pageId: req.params.id, 'createdAt': data, adsType: type, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }) } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No ad found" }) } else {
+                    var count = 0;
+                    for (var i = 0; i < result.length; i++) {
+                        count++;
+                    }
+                    res.send({
+                        result: result,
+                        count: count,
+                        responseCode: 200,
+                        responseMessage: "Result shown successfully."
+                    })
                 }
-                res.send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "Result shown successfully."
-                })
-            }
-        })
+            })
+        }
     },
 
     "searchAds": function(req, res) {
-
         var condition = { $and: [] };
         var obj = req.body;
         Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
