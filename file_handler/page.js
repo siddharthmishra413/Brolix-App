@@ -1551,6 +1551,32 @@ module.exports = {
                 })
             }
         })
-    }
+    },
+
+     "particularPageCouponWinners": function(req, res) {
+        var pageId = req.body.pageId;
+        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
+            var array = [];
+            createNewAds.find({ pageId: pageId, status: "EXPIRED" }, function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                    var couponType = result.filter(result => result.adsType == "coupon");
+                    for (i = 0; i < couponType.length; i++) {
+                        for (j = 0; j < couponType[i].winners.length; j++, j) {
+                            array.push(couponType[i].winners[j]);
+                        }
+                    }
+                    User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
+                            res.send({
+                                result: result1,
+                                responseCode: 200,
+                                responseMessage: "result show successfully;"
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    },
 
 }
