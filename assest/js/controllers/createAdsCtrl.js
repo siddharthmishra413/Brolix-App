@@ -63,6 +63,7 @@ userService.getPage().then(function(success) {
         $scope.cashStep7 = false;
         $scope.cashStep8 = false;
         $scope.cashStep9 = false;
+        console.log("createAds",JSON.stringify($scope.createAds))
         
     }
      else if(type=='giftTypeStepA'){
@@ -85,6 +86,7 @@ userService.getPage().then(function(success) {
         $scope.cashStep7 = false;
         $scope.cashStep8 = false;
         $scope.cashStep9 = false;
+        console.log("createAds",JSON.stringify($scope.createAds))
     }else if(type=='adsTypeStep2'){
           //console.log('adsType  fgsfdsfds-->>>'+$scope.createAds.adsType)
            
@@ -106,6 +108,7 @@ userService.getPage().then(function(success) {
         $scope.cashStep7 = false;
         $scope.cashStep8 = false;
         $scope.cashStep9 = false;
+        console.log("createAds",JSON.stringify($scope.createAds))
     }else if(type=='adsTypeStep3'){
           console.log('adsType-->>>'+$scope.createAds.adsType)
         $scope.StepFirst = false;
@@ -126,6 +129,7 @@ userService.getPage().then(function(success) {
         $scope.cashStep7 = false;
         $scope.cashStep8 = false;
         $scope.cashStep9 = false;
+        console.log("createAds",JSON.stringify($scope.createAds))
      }
      else if(type=='Step4'){
         $scope.StepFirst = false;
@@ -146,6 +150,7 @@ userService.getPage().then(function(success) {
         $scope.cashStep7 = false;
         $scope.cashStep8 = false;
         $scope.cashStep9 = false;
+        console.log("createAds",JSON.stringify($scope.createAds))
 
     }
     else if(type=='Step5'){
@@ -168,7 +173,7 @@ userService.getPage().then(function(success) {
         $scope.cashStep8 = false;
         $scope.cashStep9 = false;
         console.log("promoteAppGame",$scope.promoteAppGame)
-        console.log("createAds",$scope.createAds)
+        console.log("createAds",JSON.stringify($scope.createAds))
 
 
      }
@@ -191,6 +196,7 @@ userService.getPage().then(function(success) {
         $scope.cashStep7 = false;
         $scope.cashStep8 = false;
         $scope.cashStep9 = false;
+        console.log("createAds",JSON.stringify($scope.createAds))
 
     }
       else if(type=='Step7'){
@@ -212,6 +218,7 @@ userService.getPage().then(function(success) {
         $scope.cashStep7 = false;
         $scope.cashStep8 = false;
         $scope.cashStep9 = false;
+        console.log("createAds",JSON.stringify($scope.createAds))
 
     }
       else if(type=='giftTypeStepB'){
