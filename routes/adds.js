@@ -28,7 +28,7 @@ app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);
 app.get('/adsCommentList/:id/:pageNumber', authUser.authUser, adsHandler.adsCommentList);
 app.post('/tagOnads', authUser.authUser, adsHandler.tagOnads);
 app.put('/editAd/:id/:userId',  adsHandler.editAd);
-app.post('/adsDateFilter/:pageNumber', authUser.authUser, adsHandler.adsDateFilter);
+app.post('/adsDateFilter/:id/:pageNumber', authUser.authUser, adsHandler.adsDateFilter);
 app.post('/searchAds/:pageNumber', adsHandler.searchAds);
 app.post('/couponFilter/:pageNumber', adsHandler.couponFilter);
 
@@ -39,6 +39,7 @@ app.post('/viewCoupon', authUser.authUser, adsHandler.viewCoupon);
 app.post('/PageCouponFilter/:pageNumber',adsHandler.PageCouponFilter);
 app.post('/StoreFavCouponFilter/:pageNumber',adsHandler.StoreFavCouponFilter);
 app.post('/couponWinnersDateFilter/:pageNumber',adsHandler.couponWinnersDateFilter);
+app.post('/cashWinnersDateFilter/:pageNumber',adsHandler.cashWinnersDateFilter);
 
 
 module.exports = app;

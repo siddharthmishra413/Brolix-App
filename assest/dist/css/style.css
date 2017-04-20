@@ -303,3 +303,47 @@ form.well {
 .c1-notfy-profile-img{display: table-cell;vertical-align: middle;width: 80px;}
 .c1-notift-dtl p{margin: 0;}
 .notify a{color: #35b387;}
+i.fa.fa-lightbulb-o { font-size: 2em; color: #00b288; }
+.modal-body .c1-modal10 i.fa.fa-lightbulb-o { font-size: 4em; color: #00b288; 
+margin: 10px 0 30px; }
+.modal-body .detail-s{font-size: 16px;}
+.cus-content-row .radio-tab .radio-btn label { font-size: 20px;  width: 49%;}
+.cus-content-row .radio-tab .radio-btn i.fa.fa-video-camera { 
+font-size: 1.4em; }
+.cus-content-row  .radio-tab {margin: 20px 0 20px;}
+.cus-content-row input[type=radio] {margin: 0 10px 0;}
+.global-text{color:rgb(53,179,135);font-size: 20px;margin: 20px 0 30px;text-align: left;}
+.new-video1 .cover-image {width: 200px;height: 200px;}
+.new-video1 .cover-image img {height: 200px;}
+.new-upload-btns .fileContainer { overflow: hidden; position: 
+relative; background: rgb(53,179,135); color: #fff; padding: 12px; 
+border-radius: 0; margin-top: 10px; font-size: 18px; font-weight: 500
+; min-width: 400px; }
+.cus-new-btn .btn-green{min-width: 400px;height:45px;}
+.new-top-banner img{margin:0 auto;}
+.new-cus-step5 .cus-upload-photos .page-image{display:inline-block;    margin: 50px 15px 20px;}
+.new-cus-step5 .cus-upload-photos {text-align: center;}
+.form-control.c-new-textarea{height:auto;}
+.cus-step-6 .page-image{width:100%;height:250px;overflow:hidden;}
+.cus-step-6 .page-image img{width:100%;height:auto;}
+.cus-para-text p{color:rgb(53,179,135);font-size: 16px;}
+.hidden-gifts_r{display: table;margin: 20px 0;}
+.hidden-gifts_r div{display: table-cell;}
+.hidden-gifts_r .h-gifts-text {font-size: 17px;font-weight: 700;padding-right: 50px;}
+.bulb_icn{padding-left:25px;}
+.bor_btm{border-bottom:1px solid #00b288;}
+.m-t-30{margin-top:30px;}
+.sell-coupon.new_coupon .radio-tab .radio-btn label {font-size: 16px;font-weight: normal;width: 100%;}
+.qty-value span{border: 1px solid #00b288;padding: 5px 10px;margin: 0 5px;border-radius: 4px;}
+.sell-coupon.new_coupon{border-top: 1px solid #00b288;padding-top: 0px;margin-top: 20px;border-bottom: 1px solid #00b288;
+    padding-bottom: 30px;}
+.fa.fa-lightbulb-o.font-s{font-size: 2em;margin: 15px 0 0;}
+.gbl-table {display: table;}
+.global-tble-cell{display: table-cell;vertical-align: middle;padding: 0 15px;}
+.global-tble-cell .gbl-input{width:60px;}
+.gbl-label{width:auto !important;}
+.sell-coupon.new_sell label{font-weight:500;}
+.sell-coupon.new_sell{border-bottom:1px solid #00b288;}
+.input-group-age{display: table;}
+.input-group-age div{display:table-cell;}
+.new_gender .radio-tab .radio-btn label {font-size: 16px;font-weight: 500;width: 18%;}

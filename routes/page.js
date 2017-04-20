@@ -34,11 +34,11 @@ app.post('/pageFilter', authUser.authUser, pageHandler.pageFilter);
 app.post('/userFavouratePages', pageHandler.userFavouratePages);
 app.get('/listOfCategory', authUser.authUser, pageHandler.listOfCategory);
 app.post('/subCategoryData', pageHandler.subCategoryData);
-
 app.post('/winnerFilter/:pageNumber', pageHandler.winnerFilter);
 app.post('/myPagesSearch/:id/:pageNumber', pageHandler.myPagesSearch);
 app.post('/PageCashWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCashWinnersFilter);
 app.post('/PageCouponWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCouponWinnersFilter);
+app.get('/pageFollowersList/:id/:pageNumber', authUser.authUser, pageHandler.pageFollowersList);
 
 
 module.exports = app;

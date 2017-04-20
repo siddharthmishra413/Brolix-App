@@ -3,6 +3,7 @@ $(window).scrollTop(0,0);
 $scope.$emit('headerStatus', 'Manage Ads');
 $scope.$emit('SideMenu', 'Manage Ads');
 $scope.createAds = {};
+$scope.promoteAppGame = {};
 $scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
 userService.getPage().then(function(success) { 
@@ -628,10 +629,15 @@ $scope.changeImage = function(input,type) {
                 
             }
             } else {
+
                 uploadimgServeice.user(file).then(function(ObjS) {
+                     $timeout(function () {      
+                spinnerService.hide('html5spinner');   
                     $scope.createAds.url = ObjS.data.result.url;
                     console.log("$scope.createAds.url",$scope.createAds.url);
-                })
+                        }, 250);
+                }) 
+                
             }          
        }else{
            toastr.error("Only image supported.")

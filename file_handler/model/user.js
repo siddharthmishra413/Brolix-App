@@ -77,7 +77,8 @@ var userSchema = new Schema({
         adId: { type: String, ref: 'createNewAds' },
         pageId: { type: String, ref: 'createNewPage' },
         status: { type: String, default: 'ACTIVE' },
-        cashStatus: { type: String, default: 'PENDING' }
+        cashStatus: { type: String, default: 'PENDING' },
+        updateddAt: { type: Date, default: Date.now }
     }],
     couponPrize: [],
     gifts: {
@@ -96,13 +97,15 @@ var userSchema = new Schema({
         couponStatus: { type: String, default: 'VALID' },
         exchangeStatus: { type: String, default: 'ON' },
         status: { type: String, default: 'ACTIVE' },
-        type: { type: String }
+        type: { type: String },
+        updateddAt: { type: Date, default: Date.now }
     }],
     hiddenGifts: [{
         adId: { type: String, ref: 'createNewAds' },
         pageId: { type: String, ref: 'createNewPage' },
         status: { type: String, default: 'ACTIVE' },
-        hiddenCode: { type: String }
+        hiddenCode: { type: String },
+        updateddAt: { type: Date, default: Date.now }
     }],
     luckCard: {
         type: String
@@ -253,7 +256,7 @@ function initDB() {
                     firstName: 'Deepak',
                     lastName: 'Sharma',
                     image: 'http://res.cloudinary.com/mobiloitte-in/image/upload/v1482579253/IMG_0768_f9b0nw.jpg',
-                    permissions: ["manageUser","managePages","manageAds","manageCards","manageGifts","managePayments","adminTool"]
+                    permissions: ["manageUser", "managePages", "manageAds", "manageCards", "manageGifts", "managePayments", "adminTool"]
                 }
 
                 var adminUser = new user(defaultUser);
