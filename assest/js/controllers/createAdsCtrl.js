@@ -6,6 +6,23 @@ $scope.createAds = {};
 $scope.promoteAppGame = {};
 $scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
+
+userService.adminProfile().success(function(res) {
+    if (res.responseCode == 200) {
+        $scope.userId = res.result._id; 
+        console.log("$scope.userId",$scope.userId)
+        localStorage.setItem('adminId',$scope.userId);
+    } else {
+        toastr.error(res.responseMessage);
+        $state.go('login')
+        
+    }
+    console.log("resss",$scope.userId);
+})
+
+var adminIdss = localStorage.getItem('adminId');
+console.log("userId",adminIdss)
+
 userService.getPage().then(function(success) { 
         $scope.pageDetail=success.data.result;
         console.log("Page>>>>>>>>>>"+JSON.stringify($scope.pageDetail))
@@ -43,6 +60,7 @@ userService.getPage().then(function(success) {
 
  
  $scope.click = function(type){
+    console.log("createAds.pageName",$scope.createAds.pageName)
      //console.log(type)
     if(type=='StepFirst'){
         $scope.StepFirst = false;
@@ -67,7 +85,7 @@ userService.getPage().then(function(success) {
         
     }
      else if(type=='giftTypeStepA'){
-         console.log('giftType-->>>'+$scope.createAds.giftType)
+         console.log('giftType-->>>',JSON.stringify($scope.createAds.giftType))
         $scope.StepFirst = false;
         $scope.Step1 = false;
         $scope.Step2 = true
@@ -222,7 +240,7 @@ userService.getPage().then(function(success) {
 
     }
       else if(type=='giftTypeStepB'){
-           console.log('giftType-->>>'+$scope.createAds.giftType)
+        console.log('giftType-->>>',JSON.stringify($scope.createAds.giftType))
         $scope.StepFirst = false;
         $scope.Step1 = false;
         $scope.Step2 = false
@@ -703,6 +721,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
 
    $scope.submit = function(data){
+
        console.log("All data -->>"+JSON.stringify(data));
    }
 })

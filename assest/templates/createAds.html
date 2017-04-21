@@ -11,7 +11,7 @@
                                     <h4>Please select the the page that you want:</h4>
                                 </div>
                             <div class="cus-content-row"  >
-                                <select class="form-control"  ng-model="createAds.pageName" ng-change="click('StepFirst')" required>
+                                <select class="form-control" ng-model="createAds.pageName" ng-change="click('StepFirst')" required>
                                   <option value="">Select Page Name</option>
                                   <option ng-repeat="page in pageDetail" value="{{page}}" >{{page.pageName}}</option>
                                 </select>
@@ -60,7 +60,7 @@
                                 <div class="radio-tab">
                                     <div class="radio-btn text-left">
                                         <label>
-                                            <input type="radio" name="radio" ng-model="createAds.couponGift" value="Coupon Gift"  ng-click="click('giftTypeStepA')"  checked>&nbsp; Coupon Gift
+                                            <input type="radio" name="radio" ng-model="createAds.giftType" value="Coupon"  ng-click="click('giftTypeStepA')"  checked>&nbsp; Coupon Gift
                                         </label>
                                         <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal10"></i>
                                     </div>
@@ -79,7 +79,7 @@
                                     <div class="radio-tab">
                                         <div class="radio-btn text-left">
                                             <label>
-                                                <input type="radio" name="radio" ng-model="createAds.cashGift" value="Cash Gift" ng-click="click('giftTypeStepB')" checked>&nbsp; Cash Gift
+                                                <input type="radio" name="radio" ng-model="createAds.giftType" value="Cash" ng-click="click('giftTypeStepB')" checked>&nbsp; Cash Gift
                                             </label>
                                             <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal10"></i>
                                         </div>
@@ -126,11 +126,11 @@
                                     <div class="radio-btn text-center">
                                         <label>
                                             <i class="fa fa-video-camera" aria-hidden="true"></i>
-                                            <input type="radio" name="radio" ng-model="createAds.videoAds" value="Video Ads"   ng-click="click('adsTypeStep2')" checked>&nbsp; Video
+                                            <input type="radio" name="radio" ng-model="createAds.adContentType" value="video"   ng-click="click('adsTypeStep2')" checked>&nbsp; Video
                                         </label>
                                         <label>
                                             <i class="fa fa-slideshare" aria-hidden="true"></i>
-                                            <input type="radio" name="radio" ng-model="createAds.slideShow"  value="Slide Show Ads"  ng-click="click('adsTypeStep3')" checked>&nbsp; Slide Show
+                                            <input type="radio" name="radio" ng-model="createAds.adContentType"  value="slideshow"  ng-click="click('adsTypeStep3')" checked>&nbsp; Slide Show
                                         </label>
                                     </div>
                                 </div>
