@@ -23,7 +23,7 @@
                                         <li ng-click="total_user_coupons('totalUser')"><a>Coupon</a></li>
                                         <li ng-click="total_user_brolix('totalUser')"><a>Brolix</a></li>
                                         <li ng-click="total_user_card('totalUser')"><a>Card</a></li>
-                                        <li ng-click="total_user_cash('totalUser')""><a>Cash</a></li>
+                                        <li ng-click="total_user_cash('totalUser')"><a>Cash</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -329,7 +329,7 @@
     </div>
     
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="totalUsers">
+        <div class="cus-table" ng-switch-when="totalUsers">
         <div class="grp-search">
         <div class="row-search">
             <ul>
@@ -362,7 +362,7 @@
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
                 </li>
                 <li class="last">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
                 </li>
             </ul>
         </div>
@@ -377,6 +377,7 @@
             </form>
         </div>
     </div>
+        <div class="table-responsive col-sm-12">
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -402,6 +403,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
             <div style="float:right; font-size: 20px;" ng-if="(totalUser | customFilterUser:test).length != 0">
                         <button ng-click="preClk()" ng-disabled="pageNo==1" class="btn paginationBtn" >Prev</button> {{pageNo}}/{{noOfPages}}
                         <button ng-click="nextClk()" ng-disabled="pageNo==noOfPages" class="btn paginationBtn">Next</button>
@@ -409,7 +411,7 @@
         </div>
     </div> 
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="personalUser">
+        <div class="cus-table" ng-switch-when="personalUser">
             <div class="grp-search">
             <div class="row-search">
                 <ul>
@@ -442,7 +444,7 @@
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
                     </li>
                     <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
                     </li>
                 </ul>
             </div>
@@ -457,7 +459,7 @@
                 </form>
             </div>
         </div>
-          
+        <div class="table-responsive col-sm-12">  
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -483,6 +485,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
             <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUser:test).length != 0">
                         <button ng-click="prePersonalUser()" ng-disabled="pagePersonalUser==1" class="btn paginationBtn" >Prev</button> 
                         {{pagePersonalUser}}/{{noOfPagesPersonalUser}}
@@ -491,7 +494,7 @@
         </div>
     </div>  
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="businessUser">
+        <div class="cus-table" ng-switch-when="businessUser">
             <div class="grp-search">
             <div class="row-search">
                 <ul>
@@ -524,7 +527,7 @@
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
                     </li>
                     <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
                     </li>
                 </ul>
             </div>
@@ -539,7 +542,7 @@
                 </form>
             </div>
         </div>
-
+        <div class="table-responsive col-sm-12">
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -564,6 +567,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
             <div style="float:right; font-size: 20px;" ng-if="(businessUser | customFilterUser:test).length != 0">
                 <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button> 
                 {{pageBusinessUser}}/{{noOfPagesBusinessUser}}
@@ -572,7 +576,7 @@
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="liveUser">
+        <div class="cus-table" ng-switch-when="liveUser">
             <div class="grp-search">
             <div class="row-search">
                 <ul>
@@ -605,7 +609,7 @@
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
                     </li>
                     <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
                     </li>
                 </ul>
             </div>
@@ -620,6 +624,7 @@
                 </form>
             </div>
         </div>
+        <div class="table-responsive col-sm-12">
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -644,6 +649,7 @@
                    </tr>
                </tbody>
             </table>
+        </div>
             <div style="float:right; font-size: 20px;" ng-if="(liveUser | customFilterUser:test).length != 0">
                 <button ng-click="preLiveUser()" ng-disabled="pageLiveUser==1" class="btn paginationBtn" >Prev</button> 
                 {{pageLiveUser}}/{{noOfPagesLiveUser}}
@@ -652,7 +658,7 @@
         </div>
     </div> 
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="totalwinners">
+        <div class="cus-table" ng-switch-when="totalwinners">
             <div class="grp-search">
             <div class="row-search">
                 <ul>
@@ -685,7 +691,7 @@
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
                     </li>
                     <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
                     </li>
                 </ul>
             </div>
@@ -700,6 +706,7 @@
                 </form>
             </div>
         </div>
+        <div class="table-responsive col-sm-12">
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -724,6 +731,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
             <div style="float:right; font-size: 20px;" ng-if="(totalWinners | customFilterUser:test).length != 0">
                 <button ng-click="preTotalWinners()" ng-disabled="pageTotalWinners ==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalWinners }}/{{noOfPagesTotalWinners }}
@@ -733,7 +741,7 @@
     </div>
     
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="cashWinners">
+        <div class="cus-table" ng-switch-when="cashWinners">
         <div class="grp-search">
             <div class="row-search">
                 <ul>
@@ -766,7 +774,7 @@
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
                     </li>
                     <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
                     </li>
                 </ul>
             </div>
@@ -781,7 +789,7 @@
                 </form>
             </div>
         </div>
-
+        <div class="table-responsive col-sm-12">
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -806,6 +814,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
             <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test).length != 0">
                 <button ng-click="preCashWinners()" ng-disabled="pageCashWinners==1" class="btn paginationBtn" >Prev</button> 
                 {{pageCashWinners}}/{{noOfPagesCashWinners}}
@@ -814,7 +823,7 @@
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="couponWinners">
+        <div class="cus-table" ng-switch-when="couponWinners">
         <div class="grp-search">
             <div class="row-search">
                 <ul>
@@ -847,7 +856,7 @@
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
                     </li>
                     <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
                     </li>
                 </ul>
             </div>
@@ -862,6 +871,7 @@
                 </form>
             </div>
         </div>
+        <div class="table-responsive col-sm-12">
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -886,6 +896,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
             <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test).length != 0">
                 <button ng-click="preCouponWinners()" ng-disabled="pageCouponWinners==1" class="btn paginationBtn" >Prev</button> 
                 {{pageCouponWinners}}/{{noOfPagesCouponWinners}}
@@ -894,7 +905,7 @@
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="blockuser">
+        <div class="cus-table" ng-switch-when="blockuser">
         <div class="grp-search">
             <div class="row-search">
                 <ul>
@@ -905,7 +916,7 @@
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="UnBlock_User(myForm.checkId)">Unblock User</a>
                     </li>
                     <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
                     </li>
                 </ul>
             </div>
@@ -920,6 +931,7 @@
                 </form>
             </div>
         </div>
+        <div class="table-responsive col-sm-12">
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -944,6 +956,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
             <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test).length != 0">
                 <button ng-click="preBlockUser()" ng-disabled="pageBlockUser==1" class="btn paginationBtn" >Prev</button> 
                 {{pageBlockUser}}/{{noOfPagesBlockUser}}

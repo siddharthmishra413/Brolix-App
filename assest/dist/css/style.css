@@ -1,4 +1,5 @@
-
+html {overflow-x: hidden;}
+body {overflow-x: hidden;}
 .panel-login {
 	border-color: #ccc;
 	-webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
@@ -345,5 +346,40 @@ border-radius: 0; margin-top: 10px; font-size: 18px; font-weight: 500
 .sell-coupon.new_sell label{font-weight:500;}
 .sell-coupon.new_sell{border-bottom:1px solid #00b288;}
 .input-group-age{display: table;}
-.input-group-age div{display:table-cell;}
+.input-group-age div{display:table-cell;vertical-align: middle;
+    padding: 0 15px;}
+.input-group-age div .form-control{width:80px;}
 .new_gender .radio-tab .radio-btn label {font-size: 16px;font-weight: 500;width: 18%;}
+.age-row.new-age-row {margin: 15px 0 30px;}
+.cus-gender-radio.new_gender .radio-tab .radio-btn label{width:15%;}
+.cus-gender-radio.new_gender{margin:20px 0 10px;}
+.new_banner-img{position:relative}
+.new-banner_btm-btn{position: absolute;bottom: 10px;width: 100%;text-align: center;}
+.terms-cond-list li{list-style-type: none;margin: 15px 0;}
+.terms-cond-list li span {display: inline-block;width: 95%;vertical-align: top;padding-left: 10px;}
+.terms-cond-list li i{vertical-align: top;}
+.terms-cond-list{max-height: 500px;overflow-y: auto;}
+.fa.fa-paperclip.cus-paperclip{font-size: 3em;transform: rotate(90deg);}
+.new_file .img-pro-file{margin: 0 auto;text-align: center;}
+.new_file{text-align: center;}
+
+
+
+/********media query*************/
+
+@media (min-width:992px) and (max-width:1200px){
+    .add-card .form-block, .create-offer-form{width: 100%;}
+    .cover-image{width: 100%;height:auto;}
+    .h3, h3 {font-size: 20px;}
+}
+@media (min-width:768px) and (max-width:991px){
+    .radio-tab .radio-btn label {width: 49%;}
+    .form-block .control-label {font-size: 13px;}
+    .h3, h3 {font-size: 15px;}
+}
+@media (max-width:767px){
+    .nav-tabs.nav-justified > li > a{font-size: 14px;}
+    .h3, h3 {font-size: 17px;}
+    .c1-notify-row h3{margin: 8px;}
+
+/***********/
