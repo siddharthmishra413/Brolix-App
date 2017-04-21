@@ -4,8 +4,7 @@ $scope.$emit('headerStatus', 'Manage Ads');
 $scope.$emit('SideMenu', 'Manage Ads');
 $scope.createAds = {};
 $scope.promoteAppGame = {};
-$scope.createAds.advertismentCover='../dist/image/cover.jpg';
-
+//$scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
 userService.adminProfile().success(function(res) {
     if (res.responseCode == 200) {
@@ -32,104 +31,57 @@ userService.getPage().then(function(success) {
 }) 
 
  
- $scope.createAds.photo1='./dist/image/user-image.jpeg';
- $scope.createAds.photo2='./dist/image/user-image.jpeg';
- $scope.createAds.photo3='./dist/image/user-image.jpeg';
- $scope.createAds.photo4='./dist/image/user-image.jpeg';
- $scope.createAds.photo5='./dist/image/user-image.jpeg';
- $scope.createAds.photo6='./dist/image/user-image.jpeg';
+ // $scope.createAds.photo1='./dist/image/user-image.jpeg';
+ // $scope.createAds.photo2='./dist/image/user-image.jpeg';
+ // $scope.createAds.photo3='./dist/image/user-image.jpeg';
+ // $scope.createAds.photo4='./dist/image/user-image.jpeg';
+ // $scope.createAds.photo5='./dist/image/user-image.jpeg';
+ // $scope.createAds.photo6='./dist/image/user-image.jpeg';
 
- $scope.StepFirst = true;
- $scope.Step1 = false;
+ $scope.Step1 = true;
  $scope.Step2 = false;
  $scope.Step3 = false;
  $scope.Step4 = false;
  $scope.Step5 = false;
  $scope.Step6 = false;
  $scope.Step7 = false;
- $scope.Step8 = false;
- $scope.cashStep1 = false;
- $scope.cashStep2 = false
- $scope.cashStep3 = false;
- $scope.cashStep4 = false;
- $scope.cashStep5 = false;
- $scope.cashStep6 = false;
- $scope.cashStep7 = false;
- $scope.cashStep8 = false;
- $scope.cashStep9 = false;
+
+ // $scope.Step7 = false;
+ // $scope.Step8 = false;
+ // $scope.cashStep1 = false;
+ // $scope.cashStep2 = false
+ // $scope.cashStep3 = false;
+ // $scope.cashStep4 = false;
+ // $scope.cashStep5 = false;
+ // $scope.cashStep6 = false;
+ // $scope.cashStep7 = false;
+ // $scope.cashStep8 = false;
+ // $scope.cashStep9 = false;
 
  
  $scope.click = function(type){
-    console.log("createAds.pageName",$scope.createAds.pageName)
-     //console.log(type)
-    if(type=='StepFirst'){
-        $scope.StepFirst = false;
-        $scope.Step1 = true;
+    console.log("createAds.pageName",JSON.stringify($scope.createAds))
+    console.log("type",type)
+    if(type == 'Step2'){
+        $scope.Step1 = false;
+        $scope.Step2 = true;
+        $scope.Step3 = false;
+        $scope.Step4 = false;
+        $scope.Step5 = false;
+        $scope.Step6 = false;
+        $scope.Step7 = false;
+        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+    }else if(type == 'Step3'){
+        $scope.Step1 = false;
         $scope.Step2 = false;
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-        console.log("createAds",JSON.stringify($scope.createAds))
-        
-    }
-     else if(type=='giftTypeStepA'){
-         console.log('giftType-->>>',JSON.stringify($scope.createAds.giftType))
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = true
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-        console.log("createAds",JSON.stringify($scope.createAds))
-    }else if(type=='adsTypeStep2'){
-          //console.log('adsType  fgsfdsfds-->>>'+$scope.createAds.adsType)
-           
-         
-        $scope.Step1 = false;
-        $scope.Step2 = false
         $scope.Step3 = true;
         $scope.Step4 = false;
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-        console.log("createAds",JSON.stringify($scope.createAds))
-    }else if(type=='adsTypeStep3'){
-          console.log('adsType-->>>'+$scope.createAds.adsType)
-        $scope.StepFirst = false;
+        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+    }else if(type == 'video'){
         $scope.Step1 = false;
         $scope.Step2 = false;
         $scope.Step3 = false;
@@ -137,42 +89,28 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-        console.log("createAds",JSON.stringify($scope.createAds))
-     }
-     else if(type=='Step4'){
-        $scope.StepFirst = false;
+       console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+    }else if(type == 'slide'){
         $scope.Step1 = false;
-        $scope.Step2 = false
+        $scope.Step2 = false;
+        $scope.Step3 = false;
+        $scope.Step4 = false;
+        $scope.Step5 = false;
+        $scope.Step6 = false;
+        $scope.Step7 = true;
+       console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+    }else if(type == 'Step5'){
+        $scope.Step1 = false;
+        $scope.Step2 = false;
         $scope.Step3 = false;
         $scope.Step4 = false;
         $scope.Step5 = true;
         $scope.Step6 = false;
         $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-        console.log("createAds",JSON.stringify($scope.createAds))
-
-    }
-    else if(type=='Step5'){
-        $scope.StepFirst = false;
+        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+    }else if(type == 'Step6'){
         $scope.Step1 = false;
         $scope.Step2 = false;
         $scope.Step3 = false;
@@ -180,314 +118,15 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = true;
         $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-        console.log("promoteAppGame",$scope.promoteAppGame)
-        console.log("createAds",JSON.stringify($scope.createAds))
+        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
-
-     }
-     else if(type=='Step6'){
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = true;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-        console.log("createAds",JSON.stringify($scope.createAds))
-
+    }else{
+        toastr.error("something wents to wroung")
     }
-      else if(type=='Step7'){
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = true;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-        console.log("createAds",JSON.stringify($scope.createAds))
-
-    }
-      else if(type=='giftTypeStepB'){
-        console.log('giftType-->>>',JSON.stringify($scope.createAds.giftType))
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = true
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-
-    }
-     else if(type=='adsTypeCashStep2'){
-         console.log('giftType-->>>'+$scope.createAds.giftType)
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = true;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-
-    }
-     else if(type=='adsTypeCashStep3'){
-         console.log('giftType-->>>'+$scope.createAds.giftType)
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = true;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-
-    }
-     else if(type=='cashStep4'){
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = true;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-
-    }
-     else if(type=='cashStep5'){
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = true;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-
-    }
-     else if(type=='cashStep6'){
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = true;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = false;
-
-    }
-     else if(type=='cashStep7'){
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = true;
-        $scope.cashStep9 = false;
-
-    }
-      else if(type=='cashStep8'){
-        $scope.StepFirst = false;
-        $scope.Step1 = false;
-        $scope.Step2 = false
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        $scope.Step8 = false;
-        $scope.cashStep1 = false;
-        $scope.cashStep2 = false
-        $scope.cashStep3 = false;
-        $scope.cashStep4 = false;
-        $scope.cashStep5 = false;
-        $scope.cashStep6 = false;
-        $scope.cashStep7 = false;
-        $scope.cashStep8 = false;
-        $scope.cashStep9 = true;
-
-    }
-
-    else{
-        toastr.error("Somthing Wents to wroung")
-     }  
+    
  }
 
-//  $scope.uploadVideo = function() {
-//     var file = $scope.filevideo;
-//  console.log("video" , $scope.filevideo)
-//     if (file != undefined || file != '') {
-//     //   $scope.videoName = file.name;
-//       userService.uploads(file).success(function(res) {
-//         $scope.videoURL = res.fileName;
-//         $scope.thumbnail = res.thumbnail;
-//         file = '';
-//         $scope.filevideo = '';
-//       }).error(function(status, data) {});
-//     }
-//   }
-// $scope.uploadVideo = function() {
-//     console.log("file111",$scope.filevideo);
-//     var file = $scope.filevideo;
-  
-  
-  
-// }
 
-/*function uploadVideo() {
-    console.log("file111",$scope.filevideo);
-    var file = $scope.filevideo;
-    // if (file != undefined || file != '') {
-    //   $scope.videoName = file.name;
-    // //   UserService.uploadVideo(file).success(function(res) {
-    // //     $scope.videoURL = res.fileName;
-    // //     $scope.thumbnail = res.thumbnail;
-    // //     file = '';
-    // //     $scope.filevideo = '';
-    // //   }).error(function(status, data) {});
-    // }
-}*/
-
-//   $scope.uploadAudio = function() {
-//     var file = $scope.fileaudio;
-//     if (file != undefined || file != '') {
-//     //   $scope.audioName = file.name;
-//       userService.uploads(file).success(function(res) {
-//         $scope.audioURL = res.result.url;
-//         $scope.fileaudio = '';
-//         file = '';
-//       }).error(function(status, data) {});
-//     }
-//   }
-
-
-
-// $scope.changeVideo = function(input) {
-//         console.log("input---- ", input);
-//         var file = input.files[0];
-//         var ext = file.name.split('.').pop();
-//         // console.log(ext)
-//         if (ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png" || ext == "3gp" || ext == "mp4" || ext == "flv" || ext == "avi" || ext == "wmv") {
-//             // console.log(file.name)
-//             $scope.myForm.type = file.type;
-//             $scope.Name = file.name;
-//             if(file.type.split('/')[0]=='image') {
-//                 uploadimgServeice.user(file).then(function(ObjS) {
-//                     $scope.myForm.url = ObjS.data.result.url
-//                     console.log(JSON.stringify(ObjS.data.result.url));
-//                 })
-//             } else {
-//                 videoServeice.user(file).then(function(ObjS) {
-//                     $scope.myForm.url = ObjS.data.fileName;
-//                     console.log($scope.myForm.url);
-//                 })
-//             }
-//         } else {
-//             toastr.error("Only image and video supported.")
-//         }
-//     }
 $scope.changeImage = function(input,type) {
 
      spinnerService.show('html5spinner');  
@@ -660,8 +299,8 @@ $scope.changeImage = function(input,type) {
                 uploadimgServeice.user(file).then(function(ObjS) {
                      $timeout(function () {      
                 spinnerService.hide('html5spinner');   
-                    $scope.createAds.url = ObjS.data.result.url;
-                    console.log("$scope.createAds.url",$scope.createAds.url);
+                    $scope.createAds.vedioUrl = ObjS.data.result.url;
+                    console.log("$scope.createAds.url",$scope.createAds.vedioUrl);
                         }, 250);
                 }) 
                 

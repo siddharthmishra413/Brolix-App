@@ -1,66 +1,66 @@
-<div class="container" ng-if="StepFirst">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Create New Ad</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-                             <div class="top-content-head text-center">
-                                    <h4>Please select the the page that you want:</h4>
-                                </div>
-                            <div class="cus-content-row"  >
-                                <select class="form-control" ng-model="createAds.pageName" ng-change="click('StepFirst')" required>
-                                  <option value="">Select Page Name</option>
-                                  <option ng-repeat="page in pageDetail" value="{{page}}" >{{page.pageName}}</option>
-                                </select>
-
-                                  <!-- <select class="form-control" ng-model="createAds.StepFirst" ng-change="click('StepFirst')" >
-                                         <option value="">Select Page</option>
-                                            <option>Page 23 </option>
-                                            <option>Page 77</option>
-                                            <option>Page 63</option>
-                                            <option>Page 29</option>
-                                            <option>Page 33</option>
-                                            <option>Page 83 </option>
-                                            <option>Page 47</option>
-                                            <option>Page 13</option>
-                                            <option>Page 39</option>
-                                            <option>Page 25</option>
-                                  </select> -->
-                            </div>   
-                        </div>
+<div class="container" ng-if="Step1">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Create New Ad</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                         <div class="top-content-head text-center">
+                                <h4>Please select the the page that you want:</h4>
+                            </div>
+                        <div class="cus-content-row"  >
+                            <select class="form-control" ng-model="createAds.pageName" ng-change="click('Step2')" required>
+                              <option value="">Select Page Name</option>
+                              <option ng-repeat="page in pageDetail" value="{{page}}" >{{page.pageName}}</option>
+                            </select>
+                        </div>   
                     </div>
                 </div>
             </div>
         </div>
-    </div>  
-  
-  
-  
-       <!---Screen1 Start-->
-  <div class="container" ng-if="Step1">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-                            
-               
-                            
-                            <div class="cus-content-row"  >
-                                <div class="top-content-head text-center">
-                                    <p>In order to publish your Ads you must provide a gifts for one or more winners.</p>
-                                    <h4>Please select the gift type from the following:</h4>
+    </div>
+</div>  
+   
+   <!---Screen1 Start-->
+<div class="container" ng-if="Step2">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Step on to create Ads</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">   
+                        <div class="cus-content-row"  >
+                            <div class="top-content-head text-center">
+                                <p>In order to publish your Ads you must provide a gifts for one or more winners.</p>
+                                <h4>Please select the gift type from the following:</h4>
+                            </div>
+                            <div class="radio-tab">
+                                <div class="radio-btn text-left">
+                                    <label>
+                                        <input type="radio" name="radio" ng-model="createAds.giftType" value="Coupon"  ng-click="click('Step3')"  checked>&nbsp; Coupon Gift
+                                    </label>
+                                    <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal10"></i>
                                 </div>
+                            </div>
+                            <div class="details">
+                                <div>Through "Coupon Gift" you will be able to post your advertisements on home page & promote  your, products and all other details by providing coupons gifts which could includes big discounts or something free for one or more winners. The winners could be one up to all and they will be elected by an auto raffle. The raffle will contain only the users who watched your Ad.</div>
+                                <p>The coupon may include:(Examples)</p>
+                                <p>-Free Meal 50% Discount</p>
+                                <p>-Free Trips Buy one get one</p>
+                                <p>-And more ideas</p>
+                                <div>Users will discover your page & advertisements then the intrested users will watch the Ads, Jion the raffle and win.</div>
+                            </div>
+                        </div>
+                        <div class="login-block">
+                            <div class="cus-content-row">
                                 <div class="radio-tab">
                                     <div class="radio-btn text-left">
                                         <label>
-                                            <input type="radio" name="radio" ng-model="createAds.giftType" value="Coupon"  ng-click="click('giftTypeStepA')"  checked>&nbsp; Coupon Gift
+                                            <input type="radio" name="radio" ng-model="createAds.giftType" value="Cash" ng-click="click('Step3')" checked>&nbsp; Cash Gift
                                         </label>
                                         <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal10"></i>
                                     </div>
@@ -74,1243 +74,380 @@
                                     <div>Users will discover your page & advertisements then the intrested users will watch the Ads, Jion the raffle and win.</div>
                                 </div>
                             </div>
-                            <div class="login-block">
-                                <div class="cus-content-row">
-                                    <div class="radio-tab">
-                                        <div class="radio-btn text-left">
-                                            <label>
-                                                <input type="radio" name="radio" ng-model="createAds.giftType" value="Cash" ng-click="click('giftTypeStepB')" checked>&nbsp; Cash Gift
-                                            </label>
-                                            <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal10"></i>
-                                        </div>
-                                    </div>
-                                    <div class="details">
-                                        <div>Through "Coupon Gift" you will be able to post your advertisements on home page & promote  your, products and all other details by providing coupons gifts which could includes big discounts or something free for one or more winners. The winners could be one up to all and they will be elected by an auto raffle. The raffle will contain only the users who watched your Ad.</div>
-                                        <p>The coupon may include:(Examples)</p>
-                                        <p>-Free Meal 50% Discount</p>
-                                        <p>-Free Trips Buy one get one</p>
-                                        <p>-And more ideas</p>
-                                        <div>Users will discover your page & advertisements then the intrested users will watch the Ads, Jion the raffle and win.</div>
-                                    </div>
-                                </div>
-                                <!--<div class="btn2 text-center">
-                                    <a  class="btn btn-lg btn-green" ng-click="click('Step1')">Next</a>
-                                    <a  class="btn btn-lg btn-green">Cancel</a>
-                                </div>-->
+                        </div>               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+          <!--  End Of Screen1 -->
+
+           <!-- Screen2 Start coupon -->
+                            
+<div class="container" ng-if="Step3">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Type of Ads</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                        <div class="cus-content-row" >
+                            <div class="top-content-head text-center">
+                                <h4>Please Select the type of your ad.</h4>
                             </div>
-                                
+                            <div class="radio-tab">
+                                <div class="radio-btn text-center">
+                                    <label>
+                                        <i class="fa fa-video-camera" aria-hidden="true"></i>
+                                        <input type="radio" name="radio" ng-model="createAds.adContentType" value="video"   ng-click="click('video')" checked>&nbsp; Video
+                                    </label>
+                                    <label>
+                                        <i class="fa fa-slideshare" aria-hidden="true"></i>
+                                        <input type="radio" name="radio" ng-model="createAds.adContentType"  value="slideshow"  ng-click="click('slide')" checked>&nbsp; Slide Show
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-          <!--  End Of Screen1 -->
-                            
-<div class="container" ng-if="Step2">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
+</div>
 
-                     <!-- Screen2 Start -->
-                          <div class="cus-content-row" >
-                                <div class="top-content-head text-center">
-                                    <h4>Please Select the type of your ad.</h4>
+
+<div class="container" ng-if="Step4">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add New Page</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                        <div class="video-container new-video1">
+                            <div class="video-part text-center">
+                                <video width="720" height="240" controls src={{createAds.vedioUrl}}>
+                                  Your browser does not support the video tag.
+                                </video>
+                                <p class="global-text">Please upload the advertisement cover, it will appear in home page.</p>
+                                <div class="cover-image">
+                                    <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
+                                    <label class="fileContainer">
+                                        Choose File
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*">
+                                    </label>
                                 </div>
-                                <div class="radio-tab">
-                                    <div class="radio-btn text-center">
-                                        <label>
-                                            <i class="fa fa-video-camera" aria-hidden="true"></i>
-                                            <input type="radio" name="radio" ng-model="createAds.adContentType" value="video"   ng-click="click('adsTypeStep2')" checked>&nbsp; Video
-                                        </label>
-                                        <label>
-                                            <i class="fa fa-slideshare" aria-hidden="true"></i>
-                                            <input type="radio" name="radio" ng-model="createAds.adContentType"  value="slideshow"  ng-click="click('adsTypeStep3')" checked>&nbsp; Slide Show
-                                        </label>
-                                    </div>
-                                </div>
-                                 <!--<div class="btn2 text-center">
-                                    <a  class="btn btn-lg btn-green" ng-click="click('Step2')">Next</a>
-                                    <a  class="btn btn-lg btn-green">Cancel</a>
-                                </div>-->
-                            </div>
-                         </div>
-                       </div>
-                     </div>
-                   </div>
-                  </div>
-               </div>
-                   <!---End Of Screen2 -->
-
-
-                     <!--Cash Screen2 Start -->
-
-<div class="container" ng-if="cashStep2">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-                          <div class="cus-content-row">
-                                <div class="top-content-head text-center">
-                                    <h4>Please Select the type of your ad.</h4>
-                                </div>
-                                <div class="radio-tab">
-                                    <div class="radio-btn text-center">
-                                        <label>
-                                            <i class="fa fa-video-camera" aria-hidden="true"></i>
-                                            <input type="radio" name="radio" ng-model="createAds.adsType" value="Video Ads"  ng-click="click('adsTypeCashStep2')" checked>&nbsp; Video
-                                        </label>
-                                        <label>
-                                            <i class="fa fa-slideshare" aria-hidden="true"></i>
-                                            <input type="radio" name="radio" ng-model="createAds.adsType"  value="Slide Show Ads" ng-click="click('adsTypeCashStep3')" checked>&nbsp; Slide Show
-                                        </label>
-                                    </div>
-                                </div>
-                                 <!--<div class="btn2 text-center">
-                                    <a  class="btn btn-lg btn-green" ng-click="click('Step2')">Next</a>
-                                    <a  class="btn btn-lg btn-green">Cancel</a>
-                                </div>-->
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                 </div>
-
-                   <!---End Of Cash Screen2 -->
-                            
-                         
-                <!--- Video Screen Start-->  
-
-<div class="container" ng-if="Step3">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-                            <div class="video-container new-video1">
-                                <div class="video-part text-center">
-                                    <div class="new-top-banner">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
-                                    </div>
-                                   <!--  <img src="../dist/image/video-img1.png"  class="img-responsive"> -->
-                                    <p class="global-text">Please upload the advertisement cover, it will appear in home page.</p>
-                                    <!--<div class="cus-upload-photos">
-                                        <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" src="{{user.photo || './dist/image/user-image.jpeg'}}" id="output">
-                                            <div class="page-upload">
-                                                <div class="fileUpload btn">
-                                                    <span><i class="fa fa-camera"></i></span>
-                                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>-->
-                                    <!-- <div class="cus-upload-photos">
-                                       <div class="page-image clearfix">
-                                          <img class="profile-user-img img-responsive" ng-model="createAds.adCover" src="{{createAds.adCover|| './dist/image/user-image.jpeg'}}" id="output">
-                                          <label class="fileContainer">
-                                              Choose File
-                                              <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'adCover')" accept="image/*">
-                                          </label>
-                                       </div>
-                                   </div> -->
-
-                                   <div class="cover-image">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
-                                        <label class="fileContainer">
-                                            Choose File
-                                            <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*">
-                                        </label>
-                                    </div>
-
-                                    <div class="btn2 text-center">           
-                                        <!-- <div> 
-                                             <a style="margin-right: 33%;" class="btn btn-lg btn-green">  Upload Video</a>
-                                              <div class="col-xs-6 col-md-4 border-div">
-                                                    <div class="col-md-10 namebind">{{videoName}}</div>
-                                                    <div class="col-md-2 crossLine" ng-click="clearData('videoName')"> </div>
-                                                    </div>
-                                            <div class="file_upload  frm2" onchange="angular.element(this).scope().uploadVideo()">
-                                                <input  type="file" style=" margin: 2px; padding-bottom: 0%; margin-left: 59%; font: inherit;color: inherit;" accept="video/*" file-model = "filevideo" id="file_upload2" name="file_upload2" >
-                                            </div> 
-                                        </div> -->
-
-                                        <div class="form-group">
-                                          <label for="inputName" class="col-sm-2 control-label"></label>
-
-                                          <div class="col-sm-12">
-                                            <!-- <label class="btn btn-default btn-file">
-                                              Upload Image/Video
-                                              <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*">
-                                            </label> -->
+                                <div class="btn2 text-center">           
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-12">
                                             <div class="text-center new-upload-btns">
                                                 <label class="fileContainer">
-                                                Upload Image/Video
+                                                Upload Video
                                                 <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*">
-                                                <!-- <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*"> -->
                                                 </label>
                                             </div>
-                                          </div>
-                                          <div class="col-xs-6 col-md-4 border-div uploadfile-3">
-                                                <label ng-click="clear()">{{Name}}<i ng-if="Name" style="font-size: x-large; cursor: pointer;" class="fa fa-times"></i></label>
-                                            </div>
                                         </div>
-                                        <div class="col-sm-12">
-                                            <div class="text-center cus-new-btn">
-                                                <a class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
-                                            </div>
+                                        <div class="col-xs-6 col-md-4 border-div uploadfile-3">
+                                            <label ng-click="clear()">{{Name}}<i ng-if="Name" style="font-size: x-large; cursor: pointer;" class="fa fa-times"></i></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="text-center cus-new-btn">
+                                            <a class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="btn2 text-center col-sm-12">
-                                    <a class="btn btn-lg btn-green"  ng-click="click('Step5')" >Next</a>
-                                    <a class="btn btn-lg btn-green">Cancel</a>
-                                </div>
                             </div>
-                            </div>
-                            </div>
-                              </div>
-                                </div>
-                                  </div>
-                                    </div>
-            
-               <!--End Of Video Screen-->
-
-
-         <!---Cash Video Screen Start-->   
-
-
- <div class="container" ng-if="cashStep3">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-
-                            <div class="video-container"  >
-                                <div class="video-part text-center">
-                                    <img src="../dist/image/video-img1.png"  class="img-responsive">
-                                    <p>Please upload the advertisement cover, it will appear in home page.</p>
-                                    <!--<div class="cus-upload-photos">
-                                        <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" src="{{user.photo || './dist/image/user-image.jpeg'}}" id="output">
-                                            <div class="page-upload">
-                                                <div class="fileUpload btn">
-                                                    <span><i class="fa fa-camera"></i></span>
-                                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>-->
-                                    <div class="cus-upload-photos">
-                                       <div class="page-image clearfix">
-                                          <img class="profile-user-img img-responsive" ng-model="createAds.adCover" src="{{createAds.adCover || './dist/image/user-image.jpeg'}}" id="output">
-                                          <label class="fileContainer">
-                                              Choose File
-                                              <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'adCover')" accept="image/*">
-                                          </label>
-                                       </div>
-                                   </div>
-                                    <div class="btn2 text-center">
-                                        <a href="index.html" class="btn btn-lg btn-green">Upload Video</a>
-                                        <a class="btn btn-lg btn-green" ng-click="click('cashStep4')">Promote App, Game</a>
-                                    </div>
-                                </div>
-                                <div class="btn2 text-center">
-                                    <a class="btn btn-lg btn-green"  ng-click="click('cashStep5')" >Next</a>
-                                    <a class="btn btn-lg btn-green">Cancel</a>
-                                </div>
+                            <div class="btn2 text-center col-sm-12">
+                                <a class="btn btn-lg btn-green"  ng-click="click('Step5')" >Next</a>
+                                <a class="btn btn-lg btn-green">Cancel</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-     </div>
-            
-               <!--End Of Cash Video Screen-->
-
-
-                      <!--- slideShow Screen Start-->
-
- <div class="container" ng-if="Step4">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-                        
-                            <div class="cus-content-row"  >
-                                <div class="top-content-head text-center">
-                                    <h4>Please Upload the Ad image maximum 6;</h4>
-                                </div>
-                                    <div class="btn2 text-center">
-                                        <div class="cus-upload-photos">
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive"   ng-model="createAds.photo1"  ng-src="{{createAds.photo1}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo1')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive"  ng-model="createAds.photo2"  ng-src="{{createAds.photo2}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo2')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive" ng-model="createAds.photo3"  ng-src="{{createAds.photo3}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo3')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive" ng-model="createAds.photo4"  ng-src="{{createAds.photo4}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo4')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive"  ng-model="createAds.photo5"  ng-src="{{createAds.photo5}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo5')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive" ng-model="createAds.photo6"  ng-src="{{createAds.photo6}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo6')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                           </div>
-                                        <a  class="btn btn-lg btn-green" >Select Music</a>
-                                        <a  class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
-                                    </div>
-                                        <div class="btn2 text-center">
-                                    <button class="btn btn-lg btn-green"  ng-click="click('Step5')" ng-disabled="createAds.photo1=='./dist/image/user-image.jpeg' || createAds.photo2=='./dist/image/user-image.jpeg' || createAds.photo3=='./dist/image/user-image.jpeg' || createAds.photo4=='./dist/image/user-image.jpeg' || createAds.photo5 =='./dist/image/user-image.jpeg' || createAds.photo6=='./dist/image/user-image.jpeg'">Next</button>
-                                    <a class="btn btn-lg btn-green">Cancel</a>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                                </div>
-                            </div>
-
-                        </div>
-                                </div>
-                            
-                            
-                  <!--End Of slideShow Screen-->
-                  
-                  
-                      <!---  Cash slideShow Screen Start-->
- <div class="container" ng-if="cashStep4">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-                        
-                            <div class="cus-content-row">
-                                <div class="top-content-head text-center">
-                                    <h4>Please Upload the Ad image maximum 6;</h4>
-                                </div>
-                                    <div class="btn2 text-center">
-                                        <div class="cus-upload-photos">
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive"   ng-model="createAds.photo1"  ng-src="{{createAds.photo1}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo1')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive"  ng-model="createAds.photo2"  ng-src="{{createAds.photo2}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo2')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive" ng-model="createAds.photo3"  ng-src="{{createAds.photo3}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo3')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive" ng-model="createAds.photo4"  ng-src="{{createAds.photo4}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo4')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive"  ng-model="createAds.photo5"  ng-src="{{createAds.photo5}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo5')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                               <div class="page-image clearfix">
-                                                 <img class="profile-user-img img-responsive" ng-model="createAds.photo6"  ng-src="{{createAds.photo6}}" id="output">
-                                                    <label class="fileContainer">
-                                                        Choose File
-                                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo6')" accept="image/*">
-                                                    </label>
-                                                </div>
-                                           </div>
-                                        <a  class="btn btn-lg btn-green" >Select Music</a>
-                                        <a  class="btn btn-lg btn-green" ng-click="click('cashStep4')">Promote App, Game</a>
-                                    </div>
-                                        <div class="btn2 text-center">
-                                    <button class="btn btn-lg btn-green"  ng-click="click('cashStep5')" ng-disabled="createAds.photo1=='./dist/image/user-image.jpeg' || createAds.photo2=='./dist/image/user-image.jpeg' || createAds.photo3=='./dist/image/user-image.jpeg' || createAds.photo4=='./dist/image/user-image.jpeg' || createAds.photo5 =='./dist/image/user-image.jpeg' || createAds.photo6=='./dist/image/user-image.jpeg'">Next</button>
-                                    <a class="btn btn-lg btn-green">Cancel</a>
-                                </div>
-                                </div>
-                            </div>
-                           </div>
-                                </div>
-                            </div>
-                            </div>
-                                </div>
-                    
-                            
-                  <!--End Of Cash slideShow Screen-->          
-                             
-                  <!--- Promote App Screen Start --> 
-
-
-   <div class="container" ng-if="Step5">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Promote App, Game</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-                            <div class="cus-content-row new-cus-step5">
-                                 <form class="form-block" role="form">
-                                    <fieldset>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <!-- <select class="form-control" ng-model="createAds.links">
-                                                        <option value="">Google Play Link</option>
-                                                        <option>App Store Link</option>
-                                                        <option>Window Store Link</option>
-                                                    </select> -->
-                                                    <div class="form-group">
-                                                         <input ng-model="promoteAppGame.appName" type="text" class="form-control" placeholder="App Name">
-                                                    </div>
-                                                    <div class="form-group">
-                                                         <input ng-model="promoteAppGame.googlePlayLink" type="text" class="form-control" placeholder="Google Play Link">
-                                                    </div>
-                                                    <div class="form-group">
-                                                         <input ng-model="promoteAppGame.appStoreLink" type="text" class="form-control" placeholder="App Store Link">
-                                                    </div>
-                                                    <div class="form-group">
-                                                         <input ng-model="promoteAppGame.windowStoreLink" type="text" class="form-control" placeholder="Window Store Link">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="top-content-head text-center">
-                                            <h4>Please Upload your App Icon.</h4>
-                                        </div>
-                                        <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appIcon"  src="{{promoteAppGame.appIcon || './dist/image/user-image.jpeg'}}" id="output">
-                                               <label class="fileContainer">
-                                                    <span><i class="fa fa-camera"></i></span>
-                                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this, 'appIcon')" accept="image/*">
-                                                 </label>
-                                            </div>
-                                            <!--<img class="profile-user-img img-responsive" src="{{user.photo || './dist/image/user-image.jpeg'}}" id="output">
-                                              <label class="fileContainer">
-                                                     Choose File
-                                              <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                              </label>
-                                        </div>-->
-                                        <div class="top-content-head text-center">
-                                            <h4>Please Upload your App Photos for download page.</h4>
-                                        </div>
-                                        <div class="cus-upload-photos">
-                                            <div class="page-image clearfix">
-                                              <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appPhoto1" src="{{promoteAppGame.appPhoto1 || './dist/image/user-image.jpeg'}}" id="output">
-                                                <label class="fileContainer">
-                                                  Choose File
-                                                  <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this, 'appPhoto1')" accept="image/*">
-                                                </label>
-                                            </div>
-                                            <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appPhoto2"   src="{{createAds.appPhoto2 || './dist/image/user-image.jpeg'}}" id="output">
-                                                <label class="fileContainer">
-                                                  Choose File
-                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto2')" accept="image/*">
-                                                </label>
-                                            </div>
-                                            <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appPhoto3"   src="{{createAds.appPhoto3 || './dist/image/user-image.jpeg'}}" id="output">
-                                                <label class="fileContainer">
-                                                  Choose File
-                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto3')" accept="image/*">
-                                                </label>
-                                            </div>
-                                            <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appPhoto4"   src="{{promoteAppGame.appPhoto4 || './dist/image/user-image.jpeg'}}" id="output">
-                                                <label class="fileContainer">
-                                                  Choose File
-                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto4')" accept="image/*">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group clearfix">
-                                            <textarea class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
-                                        </div>
-                                          <!-- <input type="text" ng-model="createAds.promoteDescr" placeholder="Description...">  -->
-                                        <div class="btn2 text-center">
-                                            <a  class="btn btn-lg btn-green" ng-click="click('Step5')">Next</a>
-                                            <a  class="btn btn-lg btn-green">Cancel</a>
-                                        </div>
-                                    </fieldset>
-                                </form>
-                            </div>
-                           </div>
-                           </div>
-                           </div>
-                           </div>
-                           </div>
-                           </div>
-
-
-                    <!---End Of  Promote App Screen -->
-
-
- <!--- Cash Promote App Screen Start --> 
-
-   <div class="container" ng-if="cashStep5">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Promote App, Game</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-                            <div class="cus-content-row new-cus-step5">
-                                 <form class="form-block" role="form">
-                                    <fieldset>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <!-- <select class="form-control" ng-model="createAds.links">
-                                                        <option value="">Google Play Link</option>
-                                                        <option>App Store Link</option>
-                                                        <option>Window Store Link</option>
-                                                    </select> -->
-                                                    <div class="form-group">
-                                                         <input ng-model="promoteAppGame.appName" type="text" class="form-control" placeholder="App Name">
-                                                    </div>
-                                                    <div class="form-group">
-                                                         <input ng-model="promoteAppGame.googlePlayLink"type="text" class="form-control" placeholder="Google Play Link">
-                                                    </div>
-                                                    <div class="form-group">
-                                                         <input ng-model="promoteAppGame.appStoreLink" type="text" class="form-control" placeholder="App Store Link">
-                                                    </div>
-                                                    <div class="form-group">
-                                                         <input ng-model="promoteAppGame.windowStoreLink" type="text" class="form-control" placeholder="Window Store Link">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="top-content-head text-center">
-                                            <h4>Please Upload your App Icon.</h4>
-                                        </div>
-                                        <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="createAds.appIcon"  src="{{createAds.appIcon || './dist/image/user-image.jpeg'}}" id="output">
-                                               <label class="fileContainer">
-                                                    <span><i class="fa fa-camera"></i></span>
-                                                    <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this, 'appIcon')" accept="image/*">
-                                                 </label>
-                                            </div>
-                                            <!--<img class="profile-user-img img-responsive" src="{{user.photo || './dist/image/user-image.jpeg'}}" id="output">
-                                              <label class="fileContainer">
-                                                     Choose File
-                                              <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                              </label>
-                                        </div>-->
-                                        <div class="top-content-head text-center">
-                                            <h4>Please Upload your App Photos for download page.</h4>
-                                        </div>
-                                        <div class="cus-upload-photos">
-                                            <div class="page-image clearfix">
-                                              <img class="profile-user-img img-responsive" ng-model="createAds.downloadPhoto1" src="{{createAds.downloadPhoto1 || './dist/image/user-image.jpeg'}}" id="output">
-                                                <label class="fileContainer">
-                                                  Choose File
-                                                  <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this, 'downloadPhoto1')" accept="image/*">
-                                                </label>
-                                            </div>
-                                            <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="createAds.downloadPhoto2"   src="{{createAds.downloadPhoto2 || './dist/image/user-image.jpeg'}}" id="output">
-                                                <label class="fileContainer">
-                                                  Choose File
-                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'downloadPhoto2')" accept="image/*">
-                                                </label>
-                                            </div>
-                                            <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="createAds.downloadPhoto3"   src="{{createAds.downloadPhoto3 || './dist/image/user-image.jpeg'}}" id="output">
-                                                <label class="fileContainer">
-                                                  Choose File
-                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'downloadPhoto3')" accept="image/*">
-                                                </label>
-                                            </div>
-                                            <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="createAds.downloadPhoto4"   src="{{createAds.downloadPhoto4 || './dist/image/user-image.jpeg'}}" id="output">
-                                                <label class="fileContainer">
-                                                  Choose File
-                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'downloadPhoto4')" accept="image/*">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group clearfix">
-                                            <textarea class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
-                                        </div>
-                                          <!-- <input type="text" ng-model="createAds.promoteDescr" placeholder="Description...">  -->
-                                        <div class="btn2 text-center">
-                                            <a  class="btn btn-lg btn-green" ng-click="click('Step5')">Next</a>
-                                            <a  class="btn btn-lg btn-green">Cancel</a>
-                                        </div>
-                                    </fieldset>
-                                </form>
-                            </div>
-                           </div>
-                           </div>
-                           </div>
-                           </div>
-                           </div>
-                           </div>
-
-                    <!---End Of Cash Promote App Screen -->
-
-
-                 <!-- Gift Description Screen Start-->
-
-   <div class="container" ng-if="Step6">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-                            
-                            <div class="terms-Condition cus-step-6">
-                                
-                               <!--  <div class="page-image clearfix">
-                                    <img class="profile-user-img img-responsive"  ng-model="createAds.giftImage" src="{{createAds.giftImage || './dist/image/user-image.jpeg'}}" id="output">
-                                    <label class="fileContainer">
-                                          <a href="" class="btn btn-lg btn-green">Upload Gift image</a>
-                                          Upload Gift image
-                                      <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this, 'giftImage' )" accept="image/*">
-                                    </label>
-                                </div> -->
-
-                                <div class="form-horizontal clearfix">
-                                    <label class="control-label col-sm-4">Gift Description</label>
-                                    <div class="col-sm-8">
-                                        <textarea ng-model="createAds.giftDescriptionCouponGift" class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
-                                    </div>
-                                </div>
-
-                                <!-- <div class="col-sm-6 text-center m-t-15">
-                                    <label>Gift Description</label>
-                                </div>
-                                <div class="form-group clearfix">
-                                    <textarea class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
-                                </div> -->
-                                    <!-- <input type="text" data-toggle="modal" ng-model="createAds.desciption"  placeholder="Description...">  -->
-                                
-                                <!-- <div class="col-sm-12">
-                                    <img src="../dist/image/image1.png" class="img-responsive cus-img1">
-                                </div> -->
-                                <div class="col-sm-12 bor_btm">
-                                    <div class="hidden-gifts_r">
-                                        <div class="h-gifts-text">Hidden Gifts</div>
-                                        <div class="add-code_btn"><button type="submit" class="btn btn-green" data-toggle="modal" data-target="#myModal1">Add Code</button></div>
-                                        <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
-                                    </div>
-                                </div>
-                                <!-- <div class="col-sm-4 text-center">
-                                    <label class="m-t-15">Hidden Gifts</label>
-                                </div>
-                                <div class="col-sm-6 text-center">
-                                    <a href=""  data-toggle="modal" data-target="#myModal1" class="btn btn-lg btn-green">Add Code</a>
-                                </div>
-                                <i class="fa fa-lightbulb-o" aria-hidden="true"></i> -->
-                                <div class="cus-btm-div col-sm-12 m-t-30">
-                                    <div class="col-sm-6">
-                                        <div class="text-center">
-                                            <label class="coupon-date col-sm-12">Coupon Expiry Date</label>
-                                            <div class="col-sm-6 col-sm-offset-3">
-                                                <select ng-model="createAds.couponExpiryDate" class="form-control">
-                                                 <option value=""> Never</option>
-                                                    <option>1 Week </option>
-                                                    <option>2 Weeks</option>
-                                                    <option>3 Weeks</option>
-                                                    <option>1 Month</option>
-                                                    <option>2 Months</option>
-                                                    <option>3 Months</option>
-                                    
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="text-center">
-                                            <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
-                                            <div class="col-sm-6 col-sm-offset-3">
-                                                <input type="text" class="form-control text-center"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 cus-para-text m-t-30">
-                                    <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
-                                    <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
-                                    <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
-                                    <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="new_banner-img">
-                                        <img src="../dist/image/cover.jpg" class="img-responsive cus-img1">
-                                        <div class="new-banner_btm-btn">
-                                            <button class="btn btn-green">My Upgrade Card</button>
-                                            <button class="btn btn-green">Go to Cards Store</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-sm-12 sell-coupon new_coupon">
-                                    <div class="text-center"><i class="fa fa-lightbulb-o font-s" aria-hidden="true"></i></div>
-                                    <h3>Sell this coupon </h3>
-                                    <div class="radio-tab">
-                                        <div class="radio-btn text-left">
-                                            <label>
-                                                <input type="radio" name="radio" checked>&nbsp; Disable (Don't post my coupon in the store)
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="radio-tab">
-                                        <div class="radio-btn text-left">
-                                            <label>
-                                                <input type="radio"  name="radio" checked>&nbsp; Disable (Don't post my coupon in the store)
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="qty-value">Qty <span>100</span> Coupon or End of ad validity</div>
-                                </div>
-                                <div class="col-sm-12 sell-coupon new_sell">
-                                    <h3>Winner</h3>
-                                    <div class="radio-tab cus-inline-fld">
-                                        <div class="radio-btn text-left gbl-table">
-                                            <div class="global-tble-cell">
-                                                <label class="gbl-label">
-                                                    <input type="radio" ng-model="createAds.winner"  name="radio" ng-model="createAds.winner" checked>&nbsp;
-                                                </label>
-                                            </div>
-                                            <div class="global-tble-cell">
-                                                <input type="text" ng-model="createAds.winner1" value="" class="form-control gbl-input">
-                                            </div>
-                                            <div class="global-tble-cell">
-                                                <input type="text" ng-model="createAds.winner2" value=""  class="form-control gbl-input">
-                                            </div>
-                                            <div class="global-tble-cell">
-                                                <label>Coupon</label>
-                                            </div>
-                                            <!-- <div class="cus-input-text">
-                                                <input type="text" ng-model="createAds.winner1" value="" class="form-control">
-                                                <input type="text"   ng-model="createAds.winner2" value=""  class="form-control">
-                                                <label>Coupon</label>
-                                            </div> -->
-                                        </div>
-                                    </div>
-                                    <div class="radio-tab">
-                                        <div class="radio-btn text-left">
-                                            <label>
-                                                <input type="radio" ng-model="createAds.winner"  value="All are Winer"  name="radio" ng-model="createAds.winner" checked>&nbsp; All are Winer
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 sell-coupon">
-                                    <h3>Who will see your add?</h3>
-                                    <div class="col-sm-4">
-                                       <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
-                                           <option value="">Select Country</option>
-                                           <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
-                                       </select>
-                                    </div>
-                                    <div class="col-sm-4">
-                                       <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
-                                          <option value="">Select State</option>
-                                          <option ng-repeat="state in stateList">{{state.region}}</option>
-                                       </select> 
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <select  class="form-control" id="city" ng-model="createAds.city" required>
-                                          <option value="">Select City</option>
-                                          <option ng-repeat="city in cityList">{{city.city}}</option>
-                                        </select> 
-                                    </div>
-                                </div>
-                                <dic class="col-sm-12">
-                                    <div class="cus-gender-radio new_gender clearfix">
-                                        <label>Gender : </label>
-                                        <div class="radio-btn text-left">
-                                            <label>
-                                                <input type="radio" name="radio" ng-model="createAds.gender" checked>&nbsp; Both
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="radio" ng-model="createAds.gender" checked>&nbsp; Male
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="radio" ng-model="createAds.gender" checked>&nbsp; Female
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                    <div class="col-sm-12 age-row new-age-row">
-                                        <label class="col-sm-2 m-t-7">Age</label>
-                                        <div class=" col-sm-10 age-row-fld">
-                                            <div class="input-group-age">
-                                                <div><label>From</label></div>
-                                                 <div><input type="text" ng-model="createAds.ageFrom" class="form-control"></div>
-                                                 <div><label>To</label></div>
-                                                 <div><input type="text" ng-model="createAds.ageTo" class="form-control"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="btn2 text-center m-t-30">
-                                    <a href="index.html" class="btn btn-lg btn-green">Back</a>
-                                    <a  class="btn btn-lg btn-green" ng-click="click('Step6')">Next</a>
-                                </div>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                            </div>
-                            
-                            
-                <!---End Of Gift Description  Screen-->
-
-  <!---Cash Description  Screen-->
-   <div class="container" ng-if="cashStep6">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-                             <div class="col-sm-12">
-                                <div class="cash-ad-details-cont"  >
-                                    <h3>Cash Ad Details</h3>
-                                    <div class="col-xs-5">
-                                        <label >Number of viewer</label>
-                                        <div class="form-group">
-                                            <input type="text" ng-model="createAds.viewers" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-5">
-                                        <label>Cash Gift for the Winner</label>
-                                        <div class="form-group">
-                                            <input type="text" ng-model="createAds.winnerGift" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-2 m-t-20">
-                                        <a href="" data-toggle="modal" data-target="#myModal"><img src="../dist/image/bulb-icon1.png"></a>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 form-inline">
-                                  <div class="form-group">
-                                    <label for="exampleInputName2">Brolix Fees :</label>
-                                    <input type="text" ng-model="createAds.brolixFees" class="form-control" placeholder="">
-                                  </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="cash-ad-details-cont clearfix m-t-30 row">
-                                    <h3>Who will see your add?</h3>
-                                    <div class="col-sm-4">
-                                       <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
-                                           <option value="">Select Country</option>
-                                           <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
-                                       </select>
-                                    </div>
-                                    <div class="col-sm-4">
-                                       <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
-                                          <option value="">Select State</option>
-                                          <option ng-repeat="state in stateList">{{state.region}}</option>
-                                       </select> 
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <select  class="form-control" id="city" ng-model="createAds.city" required>
-                                          <option value="">Select City</option>
-                                          <option ng-repeat="city in cityList">{{city.city}}</option>
-                                        </select> 
-                                    </div>
-                                    <div class="radio-tab cus-gender-radio col-sm-12">
-                                        <div class="radio-btn text-left">
-                                            <label>Gender : </label>
-                                            <label>
-                                                <input type="radio" ng-model="createAds.gender" name="radio" checked>&nbsp; Both
-                                            </label>
-                                            <label>
-                                                <input type="radio" ng-model="createAds.gender" name="radio" checked>&nbsp; Male
-                                            </label>
-                                            <label>
-                                                <input type="radio" ng-model="createAds.gender" name="radio" checked>&nbsp; Female
-                                            </label>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 btn2 text-center">
-                                    <a href="index.html" class="btn btn-lg btn-green">Back</a>
-                                    <a  class="btn btn-lg btn-green" ng-click="click('cashStep6')">Next</a>
-                                </div>
-                            </div>
-                         </div>
-                            </div>
-                         </div>
-                            </div>
-                         </div>
-                            </div>
-                            
-                  <!--- End of Cash Description  Screen-->           
-                            
-                          
-               <!--- Gifts availaible only for cash gifts and upgraded Ads Screen Start-->
-               
-   <div class="container" ng-if="Step7">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-                       <div class="video-container1">
-                                <div class="video-part text-center">
-                                    <p>You can change the background image for your coupon.</p>
-                                    <div class="cus-upload-photos">
-                                        <div class="page-image clearfix">
-                                            <img src="../dist/image/banner-img.png">
-                                            <div class="page-upload">
-                                                <div class="fileUpload btn">
-                                                    <span><i class="fa fa-camera"></i></span>
-                                                    <input type="file" class="upload" />
-                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="top-content-head text-center">
-                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                    <h4>This option is availaible only for cash gifts and upgraded Ads.</h4>
-                                </div>
-                                <div class="btn2 text-center">
-                                    <a  class="btn btn-lg btn-green" ng-click="click('Step7')">Next</a>
-                                    <a class="btn btn-lg btn-green">Cancel</a>
-                                </div>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                            </div>
-                            
-               <!--End of Gifts availaible only for cash gifts and upgraded Ads Screen  -->
-
-
-                <!--- Cash Screen - Gifts availaible only for cash gifts and upgraded Ads Screen Start-->
-       
-  <div class="container" ng-if="cashStep7">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-                       <div class="video-container1">
-                                <div class="video-part text-center">
-                                    <p>You can change the background image for your coupon.</p>
-                                    <div class="cus-upload-photos">
-                                        <div class="page-image clearfix">
-                                            <img src="../dist/image/banner-img.png">
-                                            <div class="page-upload">
-                                                <div class="fileUpload btn">
-                                                    <span><i class="fa fa-camera"></i></span>
-                                                    <input type="file" class="upload" />
-                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="top-content-head text-center">
-                                    <!--<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>-->
-                                    <h4>This option is availaible only for cash gifts and upgraded Ads.</h4>
-                                </div>
-                                <div class="btn2 text-center">
-                                    <a  class="btn btn-lg btn-green" ng-click="click('cashStep7')">Next</a>
-                                    <a class="btn btn-lg btn-green">Cancel</a>
-                                </div>
-                            </div>
-                        </div>
-                            </div>
-                            
-                        </div>
-                            </div>
-                            
-                        </div>
-                            </div>
-                            
-                            
-               <!--End of Gifts availaible only for cash gifts and upgraded Ads Screen  -->
-
-
-               <!--Terms and Conditions Screen Start-->
-
- <div class="container" ng-if="Step8">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-                            <div class="terms-Condition">
-                                <div class="text-center"><i class="fa fa-paperclip cus-paperclip" aria-hidden="true"></i></div>
-                                <h3 class="text-center">Terms and Conditions</h3>
-                                <h4>Please read the following carefully:</h4>
-                                <div class="terms-cond-list">
-                                    <ul>
-                                        <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                        <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                        <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                        <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                    </ul>
-                                </div>
-                                <div class="btn2 text-center">
-                                    <a  class="btn btn-lg btn-green" ng-click="submit(createAds)" >Agree & Publish</a>
-                                    <a href="index.html" class="btn btn-lg btn-green">Back</a>
-                                </div>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                            </div>
-                            </div>
-                            </div>
-    <!-- End of Terms and Conditions Screen-->
-
-
-
-                 <!-- Cash Screen Terms and Conditions Screen Start-->
-
- <div class="container" ng-if="cashStep8">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="add-user panel panel-default cust-panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Add New Page</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="login-block">
-
-                            <div class="terms-Condition">
-                                <h3 class="text-center">Terms and Conditions</h3>
-                                <h4>Please read the following carefully:</h4>
-                                <div class="terms-cond-list">
-                                    <ul>
-                                        <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                        <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                        <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                        <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                    </ul>
-                                </div>
-                                <div class="btn2 text-center">
-                                    <a  class="btn btn-lg btn-green" ng-click="click('cashStep8')" >Agree & Pay</a>
-                                    <a href="index.html" class="btn btn-lg btn-green">Back</a>
-                                </div>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                            </div>
-            <!-- End of Terms and Conditions  Cash Screen-->
-
-
-
-              <!-- Payment Screen Start-->
-
-                            <div class="terms-Condition" ng-if="cashStep9">
-                                <h3 class="text-center">Payment Methods</h3>
-                                <h4 class="text-center">You can do your payment using the following methods</h4>
-                                  <div class="terms-cond-list">
-                            
-                                    <div style="text-align: center; margin-top: 10%;">
-                                    <label> Amount of Payment $5</label>
-                                    </div>
-        
-                                    <div style="text-align: center; margin-top: 5%;">
-                                        <button> Pay with PayPal</button>
-                                    </div>
-                                    
-                                </div>
-                                <div class="btn2 text-center">
-                                    <a  class="btn btn-lg btn-green" ng-click="click('cashStep7')" >Back</a>
-                                    <a class="btn btn-lg btn-green" ng-click="submit(createAds)">Check out Now</a>
-                                </div>
-                            </div>
-            <!-- End of Payment Screen-->
-
-
-
-                              <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-          <div class="text-center"><img src="../dist/image/bulb-icon1.png" class="img-responsive modal-bulb"></div>
-          <div class="modal-static-text">
-              <p>Hidden Gifts option allows you to send a code that you don't want anyone to see it except the winners. You can type the code here and it will be delivered to the winners as a text message by Brolix App. You can make an announcement about the "Hidden Code" in the "Gift Description" and only the winners will get it. The hidden code could be for Licence code, discount code,card, number...etc.</p>
-              <p>
-                 If you already have a system which can generate discount codes so you can use "Hidden Gift" option to upload that codes for sending them to the winner as a gift.
-              </p>
-          </div>
-          <div class="btn2 text-center">
-              <a href="index.html" class="btn btn-lg btn-green">Back</a>
-          </div>
-      </div>
     </div>
-
-  </div>
 </div>
 
-
-<!-- Modal -->
-<div id="myModal1" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-          <div class="hidden-gift-modal">
-              <h3>Hidden Gift</h3>
-              <div class="form-horizontal">
-                  <div class="form-group">
-                    <label class="col-sm-4 control-label">Number of Winners : </label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" placeholder="Email">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-4 control-label">Number of Codes : </label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" placeholder="Email">
-                    </div>
-                  </div>
-              </div>
-              <div class="form-group">
-                <label>Please type code below :</label>
-                <input type="text" class="form-control" placeholder="">
-              </div>
-              <div class="text-center">
-                  <a href="index.html" class="btn btn-lg btn-green">Add</a>
-              </div>
-          </div>
-          <div class="text-center">
-              <a href="index.html" class="btn btn-lg btn-green">Back</a>
-              <a href="index.html" class="btn btn-lg btn-green">Next</a>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<div id="myModal10" class="modal fade" role="dialog">
-    <div class="modal-dialog cls_pop">
-        <div class="modal-content">
-           <!-- <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title"></h4>
-           </div> -->
-           <div class="modal-body">
-                <div class="text-center c1-modal10"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
-                <div class="detail-s">Through "Coupon Gift" you will be able to post your advertisements on home page & promote your, products and all other details by providing coupons gifts which could includes big discounts or something free for one or more winners. The winners could be one up to all and they will be elected by an auto raffle. The raffle will contain only the users who watched your Ad.
+<div class="container" ng-if="Step5">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add New Page</h3>
                 </div>
-           </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                        <div class="terms-Condition cus-step-6">
+                            <div class="form-horizontal clearfix">
+                                <label class="control-label col-sm-4">Gift Description</label>
+                                <div class="col-sm-8">
+                                    <textarea ng-model="createAds.giftDescription" class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 bor_btm">
+                                <div class="hidden-gifts_r">
+                                    <div class="h-gifts-text">Hidden Gifts</div>
+                                    <div class="add-code_btn"><button type="submit" class="btn btn-green" data-toggle="modal" data-target="#myModal1">Add Code</button></div>
+                                    <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+                                </div>
+                            </div>
+                            <div class="cus-btm-div col-sm-12 m-t-30">
+                                <div class="col-sm-6">
+                                    <div class="text-center">
+                                        <label class="coupon-date col-sm-12">Coupon Expiry Date</label>
+                                        <div class="col-sm-6 col-sm-offset-3">
+                                            <select ng-model="createAds.couponExpiryDate" class="form-control">
+                                                <option value="">Never</option>
+                                                <option value="1 Week">1 Week </option>
+                                                <option value="2 Weeks">2 Weeks</option>
+                                                <option value="3 Weeks">3 Weeks</option>
+                                                <option value="1 Month">1 Month</option>
+                                                <option value="2 Months">2 Months</option>
+                                                <option value="3 Months">3 Months</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="text-center">
+                                        <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
+                                        <div class="col-sm-6 col-sm-offset-3">
+                                            <input ng-model="createAds.viewers" type="text" class="form-control text-center"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 cus-para-text m-t-30">
+                                <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
+                                <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
+                                <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
+                                <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="new_banner-img">
+                                    <img src="../dist/image/cover.jpg" class="img-responsive cus-img1">
+                                    <div class="new-banner_btm-btn">
+                                        <button class="btn btn-green">My Upgrade Card</button>
+                                        <button class="btn btn-green">Go to Cards Store</button>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="col-sm-12 sell-coupon new_coupon">
+                                <div class="text-center"><i class="fa fa-lightbulb-o font-s" aria-hidden="true"></i></div>
+                                <h3>Sell this coupon </h3>
+                                <div class="radio-tab">
+                                    <div class="radio-btn text-left">
+                                        <label>
+                                            <input type="radio" ng-model="createAds.cellThisCoupon" name="radio" value="Disable" checked>&nbsp; Disable (Don't post my coupon in the store)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="radio-tab">
+                                    <div class="radio-btn text-left">
+                                        <label>
+                                            <input type="radio" ng-model="createAds.cellThisCoupon" name="radio" value="Enable" checked>&nbsp; Enable (Post my coupon on the store)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="qty-value">Qty <span>100</span> Coupon or End of ad validity</div>
+                            </div>
+                            <div class="col-sm-12 sell-coupon new_sell">
+                                <h3>Winner</h3>
+                                <div class="radio-tab cus-inline-fld">
+                                    <div class="radio-btn text-left gbl-table">
+                                        <div class="global-tble-cell">
+                                            <label class="gbl-label">
+                                                <input type="radio" ng-model="createAds.winner" value="Winer" name="radio" ng-model="createAds.winner" checked>&nbsp;
+                                            </label>
+                                        </div>
+                                        <div class="global-tble-cell">
+                                            <input type="text" ng-model="createAds.winner1" value="" class="form-control gbl-input">
+                                        </div>
+                                        <div class="global-tble-cell">
+                                            <input type="text" ng-model="createAds.winner2" value=""  class="form-control gbl-input">
+                                        </div>
+                                        <div class="global-tble-cell">
+                                            <label>Coupon</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="radio-tab">
+                                    <div class="radio-btn text-left">
+                                        <label>
+                                            <input type="radio" ng-model="createAds.winner"  value="All are Winer"  name="radio" ng-model="createAds.winner" checked>&nbsp; All are Winers
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 sell-coupon">
+                                <h3>Who will see your add?</h3>
+                                <div class="col-sm-4">
+                                   <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
+                                       <option value="">Select Country</option>
+                                       <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                                   </select>
+                                </div>
+                                <div class="col-sm-4">
+                                   <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
+                                      <option value="">Select State</option>
+                                      <option ng-repeat="state in stateList">{{state.region}}</option>
+                                   </select> 
+                                </div>
+                                <div class="col-sm-4">
+                                    <select  class="form-control" id="city" ng-model="createAds.city" required>
+                                      <option value="">Select City</option>
+                                      <option ng-repeat="city in cityList">{{city.city}}</option>
+                                    </select> 
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="cus-gender-radio new_gender clearfix">
+                                    <label>Gender : </label>
+                                    <div class="radio-btn text-left">
+                                        <label>
+                                            <input type="radio" name="radio" value="Both" ng-model="createAds.gender" checked>&nbsp; Both
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="radio" value="Male" ng-model="createAds.gender" checked>&nbsp; Male
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="radio" value="Female" ng-model="createAds.gender" checked>&nbsp; Female
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 age-row new-age-row">
+                                <label class="col-sm-2 m-t-7">Age</label>
+                                <div class=" col-sm-10 age-row-fld">
+                                    <div class="input-group-age">
+                                        <div><label>From</label></div>
+                                         <div><input type="text" ng-model="createAds.ageFrom" class="form-control"></div>
+                                         <div><label>To</label></div>
+                                         <div><input type="text" ng-model="createAds.ageTo" class="form-control"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn2 text-center m-t-30">
+                            <a href="index.html" class="btn btn-lg btn-green">Back</a>
+                            <a  class="btn btn-lg btn-green" ng-click="click('Step6')">Next</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" ng-if="Step6">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add New Page</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                        <div class="terms-Condition">
+                            <h3 class="text-center">Terms and Conditions</h3>
+                            <h4>Please read the following carefully:</h4>
+                            <div class="terms-cond-list">
+                                <ul>
+                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
+                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
+                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
+                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
+                                </ul>
+                            </div>
+                            <div class="btn2 text-center">
+                                <a  class="btn btn-lg btn-green" ng-click="click('cashStep8')" >Agree & Pay</a>
+                                <a href="index.html" class="btn btn-lg btn-green">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" ng-if="Step7">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add New Page</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                        <div class="cus-content-row"  >
+                            <div class="top-content-head text-center">
+                                <h4>Please Upload the Ad image maximum 6;</h4>
+                            </div>
+                                <div class="btn2 text-center">
+                                    <div class="cus-upload-photos">
+                                       <div class="page-image clearfix">
+                                            <img class="profile-user-img img-responsive"   ng-model="createAds.photo1"  ng-src="{{createAds.photo1}}" id="output">
+                                            <label class="fileContainer">
+                                                Choose File
+                                            <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo1')" accept="image/*">
+                                            </label>
+                                        </div>
+                                        <div class="page-image clearfix">
+                                         <img class="profile-user-img img-responsive"  ng-model="createAds.photo2"  ng-src="{{createAds.photo2}}" id="output">
+                                            <label class="fileContainer">
+                                                Choose File
+                                            <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo2')" accept="image/*">
+                                            </label>
+                                        </div>
+                                        <div class="page-image clearfix">
+                                         <img class="profile-user-img img-responsive" ng-model="createAds.photo3"  ng-src="{{createAds.photo3}}" id="output">
+                                            <label class="fileContainer">
+                                                Choose File
+                                            <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo3')" accept="image/*">
+                                            </label>
+                                        </div>
+                                        <div class="page-image clearfix">
+                                         <img class="profile-user-img img-responsive" ng-model="createAds.photo4"  ng-src="{{createAds.photo4}}" id="output">
+                                            <label class="fileContainer">
+                                                Choose File
+                                            <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo4')" accept="image/*">
+                                            </label>
+                                        </div>
+                                        <div class="page-image clearfix">
+                                         <img class="profile-user-img img-responsive"  ng-model="createAds.photo5"  ng-src="{{createAds.photo5}}" id="output">
+                                            <label class="fileContainer">
+                                                Choose File
+                                            <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo5')" accept="image/*">
+                                            </label>
+                                        </div>
+                                        <div class="page-image clearfix">
+                                         <img class="profile-user-img img-responsive" ng-model="createAds.photo6"  ng-src="{{createAds.photo6}}" id="output">
+                                            <label class="fileContainer">
+                                                Choose File
+                                            <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo6')" accept="image/*">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-lg btn-green" >Select Music</a>
+                                    <a class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
+                                </div>
+                            <div class="btn2 text-center">
+                                <button class="btn btn-lg btn-green"  ng-click="click('Step5')" ng-disabled="createAds.photo1=='./dist/image/user-image.jpeg' || createAds.photo2=='./dist/image/user-image.jpeg' || createAds.photo3=='./dist/image/user-image.jpeg' || createAds.photo4=='./dist/image/user-image.jpeg' || createAds.photo5 =='./dist/image/user-image.jpeg' || createAds.photo6=='./dist/image/user-image.jpeg'">Next</button>
+                                <a class="btn btn-lg btn-green">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
         </div>
     </div>
 </div>
