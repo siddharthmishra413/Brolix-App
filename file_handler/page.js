@@ -455,40 +455,6 @@ module.exports = {
         }
     },
 
-    //  var condition = { $or: [] };
-    // var obj = req.body;
-    // Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-    //     if (key == 'cashStatus' || key == 'couponStatus') {
-    //         var cond = { $or: [] };
-    //         if (key == "cashStatus") {
-    //             for (data in obj[key]) {
-    //                 condition.$or.push({ cashStatus: obj[key][data] })
-    //             }
-    //         } else {
-    //             for (data in obj[key]) {
-    //                 condition.$or.push({ couponStatus: obj[key][data] })
-    //             }
-    //         }
-    //         //condition[key] = cond;
-    //     } else {
-    //         condition[key] = obj[key];
-    //     }
-    // });
-    // if (condition.$or.length == 0) {
-    //     delete condition.$or;
-    // }
-
-    // Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-    //             if (!(req.body[key] == "" || req.body[key] == undefined)) {
-    //                 if(key == 'startDate'){
-    //                     var startDateKey = req.body[key];
-    //                 }
-    //                 if(key == 'endDate'){
-    //                     var endDateKey = req.body[key];
-    //                 }                                               
-    //             }
-    //         });
-
     "PageCouponWinnersFilter": function(req, res) {
         var pageId = req.params.id;
         var startDateKey = '';
@@ -502,11 +468,11 @@ module.exports = {
             Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                 if (!(req.body[key] == "" || req.body[key] == undefined)) {
                     if (key == 'startDate') {
-                        tempCond['$gte'] = req.body[key];
+                        tempCond['$gte'] = new Date(req.body[key]);
                         console.log("startDate--->>>", tempCond)
                     }
                     if (key == 'endDate') {
-                        tempEndDate['$lte'] = req.body[key];
+                        tempEndDate['$lte'] = new Date(req.body[key]);
                         console.log("gte--->>>", tempEndDate)
                     }
                 }

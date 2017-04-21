@@ -2036,29 +2036,99 @@ module.exports = {
         })
     },
 
-    "winnersFilterCodeBasis": function(req, res) { // with code and without code
-        if (req.body.type == 'all') {
+    // "winnersFilterCodeBasis": function(req, res) { // with code and without code
+    //     if (req.body.type == 'all') {
+    //         var pageId = req.body.pageId;
+    //         User.aggregate({ $unwind: "$hiddenGifts" }, { $unwind: "$coupon" }, {
+    //             $match: {
+    //                 $or: [{ 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" }, {
+    //                     'coupon.pageId': pageId,
+    //                     'coupon.type': "WINNER",
+    //                     'coupon.status': "ACTIVE"
+    //                 }]
+    //             }
+    //         }).exec(function(err, result) {
+    //             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+    //                 res.send({
+    //                     result: result,
+    //                     responseCode: 200,
+    //                     responseMessage: "User show successfully."
+    //                 })
+    //             }
+    //         })
+    //     } else if (req.body.type == 'withCode') {
+    //         var pageId = req.body.pageId;
+    //         User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" } }).exec(function(err, result1) {
+    //             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+    //                 res.send({
+    //                     result: result1,
+    //                     responseCode: 200,
+    //                     responseMessage: "User show successfully."
+    //                 })
+    //             }
+    //         })
+    //     } else {
+    //         var pageId = req.body.pageId;
+    //         User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE" } }).exec(function(err, result2) {
+    //             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+    //                 res.send({
+    //                     result: result2,
+    //                     responseCode: 200,
+    //                     responseMessage: "User show successfully."
+    //                 })
+    //             }
+    //         })
+    //     }
+    // },
+
+
+
+    // Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+
+    //                 if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
+    //                     var cond = { $or: [] };
+    //                     if (key == "subCategory") {
+    //                         for (data in req.body[key]) {
+    //                             cond.$or.push({ subCategory: req.body[key][data] })
+    //                         }
+    //                         condition.$and.push(cond)
+    //                     } else {
+    //                         var tempCond = {};
+    //                         tempCond[key] = req.body[key];
+    //                         condition.$and.push(tempCond)
+    //                     }
+    //                 }
+    //             });
+    //             if (condition.$and.length == 0) {
+    //                 delete condition.$and;
+    //             }
+
+    // var condition = { $or: [] };
+    //         Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+    //             if (!(req.body[key] == "" || req.body[key] == undefined)) {
+    //                 if (key == 'startDate') {
+    //                     tempCond['$gte'] = req.body[key];
+    //                     console.log("startDate--->>>", tempCond)
+    //                 }
+    //                 if (key == 'endDate') {
+    //                     tempEndDate['$lte'] = req.body[key];
+    //                     console.log("gte--->>>", tempEndDate)
+    //                 }
+    //             }
+    //             if (tempCond != '' || tempEndDate != '') {
+    //                 data = Object.assign(tempCond, tempEndDate)
+    //             }
+    //         });
+
+
+    "winnersFilterCodeBasis": function(req, res) {
+
+
+        if (req.body.type == 'withCode') {
             var pageId = req.body.pageId;
-            User.aggregate({ $unwind: "$hiddenGifts" }, { $unwind: "$coupon" }, {
-                $match: {
-                    $or: [{ 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" }, {
-                        'coupon.pageId': pageId,
-                        'coupon.type': "WINNER",
-                        'coupon.status': "ACTIVE"
-                    }]
-                }
-            }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "User show successfully."
-                    })
-                }
-            })
-        } else if (req.body.type == 'withCode') {
-            var pageId = req.body.pageId;
-            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" } }).exec(function(err, result1) {
+            var name = req.body.name;
+            console.log("with--->>", name)
+            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstname': name } }).exec(function(err, result1) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result1,
@@ -2069,7 +2139,9 @@ module.exports = {
             })
         } else {
             var pageId = req.body.pageId;
-            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE" } }).exec(function(err, result2) {
+            var name = req.body.name;
+            console.log("without--->>", name)
+            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE", 'firstname': name } }).exec(function(err, result2) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result2,

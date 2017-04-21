@@ -768,7 +768,7 @@ module.exports = {
 
         User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
             console.log("1")
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found." }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
@@ -776,7 +776,7 @@ module.exports = {
                 var pages = Math.ceil(count / 8);
                 User.aggregate({ $unwind: "$cashPrize" }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     console.log("2")
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found." }); } else {
                         User.populate(result1, {
                             path: 'cashPrize.adId',
                             model: 'createNewAds'
