@@ -1584,6 +1584,47 @@ module.exports = {
                 })
             }
         })
-    }
+    },
+
+
+    "couponInboxDateFilter": function(req, res) {
+        if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: "Please enter atleast startDate or endDate" }); } else if (!req.body.pageId) { res.send({ responseCode: 400, responseMessage: "Please enter pageId" }); } else {
+            var pageId = req.body.pageId;
+            var startDateKey = '';
+            var endDateKey = '';
+            var tempCond = {};
+            var tempEndDate = {};
+            var data;
+            var condition = { $or: [] };
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                    if (key == 'startDate') {
+                        tempCond['$gte'] = new Date(req.body[key]);
+                        console.log("startDate--->>>", tempCond)
+                    }
+                    if (key == 'endDate') {
+                        tempEndDate['$lte'] = new Date(req.body[key]);
+                        console.log("gte--->>>", tempEndDate)
+                    }
+                }
+                if (tempCond != '' || tempEndDate != '') {
+                    data = Object.assign(tempCond, tempEndDate)
+                }
+            });
+            console.log("startDate", tempCond)
+            console.log("endDate", tempEndDate)
+            console.log("dta===>>", data)
+            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }).exec(function(err, result) {
+                console.log("2")
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "All coupon winner shown successfully."
+                    })
+                }
+            })
+        }
+    },
 
 }

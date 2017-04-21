@@ -41,7 +41,7 @@ app.post('/PageCouponWinnersFilter/:id/:pageNumber', authUser.authUser, pageHand
 app.get('/pageFollowersList/:id', authUser.authUser, pageHandler.pageFollowersList);
 app.get('/CouponInboxWinners/:id', authUser.authUser, pageHandler.CouponInboxWinners);
 app.post('/viewCouponCode', authUser.authUser, pageHandler.viewCouponCode);
-
+app.post('/couponInboxDateFilter', authUser.authUser, pageHandler.couponInboxDateFilter);
 
 
 module.exports = app;
