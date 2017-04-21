@@ -1,37 +1,39 @@
-<div class="container">
-    <div class="outer-block">
-        <div class="add-user panel panel-default cust-panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">Remove Cards</h3>
-            </div>
-            <div class="panel-body">
-                <ul class="nav nav-pills card-tabs">
-                    <li class="active"><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('upgrade_card')">Upgrade Card</a>
-                    </li>
-                    <li><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
-                </ul>
-                <div class="tab-content add-card">
-                    <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
-                        <div class="row-table" ng-repeat="data in UpgradeCard">
-                            <div class="col-cell">
-                                <div class="cover-image">
-                                    <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Remove Cards</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-pills card-tabs">
+                        <li class="active"><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('upgrade_card')">Upgrade Card</a>
+                        </li>
+                        <li><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
+                    </ul>
+                    <div class="tab-content add-card">
+                        <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
+                            <div class="row-table" ng-repeat="data in UpgradeCard">
+                                <div class="col-cell">
+                                    <div class="cover-image">
+                                        <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-cell add-remove">
-                                <span class="fa fa-times-circle" ng-click="addcardId(data._id)"></span>
+                                <div class="col-cell add-remove">
+                                    <span class="fa fa-times-circle" ng-click="addcardId(data._id)"></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
-                        <div class="row-table" ng-repeat="data in LuckCard">
-                            <div class="col-cell">
-                                <div class="cover-image">
-                                    <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                        <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
+                            <div class="row-table" ng-repeat="data in LuckCard">
+                                <div class="col-cell">
+                                    <div class="cover-image">
+                                        <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-cell add-remove">
-                                <span class="fa fa-times-circle" ng-click="addcardId(data._id)"></span>
+                                <div class="col-cell add-remove">
+                                    <span class="fa fa-times-circle" ng-click="addcardId(data._id)"></span>
+                                </div>
                             </div>
                         </div>
                     </div>

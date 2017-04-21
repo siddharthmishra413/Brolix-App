@@ -1558,14 +1558,47 @@ module.exports = {
                 for (var i = 0; i < result[0].pageFollowersUser.length; i++) {
                     userArray.push(result[0].pageFollowersUser[i].userId)
                 }
-                User.paginate({ _id: { $in: userArray } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 400, responseMessage: "No follower found" }); } else {
+                User.find({ _id: { $in: userArray } }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No follower found" }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
                             responseMessage: "successfully shown the result."
                         })
                     }
+                })
+            }
+        })
+    },
+
+    "CouponInboxWinners": function(req, res) {
+        var pageId = req.params.id;
+        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "All request show successfully"
+                })
+            }
+        })
+    },
+
+    "viewCouponCode": function(req, res) {
+        User.find({ 'hiddenGifts.adId': req.body.adId }, 'hiddenGifts').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No gift found' }) } else {
+                var code;
+                for (var i = 0; i < result[0].hiddenGifts.length; i++) {
+                    console.log("result->>", result[0].hiddenGifts.length, i)
+                    if (result[0].hiddenGifts[i].adId == req.body.adId) {
+                        code = result[0].hiddenGifts[i].hiddenCode
+                    }
+                }
+                console.log("code-->>", code)
+                res.send({
+                    result: code,
+                    responseCode: 200,
+                    responseMessage: 'Coupon code shown successfully'
                 })
             }
         })

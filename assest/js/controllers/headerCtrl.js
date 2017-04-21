@@ -15,8 +15,11 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
     	}else {
 
     		$scope.user = res.result;
-         console.log("userDetails--->",JSON.stringify($scope.user))
+        console.log("userDetails--->",JSON.stringify($scope.user))
+
         localStorage.loginData=res.result._id;
+        $scope.userId = res.result._id; 
+        localStorage.setItem('userId',$scope.userId);
         $scope.image = $scope.user.image;
         $scope.type = res.result.type;
         $scope.userPermissions = res.result.permissions;

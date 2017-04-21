@@ -363,29 +363,8 @@ module.exports = {
                     }
                 })
             }
-
         });
     },
-
-    // var imageUrl = [];
-    //      var a = 0;
-    //      for (var i = 0; i < images.length; i++) {
-    //          var img_base64 = images[i];
-    //          binaryData = new Buffer(img_base64, 'base64');
-    //          require("fs").writeFile("test.jpeg", binaryData, "binary", function(err) {});
-    //          cloudinary.uploader.upload("test.jpeg", function(result) {
-    //              if (result.url) {
-    //                  imageUrl.push(result.url);
-    //                  a += i;
-    //                  if (a == i * i) {
-    //                      callback(null, imageUrl);
-    //                  }
-    //              } else {
-    //                  callback(null,'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
-    //              }
-
-    //          });
-    //      }
 
     "uploads": function(req, res) {
         console.log(req.files);
@@ -398,14 +377,7 @@ module.exports = {
                 var fileName = files.images[i].originalFilename;
                 cloudinary.uploader.upload(img.path, function(result) {
                     console.log(result)
-                        // cloudinary.image('ngdsjthoo4thilkrxpmw.png', { width: 100, height: 150, crop: "fill" },function(err, result){
-                        //     console.log("image result==>>"+result)
-                        // })
                     if (result.url) {
-                        //    cloudinary.image(result.url, { width: 100, height: 150, crop: 'fill', 
-                        // html_width: 50, html_height: 75 },function(ress){
-                        //    console.log("DFdfdf"+ress)
-                        // })                                                       
                         imageUrl.push(result.url);
                         a += i;
                         if (a == i * i) {
@@ -418,6 +390,9 @@ module.exports = {
                     } else {
                         callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
                     }
+                }, {
+                    resource_type: "auto",
+                    chunk_size: 6000000
                 });
             }
         })
