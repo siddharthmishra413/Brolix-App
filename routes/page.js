@@ -40,6 +40,7 @@ app.post('/PageCashWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandle
 app.post('/PageCouponWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCouponWinnersFilter);
 app.get('/pageFollowersList/:id', authUser.authUser, pageHandler.pageFollowersList);
 app.get('/CouponInboxWinners/:id', authUser.authUser, pageHandler.CouponInboxWinners);
+app.post('/viewCouponCode', authUser.authUser, pageHandler.viewCouponCode);
 
 
 
