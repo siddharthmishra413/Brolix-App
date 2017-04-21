@@ -1555,19 +1555,35 @@ module.exports = {
 
     "CouponInboxWinners": function(req, res) {
         var pageId = req.params.id;
-        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type':"WINNER", 'coupon.status':'ACTIVE' } }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else if(!result){ res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' });}
-              else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
+        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "All request show successfully"
                 })
-
-                
             }
         })
     },
+
+    "viewCouponCode": function(req, res) {
+        User.find({ 'hiddenGifts.adId': req.body.adId }, 'hiddenGifts').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No gift found' }) } else {
+                var code;
+                for (var i = 0; i < result[0].hiddenGifts.length; i++) {
+                    console.log("result->>", result[0].hiddenGifts.length, i)
+                    if (result[0].hiddenGifts[i].adId == req.body.adId) {
+                        code = result[0].hiddenGifts[i].hiddenCode
+                    }
+                }
+                console.log("code-->>", code)
+                res.send({
+                    result: code,
+                    responseCode: 200,
+                    responseMessage: 'Coupon code shown successfully'
+                })
+            }
+        })
+    }
 
 }
