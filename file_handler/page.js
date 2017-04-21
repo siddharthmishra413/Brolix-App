@@ -478,11 +478,9 @@ module.exports = {
                 }
                 if (tempCond != '' || tempEndDate != '') {
                     data = Object.assign(tempCond, tempEndDate)
-                }
-                else if (tempCond != '' || tempEndDate != '') {
-                    data = Object.assign(tempEndDate, tempCond)
-                }
+                }                
             });
+            
             console.log("tempCond--->>", tempCond)
             console.log("tempEndDate--->>", tempEndDate)
             console.log("dta===>>", data)
