@@ -2038,17 +2038,27 @@ module.exports = {
 
     "winnersFilterCodeBasis": function(req, res) { // with code and without code
         if (req.body.type == 'all') {
-            User.aggregate({ $unwind: "$hiddenGifts" }, { $unwind: "$coupon" }, { $match: { $or: [{ 'hiddenGifts.status': "ACTIVE" }, { 'coupon.status': "ACTIVE" }] } }).exec(function(err, result1) {
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+            var pageId = req.body.pageId;
+            User.aggregate({ $unwind: "$hiddenGifts" }, { $unwind: "$coupon" }, {
+                $match: {
+                    $or: [{ 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" }, {
+                        'coupon.pageId': pageId,
+                        'coupon.type': "WINNER",
+                        'coupon.status': "ACTIVE"
+                    }]
+                }
+            }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
-                        result: result1,
+                        result: result,
                         responseCode: 200,
                         responseMessage: "User show successfully."
                     })
                 }
             })
         } else if (req.body.type == 'withCode') {
-            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.status': "ACTIVE" } }).exec(function(err, result1) {
+            var pageId = req.body.pageId;
+            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" } }).exec(function(err, result1) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result1,
@@ -2058,7 +2068,8 @@ module.exports = {
                 }
             })
         } else {
-            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.status': "ACTIVE" } }).exec(function(err, result2) {
+            var pageId = req.body.pageId;
+            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE" } }).exec(function(err, result2) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result2,
