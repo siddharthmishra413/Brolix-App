@@ -427,7 +427,7 @@ module.exports = {
     },
     //   User.find({ _id: { $in: arr }, "createdAt": { "$gte": req.body.toDate, "$lt": req.body.fromDate } }).exec(function(err, newResult) {
 
-    "PageCashWinnersFilter": function(req, res) {
+    "particularPageCashWinners": function(req, res) {
         var pageId = req.params.id;
         if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
             var array = [];
@@ -440,7 +440,7 @@ module.exports = {
                         }
                     }
                     console.log("array-->>", array)
-                    User.paginate({ _id: { $in: array }, "createdAt": { "$gte": req.body.toDate, "$lt": req.body.fromDate } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                    User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
                         console.log("result1-->>", result1)
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
                             res.send({
@@ -469,19 +469,20 @@ module.exports = {
                 if (!(req.body[key] == "" || req.body[key] == undefined)) {
                     if (key == 'startDate') {
                         tempCond['$gte'] = new Date(req.body[key]);
-                        console.log("startDate--->>>", tempCond)
+                        console.log("startDate-111-->>>", tempCond)
                     }
                     if (key == 'endDate') {
                         tempEndDate['$lte'] = new Date(req.body[key]);
-                        console.log("gte--->>>", tempEndDate)
+                        console.log("gte-111-->>>", tempEndDate)
                     }
                 }
                 if (tempCond != '' || tempEndDate != '') {
                     data = Object.assign(tempCond, tempEndDate)
                 }
             });
-            console.log("startDate", tempCond)
-            console.log("endDate", tempEndDate)
+
+            console.log("tempCond--->>", tempCond)
+            console.log("tempEndDate--->>", tempEndDate)
             console.log("dta===>>", data)
 
             createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
@@ -508,7 +509,7 @@ module.exports = {
     },
 
 
-    "particularPageCashWinners": function(req, res) {
+    "PageCashWinnersFilter": function(req, res) {
         var pageId = req.body.pageId;
         var startDateKey = '';
         var endDateKey = '';
@@ -521,11 +522,11 @@ module.exports = {
             Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                 if (!(req.body[key] == "" || req.body[key] == undefined)) {
                     if (key == 'startDate') {
-                        tempCond['$gte'] = req.body[key];
+                        tempCond['$gte'] = new Date(req.body[key]);
                         console.log("startDate--->>>", tempCond)
                     }
                     if (key == 'endDate') {
-                        tempEndDate['$lte'] = req.body[key];
+                        tempEndDate['$lte'] = new Date(req.body[key]);
                         console.log("gte--->>>", tempEndDate)
                     }
                 }
@@ -545,6 +546,7 @@ module.exports = {
                         }
                     }
                     User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                        console.log("particularPageCashWinners-->>", particularPageCashWinners)
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
                             res.send({
                                 result: result1,
@@ -708,57 +710,55 @@ module.exports = {
     },
 
     "pageStatisticsFilter": function(req, res) { //pageId, 
-        // var startTime = new Date(req.body.date).toUTCString();
-        // var endTimeHour = req.body.date + 86399000;
-        // var endTime = new Date(endTimeHour).toUTCString();
+        var startTime = new Date(req.body.date).toUTCString();
+        var endTimeHour = req.body.date + 86399000;
+        var endTime = new Date(endTimeHour).toUTCString();
 
-        // var week = endTimeHour - 604800000;
-        // var weekly = new Date(week).toUTCString();
+        var week = endTimeHour - 604800000;
+        var weekly = new Date(week).toUTCString();
 
 
-        // function daysInMonth(month, year) {
-        //     return new Date(year, month, 0).getDate();
-        // }
-        // var month_date = new Date(parseInt(req.body.date))
-        // var mm = month_date.getMonth();
-        // var yy = month_date.getFullYear();
-        // console.log("year==>" + yy)
-        // var days = daysInMonth(mm, yy);
-        // console.log("days-----------  ", days);
-        // var month = parseInt(req.body.date) + (86400000 * days)
-        // var monthly = new Date(month).toUTCString();
+        function daysInMonth(month, year) {
+            return new Date(year, month, 0).getDate();
+        }
+        var month_date = new Date(parseInt(req.body.date))
+        var mm = month_date.getMonth();
+        var yy = month_date.getFullYear();
+        console.log("year==>" + yy)
+        var days = daysInMonth(mm, yy);
+        console.log("days-----------  ", days);
+        var month = parseInt(req.body.date) + (86400000 * days)
+        var monthly = new Date(month).toUTCString();
 
-        // //var yearly = new Date().getFullYear;
-        // if (req.body.dateFilter == 'all') {
-        //     var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) } } }
-        // }
-        // if (req.body.dateFilter == 'today') {
-        //     var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
-        // }
-        // if (req.body.dateFilter == 'weekly') {
-        //     var condition;
-        //     var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
-        // }
-        // if (req.body.dateFilter == 'monthly') {
-        //     var queryCondition = { $match: { "month": mm, "year": yy } }
-        // }
-        // if (req.body.dateFilter == 'yearly') {
-        //     var condition = { $project: { pageView: "$pageView", productView: "$productView", callUsClick: "$callUsClick", date: "$date", year: { $year: "$date" }, month: { $month: "$date" } } };
-        //     var queryCondition = { $match: { "year": yy } };
-        //     // var queryCondition = {query,condition};
-        // }
-        // console.log("startTime==>>" + startTime);
-        // console.log("new date startTime==>>" + new Date(startTime));
-        // console.log("endTime====>>" + endTime)
+        //var yearly = new Date().getFullYear;
+        if (req.body.dateFilter == 'all') {
+            var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) } } }
+        }
+        if (req.body.dateFilter == 'today') {
+            var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
+        }
+        if (req.body.dateFilter == 'weekly') {
+            var condition;
+            var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
+        }
+        if (req.body.dateFilter == 'monthly') {
+            var queryCondition = { $match: { "month": mm, "year": yy } }
+        }
+        if (req.body.dateFilter == 'yearly') {
+            var condition = { $project: { pageView: "$pageView", productView: "$productView", callUsClick: "$callUsClick", date: "$date", year: { $year: "$date" }, month: { $month: "$date" } } };
+            var queryCondition = { $match: { "year": yy } };
+            // var queryCondition = {query,condition};
+        }
+        console.log("startTime==>>" + startTime);
+        console.log("new date startTime==>>" + new Date(startTime));
+        console.log("endTime====>>" + endTime)
             //   var rules = [{pageId:"58aaa1b3fdc4ed1553754d2f"}, {date: {$gte: startTime}}];
 
         //         Views.aggregate( [    
         //  { $match: {date: {"$gte":  new Date(startTime), "$lte": new Date(endTime)},pageId:"58aaa1b3fdc4ed1553754d2f"}},
         // // { $group: { _id: null, count: { $sum: "$productView" } } }
         //  ]).exec(function(err,result){
-       // if (req.body.dateFilter == 'today') {
-            var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
-    //    }
+
         console.log("queryCondition" + JSON.stringify(queryCondition))
 
         Views.aggregate([queryCondition, {
@@ -784,25 +784,9 @@ module.exports = {
                     responseCode: 404,
                     responseMessage: "error."
                 });
-            } else if (result.length == 0) {
-               var data =   {
-                           
-                           totalProductView:0,
-                           totalPageView: 0,
-                           totalEventViewClicks: 0,
-                           totalEmailClicks: 0,
-                           totalCallUsClick: 0,
-                           totalFollowerNumber: 0,
-                           totalSocialMediaClicks: 0,
-                           totalLocationClicks: 0,
-                           totalWebsiteClicks: 0,
-                           totalShares: 0,
-                           totalViewAds: 0,
-                           totalRating: 0
-                       }
-
+            } else if (!result) {
                 res.send({
-                    result: data,
+                    result: result,
                     responseCode: 404,
                     responseMessage: "Data not found."
                 });
@@ -812,7 +796,7 @@ module.exports = {
                         [
                             //  { $match: {_id:req.body.pageId} },
                             { $unwind: "$totalRating" },
-                            { $match: { "totalRating.date": { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, _id: new mongoose.Types.ObjectId(req.body.pageId) } }
+                            { $match: { "totalRating.date": { "$gte": new Date(startTime), "$lte": new Date(endTime) }, _id: new mongoose.Types.ObjectId(req.body.pageId) } }
                         ],
                         function(err, pages) {
 
@@ -1609,6 +1593,27 @@ module.exports = {
                 }
             })
         }
+    },
+
+    "blockedPagesSearch": function(req, res) {
+        createNewPage.find({ status: 'BLOCK' }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+                var blockPagesArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    console.log(typeof(result[i]._id))
+                    blockPagesArray.push(String(result[i]._id))
+                }
+                // console.log(typeof(result[i]._id))
+                console.log("blockPagesArray-->>", blockPagesArray)
+                var re = new RegExp(req.body.search, 'i');
+                createNewPage.paginate({ $and: [{ _id: { $in: blockPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
+                    function(err, result1) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
+                            res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
+                        }
+                    })
+            }
+        })
     },
 
 }

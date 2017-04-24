@@ -30,35 +30,14 @@ userService.getPage().then(function(success) {
          toastr.error('Connection error.');
 }) 
 
- 
- // $scope.createAds.photo1='./dist/image/user-image.jpeg';
- // $scope.createAds.photo2='./dist/image/user-image.jpeg';
- // $scope.createAds.photo3='./dist/image/user-image.jpeg';
- // $scope.createAds.photo4='./dist/image/user-image.jpeg';
- // $scope.createAds.photo5='./dist/image/user-image.jpeg';
- // $scope.createAds.photo6='./dist/image/user-image.jpeg';
-
  $scope.Step1 = true;
  $scope.Step2 = false;
  $scope.Step3 = false;
- $scope.Step4 = false;
+ $scope.vedioStep4 = false;
  $scope.Step5 = false;
  $scope.Step6 = false;
- $scope.Step7 = false;
+ $scope.slideStep4 = false;
 
- // $scope.Step7 = false;
- // $scope.Step8 = false;
- // $scope.cashStep1 = false;
- // $scope.cashStep2 = false
- // $scope.cashStep3 = false;
- // $scope.cashStep4 = false;
- // $scope.cashStep5 = false;
- // $scope.cashStep6 = false;
- // $scope.cashStep7 = false;
- // $scope.cashStep8 = false;
- // $scope.cashStep9 = false;
-
- 
  $scope.click = function(type){
     console.log("createAds.pageName",JSON.stringify($scope.createAds))
     console.log("type",type)
@@ -66,59 +45,109 @@ userService.getPage().then(function(success) {
         $scope.Step1 = false;
         $scope.Step2 = true;
         $scope.Step3 = false;
-        $scope.Step4 = false;
+        $scope.vedioStep4 = false;
         $scope.Step5 = false;
         $scope.Step6 = false;
-        $scope.Step7 = false;
+        $scope.slideStep4 = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
+    }else if(type == 'Back2'){
+        $scope.Step1 = true;
+        $scope.Step2 = false;
+        $scope.Step3 = false;
+        $scope.vedioStep4 = false;
+        $scope.Step5 = false;
+        $scope.Step6 = false;
+        $scope.slideStep4 = false;
+        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
     }else if(type == 'Step3'){
         $scope.Step1 = false;
         $scope.Step2 = false;
         $scope.Step3 = true;
-        $scope.Step4 = false;
+        $scope.vedioStep4 = false;
         $scope.Step5 = false;
         $scope.Step6 = false;
-        $scope.Step7 = false;
+        $scope.slideStep4 = false;
+        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+    }else if(type == 'Back3'){
+        $scope.Step1 = false;
+        $scope.Step2 = true;
+        $scope.Step3 = false;
+        $scope.vedioStep4 = false;
+        $scope.Step5 = false;
+        $scope.Step6 = false;
+        $scope.slideStep4 = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'video'){
         $scope.Step1 = false;
         $scope.Step2 = false;
         $scope.Step3 = false;
-        $scope.Step4 = true;
+        $scope.vedioStep4 = true;
         $scope.Step5 = false;
         $scope.Step6 = false;
-        $scope.Step7 = false;
+        $scope.slideStep4 = false;
+       console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+    }else if(type == 'Back4'){
+        $scope.Step1 = false;
+        $scope.Step2 = false;
+        $scope.Step3 = true;
+        $scope.vedioStep4 = false;
+        $scope.Step5 = false;
+        $scope.Step6 = false;
+        $scope.slideStep4 = false;
+        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+    }else if(type == 'Step5'){
+        $scope.Step1 = false;
+        $scope.Step2 = false;
+        $scope.Step3 = false;
+        $scope.vedioStep4 = false;
+        $scope.Step5 = true;
+        $scope.Step6 = false;
+        $scope.slideStep4 = false;
+        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+    }else if(type == 'Back5'){
+        $scope.Step1 = false;
+        $scope.Step2 = false;
+        $scope.Step3 = false;
+        $scope.vedioStep4 = true;
+        $scope.Step5 = false;
+        $scope.Step6 = false;
+        $scope.slideStep4 = false;
        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'slide'){
         $scope.Step1 = false;
         $scope.Step2 = false;
         $scope.Step3 = false;
-        $scope.Step4 = false;
+        $scope.vedioStep4 = false;
         $scope.Step5 = false;
         $scope.Step6 = false;
-        $scope.Step7 = true;
+        $scope.slideStep4 = true;
        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
-    }else if(type == 'Step5'){
-        $scope.Step1 = false;
-        $scope.Step2 = false;
-        $scope.Step3 = false;
-        $scope.Step4 = false;
-        $scope.Step5 = true;
-        $scope.Step6 = false;
-        $scope.Step7 = false;
-        console.log("createAds.pageName",JSON.stringify($scope.createAds))
     }else if(type == 'Step6'){
         $scope.Step1 = false;
         $scope.Step2 = false;
         $scope.Step3 = false;
-        $scope.Step4 = false;
+        $scope.vedioStep4 = false;
         $scope.Step5 = false;
         $scope.Step6 = true;
-        $scope.Step7 = false;
+        $scope.slideStep4 = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+    }else if(type == 'Back6'){
+        $scope.Step1 = false;
+        $scope.Step2 = false;
+        $scope.Step3 = false;
+        $scope.vedioStep4 = false;
+        $scope.Step5 = true;
+        $scope.Step6 = false;
+        $scope.slideStep4 = false;
+       console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else{
         toastr.error("something wents to wroung")

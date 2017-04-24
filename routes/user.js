@@ -57,6 +57,7 @@ app.post('/winnersFilterCodeBasis', userHandler.winnersFilterCodeBasis)
 app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode);
 app.post('/seeExchangeSentRequest', authUser.authUser, userHandler.seeExchangeSentRequest);
 app.post('/savePaymentRequest', userHandler.savePaymentRequest);
+app.post('/blockedUserSearch', authUser.authUser, userHandler.blockedUserSearch);
 
 
 app.post('/payU', userHandler.payU)
