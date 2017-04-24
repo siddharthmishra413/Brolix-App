@@ -3,7 +3,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Create New Ad</h3>
+                    <h3 class="panel-title">Create New Ad Step1</h3>
                 </div>
                 <div class="panel-body">
                     <div class="login-block">
@@ -29,7 +29,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Step on to create Ads</h3>
+                    <h3 class="panel-title">Step on to create Ads Step2</h3>
                 </div>
                 <div class="panel-body">
                     <div class="login-block">   
@@ -73,6 +73,9 @@
                                     <p>-And more ideas</p>
                                     <div>Users will discover your page & advertisements then the intrested users will watch the Ads, Jion the raffle and win.</div>
                                 </div>
+                                <div class="btn2 text-center col-sm-12">
+                                    <a class="btn btn-lg btn-green"  ng-click="click('Back2')" >Back</a>
+                                </div>
                             </div>
                         </div>               
                     </div>
@@ -90,7 +93,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Type of Ads</h3>
+                    <h3 class="panel-title">Type of Ads Step3</h3>
                 </div>
                 <div class="panel-body">
                     <div class="login-block">
@@ -109,6 +112,9 @@
                                         <input type="radio" name="radio" ng-model="createAds.adContentType"  value="slideshow"  ng-click="click('slide')" checked>&nbsp; Slide Show
                                     </label>
                                 </div>
+                                <div class="btn2 text-center col-sm-12">
+                                    <a class="btn btn-lg btn-green"  ng-click="click('Back3')" >Back</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -119,12 +125,12 @@
 </div>
 
 
-<div class="container" ng-if="Step4">
+<div class="container" ng-if="vedioStep4">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add New Page</h3>
+                    <h3 class="panel-title">Add New Page Step4</h3>
                 </div>
                 <div class="panel-body">
                     <div class="login-block">
@@ -165,7 +171,7 @@
                             </div>
                             <div class="btn2 text-center col-sm-12">
                                 <a class="btn btn-lg btn-green"  ng-click="click('Step5')" >Next</a>
-                                <a class="btn btn-lg btn-green">Cancel</a>
+                                <a class="btn btn-lg btn-green"  ng-click="click('Back4')" >Back</a>
                             </div>
                         </div>
                     </div>
@@ -180,7 +186,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add New Page</h3>
+                    <h3 class="panel-title">Add New Page Step5</h3>
                 </div>
                 <div class="panel-body">
                     <div class="login-block">
@@ -194,7 +200,7 @@
                             <div class="col-sm-12 bor_btm">
                                 <div class="hidden-gifts_r">
                                     <div class="h-gifts-text">Hidden Gifts</div>
-                                    <div class="add-code_btn"><button type="submit" class="btn btn-green" data-toggle="modal" data-target="#myModal1">Add Code</button></div>
+                                    <div class="add-code_btn"><button type="submit" class="btn btn-green" data-toggle="modal" data-target="#myModal10">Add Code</button></div>
                                     <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
                                 </div>
                             </div>
@@ -336,8 +342,42 @@
                             </div>
                         </div>
                         <div class="btn2 text-center m-t-30">
-                            <a href="index.html" class="btn btn-lg btn-green">Back</a>
                             <a  class="btn btn-lg btn-green" ng-click="click('Step6')">Next</a>
+                            <a  class="btn btn-lg btn-green" ng-click="click('Back5')">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" ng-if="Step6">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add New Page Step6</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                        <div class="terms-Condition">
+                            <div class="text-center"><i class="fa fa-paperclip cus-paperclip" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="text-center">Terms and Conditions</h3>
+                            <h4>Please read the following carefully:</h4>
+                            <div class="terms-cond-list">
+                                <ul>
+                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
+                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
+                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
+                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
+                                </ul>
+                            </div>
+                            <div class="btn2 text-center">
+                                <a  class="btn btn-lg btn-green" ng-click="submit(createAds)" >Agree & Publish</a>
+                                <a  class="btn btn-lg btn-green" ng-click="click('Back6')">Back</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -347,12 +387,12 @@
 </div>
 
 
-<div class="container" ng-if="Step6">
+<!-- <div class="container" ng-if="Step6">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add New Page</h3>
+                    <h3 class="panel-title">Add New Page Step6</h3>
                 </div>
                 <div class="panel-body">
                     <div class="login-block">
@@ -377,14 +417,14 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
-<div class="container" ng-if="Step7">
+<!-- <div class="container" ng-if="Step7">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add New Page</h3>
+                    <h3 class="panel-title">Add New Page Step7</h3>
                 </div>
                 <div class="panel-body">
                     <div class="login-block">
@@ -450,7 +490,78 @@
              </div>
         </div>
     </div>
+</div> -->
+
+
+<div class="container" ng-if="slideStep4">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add New Page</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                        <div class="cus-content-row"  >
+                            <div class="top-content-head text-center">
+                                <h4>Please Upload the Ad image maximum 6;</h4>
+                            </div>
+                            <div class="btn2 text-center">
+                                <div class="cus-upload-photos">
+                                   <div class="page-image clearfix">
+                                        <img class="profile-user-img img-responsive"   ng-model="createAds.photo1"  ng-src="{{createAds.photo1}}" id="output">
+                                        <label class="fileContainer">
+                                            Choose File
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo1')" accept="image/*">
+                                        </label>
+                                    </div>
+                                    <div class="page-image clearfix">
+                                        <img class="profile-user-img img-responsive"  ng-model="createAds.photo2"  ng-src="{{createAds.photo2}}" id="output">
+                                        <label class="fileContainer">
+                                            Choose File
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo2')" accept="image/*">
+                                        </label>
+                                    </div>
+                                    <div class="page-image clearfix">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.photo3"  ng-src="{{createAds.photo3}}" id="output">
+                                        <label class="fileContainer">
+                                            Choose File
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo3')" accept="image/*">
+                                        </label>
+                                    </div>
+                                    <div class="page-image clearfix">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.photo4"  ng-src="{{createAds.photo4}}" id="output">
+                                        <label class="fileContainer">
+                                            Choose File
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo4')" accept="image/*">
+                                        </label>
+                                    </div>
+                                    <div class="page-image clearfix">
+                                        <img class="profile-user-img img-responsive"  ng-model="createAds.photo5"  ng-src="{{createAds.photo5}}" id="output">
+                                        <label class="fileContainer">
+                                            Choose File
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo5')" accept="image/*">
+                                        </label>
+                                    </div>
+                                    <div class="page-image clearfix">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.photo6"  ng-src="{{createAds.photo6}}" id="output">
+                                        <label class="fileContainer">
+                                            Choose File
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo6')" accept="image/*">
+                                        </label>
+                                    </div>
+                                </div>
+                                <a  class="btn btn-lg btn-green" >Select Music</a>
+                                <a  class="btn btn-lg btn-green" ng-click="click('Step4')">Promote App, Game</a>
+                            </div>
+                            <div class="btn2 text-center">
+                                <button class="btn btn-lg btn-green"  ng-click="click('Step5')" ng-disabled="createAds.photo1=='./dist/image/user-image.jpeg' || createAds.photo2=='./dist/image/user-image.jpeg' || createAds.photo3=='./dist/image/user-image.jpeg' || createAds.photo4=='./dist/image/user-image.jpeg' || createAds.photo5 =='./dist/image/user-image.jpeg' || createAds.photo6=='./dist/image/user-image.jpeg'">Next</button>
+                                <a class="btn btn-lg btn-green">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-
