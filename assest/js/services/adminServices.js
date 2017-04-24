@@ -157,6 +157,10 @@ app.service('userService',function($http){
 
     /*-------------------------Manage ADS---------------------*/
 
+    createAds: function(data){
+      return $http.post(baseurl+'/ads/createAds', data);
+    },
+
     totalAds: function(page) {
      return $http.get(baseurl+'/admin/totalAds/'+page);
      },
