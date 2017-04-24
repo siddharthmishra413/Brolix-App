@@ -710,54 +710,56 @@ module.exports = {
     },
 
     "pageStatisticsFilter": function(req, res) { //pageId, 
-        var startTime = new Date(req.body.date).toUTCString();
-        var endTimeHour = req.body.date + 86399000;
-        var endTime = new Date(endTimeHour).toUTCString();
+        // var startTime = new Date(req.body.date).toUTCString();
+        // var endTimeHour = req.body.date + 86399000;
+        // var endTime = new Date(endTimeHour).toUTCString();
 
-        var week = endTimeHour - 604800000;
-        var weekly = new Date(week).toUTCString();
+        // var week = endTimeHour - 604800000;
+        // var weekly = new Date(week).toUTCString();
 
 
-        function daysInMonth(month, year) {
-            return new Date(year, month, 0).getDate();
-        }
-        var month_date = new Date(parseInt(req.body.date))
-        var mm = month_date.getMonth();
-        var yy = month_date.getFullYear();
-        console.log("year==>" + yy)
-        var days = daysInMonth(mm, yy);
-        console.log("days-----------  ", days);
-        var month = parseInt(req.body.date) + (86400000 * days)
-        var monthly = new Date(month).toUTCString();
+        // function daysInMonth(month, year) {
+        //     return new Date(year, month, 0).getDate();
+        // }
+        // var month_date = new Date(parseInt(req.body.date))
+        // var mm = month_date.getMonth();
+        // var yy = month_date.getFullYear();
+        // console.log("year==>" + yy)
+        // var days = daysInMonth(mm, yy);
+        // console.log("days-----------  ", days);
+        // var month = parseInt(req.body.date) + (86400000 * days)
+        // var monthly = new Date(month).toUTCString();
 
-        //var yearly = new Date().getFullYear;
-        if (req.body.dateFilter == 'all') {
-            var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) } } }
-        }
-        if (req.body.dateFilter == 'today') {
-            var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
-        }
-        if (req.body.dateFilter == 'weekly') {
-            var condition;
-            var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
-        }
-        if (req.body.dateFilter == 'monthly') {
-            var queryCondition = { $match: { "month": mm, "year": yy } }
-        }
-        if (req.body.dateFilter == 'yearly') {
-            var condition = { $project: { pageView: "$pageView", productView: "$productView", callUsClick: "$callUsClick", date: "$date", year: { $year: "$date" }, month: { $month: "$date" } } };
-            var queryCondition = { $match: { "year": yy } };
-            // var queryCondition = {query,condition};
-        }
-        console.log("startTime==>>" + startTime);
-        console.log("new date startTime==>>" + new Date(startTime));
-        console.log("endTime====>>" + endTime)
-            //   var rules = [{pageId:"58aaa1b3fdc4ed1553754d2f"}, {date: {$gte: startTime}}];
+        // //var yearly = new Date().getFullYear;
+        // if (req.body.dateFilter == 'all') {
+        //     var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) } } }
+        // }
+        // if (req.body.dateFilter == 'today') {
+        //     var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
+        // }
+        // if (req.body.dateFilter == 'weekly') {
+        //     var condition;
+        //     var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
+        // }
+        // if (req.body.dateFilter == 'monthly') {
+        //     var queryCondition = { $match: { "month": mm, "year": yy } }
+        // }
+        // if (req.body.dateFilter == 'yearly') {
+        //     var condition = { $project: { pageView: "$pageView", productView: "$productView", callUsClick: "$callUsClick", date: "$date", year: { $year: "$date" }, month: { $month: "$date" } } };
+        //     var queryCondition = { $match: { "year": yy } };
+        //     // var queryCondition = {query,condition};
+        // }
+        // console.log("startTime==>>" + startTime);
+        // console.log("new date startTime==>>" + new Date(startTime));
+        // console.log("endTime====>>" + endTime)
+        //     //   var rules = [{pageId:"58aaa1b3fdc4ed1553754d2f"}, {date: {$gte: startTime}}];
 
         //         Views.aggregate( [    
         //  { $match: {date: {"$gte":  new Date(startTime), "$lte": new Date(endTime)},pageId:"58aaa1b3fdc4ed1553754d2f"}},
         // // { $group: { _id: null, count: { $sum: "$productView" } } }
         //  ]).exec(function(err,result){
+
+        var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
 
         console.log("queryCondition" + JSON.stringify(queryCondition))
 
@@ -784,19 +786,27 @@ module.exports = {
                     responseCode: 404,
                     responseMessage: "error."
                 });
-            } else if (!result) {
-                res.send({
-                    result: result,
-                    responseCode: 404,
-                    responseMessage: "Data not found."
-                });
-            } else {
+            } else if (result.length == 0) { 
+                var data = { 
+                totalProductView:0, 
+                totalPageView: 0, 
+                totalEventViewClicks: 0, 
+                totalEmailClicks: 0, 
+                totalCallUsClick: 0, 
+                totalFollowerNumber: 0, 
+                totalSocialMediaClicks: 0, 
+                totalLocationClicks: 0, 
+                totalWebsiteClicks: 0, 
+                totalShares: 0, 
+                totalViewAds: 0, 
+                totalRating: 0 
+            } }else {
                 console.log("aggregate result===>.", result)
                 createNewPage.aggregate(
                         [
                             //  { $match: {_id:req.body.pageId} },
                             { $unwind: "$totalRating" },
-                            { $match: { "totalRating.date": { "$gte": new Date(startTime), "$lte": new Date(endTime) }, _id: new mongoose.Types.ObjectId(req.body.pageId) } }
+                            { $match: { "totalRating.date": { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, _id: new mongoose.Types.ObjectId(req.body.pageId) } }
                         ],
                         function(err, pages) {
 
