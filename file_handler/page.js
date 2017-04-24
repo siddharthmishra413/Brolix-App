@@ -780,6 +780,7 @@ module.exports = {
                 totalRating: { $sum: 0 }
             }
         }]).exec(function(err, result) {
+
             if (err) {
                 res.send({
                     result: err,
@@ -788,19 +789,26 @@ module.exports = {
                 });
             } else if (result.length == 0) { 
                 var data = { 
-                totalProductView:0, 
-                totalPageView: 0, 
-                totalEventViewClicks: 0, 
-                totalEmailClicks: 0, 
-                totalCallUsClick: 0, 
-                totalFollowerNumber: 0, 
-                totalSocialMediaClicks: 0, 
-                totalLocationClicks: 0, 
-                totalWebsiteClicks: 0, 
-                totalShares: 0, 
-                totalViewAds: 0, 
-                totalRating: 0 
-            } }else {
+                    totalProductView:0, 
+                    totalPageView: 0, 
+                    totalEventViewClicks: 0, 
+                    totalEmailClicks: 0, 
+                    totalCallUsClick: 0, 
+                    totalFollowerNumber: 0, 
+                    totalSocialMediaClicks: 0, 
+                    totalLocationClicks: 0, 
+                    totalWebsiteClicks: 0, 
+                    totalShares: 0, 
+                    totalViewAds: 0, 
+                    totalRating: 0 
+                }
+                res.send({
+                    result: data,
+                    responseCode: 200,
+                    responseMessage: "Data not found."
+                });
+  
+            }else {
                 console.log("aggregate result===>.", result)
                 createNewPage.aggregate(
                         [
