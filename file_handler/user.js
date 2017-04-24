@@ -2122,13 +2122,18 @@ module.exports = {
 
 
     "winnersFilterCodeBasis": function(req, res) {
-
+        var pageId = req.body.pageId;
+        var name = req.body.name;
 
         if (req.body.type == 'withCode') {
-            var pageId = req.body.pageId;
-            var name = req.body.name;
-            console.log("with--->>", name)
-            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstname': name } }).exec(function(err, result1) {
+
+            if(!(req.body.name == null || req.body.name == undefined || req.body.name == '')){
+              var condition =  { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstName': name }
+            }
+            else{
+                var condition =  { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" }
+            }
+            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: condition }).exec(function(err, result1) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result1,
@@ -2137,11 +2142,19 @@ module.exports = {
                     })
                 }
             })
-        } else {
-            var pageId = req.body.pageId;
-            var name = req.body.name;
-            console.log("without--->>", name)
-            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE", 'firstname': name } }).exec(function(err, result2) {
+        } 
+        else {
+      
+            if(!(req.body.name == null || req.body.name == undefined || req.body.name == '')){
+              var condition =  { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE", 'firstName': name }
+            }
+            else{
+                var condition =  { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE" }
+            }
+
+            console.log("condition--->>", condition)
+            User.aggregate([{ $unwind: "$coupon" }, { $match: condition }]).exec(function(err, result2) {
+               
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result2,
