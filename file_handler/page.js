@@ -1554,7 +1554,6 @@ module.exports = {
         })
     },
 
-
     "couponInboxDateFilter": function(req, res) {
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: "Please enter atleast startDate or endDate" }); } else if (!req.body.pageId) { res.send({ responseCode: 400, responseMessage: "Please enter pageId" }); } else {
             var pageId = req.body.pageId;
@@ -1603,7 +1602,6 @@ module.exports = {
                     console.log(typeof(result[i]._id))
                     blockPagesArray.push(String(result[i]._id))
                 }
-                // console.log(typeof(result[i]._id))
                 console.log("blockPagesArray-->>", blockPagesArray)
                 var re = new RegExp(req.body.search, 'i');
                 createNewPage.paginate({ $and: [{ _id: { $in: blockPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
@@ -1615,5 +1613,27 @@ module.exports = {
             }
         })
     },
+
+    "searchFavouitePages": function(req, res) {
+         User.find({ _id:req.params.id}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+             else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct user id" }); }
+              else {
+                var FavouitePages = [];
+                for (var i = 0; i < result[0].pageFollowers.length; i++) {
+                    console.log("data-->",result[0].pageFollowers.length,i)
+                    FavouitePages.push(result[0].pageFollowers[i].pageId)
+                }
+                console.log("FavouitePages-->>", FavouitePages)
+                var re = new RegExp(req.body.search, 'i');
+                createNewPage.paginate({ $and: [{ _id: { $in: FavouitePages } }, { 'pageName': { $regex: re } }] },{ pageNumber: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
+                            res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
+                        }
+                    })
+            }
+        })
+
+    }
 
 }
