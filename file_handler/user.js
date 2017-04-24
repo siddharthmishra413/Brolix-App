@@ -2120,15 +2120,13 @@ module.exports = {
     //             }
     //         });
 
-
     "winnersFilterCodeBasis": function(req, res) {
-
-
         if (req.body.type == 'withCode') {
             var pageId = req.body.pageId;
             var name = req.body.name;
             console.log("with--->>", name)
-            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstname': name } }).exec(function(err, result1) {
+            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: {$or:[{'hiddenGifts.pageId': pageId,'hiddenGifts.status': "ACTIVE"},{firstName: name}]}}).exec(function(err, result1) {
+                console.log("result-->>",result1)
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result1,
