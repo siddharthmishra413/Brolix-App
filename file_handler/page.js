@@ -427,7 +427,7 @@ module.exports = {
     },
     //   User.find({ _id: { $in: arr }, "createdAt": { "$gte": req.body.toDate, "$lt": req.body.fromDate } }).exec(function(err, newResult) {
 
-    "PageCashWinnersFilter": function(req, res) {
+    "particularPageCashWinners": function(req, res) {
         var pageId = req.params.id;
         if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
             var array = [];
@@ -440,7 +440,7 @@ module.exports = {
                         }
                     }
                     console.log("array-->>", array)
-                    User.paginate({ _id: { $in: array }, "createdAt": { "$gte": req.body.toDate, "$lt": req.body.fromDate } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                    User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
                         console.log("result1-->>", result1)
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
                             res.send({
@@ -478,9 +478,9 @@ module.exports = {
                 }
                 if (tempCond != '' || tempEndDate != '') {
                     data = Object.assign(tempCond, tempEndDate)
-                }                
+                }
             });
-            
+
             console.log("tempCond--->>", tempCond)
             console.log("tempEndDate--->>", tempEndDate)
             console.log("dta===>>", data)
@@ -509,7 +509,7 @@ module.exports = {
     },
 
 
-    "particularPageCashWinners": function(req, res) {
+    "PageCashWinnersFilter": function(req, res) {
         var pageId = req.body.pageId;
         var startDateKey = '';
         var endDateKey = '';
@@ -522,11 +522,11 @@ module.exports = {
             Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                 if (!(req.body[key] == "" || req.body[key] == undefined)) {
                     if (key == 'startDate') {
-                        tempCond['$gte'] = req.body[key];
+                        tempCond['$gte'] = new Date(req.body[key]);
                         console.log("startDate--->>>", tempCond)
                     }
                     if (key == 'endDate') {
-                        tempEndDate['$lte'] = req.body[key];
+                        tempEndDate['$lte'] = new Date(req.body[key]);
                         console.log("gte--->>>", tempEndDate)
                     }
                 }
@@ -546,6 +546,7 @@ module.exports = {
                         }
                     }
                     User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                        console.log("particularPageCashWinners-->>", particularPageCashWinners)
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
                             res.send({
                                 result: result1,
