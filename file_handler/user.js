@@ -2037,17 +2037,13 @@ module.exports = {
     },
 
     "winnersFilterCodeBasis": function(req, res) {
-
         var pageId = req.body.pageId;
         var name = req.body.name;
-
         if (req.body.type == 'withCode') {
-
-            if(!(req.body.name == null || req.body.name == undefined || req.body.name == '')){
-              var condition =  { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstName': name }
-            }
-            else{
-                var condition =  { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" }
+            if (!(req.body.name == null || req.body.name == undefined || req.body.name == '')) {
+                var condition = { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstName': name }
+            } else {
+                var condition = { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" }
             }
             User.aggregate({ $unwind: "$hiddenGifts" }, { $match: condition }).exec(function(err, result1) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
@@ -2058,19 +2054,17 @@ module.exports = {
                     })
                 }
             })
-        } 
-        else {
-      
-            if(!(req.body.name == null || req.body.name == undefined || req.body.name == '')){
-              var condition =  { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE", 'firstName': name }
-            }
-            else{
-                var condition =  { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE" }
+        } else {
+
+            if (!(req.body.name == null || req.body.name == undefined || req.body.name == '')) {
+                var condition = { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE", 'firstName': name }
+            } else {
+                var condition = { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE" }
             }
 
             console.log("condition--->>", condition)
             User.aggregate([{ $unwind: "$coupon" }, { $match: condition }]).exec(function(err, result2) {
-               
+
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         result: result2,
@@ -2133,25 +2127,30 @@ module.exports = {
         })
     },
 
-    "blockedUserSearch": function(req, res) {
-        User.find({ status: 'BLOCK' }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
-                var blockUserArray = [];
-                for (var i = 0; i < result.length; i++) {
-                    console.log(typeof(result[i]._id))
-                    blockUserArray.push(String(result[i]._id))
-                }
-                // console.log(typeof(result[i]._id))
-                console.log("blockUserArray-->>", blockUserArray)
+    "blockUserSearch": function(req, res) {
+        followerList.find({ userId: req.body.userId, followerStatus: "block" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                var arr = [];
+                result.forEach(function(result) {
+                    arr.push(result.blockUserId)
+                    console.log("arrr========");
+                    console.log(arr);
+                })
                 var re = new RegExp(req.body.search, 'i');
-                User.find({ $and: [{ _id: { $in: blockUserArray } }, { 'firstName': { $regex: re } }] }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
-                        res.send({ result: result1, responseCode: 200, responseMessage: "Show User successfully." });
+                User.find({ $and: [{ _id: { $in: arr } }, { 'pageName': { $regex: re } }] }, function(err, newResult) {
+                    for (var i = 0; i < newResult.length; i++) {
+                        newResult[i].followerStatus = result[i].followerStatus;
                     }
+                    res.send({
+                        result: newResult,
+                        responseCode: 200,
+                        responseMessage: "Show list all block users."
+                    });
                 })
             }
         })
-    },
+    }
+
 
 
 
