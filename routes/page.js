@@ -27,6 +27,8 @@ app.post('/particularPageCashWinners/:pageNumber', authUser.authUser, pageHandle
 app.put('/adAdmin/:id', authUser.authUser, pageHandler.adAdmin);
 app.post('/pageViewClick', pageHandler.pageViewClick);
 app.post('/pageStatisticsFilter', pageHandler.pageStatisticsFilter);
+
+
 app.post('/giftStatistics', pageHandler.giftStatistics);
 app.post('/adsStatistics', pageHandler.adsStatistics);
 app.post('/CouponCashAdStatistics', pageHandler.CouponCashAdStatistics);
