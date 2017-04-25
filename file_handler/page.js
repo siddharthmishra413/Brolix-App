@@ -1656,7 +1656,7 @@ module.exports = {
         var adds = new addsComments(req.body);
         adds.save(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                createNewPage.findOneAndUpdate({ _id: req.body.addId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
+                createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         res.send({ result: result, responseCode: 200, responseMessage: "Review save with concerned User details." });
                     }
