@@ -949,12 +949,11 @@ module.exports = {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
                 var userArray = [];
                 for (var i = 0; i < result.length; i++) {
-                    console.log("resu-->>", result.length, i)
                     if (result[i]._id == userId) {
                         userArray.push(result[i]._id)
                     }
                 }
-                User.aggregate({ $unwind: "$coupon" }, { $match: { $and: [{ _id: { $in: userArray }, 'coupon.couponStatus': { $in: status } }] } }, function(err, result1) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { $and: [{ _id: { $in: userArray }, 'coupon.couponStatus': { $in: status }, 'coupon.status': 'ACTIVE' }] } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         User.populate(result1, {
                             path: 'coupon.pageId',
