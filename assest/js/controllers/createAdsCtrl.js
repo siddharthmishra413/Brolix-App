@@ -6,6 +6,10 @@ $scope.createAds = {};
 $scope.promoteAppGame = {};
 //$scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
+$scope.openTerms = function(){
+    $("#myModal10").modal('show');
+}
+
 userService.adminProfile().success(function(res) {
     if (res.responseCode == 200) {
         $scope.userId = res.result._id; 
@@ -438,19 +442,36 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
 
    $scope.submit = function(){
-    console.log("$scope",$scope.createAds);
-    console.log("ddadaaradfatya0",JSON.stringify(data));
+    console.log("$scope",JSON.stringify($scope.createAds.pageName));
+    pageDetails = JSON.parse($scope.createAds.pageName);
+    console.log("pageDetails",pageDetails)
+
+    //console.log("ddadaaradfatya0",JSON.stringify(data));
     var modifyData = {};
     modifyData = {
         userId:adminIdss,
-        pageId:$scope.createAds.pageName._id,
-        adsType:data.giftType,
+        pageId:pageDetails._id,
+        pageName:pageDetails.pageName,
+        adsType:$scope.createAds.giftType,
+        numberOfWinners:$scope.createAds.
+
         //cashAdPrize:data.,
-        adContentType:data.adContentType,
+        adContentType:$scope.createAds.adContentType,
         // numberOfWinners:
         // viewerLenght:data.viewers.
-        uploadGiftImage:data.advertismentCover
+        uploadGiftImage:$scope.createAds.advertismentCover,
+        sellCoupon:$scope.createAds.cellThisCoupon,
+        whoWillSeeYourAdd:{
+            country:$scope.createAds.country,
+            state:$scope.createAds.state,
+            city:$scope.createAds.city
+        },
+        gender:$scope.createAds.gender,
+        ageFrom:$scope.createAds.ageFrom,
+        ageTo:$scope.createAds.ageFrom
     }
+    console.log("All data -->>"+JSON.stringify(modifyData));
+   }
 
 //     userService.createAds(data).success(function(res) {
 //     if (res.responseCode == 200) {
@@ -462,8 +483,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 //     }
 //     console.log("resss",$scope.userId);
 // })
-       console.log("All data -->>"+JSON.stringify(modifyData));
-   }
+       
 
-   
+
 })
