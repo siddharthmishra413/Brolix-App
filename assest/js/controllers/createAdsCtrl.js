@@ -4,7 +4,17 @@ $scope.$emit('headerStatus', 'Manage Ads');
 $scope.$emit('SideMenu', 'Manage Ads');
 $scope.createAds = {};
 $scope.promoteAppGame = {};
+$scope.addCode = [];
 //$scope.createAds.advertismentCover='../dist/image/cover.jpg';
+
+
+$scope.addcode = function(code){
+    console.log("code",code)
+    $scope.addCode.push(code);
+    console.log("addcode",$scope.addCode)
+}
+
+
 
 $scope.openTerms = function(type){
 
@@ -12,6 +22,10 @@ $scope.openTerms = function(type){
             {
                 case 'hiddenGiftTerms': 
                 $("#hiddenGiftTerms").modal('show');  
+                break;
+
+                case 'close': 
+                $("#hiddenGiftTerms").modal('hide');  
                 break;
 
                 case 'cellThisCouponTerms':
@@ -26,7 +40,8 @@ $scope.openTerms = function(type){
                 $("#cashTerms").modal('show'); 
                 break;
 
-                default: 
+                default:
+                toastr.error("something wents to wrong") 
                 
             }
 

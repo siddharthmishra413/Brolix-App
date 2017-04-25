@@ -201,7 +201,7 @@
                                 <div class="hidden-gifts_r">
                                     <div class="h-gifts-text">Hidden Gifts</div>
                                     <div class="add-code_btn"><button type="submit" class="btn btn-green" ng-click="openTerms('hiddenGiftTerms')">Add Code</button></div>
-                                    <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+                                    <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true" ng-click="openTerms('hiddenGiftTerms')"></i></div>
                                 </div>
                             </div>
                             <div class="cus-btm-div col-sm-12 m-t-30">
@@ -670,28 +670,7 @@
 </div>
 
 
-<div id="hiddenGiftTerms" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-          <div class="text-center"><img src="../dist/image/bulb-icon1.png" class="img-responsive modal-bulb"></div>
-          <div class="modal-static-text">
-              <p>Hidden Gifts option allows you to send a code that you don't want anyone to see it except the winners. You can type the code here and it will be delivered to the winners as a text message by Brolix App. You can make an announcement about the "Hidden Code" in the "Gift Description" and only the winners will get it. The hidden code could be for Licence code, discount code,card, number...etc.</p>
-              <p>
-                 If you already have a system which can generate discount codes so you can use "Hidden Gift" option to upload that codes for sending them to the winner as a gift.
-              </p>
-          </div>
-          <div class="btn2 text-center">
-              <a href="index.html" class="btn btn-lg btn-green">Back</a>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 
 <div id="cellThisCouponTerms" class="modal fade" role="dialog">
@@ -749,4 +728,47 @@
            </div>
         </div>
     </div>
+</div>
+
+<div id="hiddenGiftTerms" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+          <div class="hidden-gift-modal">
+              <h3>Hidden Gift</h3>
+              <div class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">Number of Winners : </label>
+                    <div class="col-sm-8">
+                      <input type="text" ng-model="createAds.numberOfWinners"class="form-control" placeholder="Email">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">Number of Codes : </label>
+                    <div class="col-sm-8">
+                      <span ng-model="createAds.numberOfWinners" type="text" class="form-control" placeholder="Email">{{createAds.numberOfWinners}}</span>
+                    </div>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label>Please type code below :</label>
+                <input ng-model="createAds.hiddenCode" type="text" class="form-control" placeholder="">
+                <span ng-reapet="addCode in addCode" class="form-control" placeholder="Email">{{createAds.numberOfWinners}}</span>
+              </div>
+              <div class="text-center">
+                  <a  ng-click="addcode(createAds.hiddenCode)" class="btn btn-lg btn-green">Add</a>
+              </div>
+          </div>
+          <div class="text-center">
+              <a ng-click="openTerms('close')" class="btn btn-lg btn-green">Back</a>
+              <a ng-click="openTerms('close')" class="btn btn-lg btn-green">Next</a>
+          </div>
+      </div>
+    </div>
+  </div>
 </div>

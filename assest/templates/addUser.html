@@ -111,12 +111,12 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Mobile No</label>
                                             <div class="col-md-9">
-                                                <input type="tel" class="form-control" name="mobileNumber" ng-model="myFrom.mobileNumber" placeholder="Mobile No" minlength="10" maxlength="15" ng-pattern="regEx" required> 
+                                                <input type="tel" class="form-control" name="mobileNumber" ng-model="myFrom.mobileNumber" placeholder="Mobile No" minlength="10" maxlength="15" ng-pattern="phoneNumbrss" required> 
                                                 <span style="color:red;" ng-show="userFrom.mobileNumber.$dirty && userFrom.mobileNumber.$invalid">
                                                 <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required</span> 
                                                 <span ng-show="userFrom.mobileNumber.$error.minlength">Must have atleast 10 digits.</span>
                                                 <span ng-show="userFrom.mobileNumber.$error.maxlength">Must have at most 15 digits.</span>
-                                                <span ng-show="userFrom.mobileNumber.$error.pattern">Enter valid mobile number</span>  
+                                                <span ng-show="userFrom.mobileNumber.$error.pattern">Please Enter the Phone no matching  pattern [+91-xxx-xxxxx || 91-xxx-xxxxx]</span>  
                                             </div>
                                         </div>
                                     </div>
