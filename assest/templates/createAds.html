@@ -43,7 +43,7 @@
                                     <label>
                                         <input type="radio" name="radio" ng-model="createAds.giftType" value="Coupon"  ng-click="click('Step3')"  checked>&nbsp; Coupon Gift
                                     </label>
-                                    <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" ng-click="openTerms()"></i>
+                                    <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" ng-click="openTerms('couponTerms')"></i>
                                 </div>
                             </div>
                             <div class="details">
@@ -62,7 +62,7 @@
                                         <label>
                                             <input type="radio" name="radio" ng-model="createAds.giftType" value="Cash" ng-click="click('Step3')" checked>&nbsp; Cash Gift
                                         </label>
-                                        <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" data-toggle="modal" data-target="#myModal10"></i>
+                                        <i class="fa fa-lightbulb-o pull-right" aria-hidden="true" ng-click="openTerms('cashTerms')"></i>
                                     </div>
                                 </div>
                                 <div class="details">
@@ -200,7 +200,7 @@
                             <div class="col-sm-12 bor_btm">
                                 <div class="hidden-gifts_r">
                                     <div class="h-gifts-text">Hidden Gifts</div>
-                                    <div class="add-code_btn"><button type="submit" class="btn btn-green" data-toggle="modal" data-target="#myModal10">Add Code</button></div>
+                                    <div class="add-code_btn"><button type="submit" class="btn btn-green" ng-click="openTerms('hiddenGiftTerms')">Add Code</button></div>
                                     <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
                                 </div>
                             </div>
@@ -246,7 +246,7 @@
                                 </div>
                             </div>  
                             <div class="col-sm-12 sell-coupon new_coupon">
-                                <div class="text-center"><i class="fa fa-lightbulb-o font-s" aria-hidden="true"></i></div>
+                                <div class="text-center"><i class="fa fa-lightbulb-o font-s" aria-hidden="true" ng-click="openTerms('cellThisCouponTerms')"></i></div>
                                 <h3>Sell this coupon </h3>
                                 <div class="radio-tab">
                                     <div class="radio-btn text-left">
@@ -665,6 +665,88 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="hiddenGiftTerms" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+          <div class="text-center"><img src="../dist/image/bulb-icon1.png" class="img-responsive modal-bulb"></div>
+          <div class="modal-static-text">
+              <p>Hidden Gifts option allows you to send a code that you don't want anyone to see it except the winners. You can type the code here and it will be delivered to the winners as a text message by Brolix App. You can make an announcement about the "Hidden Code" in the "Gift Description" and only the winners will get it. The hidden code could be for Licence code, discount code,card, number...etc.</p>
+              <p>
+                 If you already have a system which can generate discount codes so you can use "Hidden Gift" option to upload that codes for sending them to the winner as a gift.
+              </p>
+          </div>
+          <div class="btn2 text-center">
+              <a href="index.html" class="btn btn-lg btn-green">Back</a>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="cellThisCouponTerms" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+          <div class="text-center"><img src="../dist/image/bulb-icon1.png" class="img-responsive modal-bulb"></div>
+          <div class="modal-static-text">
+              <p>Hidden Gifts option allows you to send a code that you don't want anyone to see it except the winners. You can type the code here and it will be delivered to the winners as a text message by Brolix App. You can make an announcement about the "Hidden Code" in the "Gift Description" and only the winners will get it. The hidden code could be for Licence code, discount code,card, number...etc.</p>
+              <p>
+                 If you already have a system which can generate discount codes so you can use "Hidden Gift" option to upload that codes for sending them to the winner as a gift.
+              </p>
+          </div>
+          <div class="btn2 text-center">
+              <a href="index.html" class="btn btn-lg btn-green">Back</a>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="couponTerms" class="modal fade" role="dialog">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+           <!-- <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title"></h4>
+           </div> -->
+           <div class="modal-body">
+                <div class="text-center c1-modal10"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+                <div class="detail-s">Through "Coupon Gift" you will be able to post your advertisements on home page & promote your, products and all other details by providing coupons gifts which could includes big discounts or something free for one or more winners. The winners could be one up to all and they will be elected by an auto raffle. The raffle will contain only the users who watched your Ad.
+                </div>
+           </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="cashTerms" class="modal fade" role="dialog">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+           <!-- <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title"></h4>
+           </div> -->
+           <div class="modal-body">
+                <div class="text-center c1-modal10"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+                <div class="detail-s">Through "Coupon Gift" you will be able to post your advertisements on home page & promote your, products and all other details by providing coupons gifts which could includes big discounts or something free for one or more winners. The winners could be one up to all and they will be elected by an auto raffle. The raffle will contain only the users who watched your Ad.
+                </div>
+           </div>
         </div>
     </div>
 </div>

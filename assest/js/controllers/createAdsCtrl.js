@@ -6,8 +6,32 @@ $scope.createAds = {};
 $scope.promoteAppGame = {};
 //$scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
-$scope.openTerms = function(){
-    $("#myModal10").modal('show');
+$scope.openTerms = function(type){
+
+    switch (type)
+            {
+                case 'hiddenGiftTerms': 
+                $("#hiddenGiftTerms").modal('show');  
+                break;
+
+                case 'cellThisCouponTerms':
+                $("#cellThisCouponTerms").modal('show');          
+                break;
+
+                case 'couponTerms':
+                $("#couponTerms").modal('show'); 
+                break;
+
+                case 'cashTerms':
+                $("#cashTerms").modal('show'); 
+                break;
+
+                default: 
+                
+            }
+
+    console.log("helll")
+   
 }
 
 userService.adminProfile().success(function(res) {
@@ -453,7 +477,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         pageId:pageDetails._id,
         pageName:pageDetails.pageName,
         adsType:$scope.createAds.giftType,
-        numberOfWinners:$scope.createAds.
+        // numberOfWinners:$scope.createAds.
 
         //cashAdPrize:data.,
         adContentType:$scope.createAds.adContentType,

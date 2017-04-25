@@ -1330,7 +1330,13 @@ module.exports = {
 
     "chatHistory": function(req, res, next) {
         console.log('everything-----chatHistorychatHistorychatHistorys-------' + JSON.stringify(req.body));
-        chat.paginate({ $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }] }, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
+        var condition;
+        if(req.body.pageId){
+            condition = { $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId, pageId: req.body.pageId }, { senderId: req.body.receiverId, receiverId: req.body.senderId, pageId: req.body.pageId }] }
+        }else{
+            condition = { $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }] }
+        }
+        chat.paginate(condition, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
             if (!results.docs.length) {
                 res.send({
                     result: results,
@@ -1347,8 +1353,13 @@ module.exports = {
         });
     },
 
-
     "onlineUserList": function(req, res) {
+        var condition;
+        if(req.body.pageId){
+            condition = { $or: [{ senderId: req.body.userId, pageId: req.body.pageId }, { receiverId: req.body.userId, pageId: req.body.pageId }] }
+        }else{
+            condition = { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
+        }
         chat.aggregate(
             [{
                 $match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
