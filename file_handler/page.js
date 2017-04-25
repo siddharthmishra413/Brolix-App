@@ -13,6 +13,8 @@ var _ = require('underscore')
     //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
+   var moment = require('moment')
+
 module.exports = {
 
     //API for create Page
@@ -764,6 +766,10 @@ module.exports = {
 
         console.log("queryCondition" + JSON.stringify(queryCondition))
 
+        if(req.body.dateFilter == 'yearly') {
+            var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) } } }
+        }
+
         Views.aggregate([queryCondition, {
             $group: {
                 _id: null,
@@ -845,13 +851,16 @@ module.exports = {
     },
 
     "giftStatistics": function(req, res) {
-        var startTime = new Date(req.body.date).toUTCString();
-        var endTimeHour = req.body.date + 86399000;
-        var endTime = new Date(endTimeHour).toUTCString();
+        var startTime = new Date(req.body.startDate).toUTCString();
+        var endTime = new Date(req.body.endDate).toUTCString();
 
-        var week = endTimeHour - 604800000;
-        var weekly = new Date(week).toUTCString();
-
+        // var endTimeHour = req.body.date + 86399000;
+        // var endTime = new Date(endTimeHour).toUTCString();
+        // var week = endTimeHour - 604800000;
+        // var weekly = new Date(week).toUTCString();
+        
+        console.log("startTime=>",startTime)
+        console.log("endTime=>",endTime)
 
         waterfall([
             function(callback) {
@@ -859,10 +868,15 @@ module.exports = {
                     updatedAt: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, result) {
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (result.length == 0) { res.send({ result: result, responseCode: 404, responseMessage: "Data not found." }); } else {
+                    console.log("result",result)
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
+                    else if (result.length == 0) {
+                        var winnersLength = 0;
+                        callback(null, winnersLength)
+                    } 
+                    else {
                         console.log(result)
                         var winnersLength = 0;
-
                         for (var i = 0; i < result.length; i++) {
                             winnersLength += result[i].winners.length;
                             console.log(winnersLength);
@@ -872,67 +886,124 @@ module.exports = {
                 })
             },
             function(winnersLength, callback) {
+                console.log("winnersLength",winnersLength)
                 User.find({
                     cardPurchaseDate: { $gte: startTime, $lte: endTime }
                 }).exec(function(err, ress) {
-                    var totalBuyers = ress.length;
-                    var data = {
-                        total_winners: winnersLength,
-                        total_buyers: totalBuyers
+
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
+                    else if (ress.length == 0) { 
+                        var totalBuyers = 0;
+                        callback(null, winnersLength, totalBuyers)
+                    } 
+                    else {
+                       var totalBuyers = ress.length;
+                       callback(null, winnersLength, totalBuyers)
                     }
-                    callback(null, winnersLength, totalBuyers)
                 })
             },
             function(winnersLength, totalBuyers, callback) {
+                 console.log("totalBuyers",totalBuyers)
                 createNewAds.find({
                     cashStatus: 'DELIVERED',
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
-                }).exec(function(err, couponUsedResult) {
-                    callback(null, winnersLength, totalBuyers, couponUsedResult)
+                }).exec(function(err, cashDeliveredResult) {
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
+                    else if (cashDeliveredResult.length == 0) { 
+                         var cashDeliveredResult = 0;
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult)
+                    } 
+                    else {
+                       callback(null, winnersLength, totalBuyers, cashDeliveredResult)
+                    }
+                   
                 })
             },
-            function(winnersLength, totalBuyers, callback) {
+            function(winnersLength, totalBuyers, cashDeliveredResult, callback) {
                 createNewAds.find({
                     cashStatus: 'PENDING',
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
-                }).exec(function(err, couponUsedResult) {
-                    callback(null, winnersLength, totalBuyers, couponUsedResult)
+                }).exec(function(err, cashPendingResult) {
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
+                    else if (cashPendingResult.length == 0) { 
+                         var cashPendingResult = 0;
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult)
+                    } 
+                    else {
+                       callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult)
+                    }
+                    //callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult)
                 })
             },
-            function(winnersLength, totalBuyers, callback) {
+            function(winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, callback) {
                 createNewAds.find({
                     couponStatus: 'USED',
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, couponUsedResult) {
-                    callback(null, winnersLength, totalBuyers, couponUsedResult)
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
+                    else if (couponUsedResult.length == 0) { 
+                         var couponUsedResult = 0;
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult)
+                    } 
+                    else {
+                       callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult)
+                    }
+                    
                 })
             },
-            function(winnersLength, totalBuyers, couponUsedResult, callback) {
+            function( winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult, callback) {
                 createNewAds.find({
                     couponStatus: 'EXPIRED',
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, couponExpResult) {
-                    callback(null, winnersLength, totalBuyers, couponUsedResult, couponExpResult);
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
+                    else if (couponExpResult.length == 0) { 
+                         var couponExpResult = 0;
+                        callback(null,  winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult, couponExpResult);
+                    } 
+                    else {
+                       callback(null,  winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult, couponExpResult);
+                    }
+                    
                 })
             },
-            function(winnersLength, totalBuyers, couponUsedResult, couponExpResult, callback) {
+            function(winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult, couponExpResult, callback) {
                 createNewAds.find({
                     couponStatus: 'VALID',
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, couponValidResult) {
-                    var data = {
-                        winnersLength: winnersLength,
-                        totalBuyers: totalBuyers,
-                        couponUsedResult: couponUsedResult,
-                        couponExpResult: couponExpResult,
-                        couponValidResult: couponValidResult
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
+                    else if (couponValidResult.length == 0) { 
+                        var couponValidResult = 0;
+                        var data = {
+                            winnersLength: winnersLength,
+                            totalBuyers: totalBuyers,
+                            cashPendingResult : cashPendingResult,
+                            cashDeliveredResult : cashDeliveredResult,
+                            couponUsedResult: couponUsedResult,
+                            couponExpResult: couponExpResult,
+                            couponValidResult: couponValidResult
+                        }
+                        callback(null, data);
+                    } 
+                    else {
+                        var data = {
+                            winnersLength: winnersLength,
+                            totalBuyers: totalBuyers,
+                            cashPendingResult : cashPendingResult,
+                            cashDeliveredResult : cashDeliveredResult,
+                            couponUsedResult: couponUsedResult,
+                            couponExpResult: couponExpResult,
+                            couponValidResult: couponValidResult
+                        }
+                        callback(null, data);
                     }
-                    callback(null, data);
+               
                 })
             }
         ], function(err, result) {
