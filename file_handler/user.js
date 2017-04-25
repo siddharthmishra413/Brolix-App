@@ -610,12 +610,12 @@ module.exports = {
     //API for Change Password
     "changePassword": function(req, res) {
         User.findOne({ _id: req.body.userId }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ response_code: 404, response_message: "User doesn't exist." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseCode: "User doesn't exist." }); } else {
                 var oldpassword = req.body.oldpass;
                 if (result.password != oldpassword) {
                     res.send({
-                        response_code: 401,
-                        response_message: "Old password doesn't match."
+                        responseCode: 401,
+                        responseCode: "Old password doesn't match."
                     });
                 } else {
                     var password = req.body.newpass;

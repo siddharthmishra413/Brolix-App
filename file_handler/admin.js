@@ -3667,7 +3667,7 @@ module.exports = {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Profile update successfully."
+                    responseMessage: "Profile updated successfully."
                 });
             }
         })
