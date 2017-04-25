@@ -6,6 +6,10 @@ $scope.createAds = {};
 $scope.promoteAppGame = {};
 //$scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
+$scope.openTerms = function(){
+    $("#myModal10").modal('show');
+}
+
 userService.adminProfile().success(function(res) {
     if (res.responseCode == 200) {
         $scope.userId = res.result._id; 
@@ -37,6 +41,7 @@ userService.getPage().then(function(success) {
  $scope.Step5 = false;
  $scope.Step6 = false;
  $scope.slideStep4 = false;
+ $scope.promoteApp = false;
 
  $scope.click = function(type){
     console.log("createAds.pageName",JSON.stringify($scope.createAds))
@@ -49,6 +54,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
     }else if(type == 'Back2'){
         $scope.Step1 = true;
@@ -58,6 +64,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Step3'){
@@ -68,6 +75,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Back3'){
@@ -78,6 +86,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'video'){
@@ -88,6 +97,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Back4'){
@@ -98,6 +108,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Step5'){
@@ -108,6 +119,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = true;
         $scope.Step6 = false;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
     }else if(type == 'Back5'){
         $scope.Step1 = false;
@@ -117,6 +129,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'slide'){
@@ -127,6 +140,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = false;
         $scope.slideStep4 = true;
+        $scope.promoteApp = false;
        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Step6'){
@@ -137,6 +151,7 @@ userService.getPage().then(function(success) {
         $scope.Step5 = false;
         $scope.Step6 = true;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Back6'){
@@ -147,10 +162,48 @@ userService.getPage().then(function(success) {
         $scope.Step5 = true;
         $scope.Step6 = false;
         $scope.slideStep4 = false;
+        $scope.promoteApp = false;
        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
+    }else if(type == 'promoteApp'){
+        $scope.Step1 = false;
+        $scope.Step2 = false;
+        $scope.Step3 = false;
+        $scope.vedioStep4 = false;
+        $scope.Step5 = false;
+        $scope.Step6 = false;
+        $scope.slideStep4 = false;
+        $scope.promoteApp = true;
+       console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+    }else if(type == 'promoteAppBack'){
+        console.log("alalalaldata",$scope.createAds.adContentType)
+        if ($scope.createAds.adContentType == 'video'){
+            $scope.Step1 = false;
+            $scope.Step2 = false;
+            $scope.Step3 = false;
+            $scope.vedioStep4 = true;
+            $scope.Step5 = false;
+            $scope.Step6 = false;
+            $scope.slideStep4 = false;
+            $scope.promoteApp = false;
+            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        }else if($scope.createAds.adContentType == 'slideshow'){
+            $scope.Step1 = false;
+            $scope.Step2 = false;
+            $scope.Step3 = false;
+            $scope.vedioStep4 = false;
+            $scope.Step5 = false;
+            $scope.Step6 = false;
+            $scope.slideStep4 = true;
+            $scope.promoteApp = false;
+        }else{
+            toastr.error("somthing wents to wrong")
+        }
+        
+
     }else{
-        toastr.error("something wents to wroung")
+        toastr.error("something wents to wrong")
     }
     
  }
@@ -388,8 +441,49 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     //-------------------------------END OF SELECT CASCADING-------------------------//
 
 
-   $scope.submit = function(data){
+   $scope.submit = function(){
+    console.log("$scope",JSON.stringify($scope.createAds.pageName));
+    pageDetails = JSON.parse($scope.createAds.pageName);
+    console.log("pageDetails",pageDetails)
 
-       console.log("All data -->>"+JSON.stringify(data));
+    //console.log("ddadaaradfatya0",JSON.stringify(data));
+    var modifyData = {};
+    modifyData = {
+        userId:adminIdss,
+        pageId:pageDetails._id,
+        pageName:pageDetails.pageName,
+        adsType:$scope.createAds.giftType,
+        numberOfWinners:$scope.createAds.
+
+        //cashAdPrize:data.,
+        adContentType:$scope.createAds.adContentType,
+        // numberOfWinners:
+        // viewerLenght:data.viewers.
+        uploadGiftImage:$scope.createAds.advertismentCover,
+        sellCoupon:$scope.createAds.cellThisCoupon,
+        whoWillSeeYourAdd:{
+            country:$scope.createAds.country,
+            state:$scope.createAds.state,
+            city:$scope.createAds.city
+        },
+        gender:$scope.createAds.gender,
+        ageFrom:$scope.createAds.ageFrom,
+        ageTo:$scope.createAds.ageFrom
+    }
+    console.log("All data -->>"+JSON.stringify(modifyData));
    }
+
+//     userService.createAds(data).success(function(res) {
+//     if (res.responseCode == 200) {
+//         toastr.success("create ads successfully")
+//     } else {
+//         toastr.error(res.responseMessage);
+//         $state.go('login')
+        
+//     }
+//     console.log("resss",$scope.userId);
+// })
+       
+
+
 })

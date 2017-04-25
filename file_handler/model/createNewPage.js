@@ -128,6 +128,7 @@ var createNewPageSchema = new mongoose.Schema({
     socialMedia: [],
     countryCode:{ type:String},
     locationDescription:{type:String},
+    commentCount: { type: Number, default: 0 },
     createdAt: {
         type: Date,
         default: Date.now

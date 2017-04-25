@@ -2,6 +2,7 @@ var createNewPage = require("./model/createNewPage");
 var createNewAds = require("./model/createNewAds");
 var createEvents = require("./model/createEvents");
 var createNewReport = require("./model/reportProblem");
+var addsComments = require("./model/addsComments");
 //var notificationList = require("./model/notificationList");
 var subCategory = require("./subcategory.json");
 
@@ -793,28 +794,28 @@ module.exports = {
                     responseCode: 404,
                     responseMessage: "error."
                 });
-            } else if (result.length == 0) { 
-                var data = { 
-                    totalProductView:0, 
-                    totalPageView: 0, 
-                    totalEventViewClicks: 0, 
-                    totalEmailClicks: 0, 
-                    totalCallUsClick: 0, 
-                    totalFollowerNumber: 0, 
-                    totalSocialMediaClicks: 0, 
-                    totalLocationClicks: 0, 
-                    totalWebsiteClicks: 0, 
-                    totalShares: 0, 
-                    totalViewAds: 0, 
-                    totalRating: 0 
+            } else if (result.length == 0) {
+                var data = {
+                    totalProductView: 0,
+                    totalPageView: 0,
+                    totalEventViewClicks: 0,
+                    totalEmailClicks: 0,
+                    totalCallUsClick: 0,
+                    totalFollowerNumber: 0,
+                    totalSocialMediaClicks: 0,
+                    totalLocationClicks: 0,
+                    totalWebsiteClicks: 0,
+                    totalShares: 0,
+                    totalViewAds: 0,
+                    totalRating: 0
                 }
                 res.send({
                     result: data,
                     responseCode: 200,
                     responseMessage: "Data not found."
                 });
-  
-            }else {
+
+            } else {
                 console.log("aggregate result===>.", result)
                 createNewPage.aggregate(
                         [
@@ -1643,7 +1644,6 @@ module.exports = {
         })
     },
 
-
     "couponInboxDateFilter": function(req, res) {
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: "Please enter atleast startDate or endDate" }); } else if (!req.body.pageId) { res.send({ responseCode: 400, responseMessage: "Please enter pageId" }); } else {
             var pageId = req.body.pageId;
@@ -1692,7 +1692,6 @@ module.exports = {
                     console.log(typeof(result[i]._id))
                     blockPagesArray.push(String(result[i]._id))
                 }
-                // console.log(typeof(result[i]._id))
                 console.log("blockPagesArray-->>", blockPagesArray)
                 var re = new RegExp(req.body.search, 'i');
                 createNewPage.paginate({ $and: [{ _id: { $in: blockPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
@@ -1705,4 +1704,61 @@ module.exports = {
         })
     },
 
+    "searchFavouitePages": function(req, res) {
+        User.find({ _id: req.params.id }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct user id" }); } else {
+                var FavouitePages = [];
+                for (var i = 0; i < result[0].pageFollowers.length; i++) {
+                    console.log("data-->", result[0].pageFollowers.length, i)
+                    FavouitePages.push(result[0].pageFollowers[i].pageId)
+                }
+                console.log("FavouitePages-->>", FavouitePages)
+                var re = new RegExp(req.body.search, 'i');
+                createNewPage.paginate({ $and: [{ _id: { $in: FavouitePages } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
+                        res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
+                    }
+                })
+            }
+        })
+    },
+
+    "reviewOnPage": function(req, res) {
+        var adds = new addsComments(req.body);
+        adds.save(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        res.send({ result: result, responseCode: 200, responseMessage: "Review save with concerned User details." });
+                    }
+                })
+            }
+        })
+    },
+    //API Comment on Ads
+    "replyOnReview": function(req, res) {
+        addsComments.findOneAndUpdate({ pageId: req.body.pageId, _id: req.body.commentId }, {
+            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
+        }, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: results,
+                    responseCode: 200,
+                    responseMessage: "Review save successfully."
+                });
+            }
+        })
+    },
+
+    "reviewCommentList": function(req, res) {
+        addsComments.paginate({ pageId: req.params.id }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Review List."
+                })
+            }
+        })
+    },
 }

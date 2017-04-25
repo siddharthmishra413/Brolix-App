@@ -45,6 +45,10 @@ app.get('/CouponInboxWinners/:id', authUser.authUser, pageHandler.CouponInboxWin
 app.post('/viewCouponCode', authUser.authUser, pageHandler.viewCouponCode);
 app.post('/couponInboxDateFilter', authUser.authUser, pageHandler.couponInboxDateFilter);
 app.post('/blockedPagesSearch/:pageNumber', pageHandler.blockedPagesSearch);
+app.post('/searchFavouitePages/:id/:pageNumber', pageHandler.searchFavouitePages);
+app.post('/reviewOnPage', authUser.authUser, pageHandler.reviewOnPage);
+app.post('/replyOnReview', authUser.authUser, pageHandler.replyOnReview);
+app.get('/reviewCommentList/:id/:pageNumber', authUser.authUser, pageHandler.reviewCommentList);
 
 
 module.exports = app;
