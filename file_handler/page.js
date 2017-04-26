@@ -1300,7 +1300,6 @@ module.exports = {
                                 query.$and.push(temporayCond)
                             }
                         }
-
                     });
 
                     if (query.$and.length == 0) {
@@ -1377,7 +1376,6 @@ module.exports = {
                                 query.$and.push(temporayCond)
                             }
                         }
-
                     });
 
                     if (query.$and.length == 0) {
@@ -1498,7 +1496,6 @@ module.exports = {
                 } else {
                     callback(null, [], arrayId, "null", "null", "null", "null")
                 }
-
             },
             function(couponResults, arrayId, page, pages, limitData, count, callback) {
                 // console.log("results==>",couponResults)

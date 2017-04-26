@@ -30,6 +30,9 @@ var chatSchema = new Schema({
         type: String,
         trim: true
     },
+    pageId: {
+        type: String
+    },
     timestamp: {
         type: String
     },

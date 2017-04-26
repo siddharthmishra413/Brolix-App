@@ -67,7 +67,8 @@ $scope.changeImage = function(input,type) {
           $state.go('login');
           toastr.success(ObjS.data.responseMessage);  
         }else{
-         toastr.error(ObjS.data.responseMessage);  
+          console.log("dsds")
+         toastr.error(ObjS.data.response_message);  
         }
       },function(err){
        console.log("err----->"+err)

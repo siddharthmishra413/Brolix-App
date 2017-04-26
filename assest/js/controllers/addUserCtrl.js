@@ -3,6 +3,7 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
     $scope.$emit('headerStatus', 'Manage User');
     $scope.$emit('SideMenu', 'Manage User');
     $scope.minDate = new Date().toDateString();
+    $scope.regEx="/^[0-9]{10,10}$/;"
 
     $scope.myFrom = {};
 
