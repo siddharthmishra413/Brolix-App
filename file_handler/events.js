@@ -2,7 +2,7 @@ var createEvents = require("./model/createEvents");
 
 module.exports = {
 
-    "createEvent": function (req, res) {
+    "createEvent": function(req, res) {
         if (!req.body.pageId) {
             res.send({
                 responseCode: 400,
@@ -11,7 +11,7 @@ module.exports = {
         } else {
             console.log("request-->>>", JSON.stringify(req.body))
             var event = new createEvents(req.body);
-            event.save(function (err, result) {
+            event.save(function(err, result) {
                 if (err) {
                     res.send({
                         responseCode: 500,
@@ -29,11 +29,11 @@ module.exports = {
     },
 
     //API for create Page
-    "showAllEvents": function (req, res) {
+    "showAllEvents": function(req, res) {
         createEvents.find({
             pageId: req.params.id,
             status: "ACTIVE"
-        }).exec(function (err, result) {
+        }).exec(function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -51,8 +51,8 @@ module.exports = {
 
 
     //API for Edit Event
-    "editEvent": function (req, res) {
-        createEvents.findByIdAndUpdate(req.params.id, req.body).exec(function (err, results) {
+    "editEvent": function(req, res) {
+        createEvents.findByIdAndUpdate(req.params.id, req.body).exec(function(err, results) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -69,7 +69,7 @@ module.exports = {
     },
 
     //API for Edit Event
-    "deleteEvent": function (req, res) {
+    "deleteEvent": function(req, res) {
         createEvents.findByIdAndUpdate({
             _id: req.body.eventId
         }, {
@@ -78,7 +78,7 @@ module.exports = {
             }
         }, {
             new: true
-        }).exec(function (err, result) {
+        }).exec(function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -94,10 +94,10 @@ module.exports = {
     },
 
     // Show all events details
-    "showEventDetails": function (req, res) {
+    "showEventDetails": function(req, res) {
         createEvents.findOne({
             _id: req.params.id
-        }).exec(function (err, result) {
+        }).exec(function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -113,7 +113,7 @@ module.exports = {
         })
     },
 
-    "upCommingEvents": function (req, res) {
+    "upCommingEvents": function(req, res) {
         var startTime = new Date().toUTCString();
         var h = new Date(new Date(startTime).setHours(00)).toUTCString();
         var m = new Date(new Date(h).setMinutes(00)).toUTCString();
@@ -122,7 +122,7 @@ module.exports = {
             // var actualTime = parseInt(s);
         createEvents.find({
             pageId: req.body.pageId
-        }).exec(function (err, result) {
+        }).exec(function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -142,7 +142,7 @@ module.exports = {
                     _id: {
                         $in: eventArray
                     }
-                }).exec(function (err, result1) {
+                }).exec(function(err, result1) {
                     if (err) {
                         res.send({
                             responseCode: 409,
