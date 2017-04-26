@@ -14,7 +14,7 @@ var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
 var country = require('countryjs');
-var CronJob = require('cron').CronJob;
+var cron = require('node-cron');
 var yeast = require('yeast');
 var followerList = require("./model/followersList");
 var paypalPayment = require("./model/payment");
@@ -610,12 +610,12 @@ module.exports = {
     //API for Change Password
     "changePassword": function(req, res) {
         User.findOne({ _id: req.body.userId }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ response_code: 404, response_message: "User doesn't exist." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseCode: "User doesn't exist." }); } else {
                 var oldpassword = req.body.oldpass;
                 if (result.password != oldpassword) {
                     res.send({
-                        response_code: 401,
-                        response_message: "Old password doesn't match."
+                        responseCode: 401,
+                        responseCode: "Old password doesn't match."
                     });
                 } else {
                     var password = req.body.newpass;
@@ -1362,7 +1362,7 @@ module.exports = {
         }
         chat.aggregate(
             [{
-                $match: condition
+                $match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
             }, { $sort: { timestamp: -1 } }, {
                 $group: {
                     _id: { senderId: "$senderId", receiverId: "$receiverId" },
@@ -2172,18 +2172,20 @@ module.exports = {
 
 
 
-new CronJob('* * * * * *', function() {
-console.log('You will see this message every second');
+cron.schedule('* * * * *', function() {
+console.log('You will see this message every minute');
     User.find({ 'coupon.couponStatus': "VALID" }).exec(function(err, result) {
         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
         //  else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); }
         else {
+             console.log("<<--else-->>")
             var array = [];
             var array1 = [];
             var startTime = new Date().toUTCString();
             var h = new Date(new Date(startTime).setHours(00)).toUTCString();
             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
             var currentTime = Date.now(m)
+             console.log("<<--currentTime-->>",currentTime)
             for (var i = 0; i < result.length; i++) {
                 for (var j = 0; j < result[i].coupon.length; j++) {
                     if (currentTime >= new Date(result[i].coupon[j].expirationTime)) {
