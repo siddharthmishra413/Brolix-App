@@ -62,6 +62,10 @@ var viewSchema = new Schema({
         type: Number,
         default: 0
     },
+    totalRating:{
+        type: Number,
+        default: 0
+    },
     adsId:{
         type:String
     },
