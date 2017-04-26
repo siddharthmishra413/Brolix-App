@@ -14,7 +14,7 @@ var cloudinary = require('cloudinary');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' })
 var country = require('countryjs');
-var cron = require('node-cron');
+var CronJob = require('cron').CronJob;
 var yeast = require('yeast');
 var followerList = require("./model/followersList");
 var paypalPayment = require("./model/payment");
@@ -2172,9 +2172,9 @@ module.exports = {
 
 
 
-cron.schedule('12 * * * *', function() {
-
-    User.find({ 'coupon.couponStatus': "valid" }).exec(function(err, result) {
+new CronJob('* * * * * *', function() {
+console.log('You will see this message every second');
+    User.find({ 'coupon.couponStatus': "VALID" }).exec(function(err, result) {
         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
         //  else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); }
         else {
@@ -2186,7 +2186,7 @@ cron.schedule('12 * * * *', function() {
             var currentTime = Date.now(m)
             for (var i = 0; i < result.length; i++) {
                 for (var j = 0; j < result[i].coupon.length; j++) {
-                    if (currentTime >= Math.round(result[i].coupon[j].expirationTime)) {
+                    if (currentTime >= new Date(result[i].coupon[j].expirationTime)) {
                         array.push(result[i].coupon[j]._id);
                         array1.push(result[i].coupon[j].adId)
                     } else {
