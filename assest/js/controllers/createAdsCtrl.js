@@ -5,13 +5,22 @@ $scope.$emit('SideMenu', 'Manage Ads');
 $scope.createAds = {};
 $scope.promoteAppGame = {};
 $scope.addCode = [];
+
 //$scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
 
 $scope.addcode = function(code){
+
+    if($scope.addCode.length<$scope.createAds.numberOfWinners){
     console.log("code",code)
     $scope.addCode.push(code);
+    $scope.createAds.hiddenCode="";
     console.log("addcode",$scope.addCode)
+
+    }
+    else{
+        toastr.error("You are not allowed to add more coupons")
+    }
 }
 
 
@@ -275,11 +284,11 @@ $scope.changeImage = function(input,type) {
                 })  
                 break;
 
-                case 'photo1': 
+                case 'appPhoto1': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                      $timeout(function () {      
                 spinnerService.hide('html5spinner');   
-                    $scope.createAds.photo1 = ObjS.data.result.url;
+                    $scope.createAds.appPhoto1 = ObjS.data.result.url;
                     
                         }, 250);  
                     // $scope.user.photo1 = ObjS.data.result.url;
@@ -287,57 +296,90 @@ $scope.changeImage = function(input,type) {
                 })  
                 break;
 
-                case 'photo2': 
+                case 'appPhoto2': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.photo2 = ObjS.data.result.url;
+                    $scope.createAds.appPhoto2 = ObjS.data.result.url;
                     }, 250);  
                     // $scope.user.photo2 = ObjS.data.result.url;
                     console.log("image",$scope.createAds.photo2)
                 })  
                 break;
 
-                case 'photo3': 
+                case 'appPhoto3': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.photo3 = ObjS.data.result.url;
+                    $scope.createAds.appPhoto3 = ObjS.data.result.url;
                     }, 250); 
                     // $scope.user.photo3 = ObjS.data.result.url;
                 })  
                 break;
 
-                case 'photo4': 
+                case 'appPhoto4': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner');
-                    $scope.createAds.photo4 = ObjS.data.result.url;
+                    $scope.createAds.appPhoto4 = ObjS.data.result.url;
                         }, 250);  
                     // $scope.user.photo4 = ObjS.data.result.url;
                 })  
                 break;
 
-                case 'photo5': 
+                case 'appPhoto5': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.photo5 = ObjS.data.result.url;
+                    $scope.createAds.appPhoto5 = ObjS.data.result.url;
                     }, 250);  
                     // $scope.user.photo5 = ObjS.data.result.url;
                 })  
                 break;
 
-                case 'photo6': 
+                case 'appPhoto6': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.photo6 = ObjS.data.result.url;
+                    $scope.createAds.appPhoto6 = ObjS.data.result.url;
                     }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
                 })  
                 break;
+
+                case 'appIcon': 
+                uploadimgServeice.user(file).then(function(ObjS) {
+                    $timeout(function () {      
+                    spinnerService.hide('html5spinner'); 
+                    $scope.createAds.appIcon = ObjS.data.result.url;
+                    }, 250);  
+                    // $scope.user.appIcon = ObjS.data.result.url;
+                })  
+                break;
+
+                case 'photo7': 
+                uploadimgServeice.user(file).then(function(ObjS) {
+                    $timeout(function () {      
+                    spinnerService.hide('html5spinner'); 
+                    $scope.createAds.appPhoto7 = ObjS.data.result.url;
+                    }, 250);  
+                    // $scope.user.photo6 = ObjS.data.result.url;
+
+                })  
+                break;
+
+                case 'photo8': 
+                uploadimgServeice.user(file).then(function(ObjS) {
+                    $timeout(function () {      
+                    spinnerService.hide('html5spinner'); 
+                    $scope.createAds.appPhoto8 = ObjS.data.result.url;
+                    }, 250);  
+                    // $scope.user.photo6 = ObjS.data.result.url;
+
+                })  
+                break;
+
                 case 'adCover': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
@@ -349,15 +391,7 @@ $scope.changeImage = function(input,type) {
                 })  
                 break;
 
-                case 'appIcon': 
-                uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
-                    $scope.promoteAppGame.appIcon = ObjS.data.result.url;
-                    }, 250);  
-                    // $scope.user.appIcon = ObjS.data.result.url;
-                })  
-                break;
+                
 
                 case 'appPhoto1': 
                 uploadimgServeice.user(file).then(function(ObjS) {
@@ -479,49 +513,102 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     }
     //-------------------------------END OF SELECT CASCADING-------------------------//
 
+    function daysInMonth(month,year) {
+            return new Date(year, month, 0).getDate();
+        } 
 
-   $scope.submit = function(){
+    $scope.expDate = function(date){
+
+        var currentDate = new Date()
+        var year = currentDate.getFullYear();
+        var month = 1+currentDate.getMonth();
+        console.log("ccccccc",year,month)
+        var noOfDays = daysInMonth(month,year); 
+
+        console.log("noOfDays",noOfDays);
+
+
+
+        
+
+
+         // switch (type)
+         //    {
+                
+         //        case 'advertismentCover': 
+                  
+         //        break;
+
+         //        default:
+
+         //    }
+
+
+    }
+
+
+    $scope.submit = function(){
+
+
+    var onedaymilisecond = 8.64e+7;
     console.log("$scope",JSON.stringify($scope.createAds.pageName));
     pageDetails = JSON.parse($scope.createAds.pageName);
-    console.log("pageDetails",pageDetails)
-
+    var whoWillSeeYourAddArray = [];
+    var appPhoto = [];
+    appPhoto= [$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6];
+    var promoteAppBoolean = appPhoto.length==0 ? false:true;
     //console.log("ddadaaradfatya0",JSON.stringify(data));
     var modifyData = {};
     modifyData = {
         userId:adminIdss,
         pageId:pageDetails._id,
         pageName:pageDetails.pageName,
+        category:pageDetails.category,
+        subCategory:pageDetails.subCategory,
         adsType:$scope.createAds.giftType,
-        // numberOfWinners:$scope.createAds.
-
-        //cashAdPrize:data.,
+        coverImage:$scope.createAds.advertismentCover,
         adContentType:$scope.createAds.adContentType,
-        // numberOfWinners:
-        // viewerLenght:data.viewers.
-        uploadGiftImage:$scope.createAds.advertismentCover,
+        numberOfWinners:$scope.createAds.winner,
+        giftDescription:$scope.createAds.giftDescription,
+        viewerLenght:$scope.createAds.viewers,
+        hiddenGifts:$scope.addCode,
+        couponLength:$scope.createAds.winner,
+        gender:$scope.createAds.gender,
+        ageFrom:$scope.createAds.ageFrom,
+        ageTo:$scope.createAds.ageTo,
+        couponBuyersLength:$scope.createAds.viewers,
         sellCoupon:$scope.createAds.cellThisCoupon,
         whoWillSeeYourAdd:{
             country:$scope.createAds.country,
             state:$scope.createAds.state,
             city:$scope.createAds.city
         },
-        gender:$scope.createAds.gender,
-        ageFrom:$scope.createAds.ageFrom,
-        ageTo:$scope.createAds.ageFrom
+        couponExpiryDate: 1495650600000,
+        googleLink:$scope.createAds.googlePlayLink,
+        appStoreLink:$scope.createAds.appStoreLink,
+        windowsStoreLink:$scope.createAds.windowStoreLink,
+        appIcon:$scope.createAds.appIcon,
+        linkDescription:$scope.createAds.linkDescription,
+        dawnloadPagePhoto:appPhoto,
+        promoteApp:promoteAppBoolean,
+        video:$scope.createAds.vedioUrl,
+  
     }
     console.log("All data -->>"+JSON.stringify(modifyData));
+    userService.createAds(data).success(function(res) {
+    if (res.responseCode == 200) {
+        toastr.success("create ads successfully")
+    } else {
+        toastr.error(res.responseMessage);
+        $state.go('login')
+        
+    }
+    console.log("resss",$scope.userId);
+    })
+    
    }
 
-//     userService.createAds(data).success(function(res) {
-//     if (res.responseCode == 200) {
-//         toastr.success("create ads successfully")
-//     } else {
-//         toastr.error(res.responseMessage);
-//         $state.go('login')
-        
-//     }
-//     console.log("resss",$scope.userId);
-// })
+    
        
 
 

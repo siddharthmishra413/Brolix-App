@@ -209,7 +209,7 @@
                                     <div class="text-center">
                                         <label class="coupon-date col-sm-12">Coupon Expiry Date</label>
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <select ng-model="createAds.couponExpiryDate" class="form-control">
+                                            <select ng-model="createAds.couponExpiryDate" class="form-control" ng-change="expDate(createAds.couponExpiryDate)">
                                                 <option value="">Never</option>
                                                 <option value="1 Week">1 Week </option>
                                                 <option value="2 Weeks">2 Weeks</option>
@@ -270,14 +270,14 @@
                                     <div class="radio-btn text-left gbl-table">
                                         <div class="global-tble-cell">
                                             <label class="gbl-label">
-                                                <input type="radio" ng-model="createAds.winner" value="Winer" name="radio" ng-model="createAds.winner" checked>&nbsp;
+                                                <input type="radio" ng-model="createAds.winner" value="Winer" name="radio" ng-model="createAds.numberOfWinners" checked>&nbsp;
                                             </label>
                                         </div>
                                         <div class="global-tble-cell">
-                                            <input type="text" ng-model="createAds.winner1" value="" class="form-control gbl-input">
+                                            <input type="text" ng-model="createAds.winner" value="" class="form-control gbl-input">
                                         </div>
                                         <div class="global-tble-cell">
-                                            <input type="text" ng-model="createAds.winner2" value=""  class="form-control gbl-input">
+                                            <span type="text" ng-model="createAds.winner" value=""  class="form-control gbl-input"></span>
                                         </div>
                                         <div class="global-tble-cell">
                                             <label>Coupon</label>
@@ -588,16 +588,16 @@
                                                     <option>Window Store Link</option>
                                                 </select> -->
                                                 <div class="form-group">
-                                                     <input ng-model="promoteAppGame.appName" type="text" class="form-control" placeholder="App Name">
+                                                     <input ng-model="createAds.appName" type="text" class="form-control" placeholder="App Name">
                                                 </div>
                                                 <div class="form-group">
-                                                     <input ng-model="promoteAppGame.googlePlayLink" type="text" class="form-control" placeholder="Google Play Link">
+                                                     <input ng-model="createAds.googlePlayLink" type="text" class="form-control" placeholder="Google Play Link">
                                                 </div>
                                                 <div class="form-group">
-                                                     <input ng-model="promoteAppGame.appStoreLink" type="text" class="form-control" placeholder="App Store Link">
+                                                     <input ng-model="createAds.appStoreLink" type="text" class="form-control" placeholder="App Store Link">
                                                 </div>
                                                 <div class="form-group">
-                                                     <input ng-model="promoteAppGame.windowStoreLink" type="text" class="form-control" placeholder="Window Store Link">
+                                                     <input ng-model="createAds.windowStoreLink" type="text" class="form-control" placeholder="Window Store Link">
                                                 </div>
                                             </div>
                                         </div>
@@ -606,7 +606,7 @@
                                         <h4>Please Upload your App Icon.</h4>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appIcon"  src="{{promoteAppGame.appIcon || './dist/image/user-image.jpeg'}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.appIcon"  src="{{createAds.appIcon || './dist/image/user-image.jpeg'}}" id="output">
                                         <label class="fileContainer">
                                         <span><i class="fa fa-camera"></i></span>
                                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this, 'appIcon')" accept="image/*">
@@ -623,36 +623,50 @@
                                     </div>
                                     <div class="cus-upload-photos">
                                         <div class="page-image clearfix">
-                                          <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appPhoto1" src="{{promoteAppGame.appPhoto1 || './dist/image/user-image.jpeg'}}" id="output">
+                                          <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto1" src="{{createAds.appPhoto1 || './dist/image/user-image.jpeg'}}" id="output">
                                             <label class="fileContainer">
                                               Choose File
                                               <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this, 'appPhoto1')" accept="image/*">
                                             </label>
                                         </div>
                                         <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appPhoto2"   src="{{createAds.appPhoto2 || './dist/image/user-image.jpeg'}}" id="output">
+                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto2"   src="{{createAds.appPhoto2 || './dist/image/user-image.jpeg'}}" id="output">
                                             <label class="fileContainer">
                                               Choose File
                                               <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto2')" accept="image/*">
                                             </label>
                                         </div>
                                         <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appPhoto3"   src="{{createAds.appPhoto3 || './dist/image/user-image.jpeg'}}" id="output">
+                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto3"   src="{{createAds.appPhoto3 || './dist/image/user-image.jpeg'}}" id="output">
                                             <label class="fileContainer">
                                               Choose File
                                               <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto3')" accept="image/*">
                                             </label>
                                         </div>
                                         <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="promoteAppGame.appPhoto4"   src="{{promoteAppGame.appPhoto4 || './dist/image/user-image.jpeg'}}" id="output">
+                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto4"   src="{{createAds.appPhoto4 || './dist/image/user-image.jpeg'}}" id="output">
                                             <label class="fileContainer">
                                               Choose File
                                               <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto4')" accept="image/*">
                                             </label>
                                         </div>
+                                        <div class="page-image clearfix">
+                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto5"   src="{{createAds.appPhoto5 || './dist/image/user-image.jpeg'}}" id="output">
+                                            <label class="fileContainer">
+                                              Choose File
+                                              <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto5')" accept="image/*">
+                                            </label>
+                                        </div>
+                                        <div class="page-image clearfix">
+                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto6"   src="{{createAds.appPhoto6 || './dist/image/user-image.jpeg'}}" id="output">
+                                            <label class="fileContainer">
+                                              Choose File
+                                              <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto6')" accept="image/*">
+                                            </label>
+                                        </div>
                                     </div>
                                     <div class="form-group clearfix">
-                                        <textarea class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
+                                        <textarea ng-model="createAds.linkDescription" class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
                                     </div>
                                       <!-- <input type="text" ng-model="createAds.promoteDescr" placeholder="Description...">  -->
                                     <div class="btn2 text-center">
@@ -745,7 +759,7 @@
                   <div class="form-group">
                     <label class="col-sm-4 control-label">Number of Winners : </label>
                     <div class="col-sm-8">
-                      <input type="text" ng-model="createAds.numberOfWinners"class="form-control" placeholder="Email">
+                      <input type="text" ng-model="createAds.numberOfWinners" class="form-control" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -757,8 +771,18 @@
               </div>
               <div class="form-group">
                 <label>Please type code below :</label>
-                <input ng-model="createAds.hiddenCode" type="text" class="form-control" placeholder="">
-                <span ng-reapet="addCode in addCode" class="form-control" placeholder="Email">{{createAds.numberOfWinners}}</span>
+                <input id="input" ng-model="createAds.hiddenCode" type="text" class="form-control" placeholder="">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="row-table" ng-repeat="x in addCode">
+                                <div class="col-cell">
+                                    <span class="form-control">{{x}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
               </div>
               <div class="text-center">
                   <a  ng-click="addcode(createAds.hiddenCode)" class="btn btn-lg btn-green">Add</a>
