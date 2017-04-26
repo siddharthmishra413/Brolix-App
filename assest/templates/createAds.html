@@ -504,58 +504,65 @@
                     <div class="login-block">
                         <div class="cus-content-row"  >
                             <div class="top-content-head text-center">
-                                <h4>Please Upload the Ad image maximum 6;</h4>
+                                <h4>Please Upload the Ad image maximum 6</h4>
                             </div>
                             <div class="btn2 text-center">
                                 <div class="cus-upload-photos">
                                    <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"   ng-model="createAds.photo1"  ng-src="{{createAds.photo1}}" id="output">
+                                        <img class="profile-user-img img-responsive"   ng-model="createAds.slidePhoto1"  ng-src="{{createAds.slidePhoto1}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo1')" accept="image/*">
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto1')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"  ng-model="createAds.photo2"  ng-src="{{createAds.photo2}}" id="output">
+                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slidePhoto2"  ng-src="{{createAds.slidePhoto2}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo2')" accept="image/*">
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slidePhoto2')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.photo3"  ng-src="{{createAds.photo3}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto3"  ng-src="{{createAds.slidePhoto3}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo3')" accept="image/*">
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slidePhoto3')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.photo4"  ng-src="{{createAds.photo4}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto4"  ng-src="{{createAds.slidePhoto4}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'photo4')" accept="image/*">
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slidePhoto4')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"  ng-model="createAds.photo5"  ng-src="{{createAds.photo5}}" id="output">
+                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slidePhoto5"  ng-src="{{createAds.slidePhoto5}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo5')" accept="image/*">
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto5')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.photo6"  ng-src="{{createAds.photo6}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto6"  ng-src="{{createAds.slidePhoto6}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'photo6')" accept="image/*">
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto6')" accept="image/*">
                                         </label>
                                     </div>
                                 </div>
-                                <a  class="btn btn-lg btn-green" >Select Music</a>
+                                <div class="col-sm-12">
+                                            <div class="text-center new-upload-btns">
+                                                <label class="fileContainer">
+                                                Select Music
+                                                <input type="file" onchange="angular.element(this).scope().changeImage(this,'mp3')" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*,mp3/*">
+                                                </label>
+                                            </div>
+                                        </div>
                                 <a  class="btn btn-lg btn-green" ng-model="createAds.promoteApp" value="true" ng-click="click('promoteApp')">Promote App, Game</a>
                             </div>
                             <div class="btn2 text-center">
-                                <button class="btn btn-lg btn-green"  ng-click="click('Step5')" ng-disabled="createAds.photo1=='./dist/image/user-image.jpeg' || createAds.photo2=='./dist/image/user-image.jpeg' || createAds.photo3=='./dist/image/user-image.jpeg' || createAds.photo4=='./dist/image/user-image.jpeg' || createAds.photo5 =='./dist/image/user-image.jpeg' || createAds.photo6=='./dist/image/user-image.jpeg'">Next</button>
+                                <button class="btn btn-lg btn-green"  ng-click="click('Step5')">Next</button>
                                  <a class="btn btn-lg btn-green"  ng-click="click('Back4')" >Back</a>
                             </div>
                         </div>

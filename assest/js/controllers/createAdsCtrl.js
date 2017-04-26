@@ -276,7 +276,7 @@ $scope.changeImage = function(input,type) {
        var file = input.files[0];
        console.log("input type",input.files[0])
        var ext = file.name.split('.').pop();
-       if (ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png" || ext == "3gp" || ext == "mp4" || ext == "flv" || ext == "avi" || ext == "wmv") {
+       if (ext == "mp3" || ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png" || ext == "3gp" || ext == "mp4" || ext == "flv" || ext == "avi" || ext == "wmv") {
            $scope.imageName = file.name;
            console.log("$scope.imageName",$scope.imageName)
            $scope.createAds.type = file.type;
@@ -371,22 +371,66 @@ $scope.changeImage = function(input,type) {
                 })  
                 break;
 
-                case 'photo7': 
+                case 'slidePhoto1': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.appPhoto7 = ObjS.data.result.url;
+                    $scope.createAds.slidePhoto1 = ObjS.data.result.url;
                     }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
                 })  
                 break;
 
-                case 'photo8': 
+                case 'slidePhoto2': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
-                    $scope.createAds.appPhoto8 = ObjS.data.result.url;
+                    $scope.createAds.slidePhoto2 = ObjS.data.result.url;
+                    }, 250);  
+                    // $scope.user.photo6 = ObjS.data.result.url;
+
+                })  
+                break;
+
+                case 'slidePhoto3': 
+                uploadimgServeice.user(file).then(function(ObjS) {
+                    $timeout(function () {      
+                    spinnerService.hide('html5spinner'); 
+                    $scope.createAds.slidePhoto3 = ObjS.data.result.url;
+                    }, 250);  
+                    // $scope.user.photo6 = ObjS.data.result.url;
+
+                })  
+                break;
+
+                case 'slidePhoto4': 
+                uploadimgServeice.user(file).then(function(ObjS) {
+                    $timeout(function () {      
+                    spinnerService.hide('html5spinner'); 
+                    $scope.createAds.slidePhoto4 = ObjS.data.result.url;
+                    }, 250);  
+                    // $scope.user.photo6 = ObjS.data.result.url;
+
+                })  
+                break;
+
+                case 'slidePhoto5': 
+                uploadimgServeice.user(file).then(function(ObjS) {
+                    $timeout(function () {      
+                    spinnerService.hide('html5spinner'); 
+                    $scope.createAds.slidePhoto5 = ObjS.data.result.url;
+                    }, 250);  
+                    // $scope.user.photo6 = ObjS.data.result.url;
+
+                })  
+                break;
+
+                case 'slidePhoto6': 
+                uploadimgServeice.user(file).then(function(ObjS) {
+                    $timeout(function () {      
+                    spinnerService.hide('html5spinner'); 
+                    $scope.createAds.slidePhoto6 = ObjS.data.result.url;
                     }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
@@ -452,6 +496,18 @@ $scope.changeImage = function(input,type) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
                     $scope.createAds.giftImage = ObjS.data.result.url;
+                    }, 250); 
+                    //$scope.user.giftImage = ObjS.data.result.url;
+
+                })  
+                break;
+
+                case 'mp3': 
+                uploadimgServeice.user(file).then(function(ObjS) {
+                    $timeout(function () {      
+                    spinnerService.hide('html5spinner'); 
+                    $scope.createAds.audioUrl = ObjS.data.result.url;
+                    console.log("$scope.createAds.audioUrl",$scope.createAds.audioUrl);
                     }, 250); 
                     //$scope.user.giftImage = ObjS.data.result.url;
 
@@ -603,13 +659,15 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
     $scope.submit = function(){
 
-    var onedaymilisecond = 8.64e+7;
+    // var onedaymilisecond = 8.64e+7;
     console.log("$scope",JSON.stringify($scope.createAds.pageName));
     pageDetails = JSON.parse($scope.createAds.pageName);
     var whoWillSeeYourAddArray = [];
+    var slideShow = [$scope.createAds.slidePhoto1,$scope.createAds.slidePhoto2,$scope.createAds.slidePhoto3,$scope.createAds.slidePhoto4,$scope.createAds.slidePhoto5,$scope.createAds.slidePhoto6];
     var appPhoto = [];
     appPhoto= [$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6];
     var promoteAppBoolean = appPhoto.length==0 ? false:true;
+    var coverimage = coverImage$scope.createAds.adContentType == 'slideshow' ? $scope.createAds.slidePhoto1:$scope.createAds.advertismentCover;
     //console.log("ddadaaradfatya0",JSON.stringify(data));
     var modifyData = {};
     modifyData = {
@@ -619,7 +677,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         category:pageDetails.category,
         subCategory:pageDetails.subCategory,
         adsType:$scope.createAds.giftType,
-        coverImage:$scope.createAds.advertismentCover,
+        coverImage:coverimage,
         adContentType:$scope.createAds.adContentType,
         numberOfWinners:$scope.createAds.winner,
         giftDescription:$scope.createAds.giftDescription,
@@ -645,6 +703,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         dawnloadPagePhoto:appPhoto,
         promoteApp:promoteAppBoolean,
         video:$scope.createAds.vedioUrl,
+        musicFileName:$scope.createAds.audioUrl,
+        slideShow:slideShow,
   
     }
     console.log("All data -->>"+JSON.stringify(modifyData));
