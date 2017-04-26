@@ -9,5 +9,6 @@ app.get('/showAllEvents/:id', authUser.authUser, eventHandler.showAllEvents);
 app.get('/showEventDetails/:id', authUser.authUser, eventHandler.showEventDetails);
 app.put('/editEvent/:id', authUser.authUser, eventHandler.editEvent);
 app.put('/deleteEvent', authUser.authUser, eventHandler.deleteEvent);
+app.post('/upCommingEvents', authUser.authUser, eventHandler.upCommingEvents);
 
 module.exports = app;
