@@ -633,36 +633,39 @@ module.exports = {
     //API for user Profile
     "userProfile": function(req, res) {
         User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Profile data show successfully."
-            });
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Profile data show successfully."
+                });
+            }
         })
     },
 
     //API for user Details
     "listOfAllAdvertiser": function(req, res) {
         User.find({ type: 'Advertiser' }, avoid).exec(function(err, result) {
-            if (err) throw err;
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Show data successfully."
-            });
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Show data successfully."
+                });
+            }
         })
     },
 
     //API for user Profile
     "detailsOfAdvertiser": function(req, res) {
         User.findOne({ _id: req.params.id }, avoid).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Profile data show successfully."
-            });
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Profile data show successfully."
+                });
+            }
         })
     },
 
@@ -2172,20 +2175,19 @@ module.exports = {
 
 
 
-cron.schedule('* * * * *', function() {
-console.log('You will see this message every minute');
+cron.schedule('*/2 * * * *', function() {
     User.find({ 'coupon.couponStatus': "VALID" }).exec(function(err, result) {
         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
         //  else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); }
         else {
-             console.log("<<--else-->>")
+            console.log("<<--else-->>")
             var array = [];
             var array1 = [];
             var startTime = new Date().toUTCString();
             var h = new Date(new Date(startTime).setHours(00)).toUTCString();
             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
             var currentTime = Date.now(m)
-             console.log("<<--currentTime-->>",currentTime)
+            console.log("<<--currentTime-->>", currentTime)
             for (var i = 0; i < result.length; i++) {
                 for (var j = 0; j < result[i].coupon.length; j++) {
                     if (currentTime >= new Date(result[i].coupon[j].expirationTime)) {

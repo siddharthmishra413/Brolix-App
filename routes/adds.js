@@ -27,18 +27,19 @@ app.get('/couponWinners/:pageNumber', authUser.authUser, adsHandler.couponWinner
 app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);
 app.get('/adsCommentList/:id/:pageNumber', authUser.authUser, adsHandler.adsCommentList);
 app.post('/tagOnads', authUser.authUser, adsHandler.tagOnads);
-app.put('/editAd/:id/:userId',  adsHandler.editAd);
+app.put('/editAd/:id/:userId', adsHandler.editAd);
 app.post('/adsDateFilter/:id/:pageNumber', authUser.authUser, adsHandler.adsDateFilter);
-app.post('/searchAds/:pageNumber', adsHandler.searchAds);
+app.post('/particularPageCouponAdsFilter/:pageNumber', adsHandler.particularPageCouponAdsFilter);
 app.post('/couponFilter/:pageNumber', adsHandler.couponFilter);
 app.post('/couponGiftsFilter', authUser.authUser, adsHandler.couponGiftsFilter);
 app.post('/cashGiftsFilter', authUser.authUser, adsHandler.cashGiftsFilter);
 app.get('/storeCouponList/:pageNumber', authUser.authUser, adsHandler.storeCouponList);
 app.post('/viewCoupon', authUser.authUser, adsHandler.viewCoupon);
-app.post('/PageCouponFilter/:pageNumber',adsHandler.PageCouponFilter);
-app.post('/StoreFavCouponFilter/:pageNumber',adsHandler.StoreFavCouponFilter);
-app.post('/couponWinnersDateFilter/:pageNumber',adsHandler.couponWinnersDateFilter);
-app.post('/cashWinnersDateFilter/:pageNumber',adsHandler.cashWinnersDateFilter);
+app.post('/PageCouponFilter/:pageNumber', adsHandler.PageCouponFilter);
+app.post('/StoreFavCouponFilter/:pageNumber', adsHandler.StoreFavCouponFilter);
+app.post('/couponWinnersDateFilter/:pageNumber', adsHandler.couponWinnersDateFilter);
+app.post('/cashWinnersDateFilter/:pageNumber', adsHandler.cashWinnersDateFilter);
+app.post('/particularPageCashAdsFilter/:pageNumber', adsHandler.particularPageCashAdsFilter);
 
 
 module.exports = app;
