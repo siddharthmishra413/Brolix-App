@@ -170,16 +170,29 @@ userService.getPage().then(function(success) {
         $scope.promoteApp = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
     }else if(type == 'Back5'){
-        $scope.Step1 = false;
-        $scope.Step2 = false;
-        $scope.Step3 = false;
-        $scope.vedioStep4 = true;
-        $scope.Step5 = false;
-        $scope.Step6 = false;
-        $scope.slideStep4 = false;
-        $scope.promoteApp = false;
-       console.log("createAds.pageName",JSON.stringify($scope.createAds))
-
+        if($scope.createAds.adContentType == 'video'){
+            $scope.Step1 = false;
+            $scope.Step2 = false;
+            $scope.Step3 = false;
+            $scope.vedioStep4 = true;
+            $scope.Step5 = false;
+            $scope.Step6 = false;
+            $scope.slideStep4 = false;
+            $scope.promoteApp = false;
+            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        }else if($scope.createAds.adContentType == 'slideshow'){
+            $scope.Step1 = false;
+            $scope.Step2 = false;
+            $scope.Step3 = false;
+            $scope.vedioStep4 = false;
+            $scope.Step5 = false;
+            $scope.Step6 = false;
+            $scope.slideStep4 = true;
+            $scope.promoteApp = false;
+            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        }else{
+            toastr.error('Something wents to wrong')
+        }
     }else if(type == 'slide'){
         $scope.Step1 = false;
         $scope.Step2 = false;
@@ -519,36 +532,76 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
     $scope.expDate = function(date){
 
+        console.log("date",date);
+
         var currentDate = new Date()
         var year = currentDate.getFullYear();
         var month = 1+currentDate.getMonth();
         console.log("ccccccc",year,month)
-        var noOfDays = daysInMonth(month,year); 
+        var noOfDaysOne = daysInMonth(month,year);
+        var noOfDaysTwo = daysInMonth(month+1,year);
+        var noOfDaysThree = daysInMonth(month+2,year); 
+        console.log("noOfDays",noOfDaysOne);
+        console.log("noOfDays",noOfDaysTwo);
+        console.log("noOfDays",noOfDaysThree);
+        var one_day = 86400000;
+        var currentDateNumber = new Date().getTime();
+        console.log("currentDateNumber",currentDateNumber)
 
-        console.log("noOfDays",noOfDays);
+        switch (date)
+        {
+            
+            case '1 Week':
+            $scope.couponExpiryDate = 86400000*7;
+            console.log("1 week",$scope.couponExpiryDate)
+     
+            break;
 
+            case '2 Weeks': 
 
+            $scope.couponExpiryDate = 86400000*14;
+            console.log("2 week",$scope.couponExpiryDate)
+              
+            break;
 
-        
+            case '3 Weeks': 
 
+            $scope.couponExpiryDate = 86400000*21;
+            console.log("3 week",$scope.couponExpiryDate)
+              
+            break;
 
-         // switch (type)
-         //    {
-                
-         //        case 'advertismentCover': 
-                  
-         //        break;
+            case '1 Month':
 
-         //        default:
+            $scope.couponExpiryDate = 86400000*30;
+            console.log("1 Month",$scope.couponExpiryDate)
+ 
+            break;
 
-         //    }
+            case '2 Months': 
+
+            $scope.couponExpiryDate = 86400000*60;
+            console.log("1 Month",$scope.couponExpiryDate)
+              
+            break;
+
+            case '3 Months':
+
+            $scope.couponExpiryDate = 86400000*90;
+            console.log("1 Month",$scope.couponExpiryDate) 
+              
+            break;
+
+            default:
+            toastr.error("Something Wents to wrong")
+
+        }
 
 
     }
 
 
     $scope.submit = function(){
-
 
     var onedaymilisecond = 8.64e+7;
     console.log("$scope",JSON.stringify($scope.createAds.pageName));
@@ -570,7 +623,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         adContentType:$scope.createAds.adContentType,
         numberOfWinners:$scope.createAds.winner,
         giftDescription:$scope.createAds.giftDescription,
-        viewerLenght:$scope.createAds.viewers,
+        viewerLength:$scope.createAds.viewers,
         hiddenGifts:$scope.addCode,
         couponLength:$scope.createAds.winner,
         gender:$scope.createAds.gender,
@@ -583,7 +636,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
             state:$scope.createAds.state,
             city:$scope.createAds.city
         },
-        couponExpiryDate: 1495650600000,
+        couponExpiryDate: $scope.couponExpiryDate,
         googleLink:$scope.createAds.googlePlayLink,
         appStoreLink:$scope.createAds.appStoreLink,
         windowsStoreLink:$scope.createAds.windowStoreLink,
@@ -595,12 +648,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
   
     }
     console.log("All data -->>"+JSON.stringify(modifyData));
-    userService.createAds(data).success(function(res) {
+    userService.createAds(modifyData).success(function(res) {
+        console.log("ressssssss",JSON.stringify(res))
     if (res.responseCode == 200) {
-        toastr.success("create ads successfully")
+        toastr.success(res.responseMessage)
     } else {
         toastr.error(res.responseMessage);
-        $state.go('login')
+        // $state.go('login')
         
     }
     console.log("resss",$scope.userId);
