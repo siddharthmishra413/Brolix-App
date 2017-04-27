@@ -98,6 +98,7 @@ var userSchema = new Schema({
         exchangeStatus: { type: String, default: 'ON' },
         status: { type: String, default: 'ACTIVE' },
         type: { type: String },
+        couponExpire: { type: String },
         updateddAt: { type: Date, default: Date.now }
     }],
     hiddenGifts: [{

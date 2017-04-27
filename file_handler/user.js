@@ -1537,13 +1537,27 @@ module.exports = {
                         var s = Date.now(m)
                         var coupanAge = couponExpiryDate1;
                         var actualTime = parseInt(s) + parseInt(coupanAge);
+                        console.log("coupanAge--->>", coupanAge)
+                        if (coupanAge == 'NEVER') {
+                            console.log("if")
+                            var data = {
+                                couponCode: couponCode1,
+                                adId: req.body.adId,
+                                pageId: pageId,
+                                type: "PURCHASED",
+                                couponExpire: "NEVER"
+                            }
 
-                        var data = {
-                            couponCode: couponCode1,
-                            expirationTime: actualTime,
-                            adId: req.body.adId,
-                            pageId: pageId,
-                            type: "PURCHASED"
+                        } else {
+                            console.log("else")
+                            var data = {
+                                couponCode: couponCode1,
+                                expirationTime: actualTime,
+                                adId: req.body.adId,
+                                pageId: pageId,
+                                type: "PURCHASED",
+                                couponExpire: "YES"
+                            }
                         }
                         console.log("data--->>", data)
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { coupon: data }, $inc: { gifts: 1, brolix: -req.body.brolix } }, { new: true }, function(err, result3) {
