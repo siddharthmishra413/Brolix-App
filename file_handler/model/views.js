@@ -66,8 +66,33 @@ var viewSchema = new Schema({
         type: Number,
         default: 0
     },
-    adsId:{
+    adId:{
         type:String
+    },
+
+    AdTag:{
+        type: Number,
+        default: 0
+    },
+    socialShare:{
+        type: Number,
+        default: 0
+    },
+    AdFollowers:{
+        type: Number,
+        default: 0
+    },
+    useLuckCard:{
+        type: Number,
+        default: 0
+    },
+    AdReport:{
+        type: Number,
+        default: 0
+    },
+    GameDownloaded:{
+        type: Number,
+        default: 0
     },
     createdAt: {
         type: Date,

@@ -788,7 +788,7 @@ module.exports = {
                 totalWebsiteClicks: { $sum: "$websiteClicks" },
                 totalShares: { $sum: "$shares" },
                 totalViewAds: { $sum: "$viewAds" },
-                totalRating: { $sum: "$totalRating" }
+                totalRating: { $sum: "$totalReview" }
             }
         }]).exec(function(err, result) {
 

@@ -39,6 +39,10 @@ app.post('/PageCouponFilter/:pageNumber',adsHandler.PageCouponFilter);
 app.post('/StoreFavCouponFilter/:pageNumber',adsHandler.StoreFavCouponFilter);
 app.post('/couponWinnersDateFilter/:pageNumber',adsHandler.couponWinnersDateFilter);
 app.post('/cashWinnersDateFilter/:pageNumber',adsHandler.cashWinnersDateFilter);
+app.post('/adsViewClick',adsHandler.adsViewClick);
+app.post('/adStatistics',adsHandler.adStatistics);
+app.post('/adStatisticsFilterClick',adsHandler.adStatisticsFilterClick);
+
 
 
 module.exports = app;
