@@ -352,6 +352,103 @@
     </div>
 </div>
 
+
+<div class="container" ng-if="cashStep5">
+	<div class="row">
+	    <div class="col-md-8 col-md-offset-2">
+	        <div class="add-user panel panel-default cust-panel">
+	            <div class="panel-heading">
+	                <h3 class="panel-title">Add New Page</h3>
+	            </div>
+	            <div class="panel-body">
+	                <div class="login-block">
+
+	                     <div class="col-sm-12">
+	                        <div class="cash-ad-details-cont"  >
+	                            <h3>Cash Ad Details</h3>
+	                            <div class="col-xs-5">
+	                                <label >Number of viewer</label>
+	                                <div class="form-group">
+	                                    <input type="text" ng-model="createAds.viewers" class="form-control">
+	                                </div>
+	                            </div>
+	                            <div class="col-xs-5">
+	                                <label>Cash Gift for the Winner</label>
+	                                <div class="form-group">
+	                                    <input type="text" ng-model="createAds.winnerGift" class="form-control">
+	                                </div>
+	                            </div>
+	                            <div class="col-xs-2 m-t-20">
+	                                <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true" ng-click="openTerms('cashTerms')"></i></div>
+	                            </div>
+	                        </div>
+	                        <div class="col-sm-12 form-inline">
+	                          <div class="form-group">
+	                            <label for="exampleInputName2">Brolix Fees :</label>
+	                            <input type="text" ng-model="createAds.brolixFees" class="form-control" placeholder="">
+	                          </div>
+	                        </div>
+	                        <div class="col-sm-12 sell-coupon">
+                                <h3>Who will see your add?</h3>
+                                <div class="col-sm-4">
+                                   <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
+                                       <option value="">Select Country</option>
+                                       <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                                   </select>
+                                </div>
+                                <div class="col-sm-4">
+                                   <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
+                                      <option value="">Select State</option>
+                                      <option ng-repeat="state in stateList">{{state.region}}</option>
+                                   </select> 
+                                </div>
+                                <div class="col-sm-4">
+                                    <select  class="form-control" id="city" ng-model="createAds.city" required>
+                                      <option value="">Select City</option>
+                                      <option ng-repeat="city in cityList">{{city.city}}</option>
+                                    </select> 
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="cus-gender-radio new_gender clearfix">
+                                    <label>Gender : </label>
+                                    <div class="radio-btn text-left">
+                                        <label>
+                                            <input type="radio" name="radio" value="Both" ng-model="createAds.gender" checked>&nbsp; Both
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="radio" value="Male" ng-model="createAds.gender" checked>&nbsp; Male
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="radio" value="Female" ng-model="createAds.gender" checked>&nbsp; Female
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 age-row new-age-row">
+                                <label class="col-sm-2 m-t-7">Age</label>
+                                <div class=" col-sm-10 age-row-fld">
+                                    <div class="input-group-age">
+                                        <div><label>From</label></div>
+                                         <div><input type="text" ng-model="createAds.ageFrom" class="form-control"></div>
+                                         <div><label>To</label></div>
+                                         <div><input type="text" ng-model="createAds.ageTo" class="form-control"></div>
+                                    </div>
+                                </div>
+                            </div>
+	                        <div class="col-sm-12 btn2 text-center">
+	                            <a  class="btn btn-lg btn-green" ng-click="click('Back5')">Back</a>
+	                            <a class="btn btn-lg btn-green" ng-click="click('Step6')">Next</a>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>
+
+
 <div class="container" ng-if="Step6">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">

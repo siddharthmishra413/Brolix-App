@@ -90,6 +90,7 @@ userService.getPage().then(function(success) {
  $scope.Step6 = false;
  $scope.slideStep4 = false;
  $scope.promoteApp = false;
+ $scope.cashStep5 = false;
 
  $scope.click = function(type){
     console.log("createAds.pageName",JSON.stringify($scope.createAds))
@@ -103,6 +104,7 @@ userService.getPage().then(function(success) {
         $scope.Step6 = false;
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
+        $scope.cashStep5 = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
     }else if(type == 'Back2'){
         $scope.Step1 = true;
@@ -113,6 +115,7 @@ userService.getPage().then(function(success) {
         $scope.Step6 = false;
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
+        $scope.cashStep5 = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Step3'){
@@ -124,6 +127,7 @@ userService.getPage().then(function(success) {
         $scope.Step6 = false;
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
+        $scope.cashStep5 = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Back3'){
@@ -135,6 +139,7 @@ userService.getPage().then(function(success) {
         $scope.Step6 = false;
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
+        $scope.cashStep5 = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'video'){
@@ -146,6 +151,7 @@ userService.getPage().then(function(success) {
         $scope.Step6 = false;
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
+        $scope.cashStep5 = false;
        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Back4'){
@@ -157,19 +163,37 @@ userService.getPage().then(function(success) {
         $scope.Step6 = false;
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
+        $scope.cashStep5 = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Step5'){
-        $scope.Step1 = false;
-        $scope.Step2 = false;
-        $scope.Step3 = false;
-        $scope.vedioStep4 = false;
-        $scope.Step5 = true;
-        $scope.Step6 = false;
-        $scope.slideStep4 = false;
-        $scope.promoteApp = false;
-        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+        if($scope.createAds.giftType == 'coupon'){
+            $scope.Step1 = false;
+            $scope.Step2 = false;
+            $scope.Step3 = false;
+            $scope.vedioStep4 = false;
+            $scope.Step5 = true;
+            $scope.Step6 = false;
+            $scope.slideStep4 = false;
+            $scope.promoteApp = false;
+            $scope.cashStep5 = false;
+            $scope.cashStep5 = false;
+            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        }else if($scope.createAds.giftType == 'cash'){
+            $scope.Step1 = false;
+            $scope.Step2 = false;
+            $scope.Step3 = false;
+            $scope.vedioStep4 = false;
+            $scope.Step5 = false;
+            $scope.Step6 = false;
+            $scope.slideStep4 = false;
+            $scope.promoteApp = false;
+            $scope.cashStep5 = true;
+        }
+        
     }else if(type == 'Back5'){
+
         if($scope.createAds.adContentType == 'video'){
             $scope.Step1 = false;
             $scope.Step2 = false;
@@ -179,6 +203,7 @@ userService.getPage().then(function(success) {
             $scope.Step6 = false;
             $scope.slideStep4 = false;
             $scope.promoteApp = false;
+            $scope.cashStep5 = false;
             console.log("createAds.pageName",JSON.stringify($scope.createAds))
         }else if($scope.createAds.adContentType == 'slideshow'){
             $scope.Step1 = false;
@@ -189,6 +214,7 @@ userService.getPage().then(function(success) {
             $scope.Step6 = false;
             $scope.slideStep4 = true;
             $scope.promoteApp = false;
+            $scope.cashStep5 = false;
             console.log("createAds.pageName",JSON.stringify($scope.createAds))
         }else{
             toastr.error('Something wents to wrong')
@@ -202,6 +228,7 @@ userService.getPage().then(function(success) {
         $scope.Step6 = false;
         $scope.slideStep4 = true;
         $scope.promoteApp = false;
+        $scope.cashStep5 = false;
        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Step6'){
@@ -213,18 +240,34 @@ userService.getPage().then(function(success) {
         $scope.Step6 = true;
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
+        $scope.cashStep5 = false;
         console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Back6'){
-        $scope.Step1 = false;
-        $scope.Step2 = false;
-        $scope.Step3 = false;
-        $scope.vedioStep4 = false;
-        $scope.Step5 = true;
-        $scope.Step6 = false;
-        $scope.slideStep4 = false;
-        $scope.promoteApp = false;
-       console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        if($scope.createAds.giftType == 'coupon'){
+            $scope.Step1 = false;
+            $scope.Step2 = false;
+            $scope.Step3 = false;
+            $scope.vedioStep4 = false;
+            $scope.Step5 = true;
+            $scope.Step6 = false;
+            $scope.slideStep4 = false;
+            $scope.promoteApp = false;
+            $scope.cashStep5 = false;
+            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        }else if($scope.createAds.giftType == 'cash'){
+            $scope.Step1 = false;
+            $scope.Step2 = false;
+            $scope.Step3 = false;
+            $scope.vedioStep4 = false;
+            $scope.Step5 = false;
+            $scope.Step6 = false;
+            $scope.slideStep4 = false;
+            $scope.promoteApp = false;
+            $scope.cashStep5 = true;
+            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+
+        }
 
     }else if(type == 'promoteApp'){
         $scope.Step1 = false;
@@ -235,6 +278,7 @@ userService.getPage().then(function(success) {
         $scope.Step6 = false;
         $scope.slideStep4 = false;
         $scope.promoteApp = true;
+        $scope.cashStep5 = false;
        console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'promoteAppBack'){
@@ -248,6 +292,7 @@ userService.getPage().then(function(success) {
             $scope.Step6 = false;
             $scope.slideStep4 = false;
             $scope.promoteApp = false;
+            $scope.cashStep5 = false;
             console.log("createAds.pageName",JSON.stringify($scope.createAds))
         }else if($scope.createAds.adContentType == 'slideshow'){
             $scope.Step1 = false;
@@ -258,6 +303,7 @@ userService.getPage().then(function(success) {
             $scope.Step6 = false;
             $scope.slideStep4 = true;
             $scope.promoteApp = false;
+            $scope.cashStep5 = false;
         }else{
             toastr.error("somthing wents to wrong")
         }
@@ -271,6 +317,7 @@ userService.getPage().then(function(success) {
 
 
 $scope.changeImage = function(input,type) {
+    console.log("type",type)
 
      spinnerService.show('html5spinner');  
        var file = input.files[0];
@@ -502,7 +549,16 @@ $scope.changeImage = function(input,type) {
                 })  
                 break;
 
-                case 'mp3': 
+                
+
+                default: 
+                toastr.error("Somthing wents to wroung")
+                
+            }
+            } else {
+
+                if(type == 'mp3'){
+
                 uploadimgServeice.user(file).then(function(ObjS) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
@@ -512,21 +568,19 @@ $scope.changeImage = function(input,type) {
                     //$scope.user.giftImage = ObjS.data.result.url;
 
                 })  
-                break;
-
-                default: 
-                toastr.error("Somthing wents to wroung")
-                
-            }
-            } else {
-
-                uploadimgServeice.user(file).then(function(ObjS) {
-                     $timeout(function () {      
-                spinnerService.hide('html5spinner');   
+         
+                }else{
+                    uploadimgServeice.user(file).then(function(ObjS) {
+                    $timeout(function () {      
+                    spinnerService.hide('html5spinner');   
                     $scope.createAds.vedioUrl = ObjS.data.result.url;
                     console.log("$scope.createAds.url",$scope.createAds.vedioUrl);
                         }, 250);
-                }) 
+                })
+
+                }
+
+                 
                 
             }          
        }else{
@@ -667,7 +721,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     var appPhoto = [];
     appPhoto= [$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6];
     var promoteAppBoolean = appPhoto.length==0 ? false:true;
-    var coverimage = coverImage$scope.createAds.adContentType == 'slideshow' ? $scope.createAds.slidePhoto1:$scope.createAds.advertismentCover;
+    var coverimage = $scope.createAds.adContentType == 'slideshow' ? $scope.createAds.slidePhoto1:$scope.createAds.advertismentCover;
     //console.log("ddadaaradfatya0",JSON.stringify(data));
     var modifyData = {};
     modifyData = {
@@ -705,6 +759,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         video:$scope.createAds.vedioUrl,
         musicFileName:$scope.createAds.audioUrl,
         slideShow:slideShow,
+        brolixFees:$scope.createAds.brolixFees,
   
     }
     console.log("All data -->>"+JSON.stringify(modifyData));
