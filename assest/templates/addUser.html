@@ -20,8 +20,8 @@
                                                 <input type="text" class="form-control" name="firstName" ng-model="myFrom.firstName" placeholder="First Name" ng-pattern ="/^[a-zA-Z]*$/" maxlength="31" ng-maxlength="30" required>
                                                 <span style="color:red;" ng-show="userFrom.firstName.$dirty && userFrom.firstName.$invalid">
                                                 <span ng-show="userFrom.firstName.$error.required">First name is required.</span>
-                                                <span ng-show="userFrom.firstName.$error.pattern">Only characters are required and Space are not allowed.</span>
-                                                <span ng-show="userFrom.firstName.$error.maxlength">Your first name should contain max 30 characters.</span>
+                                                <span ng-show="userFrom.firstName.$error.pattern">Only alphabets are required and Space are not allowed.</span>
+                                                <span ng-show="userFrom.firstName.$error.maxlength">Your first name should contain max 30 alphabets.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -32,8 +32,8 @@
                                                 <input type="text" class="form-control" name="lastName" ng-model="myFrom.lastName" placeholder="Last Name" ng-pattern ="/^[a-zA-Z]*$/" maxlength="31" ng-maxlength="30" required> 
                                                 <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid">
                                                 <span ng-show="userFrom.lastName.$error.required">Last name is required.</span>
-                                                <span ng-show="userFrom.lastName.$error.pattern">Only characters are required and Space are not allowed.</span>
-                                                <span ng-show="userFrom.lastName.$error.maxlength">Your last name should contain max 30 characters.</span>
+                                                <span ng-show="userFrom.lastName.$error.pattern">Only alphabets are required and Space are not allowed.</span>
+                                                <span ng-show="userFrom.lastName.$error.maxlength">Your last name should contain max 30 alphabets.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -111,12 +111,12 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Mobile No</label>
                                             <div class="col-md-9">
-                                                <input type="tel" class="form-control" name="mobileNumber" ng-model="myFrom.mobileNumber" placeholder="Mobile No" minlength="10" maxlength="10" ng-pattern="/^[7-9][0-9]{9}$/" required> 
+                                                <input type="tel" class="form-control" name="mobileNumber" ng-model="myFrom.mobileNumber" placeholder="Mobile No" minlength="10" maxlength="15" ng-pattern="phoneNumbrss" required> 
                                                 <span style="color:red;" ng-show="userFrom.mobileNumber.$dirty && userFrom.mobileNumber.$invalid">
                                                 <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required</span> 
                                                 <span ng-show="userFrom.mobileNumber.$error.minlength">Must have atleast 10 digits.</span>
-                                                <span ng-show="userFrom.mobileNumber.$error.maxlength">Must have at most 10 digits.</span>
-                                                <span ng-show="userFrom.mobileNumber.$error.pattern">Only number are allowed.</span>  
+                                                <span ng-show="userFrom.mobileNumber.$error.maxlength">Must have at most 15 digits.</span>
+                                                <span ng-show="userFrom.mobileNumber.$error.pattern">Please Enter the Phone no matching  pattern [+91-xxx-xxxxx || 91-xxx-xxxxx]</span>  
                                             </div>
                                         </div>
                                     </div>

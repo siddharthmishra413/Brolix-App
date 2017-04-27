@@ -872,38 +872,88 @@ module.exports = {
         }
     },
 
-    "searchAds": function(req, res) {
-        var condition = { $and: [] };
-        var obj = req.body;
-        Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-            if (key == 'status') {
-                var cond = { $or: [] };
+    // "searchAds": function(req, res) {
+    //     var condition = { $and: [] };
+    //     var obj = req.body;
+    //     Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
+    //         if (key == 'status') {
+    //             var cond = { $or: [] };
 
-                if (key == "status") {
-                    for (data in obj[key]) {
-                        cond.$or.push({ status: obj[key][data] })
-                    }
-                    condition.$and.push(cond)
+    //             if (key == "status") {
+    //                 for (data in obj[key]) {
+    //                     cond.$or.push({ status: obj[key][data] })
+    //                 }
+    //                 condition.$and.push(cond)
+    //             }
+    //         } else {
+    //             var tempCond = {};
+    //             tempCond[key] = req.body[key];
+    //             condition.$and.push(tempCond)
+    //                 //condition[key] = obj[key];
+    //         }
+    //     });
+    //     if (condition.$and.length == 0) {
+    //         delete condition.$or;
+    //     }
+    //     console.log("condition==>" + JSON.stringify(condition))
+    //     createNewAds.paginate(condition, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+    //             res.send({
+    //                 result: result,
+    //                 responseCode: 200,
+    //                 responseMessage: "Result shown successfully."
+    //             })
+    //         }
+    //     })
+    // },
+
+    "particularPageCouponAdsFilter": function(req, res) {
+        var status = req.body.status;
+        createNewAds.find({ pageId: req.body.pageId, adsType: 'coupon' }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId." }); } else {
+                var adsArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    adsArray.push(result[i]._id)
                 }
-            } else {
-                var tempCond = {};
-                tempCond[key] = req.body[key];
-                condition.$and.push(tempCond)
-                    //condition[key] = obj[key];
-            }
-        });
-        if (condition.$and.length == 0) {
-            delete condition.$or;
-        }
-        console.log("condition==>" + JSON.stringify(condition))
-        createNewAds.paginate(condition, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Result shown successfully."
+                console.log("ads-->>", adsArray)
+                createNewAds.paginate({ _id: { $in: adsArray }, status: { $in: status } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "Please enter correct adId." }); } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: 'Success'
+                        })
+
+                    }
+
                 })
             }
+
+        })
+    },
+
+    "particularPageCashAdsFilter": function(req, res) {
+        var status = req.body.status;
+        createNewAds.find({ pageId: req.body.pageId, adsType: 'cash' }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId." }); } else {
+                var adsArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    adsArray.push(result[i]._id)
+                }
+                console.log("ads-->>", adsArray)
+                createNewAds.paginate({ _id: { $in: adsArray }, status: { $in: status } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "Please enter correct adId." }); } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: 'Success'
+                        })
+
+                    }
+
+                })
+            }
+
         })
     },
 
@@ -942,23 +992,36 @@ module.exports = {
             }
         })
     },
-    // { $and: [data] }
 
     "couponGiftsFilter": function(req, res) {
         var userId = req.body.userId;
         var status = req.body.couponStatus;
         var array = [];
-        User.findOne({ _id: userId }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$coupon" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                for (i = 0; i < result.coupon.length; i++) {
-                    array.push(result.coupon[i].adId)
+                var userArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i]._id == userId) {
+                        userArray.push(result[i]._id)
+                    }
                 }
-                createNewAds.find({ _id: { $in: array }, couponStatus: { $in: status } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
-                        res.send({
-                            result: result1,
-                            responseCode: 200,
-                            responseMessage: "result show successfully."
+                User.aggregate({ $unwind: "$coupon" }, { $match: { $and: [{ _id: { $in: userArray }, 'coupon.couponStatus': { $in: status }, 'coupon.status': 'ACTIVE' }] } }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
+                        User.populate(result1, {
+                            path: 'coupon.pageId',
+                            model: 'createNewPage',
+                            select: 'pageName'
+                        }, function(err, result2) {
+                            User.populate(result1, {
+                                path: 'coupon.adId',
+                                model: 'createNewAds'
+                            }, function(err, result3) {
+                                res.send({
+                                    result: result3,
+                                    responseCode: 200,
+                                    responseMessage: "result show successfully."
+                                })
+                            })
                         })
                     }
                 })

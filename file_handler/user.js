@@ -610,12 +610,12 @@ module.exports = {
     //API for Change Password
     "changePassword": function(req, res) {
         User.findOne({ _id: req.body.userId }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ response_code: 404, response_message: "User doesn't exist." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseCode: "User doesn't exist." }); } else {
                 var oldpassword = req.body.oldpass;
                 if (result.password != oldpassword) {
                     res.send({
-                        response_code: 401,
-                        response_message: "Old password doesn't match."
+                        responseCode: 401,
+                        responseCode: "Old password doesn't match."
                     });
                 } else {
                     var password = req.body.newpass;
@@ -633,36 +633,39 @@ module.exports = {
     //API for user Profile
     "userProfile": function(req, res) {
         User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Profile data show successfully."
-            });
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Profile data show successfully."
+                });
+            }
         })
     },
 
     //API for user Details
     "listOfAllAdvertiser": function(req, res) {
         User.find({ type: 'Advertiser' }, avoid).exec(function(err, result) {
-            if (err) throw err;
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Show data successfully."
-            });
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Show data successfully."
+                });
+            }
         })
     },
 
     //API for user Profile
     "detailsOfAdvertiser": function(req, res) {
         User.findOne({ _id: req.params.id }, avoid).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Profile data show successfully."
-            });
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Profile data show successfully."
+                });
+            }
         })
     },
 
@@ -1330,7 +1333,13 @@ module.exports = {
 
     "chatHistory": function(req, res, next) {
         console.log('everything-----chatHistorychatHistorychatHistorys-------' + JSON.stringify(req.body));
-        chat.paginate({ $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }] }, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
+        var condition;
+        if (req.body.pageId) {
+            condition = { $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId, pageId: req.body.pageId }, { senderId: req.body.receiverId, receiverId: req.body.senderId, pageId: req.body.pageId }] }
+        } else {
+            condition = { $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }] }
+        }
+        chat.paginate(condition, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
             if (!results.docs.length) {
                 res.send({
                     result: results,
@@ -1347,8 +1356,13 @@ module.exports = {
         });
     },
 
-
     "onlineUserList": function(req, res) {
+        var condition;
+        if (req.body.pageId) {
+            condition = { $or: [{ senderId: req.body.userId, pageId: req.body.pageId }, { receiverId: req.body.userId, pageId: req.body.pageId }] }
+        } else {
+            condition = { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
+        }
         chat.aggregate(
             [{
                 $match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
@@ -1780,7 +1794,7 @@ module.exports = {
                             createNewAds.findOneAndUpdate({ _id: adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
 
-                                    User.findOneAndUpdate({ 'coupon._id': senderCouponId }, { $set: { "coupon.$.status": "SEND" } }, { new: true }).exec(function(err, result3) {
+                                    User.findOneAndUpdate({ 'coupon._id': senderCouponId }, { $set: { "coupon.$.status": "SEND" }, $inc: { gifts: -1 } }, { new: true }).exec(function(err, result3) {
                                         console.log("result3--->>", result3)
                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                                             for (i = 0; i < result3.coupon.length; i++) {
@@ -1793,7 +1807,7 @@ module.exports = {
                                                 }
                                             }
                                             console.log("couponAdId--->>>", couponAdId)
-                                            User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } } }, { new: true }).exec(function(err, result4) {
+                                            User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } }, $inc: { gifts: 1 } }, { new: true }).exec(function(err, result4) {
                                                 console.log("result4--->>>", result4)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                             })
@@ -1816,7 +1830,7 @@ module.exports = {
                         createNewAds.findOneAndUpdate({ _id: adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
 
-                                User.findOneAndUpdate({ 'coupon._id': senderCouponId }, { $set: { "coupon.$.status": "SEND" } }, { new: true }).exec(function(err, result3) {
+                                User.findOneAndUpdate({ 'coupon._id': senderCouponId }, { $set: { "coupon.$.status": "SEND" }, $inc: { gifts: -1 } }, { new: true }).exec(function(err, result3) {
                                     console.log("result3--->>", result3)
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                                         for (i = 0; i < result3.coupon.length; i++) {
@@ -1828,7 +1842,7 @@ module.exports = {
                                                 var type = "SENDBYFOLLOWER";
                                             }
                                         }
-                                        User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } } }, { new: true }).exec(function(err, result4) {
+                                        User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } }, $inc: { gifts: 1 } }, { new: true }).exec(function(err, result4) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                         })
                                     }
@@ -2161,21 +2175,22 @@ module.exports = {
 
 
 
-cron.schedule('12 * * * *', function() {
-
-    User.find({ 'coupon.couponStatus': "valid" }).exec(function(err, result) {
+cron.schedule('*/2 * * * *', function() {
+    User.find({ 'coupon.couponStatus': "VALID" }).exec(function(err, result) {
         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
         //  else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); }
         else {
+            console.log("<<--else-->>")
             var array = [];
             var array1 = [];
             var startTime = new Date().toUTCString();
             var h = new Date(new Date(startTime).setHours(00)).toUTCString();
             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
             var currentTime = Date.now(m)
+            console.log("<<--currentTime-->>", currentTime)
             for (var i = 0; i < result.length; i++) {
                 for (var j = 0; j < result[i].coupon.length; j++) {
-                    if (currentTime >= Math.round(result[i].coupon[j].expirationTime)) {
+                    if (currentTime >= new Date(result[i].coupon[j].expirationTime)) {
                         array.push(result[i].coupon[j]._id);
                         array1.push(result[i].coupon[j].adId)
                     } else {

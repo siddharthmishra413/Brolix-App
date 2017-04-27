@@ -33,7 +33,6 @@ console.log(cities["something else"]) // undefined
 
 module.exports = {
     "login": function(req, res) {
-        console.log("request-->>" + JSON.stringify(req.body))
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
             User.findOne({
@@ -42,17 +41,14 @@ module.exports = {
                 $or: [{ 'type': 'ADMIN' }, { 'type': 'SYSTEMADMIN' }],
                 status: 'ACTIVE'
             }).exec(function(err, result) {
-                console.log("result-->>", result)
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
                     res.send({
                         responseCode: 404,
                         responseMessage: "The email address that you've entered doesn't match any account."
                     });
                 } else {
-                    console.log("2")
                         // sets a cookie with the user's info
                     req.session.user = result;
-                    console.log("request-->>", req.session.user)
                     res.send({
                         responseCode: 200,
                         responseMessage: "Login successfully."
@@ -456,7 +452,6 @@ module.exports = {
 
     "totalSoldUpgradeCardFilter": function(req, res, query) {
         console.log(query.length)
-        console.log("query===>" + JSON.stringify(query))
         if (!(query.length == 1)) {
             console.log("query")
             var updateData = query;
@@ -483,7 +478,6 @@ module.exports = {
 
     "totalSoldLuckCard": function(req, res, query) {
         console.log(query.length)
-        console.log("query===>" + JSON.stringify(query))
         if (!(query.length == 1)) {
             console.log("query")
             var updateData = query;
@@ -527,7 +521,6 @@ module.exports = {
 
     "totalSoldLuckCardFilter": function(req, res, query) {
         console.log(query.length)
-        console.log("query===>" + JSON.stringify(query))
         if (!(query.length == 1)) {
             console.log("query")
             var updateData = query;
@@ -3091,7 +3084,7 @@ module.exports = {
     },
 
     "showPageName": function(req, res) {
-        createNewPage.find({ status: 'ACTIVE' }, 'pageName').exec(function(err, result) {
+        createNewPage.find({ status: 'ACTIVE' }, 'pageName category subCategory').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: "All page with name shown successfully" })
             }
@@ -3667,7 +3660,7 @@ module.exports = {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Profile update successfully."
+                    responseMessage: "Profile updated successfully."
                 });
             }
         })
