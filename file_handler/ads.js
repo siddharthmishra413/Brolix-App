@@ -11,6 +11,8 @@ var upload = multer({ dest: 'uploads/' })
 var fs = require('fs');
 var waterfall = require('async-waterfall');
 var multiparty = require('multiparty');
+var Views = require("./model/views");
+
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
     api_key: '188884977577618',
@@ -1303,7 +1305,341 @@ module.exports = {
                 })
             }
         ])
-    }
+    },
+
+      "adsViewClick": function(req, res) {
+        var startTime = new Date(req.body.date).toUTCString();
+        var endTimeHour = req.body.date + 86399000;
+        var endTime = new Date(endTimeHour).toUTCString();
+        console.log(startTime);
+        console.log(endTime)
+
+        var details = req.body;
+        var data = req.body.click;
+
+        switch (data) {
+            case 'AdTag':
+                var updateData = { $inc: { AdTag: 1 } };
+                details.AdTag = 1;
+                break;
+            case 'socialShare':
+                var updateData = { $inc: { socialShare: 1 } };
+                details.socialShare = 1;
+                break;
+            case 'AdFollowers':
+                var updateData = { $inc: { AdFollowers: 1 } };
+                details.AdFollowers = 1;
+                break;
+            case 'useLuckCard':
+                var updateData = { $inc: { useLuckCard: 1 } };
+                details.useLuckCard = 1;
+                break;
+            case 'AdReport':
+                var updateData = { $inc: { AdReport: 1 } };
+                details.AdReport = 1;
+                break;
+            case 'GameDownloaded':
+                var updateData = { $inc: { GameDownloaded: 1 } };
+                details.GameDownloaded = 1;
+            break;
+        }
+
+        Views.findOne({ adId: req.body.adId, date: { $gte: startTime, $lte: endTime } }, function(err, result) {
+            console.log("views r3sult==>>" + result)
+            if (err) {
+                res.send({
+                    result: err,
+                    responseCode: 302,
+                    responseMessage: "error."
+                });
+            } else if (!result) {
+                saveData = 1;
+                details.date = startTime;
+                var views = Views(details);
+                views.save(function(err, pageRes) {
+                    res.send({
+                        result: pageRes,
+                        responseCode: 200,
+                        responseMessage: "Successfully update clicks."
+                    });
+                })
+
+            } else {
+                Views.findOneAndUpdate({ _id: result._id }, updateData, { new: true }).exec(function(err, pageRes) {
+                    if (err) {
+                        res.send({
+                            result: err,
+                            responseCode: 302,
+                            responseMessage: "error."
+                        });
+                    } else if (!result) {
+                        res.send({
+                            result: pageRes,
+                            responseCode: 404,
+                            responseMessage: "Successfully update clicks."
+                        });
+                    } else {
+                        res.send({
+                            result: pageRes,
+                            responseCode: 200,
+                            responseMessage: "Successfully update clicks."
+                        });
+                    }
+                })
+            }
+        })
+    },
+
+    "adStatistics": function(req, res) {
+        var queryCondition = {$match :{$and: [{date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } },{adId: req.body.adId}] }}
+         var queryConditionPage = {$match :{$and: [{date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } },{pageId: req.body.pageId}] }}
+        console.log("queryCondition" + JSON.stringify(queryCondition))
+        waterfall([
+            function(callback){
+                Views.aggregate([queryCondition,{
+                    $group: {
+                        _id: null,
+                        pageView:{ $sum: 0 },
+                        viewAds: { $sum: 0 },
+                        AdTag: { $sum: "$AdTag" },
+                        socialShare: { $sum: "$socialShare" },
+                        AdFollowers: { $sum: "$AdFollowers" },
+                        useLuckCard: { $sum: "$useLuckCard" },
+                        AdReport: { $sum: "$AdReport" },
+                        GameDownloaded: { $sum: "$GameDownloaded" }
+                    }
+                }]).exec(function(err, result) {
+                    if (err) {
+                        res.send({
+                            result: err,
+                            responseCode: 404,
+                            responseMessage: "error."
+                        });
+                    } else if (result.length == 0) {
+                         var data = [{
+                            pageView: 0,
+                            viewAds: 0,
+                            AdTag: 0,
+                            socialShare: 0,
+                            AdFollowers: 0,
+                            useLuckCard: 0,
+                            AdReport: 0,
+                            GameDownloaded: 0
+                        }]
+                        callback(null, data)
+                    }
+                    else{
+                           callback(null, result)
+                    }
+                })
+            },
+            function(AdResult, callback){
+                Views.aggregate([queryConditionPage,{
+                    $group: {
+                        _id: null,
+                        pageView:  {$sum: "$pageView" },
+                        viewAds: {$sum: "$viewAds" }              
+                    }
+                }]).exec(function(err, result) {
+                    console.log("AdResult",AdResult)
+                    console.log("result",result)
+                    if (err) {
+                        res.send({
+                            result: err,
+                            responseCode: 404,
+                            responseMessage: "error."
+                        });
+                    } else if (result.length == 0) {
+                        var data = [{
+                            pageView: 0,
+                            viewAds: 0                           
+                        }]
+                    }
+                    else{
+                        AdResult[0].pageView = result[0].pageView;
+                        AdResult[0].viewAds = result[0].viewAds;
+                        res.send({
+                            result: AdResult,
+                            responseCode: 200,
+                            responseMessage: "Success."
+                        });
+                    }
+                })
+            }
+        ])
+    },
+
+     "adStatisticsFilterClick": function(req, res) { 
+
+       // var details = req.body;
+        var data = req.body.click;
+
+        switch (data) {
+            case 'pageView':
+                var updateData = {$match:{pageId: req.body.pageId}};
+                var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        pageView:{ $sum: "$pageView" },
+                        viewAds:{ $sum: 0},
+                        AdTag:{ $sum: 0 },
+                        socialShare:{ $sum: 0 },
+                        AdFollowers:{ $sum: 0},
+                        useLuckCard:{ $sum: 0 },
+                        AdReport:{ $sum: 0 },
+                        GameDownloaded:{ $sum: 0 }
+                    }}
+                break;
+            case 'viewAds':
+                var updateData = {$match:{pageId: req.body.pageId}};
+                var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        pageView:{ $sum: 0},
+                        viewAds:{ $sum: "$viewAds"},
+                        AdTag:{ $sum: 0 },
+                        socialShare:{ $sum: 0 },
+                        AdFollowers:{ $sum: 0},
+                        useLuckCard:{ $sum: 0 },
+                        AdReport:{ $sum: 0 },
+                        GameDownloaded:{ $sum: 0 }
+                    }}
+                break;
+            case 'AdTag':
+                 var updateData = {$match:{adId: req.body.adId}};
+                 var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        pageView:{ $sum: 0},
+                        viewAds:{ $sum: 0},
+                        AdTag:{ $sum: "$AdTag" },
+                        socialShare:{ $sum: 0 },
+                        AdFollowers:{ $sum: 0},
+                        useLuckCard:{ $sum: 0 },
+                        AdReport:{ $sum: 0 },
+                        GameDownloaded:{ $sum: 0 }
+                    }}
+                break;
+            case 'socialShare':
+                var updateData = {$match:{adId: req.body.adId}};
+                 var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        pageView:{ $sum: 0},
+                        viewAds:{ $sum: 0},
+                        AdTag:{ $sum: 0 },
+                        socialShare:{ $sum: "$socialShare"},
+                        AdFollowers:{ $sum: 0},
+                        useLuckCard:{ $sum: 0 },
+                        AdReport:{ $sum: 0 },
+                        GameDownloaded:{ $sum: 0 }
+                    }}
+                break;
+            case 'AdFollowers':
+                var updateData = {$match:{adId: req.body.adId}};
+                  var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        pageView:{ $sum: 0},
+                        viewAds:{ $sum: 0},
+                        AdTag:{ $sum: 0 },
+                        socialShare:{ $sum: 0 },
+                        AdFollowers:{ $sum: "$AdFollowers"},
+                        useLuckCard:{ $sum: 0 },
+                        AdReport:{ $sum: 0 },
+                        GameDownloaded:{ $sum: 0 }
+                    }}
+                break;
+            case 'useLuckCard':
+                var updateData = {$match:{adId: req.body.adId}};
+                  var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        pageView:{ $sum: 0},
+                        viewAds:{ $sum: 0},
+                        AdTag:{ $sum: 0 },
+                        socialShare:{ $sum: 0 },
+                        AdFollowers:{ $sum: 0},
+                        useLuckCard:{ $sum: "$useLuckCard"},
+                        AdReport:{ $sum: 0 },
+                        GameDownloaded:{ $sum: 0 }
+                    }}
+                break;
+            case 'AdReport':
+                var updateData = {$match:{adId: req.body.adId}};
+                var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        pageView:{ $sum: 0},
+                        viewAds:{ $sum: 0},
+                        AdTag:{ $sum: 0 },
+                        socialShare:{ $sum: 0 },
+                        AdFollowers:{ $sum: 0},
+                        useLuckCard:{ $sum: 0 },
+                        AdReport:{ $sum: "$AdReport"},
+                        GameDownloaded:{ $sum: 0 }
+                    }}
+                break;
+            case 'GameDownloaded':
+                var updateData = {$match:{adId: req.body.adId}};
+                var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        pageView:{ $sum: 0},
+                        viewAds:{ $sum: 0},
+                        AdTag:{ $sum: 0 },
+                        socialShare:{ $sum: 0 },
+                        AdFollowers:{ $sum: 0},
+                        useLuckCard:{ $sum: 0 },
+                        AdReport:{ $sum: 0 },
+                        GameDownloaded:{ $sum: "$GameDownloaded" }
+                    }}
+            break;
+        }
+
+        var newDate = new Date(req.body.date).getFullYear();
+
+
+        Views.aggregate(updateData,groupCond, 
+              function (err, results){
+                //var yearData = 2017
+                var data =results.filter(results=>results._id.year == newDate)
+                results =data;
+                var array = [];
+                var flag = false;
+                for(var i=1; i<=12; i++){
+                    console.log("Dfdgf",i)
+                    for(var j = 0; j<results.length; j++){
+                        if(i == results[j]._id.month){
+                            console.log("value of j==>",j)
+                            flag = true;
+                            break;
+                        }
+                        else{
+                            flag = false;
+                        }
+                    }
+                    if(flag==true){
+                        array.push(results[j])
+                    }
+                    else{
+                        var data ={
+                                _id:
+                                {
+                                    year: 2017,
+                                    month: i
+                                },
+                                pageView:0,
+                                viewAds: 0,
+                                AdTag: 0,
+                                socialShare: 0,
+                                AdFollowers: 0,
+                                useLuckCard: 0,
+                                AdReport: 0,
+                                GameDownloaded: 0
+                            }
+                        array.push(data)
+                    }
+                }
+                res.send({
+                    result: array,
+                    responseCode: 200,
+                    responseMessage: "Success."
+                })
+            });
+    },
 
 
 }
