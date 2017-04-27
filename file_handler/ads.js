@@ -25,9 +25,11 @@ module.exports = {
 
     "createAds": function(req, res) {
         if (req.body.adsType == "coupon") {
+            if(!req.body.couponExpiryDate){ res.send({responseCode:400, responseMessage:'Please enter coupon expiry date'});}
+            else{
             var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
             req.body.couponCode = couponCode;
-            req.body.viewerLenght = 2;
+            req.body.viewerLenght = 20;
             req.body.couponStatus = 'VALID';
             var Ads = new createNewAds(req.body);
             Ads.save(function(err, result) {
@@ -39,6 +41,7 @@ module.exports = {
                     })
                 }
             })
+            }
         } else {
             User.findOne({ _id: req.body.userId }).exec(function(err, result) {
                 console.log("result-->>", result)
@@ -46,7 +49,7 @@ module.exports = {
                     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                 } else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
-                        req.body.viewerLenght = 2;
+                        req.body.viewerLenght = 20;
                         req.body.cashStatus = 'PENDING';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
@@ -565,7 +568,48 @@ module.exports = {
 
     "viewAd": function(req, res) { //req.body.userId, adId
         var userId = req.body.userId;
-        waterfall([          
+        waterfall([      
+            function(callback) {
+                createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
+                   
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                        User.findOne({ _id: userId }).exec(function(err, result1) {
+                           
+                            if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                                var age = result1.dob;
+                                console.log("dob-->>",age)
+                                
+                                function _calculateAge(birthday) { // birthday is a date
+                                var ageDifMs = Date.now() - birthday.getTime();
+                                var ageDate = new Date(ageDifMs); // miliseconds from epoch
+                                return Math.abs(ageDate.getUTCFullYear() - 1970);
+                            }
+                                var myAge = _calculateAge(new Date(age))
+                                 console.log("myAge-->",myAge)
+                                 
+                                if(result.gender != 'Both'){
+                                    console.log("in if")
+                                    if(result.gender != result1.gender){
+                                        {res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
+                                    }
+                                    else{
+                                        if(age>=result.ageFrom){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
+                                        else if(age<=result.ageTo){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
+                                        else{
+                                            
+                                              callback(null)
+                                            
+                                        }                                       
+                                        
+                                    }
+                                }                               
+                               
+                            }
+                        })
+                    }
+                })
+
+            },
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); }

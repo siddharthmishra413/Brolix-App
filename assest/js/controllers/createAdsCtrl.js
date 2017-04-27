@@ -760,6 +760,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         musicFileName:$scope.createAds.audioUrl,
         slideShow:slideShow,
         brolixFees:$scope.createAds.brolixFees,
+        cashAdPrize:$scope.createAds.winnerGift,
   
     }
     console.log("All data -->>"+JSON.stringify(modifyData));

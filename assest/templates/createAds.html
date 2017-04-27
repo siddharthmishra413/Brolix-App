@@ -132,53 +132,55 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Add New Page Step4</h3>
                 </div>
-                <div class="panel-body">
-                    <div class="login-block">
-                        <div class="video-container new-video1">
-                            <div class="video-part text-center">
-                                <video width="720" height="240" controls src={{createAds.vedioUrl}}>
-                                  Your browser does not support the video tag.
-                                </video>
-                                <p class="global-text">Please upload the advertisement cover, it will appear in home page.</p>
-                                <div class="cover-image">
-                                    <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
-                                    <label class="fileContainer">
-                                        Choose File
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*">
-                                    </label>
-                                </div>
-                                <div class="btn2 text-center">           
-                                    <div class="form-group">
-                                        <label for="inputName" class="col-sm-2 control-label"></label>
-                                        <div class="col-sm-12">
-                                            <div class="text-center new-upload-btns">
-                                                <label class="fileContainer">
-                                                Upload Video
-                                                <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6 col-md-4 border-div uploadfile-3">
-                                            <label ng-click="clear()">{{Name}}<i ng-if="Name" style="font-size: x-large; cursor: pointer;" class="fa fa-times"></i></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="text-center cus-new-btn">
-                                            <a class="btn btn-lg btn-green" ng-click="click('promoteApp')">Promote App, Game</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="btn2 text-center col-sm-12">
-                                <a class="btn btn-lg btn-green"  ng-click="click('Step5')" >Next</a>
-                                <a class="btn btn-lg btn-green"  ng-click="click('Back4')" >Back</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	            <form class="form-block" role="form" name="vedioStep">
+	                <div class="panel-body">
+	                    <div class="login-block">
+	                        <div class="video-container new-video1">
+	                            <div class="video-part text-center">
+	                                <video width="720" height="240" controls src={{createAds.vedioUrl}} required>
+	                                  Your browser does not support the video tag.
+	                                </video>
+	                                <p class="global-text">Please upload the advertisement cover, it will appear in home page.11</p>
+	                                <div class="cover-image">
+	                                    <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
+	                                    <label class="fileContainer">
+	                                        Choose File
+	                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*" required>
+	                                    </label>
+	                                </div>
+	                                <div class="btn2 text-center">           
+	                                    <div class="form-group">
+	                                        <label for="inputName" class="col-sm-2 control-label"></label>
+	                                        <div class="col-sm-12">
+	                                            <div class="text-center new-upload-btns">
+	                                                <label class="fileContainer">
+	                                                Upload Video
+	                                                <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*" required>
+	                                                </label>
+	                                            </div>
+	                                        </div>
+	                                        <div class="col-xs-6 col-md-4 border-div uploadfile-3">
+	                                            <label ng-click="clear()">{{Name}}<i ng-if="Name" style="font-size: x-large; cursor: pointer;" class="fa fa-times"></i></label>
+	                                        </div>
+	                                    </div>
+	                                    <div class="col-sm-12">
+	                                        <div class="text-center cus-new-btn">
+	                                            <a class="btn btn-lg btn-green" ng-click="click('promoteApp')">Promote App, Game</a>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="btn2 text-center col-sm-12">
+	                                <button class="btn btn-lg btn-green" ng-disabled="createAds.vedioUrl == null && createAds.advertismentCover == null" ng-click="click('Step5')" >Next</button>
+	                                <button class="btn btn-lg btn-green"  ng-click="click('Back4')" >Back</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>   
+	        </div>
+	    </div>
+	</div>   
 </div>
 
 <div class="container" ng-if="Step5">
@@ -188,6 +190,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Add New Page Step5</h3>
                 </div>
+                <form class="form-block" role="form" name="vedioStep">
                 <div class="panel-body">
                     <div class="login-block">
                         <div class="terms-Condition cus-step-6">
@@ -347,6 +350,7 @@
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
