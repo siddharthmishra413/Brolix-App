@@ -333,38 +333,31 @@ module.exports = {
         });
     },
 
-    "listOfAllAds": function(req, res) { // for a single user
-        if (req.params.type == "all") {
-            var data = { pageId: req.params.id }
+    "listOfAllAds": function(req, res) {
+        if (req.params.type == 'all') {
+            createNewAds.paginate({ pageId: req.params.pageId }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "All ads shown cash type and coupon type."
+                    });
+                }
+            })
         } else {
-            var data = { pageId: req.params.id, adsType: req.params.type }
+            type = req.params.type;
+            createNewAds.paginate({ pageId: req.params.pageId, adsType: type }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "All ads shown cash type and coupon type."
+                    });
+                }
+            });
         }
-        createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                createNewPage.findOne({ _id: req.params.id }).exec(function(err, results) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!results) {
-                        createNewPage.findOneAndUpdate({ _id: req.params.id }, { $inc: { pageView: 1 } }).exec(function(err, pageRes) {
-                            res.send({
-                                // couponType: couponType,
-                                // cashType: cashType,
-                                result: result,
-                                responseCode: 200,
-                                responseMessage: "All ads shown cash type and coupon type."
-                            });
-                        })
-                    } else {
-                        res.send({
-                            // couponType: couponType,
-                            // cashType: cashType,
-                            result: result,
-                            responseCode: 200,
-                            responseMessage: "All ads shown cash type and coupon type."
-                        });
-                    }
-                })
-            }
-        });
     },
+
 
     "uploads": function(req, res) {
         console.log(req.files);
@@ -426,10 +419,9 @@ module.exports = {
                                     if (result.gender != result1.gender) {
                                         { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
                                     } else {
-                                        console.log("ageFrom--->>",result.ageFrom)
-                                        console.log("ageTo--->>",result.ageTo)
-                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); }
-                                        else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
+                                        console.log("ageFrom--->>", result.ageFrom)
+                                        console.log("ageTo--->>", result.ageTo)
+                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
                                             var state = result.whoWillSeeYourAdd.state;
                                             var city = result.whoWillSeeYourAdd.city;
