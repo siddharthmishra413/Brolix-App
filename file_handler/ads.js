@@ -341,12 +341,8 @@ module.exports = {
         }
         createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                createNewPage.findOne({
-                    _id: req.params.id,
-                    userId: req.params.userId
-                }).exec(function(err, results) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) }
-                    if (!results) {
+                createNewPage.findOne({ _id: req.params.id }).exec(function(err, results) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!results) {
                         createNewPage.findOneAndUpdate({ _id: req.params.id }, { $inc: { pageView: 1 } }).exec(function(err, pageRes) {
                             res.send({
                                 // couponType: couponType,
