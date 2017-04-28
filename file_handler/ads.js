@@ -25,22 +25,21 @@ module.exports = {
 
     "createAds": function(req, res) {
         if (req.body.adsType == "coupon") {
-            if(!req.body.couponExpiryDate){ res.send({responseCode:400, responseMessage:'Please enter coupon expiry date'});}
-            else{
-            var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
-            req.body.couponCode = couponCode;
-            req.body.viewerLenght = 20;
-            req.body.couponStatus = 'VALID';
-            var Ads = new createNewAds(req.body);
-            Ads.save(function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
-                    createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
-                        }
-                    })
-                }
-            })
+            if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else {
+                var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
+                req.body.couponCode = couponCode;
+                req.body.viewerLenght = 2;
+                req.body.couponStatus = 'VALID';
+                var Ads = new createNewAds(req.body);
+                Ads.save(function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
+                        createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
+                            }
+                        })
+                    }
+                })
             }
         } else {
             User.findOne({ _id: req.body.userId }).exec(function(err, result) {
@@ -49,7 +48,7 @@ module.exports = {
                     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                 } else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
-                        req.body.viewerLenght = 20;
+                        req.body.viewerLenght = 2;
                         req.body.cashStatus = 'PENDING';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
@@ -403,218 +402,49 @@ module.exports = {
         })
     },
 
-    // "viewAd": function(req, res) { //req.body.userId, adId
-    //     var userId = req.body.userId;
-    //     waterfall([
-    //         function(callback) {
-    //             createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
-    //                 if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrong." }); } else if (result.winners.length != 0) {res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } 
-    //                 var randomIndex = [];
-    //                 var raffleCount = result.raffleCount;
-    //                 var viewerLenght = result.viewerLenght;
-    //                 var luckUsers = result.luckCardListObject;
-    //                 var numberOfWinners = result.numberOfWinners;
-
-    //                 var mySet = new Set(raffleCount);
-    //                 var has = mySet.has(userId)
-    //                 if (has) { res.send({ responseCode: 302, responseMessage: "You have already join the raffle." }) }
-    //                 // else if (!has) raffleCount.push(userId);
-    //                 else if (!has) {
-    //                     raffleCount.push(userId);
-    //                     User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, { new: true }, function(err, result1) {
-    //                         console.log("raffleCount--->>>" + raffleCount.length);
-    //                     })
-
-    //                     if (raffleCount.length == viewerLenght) {
-    //                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
-    //                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
-    //                                 console.log("success-->>", success)
-    //                                 var winnerCount = success.numberOfWinners;
-    //                                 var pageId = success.pageId;
-    //                                 console.log("winnerCount-->>", winnerCount)
-    //                                 createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +winnerCount } }, { new: true }).exec(function(err, result2) {
-    //                                     console.log("result2-->", result2)
-    //                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
-    //                                         console.log("in else")
-    //                                     }
-    //                                 })
-    //                             }
-    //                         })
-    //                         console.log("raffleCount--111->>>" + raffleCount.length);
-    //                         for (var n = 0; n < luckUsers.length; n++) {
-    //                             for (var m = 0; m < luckUsers[n].chances; m++) {
-    //                                 raffleCount.push(luckUsers[n].userId)
-    //                             }
-    //                         }
-    //                         for (var i = 0; i < numberOfWinners; i++) {
-    //                             var index = Math.floor(Math.random() * raffleCount.length);
-    //                             if (randomIndex.filter(randomIndex => randomIndex != raffleCount[index])) {
-    //                                 randomIndex.push(raffleCount[index])
-    //                             }
-    //                         }
-    //                         callback(null, randomIndex, result.cashAdPrize, result.couponCode, result.hiddenGifts)
-    //                     } else {
-
-    //                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
-    //                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22." }); } else {
-    //                                 res.send({
-    //                                     responseCode: 200,
-    //                                     responseMessage: "You have successfully join the raffle."
-    //                                 })
-    //                             }
-    //                         });
-    //                     }
-    //                 }
-    //             })
-    //         },
-    //         function(winners, cashPrize, couponCode, hiddenGifts, callback) {
-    //             console.log("winners----->>>>", winners)
-    //             createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }).lean().exec(function(err, result) {
-    //                 if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
-
-    //                     var date = new Date();
-
-    //                     createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date } }, function(err, result3) {
-    //                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
-
-    //                             if (result3.adsType == "cash") {
-    //                                 var pageId = result3.pageId;
-
-    //                                 var data = {
-    //                                     cash: cashPrize,
-    //                                     adId: req.body.adId,
-    //                                     pageId: pageId
-    //                                 }
-    //                                 User.update({ _id: { $in: winners } }, { $push: { cashPrize: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
-
-    //                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
-
-    //                                         // functions.iOS_notification();
-    //                                         // functions.android_notification();
-
-    //                                         res.send({
-    //                                             responseCode: 200,
-    //                                             responseMessage: "Raffle is over winner decided."
-    //                                                 //result: result 
-    //                                         })
-    //                                     }
-    //                                 })
-
-    //                             } else {
-    //                                 var startTime = new Date().toUTCString();
-    //                                 var h = new Date(new Date(startTime).setHours(00)).toUTCString();
-    //                                 var m = new Date(new Date(h).setMinutes(00)).toUTCString();
-    //                                 var s = Date.now(m)
-    //                                 var pageId = result3.pageId;
-    //                                 var coupanAge = result3.couponExpiryDate;
-    //                                 var actualTime = parseInt(s) + parseInt(coupanAge);
-    //                                 var data = {
-    //                                     couponCode: couponCode,
-    //                                     expirationTime: actualTime,
-    //                                     adId: req.body.adId,
-    //                                     pageId: pageId,
-    //                                     type: "WINNER"
-    //                                 }
-    //                                 console.log("data---->>>>", data)
-    //                                 if (hiddenGifts.length != 0) {
-    //                                     console.log("if")
-    //                                     var hiddenCode = hiddenGifts;
-    //                                     var count = 0;
-    //                                     for (var i = 0; i < hiddenCode.length; i++) {
-    //                                         var data1 = {
-    //                                             hiddenCode: hiddenCode[i],
-    //                                             adId: req.body.adId,
-    //                                             pageId: pageId
-    //                                         }
-    //                                         User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, hiddenGifts: data1 }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
-    //                                             console.log("4")
-    //                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-    //                                                 count += i;
-    //                                                 if ((i * i) == count) {
-    //                                                     res.send({
-    //                                                         responseCode: 200,
-    //                                                         responseMessage: "Raffle is over winner decided."
-    //                                                             //result: result
-    //                                                     })
-    //                                                 }
-    //                                             }
-    //                                         })
-    //                                     }
-
-    //                                 } else {
-    //                                     console.log("else")
-    //                                     User.update({ _id: { $in: winners } }, { $push: { coupon: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
-    //                                         console.log("4")
-    //                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-    //                                             res.send({
-    //                                                 responseCode: 200,
-    //                                                 responseMessage: "Raffle is over winner decided."
-    //                                                     //result: result
-    //                                             })
-    //                                         }
-    //                                     })
-    //                                 }
-    //                             }
-    //                         }
-    //                     });
-    //                 }
-    //             })
-    //         }
-    //     ])
-    // },
-
     "viewAd": function(req, res) { //req.body.userId, adId
         var userId = req.body.userId;
-        waterfall([      
+        waterfall([
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
-                   
+
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                         User.findOne({ _id: userId }).exec(function(err, result1) {
-                           
+
                             if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                                 var age = result1.dob;
-                                console.log("dob-->>",age)
+                                console.log("dob-->>", age)
                                 var country1 = result.whoWillSeeYourAdd.country;
-                                  console.log("adgahda-->>",country1)
-                                
+                                console.log("adgahda-->>", country1)
+
                                 function _calculateAge(birthday) { // birthday is a date
-                                var ageDifMs = Date.now() - birthday.getTime();
-                                var ageDate = new Date(ageDifMs); // miliseconds from epoch
-                                return Math.abs(ageDate.getUTCFullYear() - 1970);
-                            }
+                                    var ageDifMs = Date.now() - birthday.getTime();
+                                    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+                                    return Math.abs(ageDate.getUTCFullYear() - 1970);
+                                }
                                 var myAge = _calculateAge(new Date(age))
-                                 console.log("myAge-->",myAge)
-                                 
-                                if(result.gender != 'Both'){
+                                console.log("myAge-->", myAge)
+
+                                if (result.gender != 'Both') {
                                     console.log("in if")
-                                    if(result.gender != result1.gender){
-                                        {res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
-                                    }
-                                    else{
-                                        if(age<result.ageFrom){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
-                                        else if(age>result.ageTo){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
-                                        else{
+                                    if (result.gender != result1.gender) {
+                                        { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
+                                    } else {
+                                        if (age < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit' }); } else if (age > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
-                                             var state = result.whoWillSeeYourAdd.state;
-                                             var city = result.whoWillSeeYourAdd.city;
-                                            
-                                          if(result1.country != country){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
-                                             else if(result1.state != state){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
-                                            else if(result1.city != city){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
-                                            else{
-                                              callback(null)
-                                            }                                            
-                                        }                                       
-                                        
+                                            var state = result.whoWillSeeYourAdd.state;
+                                            var city = result.whoWillSeeYourAdd.city;
+
+                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different state.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
+                                                callback(null)
+                                            }
+                                        }
                                     }
-                                }                               
-                               
+                                }
                             }
                         })
                     }
                 })
-
             },
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
@@ -807,7 +637,6 @@ module.exports = {
         }
     },
 
-
     "couponWinners": function(req, res) {
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
@@ -830,8 +659,6 @@ module.exports = {
                             model: 'createNewAds'
                         }, function(err, result2) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
-                                // var obj = result[0].coupon;
-                                // var data = obj.filter(obj => obj.type == "ACTIVE");
                                 res.send({
                                     docs: result2,
                                     count: count,
@@ -1357,7 +1184,7 @@ module.exports = {
         ])
     },
 
-      "adsViewClick": function(req, res) {
+    "adsViewClick": function(req, res) {
         var startTime = new Date(req.body.date).toUTCString();
         var endTimeHour = req.body.date + 86399000;
         var endTime = new Date(endTimeHour).toUTCString();
@@ -1391,7 +1218,7 @@ module.exports = {
             case 'GameDownloaded':
                 var updateData = { $inc: { GameDownloaded: 1 } };
                 details.GameDownloaded = 1;
-            break;
+                break;
         }
 
         Views.findOne({ adId: req.body.adId, date: { $gte: startTime, $lte: endTime } }, function(err, result) {
@@ -1441,15 +1268,15 @@ module.exports = {
     },
 
     "adStatistics": function(req, res) {
-        var queryCondition = {$match :{$and: [{date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } },{adId: req.body.adId}] }}
-         var queryConditionPage = {$match :{$and: [{date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } },{pageId: req.body.pageId}] }}
+        var queryCondition = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { adId: req.body.adId }] } }
+        var queryConditionPage = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { pageId: req.body.pageId }] } }
         console.log("queryCondition" + JSON.stringify(queryCondition))
         waterfall([
-            function(callback){
-                Views.aggregate([queryCondition,{
+            function(callback) {
+                Views.aggregate([queryCondition, {
                     $group: {
                         _id: null,
-                        pageView:{ $sum: 0 },
+                        pageView: { $sum: 0 },
                         viewAds: { $sum: 0 },
                         AdTag: { $sum: "$AdTag" },
                         socialShare: { $sum: "$socialShare" },
@@ -1466,7 +1293,7 @@ module.exports = {
                             responseMessage: "error."
                         });
                     } else if (result.length == 0) {
-                         var data = [{
+                        var data = [{
                             pageView: 0,
                             viewAds: 0,
                             AdTag: 0,
@@ -1477,22 +1304,21 @@ module.exports = {
                             GameDownloaded: 0
                         }]
                         callback(null, data)
-                    }
-                    else{
-                           callback(null, result)
+                    } else {
+                        callback(null, result)
                     }
                 })
             },
-            function(AdResult, callback){
-                Views.aggregate([queryConditionPage,{
+            function(AdResult, callback) {
+                Views.aggregate([queryConditionPage, {
                     $group: {
                         _id: null,
-                        pageView:  {$sum: "$pageView" },
-                        viewAds: {$sum: "$viewAds" }              
+                        pageView: { $sum: "$pageView" },
+                        viewAds: { $sum: "$viewAds" }
                     }
                 }]).exec(function(err, result) {
-                    console.log("AdResult",AdResult)
-                    console.log("result",result)
+                    console.log("AdResult", AdResult)
+                    console.log("result", result)
                     if (err) {
                         res.send({
                             result: err,
@@ -1502,10 +1328,9 @@ module.exports = {
                     } else if (result.length == 0) {
                         var data = [{
                             pageView: 0,
-                            viewAds: 0                           
+                            viewAds: 0
                         }]
-                    }
-                    else{
+                    } else {
                         AdResult[0].pageView = result[0].pageView;
                         AdResult[0].viewAds = result[0].viewAds;
                         res.send({
@@ -1519,167 +1344,180 @@ module.exports = {
         ])
     },
 
-     "adStatisticsFilterClick": function(req, res) { 
+    "adStatisticsFilterClick": function(req, res) {
 
-       // var details = req.body;
+        // var details = req.body;
         var data = req.body.click;
 
         switch (data) {
             case 'pageView':
-                var updateData = {$match:{pageId: req.body.pageId}};
-                var groupCond = { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
-                        pageView:{ $sum: "$pageView" },
-                        viewAds:{ $sum: 0},
-                        AdTag:{ $sum: 0 },
-                        socialShare:{ $sum: 0 },
-                        AdFollowers:{ $sum: 0},
-                        useLuckCard:{ $sum: 0 },
-                        AdReport:{ $sum: 0 },
-                        GameDownloaded:{ $sum: 0 }
-                    }}
+                var updateData = { $match: { pageId: req.body.pageId } };
+                var groupCond = {
+                    $group: {
+                        _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                        pageView: { $sum: "$pageView" },
+                        viewAds: { $sum: 0 },
+                        AdTag: { $sum: 0 },
+                        socialShare: { $sum: 0 },
+                        AdFollowers: { $sum: 0 },
+                        useLuckCard: { $sum: 0 },
+                        AdReport: { $sum: 0 },
+                        GameDownloaded: { $sum: 0 }
+                    }
+                }
                 break;
             case 'viewAds':
-                var updateData = {$match:{pageId: req.body.pageId}};
-                var groupCond = { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
-                        pageView:{ $sum: 0},
-                        viewAds:{ $sum: "$viewAds"},
-                        AdTag:{ $sum: 0 },
-                        socialShare:{ $sum: 0 },
-                        AdFollowers:{ $sum: 0},
-                        useLuckCard:{ $sum: 0 },
-                        AdReport:{ $sum: 0 },
-                        GameDownloaded:{ $sum: 0 }
-                    }}
+                var updateData = { $match: { pageId: req.body.pageId } };
+                var groupCond = {
+                    $group: {
+                        _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                        pageView: { $sum: 0 },
+                        viewAds: { $sum: "$viewAds" },
+                        AdTag: { $sum: 0 },
+                        socialShare: { $sum: 0 },
+                        AdFollowers: { $sum: 0 },
+                        useLuckCard: { $sum: 0 },
+                        AdReport: { $sum: 0 },
+                        GameDownloaded: { $sum: 0 }
+                    }
+                }
                 break;
             case 'AdTag':
-                 var updateData = {$match:{adId: req.body.adId}};
-                 var groupCond = { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
-                        pageView:{ $sum: 0},
-                        viewAds:{ $sum: 0},
-                        AdTag:{ $sum: "$AdTag" },
-                        socialShare:{ $sum: 0 },
-                        AdFollowers:{ $sum: 0},
-                        useLuckCard:{ $sum: 0 },
-                        AdReport:{ $sum: 0 },
-                        GameDownloaded:{ $sum: 0 }
-                    }}
+                var updateData = { $match: { adId: req.body.adId } };
+                var groupCond = {
+                    $group: {
+                        _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                        pageView: { $sum: 0 },
+                        viewAds: { $sum: 0 },
+                        AdTag: { $sum: "$AdTag" },
+                        socialShare: { $sum: 0 },
+                        AdFollowers: { $sum: 0 },
+                        useLuckCard: { $sum: 0 },
+                        AdReport: { $sum: 0 },
+                        GameDownloaded: { $sum: 0 }
+                    }
+                }
                 break;
             case 'socialShare':
-                var updateData = {$match:{adId: req.body.adId}};
-                 var groupCond = { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
-                        pageView:{ $sum: 0},
-                        viewAds:{ $sum: 0},
-                        AdTag:{ $sum: 0 },
-                        socialShare:{ $sum: "$socialShare"},
-                        AdFollowers:{ $sum: 0},
-                        useLuckCard:{ $sum: 0 },
-                        AdReport:{ $sum: 0 },
-                        GameDownloaded:{ $sum: 0 }
-                    }}
+                var updateData = { $match: { adId: req.body.adId } };
+                var groupCond = {
+                    $group: {
+                        _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                        pageView: { $sum: 0 },
+                        viewAds: { $sum: 0 },
+                        AdTag: { $sum: 0 },
+                        socialShare: { $sum: "$socialShare" },
+                        AdFollowers: { $sum: 0 },
+                        useLuckCard: { $sum: 0 },
+                        AdReport: { $sum: 0 },
+                        GameDownloaded: { $sum: 0 }
+                    }
+                }
                 break;
             case 'AdFollowers':
-                var updateData = {$match:{adId: req.body.adId}};
-                  var groupCond = { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
-                        pageView:{ $sum: 0},
-                        viewAds:{ $sum: 0},
-                        AdTag:{ $sum: 0 },
-                        socialShare:{ $sum: 0 },
-                        AdFollowers:{ $sum: "$AdFollowers"},
-                        useLuckCard:{ $sum: 0 },
-                        AdReport:{ $sum: 0 },
-                        GameDownloaded:{ $sum: 0 }
-                    }}
+                var updateData = { $match: { adId: req.body.adId } };
+                var groupCond = {
+                    $group: {
+                        _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                        pageView: { $sum: 0 },
+                        viewAds: { $sum: 0 },
+                        AdTag: { $sum: 0 },
+                        socialShare: { $sum: 0 },
+                        AdFollowers: { $sum: "$AdFollowers" },
+                        useLuckCard: { $sum: 0 },
+                        AdReport: { $sum: 0 },
+                        GameDownloaded: { $sum: 0 }
+                    }
+                }
                 break;
             case 'useLuckCard':
-                var updateData = {$match:{adId: req.body.adId}};
-                  var groupCond = { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
-                        pageView:{ $sum: 0},
-                        viewAds:{ $sum: 0},
-                        AdTag:{ $sum: 0 },
-                        socialShare:{ $sum: 0 },
-                        AdFollowers:{ $sum: 0},
-                        useLuckCard:{ $sum: "$useLuckCard"},
-                        AdReport:{ $sum: 0 },
-                        GameDownloaded:{ $sum: 0 }
-                    }}
+                var updateData = { $match: { adId: req.body.adId } };
+                var groupCond = {
+                    $group: {
+                        _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                        pageView: { $sum: 0 },
+                        viewAds: { $sum: 0 },
+                        AdTag: { $sum: 0 },
+                        socialShare: { $sum: 0 },
+                        AdFollowers: { $sum: 0 },
+                        useLuckCard: { $sum: "$useLuckCard" },
+                        AdReport: { $sum: 0 },
+                        GameDownloaded: { $sum: 0 }
+                    }
+                }
                 break;
             case 'AdReport':
-                var updateData = {$match:{adId: req.body.adId}};
-                var groupCond = { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
-                        pageView:{ $sum: 0},
-                        viewAds:{ $sum: 0},
-                        AdTag:{ $sum: 0 },
-                        socialShare:{ $sum: 0 },
-                        AdFollowers:{ $sum: 0},
-                        useLuckCard:{ $sum: 0 },
-                        AdReport:{ $sum: "$AdReport"},
-                        GameDownloaded:{ $sum: 0 }
-                    }}
+                var updateData = { $match: { adId: req.body.adId } };
+                var groupCond = {
+                    $group: {
+                        _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                        pageView: { $sum: 0 },
+                        viewAds: { $sum: 0 },
+                        AdTag: { $sum: 0 },
+                        socialShare: { $sum: 0 },
+                        AdFollowers: { $sum: 0 },
+                        useLuckCard: { $sum: 0 },
+                        AdReport: { $sum: "$AdReport" },
+                        GameDownloaded: { $sum: 0 }
+                    }
+                }
                 break;
             case 'GameDownloaded':
-                var updateData = {$match:{adId: req.body.adId}};
-                var groupCond = { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
-                        pageView:{ $sum: 0},
-                        viewAds:{ $sum: 0},
-                        AdTag:{ $sum: 0 },
-                        socialShare:{ $sum: 0 },
-                        AdFollowers:{ $sum: 0},
-                        useLuckCard:{ $sum: 0 },
-                        AdReport:{ $sum: 0 },
-                        GameDownloaded:{ $sum: "$GameDownloaded" }
-                    }}
-            break;
+                var updateData = { $match: { adId: req.body.adId } };
+                var groupCond = {
+                    $group: {
+                        _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                        pageView: { $sum: 0 },
+                        viewAds: { $sum: 0 },
+                        AdTag: { $sum: 0 },
+                        socialShare: { $sum: 0 },
+                        AdFollowers: { $sum: 0 },
+                        useLuckCard: { $sum: 0 },
+                        AdReport: { $sum: 0 },
+                        GameDownloaded: { $sum: "$GameDownloaded" }
+                    }
+                }
+                break;
         }
 
         var newDate = new Date(req.body.date).getFullYear();
 
 
-        Views.aggregate(updateData,groupCond, 
-              function (err, results){
+        Views.aggregate(updateData, groupCond,
+            function(err, results) {
                 //var yearData = 2017
-                var data =results.filter(results=>results._id.year == newDate)
-                results =data;
+                var data = results.filter(results => results._id.year == newDate)
+                results = data;
                 var array = [];
                 var flag = false;
-                for(var i=1; i<=12; i++){
-                    console.log("Dfdgf",i)
-                    for(var j = 0; j<results.length; j++){
-                        if(i == results[j]._id.month){
-                            console.log("value of j==>",j)
+                for (var i = 1; i <= 12; i++) {
+                    console.log("Dfdgf", i)
+                    for (var j = 0; j < results.length; j++) {
+                        if (i == results[j]._id.month) {
+                            console.log("value of j==>", j)
                             flag = true;
                             break;
-                        }
-                        else{
+                        } else {
                             flag = false;
                         }
                     }
-                    if(flag==true){
+                    if (flag == true) {
                         array.push(results[j])
-                    }
-                    else{
-                        var data ={
-                                _id:
-                                {
-                                    year: 2017,
-                                    month: i
-                                },
-                                pageView:0,
-                                viewAds: 0,
-                                AdTag: 0,
-                                socialShare: 0,
-                                AdFollowers: 0,
-                                useLuckCard: 0,
-                                AdReport: 0,
-                                GameDownloaded: 0
-                            }
+                    } else {
+                        var data = {
+                            _id: {
+                                year: 2017,
+                                month: i
+                            },
+                            pageView: 0,
+                            viewAds: 0,
+                            AdTag: 0,
+                            socialShare: 0,
+                            AdFollowers: 0,
+                            useLuckCard: 0,
+                            AdReport: 0,
+                            GameDownloaded: 0
+                        }
                         array.push(data)
                     }
                 }
