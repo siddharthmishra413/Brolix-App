@@ -378,7 +378,7 @@ module.exports = {
     },
 
     "listOfAds": function(req, res) { // for a single user based on cash and coupon category
-        createNewAds.find({ userId: req.body.userId }).exec(function(err, result) {
+        createNewAds.find({}).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No ad found from this User' }); } else {
                 var couponType = result.filter(result => result.adsType == "coupon");
                 var cashType = result.filter(result => result.adsType == "cash");

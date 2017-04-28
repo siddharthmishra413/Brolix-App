@@ -402,9 +402,7 @@ module.exports = {
 
                             if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                                 var age = result1.dob;
-                                console.log("dob-->>", age)
                                 var country1 = result.whoWillSeeYourAdd.country;
-                                console.log("adgahda-->>", country1)
 
                                 function _calculateAge(birthday) { // birthday is a date
                                     var ageDifMs = Date.now() - birthday.getTime();
@@ -415,12 +413,9 @@ module.exports = {
                                 console.log("myAge-->", myAge)
 
                                 if (result.gender != 'Both') {
-                                    console.log("in if")
                                     if (result.gender != result1.gender) {
                                         { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
                                     } else {
-                                        console.log("ageFrom--->>", result.ageFrom)
-                                        console.log("ageTo--->>", result.ageTo)
                                         if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
                                             var state = result.whoWillSeeYourAdd.state;
