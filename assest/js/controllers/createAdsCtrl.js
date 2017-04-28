@@ -33,6 +33,12 @@ $scope.openTerms = function(type){
                 $("#hiddenGiftTerms").modal('show');  
                 break;
 
+                case 'cellThisCouponTerms': 
+                $("#cellThisCouponTerms").modal('show');  
+                break;
+
+                
+
                 case 'close': 
                 $("#hiddenGiftTerms").modal('hide');  
                 break;

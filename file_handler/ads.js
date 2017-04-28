@@ -430,7 +430,10 @@ module.exports = {
                                     if (result.gender != result1.gender) {
                                         { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
                                     } else {
-                                        if (age < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit' }); } else if (age > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit' }); } else {
+                                        console.log("ageFrom--->>",result.ageFrom)
+                                        console.log("ageTo--->>",result.ageTo)
+                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); }
+                                        else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
                                             var state = result.whoWillSeeYourAdd.state;
                                             var city = result.whoWillSeeYourAdd.city;

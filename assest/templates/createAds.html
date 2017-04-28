@@ -171,7 +171,7 @@
 	                                </div>
 	                            </div>
 	                            <div class="btn2 text-center col-sm-12">
-	                                <button class="btn btn-lg btn-green" ng-disabled="createAds.vedioUrl == null && createAds.advertismentCover == null" ng-click="click('Step5')" >Next</button>
+	                                <button class="btn btn-lg btn-green"  ng-click="click('Step5')" >Next</button>
 	                                <button class="btn btn-lg btn-green"  ng-click="click('Back4')" >Back</button>
 	                            </div>
 	                        </div>
@@ -190,166 +190,166 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Add New Page Step5</h3>
                 </div>
-                <form class="form-block" role="form" name="vedioStep">
-                <div class="panel-body">
-                    <div class="login-block">
-                        <div class="terms-Condition cus-step-6">
-                            <div class="form-horizontal clearfix">
-                                <label class="control-label col-sm-4">Gift Description</label>
-                                <div class="col-sm-8">
-                                    <textarea ng-model="createAds.giftDescription" class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
+                <form class="form-block" role="form" name="vedioStepa">
+                    <div class="panel-body">
+                        <div class="login-block">
+                            <div class="terms-Condition cus-step-6">
+                                <div class="form-horizontal clearfix">
+                                    <label class="control-label col-sm-4">Gift Description</label>
+                                    <div class="col-sm-8">
+                                        <textarea ng-model="createAds.giftDescription" class="form-control c-new-textarea" rows="5" placeholder="Description..." required></textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 bor_btm">
-                                <div class="hidden-gifts_r">
-                                    <div class="h-gifts-text">Hidden Gifts</div>
-                                    <div class="add-code_btn"><button type="submit" class="btn btn-green" ng-click="openTerms('hiddenGiftTerms')">Add Code</button></div>
-                                    <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true" ng-click="openTerms('hiddenGiftTerms')"></i></div>
+                                <div class="col-sm-12 bor_btm">
+                                    <div class="hidden-gifts_r">
+                                        <div class="h-gifts-text">Hidden Gifts</div>
+                                        <div class="add-code_btn"><button type="submit" class="btn btn-green" ng-click="openTerms('hiddenGiftTerms')">Add Code</button></div>
+                                        <div class="bulb_icn"><i class="fa fa-lightbulb-o" aria-hidden="true" ng-click="openTerms('cellThisCouponTerms')" ></i></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="cus-btm-div col-sm-12 m-t-30">
-                                <div class="col-sm-6">
-                                    <div class="text-center">
-                                        <label class="coupon-date col-sm-12">Coupon Expiry Date</label>
-                                        <div class="col-sm-6 col-sm-offset-3">
-                                            <select ng-model="createAds.couponExpiryDate" class="form-control" ng-change="expDate(createAds.couponExpiryDate)">
-                                                <option value="">Never</option>
-                                                <option value="1 Week">1 Week </option>
-                                                <option value="2 Weeks">2 Weeks</option>
-                                                <option value="3 Weeks">3 Weeks</option>
-                                                <option value="1 Month">1 Month</option>
-                                                <option value="2 Months">2 Months</option>
-                                                <option value="3 Months">3 Months</option>
-                                            </select>
+                                <div class="cus-btm-div col-sm-12 m-t-30">
+                                    <div class="col-sm-6">
+                                        <div class="text-center">
+                                            <label class="coupon-date col-sm-12">Coupon Expiry Date</label>
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <select ng-model="createAds.couponExpiryDate" class="form-control" ng-change="expDate(createAds.couponExpiryDate)" required>
+                                                    <option value="">Never</option>
+                                                    <option value="1 Week">1 Week </option>
+                                                    <option value="2 Weeks">2 Weeks</option>
+                                                    <option value="3 Weeks">3 Weeks</option>
+                                                    <option value="1 Month">1 Month</option>
+                                                    <option value="2 Months">2 Months</option>
+                                                    <option value="3 Months">3 Months</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="text-center">
+                                            <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <input ng-model="createAds.viewers" type="text" class="form-control text-center" required/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="text-center">
-                                        <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
-                                        <div class="col-sm-6 col-sm-offset-3">
-                                            <input ng-model="createAds.viewers" type="text" class="form-control text-center"/>
+                                <div class="col-sm-12 cus-para-text m-t-30">
+                                    <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
+                                    <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
+                                    <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
+                                    <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="new_banner-img">
+                                        <img src="../dist/image/cover.jpg" class="img-responsive cus-img1">
+                                        <div class="new-banner_btm-btn">
+                                            <button class="btn btn-green">My Upgrade Card</button>
+                                            <button class="btn btn-green">Go to Cards Store</button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 cus-para-text m-t-30">
-                                <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
-                                <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
-                                <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
-                                <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="new_banner-img">
-                                    <img src="../dist/image/cover.jpg" class="img-responsive cus-img1">
-                                    <div class="new-banner_btm-btn">
-                                        <button class="btn btn-green">My Upgrade Card</button>
-                                        <button class="btn btn-green">Go to Cards Store</button>
-                                    </div>
-                                </div>
-                            </div>  
-                            <div class="col-sm-12 sell-coupon new_coupon">
-                                <div class="text-center"><i class="fa fa-lightbulb-o font-s" aria-hidden="true" ng-click="openTerms('cellThisCouponTerms')"></i></div>
-                                <h3>Sell this coupon </h3>
-                                <div class="radio-tab">
-                                    <div class="radio-btn text-left">
-                                        <label>
-                                            <input type="radio" ng-model="createAds.cellThisCoupon" name="radio" value="false" checked>&nbsp; Disable (Don't post my coupon in the store)
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="radio-tab">
-                                    <div class="radio-btn text-left">
-                                        <label>
-                                            <input type="radio" ng-model="createAds.cellThisCoupon" name="radio" value="true" checked>&nbsp; Enable (Post my coupon on the store)
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="qty-value">Qty <span>100</span> Coupon or End of ad validity</div>
-                            </div>
-                            <div class="col-sm-12 sell-coupon new_sell">
-                                <h3>Winner</h3>
-                                <div class="radio-tab cus-inline-fld">
-                                    <div class="radio-btn text-left gbl-table">
-                                        <div class="global-tble-cell">
-                                            <label class="gbl-label">
-                                                <input type="radio" ng-model="createAds.winner" value="Winer" name="radio" ng-model="createAds.numberOfWinners" checked>&nbsp;
+                                </div>  
+                                <div class="col-sm-12 sell-coupon new_coupon">
+                                    <div class="text-center"><i class="fa fa-lightbulb-o font-s" aria-hidden="true" ng-click="openTerms('cellThisCouponTerms')"></i></div>
+                                    <h3>Sell this coupon </h3>
+                                    <div class="radio-tab">
+                                        <div class="radio-btn text-left">
+                                            <label>
+                                                <input type="radio" ng-model="createAds.cellThisCoupon" name="radio" value="false" checked required>&nbsp; Disable (Don't post my coupon in the store)
                                             </label>
                                         </div>
-                                        <div class="global-tble-cell">
-                                            <input type="text" ng-model="createAds.winner" value="" class="form-control gbl-input">
-                                        </div>
-                                        <div class="global-tble-cell">
-                                            <span type="text" ng-model="createAds.winner" value=""  class="form-control gbl-input"></span>
-                                        </div>
-                                        <div class="global-tble-cell">
-                                            <label>Coupon</label>
+                                    </div>
+                                    <div class="radio-tab">
+                                        <div class="radio-btn text-left">
+                                            <label>
+                                                <input type="radio" ng-model="createAds.cellThisCoupon" name="radio" value="true" checked required>&nbsp; Enable (Post my coupon on the store)
+                                            </label>
                                         </div>
                                     </div>
+                                    <div class="qty-value">Qty <span>100</span> Coupon or End of ad validity</div>
                                 </div>
-                                <div class="radio-tab">
-                                    <div class="radio-btn text-left">
-                                        <label>
-                                            <input type="radio" ng-model="createAds.winner"  value="All are Winer"  name="radio" ng-model="createAds.winner" checked>&nbsp; All are Winers
-                                        </label>
+                                <div class="col-sm-12 sell-coupon new_sell">
+                                    <h3>Winner</h3>
+                                    <div class="radio-tab cus-inline-fld">
+                                        <div class="radio-btn text-left gbl-table">
+                                            <div class="global-tble-cell">
+                                                <label class="gbl-label">
+                                                    <input type="radio" ng-model="createAds.winner" value="Winer" name="radio" ng-model="createAds.numberOfWinners" checked required>&nbsp;
+                                                </label>
+                                            </div>
+                                            <div class="global-tble-cell">
+                                                <input type="text" ng-model="createAds.winner" value="" class="form-control gbl-input" required>
+                                            </div>
+                                            <div class="global-tble-cell">
+                                                <span type="text" ng-model="createAds.winner" value=""  class="form-control gbl-input"></span>
+                                            </div>
+                                            <div class="global-tble-cell">
+                                                <label>Coupon</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="radio-tab">
+                                        <div class="radio-btn text-left">
+                                            <label>
+                                                <input type="radio" ng-model="createAds.winner"  value="All are Winer"  name="radio" checked required>&nbsp; All are Winers
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 sell-coupon">
+                                    <h3>Who will see your add?</h3>
+                                    <div class="col-sm-4">
+                                       <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
+                                           <option value="">Select Country</option>
+                                           <option ng-repeat="country in countriesList" value"{{country.code}}" >{{country.name}}</option>
+                                       </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                       <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
+                                          <option value="">Select State</option>
+                                          <option ng-repeat="state in stateList">{{state.region}}</option>
+                                       </select> 
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <select  class="form-control" id="city" ng-model="createAds.city" required>
+                                          <option value="">Select City</option>
+                                          <option ng-repeat="city in cityList">{{city.city}}</option>
+                                        </select> 
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="cus-gender-radio new_gender clearfix">
+                                        <label>Gender : </label>
+                                        <div class="radio-btn text-left">
+                                            <label>
+                                                <input type="radio" name="radio" value="Both" ng-model="createAds.gender" checked>&nbsp; Both
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="radio" value="Male" ng-model="createAds.gender" checked>&nbsp; Male
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="radio" value="Female" ng-model="createAds.gender" checked>&nbsp; Female
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 age-row new-age-row">
+                                    <label class="col-sm-2 m-t-7">Age</label>
+                                    <div class=" col-sm-10 age-row-fld">
+                                        <div class="input-group-age">
+                                            <div><label>From</label></div>
+                                             <div><input type="text" ng-model="createAds.ageFrom" class="form-control"></div>
+                                             <div><label>To</label></div>
+                                             <div><input type="text" ng-model="createAds.ageTo" class="form-control"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 sell-coupon">
-                                <h3>Who will see your add?</h3>
-                                <div class="col-sm-4">
-                                   <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
-                                       <option value="">Select Country</option>
-                                       <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
-                                   </select>
-                                </div>
-                                <div class="col-sm-4">
-                                   <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
-                                      <option value="">Select State</option>
-                                      <option ng-repeat="state in stateList">{{state.region}}</option>
-                                   </select> 
-                                </div>
-                                <div class="col-sm-4">
-                                    <select  class="form-control" id="city" ng-model="createAds.city" required>
-                                      <option value="">Select City</option>
-                                      <option ng-repeat="city in cityList">{{city.city}}</option>
-                                    </select> 
-                                </div>
+                            <div class="btn2 text-center m-t-30">
+                                <a class="btn btn-lg btn-green" ng-click="click('Step6')" ng-disabled="vedioStepa.$invalid && createAds.gender == null && createAds.winner == null">Next</a>
+                                <a class="btn btn-lg btn-green" ng-click="click('Back5')">Back</a>
                             </div>
-                            <div class="col-sm-12">
-                                <div class="cus-gender-radio new_gender clearfix">
-                                    <label>Gender : </label>
-                                    <div class="radio-btn text-left">
-                                        <label>
-                                            <input type="radio" name="radio" value="Both" ng-model="createAds.gender" checked>&nbsp; Both
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="radio" value="Male" ng-model="createAds.gender" checked>&nbsp; Male
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="radio" value="Female" ng-model="createAds.gender" checked>&nbsp; Female
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 age-row new-age-row">
-                                <label class="col-sm-2 m-t-7">Age</label>
-                                <div class=" col-sm-10 age-row-fld">
-                                    <div class="input-group-age">
-                                        <div><label>From</label></div>
-                                         <div><input type="text" ng-model="createAds.ageFrom" class="form-control"></div>
-                                         <div><label>To</label></div>
-                                         <div><input type="text" ng-model="createAds.ageTo" class="form-control"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="btn2 text-center m-t-30">
-                            <a  class="btn btn-lg btn-green" ng-click="click('Step6')">Next</a>
-                            <a  class="btn btn-lg btn-green" ng-click="click('Back5')">Back</a>
                         </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>
@@ -903,4 +903,20 @@
       </div>
     </div>
   </div>
+</div>
+
+<div id="cellThisCouponTerms" class="modal fade" role="dialog">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+           <!-- <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title"></h4>
+           </div> -->
+           <div class="modal-body">
+                 <div class="text-center c1-modal10"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></div>
+                <div class="detail-s">Through "Coupon Gift" you will be able to post your advertisements on home page & promote your, products and all other details by providing coupons gifts which could includes big discounts or something free for one or more winners. The winners could be one up to all and they will be elected by an auto raffle. The raffle will contain only the users who watched your Ad.
+                </div>
+           </div>
+        </div>
+    </div>
 </div>
