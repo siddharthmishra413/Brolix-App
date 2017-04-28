@@ -62,7 +62,6 @@ module.exports = {
             function(callback) {
                 User.findOne({ _id: req.params.id }).exec(function(err, result) {
                     callback(null, result);
-                    console.log("resultresultresult count====>>>>" + result)
                 })
             },
             function(result, callback) {
