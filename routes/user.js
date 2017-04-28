@@ -52,7 +52,7 @@ app.post('/registerWithRefferalCode/:pageNumber', authUser.authUser, userHandler
 app.post('/seeExchangeRequest', userHandler.seeExchangeRequest);
 app.post('/couponRequestsSearch', authUser.authUser, userHandler.couponRequestsSearch);
 app.post('/acceptDeclineCouponRequest', authUser.authUser, userHandler.acceptDeclineCouponRequest);
-app.post('/useCouponWithoutCode', authUser.authUser, userHandler.useCouponWithoutCode);
+app.post('/useCouponWithoutCode', userHandler.useCouponWithoutCode);
 app.post('/winnersFilterCodeBasis', userHandler.winnersFilterCodeBasis)
 app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode);
 app.post('/seeExchangeSentRequest', authUser.authUser, userHandler.seeExchangeSentRequest);

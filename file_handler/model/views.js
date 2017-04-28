@@ -94,6 +94,10 @@ var viewSchema = new Schema({
         type: Number,
         default: 0
     },
+    couponPurchased:{
+        type: Number,
+        default: 0
+    },
     createdAt: {
         type: Date,
         default: Date.now

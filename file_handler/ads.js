@@ -12,6 +12,7 @@ var fs = require('fs');
 var waterfall = require('async-waterfall');
 var multiparty = require('multiparty');
 var Views = require("./model/views");
+var mongoose = require('mongoose');
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -1211,6 +1212,10 @@ module.exports = {
                 var updateData = { $inc: { GameDownloaded: 1 } };
                 details.GameDownloaded = 1;
             break;
+            case 'couponPurchased':
+                var updateData = { $inc: { couponPurchased: 1 } };
+                details.couponPurchased = 1;
+            break;
         }
 
         Views.findOne({ adId: req.body.adId, date: { $gte: startTime, $lte: endTime } }, function(err, result) {
@@ -1460,7 +1465,6 @@ module.exports = {
 
         var newDate = new Date(req.body.date).getFullYear();
 
-
         Views.aggregate(updateData,groupCond, 
               function (err, results){
                 //var yearData = 2017
@@ -1510,5 +1514,408 @@ module.exports = {
             });
     },
 
+     "CouponCashAdStatistics": function(req, res) {
+        var updateData = {$match:{adId: req.body.adId}};
+        var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        pageView:{ $sum: 0},
+                        viewAds:{ $sum: 0},
+                        AdTag:{ $sum: 0 },
+                        socialShare:{ $sum: 0 },
+                        AdFollowers:{ $sum: 0},
+                        useLuckCard:{ $sum: 0 },
+                        AdReport:{ $sum: 0 },
+                        couponPurchased:{ $sum: "$couponPurchased" }
+                    }}
+
+                var updateDataVALID = {$match:{'coupon.adId': req.body.adId, 'coupon.couponStatus':'VALID'}};
+                var updateUnwindDataVALID = { $unwind: "$coupon" };
+                var groupCondVALID = { $group : { 
+                   _id : { year: { $year : "$coupon.updateddAt" }, month: { $month : "$coupon.updateddAt" }},
+                        expiredCoupon:{ $sum: 0 },
+                        usedCoupon: { $sum: 0 },
+                        validCoupon: { $sum: 1 },
+                        totalWinner: { $sum: 0 },
+                        couponPurchased:{ $sum: 0}
+                    }}
+
+                var updateDataUSED = {$match:{'coupon.adId': req.body.adId, 'coupon.couponStatus':'USED'}};
+                var updateUnwindDataUSED = { $unwind: "$coupon" };
+                var groupCondUSED = { $group : { 
+                   _id : { year: { $year : "$coupon.usedCouponDate" }, month: { $month : "$coupon.usedCouponDate" }},
+                        expiredCoupon:{ $sum: 0 },
+                        usedCoupon: { $sum: 1 },
+                        validCoupon: { $sum: 0 },
+                        totalWinner: { $sum: 0 },
+                        couponPurchased:{ $sum: 0}
+                    }}
+
+                var updateDataEXPIRED = {$match:{'coupon.adId': req.body.adId, 'coupon.couponStatus':'EXPIRED'}};
+                var updateUnwindDataEXPIRED = { $unwind: "$coupon" };
+                var groupCondEXPIRED = { $group : { 
+                   _id : { year: { $year : "$coupon.expirationTime" }, month: { $month : "$coupon.expirationTime" }},
+                        expiredCoupon:{ $sum: 1 },
+                        usedCoupon: { $sum: 0 },
+                        validCoupon: { $sum: 0 },
+                        totalWinner: { $sum: 0 },
+                        couponPurchased:{ $sum: 0}
+                    }}
+        waterfall([
+            function(callback){
+                createNewAds.findOne({
+                   _id: req.body.adId
+                },function(err, result){
+                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
+                    } 
+                    else if (!result) {res.send({responseCode: 404,responseMessage: 'Data not found.'});
+                    }
+                    else{
+                        callback(null, result)
+                    }
+              })
+            },
+            function(adsResult, callback){
+              Views.aggregate(updateData,groupCond,function(err, result){
+                if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
+                } 
+                else if (!result) {
+                    res.send({
+                        responseCode: 404,
+                        responseMessage: 'Data not found.'
+                    });
+                }
+                else{
+                    callback(null,adsResult, result)
+                }
+              })
+            },
+            function(adsResult, viewResult, callback){
+              User.aggregate(updateUnwindDataVALID, updateDataVALID, groupCondVALID,function(err, result){
+                if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
+                } 
+                else if (!result) {
+                    res.send({
+                        responseCode: 404,
+                        responseMessage: 'Data not found.'
+                    });
+                }
+                else{
+                    callback(null,adsResult, viewResult, result)
+                }
+              })
+            },
+            function(adsResult, viewResult, validResult, callback){
+                User.aggregate(updateUnwindDataUSED, updateDataUSED, groupCondUSED,function(err, result){
+                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
+                    } 
+                    else if (!result) {
+                        res.send({
+                            responseCode: 404,
+                            responseMessage: 'Data not found.'
+                        });
+                    }
+                    else{
+                        callback(null,adsResult, viewResult, validResult, result)
+                    }
+                })
+            },
+            function(adsResult, viewResult, validResult, usedResult, callback){
+                User.aggregate(updateUnwindDataEXPIRED, updateDataEXPIRED, groupCondEXPIRED,function(err, result){
+                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
+                    } 
+                    else if (!result) {
+                        res.send({
+                            responseCode: 404,
+                            responseMessage: 'Data not found.'
+                        });
+                    }
+                    else{
+                        callback(null,adsResult, viewResult, validResult, usedResult, result)
+                    }
+                })
+            }
+
+        ])
+        createNewAds.findOne({
+            _id: req.body.adId
+        }).exec(function(err, result) {
+            createNewAds.findOne({
+                _id: req.body.adId
+            }, function(err, result) {
+                if (result.adsType == 'coupon') {
+                    //var couponStatus = result.couponPurchased;
+                    console.log("result coupon===>" + result.couponExpired)
+                    var data = {
+                        couponStatus: result.couponStatus,
+                        winners: result.winners.length,
+                        couponBuyer: result.couponPurchased
+                            //couponPurchased : result.couponPurchased.length
+                    }
+                    res.send({
+                        responseCode: 200,
+                        responseMessage: 'Successfully.',
+                        result: data
+                    });
+                } else {
+                    var array = [];
+
+                    User.find({ _id: { $in: result.winners } }, function(err, result1) {
+
+                        result1.forEach(function(result) {
+                            array.push(result.firstName)
+                        })
+                        console.log(array)
+                        var data = {
+                            cashStatus: result.cashStatus,
+                            winners: array
+                                //couponPurchased : result.couponPurchased.length
+                        }
+
+                        res.send({
+                            responseCode: 200,
+                            responseMessage: 'Successfully.',
+                            result: data
+                        });
+                    })
+
+                    // })
+
+                }
+            })
+        })
+    },
+
+
+    "couponStatisticsYearClicks": function(req, res) { 
+        var newDate = new Date(req.body.date).getFullYear();
+        var data = req.body.click;
+
+        switch (data) {
+            case 'couponPurchased':
+                var updateData = {$match:{adId: req.body.adId}};
+                var groupCond = { $group : { 
+                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
+                        expiredCoupon:{ $sum: 0},
+                        usedCoupon: { $sum: 0},
+                        validCoupon: { $sum: 0},
+                        totalWinner: { $sum: 0 },
+                        couponPurchased:{ $sum: "$couponPurchased"}
+                    }}
+            break;
+
+            case 'totalWinner':
+                var updateData = {$match:{_id: new mongoose.Types.ObjectId(req.body.adId)}};
+                var updateUnwindData = { $unwind: "$winners" };
+                var groupCond = { $group : { 
+                   _id : { year: { $year : "$updatedAt" }, month: { $month : "$updatedAt" }},
+                        expiredCoupon:{ $sum: 0},
+                        usedCoupon: { $sum: 0},
+                        validCoupon: { $sum: 0},
+                        totalWinner: { $sum: 1 },
+                        couponPurchased:{ $sum: 0}
+                    }}
+                break;
+
+            case 'validCoupon':
+                var updateData = {$match:{'coupon.adId': req.body.adId, 'coupon.couponStatus':'VALID'}};
+                var updateUnwindData = { $unwind: "$coupon" };
+                var groupCond = { $group : { 
+                   _id : { year: { $year : "$coupon.updateddAt" }, month: { $month : "$coupon.updateddAt" }},
+                        expiredCoupon:{ $sum: 0 },
+                        usedCoupon: { $sum: 0 },
+                        validCoupon: { $sum: 1 },
+                        totalWinner: { $sum: 0 },
+                        couponPurchased:{ $sum: 0}
+                    }}
+            break;
+
+            case 'usedCoupon':
+                var updateData = {$match:{'coupon.adId': req.body.adId, 'coupon.couponStatus':'USED'}};
+                var updateUnwindData = { $unwind: "$coupon" };
+                var groupCond = { $group : { 
+                   _id : { year: { $year : "$coupon.usedCouponDate" }, month: { $month : "$coupon.usedCouponDate" }},
+                        expiredCoupon:{ $sum: 0 },
+                        usedCoupon: { $sum: 1 },
+                        validCoupon: { $sum: 0 },
+                        totalWinner: { $sum: 0 },
+                        couponPurchased:{ $sum: 0}
+                    }}
+            break;
+
+            case 'expiredCoupon':
+                var updateData = {$match:{'coupon.adId': req.body.adId, 'coupon.couponStatus':'EXPIRED'}};
+                var updateUnwindData = { $unwind: "$coupon" };
+                var groupCond = { $group : { 
+                   _id : { year: { $year : "$coupon.expirationTime" }, month: { $month : "$coupon.expirationTime" }},
+                        expiredCoupon:{ $sum: 1 },
+                        usedCoupon: { $sum: 0 },
+                        validCoupon: { $sum: 0 },
+                        totalWinner: { $sum: 0 },
+                        couponPurchased:{ $sum: 0}
+                    }}
+            break;
+        }
+
+      //  var newDate = new Date(req.body.date).getFullYear();
+        console.log("groupCond",JSON.stringify(groupCond))
+
+        waterfall([
+            function(callback){
+                if(req.body.click == 'expiredCoupon' ||req.body.click == 'usedCoupon' || req.body.click == 'validCoupon'){
+                    User.aggregate(updateUnwindData, updateData,groupCond, 
+                      function (err, results){
+                        var data =results.filter(results=>results._id.year == newDate)
+                        results =data;                        
+                        var array = [];
+                        var flag = false;
+                        for(var i=1; i<=12; i++){
+                            console.log("Dfdgf",i)
+                            for(var j = 0; j<results.length; j++){
+                                if(i == results[j]._id.month){
+                                    console.log("value of j==>",j)
+                                    flag = true;
+                                    break;
+                                }
+                                else{
+                                    flag = false;
+                                }
+                            }
+                            if(flag==true){
+                                array.push(results[j])
+                            }
+                            else{
+                                var data ={
+                                        _id:
+                                        {
+                                            year: 2017,
+                                            month: i
+                                        },
+                                    expiredCoupon:0,
+                                    usedCoupon: 0,
+                                    validCoupon: 0,
+                                    totalWinner: 0,
+                                    couponPurchased: 0
+                                    }
+                                array.push(data)
+                            }
+                        }
+                        callback(null, array)
+                    });
+                }
+                else{
+                   callback(null, "data")
+                }
+            },
+            function(userResult, callback){
+                if(req.body.click == 'totalWinner'){
+                    createNewAds.aggregate(updateUnwindData, updateData,groupCond, 
+                      function (err, results){
+                        var data =results.filter(results=>results._id.year == newDate)
+                        results =data;
+                        var array = [];
+                        var flag = false;
+                        for(var i=1; i<=12; i++){
+                            console.log("Dfdgf",i)
+                            for(var j = 0; j<results.length; j++){
+                                if(i == results[j]._id.month){
+                                    console.log("value of j==>",j)
+                                    flag = true;
+                                    break;
+                                }
+                                else{
+                                    flag = false;
+                                }
+                            }
+                            if(flag==true){
+                                array.push(results[j])
+                            }
+                            else{
+                                var data ={
+                                        _id:
+                                        {
+                                            year: 2017,
+                                            month: i
+                                        },
+                                    expiredCoupon:0,
+                                    usedCoupon: 0,
+                                    validCoupon: 0,
+                                    totalWinner: 0,
+                                    couponPurchased: 0
+                                    }
+                                array.push(data)
+                            }
+                        }
+                        callback(null, array)
+                    });
+                }
+                else{
+                   callback(null, userResult)
+                }
+            },
+            function(result, callback){
+                console.log("updateData==>.",updateData)
+                console.log("groupCond==>.",updateData,groupCond)
+                if(req.body.click == 'couponPurchased'){
+                    Views.aggregate(updateData,groupCond, 
+                      function (err, results){
+                        var data =results.filter(results=>results._id.year == newDate)
+                        results =data;
+                        var array = [];
+                        var flag = false;
+                        for(var i=1; i<=12; i++){
+                            console.log("Dfdgf",i)
+                            for(var j = 0; j<results.length; j++){
+                                if(i == results[j]._id.month){
+                                    console.log("value of j==>",j)
+                                    flag = true;
+                                    break;
+                                }
+                                else{
+                                    flag = false;
+                                }
+                            }
+                            if(flag==true){
+                                array.push(results[j])
+                            }
+                            else{
+                                var data ={
+                                    _id:
+                                    {
+                                        year: 2017,
+                                        month: i
+                                    },
+                                    expiredCoupon:0,
+                                    usedCoupon: 0,
+                                    validCoupon: 0,
+                                    totalWinner: 0,
+                                    couponPurchased: 0
+                                }
+                                array.push(data)
+                            }
+                        }
+                        callback(null, array)
+                        // res.send({
+                        //     result: array,
+                        //     responseCode: 200,
+                        //     responseMessage: "Success."
+                        // })
+                    });
+                }
+                else{
+                   callback(null, result)
+                }
+            }
+            ], function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
+                res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+            } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: 'success.'
+                });
+            }
+        })
+    }
 
 }

@@ -1103,7 +1103,6 @@ module.exports = {
                     else {
                        callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult)
                     }
-                    
                 })
             },
             function( winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult, callback) {
