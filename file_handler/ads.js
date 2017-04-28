@@ -578,6 +578,8 @@ module.exports = {
                             if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                                 var age = result1.dob;
                                 console.log("dob-->>",age)
+                                var country1 = result.whoWillSeeYourAdd.country;
+                                  console.log("adgahda-->>",country1)
                                 
                                 function _calculateAge(birthday) { // birthday is a date
                                 var ageDifMs = Date.now() - birthday.getTime();
@@ -593,12 +595,19 @@ module.exports = {
                                         {res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
                                     }
                                     else{
-                                        if(age>=result.ageFrom){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
-                                        else if(age<=result.ageTo){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
+                                        if(age<result.ageFrom){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
+                                        else if(age>result.ageTo){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
                                         else{
+                                            var country = result.whoWillSeeYourAdd.country;
+                                             var state = result.whoWillSeeYourAdd.state;
+                                             var city = result.whoWillSeeYourAdd.city;
                                             
+                                          if(result1.country != country){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
+                                             else if(result1.state != state){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
+                                            else if(result1.city != city){res.send({ responseCode:400, responseMessage:'You are not allowed to watch this ad'});}
+                                            else{
                                               callback(null)
-                                            
+                                            }                                            
                                         }                                       
                                         
                                     }
