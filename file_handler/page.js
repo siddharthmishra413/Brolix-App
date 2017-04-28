@@ -13,7 +13,7 @@ var _ = require('underscore')
     //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
-   var moment = require('moment')
+var moment = require('moment')
 
 module.exports = {
 
@@ -62,7 +62,6 @@ module.exports = {
             function(callback) {
                 User.findOne({ _id: req.params.id }).exec(function(err, result) {
                     callback(null, result);
-                    console.log("resultresultresult count====>>>>" + result)
                 })
             },
             function(result, callback) {
@@ -405,122 +404,86 @@ module.exports = {
 
     "particularPageCouponWinners": function(req, res) {
         var pageId = req.body.pageId;
-        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
-            var array = [];
-            createNewAds.find({ pageId: pageId, status: "EXPIRED" }, function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                    var couponType = result.filter(result => result.adsType == "coupon");
-                    for (i = 0; i < couponType.length; i++) {
-                        for (j = 0; j < couponType[i].winners.length; j++, j) {
-                            array.push(couponType[i].winners[j]);
-                        }
-                    }
-                    User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
-                            res.send({
-                                result: result1,
-                                responseCode: 200,
-                                responseMessage: "result show successfully;"
-                            })
-                        }
-                    })
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 8;
+        var skips = limitData - 8;
+        var page = String(pageNumber);
+        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER' } }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
+                var count = 0;
+                for (i = 0; i < result.length; i++) {
+                    count++;
                 }
-            })
-        }
+                var pages = Math.ceil(count / 8);
+                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER' } }, { $limit: limitData }, { $skip: skips }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
+                        var limit = 0;
+                        for (i = 0; i < result1.length; i++) {
+                            limit++;
+                        }
+                        res.send({
+                            docs: result1,
+                            total: count,
+                            limit: limit,
+                            page: page,
+                            pages: pages,
+                            responseCode: 200,
+                            responseMessage: "Successfully shown result."
+                        });
+                    }
+                })
+            }
+        })
     },
-    //   User.find({ _id: { $in: arr }, "createdAt": { "$gte": req.body.toDate, "$lt": req.body.fromDate } }).exec(function(err, newResult) {
 
     "particularPageCashWinners": function(req, res) {
-        var pageId = req.params.id;
-        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
-            var array = [];
-            createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                    var cashType = result.filter(result => result.adsType == "cash");
-                    for (i = 0; i < cashType.length; i++) {
-                        for (j = 0; j < cashType[i].winners.length; j++, j) {
-                            array.push(cashType[i].winners[j]);
-                        }
-                    }
-                    console.log("array-->>", array)
-                    User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                        console.log("result1-->>", result1)
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
-                            res.send({
-                                result: result1,
-                                responseCode: 200,
-                                responseMessage: "result show successfully;"
-                            })
-                        }
-                    })
+        var pageId = req.body.pageId;
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 8;
+        var skips = limitData - 8;
+        var page = String(pageNumber);
+        User.aggregate({ $unwind: '$cashPrize' }, { $match: { 'cashPrize.pageId': pageId } }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
+                var count = 0;
+                for (i = 0; i < result.length; i++) {
+                    count++;
                 }
-            })
-        }
+                var pages = Math.ceil(count / 8);
+                User.aggregate({ $unwind: '$cashPrize' }, { $match: { 'cashPrize.pageId': pageId } }, { $limit: limitData }, { $skip: skips }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
+                        var limit = 0;
+                        for (i = 0; i < result1.length; i++) {
+                            limit++;
+                        }
+                        res.send({
+                            docs: result1,
+                            total: count,
+                            limit: limit,
+                            page: page,
+                            pages: pages,
+                            responseCode: 200,
+                            responseMessage: "Successfully shown result."
+                        });
+                    }
+                })
+            }
+        })
     },
 
     "PageCouponWinnersFilter": function(req, res) {
-        var pageId = req.params.id;
-        var startDateKey = '';
-        var endDateKey = '';
-        var tempCond = {};
-        var tempEndDate = {};
-        var data;
-        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
-            var array = [];
-            var condition = { $or: [] };
-            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                if (!(req.body[key] == "" || req.body[key] == undefined)) {
-                    if (key == 'startDate') {
-                        tempCond['$gte'] = new Date(req.body[key]);
-                        console.log("startDate-111-->>>", tempCond)
-                    }
-                    if (key == 'endDate') {
-                        tempEndDate['$lte'] = new Date(req.body[key]);
-                        console.log("gte-111-->>>", tempEndDate)
-                    }
-                }
-                if (tempCond != '' || tempEndDate != '') {
-                    data = Object.assign(tempCond, tempEndDate)
-                }
-            });
+        if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: 'Please enter atleast start date or end date' }); } else {
+            var pageId = req.params.id;
+            var pageNumber = Number(req.params.pageNumber)
+            var limitData = pageNumber * 8;
+            var skips = limitData - 8;
+            var page = String(pageNumber);
 
-            console.log("tempCond--->>", tempCond)
-            console.log("tempEndDate--->>", tempEndDate)
-            console.log("dta===>>", data)
+            var startDateKey = '';
+            var endDateKey = '';
+            var tempCond = {};
+            var tempEndDate = {};
+            var data;
 
-            createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else {
-                    var couponType = result.filter(result => result.adsType == "coupon");
-                    for (i = 0; i < couponType.length; i++) {
-                        for (j = 0; j < couponType[i].winners.length; j++, j) {
-                            array.push(couponType[i].winners[j]);
-                        }
-                    }
-                    console.log("array-->>", array)
-                    User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
-                            res.send({
-                                result: result1,
-                                responseCode: 200,
-                                responseMessage: "result show successfully;"
-                            })
-                        }
-                    })
-                }
-            })
-        }
-    },
-
-
-    "PageCashWinnersFilter": function(req, res) {
-        var pageId = req.body.pageId;
-        var startDateKey = '';
-        var endDateKey = '';
-        var tempCond = {};
-        var tempEndDate = {};
-        var data;
-        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
-            var array = [];
             var condition = { $or: [] };
             Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                 if (!(req.body[key] == "" || req.body[key] == undefined)) {
@@ -539,22 +502,86 @@ module.exports = {
             });
             console.log("startDate", tempCond)
             console.log("endDate", tempEndDate)
-            console.log("dta===>>", data)
-            createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                    var cashType = result.filter(result => result.adsType == "cash");
-                    for (i = 0; i < cashType.length; i++) {
-                        for (j = 0; j < cashType[i].winners.length; j++, j) {
-                            array.push(cashType[i].winners[j]);
-                        }
+            console.log("data===>>", data)
+            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }).exec(function(err, result) {
+                console.log("1")
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon winner found" }); } else {
+                    var count = 0;
+                    for (i = 0; i < result.length; i++) {
+                        count++;
                     }
-                    User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                        console.log("particularPageCashWinners-->>", particularPageCashWinners)
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
+                    var pages = Math.ceil(count / 8);
+                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                        console.log("2")
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                             res.send({
-                                result: result1,
+                                docs: result1,
+                                count: count,
+                                limit: limitData,
+                                page: page,
+                                pages: pages,
                                 responseCode: 200,
-                                responseMessage: "result show successfully;"
+                                responseMessage: "All coupon winner shown successfully."
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    },
+
+    "PageCashWinnersFilter": function(req, res) {
+        if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: 'Please enter atleast start date or end date' }); } else {
+            var pageId = req.params.id;
+            var pageNumber = Number(req.params.pageNumber)
+            var limitData = pageNumber * 8;
+            var skips = limitData - 8;
+            var page = String(pageNumber);
+
+            var startDateKey = '';
+            var endDateKey = '';
+            var tempCond = {};
+            var tempEndDate = {};
+            var data;
+
+            var condition = { $or: [] };
+            Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
+                if (!(req.body[key] == "" || req.body[key] == undefined)) {
+                    if (key == 'startDate') {
+                        tempCond['$gte'] = new Date(req.body[key]);
+                        console.log("startDate--->>>", tempCond)
+                    }
+                    if (key == 'endDate') {
+                        tempEndDate['$lte'] = new Date(req.body[key]);
+                        console.log("gte--->>>", tempEndDate)
+                    }
+                }
+                if (tempCond != '' || tempEndDate != '') {
+                    data = Object.assign(tempCond, tempEndDate)
+                }
+            });
+            console.log("startDate", tempCond)
+            console.log("endDate", tempEndDate)
+            console.log("data===>>", data)
+            User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.pageId': pageId, 'cashPrize.updateddAt': data } }).exec(function(err, result) {
+                console.log("1")
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No cash winner found" }); } else {
+                    var count = 0;
+                    for (i = 0; i < result.length; i++) {
+                        count++;
+                    }
+                    var pages = Math.ceil(count / 8);
+                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.pageId': pageId, 'cashPrize.updateddAt': data } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                        console.log("2")
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
+                            res.send({
+                                docs: result1,
+                                count: count,
+                                limit: limitData,
+                                page: page,
+                                pages: pages,
+                                responseCode: 200,
+                                responseMessage: "All cash winner shown successfully."
                             })
                         }
                     })
@@ -770,7 +797,7 @@ module.exports = {
 
         console.log("queryCondition" + JSON.stringify(queryCondition))
 
-        if(req.body.dateFilter == 'yearly') {
+        if (req.body.dateFilter == 'yearly') {
             var queryCondition = { $match: { date: { "$gte": new Date(startTime), "$lte": new Date(endTime) } } }
         }
 
@@ -855,67 +882,65 @@ module.exports = {
     },
 
 
-    "pageStatisticsFilterClick": function(req, res) { 
+    "pageStatisticsFilterClick": function(req, res) {
         var newDate = new Date(req.body.date).getFullYear();
 
-        Views.aggregate({$match:{pageId: req.body.pageId}},
-              { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }}, 
-                        totalProductView: { $sum: "$productView" },
-                        totalPageView: { $sum: "$pageView" },
-                        totalEventViewClicks: { $sum: "$eventViewClicks" },
-                        totalEmailClicks: { $sum: "$emailClicks" },
-                        totalCallUsClick: { $sum: "$callUsClick" },
-                        totalFollowerNumber: { $sum: "$followerNumber" },
-                        totalSocialMediaClicks: { $sum: "$socialMediaClicks" },
-                        totalLocationClicks: { $sum: "$locationClicks" },
-                        totalWebsiteClicks: { $sum: "$websiteClicks" },
-                        totalShares: { $sum: "$shares" },
-                        totalViewAds: { $sum: "$viewAds" },
-                        totalRating: { $sum: "$totalRating"}
-                   }}, 
-              function (err, results){
+        Views.aggregate({ $match: { pageId: req.body.pageId } }, {
+                $group: {
+                    _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                    totalProductView: { $sum: "$productView" },
+                    totalPageView: { $sum: "$pageView" },
+                    totalEventViewClicks: { $sum: "$eventViewClicks" },
+                    totalEmailClicks: { $sum: "$emailClicks" },
+                    totalCallUsClick: { $sum: "$callUsClick" },
+                    totalFollowerNumber: { $sum: "$followerNumber" },
+                    totalSocialMediaClicks: { $sum: "$socialMediaClicks" },
+                    totalLocationClicks: { $sum: "$locationClicks" },
+                    totalWebsiteClicks: { $sum: "$websiteClicks" },
+                    totalShares: { $sum: "$shares" },
+                    totalViewAds: { $sum: "$viewAds" },
+                    totalRating: { $sum: "$totalRating" }
+                }
+            },
+            function(err, results) {
                 var yearData = 2017
-                var data =results.filter(results=>results._id.year == newDate)
-                results =data;
+                var data = results.filter(results => results._id.year == newDate)
+                results = data;
                 var array = [];
                 var flag = false;
-                for(var i=1; i<=12; i++){
-                    console.log("Dfdgf",i)
-                    for(var j = 0; j<results.length; j++){
-                        if(i == results[j]._id.month){
+                for (var i = 1; i <= 12; i++) {
+                    console.log("Dfdgf", i)
+                    for (var j = 0; j < results.length; j++) {
+                        if (i == results[j]._id.month) {
 
-                            console.log("value of j==>",j)
+                            console.log("value of j==>", j)
                             flag = true;
                             break;
-                        }
-                        else{
+                        } else {
                             flag = false;
                         }
                     }
-                    if(flag==true){
+                    if (flag == true) {
                         array.push(results[j])
-                    }
-                    else{
-                        var data ={
-                                _id:
-                                {
-                                    year: 2017,
-                                    month: i
-                                },
-                                totalProductView: 0,
-                                totalPageView: 0,
-                                totalEventViewClicks: 0,
-                                totalEmailClicks: 0,
-                                totalCallUsClick: 0,
-                                totalFollowerNumber: 0,
-                                totalSocialMediaClicks: 0,
-                                totalLocationClicks: 0,
-                                totalWebsiteClicks: 0,
-                                totalShares: 0,
-                                totalViewAds: 0,
-                                totalRating: 0
-                            }
+                    } else {
+                        var data = {
+                            _id: {
+                                year: 2017,
+                                month: i
+                            },
+                            totalProductView: 0,
+                            totalPageView: 0,
+                            totalEventViewClicks: 0,
+                            totalEmailClicks: 0,
+                            totalCallUsClick: 0,
+                            totalFollowerNumber: 0,
+                            totalSocialMediaClicks: 0,
+                            totalLocationClicks: 0,
+                            totalWebsiteClicks: 0,
+                            totalShares: 0,
+                            totalViewAds: 0,
+                            totalRating: 0
+                        }
                         array.push(data)
                     }
                 }
@@ -927,28 +952,34 @@ module.exports = {
             });
     },
 
-     "pageStatisticsFilterWeeklyClick": function(req, res) { 
+    "pageStatisticsFilterWeeklyClick": function(req, res) {
         var newDate = new Date(req.body.date).getFullYear();
 
-        Views.aggregate(
-              { $group : { 
-                   _id : { year: { $year : "$date" }, month: { $month : "$date" }, week : {$week : "$date"}, day : {
-                $dayOfWeek : "$date"
-            }}, 
-                        totalProductView: { $sum: "$productView" },
-                        totalPageView: { $sum: "$pageView" },
-                        totalEventViewClicks: { $sum: "$eventViewClicks" },
-                        totalEmailClicks: { $sum: "$emailClicks" },
-                        totalCallUsClick: { $sum: "$callUsClick" },
-                        totalFollowerNumber: { $sum: "$followerNumber" },
-                        totalSocialMediaClicks: { $sum: "$socialMediaClicks" },
-                        totalLocationClicks: { $sum: "$locationClicks" },
-                        totalWebsiteClicks: { $sum: "$websiteClicks" },
-                        totalShares: { $sum: "$shares" },
-                        totalViewAds: { $sum: "$viewAds" },
-                        totalRating: { $sum: "$totalRating"}
-                   }}, 
-              function (err, results){
+        Views.aggregate({
+                $group: {
+                    _id: {
+                        year: { $year: "$date" },
+                        month: { $month: "$date" },
+                        week: { $week: "$date" },
+                        day: {
+                            $dayOfWeek: "$date"
+                        }
+                    },
+                    totalProductView: { $sum: "$productView" },
+                    totalPageView: { $sum: "$pageView" },
+                    totalEventViewClicks: { $sum: "$eventViewClicks" },
+                    totalEmailClicks: { $sum: "$emailClicks" },
+                    totalCallUsClick: { $sum: "$callUsClick" },
+                    totalFollowerNumber: { $sum: "$followerNumber" },
+                    totalSocialMediaClicks: { $sum: "$socialMediaClicks" },
+                    totalLocationClicks: { $sum: "$locationClicks" },
+                    totalWebsiteClicks: { $sum: "$websiteClicks" },
+                    totalShares: { $sum: "$shares" },
+                    totalViewAds: { $sum: "$viewAds" },
+                    totalRating: { $sum: "$totalRating" }
+                }
+            },
+            function(err, results) {
                 // var yearData = 2017
                 // var data =results.filter(results=>results._id.year == newDate)
                 // results =data;
@@ -1010,9 +1041,9 @@ module.exports = {
         // var endTime = new Date(endTimeHour).toUTCString();
         // var week = endTimeHour - 604800000;
         // var weekly = new Date(week).toUTCString();
-        
-        console.log("startTime=>",startTime)
-        console.log("endTime=>",endTime)
+
+        console.log("startTime=>", startTime)
+        console.log("endTime=>", endTime)
 
         waterfall([
             function(callback) {
@@ -1020,13 +1051,11 @@ module.exports = {
                     updatedAt: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, result) {
-                    console.log("result",result)
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
-                    else if (result.length == 0) {
+                    console.log("result", result)
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (result.length == 0) {
                         var winnersLength = 0;
                         callback(null, winnersLength)
-                    } 
-                    else {
+                    } else {
                         console.log(result)
                         var winnersLength = 0;
                         for (var i = 0; i < result.length; i++) {
@@ -1038,38 +1067,34 @@ module.exports = {
                 })
             },
             function(winnersLength, callback) {
-                console.log("winnersLength",winnersLength)
+                console.log("winnersLength", winnersLength)
                 User.find({
                     cardPurchaseDate: { $gte: startTime, $lte: endTime }
                 }).exec(function(err, ress) {
 
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
-                    else if (ress.length == 0) { 
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (ress.length == 0) {
                         var totalBuyers = 0;
                         callback(null, winnersLength, totalBuyers)
-                    } 
-                    else {
-                       var totalBuyers = ress.length;
-                       callback(null, winnersLength, totalBuyers)
+                    } else {
+                        var totalBuyers = ress.length;
+                        callback(null, winnersLength, totalBuyers)
                     }
                 })
             },
             function(winnersLength, totalBuyers, callback) {
-                 console.log("totalBuyers",totalBuyers)
+                console.log("totalBuyers", totalBuyers)
                 createNewAds.find({
                     cashStatus: 'DELIVERED',
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, cashDeliveredResult) {
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
-                    else if (cashDeliveredResult.length == 0) { 
-                         var cashDeliveredResult = 0;
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (cashDeliveredResult.length == 0) {
+                        var cashDeliveredResult = 0;
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult)
-                    } 
-                    else {
-                       callback(null, winnersLength, totalBuyers, cashDeliveredResult)
+                    } else {
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult)
                     }
-                   
+
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, callback) {
@@ -1078,83 +1103,79 @@ module.exports = {
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, cashPendingResult) {
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
-                    else if (cashPendingResult.length == 0) { 
-                         var cashPendingResult = 0;
-                        callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult)
-                    } 
-                    else {
-                       callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult)
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (cashPendingResult.length == 0) {
+                        var cashPendingResult = 0;
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult)
+                    } else {
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult)
                     }
                     //callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult)
                 })
             },
-            function(winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, callback) {
+            function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, callback) {
                 createNewAds.find({
                     couponStatus: 'USED',
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, couponUsedResult) {
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
-                    else if (couponUsedResult.length == 0) { 
-                         var couponUsedResult = 0;
-                        callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult)
-                    } 
-                    else {
-                       callback(null, winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult)
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (couponUsedResult.length == 0) {
+                        var couponUsedResult = 0;
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult)
+                    } else {
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult)
                     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> fc776797e3b64835bba8c5ad87634a43b65c0fd1
                 })
             },
-            function( winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult, callback) {
+            function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, callback) {
                 createNewAds.find({
                     couponStatus: 'EXPIRED',
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, couponExpResult) {
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
-                    else if (couponExpResult.length == 0) { 
-                         var couponExpResult = 0;
-                        callback(null,  winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult, couponExpResult);
-                    } 
-                    else {
-                       callback(null,  winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult, couponExpResult);
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (couponExpResult.length == 0) {
+                        var couponExpResult = 0;
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, couponExpResult);
+                    } else {
+                        callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, couponExpResult);
                     }
-                    
+
                 })
             },
-            function(winnersLength, totalBuyers, cashDeliveredResult,cashPendingResult, couponUsedResult, couponExpResult, callback) {
+            function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, couponExpResult, callback) {
                 createNewAds.find({
                     couponStatus: 'VALID',
                     couponUsedDate: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, couponValidResult) {
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
-                    else if (couponValidResult.length == 0) { 
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (couponValidResult.length == 0) {
                         var couponValidResult = 0;
                         var data = {
                             winnersLength: winnersLength,
                             totalBuyers: totalBuyers,
-                            cashPendingResult : cashPendingResult,
-                            cashDeliveredResult : cashDeliveredResult,
+                            cashPendingResult: cashPendingResult,
+                            cashDeliveredResult: cashDeliveredResult,
                             couponUsedResult: couponUsedResult,
                             couponExpResult: couponExpResult,
                             couponValidResult: couponValidResult
                         }
                         callback(null, data);
-                    } 
-                    else {
+                    } else {
                         var data = {
                             winnersLength: winnersLength,
                             totalBuyers: totalBuyers,
-                            cashPendingResult : cashPendingResult,
-                            cashDeliveredResult : cashDeliveredResult,
+                            cashPendingResult: cashPendingResult,
+                            cashDeliveredResult: cashDeliveredResult,
                             couponUsedResult: couponUsedResult,
                             couponExpResult: couponExpResult,
                             couponValidResult: couponValidResult
                         }
                         callback(null, data);
                     }
-               
+
                 })
             }
         ], function(err, result) {
