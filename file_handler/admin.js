@@ -47,7 +47,7 @@ module.exports = {
                         responseMessage: "The email address that you've entered doesn't match any account."
                     });
                 } else {
-                        // sets a cookie with the user's info
+                    // sets a cookie with the user's info
                     req.session.user = result;
                     res.send({
                         responseCode: 200,
@@ -297,12 +297,19 @@ module.exports = {
                 for (var i = 0; i < result.docs.length; i++) {
                     count++;
                 }
-                res.send({
-                    result: result,
-                    count: count,
-                    responseCode: 200,
-                    responseMessage: "All ads shown successfully."
+                createNewAds.populate(result, {
+                    path: 'userId',
+                    model: 'brolixUser',
+                    select: 'mobileNumber'
+                }, function(err, result2) {
+                    res.send({
+                        result: result2,
+                        count: count,
+                        responseCode: 200,
+                        responseMessage: "All ads shown successfully."
+                    })
                 })
+
             }
         })
     },
@@ -3289,24 +3296,24 @@ module.exports = {
     },
 
     "uploadImage": function(req, res) {
-       console.log(req.files)
-       var form = new multiparty.Form();
-       form.parse(req, function(err, fields, files) {
-          console.log("Image_Path=======>>>> " + JSON.stringify(files.file[0].path));
-           cloudinary.uploader.upload(files.file[0].path, function(result) {
-               console.log(result)
-               console.log("Url====>>>>" + result.url);
-               res.send({
-                   result: result,
-                   serverStatus: 200,
-                   response_message: "Image Uploaded"
-               });
-           },{
-                     resource_type: "auto",
-                     chunk_size: 6000000
-                 });
-       })
-   },
+        console.log(req.files)
+        var form = new multiparty.Form();
+        form.parse(req, function(err, fields, files) {
+            console.log("Image_Path=======>>>> " + JSON.stringify(files.file[0].path));
+            cloudinary.uploader.upload(files.file[0].path, function(result) {
+                console.log(result)
+                console.log("Url====>>>>" + result.url);
+                res.send({
+                    result: result,
+                    serverStatus: 200,
+                    response_message: "Image Uploaded"
+                });
+            }, {
+                resource_type: "auto",
+                chunk_size: 6000000
+            });
+        })
+    },
 
     "zipcodFunction": function(req, res) {
         console.log("req", req.body)

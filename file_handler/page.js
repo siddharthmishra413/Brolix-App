@@ -531,14 +531,19 @@ module.exports = {
     },
 
     "PageCashWinnersFilter": function(req, res) {
-        var pageId = req.body.pageId;
-        var startDateKey = '';
-        var endDateKey = '';
-        var tempCond = {};
-        var tempEndDate = {};
-        var data;
-        if (pageId == null || pageId == '' || pageId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter pageId' }); } else {
-            var array = [];
+        if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: 'Please enter atleast start date or end date' }); } else {
+            var pageId = req.params.id;
+            var pageNumber = Number(req.params.pageNumber)
+            var limitData = pageNumber * 8;
+            var skips = limitData - 8;
+            var page = String(pageNumber);
+
+            var startDateKey = '';
+            var endDateKey = '';
+            var tempCond = {};
+            var tempEndDate = {};
+            var data;
+
             var condition = { $or: [] };
             Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                 if (!(req.body[key] == "" || req.body[key] == undefined)) {
@@ -557,22 +562,26 @@ module.exports = {
             });
             console.log("startDate", tempCond)
             console.log("endDate", tempEndDate)
-            console.log("dta===>>", data)
-            createNewAds.find({ pageId: pageId, status: "EXPIRED" }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                    var cashType = result.filter(result => result.adsType == "cash");
-                    for (i = 0; i < cashType.length; i++) {
-                        for (j = 0; j < cashType[i].winners.length; j++, j) {
-                            array.push(cashType[i].winners[j]);
-                        }
+            console.log("data===>>", data)
+            User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.pageId': pageId, 'cashPrize.updateddAt': data } }).exec(function(err, result) {
+                console.log("1")
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No cash winner found" }); } else {
+                    var count = 0;
+                    for (i = 0; i < result.length; i++) {
+                        count++;
                     }
-                    User.paginate({ _id: { $in: array }, 'createdAt': data }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
-                        console.log("particularPageCashWinners-->>", particularPageCashWinners)
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found " }) } else {
+                    var pages = Math.ceil(count / 8);
+                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.pageId': pageId, 'cashPrize.updateddAt': data } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                        console.log("2")
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
                             res.send({
-                                result: result1,
+                                docs: result1,
+                                count: count,
+                                limit: limitData,
+                                page: page,
+                                pages: pages,
                                 responseCode: 200,
-                                responseMessage: "result show successfully;"
+                                responseMessage: "All cash winner shown successfully."
                             })
                         }
                     })
