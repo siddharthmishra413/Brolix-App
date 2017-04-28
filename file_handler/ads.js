@@ -563,9 +563,6 @@ module.exports = {
     //     ])
     // },
 
-    // else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
-    //                return res.status(403).send({ responseMessage: "Already used luckCard" }) }
-
     "viewAd": function(req, res) { //req.body.userId, adId
         var userId = req.body.userId;
         waterfall([      
