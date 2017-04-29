@@ -98,13 +98,9 @@ var userSchema = new Schema({
         exchangeStatus: { type: String, default: 'ON' },
         status: { type: String, default: 'ACTIVE' },
         type: { type: String },
-<<<<<<< HEAD
         updateddAt: { type: Date, default: Date.now },
-        usedCouponDate : { type: Date, default: Date.now }
-=======
-        couponExpire: { type: String },
-        updateddAt: { type: Date, default: Date.now }
->>>>>>> fc776797e3b64835bba8c5ad87634a43b65c0fd1
+        usedCouponDate : { type: Date, default: Date.now },
+        couponExpire: { type: String }
     }],
     hiddenGifts: [{
         adId: { type: String, ref: 'createNewAds' },

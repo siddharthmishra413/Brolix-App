@@ -30,8 +30,6 @@ app.post('/pageStatisticsFilter', pageHandler.pageStatisticsFilter);
 app.post('/pageStatisticsFilterClick', pageHandler.pageStatisticsFilterClick);
 app.post('/pageStatisticsFilterWeeklyClick', pageHandler.pageStatisticsFilterWeeklyClick);
 app.post('/giftStatistics', pageHandler.giftStatistics);
-app.post('/adsStatistics', pageHandler.adsStatistics);
-app.post('/CouponCashAdStatistics', pageHandler.CouponCashAdStatistics);
 app.post('/pageFilter', authUser.authUser, pageHandler.pageFilter);
 app.post('/userFavouratePages', pageHandler.userFavouratePages);
 app.get('/listOfCategory', authUser.authUser, pageHandler.listOfCategory);

@@ -3947,5 +3947,16 @@ module.exports = {
         })
     },
 
+    "adsDetail": function(req, res) {
+        createNewAds.findOne({ _id: req.params.id ,status: "ACTIVE" },"coverImage", function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Data Show successfully"
+                })
+            }
+        })
+    },
 
 }

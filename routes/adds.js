@@ -43,6 +43,7 @@ app.post('/adsViewClick',adsHandler.adsViewClick);
 app.post('/adStatistics',adsHandler.adStatistics);
 app.post('/adStatisticsFilterClick',adsHandler.adStatisticsFilterClick);
 app.post('/couponStatisticsYearClicks',adsHandler.couponStatisticsYearClicks);
+app.post('/CouponAdStatistics',adsHandler.CouponAdStatistics);
 
 
 

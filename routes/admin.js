@@ -139,6 +139,7 @@ app.get('/liveUser/:pageNumber', adminHandler.liveUser);
 app.get('/showUserAllPages/:id', adminHandler.showUserAllPages);
 app.get('/listOfCategory', adminHandler.listOfCategory);
 app.post('/subCategoryData', adminHandler.subCategoryData);
+app.get('/adsDetail/:id', adminHandler.adsDetail);
 
 
 module.exports = app;
