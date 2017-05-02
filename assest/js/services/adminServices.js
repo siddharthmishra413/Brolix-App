@@ -4,6 +4,7 @@ this.eventDetail="null";
 
 });
 var baseurl = 'http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082';
+var locaurl = 'http://172.16.16.159:8082';
 
 app.service('uploadimgServeice', function($http, $q) {
     this.user = function(file) {
@@ -157,6 +158,7 @@ app.service('userService',function($http){
 
     /*-------------------------Manage ADS---------------------*/
 
+
     createAds: function(data){
       return $http.post(baseurl+'/ads/createAds', data);
     },
@@ -207,9 +209,21 @@ app.service('userService',function($http){
     showReportOnAd: function(id) {
      return $http.get(baseurl+'/admin/showReportOnAd/'+id);
     },
+
+    listOfAds: function() {
+     return $http.get(baseurl+'/admin/listOfAds/');
+    },
+    
     adsfilter: function(data){
       return $http.post(baseurl+'/admin/adsfilter', data);
     },
+
+    adsDetail: function(id) {
+      return $http.get(locaurl+'/admin/adsDetail/'+id);
+    },
+
+    //http://172.16.16.159:8082/admin/adsDetail/58eb50626b7bf95c7b1a47de
+
 
     //Url : http://localhost:8082/admin/adsWithLinks
 

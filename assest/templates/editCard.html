@@ -17,7 +17,7 @@
                                 <div class="col-md-6">
                                     <div class="remove-card-block" >
                                         <div class="cover-image" ng-repeat="x in UpgradeCard">
-                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">    
+                                            <img style="cursor:pointer;" ng-click="showAdsDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">    
                                         </div>
                                     </div>
                                 </div>
@@ -25,10 +25,6 @@
                                     <div class="col-sm-12">
                                         <div class="cover-image" >
                                             <img class="profile-user-img img-responsive" ng-model="cardDetails.image" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output"/>
-                                            <label class="fileContainer">
-                                                Choose File
-                                                <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                            </label>
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
