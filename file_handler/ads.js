@@ -402,7 +402,6 @@ module.exports = {
 
                             if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                                 var age = result1.dob;
-                                var country1 = result.whoWillSeeYourAdd.country;
 
                                 function _calculateAge(birthday) { // birthday is a date
                                     var ageDifMs = Date.now() - birthday.getTime();

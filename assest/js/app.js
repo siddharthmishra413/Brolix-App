@@ -196,7 +196,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'adminNotificationCtrl',
             templateUrl: 'templates/adminNotification.html'
         })
-
+    .state('header.homepageAds', {
+            url: '/homepageAds',
+            controller: 'homepageAdsCtrl',
+            templateUrl: 'templates/homepageAds.html'
+        })
 
   /*addCoupons-section*/
 

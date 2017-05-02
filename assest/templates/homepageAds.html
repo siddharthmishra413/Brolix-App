@@ -1,0 +1,130 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Home Page Ads</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-pills card-tabs">
+                        <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="active_tab('coupons_types')">Coupons Types</a></li>
+                        <li><a data-toggle="pill" style="cursor: pointer;" ng-click="active_tab('cash_types')">Cash Type</a></li>
+                    </ul>
+
+                    <div class="tab-content add-card">
+                        <div id="home" class="tab-pane fade in active" ng-if="active_coupons_types">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="remove-card-block" >
+                                        <div class="cover-image" ng-repeat="x in couponAds">
+                                            <img style="cursor:pointer;" ng-click="showAdsDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.coverImage}} id="output">    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-sm-12">
+                                        <div class="cover-image" >
+                                            <img class="profile-user-img img-responsive" ng-model="cardDetails.image" src="{{adsDetails.coverImage || '../dist/image/cover.jpg'}}" id="output"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <form class="form-block" role="form" name="crtCard">
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <label class="control-label col-md-4">Position</label>
+                                                        <div class="col-md-8">
+                                                            <input ng-model="cardDetails.viewers" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="10,000" required> 
+                                                        </div>
+                                                        <span style="color:red;" ng-show="crtCard.viewer.$dirty && crtCard.viewer.$invalid">
+                                                        <span ng-show="crtCard.viewer.$error.required">Position is required.</span> 
+                                                        <span ng-show="crtCard.viewer.$error.pattern">Only number are allowed.</span> 
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <label class="control-label col-md-4">Time</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-group">
+                                                              <input ng-model="cardDetails.price" type="tel" name="prices"  ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" placeholder="25" required>
+                                                              <span class="input-group-addon" id="basic-addon2"><i class="fa fa-usd" ></i></span>
+                                                            </div>
+                                                            <span style="color:red;" ng-show="crtCard.prices.$dirty && crtCard.prices.$invalid">
+                                                            <span ng-show="crtCard.prices.$error.required">Time is required.</span> 
+                                                            <span ng-show="crtCard.prices.$error.pattern">Only number are allowed.</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="btn2 text-center">
+                                                    <button class="btn btn-lg btn-green "    ng-disabled="cardDetails.image=='../dist/image/cover.jpg' || crtCard.$invalid " ng-click="updateCard('upgrade_card',cardDetails._id,cardDetails.photo)">Update</button>
+                                                    <!-- <a href="index.html" class="btn btn-lg btn-green">Cancel</a> -->
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <div id="home" class="tab-pane fade in active" ng-if="active_cash_types">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="remove-card-block" >
+                                        <div class="cover-image" ng-repeat="x in cashType">
+                                            <img style="cursor:pointer;" ng-click="showAdsDetails(x._id)" class="profile-user-img img-responsive" src="{{x.coverImage || '../dist/image/cover.jpg'}}" id="output">  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-sm-12">
+                                        <div class="cover-image"  >
+                                        <img class="profile-user-img img-responsive" src="{{adsDetails.coverImage || '../dist/image/cover.jpg'}}" id="output">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <form class="form-block" role="form" name="crtCard2">
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <label class="control-label col-md-4">Position</label>
+                                                        <div class="col-md-8">
+                                                            <input ng-model="cardDetails.chances" type="tel" name="chance" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="10,000" required > 
+                                                            <span style="color:red;" ng-show="crtCard2.chance.$dirty && crtCard2.chance.$invalid">
+                                                            <span ng-show="crtCard2.chance.$error.required">Position is required.</span> 
+                                                            <span ng-show="crtCard2.chance.$error.pattern">Only number are allowed.</span>     
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <label class="control-label col-md-4">Time</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-group">
+                                                              <input ng-model="cardDetails.brolix" type="tel" name="brolix" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="25" required>
+                                                              <span class="input-group-addon" id="basic-addon2"><i class="fa fa-usd" ></i></span>
+                                                            </div>
+                                                            <span style="color:red;" ng-show="crtCard2.brolix.$dirty && crtCard2.brolix.$invalid">
+                                                            <span ng-show="crtCard2.brolix.$error.required">Time is required.</span> 
+                                                            <span ng-show="crtCard2.brolix.$error.pattern">Only number are allowed.</span>  
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="btn2 text-center">
+                                                    <button class="btn btn-lg btn-green " ng-click="updateCard('luck_card',cardDetails._id)"  ng-disabled="createCard.image2=='../dist/image/cover.jpg' || crtCard2.$invalid " class="btn btn-lg btn-green">Update</button>
+                                                    <!-- <a class="btn btn-lg btn-green">Cancel</a> -->
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
