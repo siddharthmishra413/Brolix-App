@@ -893,7 +893,7 @@ module.exports = {
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
             break;
             case 'weekly':
-               var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
+               var updateData = { year: { $year: "$date" }, month: { $month: "$date" } , dayOfWeek: { $dayOfWeek: "$date" } } 
             break;
         }
         
@@ -1003,10 +1003,7 @@ module.exports = {
         var startTime = new Date(req.body.startDate).toUTCString();
         var endTime = new Date(req.body.endDate).toUTCString();
 
-        // var endTimeHour = req.body.date + 86399000;
-        // var endTime = new Date(endTimeHour).toUTCString();
-        // var week = endTimeHour - 604800000;
-        // var weekly = new Date(week).toUTCString();
+
 
         console.log("startTime=>", startTime)
         console.log("endTime=>", endTime)
@@ -1024,28 +1021,49 @@ module.exports = {
                     } else {
                         console.log(result)
                         var winnersLength = 0;
+                        var array = [];
                         for (var i = 0; i < result.length; i++) {
+                            array.push(result[i]._id)
                             winnersLength += result[i].winners.length;
                             console.log(winnersLength);
                         }
-                        callback(null, winnersLength)
+
+                        callback(null, winnersLength, array)
                     }
                 })
             },
-            function(winnersLength, callback) {
+            function(winnersLength, arrayId, callback) {
                 console.log("winnersLength", winnersLength)
-                User.find({
-                    cardPurchaseDate: { $gte: startTime, $lte: endTime }
-                }).exec(function(err, ress) {
-
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (ress.length == 0) {
-                        var totalBuyers = 0;
-                        callback(null, winnersLength, totalBuyers)
-                    } else {
-                        var totalBuyers = ress.length;
-                        callback(null, winnersLength, totalBuyers)
+                var updateData = {$match:{adId: { $in: arrayId }}};
+                var groupCond = { $group : { 
+                    _id : null, 
+                    couponPurchased:{ $sum: "$couponPurchased" }
+                }}
+                Views.aggregate(updateData,groupCond,function(err, result){
+                    console.log("result=========>>>..", result)
+                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
+                    } 
+                    else if (result.length == 0) {
+                        var data =0
+                        callback(null,winnersLength,data)
+                    }
+                    else{
+                        var data = result[0].couponPurchased;
+                        callback(null,winnersLength, data)
                     }
                 })
+                // User.find({
+                //     cardPurchaseDate: { $gte: startTime, $lte: endTime }
+                // }).exec(function(err, ress) {
+
+                //     if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (ress.length == 0) {
+                //         var totalBuyers = 0;
+                //         callback(null, winnersLength, totalBuyers)
+                //     } else {
+                //         var totalBuyers = ress.length;
+                //         callback(null, winnersLength, totalBuyers)
+                //     }
+                // })
             },
             function(winnersLength, totalBuyers, callback) {
                 console.log("totalBuyers", totalBuyers)
