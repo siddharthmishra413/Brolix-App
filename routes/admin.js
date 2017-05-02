@@ -106,7 +106,7 @@ app.post('/luckUpgradeCardfilter', adminHandler.luckUpgradeCardfilter);
 app.post('/giftsFilter', adminHandler.giftsFilter);
 app.post('/brolixPaymentFilter', adminHandler.brolixPaymentFilter);
 app.post('/dollorPaymentFilter', adminHandler.dollorPaymentFilter);
-app.post('/listOfAds', adminHandler.listOfAds);
+app.get('/listOfAds', adminHandler.listOfAds);
 app.get('/listOfAllAds', adminHandler.listOfAllAds);
 app.get('/allCountriesfind', adminHandler.allCountriesfind);
 app.post('/allstatefind', adminHandler.allstatefind);

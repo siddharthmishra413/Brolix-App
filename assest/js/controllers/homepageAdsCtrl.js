@@ -1,68 +1,56 @@
-app.controller('editCardCtrl', function($scope, $window, userService,spinnerService,$timeout, uploadimgServeice, $state, toastr, $stateParams, $http) {
+app.controller('homepageAdsCtrl', function($scope, $window, userService,spinnerService,$timeout, uploadimgServeice, $state, toastr, $stateParams, $http) {
     $(window).scrollTop(0, 0);
-    $scope.$emit('headerStatus', 'Manage Cards');
-    $scope.$emit('SideMenu', 'Manage Cards');
+    $scope.$emit('headerStatus', 'Manage Ads');
+    $scope.$emit('SideMenu', 'Manage Ads');
     $scope.allCards = {};
-    $scope.active_upgrade_card=true;
+    $scope.active_coupons_types=true;
     $scope.user = {};
     $scope.myForm = {};
-    $scope.cardType = 'upgrade_card';
+    //$scope.cardType = 'coupons_types';
     $scope.cardDetails = {};
 
-    userService.viewcard($scope.cardType).success(function(res) {
+    userService.listOfAds().success(function(res) {
       console.log("resssssssssssssss",res)
-        $scope.UpgradeCard = res.data;
-        console.log("$scope.UpgradeCard",JSON.stringify($scope.UpgradeCard));
-        $scope.user.photo = '';
-        $scope.cardDetails.photo = '';
+      $scope.couponAds = res.couponType;
+      $scope.cashType = res.cashType;
+      console.log("$scope.cashType",$scope.cashType)
+      console.log("$scope.couponAds",$scope.couponAds)
+        // $scope.UpgradeCard = res.data;
+        // console.log("$scope.UpgradeCard",JSON.stringify($scope.UpgradeCard));
+        // $scope.user.photo = '';
+        // $scope.cardDetails.photo = '';
     })
 
-    $scope.changeImage = function(input) {
-        spinnerService.show('html5spinner'); 
-        var file = input.files[0];
-        var ext = file.name.split('.').pop();
-        if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
-            $scope.imageName = file.name;
-            uploadimgServeice.user(file).then(function(ObjS) {
-                 $timeout(function () {      
-                spinnerService.hide('html5spinner');     
-            $scope.myForm.photo = ObjS.data.result.url;
-            $scope.user.photo = ObjS.data.result.url;
-            }, 250); 
-            console.log("pjototot",$scope.user.photo);
-        })
-        }else{
-            toastr.error("Only image supported.")
-        }        
-    }
+    
 
     $scope.showAdsDetails = function(id){
       $scope.user.photo = '';
       console.log("iddddddddd",id)
-      userService.showCardDetails(id).success(function(res){
-        $scope.cardDetails = res.data;
-        console.log("$scope.cardDetails",$scope.cardDetails)
+      userService.adsDetail('58eb50626b7bf95c7b1a47de').success(function(res){
+        console.log("res",JSON.stringify(res))
+        $scope.adsDetails = res.result;
+        console.log("$scope.adsDetails",$scope.adsDetails)
       })
 
     }
 
     $scope.active_tab=function(active_card){
-      console.log("active_card",active_card)
-        if(active_card=='upgrade_card'){
-        $scope.active_upgrade_card=true;
-         $scope.active_luck_card=false;
-         $scope.user.photo = '';
-        $scope.cardDetails.photo = '';
-      }else if(active_card=='luck_card'){
+      console.log("coupons_types",active_card)
+        if(active_card=='coupons_types'){
+        $scope.active_coupons_types=true;
+        $scope.active_cash_types=false;
         $scope.user.photo = '';
         $scope.cardDetails.photo = '';
-        $scope.active_upgrade_card=false;
-        $scope.active_luck_card=true;
-        userService.viewcard(active_card).success(function(res) {
-        console.log("datatatatatata",res)
-        $scope.LuckCard = res.data;
-        console.log("$scope.LuckCard",$scope.LuckCard)
-    })
+      }else if(active_card=='cash_types'){
+        $scope.user.photo = '';
+        $scope.cardDetails.photo = '';
+        $scope.active_coupons_types=false;
+        $scope.active_cash_types=true;
+    //     userService.viewcard(active_card).success(function(res) {
+    //     console.log("datatatatatata",res)
+    //     $scope.cashType = res.data;
+    //     console.log("$scope.LuckCard",$scope.cashType)
+    // })
       }
       else{
         toastr.error("somthing wents to roung")

@@ -760,7 +760,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         windowsStoreLink:$scope.createAds.windowStoreLink,
         appIcon:$scope.createAds.appIcon,
         linkDescription:$scope.createAds.linkDescription,
-        dawnloadPagePhoto:appPhoto,
+        dawnloadPagePhoto:[$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6];,
         promoteApp:promoteAppBoolean,
         video:$scope.createAds.vedioUrl,
         musicFileName:$scope.createAds.audioUrl,
