@@ -881,12 +881,11 @@ module.exports = {
         })
     },
 
-
     "pageStatisticsFilterClick": function(req, res) {
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var data = req.body.dateFilter;
-        switch(dateFilter){
+        switch(data){
             case 'yearly':
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" } }
             break;
@@ -900,7 +899,7 @@ module.exports = {
         
         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
                 $group: {
-                    _id: { year: { $year: "$date" }, month: { $month: "$date" } },
+                    _id: updateData,
                     totalProductView: { $sum: "$productView" },
                     totalPageView: { $sum: "$pageView" },
                     totalEventViewClicks: { $sum: "$eventViewClicks" },
