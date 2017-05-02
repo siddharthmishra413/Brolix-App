@@ -3,7 +3,10 @@
 		<div class="col-sm-4">
 			<h3 class="text-center">Sign Up</h3>
 			<div class="form-group">
-				<textarea class="form-control" rows="20" ng-model="myFrom.termssignUpCondition"></textarea>
+                        <div class="panel-body">
+                    <textarea name="editor1" class="form-control pos_ckeditor" ng-model="signUpTerms" ></textarea>
+                        </div>
+				<!-- <textarea class="form-control" rows="20" ng-model="myFrom.termssignUpCondition"></textarea> -->
 			</div>
 			<div class="btn2 text-center">
 	            <a class="btn btn-lg btn-green" ng-click="click('signUpCondition')">Update</a>

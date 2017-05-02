@@ -7,6 +7,25 @@ $(window).scrollTop(0,0);
  $scope.sendMessage = {};
  $scope.myForm={};
 
+
+// $scope.removeAds=function(id){
+//     console.log("id",id)
+//         if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
+//         toastr.error("Please select user.")
+//     }
+//     else {
+//         userService.removeAds($scope.myForm.checkId).then(function(success) { 
+//         //console.log(JSON.stringify($scope.userDetail))
+//                 $scope.userDetail=success.data.result;
+//                 $("#adInfo").modal('show');
+//                 //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
+//             },function(err){
+//                 console.log(err);
+//                  toastr.error('Connection error.');
+//         }) 
+//     }
+// }
+
   $scope.sendMessagePage = function (modal) {
       console.log($scope.myForm.checkId);
         $scope.modalId = modal;
@@ -14,15 +33,15 @@ $(window).scrollTop(0,0);
       $("#sendMessageModelAllUser").modal('show');
  }
  
-     $scope.contactOwner = function (modal) {
-        $scope.modalId = modal;
-        $scope.modelData = modal;
-          if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
-        toastr.error("Please select user.")
-          }
-          else{
-               $("#sendMessageModelOwners").modal('show');           
-          }       
+ $scope.contactOwner = function (modal) {
+    $scope.modalId = modal;
+    $scope.modelData = modal;
+      if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
+    toastr.error("Please select user.")
+      }
+      else{
+           $("#sendMessageModelOwners").modal('show');           
+      }       
  }
 
   $scope.send_messageOwners = function(id){
@@ -52,22 +71,23 @@ $(window).scrollTop(0,0);
         })
     }
     
-     $scope.adInfo=function(){
+     $scope.adInfo=function(id){
+         console.log("id",id)
          console.log($scope.myForm.checkId)
-         if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
-        toastr.error("Please select user.")
-         }
-        else {
-            userService.adInfo($scope.myForm.checkId).then(function(success) { 
-            //console.log(JSON.stringify($scope.userDetail))
-                    $scope.userDetail=success.data.result;
-                    $("#adInfo").modal('show');
-                    //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
-                },function(err){
-                    console.log(err);
-                     toastr.error('Connection error.');
-            }) 
-        }
+        //  if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
+        // toastr.error("Please select user.")
+        //  }
+        // else {
+        //     userService.adInfo($scope.myForm.checkId).then(function(success) { 
+        //     //console.log(JSON.stringify($scope.userDetail))
+        //             $scope.userDetail=success.data.result;
+        //             $("#adInfo").modal('show');
+        //             //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
+        //         },function(err){
+        //             console.log(err);
+        //              toastr.error('Connection error.');
+        //     }) 
+        // }
     }
 
      $scope.adInfoSoldCoupon=function(id){
