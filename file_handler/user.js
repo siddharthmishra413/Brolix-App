@@ -103,7 +103,6 @@ var optionsNew = {
         'Content-Length': Buffer.byteLength(data1),
         'content': data1,
         'accept': '*/*'
-
     }
 };
 
@@ -2046,11 +2045,17 @@ module.exports = {
         var couponId = req.body.couponId;
         var adId = req.body.adId;
         User.find({ 'coupon._id': couponId }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "EXPIRED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is expired" }); } else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "Used"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } else {
-                User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED" } }, { new: true }, function(err, result1) {
+            console.log(result)
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+            else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } 
+           // else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "EXPIRED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is expired" }); } else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } 
+            else {
+                User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED" , 'coupon.$.usedCouponDate': Date.now()} }, { new: true }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
                         createNewAds.update({ _id: adId }, { $set: { 'couponStatus': "USED" } }, function(err, result2) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                            else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found" }); } 
+                            else {
                                 res.send({
                                     // result: result2,
                                     responseCode: 200,

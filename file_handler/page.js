@@ -883,8 +883,21 @@ module.exports = {
 
 
     "pageStatisticsFilterClick": function(req, res) {
-        var newDate = new Date(req.body.date).getFullYear();
-
+        var newYear = new Date(req.body.date).getFullYear();
+        var newMonth = new Date(req.body.date).getMonth();
+        var data = req.body.dateFilter;
+        switch(dateFilter){
+            case 'yearly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } }
+            break;
+            case 'monthly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
+            break;
+            case 'weekly':
+               var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
+            break;
+        }
+        
         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
                 $group: {
                     _id: { year: { $year: "$date" }, month: { $month: "$date" } },
@@ -904,7 +917,7 @@ module.exports = {
             },
             function(err, results) {
                 var yearData = 2017
-                var data = results.filter(results => results._id.year == newDate)
+                var data = results.filter(results => results._id.year == newYear)
                 results = data;
                 var array = [];
                 var flag = false;
@@ -953,7 +966,7 @@ module.exports = {
     },
 
     "pageStatisticsFilterWeeklyClick": function(req, res) {
-        var newDate = new Date(req.body.date).getFullYear();
+        //var newDate = new Date(req.body.date).getFullYear();
 
         Views.aggregate({
                 $group: {
@@ -961,9 +974,7 @@ module.exports = {
                         year: { $year: "$date" },
                         month: { $month: "$date" },
                         week: { $week: "$date" },
-                        day: {
-                            $dayOfWeek: "$date"
-                        }
+                        day: { $dayOfWeek: "$date" }
                     },
                     totalProductView: { $sum: "$productView" },
                     totalPageView: { $sum: "$pageView" },
@@ -980,50 +991,6 @@ module.exports = {
                 }
             },
             function(err, results) {
-                // var yearData = 2017
-                // var data =results.filter(results=>results._id.year == newDate)
-                // results =data;
-                // var array = [];
-                // var flag = false;
-                // for(var i=1; i<=12; i++){
-                //     console.log("Dfdgf",i)
-                //     for(var j = 0; j<results.length; j++){
-                //         if(i == results[j]._id.month){
-
-                //             console.log("value of j==>",j)
-                //             flag = true;
-                //             break;
-                //         }
-                //         else{
-                //             flag = false;
-                //         }
-                //     }
-                //     if(flag==true){
-                //         array.push(results[j])
-                //     }
-                //     else{
-                //         var data ={
-                //                 _id:
-                //                 {
-                //                     year: 2017,
-                //                     month: i
-                //                 },
-                //                 totalProductView: 0,
-                //                 totalPageView: 0,
-                //                 totalEventViewClicks: 0,
-                //                 totalEmailClicks: 0,
-                //                 totalCallUsClick: 0,
-                //                 totalFollowerNumber: 0,
-                //                 totalSocialMediaClicks: 0,
-                //                 totalLocationClicks: 0,
-                //                 totalWebsiteClicks: 0,
-                //                 totalShares: 0,
-                //                 totalViewAds: 0,
-                //                 totalRating: 0
-                //             }
-                //         array.push(data)
-                //     }
-                // }
                 res.send({
                     result: results,
                     responseCode: 200,
@@ -1124,7 +1091,6 @@ module.exports = {
                     } else {
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult)
                     }
-
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, callback) {
@@ -1185,123 +1151,6 @@ module.exports = {
             }
         })
 
-    },
-
-    //Request parameter
-    // {
-    // "adId":"58ae86f90739d0153030bc45",
-    // "pageId":"58aaa1b3fdc4ed1553754d2f"
-    // }
-
-    "adsStatistics": function(req, res) {
-        var startTime = new Date(req.body.date).toUTCString();
-        var endTimeHour = req.body.date + 86399000;
-        var endTime = new Date(endTimeHour).toUTCString();
-
-        var week = endTimeHour - 604800000;
-        var weekly = new Date(week).toUTCString();
-
-        waterfall([
-            function(callback) {
-                var queryCondition = { $match: { pageId: req.body.pageId } }
-                Views.aggregate([queryCondition, {
-                    $group: {
-                        _id: null,
-                        totalPageView: { $sum: "$pageView" }
-                    }
-                }]).exec(function(err, result) {
-                    callback(null, result)
-                })
-            },
-            function(pageView, callback) {
-                createNewAds.findOne({
-                    _id: req.body.adId
-                }).exec(function(err, results) {
-                    callback(null, pageView, results)
-                })
-            },
-            function(pageView, results, callback) {
-                createNewReport.find({
-                    adId: req.body.adId
-                }).exec(function(err, resultRepo) {
-                    console.log("result repo==>>" + resultRepo)
-                    var data = {
-                        pageView: pageView[0].totalPageView,
-                        AdTag: results.tag.length,
-                        socialShare: results.socialShareListObject.length,
-                        AdFollowers: results.adFollowers.length,
-                        useLuckCard: results.luckCardListObject.length,
-                        AdReport: resultRepo.length
-                    }
-                    console.log(data)
-                    callback(null, data)
-                })
-            }
-        ], function(err, result) {
-            if (err) {
-                res.send({
-                    responseCode: 302,
-                    responseMessage: 'Something went worng.',
-                    result: err
-                });
-            } else {
-                res.send({
-                    responseCode: 200,
-                    responseMessage: 'Successfully.',
-                    result: result
-                });
-            }
-        })
-    },
-
-    "CouponCashAdStatistics": function(req, res) {
-        createNewAds.findOne({
-            _id: req.body.adId
-        }).exec(function(err, result) {
-            createNewAds.findOne({
-                _id: req.body.adId
-            }, function(err, result) {
-                if (result.adsType == 'coupon') {
-                    //var couponStatus = result.couponPurchased;
-                    console.log("result coupon===>" + result.couponExpired)
-                    var data = {
-                        couponStatus: result.couponStatus,
-                        winners: result.winners.length,
-                        couponBuyer: result.couponPurchased
-                            //couponPurchased : result.couponPurchased.length
-                    }
-                    res.send({
-                        responseCode: 200,
-                        responseMessage: 'Successfully.',
-                        result: data
-                    });
-                } else {
-                    var array = [];
-
-                    User.find({ _id: { $in: result.winners } }, function(err, result1) {
-
-                        result1.forEach(function(result) {
-                            array.push(result.firstName)
-                        })
-                        console.log(array)
-                        var data = {
-                            cashStatus: result.cashStatus,
-                            winners: array
-                                //couponPurchased : result.couponPurchased.length
-                        }
-
-                        res.send({
-                            responseCode: 200,
-                            responseMessage: 'Successfully.',
-                            result: data
-                        });
-                    })
-
-                    // })
-
-                }
-            })
-        })
     },
 
     "notificationList": function(req, res) {
