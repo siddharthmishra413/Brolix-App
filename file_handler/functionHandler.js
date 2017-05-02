@@ -71,7 +71,7 @@
                   your_custom_data_key: 'your_custom_data_value'
               },
               notification: {
-                  title: 'Hello from Brolix.',
+                  title: 'Brolix.',
                   body: message
               }
           };
@@ -97,13 +97,12 @@
               "port": 2195,
               "enhanced": true,
               "cacheLength": 5,
-              "title": "Testing",
-              "message": "Hello from Koob. We have new titles in our library. Click here to see!",
+              "title": "Brolix",
+              "message": message,
               "deviceToken": deviceToken
           };
-          var title = "Hello from Brolix";
+          var title = "Brolix";
           var message = message;
-          var bookname = bookname;
           var deviceToken = deviceToken;
           var apnConnection = new apn.Connection(options);
           var myDevice = new apn.Device(deviceToken);
