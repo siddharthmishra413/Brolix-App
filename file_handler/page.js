@@ -883,8 +883,21 @@ module.exports = {
 
 
     "pageStatisticsFilterClick": function(req, res) {
-        var newDate = new Date(req.body.date).getFullYear();
-
+        var newYear = new Date(req.body.date).getFullYear();
+        var newMonth = new Date(req.body.date).getMonth();
+        var data = req.body.dateFilter;
+        switch(dateFilter){
+            case 'yearly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } }
+            break;
+            case 'monthly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
+            break;
+            case 'weekly':
+               var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
+            break;
+        }
+        
         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
                 $group: {
                     _id: { year: { $year: "$date" }, month: { $month: "$date" } },
@@ -904,7 +917,7 @@ module.exports = {
             },
             function(err, results) {
                 var yearData = 2017
-                var data = results.filter(results => results._id.year == newDate)
+                var data = results.filter(results => results._id.year == newYear)
                 results = data;
                 var array = [];
                 var flag = false;
@@ -953,7 +966,7 @@ module.exports = {
     },
 
     "pageStatisticsFilterWeeklyClick": function(req, res) {
-        var newDate = new Date(req.body.date).getFullYear();
+        //var newDate = new Date(req.body.date).getFullYear();
 
         Views.aggregate({
                 $group: {
@@ -961,9 +974,7 @@ module.exports = {
                         year: { $year: "$date" },
                         month: { $month: "$date" },
                         week: { $week: "$date" },
-                        day: {
-                            $dayOfWeek: "$date"
-                        }
+                        day: { $dayOfWeek: "$date" }
                     },
                     totalProductView: { $sum: "$productView" },
                     totalPageView: { $sum: "$pageView" },

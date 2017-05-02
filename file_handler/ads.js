@@ -1264,6 +1264,9 @@ module.exports = {
     },
 
     "adStatistics": function(req, res) {
+        // var queryCondition = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { adId: req.body.adId }] } }
+        // var queryConditionPage = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { pageId: req.body.pageId }] } }
+
         var queryCondition = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { adId: req.body.adId }] } }
         var queryConditionPage = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { pageId: req.body.pageId }] } }
         console.log("queryCondition" + JSON.stringify(queryCondition))
