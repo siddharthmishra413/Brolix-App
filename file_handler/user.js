@@ -18,6 +18,7 @@ var cron = require('node-cron');
 var yeast = require('yeast');
 var followerList = require("./model/followersList");
 var paypalPayment = require("./model/payment");
+var Brolixanddollors = require("./model/brolixAndDollors");
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -29,9 +30,7 @@ cloudinary.config({
 var avoid = {
         "password": 0
     }
-    //var createNewPage = require("./model/createNewAds");
-    // http://172.16.6.171
-
+   
 //brintree Integration
 var braintree = require("braintree");
 
@@ -46,20 +45,6 @@ var gateway = braintree.connect({
 var sha512 = require('js-sha512');
 var querystring = require('querystring');
 var https = require('https');
-
-// var data = querystring.stringify({ 
-//     merchantKey:"qZSnc2tX", 
-//     merchantTransactionIds:"4944995",
-//     amount:"100",
-//     productinfo:"hhhhhh",
-//     productinfo:'susheel',
-//     email:"susheelyadav95@gmail.com",
-//     phone:"8800418935",
-//     surl:"http://localhost:4001/login",
-//     furl:"http://localhost:4001/signup",
-//     service_provider:'payu_paisa'
-
-// })
 
 var marchentKey = "gtKFFx";
 var txnid = '4945398';
@@ -86,9 +71,6 @@ var data1 = querystring.stringify({
     service_provider: 'payu_paisa',
     salt: 'eCwWELxi',
     hash: sha512(string)
-
-    // string : "qZSnc2tX" +'|' +"4944995"+ '|' +1000+'|'+"Product 1"+'|'+"susheel"+'|'+"susheelyadav95@gmail.com"+'|'+"8800418935"+'|'+ "http://localhost/success" +'|'+"http://localhost/fail"+'|'+"payu_paisa"+'|||||||'+"2PcI9FTyys",
-    // hash:sha512("qZSnc2tX" +'|' +"4944995"+ '|' +1000+'|'+"Product 1"+'|'+"susheel"+'|'+"susheelyadav95@gmail.com"+'|'+"8800418935"+'|'+ "http://localhost/success" +'|'+"http://localhost/fail"+'|'+"payu_paisa"+'|||||||'+"2PcI9FTyys")
 })
 
 
@@ -105,26 +87,6 @@ var optionsNew = {
         'accept': '*/*'
     }
 };
-
-// var data = querystring.stringify({ 
-//     merchantKey:"gtKFFx"
-//     /*merchantTransactionIds:"4945362" */
-// }); 
-
-// var options = { 
-//     hostname: 'test.payumoney.com', 
-//     port: 443, 
-//     path: '/payment/op/getPaymentResponse?'+data, 
-//     method: 'POST', 
-//     headers: { 
-//         'Content-Type': 'application/json', 
-//         'Content-Length': Buffer.byteLength(data), 
-//         'content': data, 
-//         'accept': '*/*', 
-//         'Authorization': '0SC8FamYqWnwFzVgYKmiCfSsT96xerU8E+WBUh/KDXc=' 
-//     } 
-// };
-//////////////////////////////////////////////////////////////////
 
 module.exports = {
 
@@ -194,43 +156,7 @@ module.exports = {
     "paymentIntegration": function(req, res) {
         waterfall([
             function(callback) {
-                // createNewAds.findOne({
-                //   _id: req.body.Id,
-                //   adsType:'coupon'
-                // }).exec(function(err, result){
-                //   if(err){      
-                //     res.send({
-                //           responseCode: 302,
-                //           responseMessage: 'error.',
-                //           result: err
-                //     });}
-                //   else if(!result){
-                //           res.send({
-                //           responseCode: 404,
-                //           responseMessage: 'data not found.'
-                //         //  result: result
-                //       });
-                //   }
-                //   else{
                 var nextPay;
-                // console.log("chefRefund==>>",result.chefRefund)
-                // if(result.chefRefund == "Yes"){
-                //   var amount = req.body.paymentDetails.amount;
-                //   var serviceFee = amount/10 + parseInt(result.chefPay);
-                //  // var nextPay = 0;
-                //   console.log("amount"+amount);
-                //   console.log("serviceFee"+serviceFee)
-                //   if(serviceFee > amount){
-                //     nextPay = serviceFee - amount;
-                //      serviceFee = amount;
-                //      console.log("nextPay"+nextPay)
-                //   }
-                // }else{
-                //   console.log("wrong")
-                //   var amount = req.body.paymentDetails.amount;
-                //    var serviceFee = amount/10;
-                //   // nextPay = 0;
-                // }
                 var amount = req.body.amount;
                 var serviceFee = amount / 10;
                 var transactionCost = amount * (2.9 / 100) + 0.30;
@@ -305,64 +231,9 @@ module.exports = {
                             responseMessage: 'Successfully.',
                             result: results
                         });
-                        // console.log("transaction id===>>", results.transaction.id);
-                        // User.find({_id:req.body.chefId}).exec(function(err, ress){
-                        //   if(err){respon seHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
-                        //   else if(!ress){
-                        //     responseHandler.apiResponder(req, res, 404,"Data not found.");
-                        //   }
-                        //   else{
-                        //     var user = new User();
-                        //     user.paymentDetails.serviceFee =serviceFee; 
-                        //     user.paymentDetails.amount=amount;
-                        //     user.paymentDetails.chefId=req.body.paymentDetails.chefId;
-                        //     user.paymentDetails.dinerId=req.body.paymentDetails.dinerId;
-                        //     user.paymentDetails.mealId=req.body.paymentDetails.mealId;
-                        //     user.paymentDetails.transactionId= results.transaction.id;
-                        //     user.paymentDetails.transactionCost= transactionCost;
-                        //     user.save(function (err,user) {
-                        //       if(err){responseHandler.apiResponder(req, res, 302,"Problem in data finding", err) }
-                        //       else if (!user) {responseHandler.apiResponder(req, res, 404,"Data not Found")}
-                        //       else{
-                        //       callback(null ,user,result, amount, serviceFee, transactionCost,nextPay,resultss, results)
-                        //       }
-                        //     })
-                        //   }
-                        // })
                     }
                 })
             },
-            // function(user,result, amount, serviceFee, transactionCost,nextPay,resultss,results, callback){
-            //     console.log("nextPay value after callback"+nextPay)
-            //     var nextAmount = nextPay;
-            //     if(result.chefRefund == "Yes"){
-            //     console.log("yes");
-            //       if(nextPay = 0 || nextPay == undefined || nextPay == null){
-            //         User.findOneAndUpdate({_id:req.body.paymentDetails.chefId}, {'$set': {
-            //           chefRefund: 'No' , chefPay: 0
-            //         }},{new:true},function (err, resu) {
-            //         if (err) {res.send({response_code: 404,response_message: "something went wrong"});}
-            //         if (!resu) {res.send({response_code: 400,response_message: "Data not found."});}
-            //         else{
-            //           callback(null,user,results)
-            //         }})
-            //       }
-            //       else{
-            //         console.log("nextPay is not zero==>>"+nextAmount)
-            //         User.findOneAndUpdate({_id:req.body.paymentDetails.chefId}, {'$set': {
-            //           chefRefund: 'Yes' , chefPay: nextAmount
-            //         }},{new:true},function (err, resu) {
-            //         if (err) {res.send({response_code: 404,response_message: "something went wrong"});}
-            //         if (!resu) {res.send({response_code: 400,response_message: "Data not found."});}
-            //         else{
-            //           callback(null,user,results)
-            //         }})
-            //       }               
-            //    }else{
-            //     console.log("no");
-            //       callback(null,user,results)
-            //    }
-            // }
 
         ], function(err, result) {
             if (err) { responseHandler.apiResponder(req, res, 302, "Problem in data finding", err) } else {
@@ -399,22 +270,29 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
                                 console.log("4")
                                 if (req.body.haveReferralCode == true) {
-                                    User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: 250 } }).exec(function(err, result2) {
+                                    Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                            req.body.otp = functions.otp();
-                                            req.body.referralCode = yeast();
-                                            var user = User(req.body)
-                                            user.save(function(err, result) {
-                                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                                var token = jwt.sign(result, config.secreteKey);
-                                                res.header({
-                                                    "appToken": token
-                                                }).send({
-                                                    result: result,
-                                                    token: token,
-                                                    responseCode: 200,
-                                                    responseMessage: "You have been registered successfully."
-                                                });
+                                            console.log("data-->>", data)
+                                            var amount = data[0].value;
+                                            console.log("amount-->>", amount)
+                                            User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                                    req.body.otp = functions.otp();
+                                                    req.body.referralCode = yeast();
+                                                    var user = User(req.body)
+                                                    user.save(function(err, result) {
+                                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                                        var token = jwt.sign(result, config.secreteKey);
+                                                        res.header({
+                                                            "appToken": token
+                                                        }).send({
+                                                            result: result,
+                                                            token: token,
+                                                            responseCode: 200,
+                                                            responseMessage: "You have been registered successfully."
+                                                        });
+                                                    })
+                                                }
                                             })
                                         }
                                     })
@@ -913,7 +791,6 @@ module.exports = {
         User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
 
             if (error) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else {
-
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -943,7 +820,7 @@ module.exports = {
                 res.send({
                     // result: result,
                     responseCode: 200,
-                    responseMessage: "User Blocked successfully."
+                    responseMessage: "User blocked successfully."
                 });
             }
 
@@ -1143,7 +1020,6 @@ module.exports = {
         }
     },
 
-
     "useUpgradeCard": function(req, res) { //upgradeId adId viewers cash in request
         waterfall([
             function(callback) {
@@ -1184,11 +1060,7 @@ module.exports = {
                 responseMessage: "Successfully used the upgrade card."
             })
         })
-
     },
-
-
-
 
     "facebookLogin": function(req, res) {
         var obj = (req.body.facebookID);
@@ -1196,22 +1068,30 @@ module.exports = {
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-
                 if (req.body.haveReferralCode == true) {
-                    User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: 250 } }).exec(function(err, result2) {
+                    Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            req.body.referralCode = yeast();
-                            var user = new User(req.body);
-                            user.save(function(err, result1) {
-                                var token = jwt.sign(result1, config.secreteKey);
-                                res.header({
-                                    "appToken": token
-                                }).send({
-                                    result: result1,
-                                    token: token,
-                                    responseCode: 200,
-                                    responseMessage: "Signup successfully."
-                                });
+                            console.log("data-->>", data)
+                            var amount = data[0].value;
+                            console.log("amount-->>", amount)
+                            User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                    req.body.otp = functions.otp();
+                                    req.body.referralCode = yeast();
+                                    var user = User(req.body)
+                                    user.save(function(err, result3) {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                        var token = jwt.sign(result3, config.secreteKey);
+                                        res.header({
+                                            "appToken": token
+                                        }).send({
+                                            result: result3,
+                                            token: token,
+                                            responseCode: 200,
+                                            responseMessage: "You have been registered successfully."
+                                        });
+                                    })
+                                }
                             })
                         }
                     })
@@ -1458,20 +1338,29 @@ module.exports = {
         User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
                 if (req.body.haveReferralCode == true) {
-                    User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: 250 } }).exec(function(err, result2) {
+                    Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            req.body.referralCode = yeast();
-                            var user = new User(req.body);
-                            user.save(function(err, result) {
-                                var token = jwt.sign(result, config.secreteKey);
-                                res.header({
-                                    "appToken": token
-                                }).send({
-                                    result: result,
-                                    token: token,
-                                    responseCode: 200,
-                                    responseMessage: "Signup successfully."
-                                });
+                            console.log("data-->>", data)
+                            var amount = data[0].value;
+                            console.log("amount-->>", amount)
+                            User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                    req.body.otp = functions.otp();
+                                    req.body.referralCode = yeast();
+                                    var user = User(req.body)
+                                    user.save(function(err, result) {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                        var token = jwt.sign(result, config.secreteKey);
+                                        res.header({
+                                            "appToken": token
+                                        }).send({
+                                            result: result,
+                                            token: token,
+                                            responseCode: 200,
+                                            responseMessage: "You have been registered successfully."
+                                        });
+                                    })
+                                }
                             })
                         }
                     })
@@ -2046,16 +1935,13 @@ module.exports = {
         var adId = req.body.adId;
         User.find({ 'coupon._id': couponId }).exec(function(err, result) {
             console.log(result)
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-            else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } 
-           // else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "EXPIRED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is expired" }); } else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } 
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
+            // else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "EXPIRED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is expired" }); } else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } 
             else {
-                User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED" , 'coupon.$.usedCouponDate': Date.now()} }, { new: true }, function(err, result1) {
+                User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
                         createNewAds.update({ _id: adId }, { $set: { 'couponStatus': "USED" } }, function(err, result2) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                            else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found" }); } 
-                            else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                                 res.send({
                                     // result: result2,
                                     responseCode: 200,

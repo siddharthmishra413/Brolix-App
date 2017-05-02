@@ -61,7 +61,9 @@
       },
 
       "android_notification": function(deviceToken, message) {
-          var serverKey = 'AIzaSyDGz-6yYBGWStanh-DN7ljMzDATDFGA9vQ';
+        console.log("fasdfasdgsdfgsdfgsdgfadsgasg")
+        console.log("deviceToken-->.",deviceToken)
+          var serverKey = 'AIzaSyDGlEr6U16PMx8Y3m181yzyU4Fcl16ZRUw';
           var fcm = new FCM(serverKey);
 
           var message = {
@@ -78,7 +80,7 @@
 
           fcm.send(message, function(err, response) {
               if (err) {
-                  console.log("Android !! Something has gone wrong!");
+                  console.log("Android !! Something has gone wrong!", err);
               } else {
                   console.log("Successfully sent with response: ", response);
               }
