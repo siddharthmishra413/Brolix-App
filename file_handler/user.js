@@ -496,9 +496,10 @@ module.exports = {
                     });
                 } else {
                     var password = req.body.newpass;
-                    User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) {
-                          if (user.deviceType == 'android' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                    User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) { 
+                        if (user.deviceType == 'android'|| user.notification_status == 'on' || user.status == 'ACTIVE') {
                                      var message = "req.body.message";
+                                     console.log('result-->',user.deviceToken)
                                      functions.android_notification(user.deviceToken, message);
                                      console.log("Android notification send!!!!")
                                  } else if (user.deviceType == 'ios' || user.notification_status == 'on' || user.status == 'ACTIVE') {

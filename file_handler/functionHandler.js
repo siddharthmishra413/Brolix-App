@@ -61,9 +61,9 @@
       },
 
       "android_notification": function(deviceToken, message) {
-        console.log("fasdfasdgsdfgsdfgsdgfadsgasg")
+        console.log("in")
         console.log("deviceToken-->.",deviceToken)
-          var serverKey = 'AIzaSyDGlEr6U16PMx8Y3m181yzyU4Fcl16ZRUw';
+          var serverKey = '6af2f1d2ec04c436fe7ed05f8eec2989c5d341c7';
           var fcm = new FCM(serverKey);
 
           var message = {

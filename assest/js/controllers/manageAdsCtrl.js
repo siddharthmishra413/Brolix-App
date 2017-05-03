@@ -7,6 +7,60 @@ $(window).scrollTop(0,0);
  $scope.sendMessage = {};
  $scope.myForm={};
 
+
+
+ $scope.removeAds = function (id) {
+    console.log("hhh",id)
+        $scope.RemoveId = id;
+        var adsId = $scope.RemoveId;
+        //console.log("Blockidvcbc");
+        console.log("$scope.RemoveId",$scope.RemoveId)
+        if ($scope.RemoveId == '' || $scope.RemoveId == undefined || $scope.RemoveId == null) {
+       toastr.error("Please select user.")
+       $state.go('header.manageAds')
+    } else {
+    BootstrapDialog.show({
+        title: 'Remove User',
+        message: 'Are you sure want to Remove this Add',
+        buttons: [{
+            label: 'Yes',
+            action: function(dialog) {
+                userService.removeAds(adsId).success(function(res) {        
+                    if (res.responseCode == 200){
+                        dialog.close();
+                        toastr.success("Page removed Successfully");
+                        $state.reload();
+                    } else if(res.responseCode == 404){
+                        toastr.error(res.responseMessage);
+                    }
+                })    
+            }
+        }, {
+            label: 'No',
+            action: function(dialog) {
+                dialog.close();
+                // toastr.success("User Blocked");
+            }
+        }]
+    });
+    }
+}
+
+
+// $scope.removeAds=function(id){
+//         if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
+//         toastr.error("Please select user.")
+//     }
+//     else {
+//         userService.removeAds($scope.myForm.checkId).then(function(success) { 
+
+//             },function(err){
+//                 console.log(err);
+//                  toastr.error('Connection error.');
+//         }) 
+//     }
+// }
+
   $scope.sendMessagePage = function (modal) {
       console.log($scope.myForm.checkId);
         $scope.modalId = modal;
@@ -14,15 +68,15 @@ $(window).scrollTop(0,0);
       $("#sendMessageModelAllUser").modal('show');
  }
  
-     $scope.contactOwner = function (modal) {
-        $scope.modalId = modal;
-        $scope.modelData = modal;
-          if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
-        toastr.error("Please select user.")
-          }
-          else{
-               $("#sendMessageModelOwners").modal('show');           
-          }       
+ $scope.contactOwner = function (modal) {
+    $scope.modalId = modal;
+    $scope.modelData = modal;
+      if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
+    toastr.error("Please select user.")
+      }
+      else{
+           $("#sendMessageModelOwners").modal('show');           
+      }       
  }
 
   $scope.send_messageOwners = function(id){
@@ -51,7 +105,7 @@ $(window).scrollTop(0,0);
           console.log("$scope.allpageInfo",JSON.stringify($scope.allpageInfo))
         })
     }
-    
+
      $scope.adInfo=function(){
          console.log($scope.myForm.checkId)
          if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {

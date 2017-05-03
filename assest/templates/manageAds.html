@@ -208,13 +208,13 @@
         <div class="row-search">
             <ul>
                 <li class="active">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(x._id)">View Ad</a>
+                    <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Adssss</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab" style="cursor:pointer;">Edit Ad</a>
                 </li>
                  <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;">Remove Ad</a>
+                    <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                 </li>
                 <li class="">
                     <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
@@ -245,7 +245,6 @@
                 <thead>
                     <tr>
                         <th></th>
-
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
                         <th>DOWNLOAD LINKS</th>
