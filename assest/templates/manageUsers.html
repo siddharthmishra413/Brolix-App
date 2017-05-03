@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="box-block blk-drakgreen">
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
@@ -243,18 +243,18 @@
                          <select class="form-control" ng-change="changeState(); dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" required>
                             <option value="">Select State</option>
                             <option ng-repeat="state in stateList">{{state.region}}</option>
-                         </select> 
+                         </select>
                     </div>
                     <div class="form-group cus-select">
                          <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
                             <option ng-repeat="city in cityList">{{city.city}}</option>
-                         </select> 
+                         </select>
                     </div>
 
 
 
-                    
+
                     <div class="form-group cus-select">
                         <select class="form-control" ng-change="dashBordFilter(dashBordFilter.gender);" ng-model="dashBordFilter.gender" >
                             <option value="">Both Genders</option>
@@ -293,13 +293,13 @@
 
                     <!-- <div class="form-group cus-select">
                         <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">  
+                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">
                         </div>
                     </div>
 
                     <div class="form-group cus-select">
                         <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth"> 
+                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth">
                         </div>
                     </div> -->
                     <div class="form-group clearfix date-picker">
@@ -327,7 +327,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="totalUsers">
         <div class="grp-search">
@@ -344,7 +344,7 @@
                 </li>
                 <li class="active">
                 <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
-                    
+
                 </li>
                 <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
@@ -409,7 +409,7 @@
                         <button ng-click="nextClk()" ng-disabled="pageNo==noOfPages" class="btn paginationBtn">Next</button>
             </div>
         </div>
-    </div> 
+    </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="personalUser">
             <div class="grp-search">
@@ -426,7 +426,7 @@
                     </li>
                     <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
-                        
+
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
@@ -459,7 +459,7 @@
                 </form>
             </div>
         </div>
-        <div class="table-responsive col-sm-12">  
+        <div class="table-responsive col-sm-12">
             <table id="manageUserTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -487,12 +487,12 @@
             </table>
         </div>
             <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUser:test).length != 0">
-                        <button ng-click="prePersonalUser()" ng-disabled="pagePersonalUser==1" class="btn paginationBtn" >Prev</button> 
+                        <button ng-click="prePersonalUser()" ng-disabled="pagePersonalUser==1" class="btn paginationBtn" >Prev</button>
                         {{pagePersonalUser}}/{{noOfPagesPersonalUser}}
                         <button ng-click="nextPersonalUser()" ng-disabled="pagePersonalUser==noOfPagesPersonalUser" class="btn paginationBtn">Next</button>
             </div>
         </div>
-    </div>  
+    </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="businessUser">
             <div class="grp-search">
@@ -509,7 +509,7 @@
                     </li>
                     <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
-                        
+
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
@@ -569,7 +569,7 @@
             </table>
         </div>
             <div style="float:right; font-size: 20px;" ng-if="(businessUser | customFilterUser:test).length != 0">
-                <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBusinessUser}}/{{noOfPagesBusinessUser}}
                 <button ng-click="nextBusinessUser()" ng-disabled="pageBusinessUser==noOfPagesBusinessUser" class="btn paginationBtn">Next</button>
             </div>
@@ -591,7 +591,7 @@
                     </li>
                     <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
-                        
+
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
@@ -651,12 +651,12 @@
             </table>
         </div>
             <div style="float:right; font-size: 20px;" ng-if="(liveUser | customFilterUser:test).length != 0">
-                <button ng-click="preLiveUser()" ng-disabled="pageLiveUser==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preLiveUser()" ng-disabled="pageLiveUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageLiveUser}}/{{noOfPagesLiveUser}}
                 <button ng-click="nextLiveUser()" ng-disabled="pageLiveUser==noOfPagesLiveUser" class="btn paginationBtn">Next</button>
             </div>
         </div>
-    </div> 
+    </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="totalwinners">
             <div class="grp-search">
@@ -673,7 +673,7 @@
                     </li>
                     <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
-                        
+
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
@@ -733,13 +733,13 @@
             </table>
         </div>
             <div style="float:right; font-size: 20px;" ng-if="(totalWinners | customFilterUser:test).length != 0">
-                <button ng-click="preTotalWinners()" ng-disabled="pageTotalWinners ==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preTotalWinners()" ng-disabled="pageTotalWinners ==1" class="btn paginationBtn" >Prev</button>
                 {{pageTotalWinners }}/{{noOfPagesTotalWinners }}
                 <button ng-click="nextTotalWinners ()" ng-disabled="pageTotalWinners ==noOfPagesTotalWinners " class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
-    
+
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="cashWinners">
         <div class="grp-search">
@@ -756,7 +756,7 @@
                     </li>
                     <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
-                        
+
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
@@ -816,7 +816,7 @@
             </table>
         </div>
             <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test).length != 0">
-                <button ng-click="preCashWinners()" ng-disabled="pageCashWinners==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preCashWinners()" ng-disabled="pageCashWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCashWinners}}/{{noOfPagesCashWinners}}
                 <button ng-click="nextCashWinners()" ng-disabled="pageCashWinners==noOfPagesCashWinners" class="btn paginationBtn">Next</button>
             </div>
@@ -838,7 +838,7 @@
                     </li>
                     <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
-                        
+
                     </li>
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
@@ -898,7 +898,7 @@
             </table>
         </div>
             <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test).length != 0">
-                <button ng-click="preCouponWinners()" ng-disabled="pageCouponWinners==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preCouponWinners()" ng-disabled="pageCouponWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCouponWinners}}/{{noOfPagesCouponWinners}}
                 <button ng-click="nextCouponWinners()" ng-disabled="pageCouponWinners==noOfPagesCouponWinners" class="btn paginationBtn">Next</button>
             </div>
@@ -958,12 +958,12 @@
             </table>
         </div>
             <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test).length != 0">
-                <button ng-click="preBlockUser()" ng-disabled="pageBlockUser==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preBlockUser()" ng-disabled="pageBlockUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBlockUser}}/{{noOfPagesBlockUser}}
                 <button ng-click="nextBlockUser()" ng-disabled="pageBlockUser==noOfPagesBlockUser" class="btn paginationBtn">Next</button>
             </div>
         </div>
-    </div>  
+    </div>
 </div>
 
 
@@ -1003,9 +1003,9 @@
            <div class="modal-body">
                <form name="sendBrolix" name="sendMessage">
                    <div class="form-group">
-                   <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                   <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
                     <span style="color:red;" ng-show="sendBrolix.brolixsend.$dirty && sendBrolix.brolixsend.$invalid">
-                    <span ng-show="sendBrolix.brolixsend.$error.required">Brolix is required.</span> 
+                    <span ng-show="sendBrolix.brolixsend.$error.required">Brolix is required.</span>
                     <span ng-show="sendBrolix.brolixsend.$error.maxlength">Brolix have at most 10 digits.</span>
                     <span ng-show="sendBrolix.brolixsend.$error.pattern">Only number are allowed.</span>
                    </div>
@@ -1029,9 +1029,9 @@
            <div class="modal-body">
                <form name="sendCash">
                    <div class="form-group">
-                   <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                   <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
                     <span style="color:red;" ng-show="sendCash.cashsend.$dirty && sendCash.cashsend.$invalid">
-                    <span ng-show="sendCash.cashsend.$error.required">Cash is required.</span> 
+                    <span ng-show="sendCash.cashsend.$error.required">Cash is required.</span>
                     <span ng-show="sendCash.cashsend.$error.maxlength">Cash have at most 10 digits.</span>
                     <span ng-show="sendCash.cashsend.$error.pattern">Only number are allowed.</span>
                    </div>
@@ -1100,9 +1100,9 @@
            <div class="modal-body">
                <form name="userFrom1">
                    <div class="form-group">
-                   <input type="text" class="form-control" name="brolix" ng-model="send.singlebrolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                   <input type="text" class="form-control" name="brolix" ng-model="send.singlebrolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
                     <span style="color:red;" ng-show="userFrom1.brolix.$dirty && userFrom1.brolix.$invalid">
-                    <span ng-show="userFrom1.brolix.$error.required">Mobile number is required.</span> 
+                    <span ng-show="userFrom1.brolix.$error.required">Mobile number is required.</span>
                     <span ng-show="userFrom1.brolix.$error.maxlength">Must have at most 10 digits.</span>
                     <span ng-show="userFrom1.brolix.$error.pattern">Only number are allowed.</span>
                    </div>
@@ -1125,7 +1125,7 @@
            <div class="modal-body">
                <form name="userFrom1">
 
-                    
+
                     <!-- <div class="row table-responsive cus-table" ng-switch-when="totalUsers">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -1152,7 +1152,7 @@
                             </tbody>
                         </table>
                     </div> -->
-                    
+
                    <button type="submit" class="btn btn-danger" ng-click="send_brolix('singleuser')">Send Brolix</button>
 
                </form>
@@ -1223,10 +1223,15 @@
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                <h4 class="modal-title">Send Coupons to All User</h4>
            </div>
-           <div class="row-table" ng-repeat="data in allCoupons">
+           <div class="modal-header">
+               <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+               <input class="searching" ng-model='pageName' placeholder='search coupan...'>
+           </div>
+           <div class="row-table" ng-repeat="data in allCoupons | filter:pageName">
             <div class="col-cell">
                 <div class="cover-image">
-                    <img ng-src="{{data.coverImage || '../dist/image/cover.jpg'}}" id="output">
+                    <img ng-src="{{data.coverImage || '../dist/image/cover.jpg' }}" id="output">
+                    <!-- {{data.pageName}} -->
                 </div>
             </div>
             <div class="col-cell add-remove">
@@ -1244,6 +1249,9 @@
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                <h4 class="modal-title">All Coupons Details</h4>
            </div>
+           <div class="modal-header">
+               <input type='text' ng-model='pageName' placeholder="Enter name..."/>
+           </div>
             <div class="modal-body">
            <div class="row-table" >
 
@@ -1259,7 +1267,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in allCoupons">
+                    <tr ng-repeat="x in allCoupons | filter : pageName">
                         <td class="skyblue-text">{{x.pageName}}</td>
                         <td class="skyblue-text"><img class="img-responsive" ng-src="{{x.coverImage}}" id="output"></td>
                         <td class="skyblue-text">{{x.giftDescription}}</td>
@@ -1315,12 +1323,9 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>           
+                    </div>
                 </div>
            </div>
        </div>
    </div>
 </div>
-
-
-

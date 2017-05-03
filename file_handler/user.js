@@ -486,9 +486,7 @@ module.exports = {
 
     //API for Change Password
     "changePassword": function(req, res) {
-        console.log("request-->>",req.body)
         User.findOne({ _id: req.body.userId }, function(err, result) {
-            console.log("user--->>",result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseCode: "User doesn't exist." }); } else {
                 var oldpassword = req.body.oldpass;
                 if (result.password != oldpassword) {
@@ -498,18 +496,7 @@ module.exports = {
                     });
                 } else {
                     var password = req.body.newpass;
-                    User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) { 
-                        console.log("device-->>",user.deviceType);
-                        if (user.deviceType == 'Android'|| user.notification_status == 'on' || user.status == 'ACTIVE') {
-                                     var message = "req.body.message";
-                                     console.log('deviceToken-->',user.deviceToken)
-                                     functions.android_notification(user.deviceToken, message);
-                                     console.log("Android notification send!!!!")
-                                 } else if (user.deviceType == 'ios' || user.notification_status == 'on' || user.status == 'ACTIVE') {
-                                     functions.iOS_notification(user.deviceToken, message);
-                                 } else {
-                                     console.log("Something wrong!!!!")
-                                 }
+                    User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) {
                         res.send({
                             responseCode: 200,
                             responseMessage: "Password changed."
@@ -2105,7 +2092,7 @@ cron.schedule('*/2 * * * *', function() {
             var h = new Date(new Date(startTime).setHours(00)).toUTCString();
             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
             var currentTime = Date.now(m)
-            console.log("<<--currentTime-->>", Date.now(currentTime))
+            console.log("<<--currentTime-->>", currentTime)
             for (var i = 0; i < result.length; i++) {
                 for (var j = 0; j < result[i].coupon.length; j++) {
                     if (currentTime >= new Date(result[i].coupon[j].expirationTime)) {
