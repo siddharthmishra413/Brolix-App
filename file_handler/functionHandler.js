@@ -60,24 +60,15 @@
           });
       },
 
-      "android_notification": function(deviceToken, message) {
-        console.log("in")
-        console.log("deviceToken-->.",deviceToken)
-          var serverKey = '6af2f1d2ec04c436fe7ed05f8eec2989c5d341c7';
+      "android_notification": function(deviceToken, message1) {
+          var serverKey = 'AAAA0wDwq1I:APA91bHUyLivU-szb-z_23Ui532XPOxY0yqB07F27-HMme9Vu1psCS2TZI970av_HS1NswVHyKhX4qKoERYWmCChqY2fOVCVlZwTdudwXAk_rda5Z98z7fxK2r6kaf0o5x4cDSFzQqdc ';
           var fcm = new FCM(serverKey);
-
-          var message = {
-              to: deviceToken, // required
-              collapse_key: 'your_collapse_key',
-              data: {
-                  your_custom_data_key: 'your_custom_data_value'
-              },
-              notification: {
-                  title: 'Brolix.',
-                  body: message
-              }
-          };
-
+          var title="BROLIX";       
+          var message={
+            to: deviceToken,      
+            'data.message': message1,
+            'data.title':title
+        };
           fcm.send(message, function(err, response) {
               if (err) {
                   console.log("Android !! Something has gone wrong!", err);

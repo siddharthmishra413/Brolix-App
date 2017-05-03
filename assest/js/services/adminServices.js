@@ -34,7 +34,7 @@ app.directive('ckEditor', [function () {
         require: '?ngModel',
         link: function ($scope, elm, attr, ngModel) {
             
-            var ck = CKEDITOR.replace(elm[0]);
+            var ck = CKEDITOR.replace(elm[0],{height: 330});
             
             ck.on('pasteState', function () {
                 $scope.$apply(function () {
@@ -601,6 +601,14 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/terms/viewAllTerms');
     },
 
+    viewRestTerms: function(type){
+      return $http.get(baseurl+'/terms/viewTermsCondition/'+type);
+    },
+
+    editRestTerms: function(type, data){
+      return $http.put(baseurl+'/terms/editTermsCondition/'+type, data);
+    },
+    
     editTermsCondition: function(type, data) {
       return $http.put(baseurl+'/terms/editTermsCondition/'+ type, data);
     },

@@ -1,110 +1,127 @@
-app.controller('termsAndConditionCtrl', function($scope, $stateParams, $window, ckeditorService, userService, $state, toastr, $http, $timeout) {
+app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window, ckeditorService, userService, $state, toastr, $http, $timeout) {
     $(window).scrollTop(0, 0);
     $scope.$emit('headerStatus', 'Admin Tools');
     $scope.$emit('SideMenu', 'Admin Tools');
     $scope.myFrom = {};
-     $scope.show = 1;
-     
-$scope.getdata = function(){
-    userService.viewAllTerms().success(function(res) {   
-   // ckeditorService.cEditor(); 
-    /*ckeditorService.cEditor2(); */     
-        if (res.responseCode == 200){
+    $scope.show = 1;
 
-        	$scope.signUpTerms = res.result.filter(function( obj ) {
-              return obj.type == 'signUpCondition';
-            });
-            $scope.myFrom.termssignUpCondition = $scope.signUpTerms[0].termsConditionContent;
-            console.log($scope.myFrom.termssignUpCondition)
+    userService.viewAllTerms().success(function (res) {
+        console.log(JSON.stringify(res))
+            
+            if (res.responseCode == 200) {
+                $scope.signUpTerms = res.result.filter(function (obj) {
+                    return obj.type == 'signUpCondition';
+                });
+                $scope.myFrom.termssignUpCondition = $scope.signUpTerms[0].termsConditionContent;
+                console.log($scope.myFrom.termssignUpCondition)
+            } else {
+                toastr.error(res.responseMessage);
+            }
+        })
 
-            $scope.cashAdTerms = res.result.filter(function( obj ) {
-              return obj.type == 'cashAdCondition';
-            });
-            $scope.myFrom.termscashAdCondition = $scope.cashAdTerms[0].termsConditionContent;
 
-            $scope.couponAdTerms = res.result.filter(function( obj ) {
-              return obj.type == 'couponAdCondition';
-            });
 
-            $scope.myFrom.termscouponAdCondition = $scope.couponAdTerms[0].termsConditionContent;
 
+
+
+    $scope.getdata = function () {
+        userService.viewAllTerms().success(function (res) {
+
+            if (res.responseCode == 200) {
+                $scope.signUpTerms = res.result.filter(function (obj) {
+                    return obj.type == 'signUpCondition';
+                });
+                $scope.myFrom.termssignUpCondition = $scope.signUpTerms[0].termsConditionContent;
+                console.log($scope.myFrom.termssignUpCondition)
+
+                $scope.cashAdTerms = res.result.filter(function (obj) {
+                    return obj.type == 'cashAdCondition';
+                });
+                $scope.myFrom.termscashAdCondition = $scope.cashAdTerms[0].termsConditionContent;
+
+                $scope.couponAdTerms = res.result.filter(function (obj) {
+                    return obj.type == 'couponAdCondition';
+                });
+
+                $scope.myFrom.termscouponAdCondition = $scope.couponAdTerms[0].termsConditionContent;
+
+            } else {
+                toastr.error(res.responseMessage);
+            }
+        })
+    }
+
+
+
+    $scope.click = function (type) {
+        $scope.type = type;
+        console.log("type", $scope.type);
+        switch ($scope.type) {
+            case 'signUpCondition':
+                data = {
+                        termsConditionContent: $scope.myFrom.termssignUpCondition,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                       // $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+            case 'cashAdCondition':
+                data = {
+                        termsConditionContent: $scope.myFrom.termscashAdCondition,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                       // $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+            case 'couponAdCondition':
+                data = {
+                        termsConditionContent: $scope.myFrom.termscouponAdCondition,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+            default:
+                toastr.error("Something Wents to wroung");
+        }
+    }
+
+
+    $scope.restTerms = function (type) {
+    userService.viewRestTerms(type).success(function (res) {
+        if (res.responseCode == 200) {
+            $scope.myFrom.termsContent = res.result[0].termsConditionContent;
         } else {
             toastr.error(res.responseMessage);
         }
     })
 }
-    $scope.click = function(type){
 
-    	
-    	$scope.type = type;
-    	console.log("type",$scope.type);
-
-
-    	switch ($scope.type)
-            {
-                case 'signUpCondition': 
-                
-                    data = {
-                        termsConditionContent:$scope.myFrom.termssignUpCondition,
-                    }
-                    // console.log("data------------",data)
-                    // console.log("type------------",type)
-                    userService.editTermsCondition(type,data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $state.reload();
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-
-                break;
-
-                case 'cashAdCondition': 
-                    data = {
-                        termsConditionContent:$scope.myFrom.termscashAdCondition,
-                    }
-                    // console.log("data------------",data)
-                    // console.log("type------------",type)
-                    userService.editTermsCondition(type,data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $state.reload();
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
-
-                case 'couponAdCondition': 
-                    data = {
-                        termsConditionContent:$scope.myFrom.termscouponAdCondition,
-                    }
-                    // console.log("data------------",data)
-                    // console.log("type------------",type)
-                    userService.editTermsCondition(type,data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $state.reload();
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
-
-                default: 
-
-                     toastr.error("Something Wents to wroung");
-                
-            }
-
-
+$scope.updateRestTerms = function (type) {
+    var data = {
+        termsConditionContent: $scope.myFrom.termsContent
     }
-    
-
-
-
-
+    userService.editRestTerms(type, data).success(function (res) {
+        if (res.responseCode == 200) {
+            toastr.success(res.responseMessage);
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+}
 })
-
-

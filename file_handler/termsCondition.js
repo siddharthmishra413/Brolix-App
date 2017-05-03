@@ -27,7 +27,7 @@ module.exports = {
     "viewTermsCondition": function(req, res) {
         var conditionType = req.params.type;
         TermsCondition.find({ type: conditionType }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: 'No terms and contions found.' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No terms and contions found.' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: "Terms and conditions shown successfully." });
             }
         })
