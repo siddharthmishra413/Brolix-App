@@ -3,16 +3,19 @@ app.controller('termsAndConditionCtrl', function($scope, $stateParams, $window, 
     $scope.$emit('headerStatus', 'Admin Tools');
     $scope.$emit('SideMenu', 'Admin Tools');
     $scope.myFrom = {};
-
-
+     $scope.show = 1;
+     
+$scope.getdata = function(){
     userService.viewAllTerms().success(function(res) {   
-    ckeditorService.cEditor();     
+   // ckeditorService.cEditor(); 
+    /*ckeditorService.cEditor2(); */     
         if (res.responseCode == 200){
 
         	$scope.signUpTerms = res.result.filter(function( obj ) {
               return obj.type == 'signUpCondition';
             });
             $scope.myFrom.termssignUpCondition = $scope.signUpTerms[0].termsConditionContent;
+            console.log($scope.myFrom.termssignUpCondition)
 
             $scope.cashAdTerms = res.result.filter(function( obj ) {
               return obj.type == 'cashAdCondition';
@@ -29,7 +32,7 @@ app.controller('termsAndConditionCtrl', function($scope, $stateParams, $window, 
             toastr.error(res.responseMessage);
         }
     })
-
+}
     $scope.click = function(type){
 
     	
@@ -40,6 +43,7 @@ app.controller('termsAndConditionCtrl', function($scope, $stateParams, $window, 
     	switch ($scope.type)
             {
                 case 'signUpCondition': 
+                
                     data = {
                         termsConditionContent:$scope.myFrom.termssignUpCondition,
                     }
