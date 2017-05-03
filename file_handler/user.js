@@ -486,7 +486,9 @@ module.exports = {
 
     //API for Change Password
     "changePassword": function(req, res) {
+        console.log("request-->>",req.body)
         User.findOne({ _id: req.body.userId }, function(err, result) {
+            console.log("user--->>",result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseCode: "User doesn't exist." }); } else {
                 var oldpassword = req.body.oldpass;
                 if (result.password != oldpassword) {
@@ -497,9 +499,10 @@ module.exports = {
                 } else {
                     var password = req.body.newpass;
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) { 
-                        if (user.deviceType == 'android'|| user.notification_status == 'on' || user.status == 'ACTIVE') {
+                        console.log("device-->>",user.deviceType);
+                        if (user.deviceType == 'Android'|| user.notification_status == 'on' || user.status == 'ACTIVE') {
                                      var message = "req.body.message";
-                                     console.log('result-->',user.deviceToken)
+                                     console.log('deviceToken-->',user.deviceToken)
                                      functions.android_notification(user.deviceToken, message);
                                      console.log("Android notification send!!!!")
                                  } else if (user.deviceType == 'iOS' || user.notification_status == 'on' || user.status == 'ACTIVE') {
