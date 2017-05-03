@@ -505,12 +505,11 @@ module.exports = {
                                      console.log('deviceToken-->',user.deviceToken)
                                      functions.android_notification(user.deviceToken, message);
                                      console.log("Android notification send!!!!")
-                                 } else if (user.deviceType == 'iOS' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                 } else if (user.deviceType == 'ios' || user.notification_status == 'on' || user.status == 'ACTIVE') {
                                      functions.iOS_notification(user.deviceToken, message);
                                  } else {
                                      console.log("Something wrong!!!!")
                                  }
-
                         res.send({
                             responseCode: 200,
                             responseMessage: "Password changed."
@@ -2106,7 +2105,7 @@ cron.schedule('*/2 * * * *', function() {
             var h = new Date(new Date(startTime).setHours(00)).toUTCString();
             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
             var currentTime = Date.now(m)
-            console.log("<<--currentTime-->>", currentTime)
+            console.log("<<--currentTime-->>", Date.now(currentTime))
             for (var i = 0; i < result.length; i++) {
                 for (var j = 0; j < result[i].coupon.length; j++) {
                     if (currentTime >= new Date(result[i].coupon[j].expirationTime)) {

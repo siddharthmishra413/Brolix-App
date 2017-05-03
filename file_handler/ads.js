@@ -1554,6 +1554,7 @@ module.exports = {
                    _id: req.body.adId
                 },function(err, result){
                     if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
+                  
                     } 
                     else if (!result) {res.send({responseCode: 404,responseMessage: 'Data not found.'});
                     }
@@ -1610,8 +1611,8 @@ module.exports = {
                     } 
                     else if (result.length == 0) {
                          var data ={
-                            adsResult: adsResult.winners.length,
-                            viewResult: viewResult,
+                            totalWinner: adsResult.winners.length,
+                            couponPurchased: viewResult,
                             validResult: validResult,
                             usedResult: usedResult,
                             expiredResult: 0
