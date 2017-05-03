@@ -881,7 +881,117 @@ module.exports = {
         })
     },
 
-    "pageStatisticsFilterClick": function(req, res) {
+      "pageStatisticsFilterClick": function(req, res) {
+        var newYear = new Date(req.body.date).getFullYear();
+        var newMonth = new Date(req.body.date).getMonth();
+        var data = req.body.dateFilter;
+        switch(data){
+            case 'yearly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } }
+            break;
+            case 'monthly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
+            break;
+            case 'weekly':
+               var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } } 
+            break;
+        }
+        
+        Views.aggregate({ $match: { pageId: req.body.pageId } }, {
+                $group: {
+                    _id: updateData,
+                    totalProductView: { $sum: "$productView" },
+                    totalPageView: { $sum: "$pageView" },
+                    totalEventViewClicks: { $sum: "$eventViewClicks" },
+                    totalEmailClicks: { $sum: "$emailClicks" },
+                    totalCallUsClick: { $sum: "$callUsClick" },
+                    totalFollowerNumber: { $sum: "$followerNumber" },
+                    totalSocialMediaClicks: { $sum: "$socialMediaClicks" },
+                    totalLocationClicks: { $sum: "$locationClicks" },
+                    totalWebsiteClicks: { $sum: "$websiteClicks" },
+                    totalShares: { $sum: "$shares" },
+                    totalViewAds: { $sum: "$viewAds" },
+                    totalRating: { $sum: "$totalRating" }
+                }
+            },
+            function(err, results) {
+                if(req.body.dateFilter == 'yearly'){
+                    console.log("yearly")
+                    var yearData = 2017
+                    var data = results.filter(results => results._id.year == newYear)
+                    results = data;
+                    var array = [];
+                    var flag = false;
+                    for (var i = 1; i <= 12; i++) {
+                        console.log("Dfdgf", i)
+                        for (var j = 0; j < results.length; j++) {
+                            if (i == results[j]._id.month) {
+
+                                console.log("value of j==>", j)
+                                flag = true;
+                                break;
+                            } else {
+                                flag = false;
+                            }
+                        }
+                        if (flag == true) {
+                            array.push(results[j])
+                        } else {
+                            var data = {
+                                _id: {
+                                    year: 2017,
+                                    month: i
+                                },
+                                totalProductView: 0,
+                                totalPageView: 0,
+                                totalEventViewClicks: 0,
+                                totalEmailClicks: 0,
+                                totalCallUsClick: 0,
+                                totalFollowerNumber: 0,
+                                totalSocialMediaClicks: 0,
+                                totalLocationClicks: 0,
+                                totalWebsiteClicks: 0,
+                                totalShares: 0,
+                                totalViewAds: 0,
+                                totalRating: 0
+                            }
+                            array.push(data)
+                        }
+                    }
+                    res.send({
+                        result: array,
+                        responseCode: 200,
+                        responseMessage: "Success."
+                    })
+                }
+                 if(req.body.dateFilter == 'monthly'){
+                    console.log("monthly",newMonth + 1)
+                    var month = newMonth + 1;
+                    var yearData = 2017
+                    var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                    results = data;
+                    res.send({
+                        result: results,
+                        responseCode: 200,
+                        responseMessage: "Success."
+                    })
+                }
+                if(req.body.dateFilter == 'weekly'){
+                    console.log("monthly",newMonth + 1)
+                    var month = newMonth + 1;
+                    var yearData = 2017
+                    var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                    results = data;
+                    res.send({
+                        result: results,
+                        responseCode: 200,
+                        responseMessage: "Success."
+                    })
+                }
+            });
+    },
+
+    "pageStatisticsFilterClickssss": function(req, res) {
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var data = req.body.dateFilter;
