@@ -42,14 +42,36 @@
                                         </div>
                                     </div>
                                 </div> -->
+
                                 <div class="form-group">
                                         <div class="row">
+
                                             <label class="control-label col-md-3">Date of Birth</label>
                                             <div class="col-md-9">
-                                                <span class="form-control">{{viewUserProfile.dob}}</span>
+                                                 <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
+                                               <div class="input-group">
+                                                   <input class="form-control" style="cursor:pointer;" placeholder="Choose a date" ng-model="viewUserProfile.dob" max="2017-04-05" />
+                                                   <span class="input-group-addon">
+                                                   <!-- <i class="fa fa-lg fa-calendar"></i> -->
+                                                   </span>
+                                               </div>
+                                              </datepicker>
+                                              <span style="color:red;" ng-show="userFrom.dob.$dirty && userFrom.dob.$invalid">
+                                                <span ng-show="userFrom.dob.$error.required">Date of birth is required.</span> 
                                             </div>
                                         </div>
                                     </div>
+
+
+
+                                <!-- <div class="form-group">
+                                    <div class="row">
+                                        <label class="control-label col-md-3">Date of Birth</label>
+                                        <div class="col-md-9">
+                                            <span class="form-control">{{viewUserProfile.dob}}</span>
+                                        </div>
+                                    </div>
+                                </div> -->
                                 <div class="form-group">
                                     <div class="row">
                                         <label class="control-label col-md-3">Email</label>

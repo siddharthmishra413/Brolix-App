@@ -23,9 +23,9 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             console.log("$scope.allshowUserPage",JSON.stringify($scope.allshowUserPage))
         }else{
           toastr.error(res.responseMessage);
-
-        }
-
+          
+        }        
+            
         })
     }
 
@@ -55,7 +55,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     userService.showListOFCoupon().success(function(res) {
       //console.log("resssssssssssssss",res)
         $scope.allCoupons = res.result;
-      // alert(JSON.stringify(res))
         console.log("allCoupons",JSON.stringify($scope.allCoupons));
     })
 
@@ -76,31 +75,70 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
 
     $scope.userTypeName = function(val) {
         //$state.reload();
+        console.log("val",val)
         localStorage.setItem('userTypeName',val);
 
-        $scope.currentTotalWinners = 1;
-        $scope.nextTotalWinnersDetail();
+         switch (val)
+            {
+                case 'totalUsers': 
 
-        $scope.currentPage = 1;
-        $scope.nextTotalUserDetail();
+                $scope.currentPage = 1;
+                $scope.nextTotalUserDetail();
+                    
+                break;
 
-        $scope.currentPersonalUser = 1;
-        $scope.nextpersonalUserDetail();
+                case 'personalUsers': 
 
-        $scope.currentBusinessUser = 1;
-         $scope.nextBusinessUserDetail();
+                $scope.currentPersonalUser = 1;
+                $scope.nextpersonalUserDetail();
+                    
+                break;
 
-         $scope.currentCashWinners = 1;
-         $scope.nextCashWinnersDetail();
+                case 'businessUsers':
 
-         $scope.currentCouponWinners = 1;
-         $scope.nextCouponWinnersDetail();
+                $scope.currentBusinessUser = 1;
+                $scope.nextBusinessUserDetail(); 
+                    
+                break;
 
-         $scope.currentBlockUser = 1;
-         $scope.nextBlockUserDetail();
+                case 'liveUsers':
 
-          $scope.currentLiveUser = 1;
-           $scope.nextLiveUserDetail();
+                $scope.currentLiveUser = 1;
+                $scope.nextLiveUserDetail(); 
+                    
+                break;
+
+                case 'totalWinners':
+
+                $scope.currentTotalWinners = 1;
+                $scope.nextTotalWinnersDetail(); 
+                    
+                break;
+
+                case 'cashWinners':
+
+                $scope.currentCashWinners = 1;
+                $scope.nextCashWinnersDetail(); 
+                    
+                break;
+
+                case 'couponWinners':
+
+                $scope.currentCouponWinners = 1;
+                $scope.nextCouponWinnersDetail(); 
+                    
+                break;
+
+                case 'blockedUsers':
+
+                $scope.currentBlockUser = 1;
+                $scope.nextBlockUserDetail(); 
+                    
+                break;
+
+                default: 
+                toastr.error("Somwthing wents to wroung");
+            }         
     }
 
 
@@ -122,8 +160,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
       $timeout(function(){
         $scope.countriesList=countries;
       },100)
-
-
+      
+      
     });
   var countryCode;
     $scope.changeCountry = function(){
@@ -156,19 +194,19 @@ var BATTUTA_KEY="00000000000000000000000000000000"
       })
     }
     //-------------------------------END OF SELECT CASCADING-------------------------//
-
-
+   
+   
     //*******************Total Winners****************
     $scope.currentTotalWinners = 1;
      $scope.nextTotalWinnersDetail = function(){
-         userService.totalWinners($scope.currentTotalWinners).success(function(res) {
+         userService.totalWinners($scope.currentTotalWinners).success(function(res) { 
 
             if (res.responseCode == 200){
                    $scope.noOfPagesTotalWinners = res.result.pages;
                    $scope.pageTotalWinners= res.result.page;
                    $scope.totalWinners = res.result.docs;
                    $scope.totalWinnersCount = res.result.total;
-               }
+               } 
                else {
                 toastr.error(res.responseMessage);
                 }
@@ -185,7 +223,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
      }
 
 
-
+    
     userService.adminProfile().success(function(res) {
         if (res.responseCode == 404) {
             toastr.error(res.responseMessage);
@@ -207,7 +245,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                    $scope.pageNo = res.result.page;
                    $scope.totalUser = res.result.docs;
                    $scope.totalUserCount = res.result.total;
-               }
+               } 
                else {
                 toastr.error(res.responseMessage);
                 }
@@ -227,13 +265,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
      $scope.currentPersonalUser = 1;
      $scope.nextpersonalUserDetail = function(){
-         userService.showAllPersonalUser($scope.currentPersonalUser).success(function(res) {
+         userService.showAllPersonalUser($scope.currentPersonalUser).success(function(res) { 
             if (res.responseCode == 200){
                    $scope.noOfPagesPersonalUser = res.result.pages;
                    $scope.pagePersonalUser= res.result.page;
                    $scope.personalUser = res.result.docs;
                    $scope.personalUserCount = res.result.total;
-               }
+               } 
                else {
                 toastr.error(res.responseMessage);
                 }
@@ -248,20 +286,20 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $scope.currentPersonalUser--;
         $scope.nextpersonalUserDetail();
      }
-
-
+     
+    
     //*******************Business User****************
 
 
     $scope.currentBusinessUser = 1;
      $scope.nextBusinessUserDetail = function(){
-         userService.showAllBusinessUser($scope.currentBusinessUser).success(function(res) {
+         userService.showAllBusinessUser($scope.currentBusinessUser).success(function(res) { 
             if (res.responseCode == 200){
                    $scope.noOfPagesBusinessUser = res.result.pages;
                    $scope.pageBusinessUser= res.result.page;
                    $scope.businessUser = res.result.docs;
                    $scope.businessUserCount = res.result.total;
-               }
+               } 
                else {
                 toastr.error(res.responseMessage);
                 }
@@ -282,13 +320,14 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.currentCashWinners = 1;
      $scope.nextCashWinnersDetail = function(){
        console.log('page number personalUserDetail-> '+$scope.currentCashWinners);
-         userService.showAllCashWinners($scope.currentCashWinners).success(function(res) {
+         userService.showAllCashWinners($scope.currentCashWinners).success(function(res) { 
             if (res.responseCode == 200){
+                   console.log("resresresres",res)
                    $scope.noOfPagesCashWinners = res.result.pages;
                    $scope.pageCashWinners= res.result.page;
                    $scope.cashWinners = res.result.docs;
                    $scope.cashWinnersCount = res.result.total;
-               }
+               } 
                else {
                 toastr.error(res.responseMessage);
                 }
@@ -307,14 +346,14 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     //*******************Coupon Winners****************
     $scope.currentCouponWinners = 1;
      $scope.nextCouponWinnersDetail = function(){
-         userService.showAllCouponWinners($scope.currentCouponWinners).success(function(res) {
+         userService.showAllCouponWinners($scope.currentCouponWinners).success(function(res) { 
             // console.log("dddd",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesCouponWinners = res.result.pages;
                    $scope.pageCouponWinners= res.result.page;
                    $scope.couponWinners = res.result.docs;
                    $scope.couponWinnersCount = res.result.total;
-               }
+               } 
                else {
                 toastr.error(res.responseMessage);
                 }
@@ -333,13 +372,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
      //*******************Show AllBlockUser****************
      $scope.currentBlockUser = 1;
      $scope.nextBlockUserDetail = function(){
-         userService.showAllBlockUser($scope.currentBlockUser).success(function(res) {
+         userService.showAllBlockUser($scope.currentBlockUser).success(function(res) { 
             if (res.responseCode == 200){
                    $scope.noOfPagesBlockUser = res.result.pages;
                    $scope.pageBlockUser= res.result.page;
                    $scope.allblockUser = res.result.docs;
                    $scope.allblockUserCount = res.result.total;
-               }
+               } 
                else {
                 toastr.error(res.responseMessage);
                 }
@@ -354,19 +393,19 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $scope.currentBlockUser--;
         $scope.nextBlockUserDetail();
      }
-
+    
 
     //************** Live Users *******************
 
  $scope.currentLiveUser = 1;
      $scope.nextLiveUserDetail = function(){
-         userService.showAllLiveUsers($scope.currentLiveUser).success(function(res) {
+         userService.showAllLiveUsers($scope.currentLiveUser).success(function(res) { 
             if (res.responseCode == 200){
                    $scope.noOfPagesLiveUser = res.result.pages;
                    $scope.pageLiveUser= res.result.page;
                    $scope.liveUser = res.result.docs;
                    $scope.LiveUserCount = res.result.total;
-               }
+               } 
                else {
                 toastr.error(res.responseMessage);
                 }
@@ -381,7 +420,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $scope.currentLiveUser--;
         $scope.nextLiveUserDetail();
      }
-
+  
 
     $scope.active_tab=function(active_card){
         if(active_card=='upgrade_card'){
@@ -419,7 +458,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
          var data = {};
          switch ($scope.modelData)
             {
-                case 'totalUser':
+                case 'totalUser': 
                     for (var i = 0; i < $scope.totalUser.length; i++) {
                         array.push($scope.totalUser[i]._id)
                     }
@@ -427,18 +466,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {
+                    userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'PersonalUser':
+                case 'PersonalUser': 
                     for (var i = 0; i < $scope.personalUser.length; i++) {
                         array.push($scope.personalUser[i]._id)
                     }
@@ -446,18 +485,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {
+                    userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All Personal User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'BusinessUser':
+                case 'BusinessUser': 
                     for (var i = 0; i < $scope.businessUser.length; i++) {
                         array.push($scope.businessUser[i]._id)
                     }
@@ -465,18 +504,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {
+                    userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All Business User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'LiveUser':
+                case 'LiveUser': 
                     for (var i = 0; i < $scope.liveUser.length; i++) {
                         array.push($scope.liveUser[i]._id)
                     }
@@ -484,18 +523,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {
+                    userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All Live User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'WinnersUser':
+                case 'WinnersUser': 
                     for (var i = 0; i < $scope.totalWinners.length; i++) {
                         array.push($scope.totalWinners[i]._id)
                     }
@@ -503,18 +542,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {
+                    userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All Winners User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'CashWinnersUser':
+                case 'CashWinnersUser': 
                     for (var i = 0; i < $scope.cashWinners.length; i++) {
                         array.push($scope.cashWinners[i]._id)
                     }
@@ -522,18 +561,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {
+                    userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All CashWinners User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'CouponWinnersUser':
+                case 'CouponWinnersUser': 
                     for (var i = 0; i < $scope.couponWinners.length; i++) {
                         array.push($scope.couponWinners[i]._id)
                     }
@@ -541,18 +580,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {
+                    userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All CouponWinners User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'BlockedUser':
+                case 'BlockedUser': 
                     for (var i = 0; i < $scope.allblockUser.length; i++) {
                         array.push($scope.allblockUser[i]._id)
                     }
@@ -560,28 +599,28 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {
+                    userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All Blocked User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                default:
+                default: 
                 array.push($scope.modalId)
                     data = {
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    userService.sendMassageAllUser(data).success(function(res) {
+                    userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
@@ -600,7 +639,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $state.go('header.manageUsers')
         }else {
             $("#sendbrolixModelAllUser").modal('show');
-        }
+        } 
     }
 
      /*Send Brolix and close all modal*/
@@ -611,7 +650,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
         switch ($scope.modelBrolix)
             {
-                case 'totalUser':
+                case 'totalUser': 
                     for (var i = 0; i < $scope.totalUser.length; i++) {
                         array.push($scope.totalUser[i]._id)
                     }
@@ -619,18 +658,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Brolix:$scope.sendBrolix.brolix,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Brolix Send successfully to All User");
                             $scope.sendBrolix = '';
-                            $("#sendbrolixModelAllUser").modal('hide');
+                            $("#sendbrolixModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'PersonalUser':
+                case 'PersonalUser': 
                     for (var i = 0; i < $scope.personalUser.length; i++) {
                         array.push($scope.personalUser[i]._id)
                     }
@@ -638,7 +677,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Brolix:$scope.sendBrolix.brolix,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Brolix Send successfully all Personal User");
                             $scope.sendBrolix = '';
@@ -649,7 +688,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     })
                 break;
 
-                case 'BusinessUser':
+                case 'BusinessUser': 
                     for (var i = 0; i < $scope.businessUser.length; i++) {
                         array.push($scope.businessUser[i]._id)
                     }
@@ -657,7 +696,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Brolix:$scope.sendBrolix.brolix,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Brolix Send successfully to all Business User");
                             $("#sendbrolixModelAllUser").modal('hide');
@@ -668,7 +707,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     })
                 break;
 
-                case 'LiveUser':
+                case 'LiveUser': 
                     for (var i = 0; i < $scope.liveUser.length; i++) {
                         array.push($scope.liveUser[i]._id)
                     }
@@ -676,7 +715,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Brolix:$scope.sendBrolix.brolix,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Brolix Send successfully to all Live User");
                             $("#sendbrolixModelAllUser").modal('hide');
@@ -687,7 +726,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     })
                 break;
 
-                case 'WinnersUser':
+                case 'WinnersUser': 
                     for (var i = 0; i < $scope.totalWinners.length; i++) {
                         array.push($scope.totalWinners[i]._id)
                     }
@@ -695,7 +734,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Brolix:$scope.sendBrolix.brolix,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Brolix Send successfully to all Winners User");
                             $("#sendbrolixModelAllUser").modal('hide');
@@ -703,10 +742,10 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         } else {
                             toastr.error(res.responseMessage);
                         }
-                    })
+                    })   
                 break;
 
-                case 'CashWinnersUser':
+                case 'CashWinnersUser': 
                     for (var i = 0; i < $scope.cashWinners.length; i++) {
                         array.push($scope.cashWinners[i]._id)
                     }
@@ -714,7 +753,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Brolix:$scope.sendBrolix.brolix,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Brolix Send successfully to all CashWinners User");
                             $("#sendbrolixModelAllUser").modal('hide');
@@ -722,10 +761,10 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         } else {
                             toastr.error(res.responseMessage);
                         }
-                    })
+                    }) 
                 break;
 
-                case 'CouponWinnersUser':
+                case 'CouponWinnersUser': 
                     for (var i = 0; i < $scope.couponWinners.length; i++) {
                         array.push($scope.couponWinners[i]._id)
                     }
@@ -733,7 +772,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Brolix:$scope.sendBrolix.brolix,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Brolix Send successfully to all CouponWinners User");
                             $("#sendbrolixModelAllUser").modal('hide');
@@ -744,7 +783,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     })
                 break;
 
-                case 'BlockedUser':
+                case 'BlockedUser': 
                     for (var i = 0; i < $scope.allblockUser.length; i++) {
                         array.push($scope.allblockUser[i]._id)
                     }
@@ -752,7 +791,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Brolix:$scope.sendBrolix.brolix,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Brolix Send successfully to all Blocked User");
                             $("#sendbrolixModelAllUser").modal('hide');
@@ -763,13 +802,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     })
                 break;
 
-                default:
+                default: 
                     array.push($scope.modalId)
                     data = {
                         Brolix:$scope.sendBrolix.brolix,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Brolix Send successfully to User");
                             $("#sendbrolixModelAllUser").modal('hide');
@@ -793,19 +832,19 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         $state.go('header.manageUsers')
         }else {
             $("#sendcashModelAllUser").modal('show');
-        }
+        } 
     }
 
 
      /*Send Brolix and close all modal*/
 
     $scope.send_cashall = function(modal){
-
+         
         var array =[];
         var data = {};
         switch ($scope.modelCash)
             {
-                case 'totalUser':
+                case 'totalUser': 
                     for (var i = 0; i < $scope.totalUser.length; i++) {
                         array.push($scope.totalUser[i]._id)
                     }
@@ -813,18 +852,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Cash:$scope.sendCash.Cash,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Cash Send successfully to All User");
                             $scope.sendCash = '';
-                            $("#sendcashModelAllUser").modal('hide');
+                            $("#sendcashModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'PersonalUser':
+                case 'PersonalUser': 
                     for (var i = 0; i < $scope.personalUser.length; i++) {
                         array.push($scope.personalUser[i]._id)
                     }
@@ -832,18 +871,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Cash:$scope.sendCash.Cash,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Cash Send successfully to All Personal User");
                             $scope.sendCash = '';
-                            $("#sendcashModelAllUser").modal('hide');
+                            $("#sendcashModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'BusinessUser':
+                case 'BusinessUser': 
                     for (var i = 0; i < $scope.businessUser.length; i++) {
                         array.push($scope.businessUser[i]._id)
                     }
@@ -851,18 +890,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Cash:$scope.sendCash.Cash,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Cash Send successfully to All Business User");
                             $scope.sendCash = '';
-                            $("#sendcashModelAllUser").modal('hide');
+                            $("#sendcashModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'LiveUser':
+                case 'LiveUser': 
                     for (var i = 0; i < $scope.liveUser.length; i++) {
                         array.push($scope.liveUser[i]._id)
                     }
@@ -870,18 +909,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Cash:$scope.sendCash.Cash,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Cash Send successfully to All Live User");
                             $scope.sendCash = '';
-                            $("#sendcashModelAllUser").modal('hide');
+                            $("#sendcashModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'WinnersUser':
+                case 'WinnersUser': 
                     for (var i = 0; i < $scope.totalWinners.length; i++) {
                         array.push($scope.totalWinners[i]._id)
                     }
@@ -889,18 +928,18 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Cash:$scope.sendCash.Cash,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Cash Send successfully to All Winners User");
                             $scope.sendCash = '';
-                            $("#sendcashModelAllUser").modal('hide');
+                            $("#sendcashModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
-                    })
+                    })   
                 break;
 
-                case 'CashWinnersUser':
+                case 'CashWinnersUser': 
                     for (var i = 0; i < $scope.cashWinners.length; i++) {
                         array.push($scope.cashWinners[i]._id)
                     }
@@ -908,7 +947,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Cash:$scope.sendCash.Cash,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Cash Send successfully to All CashWinners User");
                             $scope.sendCash = '';
@@ -916,10 +955,10 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         } else {
                             toastr.error(res.responseMessage);
                         }
-                    })
+                    }) 
                 break;
 
-                case 'CouponWinnersUser':
+                case 'CouponWinnersUser': 
                     for (var i = 0; i < $scope.couponWinners.length; i++) {
                         array.push($scope.couponWinners[i]._id)
                     }
@@ -927,7 +966,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Cash:$scope.sendCash.Cash,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Cash Send successfully to All CouponWinners User");
                             $scope.sendCash = '';
@@ -938,7 +977,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     })
                 break;
 
-                case 'BlockedUser':
+                case 'BlockedUser': 
                     for (var i = 0; i < $scope.allblockUser.length; i++) {
                         array.push($scope.allblockUser[i]._id)
                     }
@@ -946,7 +985,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         Cash:$scope.sendCash.Cash,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Cash Send successfully to All Blocked User");
                             $scope.sendCash = '';
@@ -957,13 +996,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     })
                 break;
 
-                default:
+                default: 
                     array.push($scope.modalId)
                     data = {
                         Cash:$scope.sendCash.Cash,
                         Id:array
                     }
-                    userService.sendBrolixAndCashAllUser(data).success(function(res) {
+                    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Cash Send successfully to User");
                             $scope.sendCash = '';
@@ -973,7 +1012,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         }
                     })
             }
-
+        
     }
 
     $scope.Block_User = function (id) {
@@ -990,7 +1029,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
             buttons: [{
                 label: 'Yes',
                 action: function(dialog) {
-                    userService.BlockUser(userId).success(function(res) {
+                    userService.BlockUser(userId).success(function(res) {        
                         if (res.responseCode == 200){
                             dialog.close();
                             toastr.success("User Blocked");
@@ -998,7 +1037,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         } else {
                             toastr.error(res.responseMessage);
                         }
-                    })
+                    })    
                 }
             }, {
                 label: 'No',
@@ -1026,7 +1065,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
             buttons: [{
                 label: 'Yes',
                 action: function(dialog) {
-                    userService.UnBlockUser(userId).success(function(res) {
+                    userService.UnBlockUser(userId).success(function(res) {        
                         if (res.responseCode == 200){
                             dialog.close();
                             toastr.success("User UnBlocked");
@@ -1034,7 +1073,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                         } else {
                             toastr.error(res.responseMessage);
                         }
-                    })
+                    })    
                 }
             }, {
                 label: 'No',
@@ -1076,7 +1115,7 @@ $scope.sendCard = function(cardId,type){
 
              switch ($scope.modelData)
             {
-                case 'totalUser':
+                case 'totalUser': 
                     for (var i = 0; i < $scope.totalUser.length; i++) {
                         array.push($scope.totalUser[i]._id)
                     }
@@ -1085,18 +1124,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                    userService.sendUpgradeCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'PersonalUser':
+                case 'PersonalUser': 
                     for (var i = 0; i < $scope.personalUser.length; i++) {
                         array.push($scope.personalUser[i]._id)
                     }
@@ -1105,18 +1144,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                    userService.sendUpgradeCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Personal User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'BusinessUser':
+                case 'BusinessUser': 
                     for (var i = 0; i < $scope.businessUser.length; i++) {
                         array.push($scope.businessUser[i]._id)
                     }
@@ -1125,18 +1164,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                    userService.sendUpgradeCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Business User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'LiveUser':
+                case 'LiveUser': 
                     for (var i = 0; i < $scope.liveUser.length; i++) {
                         array.push($scope.liveUser[i]._id)
                     }
@@ -1145,18 +1184,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                    userService.sendUpgradeCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Live User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'WinnersUser':
+                case 'WinnersUser': 
                     for (var i = 0; i < $scope.totalWinners.length; i++) {
                         array.push($scope.totalWinners[i]._id)
                     }
@@ -1165,18 +1204,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                    userService.sendUpgradeCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Winners User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'CashWinnersUser':
+                case 'CashWinnersUser': 
                     for (var i = 0; i < $scope.cashWinners.length; i++) {
                         array.push($scope.cashWinners[i]._id)
                     }
@@ -1185,18 +1224,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                    userService.sendUpgradeCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All CashWinners User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'CouponWinnersUser':
+                case 'CouponWinnersUser': 
                     for (var i = 0; i < $scope.couponWinners.length; i++) {
                         array.push($scope.couponWinners[i]._id)
                     }
@@ -1205,18 +1244,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                    userService.sendUpgradeCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All CouponWinners User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'BlockedUser':
+                case 'BlockedUser': 
                     for (var i = 0; i < $scope.allblockUser.length; i++) {
                         array.push($scope.allblockUser[i]._id)
                     }
@@ -1225,29 +1264,29 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                    userService.sendUpgradeCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Blocked User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                default:
+                default: 
                 array.push($scope.modalId)
                     data = {
                         cardId:$scope.cardId,
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                    userService.sendUpgradeCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
@@ -1258,7 +1297,7 @@ $scope.sendCard = function(cardId,type){
             console.log("type",type);
              switch ($scope.modelData)
             {
-                case 'totalUser':
+                case 'totalUser': 
                     for (var i = 0; i < $scope.totalUser.length; i++) {
                         array.push($scope.totalUser[i]._id)
                     }
@@ -1267,18 +1306,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendLuckCardTOUsers(data).success(function(res) {
+                    userService.sendLuckCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'PersonalUser':
+                case 'PersonalUser': 
                     for (var i = 0; i < $scope.personalUser.length; i++) {
                         array.push($scope.personalUser[i]._id)
                     }
@@ -1287,18 +1326,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendLuckCardTOUsers(data).success(function(res) {
+                    userService.sendLuckCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Personal User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'BusinessUser':
+                case 'BusinessUser': 
                     for (var i = 0; i < $scope.businessUser.length; i++) {
                         array.push($scope.businessUser[i]._id)
                     }
@@ -1307,18 +1346,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendLuckCardTOUsers(data).success(function(res) {
+                    userService.sendLuckCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Business User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'LiveUser':
+                case 'LiveUser': 
                     for (var i = 0; i < $scope.liveUser.length; i++) {
                         array.push($scope.liveUser[i]._id)
                     }
@@ -1327,18 +1366,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendLuckCardTOUsers(data).success(function(res) {
+                    userService.sendLuckCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Live User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'WinnersUser':
+                case 'WinnersUser': 
                     for (var i = 0; i < $scope.totalWinners.length; i++) {
                         array.push($scope.totalWinners[i]._id)
                     }
@@ -1347,18 +1386,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendLuckCardTOUsers(data).success(function(res) {
+                    userService.sendLuckCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Winners User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'CashWinnersUser':
+                case 'CashWinnersUser': 
                     for (var i = 0; i < $scope.cashWinners.length; i++) {
                         array.push($scope.cashWinners[i]._id)
                     }
@@ -1367,18 +1406,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendLuckCardTOUsers(data).success(function(res) {
+                    userService.sendLuckCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All CashWinners User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'CouponWinnersUser':
+                case 'CouponWinnersUser': 
                     for (var i = 0; i < $scope.couponWinners.length; i++) {
                         array.push($scope.couponWinners[i]._id)
                     }
@@ -1387,18 +1426,18 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendLuckCardTOUsers(data).success(function(res) {
+                    userService.sendLuckCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All CouponWinners User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'BlockedUser':
+                case 'BlockedUser': 
                     for (var i = 0; i < $scope.allblockUser.length; i++) {
                         array.push($scope.allblockUser[i]._id)
                     }
@@ -1407,29 +1446,29 @@ $scope.sendCard = function(cardId,type){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendLuckCardTOUsers(data).success(function(res) {
+                    userService.sendLuckCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Blocked User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                default:
+                default: 
                 array.push($scope.modalId)
                     data = {
                         cardId:$scope.cardId,
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendLuckCardTOUsers(data).success(function(res) {
+                    userService.sendLuckCardTOUsers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to User");
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
@@ -1439,7 +1478,7 @@ $scope.sendCard = function(cardId,type){
          }else{
             toastr.error("Somwthing wents to wroung")
          }
-
+        
 
     }
 
@@ -1470,78 +1509,78 @@ $scope.dashBordFilter = function(){
     switch (type)
             {
                 case 'totalUsers':
-                console.log("aaa1");
+                console.log("aaa1"); 
                     userService.userfilter(data).success(function(res){
                         $scope.totalUser = res.data;
                         console.log("ressssssss1",JSON.stringify(res));
                     })
-
+                    
                 break;
 
-                case 'personalUsers':
+                case 'personalUsers': 
                 console.log("2");
                     userService.userfilter(data).success(function(res){
                         $scope.personalUser = res.data;
                         console.log("ressssssss2",JSON.stringify($scope.personalUser));
                     })
-
+                    
                 break;
 
-                case 'businessUsers':
+                case 'businessUsers': 
                 console.log("3");
                     userService.userfilter(data).success(function(res){
                         $scope.businessUser = res.data;
                         console.log("ressssssss3",JSON.stringify($scope.businessUser));
                     })
-
+                    
                 break;
 
-                case 'liveUsers':
+                case 'liveUsers': 
                 console.log("4");
                     userService.userfilter(data).success(function(res){
                         $scope.liveUser = res.data;
                         console.log("ressssssss4",JSON.stringify($scope.liveUser));
                     })
-
+                    
                 break;
 
-                case 'totalWinners':
+                case 'totalWinners': 
                 console.log("5");
                     userService.userfilter(data).success(function(res){
                         $scope.totalWinners = res.data;
                         console.log("ressssssss5",JSON.stringify($scope.totalWinners));
                     })
-
+                    
                 break;
 
                 case 'cashWinners':
-                console.log("6");
+                console.log("6"); 
                     userService.userfilter(data).success(function(res){
                         $scope.cashWinners = res.data;
                         console.log("ressssssss6",JSON.stringify($scope.cashWinners));
                     })
-
+                    
                 break;
 
-                case 'couponWinners':
+                case 'couponWinners': 
                 console.log("7");
                     userService.userfilter(data).success(function(res){
                         $scope.couponWinners = res.data;
                         console.log("ressssssss7",JSON.stringify($scope.couponWinners));
                     })
-
+                    
                 break;
 
-                case 'blockedUsers':
+                case 'blockedUsers': 
                 console.log("8");
                     userService.userfilter(data).success(function(res){
                         $scope.allblockUser = res.data;
                         console.log("ressssssss8",JSON.stringify($scope.allblockUser));
                     })
-
+                    
                 break;
-
-                default:
+                
+                default: 
                 toastr.error("somthing wents to wroung");
             }
 
@@ -1566,7 +1605,7 @@ $scope.dashBordFilter = function(){
          $scope.couponId = couponId;
          switch ($scope.modelDatacoupon)
             {
-                case 'totalUser':
+                case 'totalUser': 
                     for (var i = 0; i < $scope.totalUser.length; i++) {
                         array.push($scope.totalUser[i]._id)
                     }
@@ -1575,18 +1614,18 @@ $scope.dashBordFilter = function(){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
+                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'PersonalUser':
+                case 'PersonalUser': 
                     for (var i = 0; i < $scope.personalUser.length; i++) {
                         array.push($scope.personalUser[i]._id)
                     }
@@ -1595,18 +1634,18 @@ $scope.dashBordFilter = function(){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
+                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'BusinessUser':
+                case 'BusinessUser': 
                     for (var i = 0; i < $scope.businessUser.length; i++) {
                         array.push($scope.businessUser[i]._id)
                     }
@@ -1615,18 +1654,18 @@ $scope.dashBordFilter = function(){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
+                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'LiveUser':
+                case 'LiveUser': 
                     for (var i = 0; i < $scope.liveUser.length; i++) {
                         array.push($scope.liveUser[i]._id)
                     }
@@ -1635,18 +1674,18 @@ $scope.dashBordFilter = function(){
                         Id:array
                     }
                     console.log("dataIn",data)
-                   userService.sendCouponTOUSers(data).success(function(res) {
+                   userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'WinnersUser':
+                case 'WinnersUser': 
                     for (var i = 0; i < $scope.totalWinners.length; i++) {
                         array.push($scope.totalWinners[i]._id)
                     }
@@ -1655,18 +1694,18 @@ $scope.dashBordFilter = function(){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
+                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'CashWinnersUser':
+                case 'CashWinnersUser': 
                     for (var i = 0; i < $scope.cashWinners.length; i++) {
                         array.push($scope.cashWinners[i]._id)
                     }
@@ -1675,18 +1714,18 @@ $scope.dashBordFilter = function(){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
+                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'CouponWinnersUser':
+                case 'CouponWinnersUser': 
                     for (var i = 0; i < $scope.couponWinners.length; i++) {
                         array.push($scope.couponWinners[i]._id)
                     }
@@ -1695,18 +1734,18 @@ $scope.dashBordFilter = function(){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
+                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                case 'BlockedUser':
+                case 'BlockedUser': 
                     for (var i = 0; i < $scope.allblockUser.length; i++) {
                         array.push($scope.allblockUser[i]._id)
                     }
@@ -1715,29 +1754,29 @@ $scope.dashBordFilter = function(){
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
+                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
                     })
                 break;
 
-                default:
+                default: 
                 array.push($scope.modalId)
                     data = {
                         couponId:$scope.couponId,
                         Id:array
                     }
                     console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
+                    userService.sendCouponTOUSers(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success(res.responseMessage);
                             $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
+                            $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
                             toastr.error(res.responseMessage);
                         }
@@ -1753,12 +1792,15 @@ $scope.dashBordFilter = function(){
          return retArray = items;
          }
          var retArray = [];
-           for(var i=0;i<items.length;i++)
+           for(var i=0;i<items.length;i++) 
                 {
                 if (items[i].firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].mobileNumber.toString().substr(0,nameValue.length) == nameValue.toString()) {
                     retArray.push(items[i]);
                 }
            }
            return retArray;
-        }
+        } 
  });
+
+
+
