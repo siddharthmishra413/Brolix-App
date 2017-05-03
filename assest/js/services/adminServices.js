@@ -29,6 +29,50 @@ app.service('uploadimgServeice', function($http, $q) {
 
     }
 })
+app.directive('ckEditor', [function () {
+    return {
+        require: '?ngModel',
+        link: function ($scope, elm, attr, ngModel) {
+            
+            var ck = CKEDITOR.replace(elm[0]);
+            
+            ck.on('pasteState', function () {
+                $scope.$apply(function () {
+                    ngModel.$setViewValue(ck.getData());
+                });
+            });
+            
+            ngModel.$render = function (value) {
+                ck.setData(ngModel.$modelValue);
+            };
+        }
+    };
+}])
+ app.service('ckeditorService', function() {
+    var self=this;
+
+    this.cEditor=function(){
+CKEDITOR.replace( 'editor1', {
+                       width: '100%',
+              height: 270,
+            // Define the toolbar groups as it is a more accessible solution.
+            toolbarGroups: [
+                {"name":"basicstyles","groups":["basicstyles"]},
+                {"name":"links","groups":["links"]},
+                {"name":"paragraph","groups":["list","blocks"]},
+                {"name":"document","groups":["mode"]},
+                {"name":"insert","groups":["insert"]},
+                {"name":"styles","groups":["styles"]},
+                {"name":"about","groups":["about"]}
+            ],
+            // Remove the redundant buttons from toolbar groups defined above.
+            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+        } );
+
+
+    }
+
+});
 
 app.service('createPageService',function($http, $q){
  this.createPage = function(data) {
@@ -158,7 +202,9 @@ app.service('userService',function($http){
 
     /*-------------------------Manage ADS---------------------*/
 
-
+    removeAds: function(adId) {
+      return $http.get(baseurl+'/admin/removeAds/'+adId);
+    },
     createAds: function(data){
       return $http.post(baseurl+'/ads/createAds', data);
     },

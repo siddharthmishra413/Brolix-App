@@ -61,7 +61,9 @@
       },
 
       "android_notification": function(deviceToken, message) {
-          var serverKey = 'AIzaSyDGz-6yYBGWStanh-DN7ljMzDATDFGA9vQ';
+        console.log("in")
+        console.log("deviceToken-->.",deviceToken)
+          var serverKey = '6af2f1d2ec04c436fe7ed05f8eec2989c5d341c7';
           var fcm = new FCM(serverKey);
 
           var message = {
@@ -71,14 +73,14 @@
                   your_custom_data_key: 'your_custom_data_value'
               },
               notification: {
-                  title: 'Hello from Brolix.',
+                  title: 'Brolix.',
                   body: message
               }
           };
 
           fcm.send(message, function(err, response) {
               if (err) {
-                  console.log("Android !! Something has gone wrong!");
+                  console.log("Android !! Something has gone wrong!", err);
               } else {
                   console.log("Successfully sent with response: ", response);
               }
@@ -97,13 +99,12 @@
               "port": 2195,
               "enhanced": true,
               "cacheLength": 5,
-              "title": "Testing",
-              "message": "Hello from Koob. We have new titles in our library. Click here to see!",
+              "title": "Brolix",
+              "message": message,
               "deviceToken": deviceToken
           };
-          var title = "Hello from Brolix";
+          var title = "Brolix";
           var message = message;
-          var bookname = bookname;
           var deviceToken = deviceToken;
           var apnConnection = new apn.Connection(options);
           var myDevice = new apn.Device(deviceToken);

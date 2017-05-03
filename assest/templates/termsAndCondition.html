@@ -1,35 +1,52 @@
 <div class="col-sm-12">
-	<div class="row">
-		<div class="col-sm-4">
-			<h3 class="text-center">Sign Up</h3>
-			<div class="form-group">
-				<textarea class="form-control" rows="20" ng-model="myFrom.termssignUpCondition"></textarea>
-			</div>
-			<div class="btn2 text-center">
-	            <a class="btn btn-lg btn-green" ng-click="click('signUpCondition')">Update</a>
-	            
-	        </div>
-		</div>
-		<div class="col-sm-4">
-			<h3 class="text-center">Cash Add</h3>
-			<div class="form-group">
-				<textarea class="form-control" rows="20" ng-model="myFrom.termscashAdCondition"></textarea>
-			</div>
-			<div class="btn2 text-center">
-	            <a class="btn btn-lg btn-green" ng-click="click('cashAdCondition')">Update</a>
-	            
-	        </div>
-		</div>
-		<div class="col-sm-4">
-			<h3 class="text-center">Coupon Add</h3>
-			<div class="form-group">
-				<textarea class="form-control" rows="20" ng-model="myFrom.termscouponAdCondition"></textarea>
-			</div>
-			<div class="btn2 text-center">
-	            <a class="btn btn-lg btn-green" ng-click="click('couponAdCondition')">Update</a>
-	            
-	        </div>
-		</div>
-		
-	</div>
-</div>
+   <div class="row">
+      <ul class="nav nav-pills card-tabs">
+         <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata(); show = 1">Sign up</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 2">Cash Add</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 3">Coupon Add</a></li>
+      </ul>
+      <div class="col-sm-12" ng-show="show==1">
+         <div class="form-group">
+            <textarea data-ck-editor class="form-control pos_ckeditor" data-ng-model="myFrom.termssignUpCondition" ></textarea>
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('signUpCondition')">Update</a>
+         </div>
+      </div>
+      <div class="col-sm-12" ng-show="show==2">
+         <div class="form-group">
+            <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscashAdCondition" ></textarea>
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('termscashAdCondition')">Update</a>
+         </div>
+      </div>
+      <div class="col-sm-12" ng-show="show==3">
+         <div class="form-group">
+            <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscouponAdCondition" ></textarea>
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('couponAdCondition')">Update</a>
+         </div>
+      </div>
+      <!-- 		<div class="col-sm-4">
+         <h3 class="text-center">Cash Add</h3>
+         <div class="form-group">
+         	<textarea class="form-control" rows="20" ng-model="myFrom.termscashAdCondition"></textarea>
+         </div>
+         <div class="btn2 text-center">
+                     <a class="btn btn-lg btn-green" ng-click="click('cashAdCondition')">Update</a>
+                     
+                 </div>
+         </div>
+         <div class="col-sm-4">
+         <h3 class="text-center">Coupon Add</h3>
+         <div class="form-group">
+         	<textarea class="form-control" rows="20" ng-model="myFrom.termscouponAdCondition"></textarea>
+         </div>
+         <div class="btn2 text-center">
+                     <a class="btn btn-lg btn-green" ng-click="click('couponAdCondition')">Update</a>
+                     
+                 </div>
+         </div> -->
+   </div>
