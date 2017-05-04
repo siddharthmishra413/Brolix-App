@@ -1,6 +1,6 @@
   var https = require('https');
   var nodemailer = require('nodemailer');
-  var FCM = require('fcm-push');
+  var FCM = require('fcm-node');
   // var apn = require('apn');
   module.exports = {
       "otp": function(req, res, mobile) {
@@ -62,13 +62,39 @@
 
       "android_notification": function(deviceToken, message1) {
           var serverKey = 'AAAA0wDwq1I:APA91bHUyLivU-szb-z_23Ui532XPOxY0yqB07F27-HMme9Vu1psCS2TZI970av_HS1NswVHyKhX4qKoERYWmCChqY2fOVCVlZwTdudwXAk_rda5Z98z7fxK2r6kaf0o5x4cDSFzQqdc ';
-          var fcm = new FCM(serverKey);
-          var title="BROLIX";       
-          var message={
-            to: deviceToken,      
-            'data.message': message1,
-            'data.title':title
-        };
+          
+           var title=title;
+                    var fcm = new FCM(serverKey);
+                    var message={ 
+                        to: deviceToken, 
+                        collapse_key: 'your_collapse_key',   
+                        notification: {
+                            title: 'Title of your push notification', 
+                            body: 'Body of your push notification' 
+                        },   
+                        data: JSON.stringify({  
+                            body:message1 ,
+                             type: 'my another value'
+                            //title: title,
+                            //type:type,
+                            //data:data       
+                        })
+                    };
+ 
+//           var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera) 
+//          to: deviceToken, 
+//        collapse_key: 'your_collapse_key',
+//        
+//        notification: {
+//            title: 'BROLIX', 
+//            body: message1 
+//        },
+//        
+//        data: {  //you can send only notification or only data(or include both) 
+//            body: message1,
+//            type: 'my another value'
+//        }
+//           };
           fcm.send(message, function(err, response) {
               if (err) {
                   console.log("Android !! Something has gone wrong!", err);

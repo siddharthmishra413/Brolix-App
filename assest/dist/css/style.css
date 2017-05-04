@@ -363,6 +363,30 @@ border-radius: 0; margin-top: 10px; font-size: 18px; font-weight: 500
 .new_file .img-pro-file{margin: 0 auto;text-align: center;}
 .new_file{text-align: center;}
 
+.box-block .top-box{min-height: 100px;}
+.top-box .total-add{min-height: 39px;}
+.b-layer-txt{color: #fff; background-color: rgba(0,0,0,0.6); font-size: 16px; width: 160px; padding: 8px 5px;}
+.cover-image-txt{position: absolute; top: 0px; padding: 6px; left: 10px;}
+.g-layer-txt{color: #fff; background-color: #08A783; padding: 3px; font-size: 13px; width: 160px;}
+.valid-block{position: absolute; right: 6px; top: 20px; background: rgba(0,0,0,0.5); color: #fff; height: 20px; line-height: 20px; width: 85px; color: #08A783;}
+.valid-box{background-color: #08A783; color: #fff; width: 20px; height: 20px; text-align: center; line-height: 20px; display: inline-block; font-size: 8px; float: right;}
+.valid-txt{display: inline-block; text-align: right; width: calc(100% - 30px);}
+.valid-block:before {content: ''; width: 0; height: 0; border-left: 7px solid transparent; border-right: 0px solid transparent; border-top: 20px solid rgba(0,0,0,0.5); position: absolute; right: 100%;}
+.gift-input{position: relative; width: 150px; margin: 20px 0 0;}
+.gift-input input{font-weight: 600; color: #08A783; font-size: 15px; background-color: transparent; border: 0; border-bottom: 1px solid #08A783; width: 100%; outline: 0 !important; box-shadow: 0 0 0;}
+.gift-input input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #08A783;
+}
+.gift-input input::-moz-placeholder { /* Firefox 19+ */
+  color: #08A783;
+}
+.gift-input input:-ms-input-placeholder { /* IE 10+ */
+  color: #08A783;
+}
+.gift-input input:-moz-placeholder { /* Firefox 18- */
+  color: #08A783;
+}
+.cover-image.coupan-image .add-remove{width: calc(100% - 12px); height: 50px; font-size: 38px; text-align: center; cursor: pointer; color: rgb(53,179,135); position: absolute; left: 50%; top: calc(100% - 58px); transform: translate(-50%, 0); background: rgba(0,0,0,0.5); line-height: 50px;}
 
 
 /********media query*************/

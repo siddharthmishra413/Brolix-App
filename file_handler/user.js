@@ -496,11 +496,11 @@ module.exports = {
                 } else {
                     var password = req.body.newpass;
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) {
-                        if (user.deviceType == 'Android' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                        if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {
                                      var message = "you have successfully change passord";
-                                     functions.android_notification(result.deviceToken, message);
+                                     functions.android_notification(user.deviceToken, message);
                                      console.log("Android notification send!!!!")
-                                 } else if (user.deviceType == 'iOS' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                 } else if (user.deviceType == 'iOS' && user.notification_status == 'on' && user.status == 'ACTIVE') {
                                      functions.iOS_notification(user.deviceToken, message);
                                  } else {
                                      console.log("Something wrong!!!!")

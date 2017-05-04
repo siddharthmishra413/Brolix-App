@@ -19,6 +19,7 @@ var reportProblem = require('./routes/reportProblem.js');
 var terms = require('./routes/termsConditions.js');
 var tool = require('./routes/brolixAndDollors.js');
 var mongoose = require('mongoose');
+var logger = require('morgan');
 mongoose.Promise = global.Promise;
 var nodemailer = require('nodemailer');
 var session = require('client-sessions');
@@ -30,6 +31,7 @@ var port = process.env.PORT || 8082; // used to create, sign, and verify tokens
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.json({
     limit: '50mb'
