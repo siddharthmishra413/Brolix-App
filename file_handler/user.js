@@ -28,9 +28,9 @@ cloudinary.config({
 
 
 var avoid = {
-        "password": 0
-    }
-   
+    "password": 0
+}
+
 //brintree Integration
 var braintree = require("braintree");
 
@@ -252,8 +252,7 @@ module.exports = {
     //API for user signUP
     "signup": function(req, res) {
         console.log("request--->>", req.body)
-        if (!req.body.email) res.send({ responseCode: 403, responseMessage: 'Email required' });
-        else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.state) { res.send({ responseCode: 403, responseMessage: 'state required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
             console.log("1")
             User.findOne({ email: req.body.email }, function(err, result) {
@@ -694,6 +693,15 @@ module.exports = {
                                             result3.save();
                                             callback(null, result3)
                                         }
+                                        if (result3.deviceType == 'Android' || result3.notification_status == 'on' || result3.status == 'ACTIVE') {
+                                            var message = "I have send you brolix";
+                                            functions.android_notification(result3.deviceToken, message);
+                                            console.log("Android notification send!!!!")
+                                        } else if (result3.deviceType == 'iOS' || result3.notification_status == 'on' || result3.status == 'ACTIVE') {
+                                            functions.iOS_notification(result3.deviceToken, message);
+                                        } else {
+                                            console.log("Something wrong!!!!")
+                                        }
                                     });
                                 }
                             });
@@ -711,6 +719,15 @@ module.exports = {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result5) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
                                         callback(null, result5)
+                                    }
+                                    if (result5.deviceType == 'Android' || result5.notification_status == 'on' || result5.status == 'ACTIVE') {
+                                        var message = "I have send you brolix";
+                                        functions.android_notification(result5.deviceToken, message);
+                                        console.log("Android notification send!!!!")
+                                    } else if (result5.deviceType == 'iOS' || result5.notification_status == 'on' || result5.status == 'ACTIVE') {
+                                        functions.iOS_notification(result5.deviceToken, message);
+                                    } else {
+                                        console.log("Something wrong!!!!")
                                     }
                                 });
                             }
@@ -740,24 +757,72 @@ module.exports = {
                 })
             },
             function(callback) {
+                console.log(" in friends")
                 var senderId = req.body.userId;
                 var receiverId = req.body.receiverId;
-                User.findOne({ _id: senderId }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-                    else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
-                        result.cash -= req.body.cash;
-                        result.save();
-                        User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendCashListObject": { senderId: senderId, cash: req.body.cash } } }, { new: true }, function(err, user) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
-                            else {
-                                user.cash += req.body.cash;
-                                user.save();
-                                //callback(null, user)
+                User.findOne({ _id: receiverId }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendCash == "followers") {
+                        var flag = result1.userFollowers.find(userFollowers => userFollowers == senderId)
+                        if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "you are not friend" }); } else {
+                            var senderId = req.body.userId;
+                            var receiverId = req.body.receiverId;
+                            User.findOne({ _id: senderId }, function(err, result) {
+                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                                else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
+                                    result.cash -= req.body.cash;
+                                    result.save();
+                                    User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendCashListObject": { senderId: senderId, cash: req.body.cash } } }, { new: true }, function(err, user) {
+                                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
+                                        else {
+                                            user.cash += req.body.cash;
+                                            user.save();
+                                            //callback(null, user)
+                                        }
+                                        if (user.deviceType == 'Android' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                            var message = "I have sent you cash";
+                                            functions.android_notification(user.deviceToken, message);
+                                            console.log("Android notification send!!!!")
+                                        } else if (user.deviceType == 'iOS' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                            functions.iOS_notification(user.deviceToken, message);
+                                        } else {
+                                            console.log("Something wrong!!!!")
+                                        }
+                                    });
+                                    callback(null, result)
+                                }
+                            });
+                        }
+                    } else {
+                        var senderId = req.body.userId;
+                        var receiverId = req.body.receiverId;
+                        User.findOne({ _id: senderId }, function(err, result) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
+                            else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
+                                result.cash -= req.body.cash;
+                                result.save();
+                                User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendCashListObject": { senderId: senderId, cash: req.body.cash } } }, { new: true }, function(err, user) {
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
+                                    else {
+                                        user.cash += req.body.cash;
+                                        user.save();
+                                        //callback(null, user)
+                                    }
+                                    if (user.deviceType == 'Android' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                        var message = "I have sent you cash";
+                                        functions.android_notification(user.deviceToken, message);
+                                        console.log("Android notification send!!!!")
+                                    } else if (user.deviceType == 'iOS' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                        functions.iOS_notification(user.deviceToken, message);
+                                    } else {
+                                        console.log("Something wrong!!!!")
+                                    }
+                                });
+                                callback(null, result)
                             }
                         });
-                        callback(null, result)
                     }
-                });
+                })
+
             },
         ], function(err, result) {
             res.send({
@@ -767,7 +832,6 @@ module.exports = {
             });
         })
     },
-
 
     "filterToDateAndFromDate": function(req, res) {
         User.find({ _id: req.body.userId }).exec(function(err, results) {
@@ -998,7 +1062,6 @@ module.exports = {
 
 
     "useLuckCard": function(req, res) { // userId, adId, Brolix, luckId in request parameter
-
         var obj = (req.body.luckId);
         if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter luckId' }); } else {
             createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
@@ -1072,9 +1135,7 @@ module.exports = {
     },
 
     "facebookLogin": function(req, res) {
-        var obj = (req.body.facebookID);
-        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter facebookID' }); }
-        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        if (req.body.facebookID) { res.send({ responseCode: 500, responseMessage: 'please enter facebookID' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.state) { res.send({ responseCode: 403, responseMessage: 'state required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
                 if (req.body.haveReferralCode == true) {
@@ -1341,9 +1402,7 @@ module.exports = {
     },
 
     "googleLogin": function(req, res) {
-        var obj = (req.body.googleID);
-        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter googleID' }); }
-        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        if (!req.body.googleID) { res.send({ responseCode: 403, responseMessage: 'please enter googleID' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.state) { res.send({ responseCode: 403, responseMessage: 'state required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
                 if (req.body.haveReferralCode == true) {
@@ -1721,6 +1780,16 @@ module.exports = {
                                             User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } }, $inc: { gifts: 1 } }, { new: true }).exec(function(err, result4) {
                                                 console.log("result4--->>>", result4)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
+
+                                                if (result4.deviceType == 'Android' || result4.notification_status == 'on' || result4.status == 'ACTIVE') {
+                                                    var message = "you have one coupon exchange request";
+                                                    functions.android_notification(result4.deviceToken, message);
+                                                    console.log("Android notification send!!!!")
+                                                } else if (result4.deviceType == 'iOS' || result4.notification_status == 'on' || result4.status == 'ACTIVE') {
+                                                    functions.iOS_notification(result4.deviceToken, message);
+                                                } else {
+                                                    console.log("Something wrong!!!!")
+                                                }
                                             })
                                         }
                                     })
@@ -1755,6 +1824,15 @@ module.exports = {
                                         }
                                         User.findOneAndUpdate({ _id: receiverId }, { $push: { 'coupon': { couponCode: couponCode, adId: couponAdId, expirationTime: expirationTime, pageId: pageId, type: type } }, $inc: { gifts: 1 } }, { new: true }).exec(function(err, result4) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
+                                            if (result4.deviceType == 'Android' || result4.notification_status == 'on' || result4.status == 'ACTIVE') {
+                                                var message = "you have one coupon exchange request";
+                                                functions.android_notification(result4.deviceToken, message);
+                                                console.log("Android notification send!!!!")
+                                            } else if (result4.deviceType == 'iOS' || result4.notification_status == 'on' || result4.status == 'ACTIVE') {
+                                                functions.iOS_notification(result4.deviceToken, message);
+                                            } else {
+                                                console.log("Something wrong!!!!")
+                                            }
                                         })
                                     }
                                 })
