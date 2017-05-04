@@ -1875,6 +1875,185 @@ module.exports = {
                 });
             }
         })
+    },
+
+    "CashAdStatistics": function(req, res) {
+
+        waterfall([
+            function(callback){
+                var updateDataDELIVERED = {$match:{'cashPrize.adId': req.body.adId, 'cashPrize.cashStatus':'DELIVERED' }};
+                var updateUnwindDataDELIVERED = { $unwind: "$cashPrize" };
+                var groupCondDELIVERED = { $group : { 
+                       _id:null,
+                        deliveredCash: { $sum: 1 }
+                    }}
+                User.aggregate(updateUnwindDataDELIVERED, updateDataDELIVERED, groupCondDELIVERED,function(err, results){
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+                    else if (results.length == 0) {
+                        var data = 0;
+                        callback(null, data)
+                    } 
+                    else {
+                        var data = results[0].deliveredCash
+                        callback(null, data)
+                    }
+                })
+            },
+            function(cashDelivered, callback){
+                createNewAds.find({
+                    _id: req.body.adId
+                }).exec(function(err, result) {
+                    console.log("result", result)
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
+                    else if (result.length == 0) {
+                        var data = {
+                            winnersLength : 0,
+                            cashStatus : cashDelivered
+                        }
+                        res.send({
+                            result: data,
+                            responseCode: 200,
+                            responseMessage: 'success.'
+                        });
+                    } 
+                    else {
+                        console.log(result)
+                        var winnersLength = 0;
+                        for (var i = 0; i < result.length; i++) {
+                            winnersLength += result[i].winners.length;
+                            console.log(winnersLength);
+                        }
+                        var data = {
+                            winnersLength : winnersLength,
+                            cashStatus : cashDelivered
+                        }
+
+                        res.send({
+                            result: data,
+                            responseCode: 200,
+                            responseMessage: 'success.'
+                        });
+                    }
+                })
+            }
+        ])
+    },
+
+    "cashStatisticsYearClicks": function(req, res) { 
+        var newYear = new Date(req.body.date).getFullYear();
+        var data = req.body.click;
+        waterfall([
+            function(callback){
+                if(req.body.click == 'WINNER'){
+                    var updateDataWinner = { year: { $year: "$updatedAt" }, month: { $month: "$updatedAt" } }; 
+                    var updateUnwindDataWinner = { $unwind: "$winners" };
+                    createNewAds.aggregate(updateUnwindDataWinner,{ $match: { _id: new mongoose.Types.ObjectId(req.body.adId) } }, {
+                        $group: {
+                            _id: updateDataWinner,
+                            winnersLength: { $sum: 1 }
+                        }
+                    },function(err, results) {
+                        console.log("results",results)
+                            var data = results.filter(results => results._id.year == newYear)
+                            results = data;
+                            var array = [];
+                            var flag = false;
+                            for (var i = 1; i <= 12; i++) {
+                                console.log("Dfdgf", i)
+                                for (var j = 0; j < results.length; j++) {
+                                    if (i == results[j]._id.month) {
+
+                                        console.log("value of j==>", j)
+                                        flag = true;
+                                        break;
+                                    } else {
+                                        flag = false;
+                                    }
+                                }
+                                if (flag == true) {
+                                    array.push(results[j])
+                                } else {
+                                    var data = {
+                                        _id: {
+                                            year: 2017,
+                                            month: i
+                                        },
+                                        winnersLength: 0
+                                    }
+                                    array.push(data)
+                                }
+                            }
+                            callback(null, array)
+                    })
+                }
+                else{
+                    var winnersLength = 0;
+                   callback(null, winnersLength)
+                }
+            },
+            function(results, callback){
+                if(req.body.click== 'DELIVERED'){
+                        var updateDataDELIVERED = {$match:{'cashPrize.adId': req.body.adId, 'cashPrize.cashStatus':'DELIVERED' }};
+                        var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }};
+                        var updateUnwindDataDELIVERED = { $unwind: "$cashPrize" };
+                        var groupCondDELIVERED = { $group : { 
+                               _id:updateDataDeliveredd,
+                                deliveredCash: { $sum: 1 }
+                            }}
+                        User.aggregate(updateUnwindDataDELIVERED, updateDataDELIVERED, groupCondDELIVERED,function(err, results){
+                                    console.log("yearly")
+                                    var data = results.filter(results => results._id.year == newYear)
+                                    results = data;
+                                    var array = [];
+                                    var flag = false;
+                                    for (var i = 1; i <= 12; i++) {
+                                        console.log("Dfdgf", i)
+                                        for (var j = 0; j < results.length; j++) {
+                                            if (i == results[j]._id.month) {
+
+                                                console.log("value of j==>", j)
+                                                flag = true;
+                                                break;
+                                            } else {
+                                                flag = false;
+                                            }
+                                        }
+                                        if (flag == true) {
+                                            array.push(results[j])
+                                        } else {
+                                            var data = {
+                                                _id: {
+                                                    year: 2017,
+                                                    month: i
+                                                },
+                                                deliveredCash: 0,
+                                            }
+                                            array.push(data)
+                                        }
+                                    }
+                                    callback(null, array)
+                        })
+                }
+                else{
+                   callback(null, results)
+                }
+            }
+        ],function(err, result){
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+            else if (result.length == 0) {
+                res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+            } 
+            else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: 'success.'
+                });
+            }
+        })
     }
+
+
+
 
 }

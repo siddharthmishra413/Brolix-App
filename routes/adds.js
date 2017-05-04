@@ -44,7 +44,7 @@ app.post('/adStatistics',adsHandler.adStatistics);
 app.post('/adStatisticsFilterClick',adsHandler.adStatisticsFilterClick);
 app.post('/couponStatisticsYearClicks',adsHandler.couponStatisticsYearClicks);
 app.post('/CouponAdStatistics',adsHandler.CouponAdStatistics);
-
-
+app.post('/CashAdStatistics',adsHandler.CashAdStatistics);
+app.post('/cashStatisticsYearClicks', adsHandler.cashStatisticsYearClicks);
 
 module.exports = app;
