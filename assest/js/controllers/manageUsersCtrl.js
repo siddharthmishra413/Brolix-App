@@ -13,6 +13,12 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.active_upgrade_card=true;
     $scope.cardType = 'upgrade_card';
     $scope.dashBordFilter = {};
+    $scope.ageLimit = [];
+
+    for (var i = 15; i <100; i++){
+      ageLimit.push(i);
+    }
+    console.log("$scope.ageLimit",$scope.ageLimit)
 
     $scope.showPageDetails = function(id){
         console.log("id---------",id);
