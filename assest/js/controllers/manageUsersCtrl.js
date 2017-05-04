@@ -15,10 +15,9 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.dashBordFilter = {};
     $scope.ageLimit = [];
 
-    for (var i = 15; i <100; i++){
-      ageLimit.push(i);
+    for (var i = 15; i <99; i++){
+      $scope.ageLimit.push(i);
     }
-    console.log("$scope.ageLimit",$scope.ageLimit)
 
     $scope.showPageDetails = function(id){
         console.log("id---------",id);
@@ -333,6 +332,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                    $scope.pageCashWinners= res.result.page;
                    $scope.cashWinners = res.result.docs;
                    $scope.cashWinnersCount = res.result.total;
+                   console.log("$scope.cashWinnersCount",$scope.cashWinnersCount)
                } 
                else {
                 toastr.error(res.responseMessage);
