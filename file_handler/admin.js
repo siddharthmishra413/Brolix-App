@@ -162,6 +162,53 @@ module.exports = {
         })
     },
 
+    // "winners": function(req, res) {
+    //     User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': "ACTIVE" } }).exec(function(err, result1) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
+    //             var array = [];
+    //             for (var i = 0; i < result1.length; i++) {
+    //                 array.push(result1[i]._id)
+    //             }
+    //             console.log("array-->>", array)
+    //             User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result2) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result2.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
+    //                     for (var j = 0; j < result2.length; j++) {
+    //                         array.push(result2[j]._id)
+    //                     }
+    //                     console.log("array-->>", array)
+
+    //                     //         for (var i = 0; i < obj.length; i++) {
+    //                     //     console.log("in loop")
+    //                     //     User.update({ 'upgradeCardObject._id': obj[i] }, { $push: { 'UpgradeUsedAd': { upgradeId: obj[i], adId: adId } }, $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
+    //                     //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter userId" })
+    //                     //         else {
+    //                     //             console.log("in loop 1")
+    //                     //                 // callback(null)
+    //                     //         }
+    //                     //     })
+    //                     // }
+    //                     var array1 = [];
+    //                     for (var k = 0; k < array.length; k++) {
+    //                         User.paginate({ _id: array[k] }, { page: req.params.pageNumber, limit: 10 }, function(err, newResult) {
+    //                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (newResult.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
+    //                                 console.log("newResult-->>",newResult)
+    //                                 array1.push(newResult.docs[])
+    //                                 console.log("array1-->>", array1)
+
+    //                             }
+    //                         })
+    //                     }
+    //                     res.send({
+    //                         result: array1,
+    //                         responseCode: 200,
+    //                         responseMessage: 'Result'
+    //                     })
+    //                 }
+    //             })
+    //         }
+    //     })
+    // },
+
     "winners": function(req, res) {
         createNewAds.find({}, 'winners').exec(function(err, result) {
             if (err) {
