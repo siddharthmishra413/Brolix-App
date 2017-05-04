@@ -175,7 +175,6 @@ module.exports = {
                     if (result[i].winners.length >= 1) {
                         for (var j = 0; j < result[i].winners.length; j++) {
                             arr.push(result[i].winners[j]);
-
                         }
                     }
                 }
@@ -188,7 +187,6 @@ module.exports = {
                         })
                     }
                 })
-
             }
         })
     },
@@ -239,9 +237,6 @@ module.exports = {
     },
 
     "blockUser": function(req, res) {
-
-        console.log("req.body.userId", req.params.userId);
-
         User.findByIdAndUpdate({
             _id: req.params.userId
         }, {
@@ -2118,7 +2113,7 @@ module.exports = {
             var updateData = query;
         } else {
             console.log("rather than query")
-            var updateData = { 'coupon.type': "WINNER" };
+            var updateData = { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' };
         }
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 10;
@@ -2168,7 +2163,7 @@ module.exports = {
             var updateData = query;
         } else {
             console.log("rather than query")
-            var updateData = { 'coupon.type': "WINNER" };
+            var updateData = { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' };
         }
         User.aggregate({ $unwind: "$coupon" }, { $match: updateData }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
@@ -3948,15 +3943,13 @@ module.exports = {
     },
 
     "adsDetail": function(req, res) {
-        createNewAds.findOne({ _id: req.params.id ,status: "ACTIVE" },"coverImage", function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
-            else if(!result){
+        createNewAds.findOne({ _id: req.params.id, status: "ACTIVE" }, "coverImage", function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) {
                 res.send({
                     responseCode: 404,
                     responseMessage: "Data not found."
                 })
-            }
-            else {
+            } else {
                 res.send({
                     result: result,
                     responseCode: 200,
