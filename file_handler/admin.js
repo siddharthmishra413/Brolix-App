@@ -2040,13 +2040,7 @@ module.exports = {
 
     /* --------------------------------- Manage Gift Section ---------------------------------------*/
 
-
-
-
     "totalBrolixGift": function(req, res, query) {
-
-        console.log(query.length)
-        console.log("totalBrolixGift query===>" + JSON.stringify(query))
         if (!(query.length == 1)) {
             console.log("query")
             var updateData = query;
@@ -2054,7 +2048,6 @@ module.exports = {
             console.log("rather than query")
             var updateData = {};
         }
-
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 10;
         var skips = limitData - 10;
@@ -2995,21 +2988,6 @@ module.exports = {
         })
     },
 
-    // { page: req.params.pageNumber, limit: 10 },
-    //  "topFiftyAds": function(req, res) { //sort({ viewerLenght: -1 }).limit(50).populate('pageId', 'pageName')
-    //     createNewAds.find({}).sort({ viewerLenght: -1 }).limit(50).exec(function(err, result) {
-    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else {
-    //             var count = 0;
-    //             for (var i = 0; i < result.length; i++) {
-    //                 count++;
-    //             }
-    //             res.send({ result: result, count: count, responseCode: 200, responseMessage: "Top ads show successfully." });
-    //         }
-    //     })
-    // },
-
-
-
     /************************************ Admin tool sections *****************************************************************/
 
     "addNewCoupon": function(req, res) {
@@ -3722,6 +3700,15 @@ module.exports = {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
                             // callback(null)
                         }
+                        if (result1.deviceType == 'Android' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                            var message = "req.body.message";
+                            functions.android_notification(result1.deviceToken, message);
+                            console.log("Android notification send!!!!")
+                        } else if (result1.deviceType == 'iOS' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                            functions.iOS_notification(result1.deviceToken, message);
+                        } else {
+                            console.log("Something wrong!!!!")
+                        }
                     })
                 }
                 callback(null)
@@ -3782,6 +3769,15 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
                                 // callback(null)
                             }
+                            if (result1.deviceType == 'Android' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                                var message = "req.body.message";
+                                functions.android_notification(result1.deviceToken, message);
+                                console.log("Android notification send!!!!")
+                            } else if (result1.deviceType == 'iOS' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                                functions.iOS_notification(result1.deviceToken, message);
+                            } else {
+                                console.log("Something wrong!!!!")
+                            }
                         })
                     }
                     callback(null)
@@ -3831,6 +3827,15 @@ module.exports = {
                         User.update({ _id: userArray[i] }, { $push: { upgradeCardObject: data } }, { multi: true }, function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
                                 // callback(null)
+                            }
+                            if (result1.deviceType == 'Android' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                                var message = "req.body.message";
+                                functions.android_notification(result1.deviceToken, message);
+                                console.log("Android notification send!!!!")
+                            } else if (result1.deviceType == 'iOS' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                                functions.iOS_notification(result1.deviceToken, message);
+                            } else {
+                                console.log("Something wrong!!!!")
                             }
                         })
                     }
@@ -3925,7 +3930,6 @@ module.exports = {
             "Hotels and Apartments", "Medical", "Education", "Motors", "Hypermarkets", "Events", "Jewelry", "Arts and Design", "Pets", "Insurance",
             "Banks and Finance Companies", "Real Estate", "Books", "Business and Services", "Nightlife", "Construction", "Factories"
         ];
-        console.log("categoryList-->>", categoryList)
         res.send({
             result: categoryList,
             responseCode: 200,

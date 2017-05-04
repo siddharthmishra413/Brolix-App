@@ -881,22 +881,22 @@ module.exports = {
         })
     },
 
-      "pageStatisticsFilterClick": function(req, res) {
+    "pageStatisticsFilterClick": function(req, res) {
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var data = req.body.dateFilter;
-        switch(data){
+        switch (data) {
             case 'yearly':
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" } }
-            break;
+                break;
             case 'monthly':
-                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
-            break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" } }
+                break;
             case 'weekly':
-               var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } } 
-            break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } }
+                break;
         }
-        
+
         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
                 $group: {
                     _id: updateData,
@@ -915,7 +915,7 @@ module.exports = {
                 }
             },
             function(err, results) {
-                if(req.body.dateFilter == 'yearly'){
+                if (req.body.dateFilter == 'yearly') {
                     console.log("yearly")
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear)
@@ -964,8 +964,8 @@ module.exports = {
                         responseMessage: "Success."
                     })
                 }
-                 if(req.body.dateFilter == 'monthly'){
-                    console.log("monthly",newMonth + 1)
+                if (req.body.dateFilter == 'monthly') {
+                    console.log("monthly", newMonth + 1)
                     var month = newMonth + 1;
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
@@ -976,8 +976,8 @@ module.exports = {
                         responseMessage: "Success."
                     })
                 }
-                if(req.body.dateFilter == 'weekly'){
-                    console.log("monthly",newMonth + 1)
+                if (req.body.dateFilter == 'weekly') {
+                    console.log("monthly", newMonth + 1)
                     var month = newMonth + 1;
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
@@ -995,18 +995,18 @@ module.exports = {
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var data = req.body.dateFilter;
-        switch(data){
+        switch (data) {
             case 'yearly':
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" } }
-            break;
+                break;
             case 'monthly':
-                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
-            break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" } }
+                break;
             case 'weekly':
-               var updateData = { year: { $year: "$date" }, month: { $month: "$date" } , dayOfWeek: { $dayOfWeek: "$date" } } 
-            break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfWeek: { $dayOfWeek: "$date" } }
+                break;
         }
-        
+
         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
                 $group: {
                     _id: updateData,
@@ -1144,27 +1144,28 @@ module.exports = {
             },
             function(winnersLength, arrayId, callback) {
                 console.log("winnersLength", winnersLength)
-                var updateData = {$match:{adId: { $in: arrayId }}};
-                var groupCond = { $group : { 
-                    _id : null, 
-                    couponPurchased:{ $sum: "$couponPurchased" }
-                }}
-                Views.aggregate(updateData,groupCond,function(err, result){
-                    console.log("result=========>>>..", result)
-                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
-                    } 
-                    else if (result.length == 0) {
-                        var data =0
-                        callback(null,winnersLength,data)
+                var updateData = { $match: { adId: { $in: arrayId } } };
+                var groupCond = {
+                    $group: {
+                        _id: null,
+                        couponPurchased: { $sum: "$couponPurchased" }
                     }
-                    else{
-                        var data = result[0].couponPurchased;
-                        callback(null,winnersLength, data)
-                    }
-                })
-                // User.find({
-                //     cardPurchaseDate: { $gte: startTime, $lte: endTime }
-                // }).exec(function(err, ress) {
+                }
+                Views.aggregate(updateData, groupCond, function(err, result) {
+                        console.log("result=========>>>..", result)
+                        if (err) {
+                            res.send({ result: err, responseCode: 302, responseMessage: "error." });
+                        } else if (result.length == 0) {
+                            var data = 0
+                            callback(null, winnersLength, data)
+                        } else {
+                            var data = result[0].couponPurchased;
+                            callback(null, winnersLength, data)
+                        }
+                    })
+                    // User.find({
+                    //     cardPurchaseDate: { $gte: startTime, $lte: endTime }
+                    // }).exec(function(err, ress) {
 
                 //     if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (ress.length == 0) {
                 //         var totalBuyers = 0;
@@ -1355,7 +1356,6 @@ module.exports = {
             "Hotels and Apartments", "Medical", "Education", "Motors", "Hypermarkets", "Events", "Jewelry", "Arts and Design", "Pets", "Insurance",
             "Banks and Finance Companies", "Real Estate", "Books", "Business and Services", "Nightlife", "Construction", "Factories"
         ];
-        console.log("categoryList-->>", categoryList)
         res.send({
             result: categoryList,
             responseCode: 200,
