@@ -5,6 +5,7 @@ app.controller('editUserProfileCtrl', function($scope, $window, userService, $st
    $scope.$emit('SideMenu', 'Manage User');
    $scope.myForm = {};
    $scope.viewUserProfile = {};
+   $scope.minDate = new Date().toDateString();
    
    var id = $stateParams.id;
    console.log("Id====>>>" + id)

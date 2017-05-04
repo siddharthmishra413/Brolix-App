@@ -115,7 +115,7 @@
             <div class="col-md-3 col-sm-6 dwd-border">
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
-                    
+
                     <div class="form-group cus-select">
                          <select class="form-control" ng-change="changeCountry(); dashBordFilter();" ng-model="dashBordFilter.country" required>
                             <option value="">Select Country</option>
@@ -126,13 +126,13 @@
                          <select class="form-control" ng-change="changeState(); dashBordFilter();" ng-model="dashBordFilter.state" required>
                             <option value="">Select State</option>
                             <option ng-repeat="state in stateList">{{state.region}}</option>
-                         </select> 
+                         </select>
                     </div>
                     <div class="form-group cus-select">
                          <select  class="form-control" id="city" ng-change="dashBordFilter();" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
                             <option ng-repeat="city in cityList">{{city.city}}</option>
-                         </select> 
+                         </select>
                     </div>
                     <div class="form-group cus-select">
                         <select class="form-control" ng-model="dashBordFilter.categories" ng-change="dashBordFilter(dashBordFilter.category);">
@@ -140,7 +140,7 @@
                             <option ng-repeat="category in category">{{category}}</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group clearfix date-picker">
                      <datepicker date-format="yyyy-MM-dd" selector="form-control">
                        <div class="input-group">
@@ -163,20 +163,20 @@
                      </div>
                     <!-- <div class="form-group cus-select">
                         <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">  
+                            <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">
                         </div>
                     </div>
 
                     <div class="form-group cus-select">
                         <div class="col-md-9">
-                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth"> 
+                            <input type="date" class="form-control" name="dob" ng-change="dashBordFilter(dashBordFilter.dobFrom);" ng-model="dashBordFilter.dobFrom" placeholder="Date of Birth">
                         </div>
                     </div> -->
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalPages">
         <div class="grp-search">
@@ -244,7 +244,7 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalPages | pagesFilter:test).length != 0">
-                <button ng-click="preTotalPages()" ng-disabled="pageTotalPages==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preTotalPages()" ng-disabled="pageTotalPages==1" class="btn paginationBtn" >Prev</button>
                 {{pageTotalPages}}/{{noOfPagesTotalPages}}
                 <button ng-click="nextTotalPages()" ng-disabled="pageTotalPages==noOfPagesTotalPages" class="btn paginationBtn">Next</button>
             </div>
@@ -319,7 +319,7 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(unPublishedPage | pagesFilter:test).length != 0">
-                <button ng-click="preunPublishedPage()" ng-disabled="pageunPublishedPage==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preunPublishedPage()" ng-disabled="pageunPublishedPage==1" class="btn paginationBtn" >Prev</button>
                 {{pageunPublishedPage}}/{{noOfPagesunPublishedPage}}
                 <button ng-click="nextunPublishedPage()" ng-disabled="pageunPublishedPage==noOfPagesunPublishedPage" class="btn paginationBtn">Next</button>
             </div>
@@ -384,7 +384,7 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(showAllRemovedPage | pagesFilter:test).length != 0">
-                <button ng-click="preRemovedPages()" ng-disabled="pageRemovedPage==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preRemovedPages()" ng-disabled="pageRemovedPage==1" class="btn paginationBtn" >Prev</button>
                 {{pageRemovedPage}}/{{noOfPagesRemovedPage}}
                 <button ng-click="nextRemovedPages()" ng-disabled="pageRemovedPage==noOfPagesRemovedPage" class="btn paginationBtn">Next</button>
             </div>
@@ -453,7 +453,7 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(showAllBlockedPage | pagesFilter:test).length != 0">
-                <button ng-click="preBlockedPage()" ng-disabled="pageBlockedPage==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preBlockedPage()" ng-disabled="pageBlockedPage==1" class="btn paginationBtn" >Prev</button>
                 {{pageBlockedPage}}/{{noOfPagesBlockedPage}}
                 <button ng-click="nextBlockedPage()" ng-disabled="pageBlockedPage==noOfPagesBlockedPage" class="btn paginationBtn">Next</button>
             </div>
@@ -517,7 +517,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>           
+                    </div>
                 </div>
            </div>
        </div>
@@ -558,7 +558,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>           
+                    </div>
                 </div>
            </div>
        </div>
@@ -600,7 +600,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>           
+                    </div>
                 </div>
            </div>
        </div>
@@ -672,9 +672,9 @@
            <div class="modal-body">
                <form name="sendBrolix">
                    <div class="form-group">
-                   <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                   <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
                     <span style="color:red;" ng-show="sendBrolix.brolixsend.$dirty && sendBrolix.brolixsend.$invalid">
-                    <span ng-show="sendBrolix.brolixsend.$error.required">Brolix is required.</span> 
+                    <span ng-show="sendBrolix.brolixsend.$error.required">Brolix is required.</span>
                     <span ng-show="sendBrolix.brolixsend.$error.maxlength">Brolix have at most 10 digits.</span>
                     <span ng-show="sendBrolix.brolixsend.$error.pattern">Only number are allowed.</span>
                    </div>
@@ -696,9 +696,9 @@
            <div class="modal-body">
                <form name="sendCash">
                    <div class="form-group">
-                   <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                   <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
                     <span style="color:red;" ng-show="sendCash.cashsend.$dirty && sendCash.cashsend.$invalid">
-                    <span ng-show="sendCash.cashsend.$error.required">Cash is required.</span> 
+                    <span ng-show="sendCash.cashsend.$error.required">Cash is required.</span>
                     <span ng-show="sendCash.cashsend.$error.maxlength">Cash have at most 10 digits.</span>
                     <span ng-show="sendCash.cashsend.$error.pattern">Only number are allowed.</span>
                    </div>
@@ -758,7 +758,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>           
+                    </div>
                 </div>
            </div>
        </div>

@@ -717,76 +717,70 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     }
 // console.log("$scope",JSON.stringify($scope.createAds.pageName));
 
-    $scope.submit = function(){
-
+$scope.submit = function(){
     // var onedaymilisecond = 8.64e+7;
     console.log("$scope",JSON.stringify($scope.createAds.pageName));
-    pageDetails = $scope.createAds.pageName == null?null:JSON.parse($scope.createAds.pageName);
-    console.log("$scope",JSON.stringify(pageDetails));
-    // var whoWillSeeYourAddArray = [];
-    // var slideShow = [$scope.createAds.slidePhoto1,$scope.createAds.slidePhoto2,$scope.createAds.slidePhoto3,$scope.createAds.slidePhoto4,$scope.createAds.slidePhoto5,$scope.createAds.slidePhoto6];
-    // var appPhoto = [];
-    // //appPhoto= [$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6];
-    // var promoteAppBoolean = appPhoto.length==0 ? false:true;
-    // var coverimage = $scope.createAds.adContentType == 'slideshow' ? $scope.createAds.slidePhoto1:$scope.createAds.advertismentCover;
-    // //console.log("ddadaaradfatya0",JSON.stringify(data));
-    // var modifyData = {};
-    // modifyData = {
-    //     userId:adminIdss,
-    //     pageId:pageDetails._id,
-    //     pageName:pageDetails.pageName,
-    //     category:pageDetails.category,
-    //     subCategory:pageDetails.subCategory,
-    //     adsType:$scope.createAds.giftType,
-    //     coverImage:coverimage,
-    //     adContentType:$scope.createAds.adContentType,
-    //     numberOfWinners:$scope.createAds.winner,
-    //     giftDescription:$scope.createAds.giftDescription,
-    //     viewerLength:$scope.createAds.viewers,
-    //     hiddenGifts:$scope.addCode,
-    //     couponLength:$scope.createAds.winner,
-    //     gender:$scope.createAds.gender,
-    //     ageFrom:$scope.createAds.ageFrom,
-    //     ageTo:$scope.createAds.ageTo,
-    //     couponBuyersLength:$scope.createAds.viewers,
-    //     sellCoupon:$scope.createAds.cellThisCoupon,
-    //     whoWillSeeYourAdd:{
-    //         country:$scope.createAds.country,
-    //         state:$scope.createAds.state,
-    //         city:$scope.createAds.city
-    //     },
-    //     couponExpiryDate: $scope.couponExpiryDate,
-    //     googleLink:$scope.createAds.googlePlayLink,
-    //     appStoreLink:$scope.createAds.appStoreLink,
-    //     windowsStoreLink:$scope.createAds.windowStoreLink,
-    //     appIcon:$scope.createAds.appIcon,
-    //     linkDescription:$scope.createAds.linkDescription,
-    //     dawnloadPagePhoto:[$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6];,
-    //     promoteApp:promoteAppBoolean,
-    //     video:$scope.createAds.vedioUrl,
-    //     musicFileName:$scope.createAds.audioUrl,
-    //     slideShow:slideShow,
-    //     brolixFees:$scope.createAds.brolixFees,
-    //     cashAdPrize:$scope.createAds.winnerGift,
+    pageDetails = JSON.parse($scope.createAds.pageName);
+    var whoWillSeeYourAddArray = [];
+    var slideShow = [$scope.createAds.slidePhoto1,$scope.createAds.slidePhoto2,$scope.createAds.slidePhoto3,$scope.createAds.slidePhoto4,$scope.createAds.slidePhoto5,$scope.createAds.slidePhoto6];
+    var appPhoto = [];
+    appPhoto= [$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6];
+    var promoteAppBoolean = appPhoto.length==0 ? false:true;
+    var coverimage = $scope.createAds.adContentType == 'slideshow' ? $scope.createAds.slidePhoto1:$scope.createAds.advertismentCover;
+    //console.log("ddadaaradfatya0",JSON.stringify(data));
+    var modifyData = {};
+    modifyData = {
+        userId:adminIdss,
+        pageId:pageDetails._id,
+        pageName:pageDetails.pageName,
+        category:pageDetails.category,
+        subCategory:pageDetails.subCategory,
+        adsType:$scope.createAds.giftType,
+        coverImage:coverimage,
+        adContentType:$scope.createAds.adContentType,
+        numberOfWinners:$scope.createAds.winner,
+        giftDescription:$scope.createAds.giftDescription,
+        viewerLength:$scope.createAds.viewers,
+        hiddenGifts:$scope.addCode,
+        couponLength:$scope.createAds.winner,
+        gender:$scope.createAds.gender,
+        ageFrom:$scope.createAds.ageFrom,
+        ageTo:$scope.createAds.ageTo,
+        couponBuyersLength:$scope.createAds.viewers,
+        sellCoupon:$scope.createAds.cellThisCoupon,
+        whoWillSeeYourAdd:{
+            country:$scope.createAds.country,
+            state:$scope.createAds.state,
+            city:$scope.createAds.city
+        },
+        couponExpiryDate: $scope.couponExpiryDate,
+        googleLink:$scope.createAds.googlePlayLink,
+        appStoreLink:$scope.createAds.appStoreLink,
+        windowsStoreLink:$scope.createAds.windowStoreLink,
+        appIcon:$scope.createAds.appIcon,
+        linkDescription:$scope.createAds.linkDescription,
+        dawnloadPagePhoto:[$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6],
+        promoteApp:promoteAppBoolean,
+        video:$scope.createAds.vedioUrl,
+        musicFileName:$scope.createAds.audioUrl,
+        slideShow:slideShow,
+        brolixFees:$scope.createAds.brolixFees,
+        cashAdPrize:$scope.createAds.winnerGift,
   
-    // }
-    // console.log("All data -->>"+JSON.stringify(modifyData));
-    // userService.createAds(modifyData).success(function(res) {
-    //     console.log("ressssssss",JSON.stringify(res))
-    // if (res.responseCode == 200) {
-    //     toastr.success(res.responseMessage)
-    // } else {
-    //     toastr.error(res.responseMessage);
-    //     // $state.go('login')
+    }
+    console.log("All data -->>"+JSON.stringify(modifyData));
+    userService.createAds(modifyData).success(function(res) {
+        console.log("ressssssss",JSON.stringify(res))
+    if (res.responseCode == 200) {
+        toastr.success(res.responseMessage)
+    } else {
+        toastr.error(res.responseMessage);
+        // $state.go('login')
         
-    // }
-    // console.log("resss",$scope.userId);
-    // })
+    }
+    console.log("resss",$scope.userId);
+    })
     
    }
-
     
-       
-
-
 })

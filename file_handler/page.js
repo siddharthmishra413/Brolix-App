@@ -882,26 +882,26 @@ module.exports = {
         })
     },
 
-      "pageStatisticsFilterClick": function(req, res) {
+    "pageStatisticsFilterClick": function(req, res) {
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var newDate = new Date(req.body.date).getDate();
         var data = req.body.dateFilter;
-        switch(data){
+        switch (data) {
             case 'yearly':
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" } }
-            break;
+                break;
             case 'monthly':
-                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } } 
-            break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" } }
+                break;
             case 'weekly':
                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } } 
-            break;
-             case 'today':
+               break;
+            case 'today':
                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfMonth: { $dayOfMonth: "$date" },hour: { $hour: "$date" },minutes: { $minute: "$date" } } 
-            break;
+               break;
         }
-        
+
         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
                 $group: {
                     _id: updateData,
@@ -920,7 +920,7 @@ module.exports = {
                 }
             },
             function(err, results) {
-                if(req.body.dateFilter == 'yearly'){
+                if (req.body.dateFilter == 'yearly') {
                     console.log("yearly")
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear)
@@ -969,8 +969,8 @@ module.exports = {
                         responseMessage: "Success."
                     })
                 }
-                 if(req.body.dateFilter == 'monthly'){
-                    console.log("monthly",newMonth + 1)
+                if (req.body.dateFilter == 'monthly') {
+                    console.log("monthly", newMonth + 1)
                     var month = newMonth + 1;
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
@@ -981,8 +981,8 @@ module.exports = {
                         responseMessage: "Success."
                     })
                 }
-                if(req.body.dateFilter == 'weekly'){
-                    console.log("monthly",newMonth + 1)
+                if (req.body.dateFilter == 'weekly') {
+                    console.log("monthly", newMonth + 1)
                     var month = newMonth + 1;
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
@@ -993,8 +993,9 @@ module.exports = {
                         responseMessage: "Success."
                     })
                 }
-                if(req.body.dateFilter == 'today'){
-                    console.log("monthly",newMonth + 1)
+
+                if (req.body.dateFilter == 'today') {
+                    console.log("monthly", newMonth + 1)
                     var month = newMonth + 1;
                     var yearData = 2017
                     // var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
@@ -1004,6 +1005,86 @@ module.exports = {
                         responseCode: 200,
                         responseMessage: "Success."
                     })
+
+                }
+            })
+    },
+
+    "pageStatisticsFilterClickssss": function(req, res) {
+        var newYear = new Date(req.body.date).getFullYear();
+        var newMonth = new Date(req.body.date).getMonth();
+        var data = req.body.dateFilter;
+        switch (data) {
+            case 'yearly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } }
+                break;
+            case 'monthly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" } }
+                break;
+            case 'weekly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfWeek: { $dayOfWeek: "$date" } }
+                break;
+        }
+
+        Views.aggregate({ $match: { pageId: req.body.pageId } }, {
+                $group: {
+                    _id: updateData,
+                    totalProductView: { $sum: "$productView" },
+                    totalPageView: { $sum: "$pageView" },
+                    totalEventViewClicks: { $sum: "$eventViewClicks" },
+                    totalEmailClicks: { $sum: "$emailClicks" },
+                    totalCallUsClick: { $sum: "$callUsClick" },
+                    totalFollowerNumber: { $sum: "$followerNumber" },
+                    totalSocialMediaClicks: { $sum: "$socialMediaClicks" },
+                    totalLocationClicks: { $sum: "$locationClicks" },
+                    totalWebsiteClicks: { $sum: "$websiteClicks" },
+                    totalShares: { $sum: "$shares" },
+                    totalViewAds: { $sum: "$viewAds" },
+                    totalRating: { $sum: "$totalRating" }
+                }
+            },
+            function(err, results) {
+                var yearData = 2017
+                var data = results.filter(results => results._id.year == newYear)
+                results = data;
+                var array = [];
+                var flag = false;
+                for (var i = 1; i <= 12; i++) {
+                    console.log("Dfdgf", i)
+                    for (var j = 0; j < results.length; j++) {
+                        if (i == results[j]._id.month) {
+
+                            console.log("value of j==>", j)
+                            flag = true;
+                            break;
+                        } else {
+                            flag = false;
+                        }
+                    }
+                    if (flag == true) {
+                        array.push(results[j])
+                    } else {
+                        var data = {
+                            _id: {
+                                year: 2017,
+                                month: i
+                            },
+                            totalProductView: 0,
+                            totalPageView: 0,
+                            totalEventViewClicks: 0,
+                            totalEmailClicks: 0,
+                            totalCallUsClick: 0,
+                            totalFollowerNumber: 0,
+                            totalSocialMediaClicks: 0,
+                            totalLocationClicks: 0,
+                            totalWebsiteClicks: 0,
+                            totalShares: 0,
+                            totalViewAds: 0,
+                            totalRating: 0
+                        }
+                        array.push(data)
+                    }
+
                 }
             });
     },
@@ -1043,11 +1124,10 @@ module.exports = {
             });
     },
 
-
     "giftStatistics": function(req, res) {
         var startTime = new Date(req.body.startDate);
         var endTime = new Date(req.body.endDate);
- 
+
 
         console.log("startTime=>", startTime)
         console.log("endTime=>", endTime)
@@ -1069,140 +1149,145 @@ module.exports = {
                             winnersLength += result[i].winners.length;
                             console.log(winnersLength);
                         }
-                       
+
                         callback(null, winnersLength)
                     }
                 })
             },
             function(winnersLength, callback) {
-                createNewAds.find({ 
-                  pageId: req.body.pageId
+                createNewAds.find({
+                    pageId: req.body.pageId
                 }).exec(function(err, result) {
                     console.log("result", result)
-                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } 
-                    else if (result.length == 0) {
-                        var data =0;
-                        callback(null,winnersLength, data)
-                    } 
-                    else{
+                    if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (result.length == 0) {
+                        var data = 0;
+                        callback(null, winnersLength, data)
+                    } else {
                         var array = [];
                         for (var i = 0; i < result.length; i++) {
                             array.push(String(result[i]._id))
                         }
-                        var updateData = {$match:{adId: { $in: array }, date: { $gte: startTime, $lte: endTime },}};
-                        var groupCond = { $group : { 
-                            _id : null, 
-                            couponPurchased:{ $sum: "$couponPurchased" }
-                        }}
-                        Views.aggregate(updateData,groupCond,function(err, result){
-                            console.log("result=========>>>..", result)
-                            if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
-                            } 
-                            else if (result.length == 0) {
-                                var data =0
-                                callback(null,winnersLength,data)
+                        var updateData = { $match: { adId: { $in: array }, date: { $gte: startTime, $lte: endTime }, } };
+                        var groupCond = {
+                            $group: {
+                                _id: null,
+                                couponPurchased: { $sum: "$couponPurchased" }
                             }
-                            else{
+                        }
+                        Views.aggregate(updateData, groupCond, function(err, result) {
+                            console.log("result=========>>>..", result)
+                            if (err) {
+                                res.send({ result: err, responseCode: 302, responseMessage: "error." });
+                            } else if (result.length == 0) {
+                                var data = 0
+                                callback(null, winnersLength, data)
+                            } else {
                                 var data = result[0].couponPurchased;
-                                callback(null,winnersLength, data)
+                                callback(null, winnersLength, data)
                             }
                         })
                     }
-                })               
+                })
             },
             function(winnersLength, totalBuyers, callback) {
 
-                var updateDataPENDING = {$match:{'cashPrize.pageId': req.body.pageId, 'cashPrize.cashStatus':'DELIVERED', 'cashPrize.updateddAt':{ $gte: startTime, $lte: endTime } }};
+                var updateDataPENDING = { $match: { 'cashPrize.pageId': req.body.pageId, 'cashPrize.cashStatus': 'DELIVERED', 'cashPrize.updateddAt': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataPENDING = { $unwind: "$cashPrize" };
-                var groupCondPENDING = { $group : { 
-                       _id:null,
+                var groupCondPENDING = {
+                    $group: {
+                        _id: null,
                         deliveredCash: { $sum: 1 }
-                    }}
-                User.aggregate(updateUnwindDataPENDING, updateDataPENDING, groupCondPENDING,function(err, result){
-                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
-                    } 
-                    else if (result.length == 0) {
+                    }
+                }
+                User.aggregate(updateUnwindDataPENDING, updateDataPENDING, groupCondPENDING, function(err, result) {
+                    if (err) {
+                        res.send({ result: err, responseCode: 302, responseMessage: "error." });
+                    } else if (result.length == 0) {
                         var cashDeliveredResult = 0;
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult)
-                    }
-                    else{
+                    } else {
                         var cashDeliveredResult = result[0].deliveredCash
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult)
                     }
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, callback) {
-                var updateDataPENDING = {$match:{'cashPrize.pageId': req.body.pageId, 'cashPrize.cashStatus':'PENDING', 'cashPrize.updateddAt':{ $gte: startTime, $lte: endTime } }};
+                var updateDataPENDING = { $match: { 'cashPrize.pageId': req.body.pageId, 'cashPrize.cashStatus': 'PENDING', 'cashPrize.updateddAt': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataPENDING = { $unwind: "$cashPrize" };
-                var groupCondPENDING = { $group : { 
-                       _id:null,
+                var groupCondPENDING = {
+                    $group: {
+                        _id: null,
                         pendingCash: { $sum: 1 }
-                    }}
-                User.aggregate(updateUnwindDataPENDING, updateDataPENDING, groupCondPENDING,function(err, result){
-                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
-                    } 
-                    else if (result.length == 0) {
+                    }
+                }
+                User.aggregate(updateUnwindDataPENDING, updateDataPENDING, groupCondPENDING, function(err, result) {
+                    if (err) {
+                        res.send({ result: err, responseCode: 302, responseMessage: "error." });
+                    } else if (result.length == 0) {
                         var cashPendingResult = 0;
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult)
-                    }
-                    else{
+                    } else {
                         var cashPendingResult = result[0].pendingCash
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult)
                     }
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, callback) {
-                var updateDataUSED = {$match:{'coupon.pageId': req.body.pageId, 'coupon.couponStatus':'USED', 'coupon.usedCouponDate':{ $gte: startTime, $lte: endTime } }};
+                var updateDataUSED = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'USED', 'coupon.usedCouponDate': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataUSED = { $unwind: "$coupon" };
-                var groupCondUSED = { $group : { 
-                       _id:null,
+                var groupCondUSED = {
+                    $group: {
+                        _id: null,
                         usedCoupon: { $sum: 1 }
-                    }}
-                User.aggregate(updateUnwindDataUSED, updateDataUSED, groupCondUSED,function(err, result){
-                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
-                    } 
-                    else if (result.length == 0) {
+                    }
+                }
+                User.aggregate(updateUnwindDataUSED, updateDataUSED, groupCondUSED, function(err, result) {
+                    if (err) {
+                        res.send({ result: err, responseCode: 302, responseMessage: "error." });
+                    } else if (result.length == 0) {
                         var couponUsedResult = 0;
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult)
-                    }
-                    else{
+                    } else {
                         var couponUsedResult = result[0].usedCoupon
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult)
                     }
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, callback) {
-                var updateDataEXPIRED = {$match:{'coupon.pageId': req.body.pageId, 'coupon.couponStatus':'EXPIRED','coupon.expirationTime':{ $gte: startTime, $lte: endTime } }};
+                var updateDataEXPIRED = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'EXPIRED', 'coupon.expirationTime': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataEXPIRED = { $unwind: "$coupon" };
-                var groupCondEXPIRED = { $group : { 
-                        _id:null,
-                        expiredCoupon:{ $sum: 1 }
-                    }}
+                var groupCondEXPIRED = {
+                    $group: {
+                        _id: null,
+                        expiredCoupon: { $sum: 1 }
+                    }
+                }
 
-                User.aggregate(updateUnwindDataEXPIRED, updateDataEXPIRED, groupCondEXPIRED,function(err, result){
-                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
-                    } 
-                    else if (result.length == 0) {
+                User.aggregate(updateUnwindDataEXPIRED, updateDataEXPIRED, groupCondEXPIRED, function(err, result) {
+                    if (err) {
+                        res.send({ result: err, responseCode: 302, responseMessage: "error." });
+                    } else if (result.length == 0) {
                         var couponExpResult = 0;
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, couponExpResult);
-                    }
-                    else{
+                    } else {
                         var couponExpResult = result[0].expiredCoupon
                         callback(null, winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, couponExpResult);
                     }
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, couponExpResult, callback) {
-                var updateDataVALID = {$match:{'coupon.pageId': req.body.pageId, 'coupon.couponStatus':'VALID','coupon.couponStatus':'EXPIRED','coupon.updateddAt':{ $gte: startTime, $lte: endTime } }};
+                var updateDataVALID = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'VALID', 'coupon.couponStatus': 'EXPIRED', 'coupon.updateddAt': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataVALID = { $unwind: "$coupon" };
-                var groupCondVALID = { $group : { 
-                        _id:null,
+                var groupCondVALID = {
+                    $group: {
+                        _id: null,
                         validCoupon: { $sum: 1 }
-                    }}
-                User.aggregate(updateUnwindDataVALID, updateDataVALID, groupCondVALID,function(err, result){
-                    if (err) {res.send({result: err,responseCode: 302,responseMessage: "error."});
-                    } 
-                    else if (result.length == 0) {
+                    }
+                }
+                User.aggregate(updateUnwindDataVALID, updateDataVALID, groupCondVALID, function(err, result) {
+                    if (err) {
+                        res.send({ result: err, responseCode: 302, responseMessage: "error." });
+                    } else if (result.length == 0) {
                         var couponValidResult = 0;
                         var data = {
                             winnersLength: winnersLength,
@@ -1214,8 +1299,7 @@ module.exports = {
                             couponValidResult: couponValidResult
                         }
                         callback(null, data);
-                    }
-                    else{
+                    } else {
                         var data = {
                             winnersLength: winnersLength,
                             totalBuyers: totalBuyers,
@@ -1866,7 +1950,6 @@ module.exports = {
             "Hotels and Apartments", "Medical", "Education", "Motors", "Hypermarkets", "Events", "Jewelry", "Arts and Design", "Pets", "Insurance",
             "Banks and Finance Companies", "Real Estate", "Books", "Business and Services", "Nightlife", "Construction", "Factories"
         ];
-        console.log("categoryList-->>", categoryList)
         res.send({
             result: categoryList,
             responseCode: 200,
