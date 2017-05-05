@@ -877,10 +877,32 @@ module.exports = {
     },
 
     "tagOnads": function(req, res) {
+         var senderId = req.body.senderId;
         createNewAds.findOneAndUpdate({ _id: req.body.adId }, {
             $push: { "tag": { userId: req.body.userId, senderId: req.body.senderId } }
         }, { new: true }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                      for(var i =0; i<senderId.length; i++){
+                User.findOneAndUpdate({ _id: senderId[i]}, {            
+                $push: { "notification": { userId: req.body.userId, senderId: req.body.senderId, type: "You are tagged in a product", adId:req.body.adId } }
+                 }, { new: true }).exec(function(err, result1){
+                    console.log("result1-->>",result1)
+                    if(err){ res.send({responseCode:500, responseMessage:"Internal server error"});}
+                else if(!result1){ res.send({ responseCode:404, responseMessage:"Please enter correct senderId"}); }
+                else{
+                    console.log("res--1-->>",result1)
+                     if (result1.deviceType == 'Android' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                                     var message = "You are taged in a ad";
+                                     functions.android_notification(result1.deviceToken, message);
+                                     console.log("Android notification send!!!!")
+                                 } else if (result1.deviceType == 'iOS' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                                     functions.iOS_notification(result1.deviceToken, message);
+                                 } else {
+                                     console.log("Something wrong!!!!")
+                                 }
+                }
+                });
+                }
                 res.send({
                     result: results,
                     responseCode: 200,

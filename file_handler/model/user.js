@@ -142,7 +142,7 @@ var userSchema = new Schema({
     }],
     notification_status: { type: String, default: 'on', trim: true },    
     notification: [{
-        type: String,
+        type: { type: String },
         userId: { type: String },
         adId: { type: String },
         productId: { type: String },

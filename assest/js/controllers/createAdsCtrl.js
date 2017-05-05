@@ -770,17 +770,17 @@ var BATTUTA_KEY="00000000000000000000000000000000"
   
     }
     console.log("All data -->>"+JSON.stringify(modifyData));
-    userService.createAds(modifyData).success(function(res) {
-        console.log("ressssssss",JSON.stringify(res))
-    if (res.responseCode == 200) {
-        toastr.success(res.responseMessage)
-    } else {
-        toastr.error(res.responseMessage);
-        // $state.go('login')
+    // userService.createAds(modifyData).success(function(res) {
+    //     console.log("ressssssss",JSON.stringify(res))
+    // if (res.responseCode == 200) {
+    //     toastr.success(res.responseMessage)
+    // } else {
+    //     toastr.error(res.responseMessage);
+    //     // $state.go('login')
         
-    }
-    console.log("resss",$scope.userId);
-    })
+    // }
+    // console.log("resss",$scope.userId);
+    // })
     
    }
 
