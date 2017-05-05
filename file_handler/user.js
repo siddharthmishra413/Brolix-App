@@ -1516,9 +1516,7 @@ module.exports = {
                                 callback(null, result3)
                             }
                         })
-
                     }
-
                 })
             },
         ], function(err, result) {
