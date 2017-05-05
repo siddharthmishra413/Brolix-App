@@ -140,7 +140,14 @@ var userSchema = new Schema({
     adFollowers: [{
         adId: { type: String }
     }],
-    notification_status: { type: String, default: 'on', trim: true },
+    notification_status: { type: String, default: 'on', trim: true },    
+    notification: [{
+        type: String,
+        userId: { type: String },
+        adId: { type: String },
+        productId: { type: String },
+        CreatedAt: { type: Date, default: Date.now }
+    }],
     viewedAd: [],
     transferAmountListObject: [{
         amount: { type: Number },

@@ -33,7 +33,7 @@ module.exports = {
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage:'Internal server error', err }); } else {
                         createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                                 res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });

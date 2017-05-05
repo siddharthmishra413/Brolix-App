@@ -91,11 +91,28 @@ module.exports = {
             $push: { "tag": { userId: req.body.userId, senderId: req.body.senderId } }
         }, { new: true }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
+                
+                User.findOneAndUpdate({_id:req.body.senderId},{ $push: { notification: { userId: req.body.userId, type: "You are taged in a product", productId: req.body.productId } } }, { new: true }).exec(function(err, result){
+                    if(err){ res.send({responseCode:500, responseMessage:"Internal server error"});}
+                else if(! result){ res.send({ responseCode:404, responseMessage:"Please enter correct senderId"}); }
+                else{
+                     if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                     var message = "You are taged in a product";
+                                     functions.android_notification(result.deviceToken, message);
+                                     console.log("Android notification send!!!!")
+                                 } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                     functions.iOS_notification(result.deviceToken, message);
+                                 } else {
+                                     console.log("Something wrong!!!!")
+                                 }
+                     res.send({
                     result: results,
                     responseCode: 200,
                     responseMessage: "Tag save with concerned User details."
                 });
+                }                                                                 })
+                
+
             }
         })
     },
