@@ -1057,7 +1057,7 @@ module.exports = {
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
                     results = data;
                     if(results.length == 0){
-                        var datas = {
+                        var datas = [{
                             _id: {
                                 year: newYear,
                                 month: newMonth,
@@ -1076,7 +1076,7 @@ module.exports = {
                             totalShares: 0,
                             totalViewAds: 0,
                             totalRating: 0
-                        }
+                        }]
                         res.send({
                             result: datas,
                             responseCode: 200,
@@ -1403,7 +1403,7 @@ module.exports = {
                                 results = data;
                             }
                                   if(results.length == 0){
-                                    var datas = {
+                                    var datas = [{
                                         _id: {
                                             year: newYear,
                                             month: newMonth,
@@ -1422,7 +1422,7 @@ module.exports = {
                                         totalShares: 0,
                                         totalViewAds: 0,
                                         totalRating: 0
-                                    }
+                                    }]
                                     res.send({
                                         result: datas,
                                         responseCode: 200,
@@ -1505,7 +1505,7 @@ module.exports = {
                                 results = data;
                             }
                                   if(results.length == 0){
-                                    var datas = {
+                                    var datas = [{
                                         _id: {
                                             year: newYear,
                                             month: newMonth,
@@ -1524,7 +1524,7 @@ module.exports = {
                                         totalShares: 0,
                                         totalViewAds: 0,
                                         totalRating: 0
-                                    }
+                                    }]
                                     res.send({
                                         result: datas,
                                         responseCode: 200,
@@ -1620,7 +1620,7 @@ module.exports = {
                                 results = data;
                             }
                                   if(results.length == 0){
-                                    var datas = {
+                                    var datas = [{
                                         _id: {
                                             year: newYear,
                                             month: newMonth,
@@ -1639,7 +1639,7 @@ module.exports = {
                                         totalShares: 0,
                                         totalViewAds: 0,
                                         totalRating: 0
-                                    }
+                                    }]
                                     res.send({
                                         result: datas,
                                         responseCode: 200,
@@ -1722,7 +1722,7 @@ module.exports = {
                                             results = data;
                                         }
                                               if(results.length == 0){
-                                                var datas = {
+                                                var datas = [{
                                                     _id: {
                                                         year: newYear,
                                                         month: newMonth,
@@ -1741,7 +1741,7 @@ module.exports = {
                                                     totalShares: 0,
                                                     totalViewAds: 0,
                                                     totalRating: 0
-                                                }
+                                                }]
                                                 res.send({
                                                     result: datas,
                                                     responseCode: 200,
@@ -1823,7 +1823,7 @@ module.exports = {
                                             results = data;
                                         }
                                         if(results.length == 0){
-                                                var datas = {
+                                                var datas = [{
                                                     _id: {
                                                         year: newYear,
                                                         month: newMonth,
@@ -1842,7 +1842,7 @@ module.exports = {
                                                     totalShares: 0,
                                                     totalViewAds: 0,
                                                     totalRating: 0
-                                                }
+                                                }]
                                                 res.send({
                                                     result: datas,
                                                     responseCode: 200,
