@@ -94,7 +94,7 @@ module.exports = {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 for (var i = 0; i < senderId.length; i++) {
                     User.findOneAndUpdate({ _id: senderId[i] }, {
-                        $push: { "notification": { userId: req.body.userId, senderId: req.body.senderId, type: "You are tagged in a product", productId: req.body.productId } }
+                        $push: { "notification": { userId: req.body.userId, senderId: req.body.senderId, type: "You are tagged in a product", productId: req.body.productId, notificationType:'tagOnProduct' } }
                     }, { new: true }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct senderId" }); } else {
                             if (result1.deviceType == 'Android' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {

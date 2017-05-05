@@ -74,7 +74,7 @@
                                     <div>Users will discover your page & advertisements then the intrested users will watch the Ads, Jion the raffle and win.</div>
                                 </div>
                                 <div class="btn2 text-center col-sm-12">
-                                    <a class="btn btn-lg btn-green"  ng-click="click('Back2')" >Back</a>
+                                    <a class="btn btn-lg btn-green"  ng-click="click('Back2')">Back</a>
                                 </div>
                             </div>
                         </div>               
@@ -682,110 +682,154 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Promote App, Game</h3>
                 </div>
-                <div class="panel-body">
-                    <div class="login-block">
-                        <div class="cus-content-row new-cus-step5">
-                             <form class="form-block" role="form">
-                                <fieldset>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <!-- <select class="form-control" ng-model="createAds.links">
-                                                    <option value="">Google Play Link</option>
-                                                    <option>App Store Link</option>
-                                                    <option>Window Store Link</option>
-                                                </select> -->
-                                                <div class="form-group">
-                                                     <input ng-model="createAds.appName" type="text" class="form-control" placeholder="App Name">
-                                                </div>
-                                                <div class="form-group">
-                                                     <input ng-model="createAds.googlePlayLink" type="text" class="form-control" placeholder="Google Play Link">
-                                                </div>
-                                                <div class="form-group">
-                                                     <input ng-model="createAds.appStoreLink" type="text" class="form-control" placeholder="App Store Link">
-                                                </div>
-                                                <div class="form-group">
-                                                     <input ng-model="createAds.windowStoreLink" type="text" class="form-control" placeholder="Window Store Link">
+                <form class="form-block" role="form" name="promoteApp">
+                    <div class="panel-body">
+                        <div class="login-block">
+                            <div class="cus-content-row new-cus-step5">
+                                 <form class="form-block" role="form">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <!-- <select class="form-control" ng-model="createAds.links">
+                                                        <option value="">Google Play Link</option>
+                                                        <option>App Store Link</option>
+                                                        <option>Window Store Link</option>
+                                                    </select> -->
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" name="appName"  ng-model="createAds.appName" placeholder="App Name" ng-pattern ="/^[a-zA-Z]*$/" maxlength="31" ng-maxlength="30" required>
+                                                        <span style="color:red;" ng-show="promoteApp.appName.$dirty && promoteApp.appName.$invalid">
+                                                        <span ng-show="promoteApp.appName.$error.required">App name is required.</span>
+                                                        <span ng-show="promoteApp.appName.$error.pattern">Only alphabets are required</span>
+                                                        <span ng-show="promoteApp.appName.$error.maxlength">Your App name should contain max 30 alphabets.</span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" name="googlePlayLink" placeholder="Google Play Link" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" maxlength="50" ng-model="createAds.googlePlayLink" ng-change="validation('googlePlayLink')"> 
+                                                        <span style="color:red;" ng-show="promoteApp.googlePlayLink.$dirty && promoteApp.googlePlayLink.$invalid">
+                                                        <span class="error"  ng-if="promoteApp.googlePlayLink.$error.pattern">Invalid Url</span>
+                                                        <span ng-show="promoteApp.googlePlayLink.$error.manlength">Url length can't be greater than 50</span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" name="appStoreLink" placeholder="App Store Link" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" maxlength="50" ng-model="createAds.appStoreLink" ng-change="validation('appStoreLink')" > 
+                                                        <span style="color:red;" ng-show="promoteApp.appStoreLink.$dirty && promoteApp.appStoreLink.$invalid">
+                                                        <span class="error"  ng-if="promoteApp.appStoreLink.$error.pattern">Invalid Url</span>
+                                                        <span ng-show="promoteApp.appStoreLink.$error.manlength">Url length can't be greater than 50</span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" name="windowStoreLink" placeholder="Window Store Link" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" maxlength="50" ng-model="createAds.windowStoreLink" ng-change="validation('windowStoreLink')" > 
+                                                        <span style="color:red;" ng-show="promoteApp.windowStoreLink.$dirty && promoteApp.windowStoreLink.$invalid">   
+                                                        <span class="error"  ng-if="promoteApp.windowStoreLink.$error.pattern">Invalid Url</span>
+                                                        <span ng-show="promoteApp.windowStoreLink.$error.manlength">Url length can't be greater than 50</span>
+                                                    </div>
+
+                                                    <!-- <div class="col-md-9">
+                                                        <input type="text" class="form-control" name="googlePlayLink"  ng-model="createAds.googlePlayLink" placeholder="Google Play Link">
+                                                    </div>
+
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control" name="appStoreLink"  ng-model="createAds.appStoreLink" placeholder="App Store Link">
+                                                    </div> -->
+
+                                                    <!-- <div class="form-group">
+                                                         <input ng-model="createAds.windowStoreLink" name="windowStoreLink" type="text" class="form-control" placeholder="Window Store Link">
+                                                    </div> -->
+
+
+                                                    <!-- <div class="form-group">
+                                                         <input ng-model="createAds.appName" type="text" class="form-control" placeholder="App Name">
+                                                    </div> -->
+                                                    <!-- <div class="form-group">
+                                                         <input ng-model="createAds.googlePlayLink" type="text" class="form-control" placeholder="Google Play Link">
+                                                    </div> -->
+                                                    <!-- <div class="form-group">
+                                                         <input ng-model="createAds.appStoreLink" type="text" class="form-control" placeholder="App Store Link">
+                                                    </div> -->
+                                                    <!-- <div class="form-group">
+                                                         <input ng-model="createAds.windowStoreLink" type="text" class="form-control" placeholder="Window Store Link">
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="top-content-head text-center">
-                                        <h4>Please Upload your App Icon.</h4>
-                                    </div>
-                                    <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.appIcon"  src="{{createAds.appIcon || './dist/image/user-image.jpeg'}}" id="output">
-                                        <label class="fileContainer">
-                                        <span><i class="fa fa-camera"></i></span>
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this, 'appIcon')" accept="image/*">
-                                        </label>
-                                    </div>
-                                        <!--<img class="profile-user-img img-responsive" src="{{user.photo || './dist/image/user-image.jpeg'}}" id="output">
-                                          <label class="fileContainer">
-                                                 Choose File
-                                          <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
-                                          </label>
-                                    </div>-->
-                                    <div class="top-content-head text-center">
-                                        <h4>Please Upload your App Photos for download page.</h4>
-                                    </div>
-                                    <div class="cus-upload-photos">
-                                        <div class="page-image clearfix">
-                                          <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto1" src="{{createAds.appPhoto1 || './dist/image/user-image.jpeg'}}" id="output">
-                                            <label class="fileContainer">
-                                              Choose File
-                                              <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this, 'appPhoto1')" accept="image/*">
-                                            </label>
+                                        <div class="top-content-head text-center">
+                                            <h4>Please Upload your App Icon.</h4>
                                         </div>
                                         <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto2"   src="{{createAds.appPhoto2 || './dist/image/user-image.jpeg'}}" id="output">
+                                            <img class="profile-user-img img-responsive" ng-model="createAds.appIcon"  src="{{createAds.appIcon || './dist/image/user-image.jpeg'}}" id="output">
                                             <label class="fileContainer">
-                                              Choose File
-                                              <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto2')" accept="image/*">
+                                            <span><i class="fa fa-camera"></i></span>
+                                            <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this, 'appIcon')" accept="image/*">
                                             </label>
                                         </div>
-                                        <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto3"   src="{{createAds.appPhoto3 || './dist/image/user-image.jpeg'}}" id="output">
-                                            <label class="fileContainer">
-                                              Choose File
-                                              <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto3')" accept="image/*">
-                                            </label>
+                                            <!--<img class="profile-user-img img-responsive" src="{{user.photo || './dist/image/user-image.jpeg'}}" id="output">
+                                              <label class="fileContainer">
+                                                     Choose File
+                                              <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                                              </label>
+                                        </div>-->
+                                        <div class="top-content-head text-center">
+                                            <h4>Please Upload your App Photos for download page.</h4>
                                         </div>
-                                        <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto4"   src="{{createAds.appPhoto4 || './dist/image/user-image.jpeg'}}" id="output">
-                                            <label class="fileContainer">
-                                              Choose File
-                                              <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto4')" accept="image/*">
-                                            </label>
+                                        <div class="cus-upload-photos">
+                                            <div class="page-image clearfix">
+                                              <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto1" src="{{createAds.appPhoto1 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <label class="fileContainer">
+                                                  Choose File
+                                                  <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this, 'appPhoto1')" accept="image/*">
+                                                </label>
+                                            </div>
+                                            <div class="page-image clearfix">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto2"   src="{{createAds.appPhoto2 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <label class="fileContainer">
+                                                  Choose File
+                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto2')" accept="image/*">
+                                                </label>
+                                            </div>
+                                            <div class="page-image clearfix">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto3"   src="{{createAds.appPhoto3 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <label class="fileContainer">
+                                                  Choose File
+                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto3')" accept="image/*">
+                                                </label>
+                                            </div>
+                                            <div class="page-image clearfix">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto4"   src="{{createAds.appPhoto4 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <label class="fileContainer">
+                                                  Choose File
+                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto4')" accept="image/*">
+                                                </label>
+                                            </div>
+                                            <div class="page-image clearfix">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto5"   src="{{createAds.appPhoto5 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <label class="fileContainer">
+                                                  Choose File
+                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto5')" accept="image/*">
+                                                </label>
+                                            </div>
+                                            <div class="page-image clearfix">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto6"   src="{{createAds.appPhoto6 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <label class="fileContainer">
+                                                  Choose File
+                                                  <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto6')" accept="image/*">
+                                                </label>
+                                            </div>
                                         </div>
-                                        <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto5"   src="{{createAds.appPhoto5 || './dist/image/user-image.jpeg'}}" id="output">
-                                            <label class="fileContainer">
-                                              Choose File
-                                              <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto5')" accept="image/*">
-                                            </label>
+                                        <div class="form-group clearfix">
+                                            <textarea ng-model="createAds.linkDescription" class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
                                         </div>
-                                        <div class="page-image clearfix">
-                                            <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto6"   src="{{createAds.appPhoto6 || './dist/image/user-image.jpeg'}}" id="output">
-                                            <label class="fileContainer">
-                                              Choose File
-                                              <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto6')" accept="image/*">
-                                            </label>
+                                          <!-- <input type="text" ng-model="createAds.promoteDescr" placeholder="Description...">  -->
+                                        <div class="btn2 text-center">
+                                            <button  ng-disabled="promoteApp.$invalid && promoteAppValidation.length == 0 " class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">Next</button>
+                                            <a  class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">Back</a>
                                         </div>
-                                    </div>
-                                    <div class="form-group clearfix">
-                                        <textarea ng-model="createAds.linkDescription" class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
-                                    </div>
-                                      <!-- <input type="text" ng-model="createAds.promoteDescr" placeholder="Description...">  -->
-                                    <div class="btn2 text-center">
-                                        <a  class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">Next</a>
-                                        <a  class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">Back</a>
-                                    </div>
-                                </fieldset>
-                            </form>
+                                    </fieldset>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
