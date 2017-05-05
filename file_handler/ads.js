@@ -33,7 +33,7 @@ module.exports = {
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage:'Internal server error', err }); } else {
                         createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                                 res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
@@ -397,10 +397,11 @@ module.exports = {
         waterfall([
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
-
-                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); }
+                    else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); }
+                    else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); }
+                    else {
                         User.findOne({ _id: userId }).exec(function(err, result1) {
-
                             if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                                 var age = result1.dob;
 
@@ -414,6 +415,7 @@ module.exports = {
 
                                 if (result.gender != 'Both') {
                                     if (result.gender != result1.gender) {
+                                        console.log("in if")
                                         { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
                                     } else {
                                         if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
@@ -427,6 +429,17 @@ module.exports = {
                                         }
                                     }
                                 }
+                                else {
+                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
+                                            var country = result.whoWillSeeYourAdd.country;
+                                            var state = result.whoWillSeeYourAdd.state;
+                                            var city = result.whoWillSeeYourAdd.city;
+
+                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different state.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
+                                                callback(null)
+                                            }
+                                        }
+                                    }
                             }
                         })
                     }
@@ -434,7 +447,8 @@ module.exports = {
             },
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
-                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); }
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); }
+                    else{
                     var randomIndex = [];
                     var raffleCount = result.raffleCount;
                     var viewerLenght = result.viewerLenght;
@@ -490,6 +504,7 @@ module.exports = {
                                 }
                             });
                         }
+                    }
                     }
                 })
             },
