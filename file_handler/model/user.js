@@ -99,7 +99,7 @@ var userSchema = new Schema({
         status: { type: String, default: 'ACTIVE' },
         type: { type: String },
         updateddAt: { type: Date, default: Date.now },
-        usedCouponDate : { type: Date, default: Date.now },
+        usedCouponDate: { type: Date, default: Date.now },
         couponExpire: { type: String }
     }],
     hiddenGifts: [{
@@ -140,7 +140,14 @@ var userSchema = new Schema({
     adFollowers: [{
         adId: { type: String }
     }],
-    notification_status: { type: String, default: 'on', trim: true },
+    notification_status: { type: String, default: 'on', trim: true },    
+    notification: [{
+        type: { type: String },
+        userId: { type: String },
+        adId: { type: String },
+        productId: { type: String },
+        CreatedAt: { type: Date, default: Date.now }
+    }],
     viewedAd: [],
     transferAmountListObject: [{
         amount: { type: Number },

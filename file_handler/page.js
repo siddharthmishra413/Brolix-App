@@ -895,11 +895,11 @@ module.exports = {
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" } }
                 break;
             case 'weekly':
-               var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } } 
-               break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } }
+                break;
             case 'today':
-               var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfMonth: { $dayOfMonth: "$date" },hour: { $hour: "$date" },minutes: { $minute: "$date" } } 
-               break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfMonth: { $dayOfMonth: "$date" }, hour: { $hour: "$date" }, minutes: { $minute: "$date" } }
+                break;
         }
 
         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
@@ -1054,10 +1054,80 @@ module.exports = {
                     console.log("monthly", newMonth + 1)
                     var month = newMonth + 1;
                     var yearData = 2017
+<<<<<<< HEAD
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
                     results = data;
                     if(results.length == 0){
                         var datas = {
+=======
+                        // var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                        // results = data;
+                    res.send({
+                        result: results,
+                        responseCode: 200,
+                        responseMessage: "Success."
+                    })
+
+                }
+            })
+    },
+
+    "pageStatisticsFilterClickssss": function(req, res) {
+        var newYear = new Date(req.body.date).getFullYear();
+        var newMonth = new Date(req.body.date).getMonth();
+        var data = req.body.dateFilter;
+        switch (data) {
+            case 'yearly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } }
+                break;
+            case 'monthly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" } }
+                break;
+            case 'weekly':
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfWeek: { $dayOfWeek: "$date" } }
+                break;
+        }
+
+        Views.aggregate({ $match: { pageId: req.body.pageId } }, {
+                $group: {
+                    _id: updateData,
+                    totalProductView: { $sum: "$productView" },
+                    totalPageView: { $sum: "$pageView" },
+                    totalEventViewClicks: { $sum: "$eventViewClicks" },
+                    totalEmailClicks: { $sum: "$emailClicks" },
+                    totalCallUsClick: { $sum: "$callUsClick" },
+                    totalFollowerNumber: { $sum: "$followerNumber" },
+                    totalSocialMediaClicks: { $sum: "$socialMediaClicks" },
+                    totalLocationClicks: { $sum: "$locationClicks" },
+                    totalWebsiteClicks: { $sum: "$websiteClicks" },
+                    totalShares: { $sum: "$shares" },
+                    totalViewAds: { $sum: "$viewAds" },
+                    totalRating: { $sum: "$totalRating" }
+                }
+            },
+            function(err, results) {
+                var yearData = 2017
+                var data = results.filter(results => results._id.year == newYear)
+                results = data;
+                var array = [];
+                var flag = false;
+                for (var i = 1; i <= 12; i++) {
+                    console.log("Dfdgf", i)
+                    for (var j = 0; j < results.length; j++) {
+                        if (i == results[j]._id.month) {
+
+                            console.log("value of j==>", j)
+                            flag = true;
+                            break;
+                        } else {
+                            flag = false;
+                        }
+                    }
+                    if (flag == true) {
+                        array.push(results[j])
+                    } else {
+                        var data = {
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                             _id: {
                                 year: newYear,
                                 month: newMonth,
@@ -1299,59 +1369,59 @@ module.exports = {
         var newMonth = new Date(req.body.date).getMonth();
         var newDate = new Date(req.body.date).getDate();
         var data = req.body.dateFilter;
-        switch(data){
+        switch (data) {
             case 'yearly':
                 var updateDataWinner = { year: { $year: "$updatedAt" }, month: { $month: "$updatedAt" } };
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" } };
-                var updateDataExpiredd = { year: { $year: "$coupon.expirationTime" }, month: { $month: "$coupon.expirationTime" }};
-                var updateDataValidd = { year: { $year: "$coupon.updateddAt" }, month: { $month: "$coupon.updateddAt" }};
-                var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" }};
-                var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }};
-                var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }}
+                var updateDataExpiredd = { year: { $year: "$coupon.expirationTime" }, month: { $month: "$coupon.expirationTime" } };
+                var updateDataValidd = { year: { $year: "$coupon.updateddAt" }, month: { $month: "$coupon.updateddAt" } };
+                var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" } };
+                var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" } };
+                var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" } }
 
-            break;
+                break;
             case 'monthly':
-                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } };
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" } };
                 var updateDataWinner = { year: { $year: "$updatedAt" }, month: { $month: "$updatedAt" }, week: { $week: "$updatedAt" } };
-                var updateDataExpiredd = { year: { $year: "$coupon.expirationTime" }, month: { $month: "$coupon.expirationTime" } ,week: { $week: "$coupon.expirationTime" }};
-                var updateDataValidd = { year: { $year: "$coupon.updateddAt" }, month: { $month: "$coupon.updateddAt" }, week: { $week: "$coupon.updateddAt" }}
-                var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" }, week: { $week: "$coupon.usedCouponDate" }}
-                var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" } , week: { $week: "$cashPrize.updateddAt" }};
-                var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, week: { $week: "$cashPrize.updateddAt" }}
+                var updateDataExpiredd = { year: { $year: "$coupon.expirationTime" }, month: { $month: "$coupon.expirationTime" }, week: { $week: "$coupon.expirationTime" } };
+                var updateDataValidd = { year: { $year: "$coupon.updateddAt" }, month: { $month: "$coupon.updateddAt" }, week: { $week: "$coupon.updateddAt" } }
+                var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" }, week: { $week: "$coupon.usedCouponDate" } }
+                var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, week: { $week: "$cashPrize.updateddAt" } };
+                var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, week: { $week: "$cashPrize.updateddAt" } }
 
-            break;
+                break;
             case 'weekly':
-                var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } };
-                var updateDataWinner = { year: { $year: "$updatedAt" }, month: { $month: "$updatedAt" }, week: { $week: "$updatedAt" } ,dayOfMonth: { $dayOfMonth: "$updatedAt" }};
-                var updateDataExpiredd = { year: { $year: "$coupon.expirationTime" }, month: { $month: "$coupon.expirationTime" } ,week: { $week: "$coupon.expirationTime" }, dayOfMonth: { $dayOfMonth: "$coupon.expirationTime" }};
-                var updateDataValidd = { year: { $year: "$coupon.updateddAt" }, month: { $month: "$coupon.updateddAt" },week: { $week: "$coupon.updateddAt" },dayOfMonth: { $dayOfMonth: "$coupon.updateddAt" }};
-                var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" }, week: { $week: "$coupon.usedCouponDate" },dayOfMonth: { $dayOfMonth: "$coupon.usedCouponDate" }};
-                var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, week: { $week: "$cashPrize.updateddAt" }, dayOfMonth: { $dayOfMonth: "$cashPrize.updateddAt" }};
-                var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, week: { $week: "$cashPrize.updateddAt" }, dayOfMonth: { $dayOfMonth: "$cashPrize.updateddAt" }}
-            break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } };
+                var updateDataWinner = { year: { $year: "$updatedAt" }, month: { $month: "$updatedAt" }, week: { $week: "$updatedAt" }, dayOfMonth: { $dayOfMonth: "$updatedAt" } };
+                var updateDataExpiredd = { year: { $year: "$coupon.expirationTime" }, month: { $month: "$coupon.expirationTime" }, week: { $week: "$coupon.expirationTime" }, dayOfMonth: { $dayOfMonth: "$coupon.expirationTime" } };
+                var updateDataValidd = { year: { $year: "$coupon.updateddAt" }, month: { $month: "$coupon.updateddAt" }, week: { $week: "$coupon.updateddAt" }, dayOfMonth: { $dayOfMonth: "$coupon.updateddAt" } };
+                var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" }, week: { $week: "$coupon.usedCouponDate" }, dayOfMonth: { $dayOfMonth: "$coupon.usedCouponDate" } };
+                var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, week: { $week: "$cashPrize.updateddAt" }, dayOfMonth: { $dayOfMonth: "$cashPrize.updateddAt" } };
+                var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, week: { $week: "$cashPrize.updateddAt" }, dayOfMonth: { $dayOfMonth: "$cashPrize.updateddAt" } }
+                break;
             case 'today':
-                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfMonth: { $dayOfMonth: "$date" },hour: { $hour: "$date" },minutes: { $minute: "$date" } } 
-                var updateDataWinner = { year: { $year: "$updatedAt" }, month: { $month: "$updatedAt" }, dayOfMonth: { $dayOfMonth: "$updatedAt" },hour: { $hour: "$updatedAt" },minutes: { $minute: "$updatedAt" }};
-                var updateDataExpiredd = { year: { $year: "$coupon.expirationTime" }, month: { $month: "$coupon.expirationTime" } , dayOfMonth: { $dayOfMonth: "$coupon.expirationTime" }, hour: { $hour: "$coupon.expirationTime" },minutes: { $minute: "$coupon.expirationTime" }};
-                var updateDataValidd = { year: { $year: "$coupon.updateddAt" }, month: { $month: "$coupon.updateddAt" },dayOfMonth: { $dayOfMonth: "$coupon.updateddAt" }, hour: { $hour: "$coupon.updateddAt" },minutes: { $minute: "$coupon.updateddAt" } };
-                var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" },dayOfMonth: { $dayOfMonth: "$coupon.usedCouponDate" }, hour: { $hour: "$coupon.usedCouponDate" },minutes: { $minute: "$coupon.usedCouponDate" }};
-                var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, dayOfMonth: { $dayOfMonth: "$cashPrize.updateddAt" }, hour: { $hour: "$cashPrize.updateddAt" },minutes: { $minute: "$cashPrize.updateddAt" }};
-                var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, dayOfMonth: { $dayOfMonth: "$cashPrize.updateddAt" }, hour: { $hour: "$cashPrize.updateddAt" },minutes: { $minute: "$cashPrize.updateddAt" }}
-            break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfMonth: { $dayOfMonth: "$date" }, hour: { $hour: "$date" }, minutes: { $minute: "$date" } }
+                var updateDataWinner = { year: { $year: "$updatedAt" }, month: { $month: "$updatedAt" }, dayOfMonth: { $dayOfMonth: "$updatedAt" }, hour: { $hour: "$updatedAt" }, minutes: { $minute: "$updatedAt" } };
+                var updateDataExpiredd = { year: { $year: "$coupon.expirationTime" }, month: { $month: "$coupon.expirationTime" }, dayOfMonth: { $dayOfMonth: "$coupon.expirationTime" }, hour: { $hour: "$coupon.expirationTime" }, minutes: { $minute: "$coupon.expirationTime" } };
+                var updateDataValidd = { year: { $year: "$coupon.updateddAt" }, month: { $month: "$coupon.updateddAt" }, dayOfMonth: { $dayOfMonth: "$coupon.updateddAt" }, hour: { $hour: "$coupon.updateddAt" }, minutes: { $minute: "$coupon.updateddAt" } };
+                var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" }, dayOfMonth: { $dayOfMonth: "$coupon.usedCouponDate" }, hour: { $hour: "$coupon.usedCouponDate" }, minutes: { $minute: "$coupon.usedCouponDate" } };
+                var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, dayOfMonth: { $dayOfMonth: "$cashPrize.updateddAt" }, hour: { $hour: "$cashPrize.updateddAt" }, minutes: { $minute: "$cashPrize.updateddAt" } };
+                var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, dayOfMonth: { $dayOfMonth: "$cashPrize.updateddAt" }, hour: { $hour: "$cashPrize.updateddAt" }, minutes: { $minute: "$cashPrize.updateddAt" } }
+                break;
         }
-        
+
         waterfall([
-            function(callback){
-                if(req.body.click == 'WINNER'){
+            function(callback) {
+                if (req.body.click == 'WINNER') {
 
                     var updateUnwindDataWinner = { $unwind: "$winners" };
-                    createNewAds.aggregate(updateUnwindDataWinner,{ $match: { pageId: req.body.pageId } }, {
+                    createNewAds.aggregate(updateUnwindDataWinner, { $match: { pageId: req.body.pageId } }, {
                         $group: {
                             _id: updateDataWinner,
                             winnersLength: { $sum: 1 }
                         }
-                    },function(err, results) {
-                        if(req.body.dateFilter == 'yearly'){
+                    }, function(err, results) {
+                        if (req.body.dateFilter == 'yearly') {
                             console.log("yearly")
                             var data = results.filter(results => results._id.year == newYear)
                             results = data;
@@ -1383,11 +1453,12 @@ module.exports = {
                                 }
                             }
                             res.send({
-                                    responseCode: 200,
-                                    responseMessage: 'Successfully.',
-                                    result: array
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: array
                             });
                         }
+<<<<<<< HEAD
                         if(req.body.dateFilter == 'monthly' || req.body.dateFilter == 'weekly' || req.body.dateFilter == 'today'){
                             console.log("monthly",newMonth + 1)
                             var month = newMonth + 1;
@@ -1474,22 +1545,158 @@ module.exports = {
                         //     });
                         // }
  
+=======
+                        if (req.body.dateFilter == 'monthly') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+                        if (req.body.dateFilter == 'weekly') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+                        if (req.body.dateFilter == 'today') {
+                            console.log("today", results)
+                            console.log("newDate", newDate)
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                     })
-                }
-                else{
-                   callback(null, "winnersLength")
+                } else {
+                    callback(null, "winnersLength")
                 }
             },
-            function(reeee, callback){
-                if(req.body.click == 'PURCHASED'){
+            function(reeee, callback) {
+                if (req.body.click == 'PURCHASED') {
                     Views.aggregate({ $match: { pageId: req.body.pageId } }, {
+                            $group: {
+                                _id: updateData,
+                                couponPurchased: { $sum: "$couponPurchased" }
+                            }
+                        },
+                        function(err, results) {
+                            if (req.body.dateFilter == 'yearly') {
+                                console.log("yearly")
+                                var data = results.filter(results => results._id.year == newYear)
+                                results = data;
+                                var array = [];
+                                var flag = false;
+                                for (var i = 1; i <= 12; i++) {
+                                    console.log("Dfdgf", i)
+                                    for (var j = 0; j < results.length; j++) {
+                                        if (i == results[j]._id.month) {
+
+                                            console.log("value of j==>", j)
+                                            flag = true;
+                                            break;
+                                        } else {
+                                            flag = false;
+                                        }
+                                    }
+                                    if (flag == true) {
+                                        array.push(results[j])
+                                    } else {
+                                        var data = {
+                                            _id: {
+                                                year: 2017,
+                                                month: i
+                                            },
+                                            couponPurchased: 0,
+                                        }
+                                        array.push(data)
+                                    }
+                                }
+                                res.send({
+                                    responseCode: 200,
+                                    responseMessage: 'Successfully.',
+                                    result: array
+                                });
+                            }
+                            if (req.body.dateFilter == 'monthly') {
+                                console.log("monthly", newMonth + 1)
+                                var month = newMonth + 1;
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                results = data;
+                                res.send({
+                                    responseCode: 200,
+                                    responseMessage: 'Successfully.',
+                                    result: results
+                                });
+                            }
+                            if (req.body.dateFilter == 'weekly') {
+                                console.log("monthly", newMonth + 1)
+                                var month = newMonth + 1;
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                results = data;
+                                res.send({
+                                    responseCode: 200,
+                                    responseMessage: 'Successfully.',
+                                    result: results
+                                });
+                            }
+                            if (req.body.dateFilter == 'today') {
+                                console.log("monthly", newMonth + 1)
+                                var month = newMonth + 1;
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                                results = data;
+                                res.send({
+                                    responseCode: 200,
+                                    responseMessage: 'Successfully.',
+                                    result: results
+                                });
+                            }
+                        });
+                } else {
+                    callback(null, "PURCHASED")
+                }
+            },
+            function(couponPr, callback) {
+                if (req.body.click == 'EXPIRED' || req.body.click == 'VALID' || req.body.click == 'USED') {
+                    if (req.body.click == 'EXPIRED') {
+                        var updateDataMatch = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'EXPIRED' } };
+                        var updateDataCoupon = updateDataExpiredd;
+                    }
+                    if (req.body.click == 'VALID') {
+                        var updateDataMatch = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'VALID' } };
+                        var updateDataCoupon = updateDataValidd;
+                    }
+                    if (req.body.click == 'USED') {
+                        var updateDataMatch = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'USED' } };
+                        var updateDataCoupon = updateDataUsedd;
+                    }
+                    var updateUnwindData = { $unwind: "$coupon" };
+                    var groupCond = {
                         $group: {
-                            _id: updateData,
-                            couponPurchased: { $sum: "$couponPurchased" }
+                            _id: updateDataCoupon,
+                            CouponData: { $sum: 1 }
                         }
-                    },
-                    function(err, results) {
-                        if(req.body.dateFilter == 'yearly'){
+                    }
+
+                    User.aggregate(updateUnwindData, updateDataMatch, groupCond, function(err, results) {
+                        console.log("result", results)
+                        if (req.body.dateFilter == 'yearly') {
                             console.log("yearly")
                             var data = results.filter(results => results._id.year == newYear)
                             results = data;
@@ -1515,17 +1722,18 @@ module.exports = {
                                             year: 2017,
                                             month: i
                                         },
-                                        couponPurchased: 0,
+                                        CouponData: 0,
                                     }
                                     array.push(data)
                                 }
                             }
                             res.send({
-                                    responseCode: 200,
-                                    responseMessage: 'Successfully.',
-                                    result: array
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: array
                             });
                         }
+<<<<<<< HEAD
                         if(req.body.dateFilter == 'monthly' || req.body.dateFilter == 'weekly' || req.body.dateFilter == 'today'){
                             console.log("monthly",newMonth + 1)
                             var month = newMonth + 1;
@@ -1613,31 +1821,58 @@ module.exports = {
                 }
                 else{
                     callback(null, "PURCHASED")
+=======
+                        if (req.body.dateFilter == 'monthly') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+                        if (req.body.dateFilter == 'weekly') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+                        if (req.body.dateFilter == 'today') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+                    })
+                } else {
+                    callback(null, "COUPONSTATUS")
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                 }
             },
-            function(couponPr ,callback){
-                if(req.body.click == 'EXPIRED' || req.body.click == 'VALID' || req.body.click == 'USED'){
-                    if(req.body.click == 'EXPIRED'){
-                        var updateDataMatch = {$match:{'coupon.pageId': req.body.pageId, 'coupon.couponStatus':'EXPIRED' }};
-                        var updateDataCoupon = updateDataExpiredd;
+            function(result, callback) {
+                if (req.body.click == 'DELIVERED') {
+                    var updateDataDELIVERED = { $match: { 'cashPrize.pageId': req.body.pageId, 'cashPrize.cashStatus': 'DELIVERED' } };
+                    var updateUnwindDataDELIVERED = { $unwind: "$cashPrize" };
+                    var groupCondDELIVERED = {
+                        $group: {
+                            _id: updateDataDeliveredd,
+                            deliveredCash: { $sum: 1 }
+                        }
                     }
-                    if(req.body.click == 'VALID'){
-                        var updateDataMatch = {$match:{'coupon.pageId': req.body.pageId, 'coupon.couponStatus':'VALID' }};
-                        var updateDataCoupon = updateDataValidd;
-                    }
-                    if(req.body.click == 'USED'){
-                        var updateDataMatch = {$match:{'coupon.pageId': req.body.pageId, 'coupon.couponStatus':'USED' }};
-                        var updateDataCoupon = updateDataUsedd;
-                    }
-                    var updateUnwindData = { $unwind: "$coupon" };
-                    var groupCond = { $group : { 
-                        _id:updateDataCoupon,
-                        CouponData: { $sum: 1 }
-                    }}
-
-                    User.aggregate(updateUnwindData, updateDataMatch,groupCond,function(err, results){
-                        console.log("result",results)
-                        if(req.body.dateFilter == 'yearly'){
+                    User.aggregate(updateUnwindDataDELIVERED, updateDataDELIVERED, groupCondDELIVERED, function(err, results) {
+                        if (req.body.dateFilter == 'yearly') {
                             console.log("yearly")
                             var data = results.filter(results => results._id.year == newYear)
                             results = data;
@@ -1663,17 +1898,18 @@ module.exports = {
                                             year: 2017,
                                             month: i
                                         },
-                                        CouponData: 0,
+                                        deliveredCash: 0,
                                     }
                                     array.push(data)
                                 }
                             }
                             res.send({
-                                    responseCode: 200,
-                                    responseMessage: 'Successfully.',
-                                    result: array
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: array
                             });
                         }
+<<<<<<< HEAD
                         if(req.body.dateFilter == 'monthly' || req.body.dateFilter == 'weekly' || req.body.dateFilter == 'today'){
                             console.log("monthly",newMonth + 1)
                             var month = newMonth + 1;
@@ -1723,6 +1959,40 @@ module.exports = {
                                      responseMessage: "Success."
                                     })
                                 }
+=======
+                        if (req.body.dateFilter == 'monthly') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+                        if (req.body.dateFilter == 'weekly') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+                        if (req.body.dateFilter == 'today') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                         }
                         //  if(req.body.dateFilter == 'monthly'){
                         //     console.log("monthly",newMonth + 1)
@@ -1758,57 +2028,39 @@ module.exports = {
                         //     });
                         // }
                     })
-                }
-                else{
-                    callback(null, "COUPONSTATUS")
+                } else {
+                    callback(null, "DELIVERED")
                 }
             },
-            function(result, callback){
-                if(req.body.click== 'DELIVERED'){
-                        var updateDataDELIVERED = {$match:{'cashPrize.pageId': req.body.pageId, 'cashPrize.cashStatus':'DELIVERED' }};
-                        var updateUnwindDataDELIVERED = { $unwind: "$cashPrize" };
-                        var groupCondDELIVERED = { $group : { 
-                               _id:updateDataDeliveredd,
-                                deliveredCash: { $sum: 1 }
-                            }}
-                        User.aggregate(updateUnwindDataDELIVERED, updateDataDELIVERED, groupCondDELIVERED,function(err, results){
-                            if(req.body.dateFilter == 'yearly'){
-                                    console.log("yearly")
-                                    var data = results.filter(results => results._id.year == newYear)
-                                    results = data;
-                                    var array = [];
-                                    var flag = false;
-                                    for (var i = 1; i <= 12; i++) {
-                                        console.log("Dfdgf", i)
-                                        for (var j = 0; j < results.length; j++) {
-                                            if (i == results[j]._id.month) {
-
-                                                console.log("value of j==>", j)
-                                                flag = true;
-                                                break;
-                                            } else {
-                                                flag = false;
-                                            }
-                                        }
-                                        if (flag == true) {
-                                            array.push(results[j])
-                                        } else {
-                                            var data = {
-                                                _id: {
-                                                    year: 2017,
-                                                    month: i
-                                                },
-                                                deliveredCash: 0,
-                                            }
-                                            array.push(data)
-                                        }
+            function(result, callback) {
+                if (req.body.click == 'PENDING') {
+                    var updateDataPENDING = { $match: { 'cashPrize.pageId': req.body.pageId, 'cashPrize.cashStatus': 'PENDING' } };
+                    var updateUnwindDataPENDING = { $unwind: "$cashPrize" };
+                    var groupCondPENDING = {
+                        $group: {
+                            _id: updateDataPendingg,
+                            pendingCash: { $sum: 1 }
+                        }
+                    }
+                    User.aggregate(updateUnwindDataPENDING, updateDataPENDING, groupCondPENDING, function(err, results) {
+                        if (req.body.dateFilter == 'yearly') {
+                            console.log("yearly")
+                            var data = results.filter(results => results._id.year == newYear)
+                            results = data;
+                            var array = [];
+                            var flag = false;
+                            for (var i = 1; i <= 12; i++) {
+                                console.log("Dfdgf", i)
+                                for (var j = 0; j < results.length; j++) {
+                                    if (i == results[j]._id.month) {
+                                        console.log("value of j==>", j)
+                                        flag = true;
+                                        break;
+                                    } else {
+                                        flag = false;
                                     }
-                                    res.send({
-                                            responseCode: 200,
-                                            responseMessage: 'Successfully.',
-                                            result: array
-                                    });
                                 }
+<<<<<<< HEAD
                                 if(req.body.dateFilter == 'monthly' || req.body.dateFilter == 'weekly' || req.body.dateFilter == 'today'){
                                         console.log("monthly",newMonth + 1)
                                         var month = newMonth + 1;
@@ -2019,20 +2271,66 @@ module.exports = {
                 }
                 else{
                    callback(null, "null")
+=======
+                                if (flag == true) {
+                                    array.push(results[j])
+                                } else {
+                                    var data = {
+                                        _id: {
+                                            year: 2017,
+                                            month: i
+                                        },
+                                        pendingCash: 0,
+                                    }
+                                    array.push(data)
+                                }
+                            }
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: array
+                            });
+                        }
+                        if (req.body.dateFilter == 'monthly') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+                        if (req.body.dateFilter == 'weekly') {
+                            console.log("monthly", newMonth + 1)
+                            var month = newMonth + 1;
+                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                            results = data;
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'Successfully.',
+                                result: results
+                            });
+                        }
+                    })
+                } else {
+                    callback(null, "null")
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                 }
             }
         ])
     },
 
     "giftStatisticsFilterClickPurchased": function(req, res) {
-         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
+        Views.aggregate({ $match: { pageId: req.body.pageId } }, {
                 $group: {
                     _id: updateData,
                     couponPurchased: { $sum: "$couponPurchased" }
                 }
             },
             function(err, results) {
-                if(req.body.dateFilter == 'yearly'){
+                if (req.body.dateFilter == 'yearly') {
                     console.log("yearly")
                     var data = results.filter(results => results._id.year == newYear)
                     results = data;
@@ -2064,31 +2362,31 @@ module.exports = {
                         }
                     }
                     res.send({
-                            responseCode: 200,
-                            responseMessage: 'Successfully.',
-                            result: array
+                        responseCode: 200,
+                        responseMessage: 'Successfully.',
+                        result: array
                     });
                 }
-                 if(req.body.dateFilter == 'monthly'){
-                    console.log("monthly",newMonth + 1)
+                if (req.body.dateFilter == 'monthly') {
+                    console.log("monthly", newMonth + 1)
                     var month = newMonth + 1;
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
                     results = data;
                     res.send({
-                            responseCode: 200,
-                            responseMessage: 'Successfully.',
-                            result: results
+                        responseCode: 200,
+                        responseMessage: 'Successfully.',
+                        result: results
                     });
                 }
-                if(req.body.dateFilter == 'weekly'){
-                    console.log("monthly",newMonth + 1)
+                if (req.body.dateFilter == 'weekly') {
+                    console.log("monthly", newMonth + 1)
                     var month = newMonth + 1;
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
                     results = data;
                     res.send({
-                            responseCode: 200,
-                            responseMessage: 'Successfully.',
-                            result: results
+                        responseCode: 200,
+                        responseMessage: 'Successfully.',
+                        result: results
                     });
                 }
             });
