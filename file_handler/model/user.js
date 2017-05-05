@@ -99,7 +99,7 @@ var userSchema = new Schema({
         status: { type: String, default: 'ACTIVE' },
         type: { type: String },
         updateddAt: { type: Date, default: Date.now },
-        usedCouponDate : { type: Date, default: Date.now },
+        usedCouponDate: { type: Date, default: Date.now },
         couponExpire: { type: String }
     }],
     hiddenGifts: [{

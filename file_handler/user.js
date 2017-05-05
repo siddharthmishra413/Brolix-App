@@ -1666,17 +1666,15 @@ module.exports = {
                                 })
                             }
                             if (result2.deviceType == 'Android' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
-                                     var message = "You have coupon Exchange request";
-                                     functions.android_notification(result2.deviceToken, message);
-                                     console.log("Android notification send!!!!")
-                                 } else if (result2.deviceType == 'iOS' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
-                                     functions.iOS_notification(result2.deviceToken, message);
-                                 } else {
-                                     console.log("Something wrong!!!!")
-                                 }
-                        }                        
-                        
-                        else {
+                                var message = "You have coupon Exchange request";
+                                functions.android_notification(result2.deviceToken, message);
+                                console.log("Android notification send!!!!")
+                            } else if (result2.deviceType == 'iOS' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
+                                functions.iOS_notification(result2.deviceToken, message);
+                            } else {
+                                console.log("Something wrong!!!!")
+                            }
+                        } else {
                             createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode } } }, { new: true }).exec(function(err, result5) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 66' }) } else if (!result5) { res.send({ responseCode: 404, responseMessage: "Receiver ad not found." }); } else {
 
@@ -1690,14 +1688,14 @@ module.exports = {
                                 }
                             })
                             if (result2.deviceType == 'Android' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
-                                     var message = "You have coupon Exchange request";
-                                     functions.android_notification(result2.deviceToken, message);
-                                     console.log("Android notification send!!!!")
-                                 } else if (result2.deviceType == 'iOS' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
-                                     functions.iOS_notification(result2.deviceToken, message);
-                                 } else {
-                                     console.log("Something wrong!!!!")
-                                 }
+                                var message = "You have coupon Exchange request";
+                                functions.android_notification(result2.deviceToken, message);
+                                console.log("Android notification send!!!!")
+                            } else if (result2.deviceType == 'iOS' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
+                                functions.iOS_notification(result2.deviceToken, message);
+                            } else {
+                                console.log("Something wrong!!!!")
+                            }
                         }
                     })
                 }
