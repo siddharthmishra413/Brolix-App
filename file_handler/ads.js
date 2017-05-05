@@ -520,10 +520,10 @@ module.exports = {
                                         adId: req.body.adId,
                                         pageId: pageId
                                     }
-                                    User.update({ _id: { $in: winners } }, { $push: { cashPrize: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                    User.update({ _id: { $in: winners } }, { $push: { cashPrize: data }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle' }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                             if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                                                var message = "You have successfully won the Raffle.";
+                                                var message = "You have successfully won this Raffle.";
                                                 functions.android_notification(result.deviceToken, message);
                                                 console.log("Android notification send!!!!")
                                             } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
@@ -579,13 +579,13 @@ module.exports = {
                                                 adId: req.body.adId,
                                                 pageId: pageId
                                             }
-                                            User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, hiddenGifts: data1 }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                            User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, hiddenGifts: data1 }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle' }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
                                                 console.log("4")
                                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                     count += i;
                                                     if ((i * i) == count) {
                                                         if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                                                            var message = "You have successfully won the Raffle.";
+                                                            var message = "You have successfully won this Raffle.";
                                                             functions.android_notification(result.deviceToken, message);
                                                             console.log("Android notification send!!!!")
                                                         } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
@@ -605,11 +605,11 @@ module.exports = {
 
                                     } else {
                                         console.log("else")
-                                        User.update({ _id: { $in: winners } }, { $push: { coupon: data }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                        User.update({ _id: { $in: winners } }, { $push: { coupon: data }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle' }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                 if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                                                    var message = "You have successfully won the Raffle.";
+                                                    var message = "You have successfully won this Raffle.";
                                                     functions.android_notification(result.deviceToken, message);
                                                     console.log("Android notification send!!!!")
                                                 } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {

@@ -677,7 +677,7 @@ module.exports = {
                                     result2.brolix -= req.body.brolix;
                                     result2.save();
 
-                                    User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendBrolixListObject": { senderId: senderId, brolix: req.body.brolix } }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result3) {
+                                    User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendBrolixListObject": { senderId: senderId, brolix: req.body.brolix } }, "notification": { userId: senderId, type: 'I have send you Brolix' }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result3) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                         else {
                                             result3.brolix += req.body.brolix;
@@ -706,7 +706,7 @@ module.exports = {
                             else if (result4.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account." }); } else {
                                 result4.brolix -= req.body.brolix;
                                 result4.save();
-                                User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendBrolixListObject": { senderId: senderId, brolix: req.body.brolix } }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result5) {
+                                User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendBrolixListObject": { senderId: senderId, brolix: req.body.brolix } }, "notification": { userId: senderId, type: 'I have send you Brolix' }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result5) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result5) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
                                         callback(null, result5)
@@ -762,7 +762,7 @@ module.exports = {
                                 else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
                                     result.cash -= req.body.cash;
                                     result.save();
-                                    User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendCashListObject": { senderId: senderId, cash: req.body.cash } } }, { new: true }, function(err, user) {
+                                    User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendCashListObject": { senderId: senderId, cash: req.body.cash } }, "notification": { userId: senderId, type: 'I have send you Cash' } }, { new: true }, function(err, user) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                         else {
                                             user.cash += req.body.cash;
@@ -791,7 +791,7 @@ module.exports = {
                             else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
                                 result.cash -= req.body.cash;
                                 result.save();
-                                User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendCashListObject": { senderId: senderId, cash: req.body.cash } } }, { new: true }, function(err, user) {
+                                User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendCashListObject": { senderId: senderId, cash: req.body.cash } }, "notification": { userId: senderId, type: 'I have send you Cash' } }, { new: true }, function(err, user) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
                                         user.cash += req.body.cash;

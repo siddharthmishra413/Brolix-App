@@ -144,7 +144,7 @@ var userSchema = new Schema({
     notification: [{
         type: { type: String },
         userId: { type: String },
-        adId: { type: String },
+        adId: { type: String, ref: 'createNewAds' },
         productId: { type: String },
         CreatedAt: { type: Date, default: Date.now }
     }],
