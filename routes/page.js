@@ -28,7 +28,6 @@ app.put('/adAdmin/:id', authUser.authUser, pageHandler.adAdmin);
 app.post('/pageViewClick', pageHandler.pageViewClick);
 app.post('/pageStatisticsFilter', pageHandler.pageStatisticsFilter);
 app.post('/pageStatisticsFilterClick', pageHandler.pageStatisticsFilterClick);
-app.post('/pageStatisticsFilterWeeklyClick', pageHandler.pageStatisticsFilterWeeklyClick);
 app.post('/giftStatistics', pageHandler.giftStatistics);
 app.post('/giftStatisticsFilterClick', pageHandler.giftStatisticsFilterClick);
 app.post('/pageFilter', authUser.authUser, pageHandler.pageFilter);

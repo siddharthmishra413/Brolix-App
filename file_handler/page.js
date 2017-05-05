@@ -944,7 +944,7 @@ module.exports = {
                         } else {
                             var data = {
                                 _id: {
-                                    year: 2017,
+                                    year: newYear,
                                     month: i
                                 },
                                 totalProductView: 0,
@@ -975,11 +975,39 @@ module.exports = {
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
                     results = data;
-                    res.send({
-                        result: results,
-                        responseCode: 200,
-                        responseMessage: "Success."
-                    })
+                    if(results.length == 0){
+                        var datas = {
+                            _id: {
+                                year: newYear,
+                                month: newMonth
+                            },
+                            totalProductView: 0,
+                            totalPageView: 0,
+                            totalEventViewClicks: 0,
+                            totalEmailClicks: 0,
+                            totalCallUsClick: 0,
+                            totalFollowerNumber: 0,
+                            totalSocialMediaClicks: 0,
+                            totalLocationClicks: 0,
+                            totalWebsiteClicks: 0,
+                            totalShares: 0,
+                            totalViewAds: 0,
+                            totalRating: 0
+                        }
+                        res.send({
+                            result: datas,
+                            responseCode: 200,
+                            responseMessage: "Success."
+                        })
+                    }
+                    else{
+                        res.send({
+                         result: results,
+                         responseCode: 200,
+                         responseMessage: "Success."
+                        })
+                    }
+                    
                 }
                 if (req.body.dateFilter == 'weekly') {
                     console.log("monthly", newMonth + 1)
@@ -987,17 +1015,51 @@ module.exports = {
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
                     results = data;
-                    res.send({
-                        result: results,
-                        responseCode: 200,
-                        responseMessage: "Success."
-                    })
+                      if(results.length == 0){
+                        var datas = {
+                            _id: {
+                                year: newYear,
+                                month: newMonth,
+                                week: 0
+                            },
+                            totalProductView: 0,
+                            totalPageView: 0,
+                            totalEventViewClicks: 0,
+                            totalEmailClicks: 0,
+                            totalCallUsClick: 0,
+                            totalFollowerNumber: 0,
+                            totalSocialMediaClicks: 0,
+                            totalLocationClicks: 0,
+                            totalWebsiteClicks: 0,
+                            totalShares: 0,
+                            totalViewAds: 0,
+                            totalRating: 0
+                        }
+                        res.send({
+                            result: datas,
+                            responseCode: 200,
+                            responseMessage: "Success."
+                        })
+                    }
+                    else{
+                        res.send({
+                         result: results,
+                         responseCode: 200,
+                         responseMessage: "Success."
+                        })
+                    }
                 }
 
                 if (req.body.dateFilter == 'today') {
                     console.log("monthly", newMonth + 1)
                     var month = newMonth + 1;
                     var yearData = 2017
+<<<<<<< HEAD
+                    var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                    results = data;
+                    if(results.length == 0){
+                        var datas = {
+=======
                         // var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
                         // results = data;
                     res.send({
@@ -1065,9 +1127,12 @@ module.exports = {
                         array.push(results[j])
                     } else {
                         var data = {
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                             _id: {
-                                year: 2017,
-                                month: i
+                                year: newYear,
+                                month: newMonth,
+                                week: 0,
+                                dayOfMonth: 0                                
                             },
                             totalProductView: 0,
                             totalPageView: 0,
@@ -1082,46 +1147,21 @@ module.exports = {
                             totalViewAds: 0,
                             totalRating: 0
                         }
-                        array.push(data)
+                        res.send({
+                            result: datas,
+                            responseCode: 200,
+                            responseMessage: "Success."
+                        })
                     }
-
+                    else{
+                        res.send({
+                         result: results,
+                         responseCode: 200,
+                         responseMessage: "Success."
+                        })
+                    }
                 }
-            });
-    },
-
-
-    "pageStatisticsFilterWeeklyClick": function(req, res) {
-        //var newDate = new Date(req.body.date).getFullYear();
-
-        Views.aggregate({
-                $group: {
-                    _id: {
-                        year: { $year: "$date" },
-                        month: { $month: "$date" },
-                        week: { $week: "$date" },
-                        day: { $dayOfWeek: "$date" }
-                    },
-                    totalProductView: { $sum: "$productView" },
-                    totalPageView: { $sum: "$pageView" },
-                    totalEventViewClicks: { $sum: "$eventViewClicks" },
-                    totalEmailClicks: { $sum: "$emailClicks" },
-                    totalCallUsClick: { $sum: "$callUsClick" },
-                    totalFollowerNumber: { $sum: "$followerNumber" },
-                    totalSocialMediaClicks: { $sum: "$socialMediaClicks" },
-                    totalLocationClicks: { $sum: "$locationClicks" },
-                    totalWebsiteClicks: { $sum: "$websiteClicks" },
-                    totalShares: { $sum: "$shares" },
-                    totalViewAds: { $sum: "$viewAds" },
-                    totalRating: { $sum: "$totalRating" }
-                }
-            },
-            function(err, results) {
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: "Success."
-                })
-            });
+            })
     },
 
     "giftStatistics": function(req, res) {
@@ -1418,6 +1458,94 @@ module.exports = {
                                 result: array
                             });
                         }
+<<<<<<< HEAD
+                        if(req.body.dateFilter == 'monthly' || req.body.dateFilter == 'weekly' || req.body.dateFilter == 'today'){
+                            console.log("monthly",newMonth + 1)
+                            var month = newMonth + 1;
+                            if(req.body.dateFilter == 'monthly'){
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                results = data;
+                            }
+                            if(req.body.dateFilter == 'weekly'){
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                results = data;
+                            }
+                            if(req.body.dateFilter == 'today'){
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                                results = data;
+                            }
+                                  if(results.length == 0){
+                                    var datas = {
+                                        _id: {
+                                            year: newYear,
+                                            month: newMonth,
+                                            week: 0,
+                                            dayOfMonth: 0
+                                        },
+                                        totalProductView: 0,
+                                        totalPageView: 0,
+                                        totalEventViewClicks: 0,
+                                        totalEmailClicks: 0,
+                                        totalCallUsClick: 0,
+                                        totalFollowerNumber: 0,
+                                        totalSocialMediaClicks: 0,
+                                        totalLocationClicks: 0,
+                                        totalWebsiteClicks: 0,
+                                        totalShares: 0,
+                                        totalViewAds: 0,
+                                        totalRating: 0
+                                    }
+                                    res.send({
+                                        result: datas,
+                                        responseCode: 200,
+                                        responseMessage: "Success."
+                                    })
+                                }
+                                else{
+                                    res.send({
+                                     result: results,
+                                     responseCode: 200,
+                                     responseMessage: "Success."
+                                    })
+                                }
+                        }
+                        //  if(req.body.dateFilter == 'monthly'){
+                        //     console.log("monthly",newMonth + 1)
+                        //     var month = newMonth + 1;
+                        //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                        //     results = data;
+                        //     res.send({
+                        //             responseCode: 200,
+                        //             responseMessage: 'Successfully.',
+                        //             result: results
+                        //     });
+                        // }
+                        // if(req.body.dateFilter == 'weekly'){
+                        //     console.log("monthly",newMonth + 1)
+                        //     var month = newMonth + 1;
+                        //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                        //     results = data;
+                        //     res.send({
+                        //             responseCode: 200,
+                        //             responseMessage: 'Successfully.',
+                        //             result: results
+                        //     });
+                        // }
+                        //  if(req.body.dateFilter == 'today'){
+                        //     console.log("today",results)
+                        //     console.log("newDate",newDate)
+                        //     console.log("monthly",newMonth + 1)
+                        //     var month = newMonth + 1;
+                        //     var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                        //     results = data;
+                        //     res.send({
+                        //             responseCode: 200,
+                        //             responseMessage: 'Successfully.',
+                        //             result: results
+                        //     });
+                        // }
+ 
+=======
                         if (req.body.dateFilter == 'monthly') {
                             console.log("monthly", newMonth + 1)
                             var month = newMonth + 1;
@@ -1454,6 +1582,7 @@ module.exports = {
                             });
                         }
 
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                     })
                 } else {
                     callback(null, "winnersLength")
@@ -1604,6 +1733,95 @@ module.exports = {
                                 result: array
                             });
                         }
+<<<<<<< HEAD
+                        if(req.body.dateFilter == 'monthly' || req.body.dateFilter == 'weekly' || req.body.dateFilter == 'today'){
+                            console.log("monthly",newMonth + 1)
+                            var month = newMonth + 1;
+                            if(req.body.dateFilter == 'monthly'){
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                results = data;
+                            }
+                            if(req.body.dateFilter == 'weekly'){
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                results = data;
+                            }
+                            if(req.body.dateFilter == 'today'){
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                                results = data;
+                            }
+                                  if(results.length == 0){
+                                    var datas = {
+                                        _id: {
+                                            year: newYear,
+                                            month: newMonth,
+                                            week: 0,
+                                            dayOfMonth: 0
+                                        },
+                                        totalProductView: 0,
+                                        totalPageView: 0,
+                                        totalEventViewClicks: 0,
+                                        totalEmailClicks: 0,
+                                        totalCallUsClick: 0,
+                                        totalFollowerNumber: 0,
+                                        totalSocialMediaClicks: 0,
+                                        totalLocationClicks: 0,
+                                        totalWebsiteClicks: 0,
+                                        totalShares: 0,
+                                        totalViewAds: 0,
+                                        totalRating: 0
+                                    }
+                                    res.send({
+                                        result: datas,
+                                        responseCode: 200,
+                                        responseMessage: "Success."
+                                    })
+                                }
+                                else{
+                                    res.send({
+                                     result: results,
+                                     responseCode: 200,
+                                     responseMessage: "Success."
+                                    })
+                                }
+                        }
+                        //  if(req.body.dateFilter == 'monthly'){
+                        //     console.log("monthly",newMonth + 1)
+                        //     var month = newMonth + 1;
+                        //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                        //     results = data;
+                        //     res.send({
+                        //             responseCode: 200,
+                        //             responseMessage: 'Successfully.',
+                        //             result: results
+                        //     });
+                        // }
+                        // if(req.body.dateFilter == 'weekly'){
+                        //     console.log("monthly",newMonth + 1)
+                        //     var month = newMonth + 1;
+                        //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                        //     results = data;
+                        //     res.send({
+                        //             responseCode: 200,
+                        //             responseMessage: 'Successfully.',
+                        //             result: results
+                        //     });
+                        // }
+                        //  if(req.body.dateFilter == 'today'){
+                        //     console.log("monthly",newMonth + 1)
+                        //     var month = newMonth + 1;
+                        //     var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                        //     results = data;
+                        //     res.send({
+                        //             responseCode: 200,
+                        //             responseMessage: 'Successfully.',
+                        //             result: results
+                        //     });
+                        // }
+                    });
+                }
+                else{
+                    callback(null, "PURCHASED")
+=======
                         if (req.body.dateFilter == 'monthly') {
                             console.log("monthly", newMonth + 1)
                             var month = newMonth + 1;
@@ -1640,6 +1858,7 @@ module.exports = {
                     })
                 } else {
                     callback(null, "COUPONSTATUS")
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                 }
             },
             function(result, callback) {
@@ -1690,6 +1909,57 @@ module.exports = {
                                 result: array
                             });
                         }
+<<<<<<< HEAD
+                        if(req.body.dateFilter == 'monthly' || req.body.dateFilter == 'weekly' || req.body.dateFilter == 'today'){
+                            console.log("monthly",newMonth + 1)
+                            var month = newMonth + 1;
+                            if(req.body.dateFilter == 'monthly'){
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                results = data;
+                            }
+                            if(req.body.dateFilter == 'weekly'){
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                results = data;
+                            }
+                            if(req.body.dateFilter == 'today'){
+                                var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                                results = data;
+                            }
+                                  if(results.length == 0){
+                                    var datas = {
+                                        _id: {
+                                            year: newYear,
+                                            month: newMonth,
+                                            week: 0,
+                                            dayOfMonth: 0
+                                        },
+                                        totalProductView: 0,
+                                        totalPageView: 0,
+                                        totalEventViewClicks: 0,
+                                        totalEmailClicks: 0,
+                                        totalCallUsClick: 0,
+                                        totalFollowerNumber: 0,
+                                        totalSocialMediaClicks: 0,
+                                        totalLocationClicks: 0,
+                                        totalWebsiteClicks: 0,
+                                        totalShares: 0,
+                                        totalViewAds: 0,
+                                        totalRating: 0
+                                    }
+                                    res.send({
+                                        result: datas,
+                                        responseCode: 200,
+                                        responseMessage: "Success."
+                                    })
+                                }
+                                else{
+                                    res.send({
+                                     result: results,
+                                     responseCode: 200,
+                                     responseMessage: "Success."
+                                    })
+                                }
+=======
                         if (req.body.dateFilter == 'monthly') {
                             console.log("monthly", newMonth + 1)
                             var month = newMonth + 1;
@@ -1722,7 +1992,41 @@ module.exports = {
                                 responseMessage: 'Successfully.',
                                 result: results
                             });
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                         }
+                        //  if(req.body.dateFilter == 'monthly'){
+                        //     console.log("monthly",newMonth + 1)
+                        //     var month = newMonth + 1;
+                        //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                        //     results = data;
+                        //     res.send({
+                        //             responseCode: 200,
+                        //             responseMessage: 'Successfully.',
+                        //             result: results
+                        //     });
+                        // }
+                        // if(req.body.dateFilter == 'weekly'){
+                        //     console.log("monthly",newMonth + 1)
+                        //     var month = newMonth + 1;
+                        //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                        //     results = data;
+                        //     res.send({
+                        //             responseCode: 200,
+                        //             responseMessage: 'Successfully.',
+                        //             result: results
+                        //     });
+                        // }
+                        // if(req.body.dateFilter == 'today'){
+                        //     console.log("monthly",newMonth + 1)
+                        //     var month = newMonth + 1;
+                        //     var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                        //     results = data;
+                        //     res.send({
+                        //             responseCode: 200,
+                        //             responseMessage: 'Successfully.',
+                        //             result: results
+                        //     });
+                        // }
                     })
                 } else {
                     callback(null, "DELIVERED")
@@ -1756,6 +2060,218 @@ module.exports = {
                                         flag = false;
                                     }
                                 }
+<<<<<<< HEAD
+                                if(req.body.dateFilter == 'monthly' || req.body.dateFilter == 'weekly' || req.body.dateFilter == 'today'){
+                                        console.log("monthly",newMonth + 1)
+                                        var month = newMonth + 1;
+                                        if(req.body.dateFilter == 'monthly'){
+                                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                            results = data;
+                                        }
+                                        if(req.body.dateFilter == 'weekly'){
+                                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                            results = data;
+                                        }
+                                        if(req.body.dateFilter == 'today'){
+                                            var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                                            results = data;
+                                        }
+                                              if(results.length == 0){
+                                                var datas = {
+                                                    _id: {
+                                                        year: newYear,
+                                                        month: newMonth,
+                                                        week: 0,
+                                                        dayOfMonth: 0
+                                                    },
+                                                    totalProductView: 0,
+                                                    totalPageView: 0,
+                                                    totalEventViewClicks: 0,
+                                                    totalEmailClicks: 0,
+                                                    totalCallUsClick: 0,
+                                                    totalFollowerNumber: 0,
+                                                    totalSocialMediaClicks: 0,
+                                                    totalLocationClicks: 0,
+                                                    totalWebsiteClicks: 0,
+                                                    totalShares: 0,
+                                                    totalViewAds: 0,
+                                                    totalRating: 0
+                                                }
+                                                res.send({
+                                                    result: datas,
+                                                    responseCode: 200,
+                                                    responseMessage: "Success."
+                                                })
+                                            }
+                                            else{
+                                                res.send({
+                                                 result: results,
+                                                 responseCode: 200,
+                                                 responseMessage: "Success."
+                                                })
+                                            }
+                                    }
+                                //  if(req.body.dateFilter == 'monthly'){
+                                //     console.log("monthly",newMonth + 1)
+                                //     var month = newMonth + 1;
+                                //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                //     results = data;
+                                //     res.send({
+                                //             responseCode: 200,
+                                //             responseMessage: 'Successfully.',
+                                //             result: results
+                                //     });
+                                // }
+                                // if(req.body.dateFilter == 'weekly'){
+                                //     console.log("monthly",newMonth + 1)
+                                //     var month = newMonth + 1;
+                                //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                //     results = data;
+                                //     res.send({
+                                //             responseCode: 200,
+                                //             responseMessage: 'Successfully.',
+                                //             result: results
+                                //     });
+                                // }
+                                // if(req.body.dateFilter == 'today'){
+                                //     console.log("monthly",newMonth + 1)
+                                //     var month = newMonth + 1;
+                                //     var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                                //     results = data;
+                                //     res.send({
+                                //             responseCode: 200,
+                                //             responseMessage: 'Successfully.',
+                                //             result: results
+                                //     });
+                                // }
+                        })
+                }
+                else{
+                   callback(null, "DELIVERED")
+                }
+            },
+            function(result, callback){
+                if(req.body.click== 'PENDING'){
+                        var updateDataPENDING = {$match:{'cashPrize.pageId': req.body.pageId, 'cashPrize.cashStatus':'PENDING' }};
+                        var updateUnwindDataPENDING = { $unwind: "$cashPrize" };
+                        var groupCondPENDING = { $group : { 
+                               _id:updateDataPendingg,
+                                pendingCash: { $sum: 1 }
+                            }}
+                        User.aggregate(updateUnwindDataPENDING, updateDataPENDING, groupCondPENDING,function(err, results){
+                            if(req.body.dateFilter == 'yearly'){
+                                    console.log("yearly")
+                                    var data = results.filter(results => results._id.year == newYear)
+                                    results = data;
+                                    var array = [];
+                                    var flag = false;
+                                    for (var i = 1; i <= 12; i++) {
+                                        console.log("Dfdgf", i)
+                                        for (var j = 0; j < results.length; j++) {
+                                            if (i == results[j]._id.month) {
+                                                console.log("value of j==>", j)
+                                                flag = true;
+                                                break;
+                                            } else {
+                                                flag = false;
+                                            }
+                                        }
+                                        if (flag == true) {
+                                            array.push(results[j])
+                                        } else {
+                                            var data = {
+                                                _id: {
+                                                    year: 2017,
+                                                    month: i
+                                                },
+                                                pendingCash: 0,
+                                            }
+                                            array.push(data)
+                                        }
+                                    }
+                                    res.send({
+                                            responseCode: 200,
+                                            responseMessage: 'Successfully.',
+                                            result: array
+                                    });
+                                }
+                                if(req.body.dateFilter == 'monthly' || req.body.dateFilter == 'weekly' || req.body.dateFilter == 'today'){
+                                        console.log("monthly",newMonth + 1)
+                                        var month = newMonth + 1;
+                                        if(req.body.dateFilter == 'monthly'){
+                                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                            results = data;
+                                        }
+                                        if(req.body.dateFilter == 'weekly'){
+                                            var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                            results = data;
+                                        }
+                                        if(req.body.dateFilter == 'today'){
+                                            var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
+                                            results = data;
+                                        }
+                                        if(results.length == 0){
+                                                var datas = {
+                                                    _id: {
+                                                        year: newYear,
+                                                        month: newMonth,
+                                                        week: 0,
+                                                        dayOfMonth: 0
+                                                    },
+                                                    totalProductView: 0,
+                                                    totalPageView: 0,
+                                                    totalEventViewClicks: 0,
+                                                    totalEmailClicks: 0,
+                                                    totalCallUsClick: 0,
+                                                    totalFollowerNumber: 0,
+                                                    totalSocialMediaClicks: 0,
+                                                    totalLocationClicks: 0,
+                                                    totalWebsiteClicks: 0,
+                                                    totalShares: 0,
+                                                    totalViewAds: 0,
+                                                    totalRating: 0
+                                                }
+                                                res.send({
+                                                    result: datas,
+                                                    responseCode: 200,
+                                                    responseMessage: "Success."
+                                                })
+                                            }
+                                            else{
+                                                res.send({
+                                                 result: results,
+                                                 responseCode: 200,
+                                                 responseMessage: "Success."
+                                                })
+                                            }
+                                    }
+                                //  if(req.body.dateFilter == 'monthly'){
+                                //     console.log("monthly",newMonth + 1)
+                                //     var month = newMonth + 1;
+                                //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                //     results = data;
+                                //     res.send({
+                                //             responseCode: 200,
+                                //             responseMessage: 'Successfully.',
+                                //             result: results
+                                //     });
+                                // }
+                                // if(req.body.dateFilter == 'weekly'){
+                                //     console.log("monthly",newMonth + 1)
+                                //     var month = newMonth + 1;
+                                //     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
+                                //     results = data;
+                                //     res.send({
+                                //             responseCode: 200,
+                                //             responseMessage: 'Successfully.',
+                                //             result: results
+                                //     });
+                                // }
+                        })
+                }
+                else{
+                   callback(null, "null")
+=======
                                 if (flag == true) {
                                     array.push(results[j])
                                 } else {
@@ -1800,6 +2316,7 @@ module.exports = {
                     })
                 } else {
                     callback(null, "null")
+>>>>>>> 1ad9585aface45557dded0df1437ddd323e0688d
                 }
             }
         ])
