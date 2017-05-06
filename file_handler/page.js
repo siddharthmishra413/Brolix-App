@@ -1292,7 +1292,7 @@ module.exports = {
         })
     },
 
-    "giftStatisticsFilterClick": function(req, res) {
+  "giftStatisticsFilterClick": function(req, res) {
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var newDate = new Date(req.body.date).getDate();
