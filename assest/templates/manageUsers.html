@@ -326,10 +326,10 @@
                 <li class="active">
                      <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                 </li>
-                <li class="active">
+               <!--  <li class="active">
                 <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                </li>
+                </li> -->
                 <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                 </li>
@@ -408,10 +408,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                   <!--  <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -491,10 +491,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                    <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -573,10 +573,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                   <!--  <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -655,10 +655,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                    <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -738,10 +738,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                    <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -820,10 +820,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                    <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -1218,15 +1218,15 @@
                     <!-- {{data.pageName}} -->
                     <div class="cover-image-txt">
                         <div class="left-img-txt">
-                            <div class="b-layer-txt text-center">Test</div>
-                            <div class="g-layer-txt text-center">Valid Thru: 4 May 2017</div>
+                            <div class="b-layer-txt text-center">{{data.pageName}}</div>
+                            <div class="g-layer-txt text-center">{{data.couponExpiryDate}}</div>
                         </div>
                         <div class="gift-input">
-                            <input type="text" placeholder="Gift Description">
+                            <span type="text" placeholder="Gift Description">{{data.giftDescription}}</span>
                         </div>
                     </div>
                     <div class="valid-block">
-                        <span class="valid-txt">Valid</span>
+                        <span class="valid-txt">{{data.status}}</span>
                         <span class="valid-box"><i class="fa fa-circle"></i></span>
                     </div>
 

@@ -2032,7 +2032,7 @@ module.exports = {
         User.find({ 'coupon._id': couponId }).exec(function(err, result) {
             console.log(result)
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
-            else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "EXPIRED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is expired" }); } else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } 
+           // else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "EXPIRED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is expired" }); } else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } 
             else {
                 User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {

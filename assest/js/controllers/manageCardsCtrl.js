@@ -272,7 +272,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
 
     userService.showOfferOnCards(upgrade_card).success(function(res) {
-        console.log("res",JSON.stringify(res))
+        //console.log("res",JSON.stringify(res))
         if(res.responseCode == 200){
             if(res.data.length == 0){
                 toastr.error("No data Found");
@@ -388,7 +388,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
    $scope.currentTotalIncomeUpgradeCard = 1;
      $scope.nextTotalIncomeUpgradeCardDetail = function(){
          userService.totalIncomeInCashFromUpgradeCard($scope.currentTotalIncomeUpgradeCard).success(function(res) { 
-              console.log("val11",JSON.stringify(res))
+              //console.log("val11",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesTotalIncomeUpgradeCard = res.pages;
                    $scope.pageTotalIncomeUpgradeCard= res.page;
@@ -429,7 +429,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                    $scope.noOfPagesUsedUpgradeCard = res.pages;
                    $scope.pageUsedUpgradeCard= res.page;
                    $scope.usedUpgradeCard= res.docs;
-                   console.log(JSON.stringify($scope.usedUpgradeCard));
+                   //console.log(JSON.stringify($scope.usedUpgradeCard));
                     $scope.usedUpgradeCardcount = res.total;
                } 
                else {
@@ -634,49 +634,64 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     // })
 
     $scope.userInfo=function(id) {
-    console.log(JSON.stringify(id))
+    //console.log(JSON.stringify(id))
     userService.userInfo(id).then(function(success) { 
-        console.log(JSON.stringify(success))
+        //console.log(JSON.stringify(success))
                 if(success.data.responseCode == 200) {
                         $scope.userDetail=success.data.result
                         $("#userInfo").modal('show');
-                        console.log(JSON.stringify($scope.userDetail))
+                       // console.log(JSON.stringify($scope.userDetail))
                  } 
                  else{
                     toastr.error(success.data.responseMessage)
                  }
              },function(err){
-            console.log(err);
+           // console.log(err);
             toastr.error('Connection error.');
            }) 
     }
 
      $scope.pageCount=function(id) {
-        console.log(JSON.stringify(id))
+        console.log("iddddss",JSON.stringify(id))
         $scope.page=[];
-        userService.pageCount(id).then(function(success) { 
-            if(success.data.responseCode == 200) {
-                    for(i=0;i<success.data.result.length;i++){
-                        $scope.page.push(success.data.result[0]);
-                    }
-                     console.log("pages>>>>>>"+JSON.stringify($scope.page))
-                     $("#Pages").modal('show');
-                 }
-                 else{
-                    toastr.error(success.data.responseMessage)
-                 }
-                },function(err){
-                    console.log(err);
-                     toastr.error('Connection error.');
-            }) 
+        userService.pageCount(id).success(function(res) {
+          console.log("res",JSON.stringify(res))
+           if(res.responseCode ==  200) {
+            $scope.page = res.result;
+           $("#Pages").modal('show');
+            console.log("$scope.res",JSON.stringify($scope.page))
+        }else{
+          toastr.error(res.responseMessage);
+          
+        }        
+            
+        })
+
+
+        // userService.pageCount(id).then(function(success) { 
+          
+        //     if(success.data.responseCode == 200) {
+        //             for(i=0;i<success.data.result.length;i++){
+        //                 $scope.page.push(success.data.result[0]);
+        //             }
+        //              console.log("pages>>>>>>"+JSON.stringify($scope.page))
+        //              $("#Pages").modal('show');
+        //          }
+        //          else{
+        //             toastr.error(success.data.responseMessage)
+        //          }
+        //         },function(err){
+        //             console.log(err);
+        //              toastr.error('Connection error.');
+        //     }) 
     }
     
     $scope.upgradeCardUsedAd=function(id) {
-        console.log(JSON.stringify(id))
+        //console.log(JSON.stringify(id))
         var data = {
                     "upgradeId":id
                     }
-        console.log(JSON.stringify(data))
+        //console.log(JSON.stringify(data))
         userService.upgradeCardUsedAd(data).then(function(success) { 
               if(success.data.responseCode == 200) {
                     $scope.usedAd=success.data.result;
@@ -685,7 +700,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     toastr.error(success.data.responseMessage)
                  }
                 },function(err){
-                    console.log(err);
+                   // console.log(err);
                      toastr.error('Connection error.');
             }) 
     }
@@ -695,7 +710,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         var data = {
                     "luckId":id
                 }
-        console.log(JSON.stringify(data))
+        //console.log(JSON.stringify(data))
         userService.luckCardUsedAd(data).then(function(success) { 
                  if(success.data.responseCode == 200) {
                     $scope.usedAd=success.data.result;
@@ -705,13 +720,13 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     toastr.error(success.data.responseMessage)
                  }
                 },function(err){
-                    console.log(err);
+                    //console.log(err);
                      toastr.error('Connection error.');
         }) 
     }
 
   $scope.cardTypeName = function(val) {
-        console.log(val)
+        //console.log(val)
          localStorage.setItem('cardTypeName',val);
          $scope.test = '';
 
@@ -744,7 +759,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.dashBordFilter = function() {
 
     var type = localStorage.getItem('cardTypeName');
-    console.log(type);
+    //console.log(type);
     $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
 
     var data = {};
@@ -758,79 +773,79 @@ var BATTUTA_KEY="00000000000000000000000000000000"
             joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
-        console.log("datatata",data)
+       // console.log("datatata",data)
 
     switch (type)
             {
                 case 'totalSoldCards':
-                console.log("1"); 
+                //console.log("1"); 
                     userService.cardFilter(data).success(function(res){
-                        console.log(JSON.stringify(res));
+                       // console.log(JSON.stringify(res));
                         $scope.totalSoldUpgradeCard = res.data;
-                        console.log("ressssssss1",JSON.stringify($scope.totalSoldUpgradeCard));
+                        //console.log("ressssssss1",JSON.stringify($scope.totalSoldUpgradeCard));
                     })
                     
                 break;
 
                 case 'totalIncome$': 
-                console.log("2");
+               // console.log("2");
                     userService.cardFilter(data).success(function(res){
                         $scope.totalIncomeInCashFromUpgradeCard = res.data;
-                        console.log("ressssssss2",JSON.stringify($scope.totalIncomeInCashFromUpgradeCard));
+                        //console.log("ressssssss2",JSON.stringify($scope.totalIncomeInCashFromUpgradeCard));
                     })
                     
                 break;
 
                 case 'usedCards': 
-                console.log("3");
+                //console.log("3");
                     userService.cardFilter(data).success(function(res){
                         $scope.usedUpgradeCard = res.data;
-                        console.log("ressssssss3",JSON.stringify($scope.usedUpgradeCard));
+                        //console.log("ressssssss3",JSON.stringify($scope.usedUpgradeCard));
                     })
                     
                 break;
 
                 case 'unusedCards': 
-                console.log("4");
+                //console.log("4");
                     userService.cardFilter(data).success(function(res){
                         $scope.unUsedUpgradeCard = res.data;
-                        console.log("ressssssss4",JSON.stringify($scope.unUsedUpgradeCard));
+                        //console.log("ressssssss4",JSON.stringify($scope.unUsedUpgradeCard));
                     })
                     
                 break;
 
                 case 'totalSoldLuckCards': 
-                console.log("5");
+               // console.log("5");
                     userService.cardFilter(data).success(function(res){
                         $scope.totalSoldLuckCard = res.data;
-                        console.log("ressssssss5",JSON.stringify($scope.totalSoldLuckCard));
+                        //console.log("ressssssss5",JSON.stringify($scope.totalSoldLuckCard));
                     })
                     
                 break;
 
                 case 'totalIncome$LuckCards':
-                console.log("6"); 
+               // console.log("6"); 
                     userService.cardFilter(data).success(function(res){
                         $scope.totalIncomeInBrolixFromLuckCard = res.data;
-                        console.log("ressssssss6",JSON.stringify($scope.totalIncomeInBrolixFromLuckCard));
+                        //console.log("ressssssss6",JSON.stringify($scope.totalIncomeInBrolixFromLuckCard));
                     })
                     
                 break;
 
                 case 'usedCardsLuckCards': 
-                console.log("7");
+                //console.log("7");
                     userService.cardFilter(data).success(function(res){
                         $scope.usedLuckCard = res.data;
-                        console.log("ressssssss7",JSON.stringify($scope.usedLuckCard));
+                        //console.log("ressssssss7",JSON.stringify($scope.usedLuckCard));
                     })
                     
                 break;
 
                 case 'unusedCardsLuckCards': 
-                console.log("8");
+               // console.log("8");
                     userService.cardFilter(data).success(function(res){
                         $scope.unUsedLuckCard = res.data;
-                        console.log("ressssssss8",JSON.stringify($scope.unUsedLuckCard));
+                        //console.log("ressssssss8",JSON.stringify($scope.unUsedLuckCard));
                     })
                     
                 break;
@@ -851,8 +866,8 @@ app.filter("cardsFilter",function() {
   var fullName = [];
      
       return function(items,nameValue) {
-        console.log(JSON.stringify(items))
-        console.log(nameValue)
+        //console.log(JSON.stringify(items))
+        //console.log(nameValue)
         if (!nameValue) {            
          return retArray = items;
            }
@@ -876,8 +891,8 @@ app.filter("manageCardsFilter",function() {
   var name = [];
      
       return function(items,nameValue) {
-        console.log(JSON.stringify(items))
-        console.log(nameValue)
+       // console.log(JSON.stringify(items))
+       // console.log(nameValue)
         if (!nameValue) {            
          return retArray = items;
            }
