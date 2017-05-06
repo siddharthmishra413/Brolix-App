@@ -267,9 +267,9 @@ module.exports = {
     //API for Show Search
     "searchForPages": function(req, res) {
         var data = {
-            'whoWillSeeYourAdd.country': req.body.country,
-            'whoWillSeeYourAdd.state': req.body.state,
-            'whoWillSeeYourAdd.city': req.body.city,
+            'country': req.body.country,
+            'state': req.body.state,
+            'city': req.body.city,
             'pageName': req.body.pageName,
             'category': req.body.category,
             'subCategory': req.body.subCategory
@@ -281,7 +281,7 @@ module.exports = {
                 }
             }
         }
-        createNewPage.paginate({ $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
+        createNewPage.paginate({userId: { $ne: req.params.id }, $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: results,
