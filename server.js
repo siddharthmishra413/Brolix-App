@@ -83,14 +83,14 @@ app.use('/report', reportProblem);
 app.use('/admin', admin);
 app.use('/follower', follower);
 app.use('/product', product);
-app.use('/terms',terms);
-app.use('/tool',tool)
+app.use('/terms', terms);
+app.use('/tool', tool)
 
 
 
 // start the server 
 
-app.listen(port,'0.0.0.0');
+app.listen(port, '0.0.0.0');
 
 
 console.log('http://localhost:' + port);

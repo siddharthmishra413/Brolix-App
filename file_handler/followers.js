@@ -13,22 +13,30 @@
                      if (!result1) {
                          var follow = new followerList(req.body);
                          follow.save(function(err, result) {
-                             User.findOne({ _id: req.body.receiverId }).exec(function(err, results) {
-                                 if (results.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                                     var message = "req.body.message";
-                                     functions.android_notification(result.deviceToken, message);
-                                     console.log("Android notification send!!!!")
-                                 } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                                     functions.iOS_notification(result.deviceToken, message);
-                                 } else {
-                                     console.log("Something wrong!!!!")
+                             User.findOne({ _id: req.body.senderId }).exec(function(err, results) {
+                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                     var image = results.image;
+
+                                     User.findOneAndUpdate({ _id: req.body.receiverId }, {
+                                         $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", notificationType: 'follow', image: image } }
+                                     }, { new: true }).exec(function(err, results) {
+                                         if (results.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                             var message = "req.body.message";
+                                             functions.android_notification(result.deviceToken, message);
+                                             console.log("Android notification send!!!!")
+                                         } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                             functions.iOS_notification(result.deviceToken, message);
+                                         } else {
+                                             console.log("Something wrong!!!!")
+                                         }
+                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                                         res.send({
+                                             result: result,
+                                             responseCode: 200,
+                                             responseMessage: "Followed."
+                                         });
+                                     })
                                  }
-                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                                 res.send({
-                                     result: result,
-                                     responseCode: 200,
-                                     responseMessage: "Followed."
-                                 });
                              })
                          })
                      } else {

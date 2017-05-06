@@ -140,10 +140,10 @@ var userSchema = new Schema({
     adFollowers: [{
         adId: { type: String }
     }],
-    notification_status: { type: String, default: 'on', trim: true },    
+    notification_status: { type: String, default: 'on', trim: true },
     notification: [{
         type: { type: String },
-        image:{type:String},
+        image: { type: String },
         notificationType: { type: String },
         userId: { type: String },
         adId: { type: String, ref: 'createNewAds' },
