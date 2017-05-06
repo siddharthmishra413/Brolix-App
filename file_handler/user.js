@@ -2173,7 +2173,7 @@ module.exports = {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Privacy details show successfully."
+                    responseMessage: "All details show successfully."
                 })
             }
         })
