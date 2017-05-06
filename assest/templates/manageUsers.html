@@ -1211,7 +1211,7 @@
                <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
                <input class="searching form-control" ng-model='pageName' placeholder='search coupan...' style="width: 200px;">
            </div>
-           <div class="row-table" ng-repeat="data in allCoupons | filter:pageName">
+           <div class="row-table" ng-repeat="data in allCoupons | customSearchFilter:pageName">
             <div class="col-cell">
                 <div class="cover-image coupan-image">
                     <img ng-src="{{data.coverImage || '../dist/image/cover.jpg' }}" id="output">
@@ -1229,11 +1229,11 @@
                         <span class="valid-txt">Valid</span>
                         <span class="valid-box"><i class="fa fa-circle"></i></span>
                     </div>
-                    
+
                     <div class="add-remove">
                         <span class="fa fa-send" ng-click="sendCoupons(data._id)"></span>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -1266,7 +1266,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in allCoupons | filter : pageName">
+                    <tr ng-repeat="x in allCoupons | customSearchFilter : pageName">
                         <td class="skyblue-text">{{x.pageName}}</td>
                         <td class="skyblue-text"><img class="img-responsive" ng-src="{{x.coverImage}}" id="output"></td>
                         <td class="skyblue-text">{{x.giftDescription}}</td>
