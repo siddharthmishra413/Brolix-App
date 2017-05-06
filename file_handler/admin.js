@@ -1794,7 +1794,8 @@ module.exports = {
 
     "showUserPage": function(req, res) {
         createNewPage.find({ userId: req.params.id, status: "ACTIVE" }, 'pageName').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+            console.log("result-->>",result)
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct user id." }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,

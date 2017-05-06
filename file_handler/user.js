@@ -2107,7 +2107,7 @@ module.exports = {
             }
         })
     },
-    //{  $group: { _id: '$_id', list: { $push: 'upgradeCardObject.PURCHASED' } } },
+    
     "seeExchangeSentRequest": function(req, res) {
         var senderId = req.body.userId;
         console.log("receiverId-->>", senderId)
@@ -2166,15 +2166,18 @@ module.exports = {
         })
     },
 
-
     "userNotification": function(req, res) {
-        User.paginate({ _id: req.body.userId }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else {
+          User.find({ _id: req.body.userId},function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                var obj = result[0].notification;
+                 var sortArray = obj.sort(function(obj1, obj2) {
+                             return obj2.CreatedAt - obj1.CreatedAt
+                         })
                 res.send({
-                    result: result,
+                    result: sortArray,
                     responseCode: 200,
                     responseMessage: "All details show successfully."
-                })
+                });
             }
         })
     }

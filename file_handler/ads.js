@@ -878,11 +878,12 @@ module.exports = {
                     $push: { "tag": { userId: req.body.userId, senderId: req.body.senderId } }
                 }, { new: true }).exec(function(err, results) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        callback(null)
+                        callback(null, results)
                     }
                 })
             },
-            function(callback) {
+            function(results,callback) {
+                var senderId = req.body.senderId;
                 User.findOne({ _id: req.body.userId }).exec(function(err, user) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var image = user.image;
@@ -905,13 +906,13 @@ module.exports = {
                                 }
                             });
                         }
-                        callback(null, result1)
+                        callback(null, results)
                     }
                 })
             },
         ], function(err, result) {
             res.send({
-                result: results,
+                result: result,
                 responseCode: 200,
                 responseMessage: "Tag save with concerned User details."
             })
