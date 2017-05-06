@@ -2119,7 +2119,111 @@ module.exports = {
                 });
             }
         })
-    }
+    },
+
+    "sortAds": function(req, res) {
+        if (!req.body.adsType == 'coupon') {
+            return res.json({ responseCode: 404, responseMessage: "Ads not Found." })
+        } else {
+            var array2 = [];
+            createNewAds.paginate({ adsType: req.body.adsType }, { sort: { viewers: -1 } }).then(function(data) {
+                var currentTime = (new Date).getTime();
+                // console.log('currentTime',data)
+                for (var i = 0; i <= data.docs.length - 1; i++) {
+                    var array = [];
+                    console.log("haanananna", i)
+                    if (data.docs[i].expiryOfPriority != null && data.docs[i].expiryOfPriority - currentTime > 0) {
+                        console.log("with priority ", data.docs[i]._id)
+                        console.log("and prority", data.docs[i].priorityNumber)
+                        var sigma = function() {
+                            var array = data.docs;
+                            if (array[i].priorityNumber >= array.length) {
+                                var k = array[i].priorityNumber - data.length;
+                                while ((k--) + 1) {
+                                    array.push(undefined);
+                                }
+                            }
+                            array.splice(array[i].priorityNumber, 0, array.splice(i, 1)[0]);
+                            return array;
+                        }();
+                    } else {
+                        console.log("sayng something ", i)
+                        array2.push(data.docs[i]);
+                    }
+                }
+                return res.json({ responseCode: 200, responseMessage: "Success", data: data })
+            })
+        }
+    },
+
+    "priority": function(req, res) {
+        if (!req.body.number || !req.body.adsType || !req.body.adsId || !req.body.time) {
+            return res.json({ responseCode: 400, responseMessage: "Please fill in all required fields." });
+        } else {
+            async.waterfall([
+                function(callback) {
+                    createNewAds.paginate({ adsType: req.body.adsType }, { sort: { viewers: -1 } }, function(err, data) {
+                        if (err) {
+                            return res.json({ responseCode: 404, responseMessage: "Internal server error ." })
+                        } else {
+                            callback(null, data);
+                        }
+                    })
+                },
+                function(data, callback) {
+                    var currentTime = (new Date).getTime();
+                    for (var i = 0; i <= data.docs.length - 1; i++) {
+                        if (data.docs[i].priorityNumber == req.body.number) {
+                            if (data.docs[i].expiryOfPriority - currentTime >= 0) {
+                                return res.json({ responseCode: 400, responseMessage: "At this place already a ads exist.", timeleft: currentTime - data.docs[i].expiryOfPriority, docs: data.docs[i], currentTime: currentTime })
+                            }
+                        } else {
+                            console.log('.')
+                        }
+                    }
+                    callback(null, data)
+                },
+                function(data, callback) {
+
+                    createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $set: { expiryOfPriority: req.body.time, priorityNumber: req.body.number } }, { new: true }, function(err, result) {
+                        console.log("datataataya------------->>>>>>", result)
+                        if (err) {
+                            return res.json({ responseCode: 404, responseMessage: "Internal server error." })
+                        } else {
+                            // console.log("asgdhasd--------->>")
+                            var number = req.body.number;
+                            console.log("length--------->>", data.docs.length)
+                                // console.log("asghdhasgdhasgdkagsdkasdjkasdks------------->>>>>",data.docs[0]._id)
+                            for (var i = 0; i < data.docs.length; i++) {
+                                if (data.docs[i]._id == req.body.adsId) {
+                                    console.log("asgdhasdsadasdasd--------->>", i)
+                                    if (number >= data.docs.length) {
+                                        var k = number - data.docs.length;
+                                        while ((k--) + 1) {
+                                            data.docs.push(undefined);
+                                        }
+                                    }
+                                    // console.log("above data",data)
+                                    data.docs.splice(number, 0, data.docs.splice(i, 1)[0]);
+                                    console.log("ahsgdhsg-------->", data.docs)
+
+                                    // return data.docs;
+                                }
+
+                            }
+                            callback(null, data.docs)
+                        }
+                    })
+                }
+            ], function(err, data) {
+                if (err) {
+                    return res.json({ responseCode: 404, responseMessage: "Internal server error." })
+                } else {
+                    return res.json({ responseCode: 200, responseMessage: "Success", result: data })
+                }
+            })
+        }
+    },
 
 
 
