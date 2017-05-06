@@ -1410,18 +1410,7 @@ module.exports = {
                                             week: 0,
                                             dayOfMonth: 0
                                         },
-                                        totalProductView: 0,
-                                        totalPageView: 0,
-                                        totalEventViewClicks: 0,
-                                        totalEmailClicks: 0,
-                                        totalCallUsClick: 0,
-                                        totalFollowerNumber: 0,
-                                        totalSocialMediaClicks: 0,
-                                        totalLocationClicks: 0,
-                                        totalWebsiteClicks: 0,
-                                        totalShares: 0,
-                                        totalViewAds: 0,
-                                        totalRating: 0
+                                        winnersLength: 0
                                     }]
                                     res.send({
                                         result: datas,
@@ -1512,18 +1501,7 @@ module.exports = {
                                             week: 0,
                                             dayOfMonth: 0
                                         },
-                                        totalProductView: 0,
-                                        totalPageView: 0,
-                                        totalEventViewClicks: 0,
-                                        totalEmailClicks: 0,
-                                        totalCallUsClick: 0,
-                                        totalFollowerNumber: 0,
-                                        totalSocialMediaClicks: 0,
-                                        totalLocationClicks: 0,
-                                        totalWebsiteClicks: 0,
-                                        totalShares: 0,
-                                        totalViewAds: 0,
-                                        totalRating: 0
+                                        couponPurchased: 0
                                     }]
                                     res.send({
                                         result: datas,
@@ -1627,18 +1605,7 @@ module.exports = {
                                             week: 0,
                                             dayOfMonth: 0
                                         },
-                                        totalProductView: 0,
-                                        totalPageView: 0,
-                                        totalEventViewClicks: 0,
-                                        totalEmailClicks: 0,
-                                        totalCallUsClick: 0,
-                                        totalFollowerNumber: 0,
-                                        totalSocialMediaClicks: 0,
-                                        totalLocationClicks: 0,
-                                        totalWebsiteClicks: 0,
-                                        totalShares: 0,
-                                        totalViewAds: 0,
-                                        totalRating: 0
+                                        CouponData: 0
                                     }]
                                     res.send({
                                         result: datas,
@@ -1729,18 +1696,7 @@ module.exports = {
                                                         week: 0,
                                                         dayOfMonth: 0
                                                     },
-                                                    totalProductView: 0,
-                                                    totalPageView: 0,
-                                                    totalEventViewClicks: 0,
-                                                    totalEmailClicks: 0,
-                                                    totalCallUsClick: 0,
-                                                    totalFollowerNumber: 0,
-                                                    totalSocialMediaClicks: 0,
-                                                    totalLocationClicks: 0,
-                                                    totalWebsiteClicks: 0,
-                                                    totalShares: 0,
-                                                    totalViewAds: 0,
-                                                    totalRating: 0
+                                                    deliveredCash: 0
                                                 }]
                                                 res.send({
                                                     result: datas,
@@ -1771,6 +1727,7 @@ module.exports = {
                                 pendingCash: { $sum: 1 }
                             }}
                         User.aggregate(updateUnwindDataPENDING, updateDataPENDING, groupCondPENDING,function(err, results){
+                            console.log("results",results)
                             if(req.body.dateFilter == 'yearly'){
                                     console.log("yearly")
                                     var data = results.filter(results => results._id.year == newYear)
@@ -1830,18 +1787,7 @@ module.exports = {
                                                         week: 0,
                                                         dayOfMonth: 0
                                                     },
-                                                    totalProductView: 0,
-                                                    totalPageView: 0,
-                                                    totalEventViewClicks: 0,
-                                                    totalEmailClicks: 0,
-                                                    totalCallUsClick: 0,
-                                                    totalFollowerNumber: 0,
-                                                    totalSocialMediaClicks: 0,
-                                                    totalLocationClicks: 0,
-                                                    totalWebsiteClicks: 0,
-                                                    totalShares: 0,
-                                                    totalViewAds: 0,
-                                                    totalRating: 0
+                                                    pendingCash: 0
                                                 }]
                                                 res.send({
                                                     result: datas,
