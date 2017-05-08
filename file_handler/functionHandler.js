@@ -1,6 +1,6 @@
   var https = require('https');
   var nodemailer = require('nodemailer');
- var FCM = require('fcm').FCM;
+  var FCM = require('fcm').FCM;
   // var apn = require('apn');
   module.exports = {
       "otp": function(req, res, mobile) {
@@ -63,11 +63,11 @@
       "android_notification": function(deviceToken, message1) {
           var serverKey = 'AAAA0wDwq1I:APA91bHUyLivU-szb-z_23Ui532XPOxY0yqB07F27-HMme9Vu1psCS2TZI970av_HS1NswVHyKhX4qKoERYWmCChqY2fOVCVlZwTdudwXAk_rda5Z98z7fxK2r6kaf0o5x4cDSFzQqdc ';
           var fcm = new FCM(serverKey);
-          var message={
-            to: deviceToken,      
-            'data.message': message1,
-              'data.type':'testing'
-        };
+          var message = {
+              to: deviceToken,
+              'data.message': message1,
+              'data.type': 'testing'
+          };
           fcm.send(message, function(err, response) {
               if (err) {
                   console.log("Android !! Something has gone wrong!", err);
@@ -79,39 +79,34 @@
 
       "iOS_notification": function(deviceToken, message) {
           var options = {
-              "cert": "MobiloitteEnterprise.pem",
-              "key": "MobiloitteEnterprise.pem",
+              "cert": config.iOSPemFile,
+              "key": config.iOSPemFile,
               "passphrase": "Mobiloitte1",
-              //    "cert": "pushcert.pem",
-              //    "key":  "pushcert.pem",
-              //    "passphrase": "",
+
               "gateway": "gateway.push.apple.com",
               "port": 2195,
               "enhanced": true,
               "cacheLength": 5,
               "title": "Brolix",
-              "message": message,
-              "deviceToken": deviceToken
+              "message": "Hello from Brolix. Here is a message for you!!",
           };
+
           var title = "Brolix";
           var message = message;
-          var deviceToken = deviceToken;
           var apnConnection = new apn.Connection(options);
           var myDevice = new apn.Device(deviceToken);
           var note = new apn.Notification();
-          note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+
+          //note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
           note.badge = 1;
           note.alert = message;
-          note.payload = {
-              "title": title,
-              "message": message
-          };
+          note.payload = { title: title, message: message };
           try {
               apnConnection.pushNotification(note, myDevice);
+              console.log('iOS Push Notification send');
           } catch (ex) {
-              console.log(ex);
+              console.log("Error in push notification-- ", ex);
           }
-          console.log('iOS Push Notification send');
       }
 
   }

@@ -94,11 +94,11 @@ module.exports = {
                     $push: { "tag": { userId: req.body.userId, senderId: req.body.senderId } }
                 }, { new: true }).exec(function(err, results) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        callback(null,results)
+                        callback(null, results)
                     }
                 })
             },
-            function(results,callback) {
+            function(results, callback) {
                 var senderId = req.body.senderId;
                 User.findOne({ _id: req.body.userId }).exec(function(err, user) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {

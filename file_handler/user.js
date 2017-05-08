@@ -1999,7 +1999,6 @@ module.exports = {
             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
             var currentTime = Date.now(m);
             if (receiverRequestId == undefined || receiverRequestId == null || receiverRequestId == '') { res.send({ responseCode: 400, responseMessage: "ReceiverRequestId is required." }); } else {
-
                 createNewAds.findOneAndUpdate({ 'couponExchange._id': receiverRequestId }, { $set: { "couponExchange.$.couponExchangeStatus": "DECLINED" } }, { new: true }).exec(function(err, result) {
                     console.log("result-->.", result)
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
@@ -2012,7 +2011,6 @@ module.exports = {
             }
         }
     },
-
 
     "registerWithRefferalCode": function(req, res) {
         User.paginate({ referredCode: req.body.referralCode }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
@@ -2107,7 +2105,7 @@ module.exports = {
             }
         })
     },
-    
+
     "seeExchangeSentRequest": function(req, res) {
         var senderId = req.body.userId;
         console.log("receiverId-->>", senderId)
@@ -2167,12 +2165,12 @@ module.exports = {
     },
 
     "userNotification": function(req, res) {
-          User.find({ _id: req.body.userId},function(err, result) {
+        User.find({ _id: req.body.userId }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                 var obj = result[0].notification;
-                 var sortArray = obj.sort(function(obj1, obj2) {
-                             return obj2.CreatedAt - obj1.CreatedAt
-                         })
+                var sortArray = obj.sort(function(obj1, obj2) {
+                    return obj2.CreatedAt - obj1.CreatedAt
+                })
                 res.send({
                     result: sortArray,
                     responseCode: 200,
