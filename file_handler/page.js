@@ -281,6 +281,7 @@ module.exports = {
                 }
             }
         }
+        console.log(data)
         createNewPage.paginate({ $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({

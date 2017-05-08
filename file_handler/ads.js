@@ -13,6 +13,8 @@ var waterfall = require('async-waterfall');
 var multiparty = require('multiparty');
 var Views = require("./model/views");
 var mongoose = require('mongoose');
+var brolixAndDollors = require("./model/brolixAndDollors");
+
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -431,7 +433,7 @@ module.exports = {
                                         var city = result.whoWillSeeYourAdd.city;
 
                                         if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different state.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
-                                            callback(null)
+                                            callback(null, result)
                                         }
                                     }
                                 }
@@ -440,7 +442,26 @@ module.exports = {
                     }
                 })
             },
-            function(callback) {
+            function(adResult, callback){
+                if(adResult.adsType == 'cash'){
+                    if(adResult.cash > 0){
+                       var type = "freeViewersPerCashAds";
+                    }
+                    else{
+                       var type = "brolixPerFreeCashAds";
+                    }
+                }
+                if(adResult.adsType == 'coupon'){
+                    var type = "brolixPerFreeCouponAds";
+                }
+                brolixAndDollors.findOne({
+                    type : type
+                },function(err, result){
+                    var value = result.value
+                    callback(null, value)
+                })    
+            },
+            function(value, callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                         var randomIndex = [];
@@ -455,7 +476,7 @@ module.exports = {
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
                             raffleCount.push(userId);
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 50 } }, { new: true }, function(err, result1) {
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value } }, { new: true }, function(err, result1) {
                                 console.log("raffleCount--->>>" + raffleCount.length);
                             })
 
