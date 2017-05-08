@@ -60,7 +60,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     userService.showListOFCoupon().success(function(res) {
       //console.log("resssssssssssssss",res)
         $scope.allCoupons = res.result;
-        console.log("allCoupons",JSON.stringify($scope.allCoupons));
+        //console.log("allCoupons",JSON.stringify($scope.allCoupons));
     })
 
     $scope.export = function(){
@@ -1612,349 +1612,349 @@ $scope.dashBordFilter = function(){
          console.log("$scope.couponId",$scope.couponId)
          var type = localStorage.getItem('userTypeName');
          console.log("type",type);
+         $("#showAllCoupons").modal('hide');
 
 
-         // switch ($scope.modelDatacoupon)
-         //    {
-         //        case 'totalUser':
-         //            for (var i = 0; i < $scope.totalUser.length; i++) {
-         //                array.push($scope.totalUser[i]._id)
-         //            }
-         //            data = {
-         //                couponId:$scope.couponId,
-         //                Id:array
-         //            }         
-         //            BootstrapDialog.show({
-         //            title: 'Send Coupon',
-         //            message: 'Are you sure want to send coupon Users',
-         //                buttons: [{
-         //                    label: 'Yes',
-         //                    action: function(dialog) {
-         //                      $("#sendMessageModelAllUser").modal('hide');
-         //                    userService.sendCouponTOUSers(data).success(function(res) {
-         //                        if (res.responseCode == 200){
-         //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';                         
-         //                          dialog.close();
-         //                          //toastr.success("Coupon Send successfully");
-         //                          $state.reload();
-         //                        } else {
-         //                          toastr.error(res.responseMessage);
-         //                        }
-         //                      })
-         //                    }
-         //                }, {
-         //                    label: 'No',
-         //                    action: function(dialog) {
-         //                        dialog.close();
-         //                        // toastr.success("User Blocked");
-         //                    }
-         //                }]
-         //            });
-         //            //console.log("dataIn",data)       
-         //        break;
+         switch (type)
+            {
+                case 'totalUser':
+                    for (var i = 0; i < $scope.totalUser.length; i++) {
+                        array.push($scope.totalUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }         
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            //$("#showAllCoupons").modal('hide');
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';                         
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+                    //console.log("dataIn",data)       
+                break;
 
-         //        case 'PersonalUser':
-         //            for (var i = 0; i < $scope.personalUser.length; i++) {
-         //                array.push($scope.personalUser[i]._id)
-         //            }
-         //            data = {
-         //                couponId:$scope.couponId,
-         //                Id:array
-         //            }
-         //            //console.log("dataIn",data)
-         //            BootstrapDialog.show({
-         //            title: 'Send Coupon',
-         //            message: 'Are you sure want to send coupon Users',
-         //                buttons: [{
-         //                    label: 'Yes',
-         //                    action: function(dialog) {
-         //                    userService.sendCouponTOUSers(data).success(function(res) {
-         //                        if (res.responseCode == 200){
-         //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';
-         //                          $("#sendMessageModelAllUser").modal('hide');
-         //                          dialog.close();
-         //                          //toastr.success("Coupon Send successfully");
-         //                          $state.reload();
-         //                        } else {
-         //                          toastr.error(res.responseMessage);
-         //                        }
-         //                      })
-         //                    }
-         //                }, {
-         //                    label: 'No',
-         //                    action: function(dialog) {
-         //                        dialog.close();
-         //                        // toastr.success("User Blocked");
-         //                    }
-         //                }]
-         //            });
-         //        break;
+                case 'PersonalUser':
+                    for (var i = 0; i < $scope.personalUser.length; i++) {
+                        array.push($scope.personalUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+                break;
 
-         //        case 'BusinessUser':
-         //            for (var i = 0; i < $scope.businessUser.length; i++) {
-         //                array.push($scope.businessUser[i]._id)
-         //            }
-         //            data = {
-         //                couponId:$scope.couponId,
-         //                Id:array
-         //            }
-         //            //console.log("dataIn",data)
-         //            BootstrapDialog.show({
-         //            title: 'Send Coupon',
-         //            message: 'Are you sure want to send coupon Users',
-         //                buttons: [{
-         //                    label: 'Yes',
-         //                    action: function(dialog) {
-         //                    userService.sendCouponTOUSers(data).success(function(res) {
-         //                        if (res.responseCode == 200){
-         //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';
-         //                          $("#sendMessageModelAllUser").modal('hide');
-         //                          dialog.close();
-         //                          //toastr.success("Coupon Send successfully");
-         //                          $state.reload();
-         //                        } else {
-         //                          toastr.error(res.responseMessage);
-         //                        }
-         //                      })
-         //                    }
-         //                }, {
-         //                    label: 'No',
-         //                    action: function(dialog) {
-         //                        dialog.close();
-         //                        // toastr.success("User Blocked");
-         //                    }
-         //                }]
-         //            });
-         //        break;
+                case 'BusinessUser':
+                    for (var i = 0; i < $scope.businessUser.length; i++) {
+                        array.push($scope.businessUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+                break;
 
-         //        case 'LiveUser':
-         //            for (var i = 0; i < $scope.liveUser.length; i++) {
-         //                array.push($scope.liveUser[i]._id)
-         //            }
-         //            data = {
-         //                couponId:$scope.couponId,
-         //                Id:array
-         //            }
-         //            //console.log("dataIn",data)
-         //           BootstrapDialog.show({
-         //            title: 'Send Coupon',
-         //            message: 'Are you sure want to send coupon Users',
-         //                buttons: [{
-         //                    label: 'Yes',
-         //                    action: function(dialog) {
-         //                    userService.sendCouponTOUSers(data).success(function(res) {
-         //                        if (res.responseCode == 200){
-         //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';
-         //                          $("#sendMessageModelAllUser").modal('hide');
-         //                          dialog.close();
-         //                          //toastr.success("Coupon Send successfully");
-         //                          $state.reload();
-         //                        } else {
-         //                          toastr.error(res.responseMessage);
-         //                        }
-         //                      })
-         //                    }
-         //                }, {
-         //                    label: 'No',
-         //                    action: function(dialog) {
-         //                        dialog.close();
-         //                        // toastr.success("User Blocked");
-         //                    }
-         //                }]
-         //            });
-         //        break;
+                case 'LiveUser':
+                    for (var i = 0; i < $scope.liveUser.length; i++) {
+                        array.push($scope.liveUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    //console.log("dataIn",data)
+                   BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+                break;
 
-         //        case 'WinnersUser':
-         //            for (var i = 0; i < $scope.totalWinners.length; i++) {
-         //                array.push($scope.totalWinners[i]._id)
-         //            }
-         //            data = {
-         //                couponId:$scope.couponId,
-         //                Id:array
-         //            }
-         //            //console.log("dataIn",data)
-         //            BootstrapDialog.show({
-         //            title: 'Send Coupon',
-         //            message: 'Are you sure want to send coupon Users',
-         //                buttons: [{
-         //                    label: 'Yes',
-         //                    action: function(dialog) {
-         //                    userService.sendCouponTOUSers(data).success(function(res) {
-         //                        if (res.responseCode == 200){
-         //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';
-         //                          $("#sendMessageModelAllUser").modal('hide');
-         //                          dialog.close();
-         //                          //toastr.success("Coupon Send successfully");
-         //                          $state.reload();
-         //                        } else {
-         //                          toastr.error(res.responseMessage);
-         //                        }
-         //                      })
-         //                    }
-         //                }, {
-         //                    label: 'No',
-         //                    action: function(dialog) {
-         //                        dialog.close();
-         //                        // toastr.success("User Blocked");
-         //                    }
-         //                }]
-         //            });
-         //        break;
+                case 'WinnersUser':
+                    for (var i = 0; i < $scope.totalWinners.length; i++) {
+                        array.push($scope.totalWinners[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+                break;
 
-         //        case 'CashWinnersUser':
-         //            for (var i = 0; i < $scope.cashWinners.length; i++) {
-         //                array.push($scope.cashWinners[i]._id)
-         //            }
-         //            data = {
-         //                couponId:$scope.couponId,
-         //                Id:array
-         //            }
-         //            //console.log("dataIn",data)
-         //            BootstrapDialog.show({
-         //            title: 'Send Coupon',
-         //            message: 'Are you sure want to send coupon Users',
-         //                buttons: [{
-         //                    label: 'Yes',
-         //                    action: function(dialog) {
-         //                    userService.sendCouponTOUSers(data).success(function(res) {
-         //                        if (res.responseCode == 200){
-         //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';
-         //                          $("#sendMessageModelAllUser").modal('hide');
-         //                          dialog.close();
-         //                          //toastr.success("Coupon Send successfully");
-         //                          $state.reload();
-         //                        } else {
-         //                          toastr.error(res.responseMessage);
-         //                        }
-         //                      })
-         //                    }
-         //                }, {
-         //                    label: 'No',
-         //                    action: function(dialog) {
-         //                        dialog.close();
-         //                        // toastr.success("User Blocked");
-         //                    }
-         //                }]
-         //            });
-         //        break;
+                case 'CashWinnersUser':
+                    for (var i = 0; i < $scope.cashWinners.length; i++) {
+                        array.push($scope.cashWinners[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+                break;
 
-         //        case 'CouponWinnersUser':
-         //            for (var i = 0; i < $scope.couponWinners.length; i++) {
-         //                array.push($scope.couponWinners[i]._id)
-         //            }
-         //            data = {
-         //                couponId:$scope.couponId,
-         //                Id:array
-         //            }
-         //            //console.log("dataIn",data)
-         //            BootstrapDialog.show({
-         //            title: 'Send Coupon',
-         //            message: 'Are you sure want to send coupon Users',
-         //                buttons: [{
-         //                    label: 'Yes',
-         //                    action: function(dialog) {
-         //                    userService.sendCouponTOUSers(data).success(function(res) {
-         //                        if (res.responseCode == 200){
-         //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';
-         //                          $("#sendMessageModelAllUser").modal('hide');
-         //                          dialog.close();
-         //                          //toastr.success("Coupon Send successfully");
-         //                          $state.reload();
-         //                        } else {
-         //                          toastr.error(res.responseMessage);
-         //                        }
-         //                      })
-         //                    }
-         //                }, {
-         //                    label: 'No',
-         //                    action: function(dialog) {
-         //                        dialog.close();
-         //                        // toastr.success("User Blocked");
-         //                    }
-         //                }]
-         //            });
-         //        break;
+                case 'CouponWinnersUser':
+                    for (var i = 0; i < $scope.couponWinners.length; i++) {
+                        array.push($scope.couponWinners[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+                break;
 
-         //        case 'BlockedUser':
-         //            for (var i = 0; i < $scope.allblockUser.length; i++) {
-         //                array.push($scope.allblockUser[i]._id)
-         //            }
-         //            data = {
-         //                couponId:$scope.couponId,
-         //                Id:array
-         //            }
-         //            //console.log("dataIn",data)
-         //            BootstrapDialog.show({
-         //            title: 'Send Coupon',
-         //            message: 'Are you sure want to send coupon Users',
-         //                buttons: [{
-         //                    label: 'Yes',
-         //                    action: function(dialog) {
-         //                    userService.sendCouponTOUSers(data).success(function(res) {
-         //                        if (res.responseCode == 200){
-         //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';
-         //                          $("#sendMessageModelAllUser").modal('hide');
-         //                          dialog.close();
-         //                          //toastr.success("Coupon Send successfully");
-         //                          $state.reload();
-         //                        } else {
-         //                          toastr.error(res.responseMessage);
-         //                        }
-         //                      })
-         //                    }
-         //                }, {
-         //                    label: 'No',
-         //                    action: function(dialog) {
-         //                        dialog.close();
-         //                        // toastr.success("User Blocked");
-         //                    }
-         //                }]
-         //            });
-         //        break;
+                case 'BlockedUser':
+                    for (var i = 0; i < $scope.allblockUser.length; i++) {
+                        array.push($scope.allblockUser[i]._id)
+                    }
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+                break;
 
-         //        default:
-         //        array.push($scope.modalId)
-         //            data = {
-         //                couponId:$scope.couponId,
-         //                Id:array
-         //            }
-         //            //console.log("dataIn",data)
-         //            BootstrapDialog.show({
-         //            title: 'Send Coupon',
-         //            message: 'Are you sure want to send coupon Users',
-         //                buttons: [{
-         //                    label: 'Yes',
-         //                    action: function(dialog) {
-         //                    userService.sendCouponTOUSers(data).success(function(res) {
-         //                        if (res.responseCode == 200){
-         //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';
-         //                          $("#sendMessageModelAllUser").modal('hide');
-         //                          dialog.close();
+                default:
+                array.push($scope.modalId)
+                    data = {
+                        couponId:$scope.couponId,
+                        Id:array
+                    }
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  $("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
                                   
-         //                          $state.reload();
-         //                        } else {
-         //                          toastr.error(res.responseMessage);
-         //                        }
-         //                      })
-         //                    }
-         //                }, {
-         //                    label: 'No',
-         //                    action: function(dialog) {
-         //                        dialog.close();
-         //                        // toastr.success("User Blocked");
-         //                    }
-         //                }]
-         //            });
-         //    }
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+            }
 
     }
 });
