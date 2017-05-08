@@ -7,6 +7,14 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     $scope.second = false;
     $scope.third = false;
 
+    $scope.checkVal = function(){
+        if($scope.myForm.cardType == null){
+            toastr.error("Please select Card Type");
+        }else{
+            toastr.success("You Chose "+$scope.myForm.cardType);
+        }
+    }
+
 
     $scope.createOffer = function(type){
         console.log("ddddddddd",$scope.myForm.cardType)

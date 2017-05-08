@@ -253,7 +253,7 @@ module.exports = {
 
     "allPagesSearch": function(req, res) {
         var re = new RegExp(req.body.search, 'i');
-        createNewPage.paginate({ 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, result) {
+        createNewPage.paginate({ userId: { $ne: req.params.id }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                 res.send({
                     result: result,
@@ -883,7 +883,7 @@ module.exports = {
         })
     },
 
-     "pageStatisticsFilterClick": function(req, res) {
+    "pageStatisticsFilterClick": function(req, res) {
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var newDate = new Date(req.body.date).getDate();
@@ -896,11 +896,11 @@ module.exports = {
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" } }
                 break;
             case 'weekly':
-               var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } } 
-               break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } }
+                break;
             case 'today':
-               var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfMonth: { $dayOfMonth: "$date" },hour: { $hour: "$date" },minutes: { $minute: "$date" } } 
-               break;
+                var updateData = { year: { $year: "$date" }, month: { $month: "$date" }, dayOfMonth: { $dayOfMonth: "$date" }, hour: { $hour: "$date" }, minutes: { $minute: "$date" } }
+                break;
         }
 
         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
@@ -976,7 +976,7 @@ module.exports = {
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
                     results = data;
-                    if(results.length == 0){
+                    if (results.length == 0) {
                         var datas = {
                             _id: {
                                 year: newYear,
@@ -1000,15 +1000,14 @@ module.exports = {
                             responseCode: 200,
                             responseMessage: "Success."
                         })
-                    }
-                    else{
+                    } else {
                         res.send({
-                         result: results,
-                         responseCode: 200,
-                         responseMessage: "Success."
+                            result: results,
+                            responseCode: 200,
+                            responseMessage: "Success."
                         })
                     }
-                    
+
                 }
                 if (req.body.dateFilter == 'weekly') {
                     console.log("monthly", newMonth + 1)
@@ -1016,7 +1015,7 @@ module.exports = {
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month)
                     results = data;
-                      if(results.length == 0){
+                    if (results.length == 0) {
                         var datas = {
                             _id: {
                                 year: newYear,
@@ -1041,12 +1040,11 @@ module.exports = {
                             responseCode: 200,
                             responseMessage: "Success."
                         })
-                    }
-                    else{
+                    } else {
                         res.send({
-                         result: results,
-                         responseCode: 200,
-                         responseMessage: "Success."
+                            result: results,
+                            responseCode: 200,
+                            responseMessage: "Success."
                         })
                     }
                 }
@@ -1057,13 +1055,14 @@ module.exports = {
                     var yearData = 2017
                     var data = results.filter(results => results._id.year == newYear && results._id.month == month && results._id.dayOfMonth == newDate)
                     results = data;
-                    if(results.length == 0){
+                    if (results.length == 0) {
                         var datas = [{
+
                             _id: {
                                 year: newYear,
                                 month: newMonth,
                                 week: 0,
-                                dayOfMonth: 0                                
+                                dayOfMonth: 0
                             },
                             totalProductView: 0,
                             totalPageView: 0,
@@ -1083,12 +1082,11 @@ module.exports = {
                             responseCode: 200,
                             responseMessage: "Success."
                         })
-                    }
-                    else{
+                    } else {
                         res.send({
-                         result: results,
-                         responseCode: 200,
-                         responseMessage: "Success."
+                            result: results,
+                            responseCode: 200,
+                            responseMessage: "Success."
                         })
                     }
                 }
@@ -1294,7 +1292,8 @@ module.exports = {
             }
         })
     },
-    "giftStatisticsFilterClick": function(req, res) {
+
+  "giftStatisticsFilterClick": function(req, res) {
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var newDate = new Date(req.body.date).getDate();
@@ -1308,7 +1307,6 @@ module.exports = {
                 var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" }};
                 var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }};
                 var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }}
-
             break;
             case 'monthly':
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" } };
@@ -1318,7 +1316,6 @@ module.exports = {
                 var updateDataUsedd = { year: { $year: "$coupon.usedCouponDate" }, month: { $month: "$coupon.usedCouponDate" }, week: { $week: "$coupon.usedCouponDate" }}
                 var updateDataDeliveredd = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" } , week: { $week: "$cashPrize.updateddAt" }};
                 var updateDataPendingg = { year: { $year: "$cashPrize.updateddAt" }, month: { $month: "$cashPrize.updateddAt" }, week: { $week: "$cashPrize.updateddAt" }}
-
             break;
             case 'weekly':
                 var updateData = { year: { $year: "$date" }, month: { $month: "$date" } ,week: { $week: "$date" }, dayOfMonth: { $dayOfMonth: "$date" } };
@@ -1343,7 +1340,6 @@ module.exports = {
         waterfall([
             function(callback){
                 if(req.body.click == 'WINNER'){
-
                     var updateUnwindDataWinner = { $unwind: "$winners" };
                     createNewAds.aggregate(updateUnwindDataWinner,{ $match: { pageId: req.body.pageId } }, {
                         $group: {
@@ -1361,7 +1357,6 @@ module.exports = {
                                 console.log("Dfdgf", i)
                                 for (var j = 0; j < results.length; j++) {
                                     if (i == results[j]._id.month) {
-
                                         console.log("value of j==>", j)
                                         flag = true;
                                         break;
@@ -1452,7 +1447,6 @@ module.exports = {
                                 console.log("Dfdgf", i)
                                 for (var j = 0; j < results.length; j++) {
                                     if (i == results[j]._id.month) {
-
                                         console.log("value of j==>", j)
                                         flag = true;
                                         break;
@@ -1543,7 +1537,6 @@ module.exports = {
                         _id:updateDataCoupon,
                         CouponData: { $sum: 1 }
                     }}
-
                     User.aggregate(updateUnwindData, updateDataMatch,groupCond,function(err, results){
                         console.log("result",results)
                         if(req.body.dateFilter == 'yearly'){
@@ -1556,7 +1549,6 @@ module.exports = {
                                 console.log("Dfdgf", i)
                                 for (var j = 0; j < results.length; j++) {
                                     if (i == results[j]._id.month) {
-
                                         console.log("value of j==>", j)
                                         flag = true;
                                         break;
@@ -1647,7 +1639,6 @@ module.exports = {
                                         console.log("Dfdgf", i)
                                         for (var j = 0; j < results.length; j++) {
                                             if (i == results[j]._id.month) {
-
                                                 console.log("value of j==>", j)
                                                 flag = true;
                                                 break;

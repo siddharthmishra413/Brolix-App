@@ -5,6 +5,16 @@ $scope.$emit('SideMenu', 'Manage Ads');
 $scope.createAds = {};
 $scope.promoteAppGame = {};
 $scope.addCode = [];
+$scope.promoteAppValidation = [];
+
+
+$scope.validation =  function(item){
+    console.log("googlePlayLink",item)
+    
+    $scope.promoteAppValidation.push(item);
+    console.log("$scope.promoteAppValidation",$scope.promoteAppValidation)
+
+}
 
 //$scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
@@ -718,6 +728,10 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
 
     $scope.submit = function(){
+
+
+
+
 
     // var onedaymilisecond = 8.64e+7;
     console.log("$scope",JSON.stringify($scope.createAds.pageName));
