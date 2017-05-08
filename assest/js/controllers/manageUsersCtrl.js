@@ -1610,6 +1610,9 @@ $scope.dashBordFilter = function(){
          var data = {};
          $scope.couponId = couponId;
          console.log("$scope.couponId",$scope.couponId)
+         var type = localStorage.getItem('userTypeName');
+         console.log("type",type);
+
 
          // switch ($scope.modelDatacoupon)
          //    {
@@ -1620,8 +1623,7 @@ $scope.dashBordFilter = function(){
          //            data = {
          //                couponId:$scope.couponId,
          //                Id:array
-         //            }
-                    
+         //            }         
          //            BootstrapDialog.show({
          //            title: 'Send Coupon',
          //            message: 'Are you sure want to send coupon Users',
@@ -1632,8 +1634,7 @@ $scope.dashBordFilter = function(){
          //                    userService.sendCouponTOUSers(data).success(function(res) {
          //                        if (res.responseCode == 200){
          //                          toastr.success(res.responseMessage);
-         //                          $scope.sendMessage = '';
-                                  
+         //                          $scope.sendMessage = '';                         
          //                          dialog.close();
          //                          //toastr.success("Coupon Send successfully");
          //                          $state.reload();
@@ -1650,8 +1651,7 @@ $scope.dashBordFilter = function(){
          //                    }
          //                }]
          //            });
-         //            //console.log("dataIn",data)
-                    
+         //            //console.log("dataIn",data)       
          //        break;
 
          //        case 'PersonalUser':
