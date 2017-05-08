@@ -16,6 +16,7 @@ app.post('/deletePage', authUser.authUser, pageHandler.deletePage);
 app.post('/allPagesSearch/:id/:pageNumber', authUser.authUser, pageHandler.allPagesSearch); //Not Update in Docs
 app.post('/pageFollowUnfollow', pageHandler.pageFollowUnfollow); //Not Update in Docs
 app.post('/searchForPages/:id/:pageNumber', authUser.authUser, pageHandler.searchForPages); //Not Upadte in Docs
+
 app.post('/pageRating', authUser.authUser, pageHandler.pageRating);
 app.get('/showBlockedPage/:pageNumber', authUser.authUser, pageHandler.showBlockedPage);
 app.post('/removePage', authUser.authUser, pageHandler.removePage);
