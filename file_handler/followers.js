@@ -169,7 +169,7 @@
                      res.send({
                          result: results,
                          responseCode: 200,
-                         responseMessage: "You have unblocked this user."
+                         responseMessage: "You have reject this user."
                      });
                  }
              })

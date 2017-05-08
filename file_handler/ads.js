@@ -442,24 +442,23 @@ module.exports = {
                     }
                 })
             },
-            function(adResult, callback){
-                if(adResult.adsType == 'cash'){
-                    if(adResult.cash > 0){
-                       var type = "freeViewersPerCashAds";
-                    }
-                    else{
-                       var type = "brolixPerFreeCashAds";
+            function(adResult, callback) {
+                if (adResult.adsType == 'cash') {
+                    if (adResult.cash > 0) {
+                        var type = "freeViewersPerCashAds";
+                    } else {
+                        var type = "brolixPerFreeCashAds";
                     }
                 }
-                if(adResult.adsType == 'coupon'){
+                if (adResult.adsType == 'coupon') {
                     var type = "brolixPerFreeCouponAds";
                 }
                 brolixAndDollors.findOne({
-                    type : type
-                },function(err, result){
+                    type: type
+                }, function(err, result) {
                     var value = result.value
                     callback(null, value)
-                })    
+                })
             },
             function(value, callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
