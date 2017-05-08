@@ -2080,9 +2080,9 @@ module.exports = {
                 //console.log("arrayId==>",arrayId)
                 if (req.body.type == 'cash') {
                     if (!(arrayId.length == 0)) {
-                        var queryData = { $and: [{ 'cashPrize.pageId': { $in: arrayId } }] };
+                        var query= { $and: [{ 'cashPrize.pageId': { $in: arrayId } }] };
                     } else {
-                        var queryData = { $and: [] };
+                        var query = { $and: [] };
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
@@ -2156,9 +2156,9 @@ module.exports = {
                 //console.log("arrayId==>",arrayId)
                 if (req.body.type == 'cash') {
                     if (!(arrayId.length == 0)) {
-                        var queryData = { $and: [{ 'cashPrize.pageId': { $in: arrayId } }] };
+                        var query = { $and: [{ 'cashPrize.pageId': { $in: arrayId } }] };
                     } else {
-                        var queryData = { $and: [] };
+                        var query = { $and: [] };
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
