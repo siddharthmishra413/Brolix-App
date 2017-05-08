@@ -451,9 +451,16 @@ module.exports = {
                        var type = "brolixPerFreeCashAds";
                     }
                 }
-                if(adResult.adsType == 'coupon'){
-                    var type = "brolixPerFreeCouponAds";
+                else if(adResult.adsType == 'coupon'){
+                     if(adResult.cash > 0){
+                       var type = "freeViewersPerCashAds";
+                    }
+                    else{
+                       var type = "brolixPerFreeCouponAds";
+                    }
+                    
                 }
+                console.log("type-->>",type)
                 brolixAndDollors.findOne({
                     type : type
                 },function(err, result){

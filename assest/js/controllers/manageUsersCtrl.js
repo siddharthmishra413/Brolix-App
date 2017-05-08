@@ -18,7 +18,28 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     for (var i = 15; i <99; i++){
       $scope.ageLimit.push(i);
     }
+// sakshi gadia (sakshigadia@gmail.com, sakshi.gadia@gmail.com)
+// http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/countryListData
 
+
+
+    userService.countryListData().success(function(res) {
+      console.log("ddd",JSON.stringify(res))
+      $scope.countries = res.result;
+    })
+
+    $scope.changeCountry = function(){
+      var obj = {};
+      obj = {
+        country:$scope.dashBordFilter.country,
+      }
+      userService.cityListData(obj).success(function(res) {
+      console.log("ddd",JSON.stringify(res))
+      $scope.cityList = res.result;
+    })
+
+
+    }
     $scope.showPageDetails = function(id){
         //console.log("id---------",id);
         userService.showUserPage(id).success(function(res) {
@@ -155,49 +176,49 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     // }
 
 //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-    var currentCities=[];
-    $scope.currentCountry= '';
-var BATTUTA_KEY="00000000000000000000000000000000"
-    // Populate country select box from battuta API
-  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-    $.getJSON(url,function(countries)
-    {
-      $timeout(function(){
-        $scope.countriesList=countries;
-      },100)
+//     var currentCities=[];
+//     $scope.currentCountry= '';
+// var BATTUTA_KEY="00000000000000000000000000000000"
+//     // Populate country select box from battuta API
+//   url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+//     $.getJSON(url,function(countries)
+//     {
+//       $timeout(function(){
+//         $scope.countriesList=countries;
+//       },100)
 
 
-    });
-  var countryCode;
-    $scope.changeCountry = function(){
-      for(var i=0;i<$scope.countriesList.length;i++){
-        if($scope.countriesList[i].name==$scope.dashBordFilter.country){
-          countryCode=$scope.countriesList[i].code;
-          //console.log(countryCode)
-          break;
-        }
-      }
-      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(regions)
-      {
-        //console.log('state list:   '+JSON.stringify(regions))
-            $timeout(function(){
-             $scope.stateList = regions;
-            },100)
-      });
-    }
+//     });
+//   var countryCode;
+//     $scope.changeCountry = function(){
+//       for(var i=0;i<$scope.countriesList.length;i++){
+//         if($scope.countriesList[i].name==$scope.dashBordFilter.country){
+//           countryCode=$scope.countriesList[i].code;
+//           //console.log(countryCode)
+//           break;
+//         }
+//       }
+//       var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(regions)
+//       {
+//         //console.log('state list:   '+JSON.stringify(regions))
+//             $timeout(function(){
+//              $scope.stateList = regions;
+//             },100)
+//       });
+//     }
 
-    $scope.changeState = function(){
-      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
-      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(cities)
-      {
-        // console.log('city list:   '+JSON.stringify(cities))
-            $timeout(function(){
-             $scope.cityList = cities;
-            },100)
-      })
-    }
+//     $scope.changeState = function(){
+//       //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
+//       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(cities)
+//       {
+//         // console.log('city list:   '+JSON.stringify(cities))
+//             $timeout(function(){
+//              $scope.cityList = cities;
+//             },100)
+//       })
+//     }
     //-------------------------------END OF SELECT CASCADING-------------------------//
 
 
