@@ -592,26 +592,32 @@ module.exports = {
 
     "adAdmin": function(req, res) {
         if (req.body.add == "add") {
-            createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: 1 } }, {
-                new: true
-            }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Ad edit."
-                });
+            createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: 1 } }, { new: true }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { type: "Advertiser" } }).exec(function(err, result1) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "Admin added successfully"
+                            });
+                        }
+                    })
+                }
             });
         } else if (req.body.add == "remove") {
-            createNewPage.findByIdAndUpdate(req.params.id, { $pop: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: -1 } }, {
-                new: true
-            }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Removed."
-                });
+            createNewPage.findByIdAndUpdate(req.params.id, { $pop: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: -1 } }, { new: true }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { type: "USER" } }).exec(function(err, result1) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "Admin removed successfully"
+                            });
+                        }
+                    })
+                }
             });
         }
     },
@@ -2039,7 +2045,7 @@ module.exports = {
                     if (query.$and.length == 0) {
                         delete query.$and;
                     }
-                    console.log("query88==>",JSON.stringify(query))
+                    console.log("query88==>", JSON.stringify(query))
 
                     User.aggregate(
                         [
