@@ -189,7 +189,7 @@ var createNewAdsSchema = new Schema({
     favouriteCoupon: [],
     sendCouponToUser: { type: Number },
     appName: { type: String },
-    priorityNumber: { type: String },
+    priorityNumber: { type: Number, default: 0 },
     expiryOfPriority: { type: Date, default: Date.now },
     createdAt: {
         type: Date,
