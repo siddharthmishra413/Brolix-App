@@ -23,6 +23,8 @@ var logger = require('morgan');
 mongoose.Promise = global.Promise;
 var nodemailer = require('nodemailer');
 var session = require('client-sessions');
+var express = require('express'),
+    i18n = require("i18n");
 
 
 var port = process.env.PORT || 8082; // used to create, sign, and verify tokens
