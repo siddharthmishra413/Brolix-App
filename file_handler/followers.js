@@ -3,7 +3,7 @@
  var functions = require("./functionHandler");
  module.exports = {
 
-     //API Report Problem
+     //API Report Problem  
      "followUnfollow": function(req, res) {
          if (req.body.follow == "follow") {
              followerList.findOne({ $or: [{ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }] }).exec(function(err, result1) {
@@ -18,6 +18,7 @@
                                      User.findOneAndUpdate({ _id: req.body.receiverId }, {
                                          $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", notificationType: 'follow', image: image } }
                                      }, { new: true }).exec(function(err, results) {
+
                                          if (results.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
                                              var message = "req.body.message";
                                              functions.android_notification(result.deviceToken, message);
@@ -66,11 +67,15 @@
                  $set: { followerStatus: "unfollow" }
              }, { new: true }).exec(function(err, result) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                     res.send({
-                         result: result,
-                         responseCode: 200,
-                         responseMessage: "Unfollowed."
-                     });
+                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $pop: { userFollowers: -req.body.senderId } }, { new: true }).exec(function(err, result) {
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                             res.send({
+                                 result: result,
+                                 responseCode: 200,
+                                 responseMessage: "Unfollowed."
+                             });
+                         }
+                     })
                  }
              })
          }
@@ -128,8 +133,8 @@
                  }
              }, { new: true }).exec(function(err, results) {
                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }).exec(function(err, result) {
-                        console.log("result--->>>",result)
+                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }, { new: true }).exec(function(err, result) {
+                         console.log("result--->>>", result)
                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                              res.send({
                                  result: results,
@@ -149,7 +154,7 @@
                  }
              }, { new: true }).exec(function(err, results) {
                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $pop: { userFollowers: -req.body.blockUserId } }).exec(function(err, result) {
+                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId } }, { $pop: { userFollowers: -req.body.blockUserId } }, { new: true }).exec(function(err, result) {
                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                              res.send({
                                  result: results,

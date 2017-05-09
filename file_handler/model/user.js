@@ -225,6 +225,7 @@ var userSchema = new Schema({
         cashStatus: { type: String, default: 'pending' }
     }],
     userFollowers: [],
+    blockUser: [],
     UpgradeUsedAd: [{
         upgradeId: { type: String },
         adId: { type: String, ref: 'createNewAds' }

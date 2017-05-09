@@ -46,5 +46,6 @@ app.post('/couponStatisticsYearClicks',adsHandler.couponStatisticsYearClicks);
 app.post('/CouponAdStatistics',adsHandler.CouponAdStatistics);
 app.post('/CashAdStatistics',adsHandler.CashAdStatistics);
 app.post('/cashStatisticsYearClicks', adsHandler.cashStatisticsYearClicks);
+app.post('/homepageAds', adsHandler.homepageAds);
 
 module.exports = app;

@@ -449,16 +449,14 @@ module.exports = {
                     } else {
                         var type = "brolixPerFreeCashAds";
                     }
-                }
-                else if(adResult.adsType == 'coupon'){
-                     if(adResult.cash > 0){
-                       var type = "freeViewersPerCashAds";
+                } else if (adResult.adsType == 'coupon') {
+                    if (adResult.cash > 0) {
+                        var type = "freeViewersPerCashAds";
+                    } else {
+                        var type = "brolixPerFreeCouponAds";
                     }
-                    else{
-                       var type = "brolixPerFreeCouponAds";
-                    }                    
                 }
-                console.log("type-->>",type)
+                console.log("type-->>", type)
                 brolixAndDollors.findOne({
                     type: type
                 }, function(err, result) {
@@ -2183,70 +2181,120 @@ module.exports = {
     },
 
     "priority": function(req, res) {
-            async.waterfall([
-                function(callback) {
-                    createNewAds.paginate({ adsType: req.body.adsType }, { sort: { viewers: -1 } }, function(err, data) {
-                        if (err) {
-                            return res.json({ responseCode: 404, responseMessage: "Internal server error ." })
-                        } else {
-                            callback(null, data);
+        async.waterfall([
+            function(callback) {
+                createNewAds.paginate({ adsType: req.body.adsType }, { sort: { viewers: -1 } }, function(err, data) {
+                    if (err) {
+                        return res.json({ responseCode: 404, responseMessage: "Internal server error ." })
+                    } else {
+                        callback(null, data);
+                    }
+                })
+            },
+            function(data, callback) {
+                var currentTime = (new Date).getTime();
+                for (var i = 0; i <= data.docs.length - 1; i++) {
+                    if (data.docs[i].priorityNumber == req.body.number) {
+                        if (data.docs[i].expiryOfPriority - currentTime >= 0) {
+                            return res.json({ responseCode: 400, responseMessage: "At this place already a ads exist.", timeleft: currentTime - data.docs[i].expiryOfPriority, docs: data.docs[i], currentTime: currentTime })
                         }
-                    })
-                },
-                function(data, callback) {
-                    var currentTime = (new Date).getTime();
-                    for (var i = 0; i <= data.docs.length - 1; i++) {
-                        if (data.docs[i].priorityNumber == req.body.number) {
-                            if (data.docs[i].expiryOfPriority - currentTime >= 0) {
-                                return res.json({ responseCode: 400, responseMessage: "At this place already a ads exist.", timeleft: currentTime - data.docs[i].expiryOfPriority, docs: data.docs[i], currentTime: currentTime })
+                    } else {
+                        console.log('.')
+                    }
+                }
+                callback(null, data)
+            },
+            function(data, callback) {
+
+                createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $set: { expiryOfPriority: req.body.time, priorityNumber: req.body.number } }, { new: true }, function(err, result) {
+                    console.log("datataataya------------->>>>>>", result)
+                    if (err) {
+                        return res.json({ responseCode: 404, responseMessage: "Internal server error." })
+                    } else {
+                        // console.log("asgdhasd--------->>")
+                        var number = req.body.number;
+                        console.log("length--------->>", data.docs.length)
+                            // console.log("asghdhasgdhasgdkagsdkasdjkasdks------------->>>>>",data.docs[0]._id)
+                        for (var i = 0; i < data.docs.length; i++) {
+                            if (data.docs[i]._id == req.body.adsId) {
+                                console.log("asgdhasdsadasdasd--------->>", i)
+                                if (number >= data.docs.length) {
+                                    var k = number - data.docs.length;
+                                    while ((k--) + 1) {
+                                        data.docs.push(undefined);
+                                    }
+                                }
+                                // console.log("above data",data)
+                                data.docs.splice(number, 0, data.docs.splice(i, 1)[0]);
+                                console.log("ahsgdhsg-------->", data.docs)
+
+                                // return data.docs;
                             }
+
+                        }
+                        callback(null, data.docs)
+                    }
+                })
+            }
+        ], function(err, data) {
+            if (err) {
+                return res.json({ responseCode: 404, responseMessage: "Internal server error." })
+            } else {
+                return res.json({ responseCode: 200, responseMessage: "Success", result: data })
+            }
+        })
+
+    },
+
+    "homepageAds": function(req, res) {
+        waterfall([
+            function(callback) {
+                var priorityNumber = req.body.priorityNumber;
+                createNewAds.find({}).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
+                        var flag = false;
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i].priorityNumber == req.body.priorityNumber) {
+                                var flag = true;
+                            }
+                        }
+                        if (flag == false) {
+                            callback(null);
                         } else {
-                            console.log('.')
+                            res.send({ responseCode: 400, responseMessage: 'Already an ad exists at this place.' });
                         }
                     }
-                    callback(null, data)
-                },
-                function(data, callback) { 
- 
-                    createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $set: { expiryOfPriority: req.body.time, priorityNumber: req.body.number } }, { new: true }, function(err, result) {
-                        console.log("datataataya------------->>>>>>", result)
-                        if (err) {
-                            return res.json({ responseCode: 404, responseMessage: "Internal server error." })
-                        } else {
-                            // console.log("asgdhasd--------->>")
-                            var number = req.body.number;
-                            console.log("length--------->>", data.docs.length)
-                                // console.log("asghdhasgdhasgdkagsdkasdjkasdks------------->>>>>",data.docs[0]._id)
-                            for (var i = 0; i < data.docs.length; i++) {
-                                if (data.docs[i]._id == req.body.adsId) {
-                                    console.log("asgdhasdsadasdasd--------->>", i)
-                                    if (number >= data.docs.length) {
-                                        var k = number - data.docs.length;
-                                        while ((k--) + 1) {
-                                            data.docs.push(undefined);
-                                        }
-                                    }
-                                    // console.log("above data",data)
-                                    data.docs.splice(number, 0, data.docs.splice(i, 1)[0]);
-                                    console.log("ahsgdhsg-------->", data.docs)
+                })
+            },
+            function(callback) {
+                var priorityNumber = req.body.priorityNumber;
+                var expiryOfPriority = req.body.expiryOfPriority;
+                var startTime = new Date().toUTCString();
+                var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+                var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+                var s = Date.now(m)
+                var expiryOfPriority = expiryOfPriority;
+                var actualTime = parseInt(s) + parseInt(expiryOfPriority);
+                console.log("actualTime--->>>", actualTime)
+                createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { priorityNumber: priorityNumber, expiryOfPriority: actualTime } }, { new: true }).exec(function(err, result2) {
 
-                                    // return data.docs;
-                                }
-
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                                callback(null, result2)
                             }
-                            callback(null, data.docs)
-                        }
-                    })
-                }
-            ], function(err, data) {
-                if (err) {
-                    return res.json({ responseCode: 404, responseMessage: "Internal server error." })
-                } else {
-                    return res.json({ responseCode: 200, responseMessage: "Success", result: data })
-                }
-            })
-        
-    },
+                        })
+                    }
+                })
+            },
+        ], function(err, result) {
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: 'success.'
+            });
+        })
+    }
 
 
 
