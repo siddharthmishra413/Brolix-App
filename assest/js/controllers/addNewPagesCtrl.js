@@ -10,6 +10,7 @@ $scope.$emit('headerStatus', 'Manage Pages');
  $scope.array = [];
  $scope.arrayPage = [];
  $scope.adminsIdd;
+ $scope.subCategory = [];
  // $scope.arrayPage = [];
  var arr =[];
  var cond = [];

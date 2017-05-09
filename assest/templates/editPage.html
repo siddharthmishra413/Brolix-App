@@ -13,11 +13,9 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Page Name</label>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="pageName" ng-model="viewPageDetails.pageName" placeholder="Enter Page Name" maxlength="31" ng-pattern ="/^[a-zA-Z0-9\s]*$/" ng-maxlength="30" required readonly> 
+                                                <input type="text" class="form-control" name="pageName" ng-model="viewPageDetails.pageName" placeholder="Enter Page Name" required> 
                                                 <span style="color:red;" ng-show="userFrom.pageName.$dirty && userFrom.pageName.$invalid">
                                                 <span ng-show="userFrom.pageName.$error.required">Page Name is required.</span>
-                                                <span class="error"  ng-if="userFrom.pageName.$error.pattern">Only alphanumeric characters allowed.</span>
-                                                <span ng-show="userFrom.pageName.$error.maxlength">Page Name should contain max 30 characters.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -89,10 +87,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3"> Description</label>
                                             <div class="col-md-9">
-                                                <textarea class="form-control textarea-a" name="description" placeholder="Enter Description" ng-model="viewPageDetails.pageDiscription" maxlength="250" ng-maxlength="250" required></textarea>
-                                                <span style="color:red;" ng-show="userFrom.description.$dirty && userFrom.description.$invalid">
-                                                <span ng-show="userFrom.description.$error.required">Description is required.</span>
-                                                <span ng-show="userFrom.description.$error.maxlength">Description should contain max 250 characters.</span>
+                                                <textarea class="form-control textarea-a" name="description" placeholder="Enter Description" ng-model="viewPageDetails.pageDiscription" ></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -100,9 +95,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Email</label>
                                             <div class="col-md-9">
-                                                <input type="email" class="form-control" name="email" ng-model="viewPageDetails.email" placeholder="Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" maxlength="71" ng-maxlength="70" required> 
-                                                    <span style="color:red" ng-show="userFrom.email.$dirty && userFrom.email.$invalid ">
-                                                    <span ng-show="userFrom.email.$error.required ">Email is required.</span>
+                                                <input type="email" class="form-control" name="email" ng-model="viewPageDetails.email" placeholder="Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/"> 
                                                     <span ng-show="userFrom.email.$error.email && userFrom.email.$error.pattern">Invalid email address.</span>
                                                     </span>
                                             </div>
@@ -112,11 +105,8 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Website</label>
                                             <div class="col-md-9">
-                                                 <input type="text" class="form-control" name="website" placeholder="Enter Website" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" ng-model="viewPageDetails.website" required> 
-                                                 <span style="color:red;" ng-show="userFrom.website.$dirty && userFrom.website.$invalid">
-                                                <span ng-show="userFrom.website.$error.required">Website is required.</span>
-                                                <span class="error"  ng-if="userFrom.website.$error.pattern">Invalid Url</span>
-                                                 <span ng-show="userFrom.website.$error.manlength">Url length can't be greater than 50</span>
+                                                 <input type="text" class="form-control" name="website" placeholder="Enter Website" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" ng-model="viewPageDetails.website"> 
+
                                             </div>
                                         </div>
                                     </div>
@@ -124,12 +114,11 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Phone</label>
                                             <div class="col-md-9">
-                                                <input type="tel" class="form-control" name="phone" placeholder="Enter Phone No." ng-model="viewPageDetails.phoneNumber" minlength="0" maxlength="10" ng-maxlength="10" ng-pattern="/^[0-9]{1,10}$/" required> 
+                                                <input type="tel" class="form-control" name="phone" placeholder="Enter Phone No." ng-model="viewPageDetails.phoneNumber" minlength="0" maxlength="10" ng-maxlength="10" ng-pattern="/^[0-9]{1,10}$/"> 
                                                 <span style="color:red;" ng-show="userFrom.phone.$dirty && userFrom.phone.$invalid">
                                                 <span style="color:red;" ng-show="userFrom.phone.$error.required">Phone Number is required.</span> 
                                                 <span style="color:red;" ng-show="userFrom.phone.$error.maxlength">Must have at most 10 digits.</span>
                                                  <span style="color:red;" ng-show="userFrom.phone.$error.minlength">Must have at least 10 digits.</span>
-                                                <span ng-show="userFrom.phone.$error.pattern">Only Numbers are allowed.
                                             </div>
                                         </div>
                                     </div>
@@ -148,7 +137,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green"  ng-click="click('Step1')">Next</a>
+                                        <a class="btn btn-lg btn-green" ng-click="click('Step1')">Next</a>
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                     </div>
                                 </fieldset>
