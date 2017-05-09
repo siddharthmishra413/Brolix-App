@@ -8,7 +8,7 @@ var Payment = require("./model/payment");
 var subCategory = require("./subcategory.json");
 
 
-var countryList = require ('countries-cities').getCountries(); // Returns an array of country names. 
+var countryList = require('countries-cities').getCountries(); // Returns an array of country names. 
 var citiess = require('countries-cities').getCities("India"); // Returns an array of city names of the particualr country. 
 
 
@@ -4028,25 +4028,23 @@ module.exports = {
         })
     },
 
-    "countryListData": function(req, res){
-           res.send({
-                result: countryList,
-                responseCode: 200,
-                responseMessage: "All Country list."
-            })
+    "countryListData": function(req, res) {
+        res.send({
+            result: countryList,
+            responseCode: 200,
+            responseMessage: "All Country list."
+        })
     },
 
 
-    "cityListData": function(req, res){
+    "cityListData": function(req, res) {
         var city = require('countries-cities').getCities(req.body.country);
-        if(city== null || city.length== 0 || city == undefined || city == ''){
-                res.send({
-                    
-                    responseCode: 404,
-                    responseMessage: "Data not found.."
-                })
-        }
-        else{
+        if (city == null || city.length == 0 || city == undefined || city == '') {
+            res.send({
+                responseCode: 404,
+                responseMessage: "Data not found.."
+            })
+        } else {
             res.send({
                 result: city,
                 responseCode: 200,

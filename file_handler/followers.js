@@ -3,7 +3,7 @@
  var functions = require("./functionHandler");
  module.exports = {
 
-     //API Report Problem
+     //API Report Problem  
      "followUnfollow": function(req, res) {
          if (req.body.follow == "follow") {
              followerList.findOne({ $or: [{ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }] }).exec(function(err, result1) {
@@ -18,6 +18,7 @@
                                      User.findOneAndUpdate({ _id: req.body.receiverId }, {
                                          $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", notificationType: 'follow', image: image } }
                                      }, { new: true }).exec(function(err, results) {
+
                                          if (results.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
                                              var message = "req.body.message";
                                              functions.android_notification(result.deviceToken, message);
@@ -133,7 +134,8 @@
                  }
              }, { new: true }).exec(function(err, results) {
                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }).exec(function(err, result) {
+                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }, { new: true }).exec(function(err, result) {
+                         console.log("result--->>>", result)
                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                              res.send({
                                  result: results,
