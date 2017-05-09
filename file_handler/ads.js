@@ -2273,9 +2273,9 @@ module.exports = {
                 var h = new Date(new Date(startTime).setHours(00)).toUTCString();
                 var m = new Date(new Date(h).setMinutes(00)).toUTCString();
                 var s = Date.now(m)
-                var expiryOfPriority = expiryOfPriority;
-                var actualTime = parseInt(s) + parseInt(expiryOfPriority);
-                console.log("actualTime--->>>", actualTime)
+                var coupanAge = priorityNumber;
+                var actualTime = parseInt(s) + parseInt(coupanAge);
+                console.log("coupanAge--->>", coupanAge)
                 createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { priorityNumber: priorityNumber, expiryOfPriority: actualTime } }, { new: true }).exec(function(err, result2) {
