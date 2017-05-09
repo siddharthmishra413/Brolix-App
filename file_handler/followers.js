@@ -130,7 +130,6 @@
              }, { new: true }).exec(function(err, results) {
                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
                      User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }).exec(function(err, result) {
-                          console.log("result--->>",result)
                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                              res.send({
                                  result: results,
@@ -172,7 +171,7 @@
                      res.send({
                          result: results,
                          responseCode: 200,
-                         responseMessage: "You have unblocked this user."
+                         responseMessage: "You have reject this user."
                      });
                  }
              })
