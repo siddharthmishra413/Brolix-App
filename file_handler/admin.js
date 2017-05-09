@@ -4039,7 +4039,7 @@ module.exports = {
 
     "cityListData": function(req, res){
         var city = require('countries-cities').getCities(req.body.country);
-        if(city== null || city.length== 0 || city == undefined){
+        if(city== null || city.length== 0 || city == undefined || city == ''){
                 res.send({
                     
                     responseCode: 404,

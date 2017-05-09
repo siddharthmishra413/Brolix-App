@@ -58,6 +58,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
 
 
     }
+    
     $scope.showPageDetails = function(id){
         //console.log("id---------",id);
         userService.showUserPage(id).success(function(res) {
@@ -128,6 +129,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
 
                 $scope.currentPage = 1;
                 $scope.nextTotalUserDetail();
+                
 
                 break;
 
@@ -366,15 +368,16 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
        //console.log('page number personalUserDetail-> '+$scope.currentCashWinners);
          userService.showAllCashWinners($scope.currentCashWinners).success(function(res) {
             if (res.responseCode == 200){
-                   //console.log("resresresres",res)
+                   console.log("resresresres",JSON.stringify(res))
                    $scope.noOfPagesCashWinners = res.result.pages;
                    $scope.pageCashWinners= res.result.page;
                    $scope.cashWinners = res.result.docs;
                    $scope.cashWinnersCount = res.result.total;
-                   //console.log("$scope.cashWinnersCount",$scope.cashWinnersCount)
+                   console.log("$scope.cashWinnersCount",$scope.cashWinnersCount)
                }
                else {
-                toastr.error(res.responseMessage);
+               	$scope.cashWinnersCount = 0;
+                //toastr.error(res.responseMessage);
                 }
           })
      }

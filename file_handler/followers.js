@@ -121,6 +121,7 @@
      //API for Accept Follower Request
      "acceptFollowerRequest": function(req, res) {
          if (req.body.followerStatus == "accept") {
+             console.log("in")
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
                  $set: {
                      followerStatus: req.body.followerStatus,
@@ -129,6 +130,7 @@
              }, { new: true }).exec(function(err, results) {
                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
                      User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }).exec(function(err, result) {
+                          console.log("result--->>",result)
                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                              res.send({
                                  result: results,
@@ -149,6 +151,7 @@
              }, { new: true }).exec(function(err, results) {
                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
                      User.findOneAndUpdate({ _id: req.body.receiverId }, { $pop: { userFollowers: -req.body.blockUserId } }).exec(function(err, result) {
+                           console.log("result--->>",result)
                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                              res.send({
                                  result: results,

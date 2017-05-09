@@ -241,10 +241,10 @@ $scope.active_tab=function(active_card){
      $scope.nextRemovedPagesDetail();
  }
 
-userService.countrys().success(function(res) {
-     $scope.allCountriesfind = res.result;
-    }).error(function(status, data) {
-})
+// userService.countrys().success(function(res) {
+//      $scope.allCountriesfind = res.result;
+//     }).error(function(status, data) {
+// })
 
 userService.allAdminPages().success(function(res) {
     $scope.allAdminPages = res.result;
