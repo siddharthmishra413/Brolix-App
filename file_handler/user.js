@@ -416,9 +416,9 @@ module.exports = {
         })
     },
 
-    //API for user Details
+    //API for user Details  userId: { $ne: req.params.id },
     "allUserDetails": function(req, res) {
-        User.find({ $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
+        User.find({ userId: { $ne: req.params.id }, $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
             if (err) throw err;
             res.send({
                 result: result,

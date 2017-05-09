@@ -188,7 +188,9 @@ var createNewAdsSchema = new Schema({
     linkCount: { type: Number, default: 0 },
     favouriteCoupon: [],
     sendCouponToUser: { type: Number },
-    appName:{type:String},
+    appName: { type: String },
+    priorityNumber: { type: String },
+    expiryOfPriority: { type: Date, default: Date.now },
     createdAt: {
         type: Date,
         default: Date.now

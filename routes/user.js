@@ -7,7 +7,7 @@ var authUser = require('../middlewares/authUser');
 app.post('/signup', userHandler.signup);
 app.post('/login', userHandler.login);
 app.post('/verifyOtp', userHandler.verifyOtp);
-app.get('/allUserDetails', authUser.authUser, userHandler.allUserDetails);
+app.get('/allUserDetails/:id', authUser.authUser, userHandler.allUserDetails);
 app.put('/editProfile/:id', userHandler.editProfile);
 app.post('/changePassword', userHandler.changePassword);
 app.post('/forgotPassword', userHandler.forgotPassword);

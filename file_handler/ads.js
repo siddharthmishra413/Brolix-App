@@ -2177,9 +2177,6 @@ module.exports = {
     },
 
     "priority": function(req, res) {
-        if (!req.body.number || !req.body.adsType || !req.body.adsId || !req.body.time) {
-            return res.json({ responseCode: 400, responseMessage: "Please fill in all required fields." });
-        } else {
             async.waterfall([
                 function(callback) {
                     createNewAds.paginate({ adsType: req.body.adsType }, { sort: { viewers: -1 } }, function(err, data) {
@@ -2203,8 +2200,8 @@ module.exports = {
                     }
                     callback(null, data)
                 },
-                function(data, callback) {
-
+                function(data, callback) { 
+ 
                     createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $set: { expiryOfPriority: req.body.time, priorityNumber: req.body.number } }, { new: true }, function(err, result) {
                         console.log("datataataya------------->>>>>>", result)
                         if (err) {
@@ -2242,7 +2239,7 @@ module.exports = {
                     return res.json({ responseCode: 200, responseMessage: "Success", result: data })
                 }
             })
-        }
+        
     },
 
 
