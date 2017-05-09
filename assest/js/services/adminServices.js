@@ -421,8 +421,8 @@ app.service('userService',function($http){
 
     /*filter MangeUser section*/
 
-    userfilter: function(data){
-      return $http.post(baseurl+'/admin/userfilter', data);
+    userfilter: function(data,pageId){
+      return $http.post(baseurl+'/admin/userfilter/'+pageId, data);
     },
     // /*------ManageGiftSection-------*/
 

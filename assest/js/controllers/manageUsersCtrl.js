@@ -14,17 +14,35 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.cardType = 'upgrade_card';
     $scope.dashBordFilter = {};
     $scope.ageLimit = [];
+    $scope.ageLimits = [];
+
+    localStorage.setItem('userTypeName','totalUsers');
 
     for (var i = 15; i <99; i++){
       $scope.ageLimit.push(i);
     }
+    
+
+    $scope.ageFunction = function(age){
+    console.log("$scope.dashBordFilter.ageTo",age)
+    var agefromLimit = age+1;
+	    for (var i =  agefromLimit; i <99; i++){
+	      $scope.ageLimits.push(i);
+	    }
+	    console.log("$scope.ageLimits",$scope.ageLimits)
+    }
+
+    // for (var i =  $scope.dashBordFilter.ageTo; i <99; i++){
+    //   $scope.ageLimits.push(i);
+    // }
+    // console.log("$scope.ageLimits",$scope.ageLimits);
 // sakshi gadia (sakshigadia@gmail.com, sakshi.gadia@gmail.com)
 // http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/countryListData
 
 
 
     userService.countryListData().success(function(res) {
-      console.log("ddd",JSON.stringify(res))
+      //console.log("ddd",JSON.stringify(res))
       $scope.countries = res.result;
     })
 
@@ -1517,7 +1535,7 @@ $scope.dashBordFilter = function(){
     var type = localStorage.getItem('userTypeName');
     // $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
     // $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
-    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
+    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country;
     console.log("dateczx",$scope.dobFrom,$scope.dobFrom);
     var data = {};
         data = {
@@ -1537,8 +1555,22 @@ $scope.dashBordFilter = function(){
             {
                 case 'totalUsers':
                 //console.log("aaa1");
-                    userService.userfilter(data).success(function(res){
-                        $scope.totalUser = res.data;
+                    $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                         $scope.noOfPages = res.data.pages;
+                         $scope.pageNo = res.data.page;
+                         $scope.totalUser = res.data.docs;
+                         $scope.totalUserCount = res.data.total;
+                     }
+                     else {
+                      toastr.error(res.responseMessage);
+                      }
+                      // console.log("res",JSON.stringify(res))
+                      //   $scope.totalUser = res.data;
+                      //   dashBordFilter
+
                         //console.log("ressssssss1",JSON.stringify(res));
                     })
 
@@ -1546,63 +1578,71 @@ $scope.dashBordFilter = function(){
 
                 case 'personalUsers':
                 //console.log("2");
-                    userService.userfilter(data).success(function(res){
-                        $scope.personalUser = res.data;
-                        //console.log("ressssssss2",JSON.stringify($scope.personalUser));
-                    })
+                    $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                         $scope.noOfPagesPersonalUser = res.data.pages;
+                         $scope.pagePersonalUser= res.data.page;
+                         $scope.personalUser = res.data.docs;
+                         $scope.personalUserCount = res.data.total;
+                     }
+                     else {
+                      toastr.error(res.responseMessage);
+                      }
+                      })
 
                 break;
 
                 case 'businessUsers':
                 //console.log("3");
-                    userService.userfilter(data).success(function(res){
-                        $scope.businessUser = res.data;
-                        //console.log("ressssssss3",JSON.stringify($scope.businessUser));
+                    $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                         $scope.noOfPagesBusinessUser = res.data.pages;
+                         $scope.pageBusinessUser= res.data.page;
+                         $scope.businessUser = res.data.docs;
+                         $scope.businessUserCount = res.data.total;
+                     }
+                     else {
+                      toastr.error(res.responseMessage);
+                      }
                     })
 
                 break;
 
                 case 'liveUsers':
                 //console.log("4");
-                    userService.userfilter(data).success(function(res){
-                        $scope.liveUser = res.data;
-                        //console.log("ressssssss4",JSON.stringify($scope.liveUser));
-                    })
-
-                break;
-
-                case 'totalWinners':
-                //console.log("5");
-                    userService.userfilter(data).success(function(res){
-                        $scope.totalWinners = res.data;
-                        //console.log("ressssssss5",JSON.stringify($scope.totalWinners));
-                    })
-
-                break;
-
-                case 'cashWinners':
-                //console.log("6");
-                    userService.userfilter(data).success(function(res){
-                        $scope.cashWinners = res.data;
-                        //console.log("ressssssss6",JSON.stringify($scope.cashWinners));
-                    })
-
-                break;
-
-                case 'couponWinners':
-                //console.log("7");
-                    userService.userfilter(data).success(function(res){
-                        $scope.couponWinners = res.data;
-                        //console.log("ressssssss7",JSON.stringify($scope.couponWinners));
+                    $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                         $scope.noOfPagesLiveUser = res.data.pages;
+                         $scope.pageLiveUser= res.data.page;
+                         $scope.liveUser = res.data.docs;
+                         $scope.LiveUserCount = res.data.total;
+                     }
+                     else {
+                      toastr.error(res.responseMessage);
+                      }
                     })
 
                 break;
 
                 case 'blockedUsers':
-               //console.log("8");
-                    userService.userfilter(data).success(function(res){
-                        $scope.allblockUser = res.data;
-                        //console.log("ressssssss8",JSON.stringify($scope.allblockUser));
+                  $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                                if (res.responseCode == 200){
+                             $scope.noOfPagesBlockUser = res.data.pages;
+                             $scope.pageBlockUser= res.data.page;
+                             $scope.allblockUser = res.data.docs;
+                             $scope.allblockUserCount = res.data.total;
+                         }
+                         else {
+                          toastr.error(res.responseMessage);
+                          }
                     })
 
                 break;

@@ -148,7 +148,7 @@
                  }
              }, { new: true }).exec(function(err, results) {
                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                     User.findOneAndUpdate({ _id: req.body.senderId }, { $pop: { userFollowers: -req.body.blockUserId } }).exec(function(err, result) {
+                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $pop: { userFollowers: -req.body.blockUserId } }).exec(function(err, result) {
                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                              res.send({
                                  result: results,
