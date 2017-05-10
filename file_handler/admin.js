@@ -1813,7 +1813,7 @@ module.exports = {
     },
 
     "adsOnPage": function(req, res) {
-        createNewAds.paginate({ pageId: req.params.id }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+        createNewAds.find({ pageId: req.params.id }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
                 res.send({
                     result: result,
@@ -1836,7 +1836,7 @@ module.exports = {
                     }
                 }
                 console.log("array--->>", array)
-                User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
+                User.find({ _id: { $in: array } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found" }); } else {
                         res.send({
                             result: result1,
@@ -1856,7 +1856,7 @@ module.exports = {
                 for (var i = 0; i < result.adAdmin.length; i++) {
                     array.push(result.adAdmin[i].userId)
                 }
-                User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
+                User.find({ _id: { $in: array } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                         res.send({
                             result: result1,
