@@ -21,6 +21,8 @@ var paypalPayment = require("./model/payment");
 var Brolixanddollors = require("./model/brolixAndDollors");
 var mongoose = require('mongoose');
 
+var Twocheckout = require('2checkout-node');
+
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
     api_key: '188884977577618',
@@ -90,6 +92,64 @@ var optionsNew = {
 };
 
 module.exports = {
+    "createToken": function(req, res){
+        var args = {
+            sellerId: "901347468",
+            publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
+            ccNo: 4000000000000002,
+            cvv: 123,
+            expMonth: 01,
+            expYear: 2024
+        };
+
+        Twocheckout.loadPubKey('production', function() {
+            Twocheckout.requestToken(successCallback, errorCallback, args);
+        })
+    },
+
+    "Twocheckout":function(req, res){
+
+        var tco = new  Twocheckout({
+            sellerId: "901347468",
+            privateKey: "720B461B-ECC0-495D-B279-7CCC0057EED8",
+           // publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
+            sandbox: true   //#Uncomment to use Sandbox
+        });
+
+        var params = {
+            "merchantOrderId": "123", 
+            "token": "ZjhlYjkwZDMtZjVhZC00OGQ4LTkyY2YtMzc0YTc3MzgwMmVj",
+            "currency": "USD",
+            "total": "10.00",
+            "billingAddr": {
+                "name": "Joe Flagster",
+                "addrLine1": "123 Main Street",
+                "city": "Townsville",
+                "state": "Ohio",
+                "zipCode": "43206",
+                "country": "USA",
+                "email": "example@2co.com",
+                "phoneNumber": "8853735932"
+            }
+        };
+
+        tco.checkout.authorize(params, function (error, data) {
+            console.log("Fg")
+            if (error) {
+                console.log("error")
+                console.log(error);
+            } else {
+                res.send({
+                    
+                })
+                console.log("success")
+                console.log(JSON.stringify(data));
+            }
+        });
+
+    },
+
+
 
     //////////////////////////////////////////////////////////////////
     //////////////////////////////payU////////////////////////////////
