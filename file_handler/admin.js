@@ -89,42 +89,38 @@ module.exports = {
     },
 
     "addNewUser": function(req, res) {
-        User.findOne({
-            email: req.body.email
-        }).exec(function(err, result) {
-            if (err) {
-                res.send({
-                    responseCode: 409,
-                    responseMessage: 'Internal server error'
-                });
-            } else if (result) {
-                res.send({
-                    responseCode: 401,
-                    responseMessage: "Email should be unique."
-                });
-            } else {
-                var user = new User(req.body);
-                user.save(function(err, result) {
-                    if (err) {
-                        res.send({
-                            result: err,
-                            responseCode: 409,
-                            responseMessage: 'Internal server error'
-                        });
-                    } else {
-                        res.send({
-                            result: result,
-                            responseCode: 200,
-                            responseMessage: "User create successfully."
-                        });
-                    }
-                })
-            }
-        })
+        if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.state) { res.send({ responseCode: 403, responseMessage: 'state required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
+            User.findOne({ email: req.body.email }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result) {
+                    res.send({
+                        responseCode: 401,
+                        responseMessage: "Email should be unique."
+                    });
+                } else {
+                    var user = new User(req.body);
+                    user.save(function(err, result) {
+                        if (err) {
+                            res.send({
+                                result: err,
+                                responseCode: 409,
+                                responseMessage: 'Internal server error'
+                            });
+                        } else {
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "User create successfully."
+                            });
+                        }
+                    })
+                }
+            })
+        }
     },
 
     "showAllUser": function(req, res) {
-        User.paginate({ $or: [{ type: "USER", status: 'ACTIVE' }, { type: "Advertiser", status: 'ACTIVE' }]
+        User.paginate({
+            $or: [{ type: "USER", status: 'ACTIVE' }, { type: "Advertiser", status: 'ACTIVE' }]
         }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                 res.send({

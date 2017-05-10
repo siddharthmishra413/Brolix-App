@@ -252,7 +252,13 @@ module.exports = {
     //API for user signUP
     "signup": function(req, res) {
         console.log("request--->>", req.body)
-        if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.state) { res.send({ responseCode: 403, responseMessage: 'state required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); } 
+        else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); }
+         else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); }
+          else if (!req.body.state) { res.send({ responseCode: 403, responseMessage: 'state required' }); }
+           else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } 
+           else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); }
+            else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
             console.log("1")
             User.findOne({ email: req.body.email }, function(err, result) {
