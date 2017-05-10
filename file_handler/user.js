@@ -19,6 +19,7 @@ var yeast = require('yeast');
 var followerList = require("./model/followersList");
 var paypalPayment = require("./model/payment");
 var Brolixanddollors = require("./model/brolixAndDollors");
+var mongoose = require('mongoose');
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -1622,15 +1623,14 @@ module.exports = {
                 var obj = req.body.receiverCouponCode;
                 var receiverId = req.body.receiverId;
                 var senderId = req.body.senderId;
-                if (obj == undefined || obj == null || obj == '') { res.send({ responseCode: 400, responseMessage: "Receiver coupon code is required" }); } else if (receiverId == undefined || receiverId == null || receiverId == '') { res.send({ responseCode: 400, responseMessage: "receiverId is required." }) } else if (receiverId == senderId) { res.send({ responseCode: 400, responseMessage: "You can not send the exchange request to yourself." }) } else {
+                if (!req.body.receiverCouponCode) { res.send({ responseCode: 400, responseMessage: "Receiver coupon code is required" }); } else if (!req.body.receiverId) { res.send({ responseCode: 400, responseMessage: "receiverId is required." }) } else if (receiverId == senderId) { res.send({ responseCode: 400, responseMessage: "You can not send the exchange request to yourself." }) } else {
                     User.findOne({ _id: receiverId }).exec(function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error. 11' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                             User.findOne({ 'coupon.couponCode': obj }, function(err, result1) {
+                                
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error. 22" }); } else if (Boolean(result1.coupon.find(coupon => coupon.exchangeStatus == "OFF"))) {
-                                    res.send({ responseCode: 403, responseMessage: "Exchange request not allowed." })
-                                } else if (Boolean(result1.coupon.find(coupon => coupon.couponStatus != "VALID"))) {
-                                    res.send({ responseCode: 403, responseMessage: "Please enter a valid coupon to exchange" })
-                                } else {
+                                    res.send({ responseCode: 403, responseMessage: "Exchange request not allowed." })}
+                                else {
                                     callback(null)
                                 }
                             })
@@ -1644,7 +1644,7 @@ module.exports = {
                 var adId = req.body.receiverAdId;
                 var senderAdId = req.body.senderAdId;
                 var senderCouponCode = req.body.senderCouponCode;
-                if (senderId == undefined || senderId == null || senderId == '') { res.send({ responseCode: 400, responseMessage: "senderId is required." }) } else if (adId == undefined || adId == null || adId == '') { res.send({ responseCode: 400, responseMessage: "adId is required." }) } else if (senderAdId == undefined || senderAdId == null || senderAdId == '') { res.send({ responseCode: 400, responseMessage: "exchangedWithAdId is required." }) } else if (senderCouponCode == undefined || senderCouponCode == null || senderCouponCode == '') { res.send({ responseCode: 400, responseMessage: "senderCouponCode is required." }) } else {
+                if (!req.body.senderId) { res.send({ responseCode: 400, responseMessage: "senderId is required." }) } else if (!req.body.receiverAdId) { res.send({ responseCode: 400, responseMessage: "adId is required." }) } else if (!req.body.senderAdId) { res.send({ responseCode: 400, responseMessage: "exchangedWithAdId is required." }) } else if (!req.body.senderCouponCode) { res.send({ responseCode: 400, responseMessage: "senderCouponCode is required." }) } else {
 
                     User.findOne({ _id: receiverId }, function(err, result2) {
                         console.log("result2-->>", result2)
@@ -1742,17 +1742,28 @@ module.exports = {
             }
         })
     },
-
+   //   User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': senderCouponId } }, function(err, user) {
     "sendCouponToFollower": function(req, res) {
         waterfall([
             function(callback) {
+                var senderCouponId = req.body.senderCouponId;
                 var receiverId = req.body.receiverId;
                 var senderId = req.body.userId;
                 var adId = req.body.adId;
                 var couponId = req.body.couponId;
-                User.findOne({ _id: receiverId }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) } else {
+               User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) } }, function(err, user) {
+                    console.log("user---->>>",user)
+                    console.log("coupon.couponStatus--->>>",JSON.stringify(user[0].coupon.couponStatus))
+                    if(err){ res.send({ responseCode:500, responseMessage:"Internal server error11."})}
+                    else if(!user){res.send({ responseCode:404, responseMessage:"Please enter correct coupon Id."})}
+                    else if((user[0].coupon.couponStatus) != 'VALID') {
+                     res.send({ responseCode: 403, responseMessage: "Please enter a valid coupon." })}
+                    else{
+                   User.findOne({ _id: receiverId }, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) } else {
                         callback(null)
+                    }
+                })
                     }
                 })
             },
@@ -1767,9 +1778,7 @@ module.exports = {
                 var m = new Date(new Date(h).setMinutes(00)).toUTCString();
                 var currentTime = Date.now(m);
                 User.findOne({ _id: receiverId }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (Boolean(result1.coupon.find(coupon => coupon.couponReceived != "VALID"))) {
-                        res.send({ responseCode: 403, responseMessage: "Please enter a valid coupon to exchange." })
-                    } else if (result1.privacy.exchangeCoupon == "followers") {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.exchangeCoupon == "followers") {
                         var flag = result1.userFollowers.find(userFollowers => userFollowers == senderId)
                         if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "you are not friend" }); } else {
 

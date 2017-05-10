@@ -133,91 +133,91 @@ for (var i = 0; i < $scope.allAdminPages.length; i++) {
 
 /*----------send Brolix------------------*/
 
- $scope.total_user_brolix = function (modal) {
-        $("#sendbrolixModelAllUser").modal('show'); 
-    }
+//  $scope.total_user_brolix = function (modal) {
+//         $("#sendbrolixModelAllUser").modal('show'); 
+//     }
 
 
-$scope.send_brolix = function(modal){
-var array =[];
-var data = {};
+// $scope.send_brolix = function(modal){
+// var array =[];
+// var data = {};
 
-for (var i = 0; i < $scope.allAdminPages.length; i++) {
-        array.push($scope.allAdminPages[i]._id)
-    }
-    data = {
-        Brolix:$scope.sendBrolix.brolix,
-        Id:array
-    }
-    console.log("seccccccccccccccccccc",data)
-    userService.sendBrolixAndCashAllUser(data).success(function(res) {        
-        if (res.responseCode == 200){
-            toastr.success("Brolix Send successfully to All User");
-            $scope.sendBrolix = '';
-            $("#sendbrolixModelAllUser").modal('hide'); 
-        } else {
-            toastr.error(res.responseMessage);
-        }
-    })
-}
+// for (var i = 0; i < $scope.allAdminPages.length; i++) {
+//         array.push($scope.allAdminPages[i]._id)
+//     }
+//     data = {
+//         Brolix:$scope.sendBrolix.brolix,
+//         Id:array
+//     }
+//     console.log("seccccccccccccccccccc",data)
+//     userService.sendBrolixAndCashAllUser(data).success(function(res) {        
+//         if (res.responseCode == 200){
+//             toastr.success("Brolix Send successfully to All User");
+//             $scope.sendBrolix = '';
+//             $("#sendbrolixModelAllUser").modal('hide'); 
+//         } else {
+//             toastr.error(res.responseMessage);
+//         }
+//     })
+// }
 /*----------------------------------------*/
 
 
 /*------------------Send Card------------------*/
- $scope.total_user_card = function () {
-        $("#showAllCard").modal('show');
-    }
+//  $scope.total_user_card = function () {
+//         $("#showAllCard").modal('show');
+//     }
 
-$scope.sendCard = function(id){
- console.log("id",id);
- $scope.cardID = id;
- var array =[];
- var data = {};
+// $scope.sendCard = function(id){
+//  console.log("id",id);
+//  $scope.cardID = id;
+//  var array =[];
+//  var data = {};
 
- for (var i = 0; i < $scope.allAdminPages.length; i++) {
-        array.push($scope.allAdminPages[i]._id)
-    }
-    data = {
-        cardId:$scope.cardID,
-        Id:array
-    }
-    console.log("dataIn",data)
-    // userService.sendMassageAllUser(data).success(function(res) {        
-    //     if (res.responseCode == 200){
-    //         toastr.success("Message Send Successfully to All User");
-    //         $scope.sendMessage = '';
-    //         $("#sendMessageModelAllUser").modal('hide'); 
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-    // })
-}
+//  for (var i = 0; i < $scope.allAdminPages.length; i++) {
+//         array.push($scope.allAdminPages[i]._id)
+//     }
+//     data = {
+//         cardId:$scope.cardID,
+//         Id:array
+//     }
+//     console.log("dataIn",data)
+//     // userService.sendMassageAllUser(data).success(function(res) {        
+//     //     if (res.responseCode == 200){
+//     //         toastr.success("Message Send Successfully to All User");
+//     //         $scope.sendMessage = '';
+//     //         $("#sendMessageModelAllUser").modal('hide'); 
+//     //     } else {
+//     //         toastr.error(res.responseMessage);
+//     //     }
+//     // })
+// }
 
-$scope.total_user_coupons = function (modal) {
-    $("#showAllCoupons").modal('show');
-}
+// $scope.total_user_coupons = function (modal) {
+//     $("#showAllCoupons").modal('show');
+// }
 
-$scope.sendCoupons = function(couponId){
- var array =[];
- var data = {};
- for (var i = 0; i < $scope.allAdminPages.length; i++) {
-        array.push($scope.allAdminPages[i]._id)
-    }
-    data = {
-        couponId:$scope.couponId,
-        Id:array
-    }
-    console.log("dataIn",data)
-    userService.sendCouponTOUSers(data).success(function(res) {        
-        if (res.responseCode == 200){
-            toastr.success("Send Coupon to All User");
-            $scope.sendMessage = '';
-            $("#sendMessageModelAllUser").modal('hide'); 
-        } else {
-            toastr.error(res.responseMessage);
-        }
-    })
-}
+// $scope.sendCoupons = function(couponId){
+//  var array =[];
+//  var data = {};
+//  for (var i = 0; i < $scope.allAdminPages.length; i++) {
+//         array.push($scope.allAdminPages[i]._id)
+//     }
+//     data = {
+//         couponId:$scope.couponId,
+//         Id:array
+//     }
+//     console.log("dataIn",data)
+//     userService.sendCouponTOUSers(data).success(function(res) {        
+//         if (res.responseCode == 200){
+//             toastr.success("Send Coupon to All User");
+//             $scope.sendMessage = '';
+//             $("#sendMessageModelAllUser").modal('hide'); 
+//         } else {
+//             toastr.error(res.responseMessage);
+//         }
+//     })
+// }
 
 userService.viewcard($scope.cardType).success(function(res) {
       //console.log("resssssssssssssss",res)
@@ -226,20 +226,20 @@ userService.viewcard($scope.cardType).success(function(res) {
     })
 
 
-$scope.active_tab=function(active_card){
-        if(active_card=='upgrade_card'){
-        $scope.active_upgrade_card=true;
-         $scope.active_luck_card=false;
-      }else{
-        userService.viewcard(active_card).success(function(res) {
-        console.log("resssssssssssssss",res)
-        $scope.LuckCard = res.data;
-        console.log("LuckCard",$scope.LuckCard);
-    })
-         $scope.active_upgrade_card=false;
-            $scope.active_luck_card=true;
-      }
-    }
+// $scope.active_tab=function(active_card){
+//         if(active_card=='upgrade_card'){
+//         $scope.active_upgrade_card=true;
+//          $scope.active_luck_card=false;
+//       }else{
+//         userService.viewcard(active_card).success(function(res) {
+//         console.log("resssssssssssssss",res)
+//         $scope.LuckCard = res.data;
+//         console.log("LuckCard",$scope.LuckCard);
+//     })
+//          $scope.active_upgrade_card=false;
+//             $scope.active_luck_card=true;
+//       }
+//     }
 
 
 /*----------------------------------------------------*/
@@ -814,6 +814,7 @@ $scope.dashBordFilter = function(){
 $scope.showAdds = function(id){
     console.log("llllllllllll",id);
     userService.showAdds(id).success(function(res){
+        console.log("resssssss",JSON.stringify(res))
         if(res.responseCode == 200){
             $scope.allAddsOnPage=res.result;
             console.log("res",JSON.stringify(res));
