@@ -191,6 +191,7 @@ var createNewAdsSchema = new Schema({
     appName: { type: String },
     priorityNumber: { type: Number, default: 0 },
     expiryOfPriority: { type: Date, default: Date.now },
+    couponSold:[],
     createdAt: {
         type: Date,
         default: Date.now

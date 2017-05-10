@@ -8,6 +8,7 @@ $scope.class = false;
  $scope.sendMessage = {};
  $scope.active_upgrade_card=true;
  $scope.cardType = 'upgrade_card';
+ localStorage.setItem('pageTypeName','totalPages');
 
 
  userService.countryListData().success(function(res) {
@@ -311,11 +312,24 @@ $scope.dashBordFilter = function(){
     switch (type)
             {
                 case 'totalPages':
-                console.log("1"); 
-                    userService.pagefilter(data).success(function(res){
-                        $scope.totalUser = res.data;
-                        console.log("ressssssss1",res);
-                    })
+                    $scope.currentPage = 1;
+                    userService.pagefilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                           $scope.noOfPagesTotalPages = res.result.pages;
+                           $scope.pageTotalPages= res.result.page;
+                           $scope.totalPages = res.result.docs;
+                           console.log("$scope.totalPages",JSON.stringify($scope.totalPages));
+                           $scope.totalPagesCount = res.result.total;
+                       } 
+                       else {
+                        toastr.error(res.responseMessage);
+                        }
+                // console.log("1"); 
+                //     userService.pagefilter(data).success(function(res){
+                //         $scope.totalUser = res.data;
+                //         console.log("ressssssss1",res);
+                })
                     
                 break;
 
