@@ -1886,8 +1886,11 @@ module.exports = {
                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
                     var currentTime = Date.now(m);
                     if (!req.body.receiverRequestId) { res.send({ responseCode: 400, responseMessage: "Receiver RequestId is required" }); } else {
-                        createNewAds.findOne({ 'couponExchangeReceived._id': receiverRequestId }).exec(function(err, result) {
-                            console.log("ads --result--->>>",result)
+//                        createNewAds.findOne({ 'couponExchangeReceived._id': receiverRequestId }).exec(function(err, result) {
+//                            console.log("ads --result--->>>",result)
+                        createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { 'couponExchangeReceived._id': new mongoose.Types.ObjectId(receiverRequestId) } }, function(err, user) {
+                    console.log("user---->>>",user)
+                    console.log("coupon.couponExchangeStatus--->>>",JSON.stringify(user[0].couponExchangeReceived.couponExchangeStatus))
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); }
                             else {
                                 createNewAds.findOneAndUpdate({ 'couponExchangeReceived._id': receiverRequestId }, { $set: { "couponExchangeReceived.$.couponExchangeStatus": "ACCEPTED" } }, { new: true }).exec(function(err, result) {
