@@ -321,8 +321,8 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/viewPage/'+id);
     },
 
-    pagefilter: function(data) {
-      return $http.post(baseurl+'/admin/pagefilter', data);
+    pagefilter: function(data,pageNo) {
+      return $http.post(baseurl+'/admin/pagefilter/'+pageNo, data);
     },
 
     //Url : http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1310/admin/pagefilter

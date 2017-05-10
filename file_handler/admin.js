@@ -89,7 +89,7 @@ module.exports = {
     },
 
     "addNewUser": function(req, res) {
-        if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.state) { res.send({ responseCode: 403, responseMessage: 'state required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
+        if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
             User.findOne({ email: req.body.email }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result) {
                     res.send({
@@ -1814,7 +1814,7 @@ module.exports = {
 
     "adsOnPage": function(req, res) {
         createNewAds.find({ pageId: req.params.id }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -1837,7 +1837,7 @@ module.exports = {
                 }
                 console.log("array--->>", array)
                 User.find({ _id: { $in: array } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No winner found" }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
@@ -1857,7 +1857,7 @@ module.exports = {
                     array.push(result.adAdmin[i].userId)
                 }
                 User.find({ _id: { $in: array } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,

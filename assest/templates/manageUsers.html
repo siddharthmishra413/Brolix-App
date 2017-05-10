@@ -1165,23 +1165,32 @@
                                 </li>
                                 <li><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
                             </ul>
-                            <div class="tab-content add-card">
+                            <div class="tab-content add-card newtab-s">
                                 <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
                                     <div class="row-table" ng-repeat="data in UpgradeCard">
                                         <div class="col-cell">
-                                            <div class="cover-image">
+                                            <div class="cover-image newcover-img">
                                                 <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                                <div class="viewwe-s">
+                                                    <div class="tops-s">
+                                                         <div class="amts-top">50</div>
+                                                          <div class="ants-view">Viewers</div>
+                                                    </div>
+                                                     <div class="bottom-dol">$23</div>
+
+                                                </div>
+                                                 <div class="col-cell add-remove">
+                                                     <span class="fa fa-send" ng-click="sendCard(data._id,'upgrade')"></span>
+                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-cell add-remove">
-                                            <span class="fa fa-send" ng-click="sendCard(data._id,'upgrade')"></span>
-                                        </div>
+                                            
+                                        </div>                                       
                                     </div>
                                 </div>
                                 <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
                                     <div class="row-table" ng-repeat="data in LuckCard">
                                         <div class="col-cell">
-                                            <div class="cover-image">
+                                            <div class="cover-image newcover-img">
                                                 <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
                                             </div>
                                         </div>

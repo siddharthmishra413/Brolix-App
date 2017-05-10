@@ -22,17 +22,17 @@ $scope.class = false;
         country:$scope.dashBordFilter.country,
       }
       userService.cityListData(obj).success(function(res) {
-      console.log("ddd",JSON.stringify(res))
+      //console.log("ddd",JSON.stringify(res))
       $scope.cityList = res.result;
     })
 }
 
 
  userService.listOfCategory().success(function(res) {
-    console.log(JSON.stringify(res))
+    //console.log(JSON.stringify(res))
         if (res.responseCode == 200){
             $scope.category= res.result;
-            console.log("category",JSON.stringify(res))
+            //console.log("category",JSON.stringify(res))
         }else{
             toastr.error("Something went wrong")
         } 
@@ -50,59 +50,6 @@ $scope.class = false;
 
 
 
-//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-//     var currentCities=[];
-//     $scope.currentCountry= '';
-// var BATTUTA_KEY="00000000000000000000000000000000"
-//     // Populate country select box from battuta API
-//   url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-//     $.getJSON(url,function(countries)
-//     {
-//       $timeout(function(){
-//         $scope.countriesList=countries;
-//         //console.log("data1",$scope.countriesList)
-//       },100)
-      
-      
-//     });
-//   var countryCode;
-//     $scope.changeCountry = function(){
-//       for(var i=0;i<$scope.countriesList.length;i++){
-//         console.log("$scope.dashBordFilter.country",$scope.dashBordFilter.country)
-//         if($scope.countriesList[i].name==$scope.dashBordFilter.country){
-//           countryCode=$scope.countriesList[i].code;
-//           //console.log(countryCode)
-//           break;
-//         }
-//       }
-//       var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-//       $.getJSON(url,function(regions)
-//       {
-//         //console.log('state list:   '+JSON.stringify(regions))
-//             $timeout(function(){
-//              $scope.stateList = regions;
-//              //console.log("data2",$scope.stateList)
-//             },100)
-//       });
-//     }
-
-//     $scope.changeState = function(){
-//       //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
-//       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
-//       $.getJSON(url,function(cities)
-//       {
-//         // console.log('city list:   '+JSON.stringify(cities))
-//             $timeout(function(){
-//              $scope.cityList = cities;
-//              console.log("data3",$scope.cityList)
-//             },100)
-//       })
-//     }
-    //-------------------------------END OF SELECT CASCADING-------------------------//
-
-
- /*------------Send case---------------*/
-
  $scope.total_user_cash = function (modal) {
     $("#sendcashModelAllUser").modal('show'); 
 }
@@ -117,7 +64,7 @@ for (var i = 0; i < $scope.allAdminPages.length; i++) {
         Cash:$scope.sendCash.Cash,
         Id:array
     }
-    console.log("data",data)
+    //console.log("data",data)
     userService.sendBrolixAndCashAllUser(data).success(function(res) {        
         if (res.responseCode == 200){
             toastr.success("Cash Send successfully to All User");
@@ -220,11 +167,11 @@ for (var i = 0; i < $scope.allAdminPages.length; i++) {
 //     })
 // }
 
-userService.viewcard($scope.cardType).success(function(res) {
-      //console.log("resssssssssssssss",res)
-        $scope.UpgradeCard = res.data;
-        //console.log("UpgradeCard",$scope.UpgradeCard);
-    })
+// userService.viewcard($scope.cardType).success(function(res) {
+//       //console.log("resssssssssssssss",res)
+//         $scope.UpgradeCard = res.data;
+//         //console.log("UpgradeCard",$scope.UpgradeCard);
+//     })
 
 
 // $scope.active_tab=function(active_card){
@@ -269,7 +216,7 @@ userService.viewcard($scope.cardType).success(function(res) {
 userService.allAdminPages().success(function(res) {
     $scope.allAdminPages = res.result;
      $scope.allAdminPagesCount = res.count;
-     console.log("ffffffff",res)
+     //console.log("ffffffff",res)
      
     }).error(function(status, data) {
 })
@@ -293,6 +240,8 @@ userService.allAdminPages().success(function(res) {
 $scope.dashBordFilter = function(){
 
     var type = localStorage.getItem('pageTypeName');
+    console.log("type",type)
+
     $scope.dobTo =$scope.dashBordFilter.dobTo==null?undefined : new Date($scope.dashBordFilter.dobTo).getTime();
     $scope.dobFrom =$scope.dashBordFilter.dobFrom==null?undefined : new Date($scope.dashBordFilter.dobFrom).getTime();
     //$scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
@@ -307,20 +256,21 @@ $scope.dashBordFilter = function(){
             joinTo:$scope.dobTo,
             joinFrom:$scope.dobFrom,
         }
-        console.log("datatata",JSON.stringify(data))
+        //console.log("datatata",JSON.stringify(data))
 
     switch (type)
             {
                 case 'totalPages':
+                console.log("13434")
                     $scope.currentPage = 1;
-                    userService.pagefilter(data,$scope.currentPage).success(function(res){
+                    userService.pagefilter(data,$scope.currentPage ).success(function(res){
                       console.log("res",JSON.stringify(res))
                       if (res.responseCode == 200){
-                           $scope.noOfPagesTotalPages = res.result.pages;
-                           $scope.pageTotalPages= res.result.page;
-                           $scope.totalPages = res.result.docs;
-                           console.log("$scope.totalPages",JSON.stringify($scope.totalPages));
-                           $scope.totalPagesCount = res.result.total;
+                           $scope.noOfPagesTotalPages = res.data.pages;
+                           $scope.pageTotalPages= res.data.page;
+                           $scope.totalPages = res.data.docs;
+                           //console.log("$scope.totalPages",JSON.stringify(res));
+                           $scope.totalPagesCount = res.data.total;
                        } 
                        else {
                         toastr.error(res.responseMessage);
@@ -333,30 +283,65 @@ $scope.dashBordFilter = function(){
                     
                 break;
 
-                case 'unPublishedPage': 
+                case 'unPublishedPage':
+                console.log("cccccvvvvv")
+                    $scope.currentPage = 1;
+                    userService.pagefilter(data,$scope.currentPage ).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                           $scope.noOfPagesunPublishedPage = res.data.pages;
+                           $scope.pageunPublishedPage= res.data.page;
+                           $scope.unPublishedPage= res.data.docs;
+                           $scope.unPublishedPageCount = res.data.total;
+                       } 
+                       else {
+                        toastr.error(res.responseMessage);
+                        }
                 //console.log("2");
-                    userService.pagefilter(data).success(function(res){
-                        $scope.personalUser = res.data;
-                        console.log("ressssssss2",JSON.stringify($scope.personalUser));
+                    // userService.pagefilter(data).success(function(res){
+                    //     $scope.personalUser = res.data;
+                    //     //console.log("ressssssss2",JSON.stringify($scope.personalUser));
                     })
                     
                 break;
 
                 case 'removedPage': 
                 //console.log("3");
-                    userService.pagefilter(data).success(function(res){
-                        $scope.businessUser = res.data;
-                        console.log("ressssssss3",JSON.stringify($scope.businessUser));
+                    $scope.currentPage = 1;
+                    userService.pagefilter(data,$scope.currentPage ).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                           $scope.noOfPagesRemovedPage = res.data.pages;
+                           $scope.pageRemovedPage= res.data.page;
+                           $scope.showAllRemovedPage= res.data.docs;
+                           //console.log(JSON.stringify($scope.showAllRemovedPage))
+                           $scope.showAllRemovedPageCount = res.data.total;
+                       } 
+                       else {
+                        toastr.error(res.responseMessage);
+                        }
+                        //console.log("ressssssss3",JSON.stringify($scope.businessUser));
                     })
                     
                 break;
 
                 case 'blockedPage': 
                 //console.log("4");
-                    userService.pagefilter(data).success(function(res){
-                        $scope.liveUser = res.data;
-                        console.log("ressssssss4",JSON.stringify($scope.liveUser));
+                    $scope.currentPage = 1;
+                    userService.pagefilter(data,$scope.currentPage ).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                              if (res.responseCode == 200){
+                           $scope.noOfPagesBlockedPage = res.data.pages;
+                           $scope.pageBlockedPage= res.data.page;
+                           $scope.showAllBlockedPage = res.data.docs;
+                           $scope.showAllBlockedPageCount = res.data.total;
+                       } 
+                       else {
+                        toastr.error(res.responseMessage);
+                        }
+                        //console.log("ressssssss3",JSON.stringify($scope.businessUser));
                     })
+                        //console.log("ressssssss4",JSON.stringify($scope.liveUser));
                     
                 break;
 
@@ -453,7 +438,7 @@ $scope.dashBordFilter = function(){
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    console.log("luuuuuuuuuuuuuu",data)
+                    //console.log("luuuuuuuuuuuuuu",data)
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All UnPublished Page Owner");
@@ -548,7 +533,7 @@ $scope.dashBordFilter = function(){
     $scope.blockPage = function (id) {
         $scope.BlockId = id;
         var userId = $scope.BlockId;
-        console.log("Blockid",userId);
+        //console.log("Blockid",userId);
         if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
         toastr.error("Please select user.")
         $state.go('header.managePages')
@@ -583,7 +568,7 @@ $scope.dashBordFilter = function(){
     $scope.unblockPage = function (id) {
         $scope.BlockId = id;
         var userId = $scope.BlockId;
-        console.log("Blockid",userId);
+        //console.log("Blockid",userId);
         if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
         toastr.error("Please select user.")
         $state.go('header.managePages')
@@ -648,7 +633,7 @@ $scope.dashBordFilter = function(){
                    $scope.noOfPagesTotalPages = res.result.pages;
                    $scope.pageTotalPages= res.result.page;
                    $scope.totalPages = res.result.docs;
-                   console.log("$scope.totalPages",JSON.stringify($scope.totalPages));
+                   //console.log("$scope.totalPages",JSON.stringify($scope.totalPages));
                    $scope.totalPagesCount = res.result.total;
                } 
                else {
@@ -756,7 +741,7 @@ $scope.dashBordFilter = function(){
                    $scope.noOfPagesRemovedPage = res.result.pages;
                    $scope.pageRemovedPage= res.result.page;
                    $scope.showAllRemovedPage= res.result.docs;
-                   console.log(JSON.stringify($scope.showAllRemovedPage))
+                   //console.log(JSON.stringify($scope.showAllRemovedPage))
                    $scope.showAllRemovedPageCount = res.result.total;
                } 
                else {
@@ -826,12 +811,12 @@ $scope.dashBordFilter = function(){
 /*show Adds*/
 
 $scope.showAdds = function(id){
-    console.log("llllllllllll",id);
+    //console.log("llllllllllll",id);
     userService.showAdds(id).success(function(res){
-        console.log("resssssss",JSON.stringify(res))
+        //console.log("resssssss",JSON.stringify(res))
         if(res.responseCode == 200){
             $scope.allAddsOnPage=res.result;
-            console.log("res",JSON.stringify(res));
+            //console.log("res",JSON.stringify(res));
             $("#adsDetails").modal('show');
 
         }else{
@@ -844,11 +829,11 @@ $scope.showAdds = function(id){
 /*ownerDetails*/
 
 $scope.ownerDetails = function(id){
-    console.log("iddddd",id)
+    //console.log("iddddd",id)
 
 
 userService.userInfo(id).success(function(res) { 
-    console.log("resssssssss",JSON.stringify(res))
+    //console.log("resssssssss",JSON.stringify(res))
          $("#ownerDetails").modal('show');
         // if (res.responseCode == 200){
             
@@ -898,15 +883,15 @@ $scope.showAdminPages = function(id){
 app.filter("pagesFilter",function() {
      return function(items,nameValue)
      {
-        console.log(JSON.stringify(items));
-        console.log(nameValue);
+       // console.log(JSON.stringify(items));
+        //console.log(nameValue);
        if (!nameValue) {
          return retArray = items;
             }
          var retArray = [];
            for(var i=0;i<items.length;i++) 
                {
-               console.log(typeof items[i].phoneNumber);
+               //console.log(typeof items[i].phoneNumber);
              if(items[i].phoneNumber == '' || items[i].phoneNumber == 'undefined' || items[i].pageName == null || items[i].pageName == 'undefined' || items[i].pageName == null || items[i].phoneNumber == null)
               {
              }else if(items[i].phoneNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {

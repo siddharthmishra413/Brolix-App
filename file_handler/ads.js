@@ -31,7 +31,7 @@ module.exports = {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
-                req.body.viewerLenght = 2;
+            //    req.body.viewerLenght = 2;
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
@@ -51,7 +51,7 @@ module.exports = {
                     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                 } else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
-                        req.body.viewerLenght = 2;
+                      //  req.body.viewerLenght = 2;
                         req.body.cashStatus = 'PENDING';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
@@ -418,10 +418,10 @@ module.exports = {
                                     } else {
                                         if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
-                                            var state = result.whoWillSeeYourAdd.state;
+                                           // var state = result.whoWillSeeYourAdd.state;
                                             var city = result.whoWillSeeYourAdd.city;
 
-                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different state.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
+                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); }  else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
                                                 callback(null)
                                             }
                                         }
