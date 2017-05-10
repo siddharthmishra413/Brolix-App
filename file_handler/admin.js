@@ -124,8 +124,7 @@ module.exports = {
     },
 
     "showAllUser": function(req, res) {
-        User.paginate({
-            $or: [{ $ne: { type: 'ADMIN' }, type: "USER", status: 'ACTIVE' }, { type: "Advertiser", status: 'ACTIVE' }]
+        User.paginate({ $or: [{ type: "USER", status: 'ACTIVE' }, { type: "Advertiser", status: 'ACTIVE' }]
         }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                 res.send({
@@ -138,7 +137,7 @@ module.exports = {
     },
 
     "showAllPersonalUser": function(req, res) {
-        User.paginate({ $ne: { type: 'ADMIN' }, type: "USER", status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+        User.paginate({ type: "USER", status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                 res.send({
                     result: result,
@@ -151,7 +150,7 @@ module.exports = {
 
 
     "showAllBusinessUser": function(req, res) {
-        User.paginate({ $ne: { type: 'ADMIN' }, type: "Advertiser", status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+        User.paginate({ type: "Advertiser", status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                 res.send({
                     result: result,
