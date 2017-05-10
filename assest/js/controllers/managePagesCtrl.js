@@ -273,21 +273,21 @@ userService.allAdminPages().success(function(res) {
     }).error(function(status, data) {
 })
 
-$scope.catId = function() {
-    //console.log($scope.dashBordFilter.country);
-    var country = $scope.dashBordFilter.country
-    $http.get('/admin/getAllStates/' + country.code + '/ISO2').success(function(res) {
-        //console.log(res);
-        $scope.allstates = res.result;
-    }, function(err) {});
-}
+// $scope.catId = function() {
+//     //console.log($scope.dashBordFilter.country);
+//     var country = $scope.dashBordFilter.country
+//     $http.get('/admin/getAllStates/' + country.code + '/ISO2').success(function(res) {
+//         //console.log(res);
+//         $scope.allstates = res.result;
+//     }, function(err) {});
+// }
 
-$scope.slectCountry = function(qq){
-        //console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
-        userService.allstatefind($scope.dashBordFilter.country).success(function(res) {
-        $scope.allstatefind = res.result;
-    })
-}
+// $scope.slectCountry = function(qq){
+//         //console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
+//         userService.allstatefind($scope.dashBordFilter.country).success(function(res) {
+//         $scope.allstatefind = res.result;
+//     })
+// }
 
 $scope.dashBordFilter = function(){
 
