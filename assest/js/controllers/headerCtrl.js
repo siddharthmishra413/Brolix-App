@@ -15,7 +15,7 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
     	}else {
 
     		$scope.user = res.result;
-        console.log("userDetails--->",JSON.stringify($scope.user))
+        //console.log("userDetails--->",JSON.stringify($scope.user))
 
         localStorage.loginData=res.result._id;
         $scope.userId = res.result._id; 
@@ -27,7 +27,7 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
        angular.forEach($scope.userPermissions,function(value,key) {
           data.push(value);
        }) 
-        console.log("userPermissions--->",JSON.stringify(data))
+        //console.log("userPermissions--->",JSON.stringify(data))
 
             $scope.manageUser = false;
             $scope.managePages = false;

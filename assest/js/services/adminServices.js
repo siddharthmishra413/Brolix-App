@@ -143,9 +143,7 @@ app.service('userService',function($http){
     totalWinners: function(pageNo) {
       return $http.get(baseurl+'/admin/winners/'+pageNo);
     },
-    countrys: function() {
-      return $http.get(baseurl+'/admin/countrys');
-    },
+    
     // userProfile: function(id) {
     //   return $http.get(baseurl+'/admin/userProfile/'+id);
     // },
@@ -167,6 +165,12 @@ app.service('userService',function($http){
    },
     showListOFCoupon: function() {
       return $http.get(baseurl+'/admin/showListOFCoupon');
+    },
+    countryListData: function() {
+      return $http.get(baseurl+'/admin/countryListData');
+    },
+    cityListData: function(data) {
+      return $http.post(baseurl+'/admin/cityListData', data);
     },
 
 
@@ -417,8 +421,8 @@ app.service('userService',function($http){
 
     /*filter MangeUser section*/
 
-    userfilter: function(data){
-      return $http.post(baseurl+'/admin/userfilter', data);
+    userfilter: function(data,pageId){
+      return $http.post(baseurl+'/admin/userfilter/'+pageId, data);
     },
     // /*------ManageGiftSection-------*/
 

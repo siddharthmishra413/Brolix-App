@@ -3,6 +3,8 @@ var app = express();
 var adminHandler = require('../file_handler/admin.js');
 
 
+app.get('/countryListData', adminHandler.countryListData);
+app.post('/cityListData', adminHandler.cityListData);
 
 app.post('/login', adminHandler.login);
 app.get('/adminProfile', adminHandler.adminProfile);

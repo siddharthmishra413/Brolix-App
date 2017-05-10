@@ -10,7 +10,7 @@ app.post('/Twocheckout', userHandler.Twocheckout);
 app.post('/signup', userHandler.signup);
 app.post('/login', userHandler.login);
 app.post('/verifyOtp', userHandler.verifyOtp);
-app.get('/allUserDetails', authUser.authUser, userHandler.allUserDetails);
+app.get('/allUserDetails/:id', authUser.authUser, userHandler.allUserDetails);
 app.put('/editProfile/:id', userHandler.editProfile);
 app.post('/changePassword', userHandler.changePassword);
 app.post('/forgotPassword', userHandler.forgotPassword);
@@ -62,7 +62,7 @@ app.post('/seeExchangeSentRequest', authUser.authUser, userHandler.seeExchangeSe
 app.post('/savePaymentRequest', userHandler.savePaymentRequest);
 app.post('/userCashGifts', authUser.authUser, userHandler.userCashGifts);
 app.post('/blockUserSearch', authUser.authUser, userHandler.blockUserSearch);
-app.post('/userNotification/:pageNumber', authUser.authUser, userHandler.userNotification);
+app.post('/userNotification', authUser.authUser, userHandler.userNotification);
 
 
 app.post('/payU', userHandler.payU)

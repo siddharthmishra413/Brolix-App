@@ -14,7 +14,7 @@
                             </div>
                             <div class="btn-manage">
                                 <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click="userTypeName('totalUsers')">
                                         Send
                                         <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                     </button>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="btn-manage">
                                 <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click="userTypeName('personalUsers')">
                                         Send
                                         <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                     </button>
@@ -71,7 +71,7 @@
                             </div>
                             <div class="btn-manage">
                                 <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click="userTypeName('businessUsers')">
                                         Send
                                         <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                     </button>
@@ -99,7 +99,7 @@
                             </div>
                             <div class="btn-manage">
                                 <div class="dropdown">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click="userTypeName('liveUsers')">
                                         Send
                                         <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                     </button>
@@ -236,7 +236,7 @@
                      <div class="form-group cus-select">
                          <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
                             <option value="">Select Country</option>
-                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                            <option ng-repeat="country in countries" value"{{country}}">{{country}}</option>
                          </select>
                     </div>
                     <div class="form-group cus-select">
@@ -248,7 +248,7 @@
                     <div class="form-group cus-select">
                          <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
-                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                            <option ng-repeat="city in cityList">{{city}}</option>
                          </select>
                     </div>
 
@@ -263,7 +263,7 @@
                         </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-model="dashBordFilter.ageTo">
+                        <select class="form-control" ng-change="ageFunction(dashBordFilter.ageTo);" ng-model="dashBordFilter.ageTo">
                             <option value="">Age From</option>
                             <<option ng-repeat="age in ageLimit">{{age}}</option>
                         </select>
@@ -271,7 +271,7 @@
                     <div class="form-group cus-select">
                         <select class="form-control" ng-change="dashBordFilter(dashBordFilter.ageFrom);" ng-model="dashBordFilter.ageFrom">
                             <option value="">Age To</option>
-                            <option ng-repeat="age in ageLimit">{{age+1}}</option>
+                            <option ng-repeat="ages in ageLimits">{{ages}}</option>
                         </select>
                     </div>
 
@@ -326,10 +326,10 @@
                 <li class="active">
                      <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                 </li>
-                <li class="active">
+               <!--  <li class="active">
                 <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                </li>
+                </li> -->
                 <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                 </li>
@@ -408,10 +408,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                   <!--  <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -491,10 +491,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                    <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -573,10 +573,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                   <!--  <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -655,10 +655,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                    <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -738,10 +738,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                    <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -820,10 +820,10 @@
                     <li class="active">
                          <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
                     </li>
-                    <li class="active">
+                    <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
-                    </li>
+                    </li> -->
                     <li class="active">
                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
                     </li>
@@ -1218,15 +1218,15 @@
                     <!-- {{data.pageName}} -->
                     <div class="cover-image-txt">
                         <div class="left-img-txt">
-                            <div class="b-layer-txt text-center">Test</div>
-                            <div class="g-layer-txt text-center">Valid Thru: 4 May 2017</div>
+                            <div class="b-layer-txt text-center">{{data.pageName}}</div>
+                            <div class="g-layer-txt text-center">{{data.couponExpiryDate}}</div>
                         </div>
                         <div class="gift-input">
-                            <input type="text" placeholder="Gift Description">
+                            <span type="text" placeholder="Gift Description">{{data.giftDescription}}</span>
                         </div>
                     </div>
                     <div class="valid-block">
-                        <span class="valid-txt">Valid</span>
+                        <span class="valid-txt">{{data.status}}</span>
                         <span class="valid-box"><i class="fa fa-circle"></i></span>
                     </div>
 

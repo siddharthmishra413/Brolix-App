@@ -476,9 +476,9 @@ module.exports = {
         })
     },
 
-    //API for user Details
+    //API for user Details  userId: { $ne: req.params.id },
     "allUserDetails": function(req, res) {
-        User.find({ $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
+        User.find({ userId: { $ne: req.params.id }, $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
             if (err) throw err;
             res.send({
                 result: result,
@@ -2059,7 +2059,6 @@ module.exports = {
             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
             var currentTime = Date.now(m);
             if (receiverRequestId == undefined || receiverRequestId == null || receiverRequestId == '') { res.send({ responseCode: 400, responseMessage: "ReceiverRequestId is required." }); } else {
-
                 createNewAds.findOneAndUpdate({ 'couponExchange._id': receiverRequestId }, { $set: { "couponExchange.$.couponExchangeStatus": "DECLINED" } }, { new: true }).exec(function(err, result) {
                     console.log("result-->.", result)
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
@@ -2072,7 +2071,6 @@ module.exports = {
             }
         }
     },
-
 
     "registerWithRefferalCode": function(req, res) {
         User.paginate({ referredCode: req.body.referralCode }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
@@ -2092,7 +2090,7 @@ module.exports = {
         User.find({ 'coupon._id': couponId }).exec(function(err, result) {
             console.log(result)
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
-            // else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "EXPIRED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is expired" }); } else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } 
+           // else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "EXPIRED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is expired" }); } else if (Boolean(result.coupon.find(coupon => coupon.couponStatus == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } 
             else {
                 User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
@@ -2167,7 +2165,7 @@ module.exports = {
             }
         })
     },
-    //{  $group: { _id: '$_id', list: { $push: 'upgradeCardObject.PURCHASED' } } },
+
     "seeExchangeSentRequest": function(req, res) {
         var senderId = req.body.userId;
         console.log("receiverId-->>", senderId)
@@ -2226,15 +2224,18 @@ module.exports = {
         })
     },
 
-
     "userNotification": function(req, res) {
-        User.paginate({ _id: req.body.userId }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'User not found' }); } else {
+        User.find({ _id: req.body.userId }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                var obj = result[0].notification;
+                var sortArray = obj.sort(function(obj1, obj2) {
+                    return obj2.CreatedAt - obj1.CreatedAt
+                })
                 res.send({
-                    result: result,
+                    result: sortArray,
                     responseCode: 200,
                     responseMessage: "All details show successfully."
-                })
+                });
             }
         })
     }

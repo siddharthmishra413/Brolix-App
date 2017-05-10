@@ -14,18 +14,57 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.cardType = 'upgrade_card';
     $scope.dashBordFilter = {};
     $scope.ageLimit = [];
+    $scope.ageLimits = [];
+
+    localStorage.setItem('userTypeName','totalUsers');
 
     for (var i = 15; i <99; i++){
       $scope.ageLimit.push(i);
     }
+    
 
+    $scope.ageFunction = function(age){
+    console.log("$scope.dashBordFilter.ageTo",age)
+    var agefromLimit = age+1;
+	    for (var i =  agefromLimit; i <99; i++){
+	      $scope.ageLimits.push(i);
+	    }
+	    console.log("$scope.ageLimits",$scope.ageLimits)
+    }
+
+    // for (var i =  $scope.dashBordFilter.ageTo; i <99; i++){
+    //   $scope.ageLimits.push(i);
+    // }
+    // console.log("$scope.ageLimits",$scope.ageLimits);
+// sakshi gadia (sakshigadia@gmail.com, sakshi.gadia@gmail.com)
+// http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/countryListData
+
+
+
+    userService.countryListData().success(function(res) {
+      //console.log("ddd",JSON.stringify(res))
+      $scope.countries = res.result;
+    })
+
+    $scope.changeCountry = function(){
+      var obj = {};
+      obj = {
+        country:$scope.dashBordFilter.country,
+      }
+      userService.cityListData(obj).success(function(res) {
+      console.log("ddd",JSON.stringify(res))
+      $scope.cityList = res.result;
+    })
+
+
+    }
     $scope.showPageDetails = function(id){
-        console.log("id---------",id);
+        //console.log("id---------",id);
         userService.showUserPage(id).success(function(res) {
            if(res.responseCode ==  200) {
             $scope.allshowUserPage = res.result;
             $("#pageDetails").modal('show');
-            console.log("$scope.allshowUserPage",JSON.stringify($scope.allshowUserPage))
+            //console.log("$scope.allshowUserPage",JSON.stringify($scope.allshowUserPage))
         }else{
           toastr.error(res.responseMessage);
 
@@ -60,7 +99,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     userService.showListOFCoupon().success(function(res) {
       //console.log("resssssssssssssss",res)
         $scope.allCoupons = res.result;
-        console.log("allCoupons",JSON.stringify($scope.allCoupons));
+        //console.log("allCoupons",JSON.stringify($scope.allCoupons));
     })
 
     $scope.export = function(){
@@ -80,7 +119,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
 
     $scope.userTypeName = function(val) {
         //$state.reload();
-        console.log("val",val)
+        //console.log("val",val)
         localStorage.setItem('userTypeName',val);
 
          switch (val)
@@ -155,49 +194,49 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     // }
 
 //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-    var currentCities=[];
-    $scope.currentCountry= '';
-var BATTUTA_KEY="00000000000000000000000000000000"
-    // Populate country select box from battuta API
-  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-    $.getJSON(url,function(countries)
-    {
-      $timeout(function(){
-        $scope.countriesList=countries;
-      },100)
+//     var currentCities=[];
+//     $scope.currentCountry= '';
+// var BATTUTA_KEY="00000000000000000000000000000000"
+//     // Populate country select box from battuta API
+//   url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+//     $.getJSON(url,function(countries)
+//     {
+//       $timeout(function(){
+//         $scope.countriesList=countries;
+//       },100)
 
 
-    });
-  var countryCode;
-    $scope.changeCountry = function(){
-      for(var i=0;i<$scope.countriesList.length;i++){
-        if($scope.countriesList[i].name==$scope.dashBordFilter.country){
-          countryCode=$scope.countriesList[i].code;
-          //console.log(countryCode)
-          break;
-        }
-      }
-      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(regions)
-      {
-        //console.log('state list:   '+JSON.stringify(regions))
-            $timeout(function(){
-             $scope.stateList = regions;
-            },100)
-      });
-    }
+//     });
+//   var countryCode;
+//     $scope.changeCountry = function(){
+//       for(var i=0;i<$scope.countriesList.length;i++){
+//         if($scope.countriesList[i].name==$scope.dashBordFilter.country){
+//           countryCode=$scope.countriesList[i].code;
+//           //console.log(countryCode)
+//           break;
+//         }
+//       }
+//       var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(regions)
+//       {
+//         //console.log('state list:   '+JSON.stringify(regions))
+//             $timeout(function(){
+//              $scope.stateList = regions;
+//             },100)
+//       });
+//     }
 
-    $scope.changeState = function(){
-      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
-      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(cities)
-      {
-        // console.log('city list:   '+JSON.stringify(cities))
-            $timeout(function(){
-             $scope.cityList = cities;
-            },100)
-      })
-    }
+//     $scope.changeState = function(){
+//       //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
+//       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(cities)
+//       {
+//         // console.log('city list:   '+JSON.stringify(cities))
+//             $timeout(function(){
+//              $scope.cityList = cities;
+//             },100)
+//       })
+//     }
     //-------------------------------END OF SELECT CASCADING-------------------------//
 
 
@@ -244,7 +283,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
      $scope.nextTotalUserDetail = function(){
        // console.log('page number TotalUserDetail -> '+$scope.currentPage);
          userService.totalUser($scope.currentPage).success(function(res) {
-          console.log(JSON.stringify(res))
+          //console.log(JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPages = res.result.pages;
                    $scope.pageNo = res.result.page;
@@ -324,15 +363,15 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
     $scope.currentCashWinners = 1;
      $scope.nextCashWinnersDetail = function(){
-       console.log('page number personalUserDetail-> '+$scope.currentCashWinners);
+       //console.log('page number personalUserDetail-> '+$scope.currentCashWinners);
          userService.showAllCashWinners($scope.currentCashWinners).success(function(res) {
             if (res.responseCode == 200){
-                   console.log("resresresres",res)
+                   //console.log("resresresres",res)
                    $scope.noOfPagesCashWinners = res.result.pages;
                    $scope.pageCashWinners= res.result.page;
                    $scope.cashWinners = res.result.docs;
                    $scope.cashWinnersCount = res.result.total;
-                   console.log("$scope.cashWinnersCount",$scope.cashWinnersCount)
+                   //console.log("$scope.cashWinnersCount",$scope.cashWinnersCount)
                }
                else {
                 toastr.error(res.responseMessage);
@@ -434,9 +473,9 @@ var BATTUTA_KEY="00000000000000000000000000000000"
          $scope.active_luck_card=false;
       }else{
         userService.viewcard(active_card).success(function(res) {
-        console.log("resssssssssssssss",res)
+        //console.log("resssssssssssssss",res)
         $scope.LuckCard = res.data;
-        console.log("LuckCard",$scope.LuckCard);
+        //console.log("LuckCard",$scope.LuckCard);
     })
          $scope.active_upgrade_card=false;
             $scope.active_luck_card=true;
@@ -1024,7 +1063,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.Block_User = function (id) {
         $scope.BlockId = id;
         var userId = $scope.BlockId;
-        console.log("Blockid",userId);
+        //console.log("Blockid",userId);
         if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
         toastr.error("Please select user.")
         $state.go('header.manageUsers')
@@ -1060,7 +1099,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     $scope.UnBlock_User = function (id) {
         $scope.BlockId = id;
         var userId = $scope.BlockId;
-        console.log("Blockid",userId);
+        //console.log("Blockid",userId);
         if ($scope.BlockId == '' || $scope.BlockId == undefined || $scope.BlockId == null) {
         toastr.error("Please select user.")
         $state.go('header.manageUsers')
@@ -1101,7 +1140,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
 
 $scope.total_user_card = function (modal) {
-        console.log("model",modal);
+        //console.log("model",modal);
         $scope.modalId = modal;
         $scope.modelData = modal;
         if($scope.modalId == '' || $scope.modalId == undefined || $scope.modalId == null){
@@ -1117,7 +1156,7 @@ $scope.sendCard = function(cardId,type){
          var data = {};
          $scope.cardId = cardId;
          if(type == 'upgrade'){
-            console.log("type",type);
+            //console.log("type",type);
 
              switch ($scope.modelData)
             {
@@ -1129,7 +1168,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendUpgradeCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All User");
@@ -1149,7 +1188,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendUpgradeCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Personal User");
@@ -1169,7 +1208,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                   // console.log("dataIn",data)
                     userService.sendUpgradeCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Business User");
@@ -1189,7 +1228,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendUpgradeCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Live User");
@@ -1209,7 +1248,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendUpgradeCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Winners User");
@@ -1229,7 +1268,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendUpgradeCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All CashWinners User");
@@ -1249,7 +1288,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendUpgradeCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All CouponWinners User");
@@ -1269,7 +1308,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendUpgradeCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to All Blocked User");
@@ -1287,7 +1326,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendUpgradeCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("UpgradeCard Send Successfully to User");
@@ -1300,7 +1339,7 @@ $scope.sendCard = function(cardId,type){
             }
 
          }else if(type == 'luck'){
-            console.log("type",type);
+            //console.log("type",type);
              switch ($scope.modelData)
             {
                 case 'totalUser':
@@ -1311,7 +1350,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All User");
@@ -1331,7 +1370,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                   // console.log("dataIn",data)
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Personal User");
@@ -1351,7 +1390,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Business User");
@@ -1371,7 +1410,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Live User");
@@ -1391,7 +1430,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Winners User");
@@ -1411,7 +1450,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All CashWinners User");
@@ -1431,7 +1470,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All CouponWinners User");
@@ -1451,7 +1490,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to All Blocked User");
@@ -1469,7 +1508,7 @@ $scope.sendCard = function(cardId,type){
                         cardId:$scope.cardId,
                         Id:array
                     }
-                    console.log("dataIn",data)
+                    //console.log("dataIn",data)
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200){
                             toastr.success("LuckCard Send Successfully to User");
@@ -1496,7 +1535,7 @@ $scope.dashBordFilter = function(){
     var type = localStorage.getItem('userTypeName');
     // $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
     // $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
-    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
+    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country;
     console.log("dateczx",$scope.dobFrom,$scope.dobFrom);
     var data = {};
         data = {
@@ -1510,78 +1549,100 @@ $scope.dashBordFilter = function(){
             joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
-        console.log("datatata",JSON.stringify(data))
+        //console.log("datatata",JSON.stringify(data))
 
     switch (type)
             {
                 case 'totalUsers':
-                console.log("aaa1");
-                    userService.userfilter(data).success(function(res){
-                        $scope.totalUser = res.data;
-                        console.log("ressssssss1",JSON.stringify(res));
+                //console.log("aaa1");
+                    $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                         $scope.noOfPages = res.data.pages;
+                         $scope.pageNo = res.data.page;
+                         $scope.totalUser = res.data.docs;
+                         $scope.totalUserCount = res.data.total;
+                     }
+                     else {
+                      toastr.error(res.responseMessage);
+                      }
+                      // console.log("res",JSON.stringify(res))
+                      //   $scope.totalUser = res.data;
+                      //   dashBordFilter
+
+                        //console.log("ressssssss1",JSON.stringify(res));
                     })
 
                 break;
 
                 case 'personalUsers':
-                console.log("2");
-                    userService.userfilter(data).success(function(res){
-                        $scope.personalUser = res.data;
-                        console.log("ressssssss2",JSON.stringify($scope.personalUser));
-                    })
+                //console.log("2");
+                    $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                         $scope.noOfPagesPersonalUser = res.data.pages;
+                         $scope.pagePersonalUser= res.data.page;
+                         $scope.personalUser = res.data.docs;
+                         $scope.personalUserCount = res.data.total;
+                     }
+                     else {
+                      toastr.error(res.responseMessage);
+                      }
+                      })
 
                 break;
 
                 case 'businessUsers':
-                console.log("3");
-                    userService.userfilter(data).success(function(res){
-                        $scope.businessUser = res.data;
-                        console.log("ressssssss3",JSON.stringify($scope.businessUser));
+                //console.log("3");
+                    $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                         $scope.noOfPagesBusinessUser = res.data.pages;
+                         $scope.pageBusinessUser= res.data.page;
+                         $scope.businessUser = res.data.docs;
+                         $scope.businessUserCount = res.data.total;
+                     }
+                     else {
+                      toastr.error(res.responseMessage);
+                      }
                     })
 
                 break;
 
                 case 'liveUsers':
-                console.log("4");
-                    userService.userfilter(data).success(function(res){
-                        $scope.liveUser = res.data;
-                        console.log("ressssssss4",JSON.stringify($scope.liveUser));
-                    })
-
-                break;
-
-                case 'totalWinners':
-                console.log("5");
-                    userService.userfilter(data).success(function(res){
-                        $scope.totalWinners = res.data;
-                        console.log("ressssssss5",JSON.stringify($scope.totalWinners));
-                    })
-
-                break;
-
-                case 'cashWinners':
-                console.log("6");
-                    userService.userfilter(data).success(function(res){
-                        $scope.cashWinners = res.data;
-                        console.log("ressssssss6",JSON.stringify($scope.cashWinners));
-                    })
-
-                break;
-
-                case 'couponWinners':
-                console.log("7");
-                    userService.userfilter(data).success(function(res){
-                        $scope.couponWinners = res.data;
-                        console.log("ressssssss7",JSON.stringify($scope.couponWinners));
+                //console.log("4");
+                    $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                      if (res.responseCode == 200){
+                         $scope.noOfPagesLiveUser = res.data.pages;
+                         $scope.pageLiveUser= res.data.page;
+                         $scope.liveUser = res.data.docs;
+                         $scope.LiveUserCount = res.data.total;
+                     }
+                     else {
+                      toastr.error(res.responseMessage);
+                      }
                     })
 
                 break;
 
                 case 'blockedUsers':
-                console.log("8");
-                    userService.userfilter(data).success(function(res){
-                        $scope.allblockUser = res.data;
-                        console.log("ressssssss8",JSON.stringify($scope.allblockUser));
+                  $scope.currentPage = 1;
+                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                      console.log("res",JSON.stringify(res))
+                                if (res.responseCode == 200){
+                             $scope.noOfPagesBlockUser = res.data.pages;
+                             $scope.pageBlockUser= res.data.page;
+                             $scope.allblockUser = res.data.docs;
+                             $scope.allblockUserCount = res.data.total;
+                         }
+                         else {
+                          toastr.error(res.responseMessage);
+                          }
                     })
 
                 break;
@@ -1594,7 +1655,7 @@ $scope.dashBordFilter = function(){
 
 
     $scope.total_user_coupons = function (modal) {
-        console.log("model",modal);
+        //console.log("model",modal);
         $scope.modalIdcoupon = modal;
         $scope.modelDatacoupon = modal;
         if($scope.modalIdcoupon == '' || $scope.modalIdcoupon == undefined || $scope.modalIdcoupon == null){
@@ -1609,7 +1670,13 @@ $scope.dashBordFilter = function(){
          var array =[];
          var data = {};
          $scope.couponId = couponId;
-         switch ($scope.modelDatacoupon)
+         console.log("$scope.couponId",$scope.couponId)
+         var type = localStorage.getItem('userTypeName');
+         console.log("type",type);
+         $("#showAllCoupons").modal('hide');
+
+
+         switch (type)
             {
                 case 'totalUser':
                     for (var i = 0; i < $scope.totalUser.length; i++) {
@@ -1618,17 +1685,35 @@ $scope.dashBordFilter = function(){
                     data = {
                         couponId:$scope.couponId,
                         Id:array
-                    }
-                    console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
+                    }         
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            //$("#showAllCoupons").modal('hide');
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';                         
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
+                    //console.log("dataIn",data)       
                 break;
 
                 case 'PersonalUser':
@@ -1639,16 +1724,34 @@ $scope.dashBordFilter = function(){
                         couponId:$scope.couponId,
                         Id:array
                     }
-                    console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
                 break;
 
                 case 'BusinessUser':
@@ -1659,16 +1762,34 @@ $scope.dashBordFilter = function(){
                         couponId:$scope.couponId,
                         Id:array
                     }
-                    console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
                 break;
 
                 case 'LiveUser':
@@ -1679,16 +1800,34 @@ $scope.dashBordFilter = function(){
                         couponId:$scope.couponId,
                         Id:array
                     }
-                    console.log("dataIn",data)
-                   userService.sendCouponTOUSers(data).success(function(res) {
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
+                    //console.log("dataIn",data)
+                   BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
                 break;
 
                 case 'WinnersUser':
@@ -1699,16 +1838,34 @@ $scope.dashBordFilter = function(){
                         couponId:$scope.couponId,
                         Id:array
                     }
-                    console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
                 break;
 
                 case 'CashWinnersUser':
@@ -1719,16 +1876,34 @@ $scope.dashBordFilter = function(){
                         couponId:$scope.couponId,
                         Id:array
                     }
-                    console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
                 break;
 
                 case 'CouponWinnersUser':
@@ -1739,16 +1914,34 @@ $scope.dashBordFilter = function(){
                         couponId:$scope.couponId,
                         Id:array
                     }
-                    console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  //$("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
                 break;
 
                 case 'BlockedUser':
@@ -1759,16 +1952,33 @@ $scope.dashBordFilter = function(){
                         couponId:$scope.couponId,
                         Id:array
                     }
-                    console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  dialog.close();
+                                  //toastr.success("Coupon Send successfully");
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
                 break;
 
                 default:
@@ -1777,16 +1987,34 @@ $scope.dashBordFilter = function(){
                         couponId:$scope.couponId,
                         Id:array
                     }
-                    console.log("dataIn",data)
-                    userService.sendCouponTOUSers(data).success(function(res) {
-                        if (res.responseCode == 200){
-                            toastr.success(res.responseMessage);
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide');
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
+                    //console.log("dataIn",data)
+                    BootstrapDialog.show({
+                    title: 'Send Coupon',
+                    message: 'Are you sure want to send coupon Users',
+                        buttons: [{
+                            label: 'Yes',
+                            action: function(dialog) {
+                            userService.sendCouponTOUSers(data).success(function(res) {
+                                if (res.responseCode == 200){
+                                  toastr.success(res.responseMessage);
+                                  $scope.sendMessage = '';
+                                  $("#sendMessageModelAllUser").modal('hide');
+                                  dialog.close();
+                                  
+                                  $state.reload();
+                                } else {
+                                  toastr.error(res.responseMessage);
+                                }
+                              })
+                            }
+                        }, {
+                            label: 'No',
+                            action: function(dialog) {
+                                dialog.close();
+                                // toastr.success("User Blocked");
+                            }
+                        }]
+                    });
             }
 
     }
