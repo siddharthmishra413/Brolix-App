@@ -183,6 +183,7 @@
     </div>   
 </div>
 
+
 <div class="container" ng-if="Step5">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -197,7 +198,10 @@
                             <div class="form-horizontal clearfix">
                                 <label class="control-label col-sm-4">Gift Description</label>
                                 <div class="col-sm-8">
-                                    <textarea ng-model="createAds.giftDescription" class="form-control c-new-textarea" rows="5" placeholder="Description..."></textarea>
+                                    <textarea ng-model="createAds.giftDescription" name="Description" class="form-control c-new-textarea" maxlength="200" rows="5" placeholder="Description..." required></textarea>
+                                        <span style="color:red" ng-show="vedioStep.Description.$dirty && vedioStep.Description.$invalid">
+                                        <span ng-show="vedioStep.Description.$error.required">*Description is required.</span>
+                                        </span>
                                 </div>
                             </div>
                             <div class="col-sm-12 bor_btm">
@@ -228,7 +232,11 @@
                                     <div class="text-center">
                                         <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input ng-model="createAds.viewers" type="text" class="form-control text-center"/>
+                                            <input ng-model="createAds.viewers" ng-pattern="/^[0-9]*$/" name="viewers"  maxlength="4" type="text" class="form-control text-center" required>
+                                               <span style="color:red" ng-show="vedioStep.viewers.$dirty && vedioStep.viewers.$invalid">
+                                        <span ng-show="vedioStep.viewers.$error.required">*viewers is required.</span>
+                                        <span ng-show="vedioStep.viewers.$error.pattern">*Please enter only numbers!</span>
+                                        </span>
                                         </div>
                                     </div>
                                 </div>
@@ -277,7 +285,10 @@
                                             </label>
                                         </div>
                                         <div class="global-tble-cell">
-                                            <input type="text" ng-model="createAds.winner" value="" class="form-control gbl-input">
+                                            <input type="text" name="winner" ng-pattern="/^[0-9]*$/" ng-model="createAds.winner" value="" class="form-control gbl-input" maxlength="3" required>
+                                                 <span style="color:red" ng-show="vedioStep.winner.$dirty && vedioStep.winner.$invalid">
+                                        <span ng-show="vedioStep.winner.$error.required">*winner is required.</span>
+                                        <span ng-show="vedioStep.winner.$error.pattern">*Please enter only numbers!</span>
                                         </div>
                                         <div class="global-tble-cell">
                                             <span type="text" ng-model="createAds.winner" value=""  class="form-control gbl-input"></span>

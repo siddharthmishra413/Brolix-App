@@ -7,8 +7,8 @@ app.controller('createCardCtrl', function($scope, $state, $window, userService, 
     $scope.myForm = {};
     $scope.active_upgrade_card=true;
 
-$scope.createCard.image='../dist/image/cover.jpg';
-$scope.createCard.image2='../dist/image/cover.jpg';
+$scope.createCard.image='../dist/image/icon119.png';
+$scope.createCard.image2='../dist/image/icon118.png';
 
     $scope.active_tab=function(active_card){
         if(active_card=='upgrade_card'){
@@ -24,12 +24,12 @@ $scope.createCard.image2='../dist/image/cover.jpg';
         if(type=='upgrade'){
             $scope.createCard.viewers = "";
             $scope.createCard.price = "";
-            $scope.createCard.image = '../dist/image/cover.jpg';
+            $scope.createCard.image = '../dist/image/icon119.png';
         }
         else{
             $scope.createCard.chance = "";
             $scope.createCard.brolix = "";
-            $scope.createCard.image2 = '../dist/image/cover.jpg';
+            $scope.createCard.image2 = '../dist/image/icon118.png';
 
         }
 

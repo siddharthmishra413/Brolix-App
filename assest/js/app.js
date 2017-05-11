@@ -108,8 +108,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: 'templates/createAds.html'
     })
 
-    .state('editAds', {
-        url: '/editAds',
+    .state('header.editAds', {
+        url: '/editAds/:id',
         controller: 'editAdsCtrl',
         templateUrl: 'templates/editAds.html'
     })
