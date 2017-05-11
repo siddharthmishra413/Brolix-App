@@ -1144,7 +1144,7 @@ module.exports = {
     },
 
     "storeCouponList": function(req, res) {
-        createNewAds.paginate({ $ne: { userId: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        createNewAds.paginate({ userId: { $ne: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                 res.send({
                     result: result,
@@ -2295,36 +2295,53 @@ module.exports = {
         })
     },
 
+
+
     "storeCouponPrice": function(req, res) {
-        createNewAds.findOne({ _id: req.params.id }, function(err, result) {
+        createNewAds.findOne({}, function(err, result) {
             console.log("result--->>>", result)
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
-                if (result.adsType == 'cash') {
-                    if (result.cash > 0) {
-                        var type = "storeCouponPriceForUpgradedAds";
-                    } else {
-                        var type = "storeCouponPriceForFreeAds";
-                    }
-                } else if (result.adsType == 'coupon') {
-                    if (result.cash > 0) {
-                        var type = "storeCouponPriceForUpgradedAds";
-                    } else {
-                        var type = "storeCouponPriceForFreeAds";
-                    }
-                }
-                brolixAndDollors.find({ type: type }).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
-                        var value = result[0].value
-                        res.send({
-                            price: value,
-                            responseCode: 200,
-                            responseMessage: 'Successfully show price for coupon.'
-                        })
-                    }
-                })
-            }
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {}
+
         })
     }
+
+
+
+
+
+
+
+
+    // "storeCouponPrice": function(req, res) {
+    //     createNewAds.findOne({ _id: req.params.id }, function(err, result) {
+    //         console.log("result--->>>", result)
+    //         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+    //             if (result.adsType == 'cash') {
+    //                 if (result.cash > 0) {
+    //                     var type = "storeCouponPriceForUpgradedAds";
+    //                 } else {
+    //                     var type = "storeCouponPriceForFreeAds";
+    //                 }
+    //             } else if (result.adsType == 'coupon') {
+    //                 if (result.cash > 0) {
+    //                     var type = "storeCouponPriceForUpgradedAds";
+    //                 } else {
+    //                     var type = "storeCouponPriceForFreeAds";
+    //                 }
+    //             }
+    //             brolixAndDollors.find({ type: type }).exec(function(err, result) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
+    //                     var value = result[0].value
+    //                     res.send({
+    //                         price: value,
+    //                         responseCode: 200,
+    //                         responseMessage: 'Successfully show price for coupon.'
+    //                     })
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }
 
 
 

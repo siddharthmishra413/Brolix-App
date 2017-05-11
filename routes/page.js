@@ -49,6 +49,7 @@ app.post('/reviewOnPage', authUser.authUser, pageHandler.reviewOnPage);
 app.post('/replyOnReview', authUser.authUser, pageHandler.replyOnReview);
 app.get('/reviewCommentList/:id/:pageNumber', authUser.authUser, pageHandler.reviewCommentList);
 app.post('/winnerSearchFilter/:pageNumber', pageHandler.winnerSearchFilter);
+app.post('/sendCouponToAdvertiser', pageHandler.sendCouponToAdvertiser);
 
 
 module.exports = app;
