@@ -31,7 +31,7 @@ module.exports = {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
-               req.body.viewerLenght = 2;
+                req.body.viewerLenght = 2;
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
@@ -51,7 +51,7 @@ module.exports = {
                     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                 } else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
-                       req.body.viewerLenght = 2;
+                        req.body.viewerLenght = 2;
                         req.body.cashStatus = 'PENDING';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
@@ -418,10 +418,10 @@ module.exports = {
                                     } else {
                                         if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
-                                           // var state = result.whoWillSeeYourAdd.state;
+                                            // var state = result.whoWillSeeYourAdd.state;
                                             var city = result.whoWillSeeYourAdd.city;
 
-                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); }  else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
+                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
                                                 callback(null)
                                             }
                                         }
@@ -1144,7 +1144,7 @@ module.exports = {
     },
 
     "storeCouponList": function(req, res) {
-        createNewAds.paginate({userId: { $ne: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        createNewAds.paginate({ userId: { $ne: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                 res.send({
                     result: result,
@@ -2294,8 +2294,38 @@ module.exports = {
             });
         })
     },
-    
-    
+   
+
+    "storeCouponPrice": function(req, res) {
+        createNewAds.findOne({ _id: req.params.id }, function(err, result) {
+            console.log("result--->>>", result)
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                if (result.adsType == 'cash') {
+                    if (result.cash > 0) {
+                        var type = "storeCouponPriceForUpgradedAds";
+                    } else {
+                        var type = "storeCouponPriceForFreeAds";
+                    }
+                } else if (result.adsType == 'coupon') {
+                    if (result.cash > 0) {
+                        var type = "storeCouponPriceForUpgradedAds";
+                    } else {
+                        var type = "storeCouponPriceForFreeAds";
+                    }
+                }
+                brolixAndDollors.find({ type: type }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
+                        var value = result[0].value
+                        res.send({
+                            price: value,
+                            responseCode: 200,
+                            responseMessage: 'Successfully show price for coupon.'
+                        })
+                    }
+                })
+            }
+        })
+    }
 
 
 
