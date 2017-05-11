@@ -42,7 +42,8 @@
                                         <div class="col-md-9">
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                                             <ul class="form-control dropdown-menu" ng-model="myForm.subCategory" name="subCategory" required>
-                                            <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox"/>{{subCategoryData}}</a></li>
+                                            <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" ng-model="subCategoryData.selected" value={{subCategoryData}} />{{subCategoryData}}</a></li>
+                                            <li ng-click="save()">done</li>
                                             </ul>
 
                                         </div>

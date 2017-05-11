@@ -58,6 +58,18 @@ $scope.$emit('headerStatus', 'Manage Pages');
  //        }
  //    })
 
+
+ $scope.save = function(){
+  $scope.albumNameArray = $scope.subCategoryData.filter(function(subCategoryData){
+    return subCategoryData.selected;
+  });
+  console.log("albumNameArray:   "+albumNameArray);
+}
+
+
+
+
+
  $scope.addSocialMedia = function(addSocialMedia){
  	console.log("addSocialMedia",addSocialMedia);
  	
@@ -317,7 +329,7 @@ $scope.submitt = function(){
 	   });
 
 
-		//console.log("allllllll data",JSON.stringify($scope.myForm));
+		console.log("allllllll data",JSON.stringify($scope.myForm));
 		  var data={
 	           "type": "ADMIN",
 	           "userId":adminIdss,

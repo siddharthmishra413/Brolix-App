@@ -1479,40 +1479,49 @@ module.exports = {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); }
                     else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } 
                     else {
-                        if (adResult.adsType == 'cash') {
-                    if (adResult.cash > 0) {
+                        if (result.adsType == 'cash') {
+                    if (result.cash > 0) {
                         var type = "storeCouponPriceForUpgradedAds";
                     } else {
                         var type = "storeCouponPriceForFreeAds";
                     }
-                } else if (adResult.adsType == 'coupon') {
-                    if (adResult.cash > 0) {
+                } else if (result.adsType == 'coupon') {
+                    if (result.cash > 0) {
                         var type = "storeCouponPriceForUpgradedAds";
                     } else {
                         var type = "storeCouponPriceForFreeAds";
                     }
+                     
                 }
-                console.log("type-->>", type)
-                brolixAndDollors.findOne({
-                    type: type
-                }, function(err, result) {
+                     
+                //else{
+                     console.log("type-->>", type)
+                Brolixanddollors.find({ type:type }).exec(function(err, result) {
+                      console.log("result-->>", result)
                      if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); }
                     else{
-                    var value = result.value
+                        console.log("result-->>", result)
+                    var value = result[0].value
+                     console.log("value-->>", value)
                     callback(null, value)
                     }
+                    
                 })
-                    }
+                }
+                
+                   // }
                 })                
             },
             function(value,callback) {
+                console.log("value-->>", value)
                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { couponSold: req.body.userId }, $inc: { couponPurchased: 1 } },{new:true}, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength == result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
                         callback(null, value, result.couponCode, result.couponExpiryDate, result.pageId)
                     }
                 })
             },
-            function(couponCode1, couponExpiryDate1, pageId, callback) {
+            function(value,couponCode1, couponExpiryDate1, pageId, callback) {
+                  console.log("value-->>", value)
                 User.findOne({ _id: req.body.userId }).exec(function(err, result1) {
 
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (result1.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {

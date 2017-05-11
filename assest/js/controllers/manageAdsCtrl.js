@@ -10,11 +10,11 @@ $(window).scrollTop(0,0);
 
 
  $scope.removeAds = function (id) {
-    console.log("hhh",id)
+    //console.log("hhh",id)
         $scope.RemoveId = id;
         var adsId = $scope.RemoveId;
         //console.log("Blockidvcbc");
-        console.log("$scope.RemoveId",$scope.RemoveId)
+        //console.log("$scope.RemoveId",$scope.RemoveId)
         if ($scope.RemoveId == '' || $scope.RemoveId == undefined || $scope.RemoveId == null) {
        toastr.error("Please select user.")
        $state.go('header.manageAds')
@@ -62,7 +62,7 @@ $(window).scrollTop(0,0);
 // }
 
   $scope.sendMessagePage = function (modal) {
-      console.log($scope.myForm.checkId);
+      //console.log($scope.myForm.checkId);
         $scope.modalId = modal;
         $scope.modelData = modal;
       $("#sendMessageModelAllUser").modal('show');
@@ -80,7 +80,7 @@ $(window).scrollTop(0,0);
  }
 
   $scope.send_messageOwners = function(id){
-        console.log($scope.myForm.checkId);
+        //console.log($scope.myForm.checkId);
         if ($scope.sendMessage.massage == '' || $scope.sendMessage.massage == undefined || $scope.sendMessage.massage == null) {
             toastr.error('Please enter your message');
             return;
@@ -97,17 +97,17 @@ $(window).scrollTop(0,0);
   }
 
   $scope.showPageDetails = function(id){
-        console.log("id---------"+id);
+        //console.log("id---------"+id);
         userService.pageInfo(id).success(function(res) {
              console.log("Show(res.result)",JSON.stringify(res.result))
            $scope.allpageInfo = res.result;
             $("#pageDetails").modal('show');
-          console.log("$scope.allpageInfo",JSON.stringify($scope.allpageInfo))
+          //console.log("$scope.allpageInfo",JSON.stringify($scope.allpageInfo))
         })
     }
 
      $scope.adInfo=function(){
-         console.log($scope.myForm.checkId)
+         //console.log($scope.myForm.checkId)
          if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
         toastr.error("Please select user.")
          }
@@ -118,7 +118,7 @@ $(window).scrollTop(0,0);
                     $("#adInfo").modal('show');
                     //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
                 },function(err){
-                    console.log(err);
+                    //console.log(err);
                      toastr.error('Connection error.');
             }) 
         }
@@ -132,14 +132,14 @@ $(window).scrollTop(0,0);
                     $("#adInfo").modal('show');
                     //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
                 },function(err){
-                    console.log(err);
+                    //console.log(err);
                      toastr.error('Connection error.');
             }) 
         
     }
 
          $scope.reportOnAd=function(id){
-        console.log("reportOnAdId>>>"+JSON.stringify(id))
+        //console.log("reportOnAdId>>>"+JSON.stringify(id))
         userService.showReportOnAd($scope.myForm.checkId).then(function(success) { 
             //console.log(JSON.stringify($scope.userDetail))
                     $scope.userDetail=success.data.result;
@@ -154,9 +154,9 @@ $(window).scrollTop(0,0);
                     else{
                          toastr.error(success.data.responseMessage);
                     }
-                    console.log("reportOnAd>>>>>>>>>>>>>"+JSON.stringify(success))
+                    //console.log("reportOnAd>>>>>>>>>>>>>"+JSON.stringify(success))
                 },function(err){
-                    console.log(err);
+                    //console.log(err);
                      toastr.error('Connection error.');
             }) 
     }
@@ -478,7 +478,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     $scope.noOfPagesActiveAds = res.result.pages;
                     $scope.pageNoActiveAds = JSON.parse(res.result.page);
                     $scope.totalActiveAds = res.result.docs;
-                     console.log(JSON.stringify($scope.totalActiveAds))
+                     //console.log(JSON.stringify($scope.totalActiveAds))
                     $scope.totalActiveAdscount = res.count;
                     
                 }
@@ -925,8 +925,8 @@ $scope.dashBordFilter = function(){
 
 app.filter("manageAdsFilter",function() {
    return function(items,nameValue){
-    console.log(JSON.stringify(items))
-    console.log(nameValue)
+    //console.log(JSON.stringify(items))
+    //console.log(nameValue)
      if (!nameValue) {
        return retArray = items;
        }

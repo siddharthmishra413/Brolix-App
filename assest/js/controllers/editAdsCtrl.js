@@ -7,10 +7,31 @@ console.log("sss")
 
 
 
+//console.log("id:   "+$stateParams.id);
+var id = $stateParams.id;
+if(id!="")
+{
 
+}
+else
+{
+userService.getMethod('adInfo'{
+    params: { user_id: user.id }
+}).then(function(objS){
+      console.log('success: '+JSON.stringify(objS));
+      if(objS.data.responseCode==200) {
+        $scope.response = objS.data.Roles;
+      } 
+      else if(objS.responseCode==400) 
+      {
+          alert(objS.data.responseMessage);
+      }
+    
+    },function(objE){
+      console.log('error:    '+JSON.stringify(objE))
+    });
 
-
-
+}
 
 $scope.createAds = {};
 $scope.promoteAppGame = {};
