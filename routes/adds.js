@@ -33,7 +33,7 @@ app.post('/particularPageCouponAdsFilter/:pageNumber', adsHandler.particularPage
 app.post('/couponFilter/:pageNumber', adsHandler.couponFilter);
 app.post('/couponGiftsFilter', authUser.authUser, adsHandler.couponGiftsFilter);
 app.post('/cashGiftsFilter', authUser.authUser, adsHandler.cashGiftsFilter);
-app.get('/storeCouponList/:pageNumber', authUser.authUser, adsHandler.storeCouponList);
+app.get('/storeCouponList/:id/:pageNumber', authUser.authUser, adsHandler.storeCouponList);
 app.post('/viewCoupon', authUser.authUser, adsHandler.viewCoupon);
 app.post('/PageCouponFilter/:pageNumber', adsHandler.PageCouponFilter);
 app.post('/StoreFavCouponFilter/:pageNumber', adsHandler.StoreFavCouponFilter);
