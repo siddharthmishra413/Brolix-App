@@ -58,12 +58,27 @@ $scope.$emit('headerStatus', 'Manage Pages');
  //        }
  //    })
 
+$scope.checkBoxArray=[];
+ $scope.saveData = function(data){
+  //console.log(data)
+  console.log("value:  "+$scope.checkBoxArray.indexOf(data))
+if(($scope.checkBoxArray.indexOf(data)) == -1)
+{
+ $scope.checkBoxArray.push(data);
+}
+else
+{
+var checkBoxArray1 = [];
+for(var i=0;i<$scope.checkBoxArray.length;i++)
+  if($scope.checkBoxArray[i]!= data)
+checkBoxArray1.push($scope.checkBoxArray[i]);
 
- $scope.save = function(){
-  $scope.albumNameArray = $scope.subCategoryData.filter(function(subCategoryData){
-    return subCategoryData.selected;
-  });
-  console.log("albumNameArray:   "+albumNameArray);
+$scope.checkBoxArray = []
+for(var i=0;i<checkBoxArray1.length;i++)
+$scope.checkBoxArray.push(checkBoxArray1[i]);
+
+}
+  console.log("$scope.checkBoxArray:   "+$scope.checkBoxArray);
 }
 
 
@@ -336,7 +351,7 @@ $scope.submitt = function(){
 	           "pageType": "Business",
 	           "pageName": $scope.myForm.pageName,
 	           "category": $scope.myForm.mainCategory,
-	           "subCategory": $scope.myForm.subCategory,
+	           "subCategory": $scope.checkBoxArray,
 	           "pageDiscription": $scope.myForm.description,
 	           "email": $scope.myForm.email,
 	           "phoneNumber": $scope.myForm.phon,

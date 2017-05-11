@@ -31,7 +31,7 @@ module.exports = {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
-            //    req.body.viewerLenght = 2;
+               req.body.viewerLenght = 2;
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
@@ -51,7 +51,7 @@ module.exports = {
                     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                 } else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
-                      //  req.body.viewerLenght = 2;
+                       req.body.viewerLenght = 2;
                         req.body.cashStatus = 'PENDING';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
@@ -1144,7 +1144,7 @@ module.exports = {
     },
 
     "storeCouponList": function(req, res) {
-        createNewAds.paginate({$ne:{userId:req.params.id}, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        createNewAds.paginate({userId: { $ne: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                 res.send({
                     result: result,
@@ -2293,7 +2293,9 @@ module.exports = {
                 responseMessage: 'success.'
             });
         })
-    }
+    },
+    
+    
 
 
 

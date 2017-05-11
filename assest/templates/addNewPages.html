@@ -41,16 +41,15 @@
                                         <label class="control-label col-md-3">Sub Categories</label>
                                         <div class="col-md-9">
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                                            <ul class="form-control dropdown-menu" ng-model="myForm.subCategory" name="subCategory" required>
-                                            <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" ng-model="subCategoryData.selected" value={{subCategoryData}} />{{subCategoryData}}</a></li>
-                                            <li ng-click="save()">done</li>
+                                            <ul class="form-control dropdown-menu" ng-model="myForm.subCategory" name="subCategory" >
+                                            <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" unchecked ng-click="saveData(subCategoryData);"/>{{subCategoryData}}</a></li>
                                             </ul>
 
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                            <!--     <div class="form-group">
                                     <div class="row">
                                         <label class="control-label col-md-3">Sub Categories</label>
                                         <div class="col-md-9">
@@ -63,13 +62,13 @@
                                             </span> 
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <div class="row">
                                         <label class="control-label col-md-3">Description</label>
                                         <div class="col-md-9">
                                             <textarea class="form-control textarea-a" name="description" ng-model="myForm.description"  ng-maxlength="250" placeholder="Enter Description" ></textarea>
-                                            <span style="color:red;" ng-show="userFrom.description.$dirty && userFrom.description.$invalid">
+                                           <!--  <span style="color:red;" ng-show="userFrom.description.$dirty && userFrom.description.$invalid"> -->
                                         </div>
                                     </div>
                                 </div>
@@ -120,12 +119,13 @@
                                 
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
-                                    <button ng-disabled="userFrom.$invalid" class="btn btn-lg btn-green"  ng-click="click('Step1')">Next</button>
+                                    <button  class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid  || {{$scope.checkBoxArray.length < 1}} " ng-click="click('Step1')">Next</button>
                                     <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                 </div>
+                                <!-- ng-disabled="userFrom.$invalid" -->
                             </fieldset>
                         </form>
-                    </div>
+                    </div>c
                 </div>
             </div>
         </div>
@@ -160,8 +160,9 @@
                     </div>
 
                     <div class="btn2 text-center">
-                        <button class="btn btn-lg btn-green" ng-disabled="myForm.pagephoto == "" && myForm.userphoto == "" " ng-click="click('Step2')">Next</button> 
+                        <button class="btn btn-lg btn-green" ng-click="click('Step2')">Next</button> 
                     </div>
+                    <!-- ng-disabled="myForm.pagephoto == "" && myForm.userphoto == "" " -->
                 </div>
             </form>
         </div>
@@ -220,8 +221,9 @@
                                 </div>
                             </div>
                             <div class="btn2 text-center">
-                                <button class="btn btn-lg btn-green"   ng-disabled="media.$invalid or "array.length == 0" ng-click="click('Step3')">Next</button>
+                                <button class="btn btn-lg btn-green" ng-click="click('Step3')">Next</button>
                                 <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
+                                <!-- ng-disabled="media.$invalid or "array.length == 0" -->
                             </div>
                         </fieldset>
                     </form>

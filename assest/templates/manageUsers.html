@@ -377,7 +377,7 @@
                     <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
                     <tr ng-repeat="x in totalUser | customFilterUser:test">
                         <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                            <input ng-model="myForm.checkId" name="name" value="{{x}}" type="radio">
                         </td>
                         <td >{{x.firstName}}</td>
                         <td >{{x.lastName}}</td>
@@ -1243,7 +1243,7 @@
            </div>
            <div class="row-table" ng-repeat="data in allCoupons | customSearchFilter:pageName">
             <div class="col-cell">
-                <div class="cover-image coupan-image">
+                <div class="cover-image coupan-image newcover-img">
                     <img ng-src="{{data.coverImage || '../dist/image/cover.jpg' }}" id="output">
                     <!-- {{data.pageName}} -->
                     <div class="cover-image-txt">
