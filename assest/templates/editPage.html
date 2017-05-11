@@ -68,7 +68,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                   <!--  <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Sub Categories</label>
                                             <div class="col-md-9">
@@ -81,7 +81,19 @@
                                                 </span> 
                                             </div>
                                         </div>
+                                    </div> -->
+                                     <div class="form-group">
+                                    <div class="row">
+                                        <label class="control-label col-md-3">Sub Categories</label>
+                                        <div class="col-md-9">
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                            <ul class="form-control dropdown-menu" ng-model="viewPageDetails.subCategory" name="subCategory" >
+                                            <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" unchecked ng-click="saveData(subCategoryData);"/>{{subCategoryData}}</a></li>
+                                            </ul>
+
+                                        </div>
                                     </div>
+                                </div>
 
                                     <div class="form-group">
                                         <div class="row">

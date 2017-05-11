@@ -1667,10 +1667,15 @@ module.exports = {
 
                     User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(receiverCouponId) } }, function(err, user) {
                         console.log("user---->>>", user)
-                        console.log("coupon.couponStatus--->>>", JSON.stringify(user[0].coupon.exchangeStatus))
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error11." }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct coupon Id." }) } else if ((user[0].coupon.exchangeStatus) == 'OFF') {
-                            res.send({ responseCode: 403, responseMessage: "Exchange request not allowed." })
-                        } else {
+                        console.log("coupon.exchangeStatus--->>>", JSON.stringify(user[0].coupon.exchangeStatus))
+                        console.log("coupon.couponStatus--->>>", JSON.stringify(user[0].coupon.couponStatus))
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error11." }) }
+                        else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct coupon Id." }) }
+                        else if ((user[0].coupon.couponStatus) != 'VALID') {
+                            res.send({ responseCode: 403, responseMessage: "Please request for a valid coupon." })}
+                        else if ((user[0].coupon.exchangeStatus) == 'OFF') {
+                            res.send({ responseCode: 403, responseMessage: "Exchange request not allowed." })}
+                        else {
                             callback(null)
                         }
                     })

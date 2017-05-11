@@ -572,6 +572,9 @@ module.exports = {
                                     var coupanAge = result3.couponExpiryDate;
                                     var actualTime = parseInt(s) + parseInt(coupanAge);
                                     console.log("coupanAge--->>", coupanAge)
+                                    var neverExpireTime = parseInt(s) + parseInt(2125651954361);
+                                    console.log("coupanAge--->>", coupanAge)
+                                    console.log("neverExpireTime--->>", neverExpireTime)
                                     if (coupanAge == 'NEVER') {
                                         console.log("if")
                                         var data = {
@@ -579,7 +582,8 @@ module.exports = {
                                             adId: req.body.adId,
                                             pageId: pageId,
                                             type: "WINNER",
-                                            couponExpire: "NEVER"
+                                            couponExpire: "NEVER",
+                                            expirationTime:neverExpireTime
                                         }
                                     } else {
                                         console.log("else")

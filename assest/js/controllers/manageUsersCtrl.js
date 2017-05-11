@@ -1361,186 +1361,186 @@ $scope.sendCard = function(cardId,type){
                     // })
                 break;
 
-                case 'WinnersUser':
-                    for (var i = 0; i < $scope.totalWinners.length; i++) {
-                        array.push($scope.totalWinners[i]._id)
-                    }
-                    data = {
-                        cardId:$scope.cardId,
-                        Id:array
-                    }
+                // case 'WinnersUser':
+                //     for (var i = 0; i < $scope.totalWinners.length; i++) {
+                //         array.push($scope.totalWinners[i]._id)
+                //     }
+                //     data = {
+                //         cardId:$scope.cardId,
+                //         Id:array
+                //     }
 
-                    BootstrapDialog.show({
-                    title: 'Send Card',
-                    message: 'Are you sure want to send Card Users',
-                        buttons: [{
-                            label: 'Yes',
-                            action: function(dialog) {
-                            //$("#showAllCoupons").modal('hide');
-                            userService.sendUpgradeCardTOUsers(data).success(function(res) {
-                                if (res.responseCode == 200){
-                                    toastr.success("UpgradeCard Send Successfully to All Winners User");
-                                    $scope.sendMessage = '';
-                                    $("#showAllCard").modal('hide');
-                                    dialog.close();
-                                    $state.reload();
-                                } else {
-                                    toastr.error(res.responseMessage);
-                                }
-                            })
-                            }
-                        }, {
-                            label: 'No',
-                            action: function(dialog) {
-                                dialog.close();
-                                // toastr.success("User Blocked");
-                            }
-                        }]
-                    });
-                    //console.log("dataIn",data)
-                    // userService.sendUpgradeCardTOUsers(data).success(function(res) {
-                    //     if (res.responseCode == 200){
-                    //         toastr.success("UpgradeCard Send Successfully to All Winners User");
-                    //         $scope.sendMessage = '';
-                    //         $("#sendMessageModelAllUser").modal('hide');
-                    //     } else {
-                    //         toastr.error(res.responseMessage);
-                    //     }
-                    // })
-                break;
+                //     BootstrapDialog.show({
+                //     title: 'Send Card',
+                //     message: 'Are you sure want to send Card Users',
+                //         buttons: [{
+                //             label: 'Yes',
+                //             action: function(dialog) {
+                //             //$("#showAllCoupons").modal('hide');
+                //             userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                //                 if (res.responseCode == 200){
+                //                     toastr.success("UpgradeCard Send Successfully to All Winners User");
+                //                     $scope.sendMessage = '';
+                //                     $("#showAllCard").modal('hide');
+                //                     dialog.close();
+                //                     $state.reload();
+                //                 } else {
+                //                     toastr.error(res.responseMessage);
+                //                 }
+                //             })
+                //             }
+                //         }, {
+                //             label: 'No',
+                //             action: function(dialog) {
+                //                 dialog.close();
+                //                 // toastr.success("User Blocked");
+                //             }
+                //         }]
+                //     });
+                //     //console.log("dataIn",data)
+                //     // userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                //     //     if (res.responseCode == 200){
+                //     //         toastr.success("UpgradeCard Send Successfully to All Winners User");
+                //     //         $scope.sendMessage = '';
+                //     //         $("#sendMessageModelAllUser").modal('hide');
+                //     //     } else {
+                //     //         toastr.error(res.responseMessage);
+                //     //     }
+                //     // })
+                // break;
 
-                case 'CashWinnersUser':
-                    for (var i = 0; i < $scope.cashWinners.length; i++) {
-                        array.push($scope.cashWinners[i]._id)
-                    }
-                    data = {
-                        cardId:$scope.cardId,
-                        Id:array
-                    }
+                // case 'CashWinnersUser':
+                //     for (var i = 0; i < $scope.cashWinners.length; i++) {
+                //         array.push($scope.cashWinners[i]._id)
+                //     }
+                //     data = {
+                //         cardId:$scope.cardId,
+                //         Id:array
+                //     }
 
-                    BootstrapDialog.show({
-                    title: 'Send Card',
-                    message: 'Are you sure want to send Card Users',
-                        buttons: [{
-                            label: 'Yes',
-                            action: function(dialog) {
-                            //$("#showAllCoupons").modal('hide');
-                            userService.sendUpgradeCardTOUsers(data).success(function(res) {
-                                if (res.responseCode == 200){
-                                    toastr.success("UpgradeCard Send Successfully to All CashWinners User");
-                                    $scope.sendMessage = '';
-                                    $("#showAllCard").modal('hide');
-                                    dialog.close();
-                                    $state.reload();
-                                } else {
-                                    toastr.error(res.responseMessage);
-                                }
-                            })
-                            }
-                        }, {
-                            label: 'No',
-                            action: function(dialog) {
-                                dialog.close();
-                                // toastr.success("User Blocked");
-                            }
-                        }]
-                    });
-                    //console.log("dataIn",data)
-                    // userService.sendUpgradeCardTOUsers(data).success(function(res) {
-                    //     if (res.responseCode == 200){
-                    //         toastr.success("UpgradeCard Send Successfully to All CashWinners User");
-                    //         $scope.sendMessage = '';
-                    //         $("#sendMessageModelAllUser").modal('hide');
-                    //     } else {
-                    //         toastr.error(res.responseMessage);
-                    //     }
-                    // })
-                break;
+                //     BootstrapDialog.show({
+                //     title: 'Send Card',
+                //     message: 'Are you sure want to send Card Users',
+                //         buttons: [{
+                //             label: 'Yes',
+                //             action: function(dialog) {
+                //             //$("#showAllCoupons").modal('hide');
+                //             userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                //                 if (res.responseCode == 200){
+                //                     toastr.success("UpgradeCard Send Successfully to All CashWinners User");
+                //                     $scope.sendMessage = '';
+                //                     $("#showAllCard").modal('hide');
+                //                     dialog.close();
+                //                     $state.reload();
+                //                 } else {
+                //                     toastr.error(res.responseMessage);
+                //                 }
+                //             })
+                //             }
+                //         }, {
+                //             label: 'No',
+                //             action: function(dialog) {
+                //                 dialog.close();
+                //                 // toastr.success("User Blocked");
+                //             }
+                //         }]
+                //     });
+                //     //console.log("dataIn",data)
+                //     // userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                //     //     if (res.responseCode == 200){
+                //     //         toastr.success("UpgradeCard Send Successfully to All CashWinners User");
+                //     //         $scope.sendMessage = '';
+                //     //         $("#sendMessageModelAllUser").modal('hide');
+                //     //     } else {
+                //     //         toastr.error(res.responseMessage);
+                //     //     }
+                //     // })
+                // break;
 
-                case 'CouponWinnersUser':
-                    for (var i = 0; i < $scope.couponWinners.length; i++) {
-                        array.push($scope.couponWinners[i]._id)
-                    }
-                    data = {
-                        cardId:$scope.cardId,
-                        Id:array
-                    }
+                // case 'CouponWinnersUser':
+                //     for (var i = 0; i < $scope.couponWinners.length; i++) {
+                //         array.push($scope.couponWinners[i]._id)
+                //     }
+                //     data = {
+                //         cardId:$scope.cardId,
+                //         Id:array
+                //     }
 
-                    BootstrapDialog.show({
-                    title: 'Send Card',
-                    message: 'Are you sure want to send Card Users',
-                        buttons: [{
-                            label: 'Yes',
-                            action: function(dialog) {
-                            //$("#showAllCoupons").modal('hide');
-                            userService.sendUpgradeCardTOUsers(data).success(function(res) {
-                                if (res.responseCode == 200){
-                                    toastr.success("UpgradeCard Send Successfully to All CouponWinners User");
-                                    $scope.sendMessage = '';
-                                    $("#showAllCard").modal('hide');
-                                    dialog.close();
-                                    $state.reload();
-                                } else {
-                                    toastr.error(res.responseMessage);
-                                }
-                            })
-                            }
-                        }, {
-                            label: 'No',
-                            action: function(dialog) {
-                                dialog.close();
-                                // toastr.success("User Blocked");
-                            }
-                        }]
-                    });
-                    //console.log("dataIn",data)
-                    // userService.sendUpgradeCardTOUsers(data).success(function(res) {
-                    //     if (res.responseCode == 200){
-                    //         toastr.success("UpgradeCard Send Successfully to All CouponWinners User");
-                    //         $scope.sendMessage = '';
-                    //         $("#sendMessageModelAllUser").modal('hide');
-                    //     } else {
-                    //         toastr.error(res.responseMessage);
-                    //     }
-                    // })
-                break;
+                //     BootstrapDialog.show({
+                //     title: 'Send Card',
+                //     message: 'Are you sure want to send Card Users',
+                //         buttons: [{
+                //             label: 'Yes',
+                //             action: function(dialog) {
+                //             //$("#showAllCoupons").modal('hide');
+                //             userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                //                 if (res.responseCode == 200){
+                //                     toastr.success("UpgradeCard Send Successfully to All CouponWinners User");
+                //                     $scope.sendMessage = '';
+                //                     $("#showAllCard").modal('hide');
+                //                     dialog.close();
+                //                     $state.reload();
+                //                 } else {
+                //                     toastr.error(res.responseMessage);
+                //                 }
+                //             })
+                //             }
+                //         }, {
+                //             label: 'No',
+                //             action: function(dialog) {
+                //                 dialog.close();
+                //                 // toastr.success("User Blocked");
+                //             }
+                //         }]
+                //     });
+                //     //console.log("dataIn",data)
+                //     // userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                //     //     if (res.responseCode == 200){
+                //     //         toastr.success("UpgradeCard Send Successfully to All CouponWinners User");
+                //     //         $scope.sendMessage = '';
+                //     //         $("#sendMessageModelAllUser").modal('hide');
+                //     //     } else {
+                //     //         toastr.error(res.responseMessage);
+                //     //     }
+                //     // })
+                // break;
 
-                case 'BlockedUser':
-                    for (var i = 0; i < $scope.allblockUser.length; i++) {
-                        array.push($scope.allblockUser[i]._id)
-                    }
-                    data = {
-                        cardId:$scope.cardId,
-                        Id:array
-                    }
+                // case 'BlockedUser':
+                //     for (var i = 0; i < $scope.allblockUser.length; i++) {
+                //         array.push($scope.allblockUser[i]._id)
+                //     }
+                //     data = {
+                //         cardId:$scope.cardId,
+                //         Id:array
+                //     }
 
-                    BootstrapDialog.show({
-                    title: 'Send Card',
-                    message: 'Are you sure want to send Card Users',
-                        buttons: [{
-                            label: 'Yes',
-                            action: function(dialog) {
-                            //$("#showAllCoupons").modal('hide');
-                            userService.sendUpgradeCardTOUsers(data).success(function(res) {
-                                if (res.responseCode == 200){
-                                    toastr.success("UpgradeCard Send Successfully to All Blocked User");
-                                    $scope.sendMessage = '';
-                                    $("#showAllCard").modal('hide');
-                                    dialog.close();
-                                    $state.reload();
-                                } else {
-                                    toastr.error(res.responseMessage);
-                                }
-                            })
-                            }
-                        }, {
-                            label: 'No',
-                            action: function(dialog) {
-                                dialog.close();
-                                // toastr.success("User Blocked");
-                            }
-                        }]
-                    });
+                //     BootstrapDialog.show({
+                //     title: 'Send Card',
+                //     message: 'Are you sure want to send Card Users',
+                //         buttons: [{
+                //             label: 'Yes',
+                //             action: function(dialog) {
+                //             //$("#showAllCoupons").modal('hide');
+                //             userService.sendUpgradeCardTOUsers(data).success(function(res) {
+                //                 if (res.responseCode == 200){
+                //                     toastr.success("UpgradeCard Send Successfully to All Blocked User");
+                //                     $scope.sendMessage = '';
+                //                     $("#showAllCard").modal('hide');
+                //                     dialog.close();
+                //                     $state.reload();
+                //                 } else {
+                //                     toastr.error(res.responseMessage);
+                //                 }
+                //             })
+                //             }
+                //         }, {
+                //             label: 'No',
+                //             action: function(dialog) {
+                //                 dialog.close();
+                //                 // toastr.success("User Blocked");
+                //             }
+                //         }]
+                //     });
                     //console.log("dataIn",data)
                     // userService.sendUpgradeCardTOUsers(data).success(function(res) {
                     //     if (res.responseCode == 200){

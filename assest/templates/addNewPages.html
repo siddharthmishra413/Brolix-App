@@ -119,7 +119,7 @@
                                 
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
-                                    <button  class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid  || {{$scope.checkBoxArray.length < 1}} " ng-click="click('Step1')">Next</button>
+                                    <button  class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid  || {{$scope.subCategoryData.length>0}} || {{$scope.checkBoxArray.length>0}}" ng-click="click('Step1')">Next</button>
                                     <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                 </div>
                                 <!-- ng-disabled="userFrom.$invalid" -->
@@ -148,7 +148,8 @@
                         <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || '../dist/image/cover.jpg'}}" id="output" >
                         <label class="fileContainer">
                             Choose File
-                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" accept="image/*" required>
+                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" name="image" accept="image/*" required>
+                         <span ng-show="myFrom.image.$error.required">Image is required.</span>
                         </label>
                     </div>
                     <div class="page-image clearfix">
@@ -160,7 +161,7 @@
                     </div>
 
                     <div class="btn2 text-center">
-                        <button class="btn btn-lg btn-green" ng-click="click('Step2')">Next</button> 
+                        <button class="btn btn-lg btn-green" ng-disabled="myForm.pagephoto == '' && myForm.userphoto == '' " ng-click="click('Step2')">Next</button> 
                     </div>
                     <!-- ng-disabled="myForm.pagephoto == "" && myForm.userphoto == "" " -->
                 </div>
@@ -221,7 +222,7 @@
                                 </div>
                             </div>
                             <div class="btn2 text-center">
-                                <button class="btn btn-lg btn-green" ng-click="click('Step3')">Next</button>
+                                <button class="btn btn-lg btn-green" ng-disabled="{{$scope.array.length<1}}" ng-click="click('Step3')">Next</button>
                                 <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
                                 <!-- ng-disabled="media.$invalid or "array.length == 0" -->
                             </div>
