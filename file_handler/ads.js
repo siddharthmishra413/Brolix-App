@@ -583,7 +583,7 @@ module.exports = {
                                             pageId: pageId,
                                             type: "WINNER",
                                             couponExpire: "NEVER",
-                                            expirationTime:neverExpireTime
+                                            expirationTime: neverExpireTime
                                         }
                                     } else {
                                         console.log("else")
@@ -2298,7 +2298,7 @@ module.exports = {
             });
         })
     },
-   
+
 
     "storeCouponPrice": function(req, res) {
         createNewAds.findOne({ _id: req.params.id }, function(err, result) {
