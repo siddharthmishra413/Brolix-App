@@ -605,51 +605,67 @@ $scope.changeImage = function(input,type) {
    }
 
 
+userService.countryListData().success(function(res) {
+      //console.log("ddd",JSON.stringify(res))
+      $scope.countriesList = res.result;
+    })
 
-//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-    var currentCities=[];
-    $scope.currentCountry= '';
-var BATTUTA_KEY="00000000000000000000000000000000"
-    // Populate country select box from battuta API
-  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-    $.getJSON(url,function(countries)
-    {
-      $timeout(function(){
-        $scope.countriesList=countries;
-      },100)
-      
-      
-    });
-  var countryCode;
     $scope.changeCountry = function(){
-      for(var i=0;i<$scope.countriesList.length;i++){
-        if($scope.countriesList[i].name==$scope.createAds.country){
-          countryCode=$scope.countriesList[i].code;
-          //console.log(countryCode)
-          break;
-        }
+      var obj = {};
+      obj = {
+        country:$scope.createAds.country,
       }
-      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(regions)
-      {
-        //console.log('state list:   '+JSON.stringify(regions))
-        $timeout(function(){
-        $scope.stateList = regions;
-          },100)
-      });
-    }
+      userService.cityListData(obj).success(function(res) {
+      console.log("ddd",JSON.stringify(res))
+      $scope.cityList = res.result;
+    })
 
-    $scope.changeState = function(){
-      //console.log('detail -> '+countryCode+' city name -> '+$scope.createAds.state)
-      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.createAds.state+"&key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(cities)
-      {
-        // console.log('city list:   '+JSON.stringify(cities))
-        $timeout(function(){
-          $scope.cityList = cities;
-            },100)
-      })
+
     }
+//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+//     var currentCities=[];
+//     $scope.currentCountry= '';
+// var BATTUTA_KEY="00000000000000000000000000000000"
+//     // Populate country select box from battuta API
+//   url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+//     $.getJSON(url,function(countries)
+//     {
+//       $timeout(function(){
+//         $scope.countriesList=countries;
+//       },100)
+      
+      
+//     });
+//   var countryCode;
+//     $scope.changeCountry = function(){
+//       for(var i=0;i<$scope.countriesList.length;i++){
+//         if($scope.countriesList[i].name==$scope.createAds.country){
+//           countryCode=$scope.countriesList[i].code;
+//           //console.log(countryCode)
+//           break;
+//         }
+//       }
+//       var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(regions)
+//       {
+//         //console.log('state list:   '+JSON.stringify(regions))
+//         $timeout(function(){
+//         $scope.stateList = regions;
+//           },100)
+//       });
+//     }
+
+//     $scope.changeState = function(){
+//       //console.log('detail -> '+countryCode+' city name -> '+$scope.createAds.state)
+//       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.createAds.state+"&key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(cities)
+//       {
+//         // console.log('city list:   '+JSON.stringify(cities))
+//         $timeout(function(){
+//           $scope.cityList = cities;
+//             },100)
+//       })
+//     }
     //-------------------------------END OF SELECT CASCADING-------------------------//
 
     function daysInMonth(month,year) {
@@ -736,7 +752,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
     // var onedaymilisecond = 8.64e+7;
     console.log("$scope",JSON.stringify($scope.createAds.pageName));
     pageDetails = JSON.parse($scope.createAds.pageName);
-    var whoWillSeeYourAddArray = [];
+    // var whoWillSeeYourAddArray = [];
     var slideShow = [$scope.createAds.slidePhoto1,$scope.createAds.slidePhoto2,$scope.createAds.slidePhoto3,$scope.createAds.slidePhoto4,$scope.createAds.slidePhoto5,$scope.createAds.slidePhoto6];
     var appPhoto = [];
     appPhoto= [$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6];

@@ -80,6 +80,31 @@ $scope.subCaty = true;
 
     }
 
+$scope.checkBoxArray=[];
+ $scope.saveData = function(data){
+  //console.log(data)
+  console.log("value:  "+$scope.checkBoxArray.indexOf(data))
+if(($scope.checkBoxArray.indexOf(data)) == -1)
+{
+ $scope.checkBoxArray.push(data);
+}
+else
+{
+var checkBoxArray1 = [];
+for(var i=0;i<$scope.checkBoxArray.length;i++)
+  if($scope.checkBoxArray[i]!= data)
+checkBoxArray1.push($scope.checkBoxArray[i]);
+
+$scope.checkBoxArray = []
+for(var i=0;i<checkBoxArray1.length;i++)
+$scope.checkBoxArray.push(checkBoxArray1[i]);
+
+}
+  console.log("$scope.checkBoxArray:   "+$scope.checkBoxArray);
+}
+
+
+
 
 
 // $scope.viewPageDetails.socialMedia
@@ -476,15 +501,18 @@ $scope.subCaty = false;
          } 
      });
 
-
+if($scope.checkBoxArray.length<1)
+$scope.subCategoryFinal = $scope.myForm.subCategory;
+else
+$scope.subCategoryFinal = $scope.checkBoxArray;
     //console.log("allllllll data",JSON.stringify($scope.myForm));
       var data={
              "type": "ADMIN",
              "userId":userIdEdit,
              "pageType": "Business",
-             "pageName": $scope.myForm.pageName,
-             "category": $scope.myForm.mainCategory,
-             "subCategory": $scope.myForm.subCategory,
+             "pageName": $scope.viewPageDetails.pageName,
+             "category": $scope.viewPageDetails.category,
+             "subCategory": $scope.subCategoryFinal,
              "pageDiscription": $scope.myForm.description,
              "email": $scope.myForm.email,
              "phoneNumber": $scope.myForm.phon,

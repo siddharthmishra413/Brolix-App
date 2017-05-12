@@ -174,21 +174,25 @@
                             <div class="col-sm-12 sell-coupon">
                                 <h3>Who will see your add?</h3>
                                 <div class="col-sm-4">
-                                   <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
+                                   <select class="form-control" ng-change="changeCountry()" ng-model="createAds.whoWillSeeYourAdd.country" required>
                                        <option value="">Select Country</option>
-                                       <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                                       <option ng-repeat="country in countries" value"{{country.code}}">{{country}}</option>
                                    </select>
                                 </div>
                                 <div class="col-sm-4">
-                                   <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
+                                   <select class="form-control" ng-change="changeState()" ng-model="createAds.whoWillSeeYourAdd.state" required>
                                       <option value="">Select State</option>
-                                      <option ng-repeat="state in stateList">{{state.region}}</option>
+                                      <option ng-repeat="state in stateList">{{state}}</option>
                                    </select> 
                                 </div>
-                                <div class="col-sm-4">
-                                    <select  class="form-control" id="city" ng-model="createAds.city" required>
+                                <div class="col-sm-4" ng-if="cityBeg">
+                                    
+                                      <label>{{createAds.whoWillSeeYourAdd.city}}</label> 
+                                </div>
+                                <div class="col-sm-4" ng-if="cityEnd">
+                                    <select  class="form-control" id="city" ng-model="createAds.whoWillSeeYourAdd.city" required>
                                       <option value="">Select City</option>
-                                      <option ng-repeat="city in cityList">{{city.city}}</option>
+                                      <option ng-repeat="city in cityList">{{city}}</option>
                                     </select> 
                                 </div>
                             </div>
@@ -486,38 +490,38 @@
                             <div class="btn2 text-center">
                                 <div class="cus-upload-photos">
                                    <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"   ng-model="createAds.slidePhoto1"  ng-src="{{createAds.slidePhoto1}}" id="output">
+                                        <img class="profile-user-img img-responsive"   ng-model="createAds.slideShow[0]"  ng-src="{{createAds.slideShow[0]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto1')" accept="image/*">
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slideShow[0]')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slidePhoto2"  ng-src="{{createAds.slidePhoto2}}" id="output">
+                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slideShow[1]"  ng-src="{{createAds.slideShow[1]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slidePhoto2')" accept="image/*">
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slideShow[1]')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto3"  ng-src="{{createAds.slidePhoto3}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.slideShow[2]"  ng-src="{{createAds.slideShow[2]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slidePhoto3')" accept="image/*">
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slideShow[2]')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto4"  ng-src="{{createAds.slidePhoto4}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.slideShow[3]"  ng-src="{{createAds.slideShow[3]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slidePhoto4')" accept="image/*">
+                                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slideShow[3]')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slidePhoto5"  ng-src="{{createAds.slidePhoto5}}" id="output">
+                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slideShow[4]"  ng-src="{{createAds.slideShow[4]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
-                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto5')" accept="image/*">
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slideShow[4]')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">

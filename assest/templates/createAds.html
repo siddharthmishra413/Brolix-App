@@ -155,7 +155,7 @@
                                                 <div class="text-center new-upload-btns">
                                                     <label class="fileContainer">
                                                     Upload Video
-                                                    <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*" required>
+                                                    <input type="file" onchange="angular.element(this).scope().changeImage(this)" id="Name" class="form-control" placeholder="Name" accept="video/*" required>
                                                     </label>
                                                 </div>
                                             </div>
@@ -171,7 +171,7 @@
                                     </div>
                                 </div>
                                 <div class="btn2 text-center col-sm-12">
-                                    <button class="btn btn-lg btn-green" ng-disabled="createAds.vedioUrl == null && createAds.advertismentCover == null" ng-click="click('Step5')" >Next</button>
+                                    <button class="btn btn-lg btn-green" ng-disabled="createAds.vedioUrl == null || createAds.advertismentCover==null" ng-click="click('Step5')" >Next</button>
                                     <button class="btn btn-lg btn-green"  ng-click="click('Back4')" >Back</button>
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
                                     <div class="text-center">
                                         <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input ng-model="createAds.viewers" ng-pattern="/^[0-9]*$/" name="viewers"  maxlength="4" type="text" class="form-control text-center" required>
+                                            <input ng-model="createAds.viewers" ng-pattern="/^[0-9]*$/" name="viewers"  maxlength="6" type="text" class="form-control text-center" required>
                                                <span style="color:red" ng-show="vedioStep.viewers.$dirty && vedioStep.viewers.$invalid">
                                         <span ng-show="vedioStep.viewers.$error.required">*viewers is required.</span>
                                         <span ng-show="vedioStep.viewers.$error.pattern">*Please enter only numbers!</span>
@@ -281,11 +281,11 @@
                                     <div class="radio-btn text-left gbl-table">
                                         <div class="global-tble-cell">
                                             <label class="gbl-label">
-                                                <input type="radio" ng-model="createAds.winner" value="Winer" name="radio5" ng-model="createAds.numberOfWinners" checked>&nbsp;
+                                                <input type="radio" value="Winer" name="radio5" ng-model="createAds.numberOfWinners" checked>&nbsp;
                                             </label>
                                         </div>
                                         <div class="global-tble-cell">
-                                            <input type="text" name="winner" ng-pattern="/^[0-9]*$/" ng-model="createAds.winner" value="" class="form-control gbl-input" maxlength="3" required>
+                                            <input type="text" name="winner" ng-pattern="/^[0-9]*$/" ng-model="createAds.winner" value="" class="form-control gbl-input" maxlength="6" required>
                                                  <span style="color:red" ng-show="vedioStep.winner.$dirty && vedioStep.winner.$invalid">
                                         <span ng-show="vedioStep.winner.$error.required">*winner is required.</span>
                                         <span ng-show="vedioStep.winner.$error.pattern">*Please enter only numbers!</span>
@@ -301,7 +301,7 @@
                                 <div class="radio-tab">
                                     <div class="radio-btn text-left">
                                         <label>
-                                            <input type="radio" ng-model="createAds.winner"  value="All are Winer"  name="radio5" ng-model="createAds.winner" checked>&nbsp; All are Winers
+                                            <input type="radio" ng-model="createAds.numberOfWinners"  value="All are Winer"  name="radio5" ng-model="createAds.winner" checked>&nbsp; All are Winers
                                         </label>
                                     </div>
                                 </div>
@@ -311,19 +311,20 @@
                                 <div class="col-sm-4">
                                    <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
                                        <option value="">Select Country</option>
-                                       <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                                       <option ng-repeat="country in countriesList" value"{{country}}">{{country}}</option>
                                    </select>
                                 </div>
                                 <div class="col-sm-4">
                                    <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
                                       <option value="">Select State</option>
-                                      <option ng-repeat="state in stateList">{{state.region}}</option>
+                                      <option value="">N/A</option>
+                                      <!-- <option ng-repeat="state in stateList">{{state.region}}</option> -->
                                    </select> 
                                 </div>
                                 <div class="col-sm-4">
                                     <select  class="form-control" id="city" ng-model="createAds.city" required>
                                       <option value="">Select City</option>
-                                      <option ng-repeat="city in cityList">{{city.city}}</option>
+                                      <option ng-repeat="city in cityList">{{city}}</option>
                                     </select> 
                                 </div>
                             </div>
