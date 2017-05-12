@@ -2518,8 +2518,8 @@ module.exports = {
             console.log("user---->>>", user)
             console.log("coupon.couponStatus--->>>", JSON.stringify(user[0].coupon.couponStatus))
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-            else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
-             else if ((user[0].coupon.couponStatus) == "USED") { res.send({ responseCode: 400, responseMessage: "Coupon is already used." }); }
+            else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
+             else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: "Please enter a valid coupon to use." }); }
               else {
                 User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {

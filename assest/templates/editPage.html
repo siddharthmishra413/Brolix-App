@@ -53,13 +53,13 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="form-group">
+                                   <!--  <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Main Category</label>
                                             <div class="col-md-9"> 
                                                 <select name="category" class="form-control" ng-change="subCategoryData();" ng-model="viewPageDetails.category" required>
                                                 <option selected="">{{viewPageDetails.category}}</option>
-                                                    <!-- <option value="">Select Category</option> -->
+                                                
                                                     <option ng-repeat="category in category">{{category}}</option>
                                                  </select> 
                                                 <span style="color:red;" class="error" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
@@ -68,7 +68,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                   <!--  <div class="form-group">
+                                    <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Sub Categories</label>
                                             <div class="col-md-9">
@@ -82,15 +82,43 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                     <div class="form-group">
+
+<!-- ng-selected="{{category == viewPageDetails.category}} 
+ -->
+                                    <div class="form-group">
+                                    <div class="row">
+                                        <label class="control-label col-md-3">Main Category</label>
+                                        <div class="col-md-9"> 
+                                           <select name="category" class="form-control" ng-change="subCategoryData();" ng-model="viewPageDetails.category" required>
+                                                <option value="">Select Category</option>
+                                                <option ng-repeat="category in category" >{{category}}</option>
+                                             </select> 
+                                            <span style="color:red;" class="error" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
+                                                 <span style="color:red;" class="error" ng-show="userFrom.category.$error.required">Please Select a Category</span>
+                                            </span> 
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="subCaty">
                                     <div class="row">
                                         <label class="control-label col-md-3">Sub Categories</label>
                                         <div class="col-md-9">
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                                            <ul class="form-control dropdown-menu" ng-model="viewPageDetails.subCategory" name="subCategory" >
+                                            <ul class="form-control dropdown-menu" ng-model="myForm.subCategory" name="subCategory" >
                                             <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" unchecked ng-click="saveData(subCategoryData);"/>{{subCategoryData}}</a></li>
                                             </ul>
 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="caty">
+                                    <div class="row">
+                                        <label class="control-label col-md-3">Sub Categories</label>
+                                        <div class="col-md-9">
+                                            <label>{{viewPageDetails.subCategory}}</label>
                                         </div>
                                     </div>
                                 </div>

@@ -58,6 +58,30 @@ app.controller('editPagesCtrl', function($scope, $window, userService, $state, t
 
     })
 
+
+$scope.subCategoryData = function(){
+  $scope.caty = false;
+$scope.subCaty = true;
+    console.log("bbb",$scope.viewPageDetails.category);
+    var data ={};
+    data = {
+      subCat:$scope.viewPageDetails.category
+      }
+      userService.subCategoryData(data).success(function(res) {
+        console.log(JSON.stringify(res))
+            if (res.responseCode == 200){
+                $scope.subCategoryData= res.result;
+                //console.log("subCategoryData",JSON.stringify(subCategoryData))
+            }else{
+              toastr.error("Something went wrong")
+            } 
+
+        })
+
+    }
+
+
+
 // $scope.viewPageDetails.socialMedia
  $scope.addSocialMedia = function(addSocialMedia){
   console.log("addSocialMedia",addSocialMedia);
@@ -181,24 +205,24 @@ $scope.removeSocialMedia = function(removeSocialMedia){
  }
 
 
- $scope.subCategoryData = function(){
-    //console.log("bbb",$scope.viewPageDetails.category);
-    var data ={};
-    data = {
-      subCat:$scope.viewPageDetails.category
-      }
-      userService.subCategoryData(data).success(function(res) {
-        //console.log(JSON.stringify(res))
-            if (res.responseCode == 200){
-                $scope.subCategoryData= res.result;
-                console.log("subCategoryData",JSON.stringify($scope.subCategoryData))
-            }else{
-              toastr.error("Something went wrong")
-            } 
+ // $scope.subCategoryData = function(){
+ //    //console.log("bbb",$scope.viewPageDetails.category);
+ //    var data ={};
+ //    data = {
+ //      subCat:$scope.viewPageDetails.category
+ //      }
+ //      userService.subCategoryData(data).success(function(res) {
+ //        //console.log(JSON.stringify(res))
+ //            if (res.responseCode == 200){
+ //                $scope.subCategoryData= res.result;
+ //                console.log("subCategoryData",JSON.stringify($scope.subCategoryData))
+ //            }else{
+ //              toastr.error("Something went wrong")
+ //            } 
 
-        })
+ //        })
 
-    }
+ //    }
 
  // $scope.addSocialMedia = function(addSocialMedia){
  //    if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined){
@@ -296,6 +320,12 @@ $scope.removeSocialMedia = function(removeSocialMedia){
               $scope.$apply("myForm");
       });         
 }
+
+
+$scope.caty = true;
+$scope.subCaty = false;
+
+
     if ($scope.id == '') {
         toastr.error("Please first select.")
         $state.go('header.managePages')
@@ -305,7 +335,6 @@ $scope.removeSocialMedia = function(removeSocialMedia){
                 $scope.viewPageDetails = res.result;
                 console.log("admin array",JSON.stringify($scope.viewPageDetails))
                 console.log("all the data",JSON.stringify(res.result));
-
                 $scope.myForm.pagephoto = $scope.viewPageDetails.pageImage;
                 $scope.myForm.userphoto=$scope.viewPageDetails.coverImage;
                 for(i=0;i<$scope.viewPageDetails.socialMedia.length;i++){
@@ -360,6 +389,8 @@ $scope.removeSocialMedia = function(removeSocialMedia){
             }
         })
     }
+
+    console.log("$scope.viewPageDetails.category:---->    "+$scope.viewPageDetails)
     $scope.cancel=function(val){
           if(val == 'Step1'){
             $scope.viewPageDetails={};
@@ -418,6 +449,10 @@ $scope.removeSocialMedia = function(removeSocialMedia){
     //       }
     //     });
     // }
+
+
+//console.log("$scope.viewPageDetails.category:---->    "+$scope.viewPageDetails.category)
+
 
   $scope.submitt = function(){
   var userIdEdit = localStorage.getItem('userIdEdit');
