@@ -215,7 +215,7 @@
                                 
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
-                                    <button class="btn btn-lg btn-green" ng-disabled="viewUserProfile.city=="" || viewUserProfile.city==null" ng-click="updateUser()">Update Profile</button>
+                                    <button class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid" ng-click="updateUser()">Update Profile</button>
                                     <a class="btn btn-lg btn-green" ui-sref="header.manageUsers">Cancel</a>
                                 </div>
                             </fieldset>

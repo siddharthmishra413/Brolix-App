@@ -6,15 +6,28 @@ $scope.createAds = {};
 $scope.promoteAppGame = {};
 $scope.addCode = [];
 $scope.promoteAppValidation = [];
+ $scope.count=true;
 
 
-$scope.validation =  function(item){
-    console.log("googlePlayLink",item)
-    
-    $scope.promoteAppValidation.push(item);
-    console.log("$scope.promoteAppValidation",$scope.promoteAppValidation)
+$scope.validation =  function(){
 
+    console.log("item 1")
+
+    if(($scope.createAds.googlePlayLink || $scope.createAds.appStoreLink || $scope.createAds.windowStoreLink) && (createAds.appIcon)){
+        console.log("tt")
+        $scope.count=false;
+    }else{
+        console.log("ff")
+        $scope.count=true;
+    }
+    //console.log("$scope.count",$scope.count)
 }
+ $scope.ImageValidation = function(){
+    console.log("1")
+
+
+
+ }
 
 //$scope.createAds.advertismentCover='../dist/image/cover.jpg';
 

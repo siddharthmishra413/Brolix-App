@@ -377,7 +377,7 @@
                     <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
                     <tr ng-repeat="x in totalUser | customFilterUser:test">
                         <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x}}" type="radio">
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
                         <td >{{x.firstName}}</td>
                         <td >{{x.lastName}}</td>

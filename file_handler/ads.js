@@ -28,7 +28,9 @@ module.exports = {
 
     "createAds": function(req, res) {
         if (req.body.adsType == "coupon") {
-            if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else {
+            if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); }
+            else if(req.body.numberOfWinners>req.body.viewerLenght){ res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); }
+            else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
                 req.body.viewerLenght = 2;

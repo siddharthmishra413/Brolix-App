@@ -197,7 +197,7 @@ var createNewAdsSchema = new Schema({
     expiryOfPriority: { type: Date, default: Date.now },
     couponSold:[],
     uploadFile:{type:String},
-    backgroundImage:{type:String},
+    backgroundimage:{type:String},
     createdAt: {
         type: Date,
         default: Date.now

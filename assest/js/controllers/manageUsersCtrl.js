@@ -347,7 +347,8 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                    $scope.businessUserCount = res.result.total;
                }
                else {
-                toastr.error(res.responseMessage);
+                $scope.businessUserCount = 0;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
@@ -403,6 +404,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                    $scope.couponWinnersCount = res.result.total;
                }
                else {
+                $scope.couponWinnersCount = 0;
                 toastr.error(res.responseMessage);
                 }
           })
@@ -428,7 +430,8 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                    $scope.allblockUserCount = res.result.total;
                }
                else {
-                toastr.error(res.responseMessage);
+                $scope.allblockUserCount = 0;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
