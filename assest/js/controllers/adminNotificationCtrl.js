@@ -3,6 +3,12 @@ $(window).scrollTop(0,0);
 $scope.$emit('headerStatus', 'Admin Tools');
 $scope.$emit('SideMenu', 'Admin Tools');
 
+$scope.key = 'user';
+//var data = '';
+$scope.getdata = function(data)
+{
+	$scope.key = data;
+}
 
  userService.notificationToAdmin().success(function(res) {        
     if (res.responseCode == 200){

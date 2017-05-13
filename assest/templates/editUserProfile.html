@@ -76,11 +76,12 @@
                                     <div class="row">
                                         <label class="control-label col-md-3">Email</label>
                                         <div class="col-md-9">
-                                            <input type="email" class="form-control" name="email" ng-model="viewUserProfile.email" placeholder="Email" maxlength="71" ng-maxlength="70" required>
+                                            <input type="email" class="form-control" name="email" ng-model="viewUserProfile.email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" maxlength="71" ng-maxlength="70" required>
                                             <span style="color:red;" ng-show="userFrom.email.$dirty && userFrom.email.$invalid">
                                             <span ng-show="userFrom.email.$error.required">Email is required.</span>
                                             <span ng-show="userFrom.email.$error.email">Invalid email address.</span>
-                                            <span style="color:red;" ng-show="userFrom.email.$error.maxlength">This email address is too long.</span>
+                                             <span style="color:red;" ng-show="userFrom.email.$dirty && userFrom.email.$error.pattern">Invalid email address</span>
+                                            <span style="color:red;" ng-show="userFrom.email.$error.maxlength">This email address is too long.</span></span>
                                         </div>
                                     </div>
                                 </div>

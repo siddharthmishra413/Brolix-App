@@ -25,9 +25,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
 
     $scope.ageFunction = function(age){
     console.log("$scope.dashBordFilter.ageTo",age)
-    var agefromLimit = age+1;
-	    for (var i =  agefromLimit; i <99; i++){
+    var agefromLimited = parseInt(age)+1;
+    //console.log("here "+agefromLimited)
+	    for (var i =  agefromLimited; i <99; i++){
 	      $scope.ageLimits.push(i);
+        //console.log("hi");
 	    }
 	    console.log("$scope.ageLimits",$scope.ageLimits)
     }
@@ -254,7 +256,8 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                    $scope.totalWinnersCount = res.result.total;
                }
                else {
-                toastr.error(res.responseMessage);
+                $scope.totalWinnersCount = 0;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
@@ -293,6 +296,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                    $scope.totalUserCount = res.result.total;
                }
                else {
+                $scope.totalUserCount = 0;
                 toastr.error(res.responseMessage);
                 }
           })
@@ -319,6 +323,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                    $scope.personalUserCount = res.result.total;
                }
                else {
+                $scope.personalUserCount = 0;
                 toastr.error(res.responseMessage);
                 }
           })
@@ -497,6 +502,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
         if($scope.modalId == '' || $scope.modalId == undefined || $scope.modalId == null){
         toastr.error("Please select user.")
         $state.go('header.manageUsers')
+        
         }else {
             $("#sendMessageModelAllUser").modal('show');
         }
@@ -1794,7 +1800,7 @@ $scope.sendCard = function(cardId,type){
 
     /*----------DashBoardFilter----------*/
 
-
+console.log("dashBordFilter.dobTo   :   "+$scope.dashBordFilter.dobTo);
 $scope.dashBordFilter = function(){
 
     var type = localStorage.getItem('userTypeName');
