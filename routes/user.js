@@ -4,6 +4,8 @@ var userHandler = require('../file_handler/user.js');
 var authUser = require('../middlewares/authUser');
 
 
+app.get('/validatorPaytabs', userHandler.validatorPaytabs);
+
 app.post('/createToken', userHandler.createToken);
 
 app.post('/Twocheckout', userHandler.Twocheckout);
