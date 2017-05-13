@@ -296,10 +296,11 @@
                        </div>
                     </datepicker>
                     </div>
-                    <div class="form-group clearfix date-picker">
+                    <!-- {{dashBordFilter.dobTo==undefined}} -->
+                    <div class="form-group clearfix date-picker" >
                     <datepicker date-format="yyyy-MM-dd" selector="form-control" >
                        <div class="input-group">
-                           <input class="form-control" style="cursor:pointer;" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose From date" ng-model="dashBordFilter.dobFrom"/>
+                           <input ng-disabled="dashBordFilter.dobTo==undefined" class="form-control" style="cursor:pointer;" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose From date" ng-model="dashBordFilter.dobFrom"/>
                            <span class="input-group-addon" style="cursor: pointer">
                            <!-- <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
@@ -377,7 +378,7 @@
                     <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
                     <tr ng-repeat="x in totalUser | customFilterUser:test">
                         <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x}}" type="radio">
+                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
                         <td >{{x.firstName}}</td>
                         <td >{{x.lastName}}</td>

@@ -5,7 +5,7 @@ app.controller('viewUserProfileCtrl', function($scope, $window, userService, $st
     $scope.$emit('SideMenu', 'Manage User');
     $scope.myForm = {};
     var id = $stateParams.id;
-    console.log("Id====>>>"+id)
+    console.log("Idssssss====>>>"+id)
     if(id == ''){
        toastr.error("Please select user.")
        $state.go('header.manageUsers')

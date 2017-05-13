@@ -853,7 +853,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
   
     }
     console.log("All data -->>"+JSON.stringify(modifyData));
-  userService.ads('/editAd/:adminIdss/:pageDetails._id',modifyData).then(function(objS){
+  userService.editAds(adminIdss,pageDetails._id,modifyData).then(function(objS){
       console.log('success: -->  '+JSON.stringify(objS));
      
     },function(objE){

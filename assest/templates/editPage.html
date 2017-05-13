@@ -135,7 +135,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Email</label>
                                             <div class="col-md-9">
-                                                <input type="email" class="form-control" name="email" ng-model="viewPageDetails.email" placeholder="Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/"> 
+                                                <input type="email" class="form-control" name="email" ng-model="viewPageDetails.email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"> 
                                                     <span ng-show="userFrom.email.$error.email && userFrom.email.$error.pattern">Invalid email address.</span>
                                                     </span>
                                             </div>
