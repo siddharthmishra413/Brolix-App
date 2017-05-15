@@ -811,9 +811,9 @@ $scope.dashBordFilter = function(){
 /*show Adds*/
 
 $scope.showAdds = function(id){
-    //console.log("llllllllllll",id);
+    console.log("llllllllllll",id);
     userService.showAdds(id).success(function(res){
-        //console.log("resssssss",JSON.stringify(res))
+        console.log("resssssss",JSON.stringify(res))
         if(res.responseCode == 200){
             $scope.allAddsOnPage=res.result;
             //console.log("res",JSON.stringify(res));
@@ -849,11 +849,11 @@ userService.userInfo(id).success(function(res) {
 /*show winners*/
 
 $scope.showWinners = function(id){
-    //console.log("iddddd",id);
+    console.log("iddddd",id);
     userService.showPageWinner(id).success(function(res){
         if(res.responseCode == 200){
             $scope.allWinnerOnPage=res.result;
-            //console.log("res",JSON.stringify(res.result));
+            console.log("res",JSON.stringify(res.result));
             $("#pageWinnerDetails").modal('show');
 
         }else{

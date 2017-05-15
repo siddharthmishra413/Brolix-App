@@ -381,7 +381,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                    $scope.totalSoldUpgradeCardCount = res.total;
                } 
                else {
-                $scope.totalSoldUpgradeCardCount = res.total;
+                $scope.totalSoldUpgradeCardCount = 0;
                 //toastr.error(res.responseMessage);
                 }
           })
@@ -415,9 +415,11 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                    $scope.totalIncomeInCashFromUpgradeCard= res.docs;
                    $scope.totalIncomeFromUpgradeCard = res.total;
                } 
-               else {
-                $scope.totalIncomeFromUpgradeCard = res.total;
+               else if (res.responseCode == 400) {
+                $scope.totalIncomeFromUpgradeCard = 0;
                 //toastr.error(res.responseMessage);
+                }else{
+                     toastr.error(res.responseMessage);
                 }
           })
      }
@@ -446,15 +448,16 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
    $scope.currentUsedUpgradeCard = 1;
      $scope.nextUsedUpgradeCardDetail = function(){
          userService.usedUpgradeCard($scope.currentUsedUpgradeCard).success(function(res) { 
+            console.log()
             if (res.responseCode == 200){
                    $scope.noOfPagesUsedUpgradeCard = res.pages;
                    $scope.pageUsedUpgradeCard= res.page;
                    $scope.usedUpgradeCard= res.docs;
                    //console.log(JSON.stringify($scope.usedUpgradeCard));
                     $scope.usedUpgradeCardcount = res.total;
-               } 
-               else {
-                $scope.usedUpgradeCardcount = res.total;
+               }
+               else  {
+                $scope.usedUpgradeCardcount = 0;
                 //toastr.error(res.responseMessage);
                 }
           })
@@ -490,7 +493,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                    $scope.unUsedUpgradeCardcount = res.total;
                } 
                else {
-                $scope.unUsedUpgradeCardcount = res.total;
+                $scope.unUsedUpgradeCardcount = 0;
                 //toastr.error(res.responseMessage);
                 }
           })
@@ -528,7 +531,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                    $scope.totalSoldLuckCardcount = res.total;
                } 
                else {
-                $scope.totalSoldLuckCardcount = res.total;
+                $scope.totalSoldLuckCardcount = 0;
                 //toastr.error(res.responseMessage);
                 }
           })
@@ -565,7 +568,8 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                     $scope.totalIncomeLuck = res.totalIncome;
                } 
                else {
-                toastr.error(res.responseMessage);
+                $scope.totalIncomeLuck = 0;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
