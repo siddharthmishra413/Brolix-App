@@ -66,7 +66,7 @@
                         </div>
                         <div class="bottom-box">
                             <div class="btn-manage" ng-click="tab='showAllRemovedPage'">
-                                <a ng-click="pageTypeName('removedPage')">Show</a>
+                                <a ng-click="pageTypeName('Removed Pages')">Show</a>
                             </div>
                         </div>
                     </div>
@@ -206,7 +206,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Mobile">
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -238,7 +238,7 @@
                         <td >{{x.email}}</td>
                         <td >{{x.phoneNumber}}</td> -->
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showWinners(x._id)">{{x.winnersCount}}</td>
+                        <td >{{x.winnersCount}}</td>
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
                     </tr>
                 </tbody>
@@ -281,7 +281,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Mobile">
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -313,7 +313,7 @@
                         <td >{{x.userId.email}}</td>
                         <td >{{x.userId.mobileNumber}}</td> -->
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showWinners(x._id)">{{x.winnersCount}}</td>
+                        <td >{{x.winnersCount}}</td>
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
                     </tr>
                 </tbody>
@@ -334,9 +334,9 @@
                 <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
                 </li>
-                <li class="active">
+                <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="sendMessagePage(myForm.pageId)">Send Message</a>
-                </li>
+                </li> -->
                 <li class="last">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
                 </li>
@@ -346,7 +346,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Mobile">
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -378,7 +378,7 @@
                         <td >{{x.email}}</td>
                         <td >{{x.phoneNumber}}</td> -->
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showWinners(x._id)">{{x.winnersCount}}</td>
+                        <td>{{x.winnersCount}}</td>
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
                     </tr>
                 </tbody>
@@ -415,7 +415,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Mobile">
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
                         <div class="input-group-addon">Search</div>
                     </div>
                 </div>
@@ -447,7 +447,7 @@
                         <td >{{x.email}}</td>
                         <td >{{x.phoneNumber}}</td> -->
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showWinners(x._id)">{{x.winnersCount}}</td>
+                        <td >{{x.winnersCount}}</td>
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
                     </tr>
                 </tbody>
@@ -498,21 +498,15 @@
                                 <thead>
                                 <input type="text" ng-model="testing" placeholder="Search">
                                     <tr>
-                                        <th>Ads Type</th>
-                                        <th>AdContent Type</th>
-                                        <th>Category</th>
-                                        <th>Sub Category</th>
-                                        <th>Page Discription</th>
+                                        <th>Ad Date</th>
+                                        <th>Gift Description</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="x in allAddsOnPage | filter:testing" >
-                                        <td class="skyblue-text">{{x.pageType}}</td>
-                                        <td class="skyblue-text">{{x.pageName}}</td>
-                                        <td class="skyblue-text">{{x.category}}</td>
-                                        <td class="skyblue-text">{{x.subCategory}}</td>
-                                        <td class="skyblue-text">{{x.pageDiscription}}</td>
+                                        <td class="skyblue-text">{{x.createdAt | date:'dd-MM-yyyy'}}</td>
+                                        <td class="skyblue-text">{{x.giftDescription}}</td>
                                         <td class="skyblue-text">{{x.status}}</td>
                                     </tr>
                                 </tbody>
@@ -587,7 +581,7 @@
                                         <th>Mobile Number</th>
                                         <th>Email</th>
                                         <th>Country</th>
-                                        <th>State</th>
+                                        
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -597,7 +591,7 @@
                                         <td class="skyblue-text">{{x.mobileNumber}}</td>
                                         <td class="skyblue-text">{{x.email}}</td>
                                         <td class="skyblue-text">{{x.country}}</td>
-                                        <td class="skyblue-text">{{x.state}}</td>
+                                        
                                         <td class="skyblue-text">{{x.status}}</td>
                                     </tr>
                                 </tbody>

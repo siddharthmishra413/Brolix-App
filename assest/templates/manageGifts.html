@@ -6,7 +6,7 @@
                     <div class="box-block blk-drakgreen">
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
-                                <div class="total-add">Total Brolix Gifts</div>
+                                <div class="total-add">Brolix Gifts</div>
                                 <div class="total-amt">{{totalBrolix | number}}</div>
                             </div>
                             <div class="bottom-box">
@@ -22,7 +22,7 @@
                     <div class="box-block blk-red">
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
-                                <div class="total-add">Total Coupons Gifts</div>
+                                <div class="total-add">Coupons Gifts</div>
                                 <div class="total-amt">{{totalCouponsGift}}</div>
                             </div>
                             <div class="bottom-box">
@@ -38,7 +38,7 @@
                     <div class="box-block  blk-browen">
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
-                                <div class="total-add">Total Cash Gifts</div>
+                                <div class="total-add">Cash Gifts</div>
                                 <div class="total-amt">{{totalCashGift}}</div>
                             </div>
                             <div class="bottom-box">
@@ -54,7 +54,7 @@
                     <div class="box-block blk-drkblue">
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
-                                <div class="total-add">Total Hidden Gifts</div>
+                                <div class="total-add">Hidden Gifts</div>
                                 <div class="total-amt">{{totalHiddenGift}}</div>
                             </div>
                             <div class="bottom-box">
@@ -222,7 +222,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in totalExchangedCouponShow1 | totalExchangedFilter:search">
-                        <td class="skyblue-text" ng-click="showCouponGift(x.id)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id)">View</td>
                         <td>{{x.exchToFirstName}} {{x.exchToLastName}}</td>
                         <td>{{x.exchFromFirstName}} {{x.exchFromLastName}}</td>
                     </tr> 
@@ -272,7 +272,7 @@
                     <tr ng-repeat="x in totalCouponsGiftShow | totalCouponGiftFilter:search">
                         <td>{{x.coupon.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text" ng-click="showCouponGift(x.coupon.adId)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.coupon.adId)">View</td>
                         <td>{{x.coupon.couponStatus}}</td>
                     </tr>
                     <tr ng-if="(totalCouponsGiftShow | totalCouponGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
@@ -368,7 +368,7 @@
                     <tr ng-repeat="x in totalHiddenGiftShow | totalHiddenGiftFilter:search">
                         <td>{{x.hiddenGifts.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text" ng-click="showCouponGift(x.hiddenGifts.adId)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.hiddenGifts.adId)">View</td>
                         <td>{{x.hiddenGifts.status}}</td>
                      </tr>
                       <tr ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>

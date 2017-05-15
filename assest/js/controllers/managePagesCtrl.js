@@ -853,6 +853,7 @@ $scope.showWinners = function(id){
     userService.showPageWinner(id).success(function(res){
         if(res.responseCode == 200){
             $scope.allWinnerOnPage=res.result;
+            $scope.allshowUserPage = res.result;
             console.log("res",JSON.stringify(res.result));
             $("#pageWinnerDetails").modal('show');
 
@@ -866,8 +867,9 @@ $scope.showWinners = function(id){
 /*show Admin Pages*/
 
 $scope.showAdminPages = function(id){
-    //console.log("iddddd",id);
+    console.log("iddddd",id);
     userService.showAdminPages(id).success(function(res){
+      console.log("ssdsd",JSON.stringify(res))
         if(res.responseCode == 200){
             $scope.allAdminOnPages=res.result;
             //console.log("res----------------",JSON.stringify(res.result));

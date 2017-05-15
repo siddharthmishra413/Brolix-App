@@ -1855,7 +1855,9 @@ module.exports = {
                 for (var i = 0; i < result.adAdmin.length; i++) {
                     array.push(result.adAdmin[i].userId)
                 }
+                console.log("array",array)
                 User.find({ _id: { $in: array } }, function(err, result1) {
+                    console.log(result1)
                     if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                         res.send({
                             result: result1,

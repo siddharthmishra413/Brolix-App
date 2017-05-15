@@ -1168,7 +1168,8 @@
                             </ul>
                             <div class="tab-content add-card newtab-s">
                                 <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
-                                    <div class="row-table" ng-repeat="data in UpgradeCard">
+                                 <input class="searching form-control" ng-model='view' placeholder='search card...' style="width: 200px;">
+                                    <div class="row-table" ng-repeat="data in UpgradeCard | filterOnView:view">
                                         <div class="col-cell">
                                             <div class="cover-image newcover-img">
                                                 <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">

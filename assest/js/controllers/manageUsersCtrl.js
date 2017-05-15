@@ -190,6 +190,22 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     }
 
 
+ app.filter("filterOnView",function() {
+     return function(items,nameValue) {
+       if (!nameValue) {
+         return retArray = items;
+         }
+         var retArray = [];
+           for(var i=0;i<items.length;i++)
+                {
+                if (items[i].viewers.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray;
+        }
+ });
+
     // $scope.slectCountry = function(qq){
     //     console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
     //     userService.allstatefind($scope.dashBordFilter.country).success(function(res) {

@@ -603,7 +603,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                     $scope.usedLuckCardcount = res.total;
                } 
                else {
-                $scope.usedLuckCardcount = res.total;
+                $scope.usedLuckCardcount = 0;
                 //toastr.error(res.responseMessage);
                 }
           })
@@ -638,7 +638,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                     $scope.unUsedLuckCardcount = res.total;
                } 
                else {
-                $scope.unUsedLuckCardcount = res.total;
+                $scope.unUsedLuckCardcount = 0;
                 //toastr.error(res.responseMessage);
                 }
           })
