@@ -125,6 +125,7 @@
 
      //API for Accept Follower Request
      "acceptFollowerRequest": function(req, res) {
+         console.log("req-->>",req.body)
          if (req.body.followerStatus == "accept") {
              console.log("in")
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
@@ -147,6 +148,7 @@
                  }
              })
          } else if (req.body.followerStatus == "block") {
+              console.log("req-->>",req.body)
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
                  $set: {
                      followerStatus: req.body.followerStatus,

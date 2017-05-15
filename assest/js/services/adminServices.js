@@ -165,8 +165,8 @@ app.service('userService',function($http){
      showAllLiveUsers: function(pageNo) {
      return $http.get(baseurl+'/admin/liveUser/'+pageNo);
    },
-    showListOFCoupon: function() {
-      return $http.get(baseurl+'/admin/showListOFCoupon');
+    showListOFCouponWithoutPagination: function() {
+      return $http.get(baseurl+'/admin/showListOFCouponWithoutPagination');
     },
     countryListData: function() {
       return $http.get(baseurl+'/admin/countryListData');
@@ -266,8 +266,9 @@ app.service('userService',function($http){
      return $http.get(baseurl+'/admin/listOfAds/');
     },
     
-    adsfilter: function(data){
-      return $http.post(baseurl+'/admin/adsfilter', data);
+    adsfilter: function(data,pageId){
+      console.log("data in services :   "+JSON.stringify(data)+"        page:  "+pageId)
+      return $http.post(baseurl+'/admin/adsfilter'+pageId, data);
     },
 
     adsDetail: function(id) {

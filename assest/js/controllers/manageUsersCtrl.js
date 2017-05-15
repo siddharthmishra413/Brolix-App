@@ -99,8 +99,8 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
         //console.log("UpgradeCard",JSON.stringify(res));
     })
 
-    userService.showListOFCoupon().success(function(res) {
-      //console.log("resssssssssssssss",res)
+    userService.showListOFCouponWithoutPagination().success(function(res) {
+      console.log("resssssssssssssss",JSON.stringify(res))
         $scope.allCoupons = res.result;
         //console.log("allCoupons",JSON.stringify($scope.allCoupons));
     })
@@ -1820,7 +1820,7 @@ $scope.dashBordFilter = function(){
             joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
-        //console.log("datatata",JSON.stringify(data))
+        console.log("datatata",JSON.stringify(data))
 
     switch (type)
             {

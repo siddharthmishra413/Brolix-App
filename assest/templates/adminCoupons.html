@@ -18,10 +18,10 @@
                     <td>{{details.giftDescription}}</td>
                     <td>{{details.couponSellPrice}} B</td>
                     <td>
-                        <a class="table-a"  ng-href="#header/viewCoupon" ng-click="viewCoupon(details._id)">View</a>
-                        <a class="table-a" ng-href="#header/editCoupon" ng-click="editCoupon(details._id)">Edit</a>
-                        <a class="table-a" ng-click="postCoupon(details._id)">Post</a>
-                        <a class="table-a" ng-click="removeCoupon(details._id)">Remove</a>
+                        <a class="table-a" style="cursor:pointer;" ng-href="#header/viewCoupon" ng-click="viewCoupon(details._id)">View</a>
+                        <a class="table-a" style="cursor:pointer;" ng-href="#header/editCoupon" ng-click="editCoupon(details._id)">Edit</a>
+                        <a class="table-a" style="cursor:pointer;" ng-click="postCoupon(details._id)">Post</a>
+                        <a class="table-a" style="cursor:pointer;" ng-click="removeCoupon(details._id)">Remove</a>
                      </td>
                 </tr>
             </table>
@@ -41,13 +41,31 @@
             <!-- <span class="heading-coupon"><u>ADD NEW COUPON</u></span> -->
             <form class="form-block" role="form" name="myForm">
               <fieldset>
+
+             <!--  <div class="cover-image" >
+                        <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || '../dist/image/cover.jpg'}}" id="output" >
+                        <label class="fileContainer">
+                            Choose File
+                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" name="image" accept="image/*" required>
+                         <span ng-show="myFrom.image.$error.required">Image is required.</span>
+                        </label>
+                    </div>
+ -->
+
+
                   <div class="form-group clearfix">
-                      <div class="cover-image" style="height:250px;">
-                      <img style="height:200px;width:200px;border-radius: 70%;margin:0 auto;" class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
-                          <div class="new_file"><input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*"></div>
+                      <div class="cover-image">
+                       <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                        <label class="fileContainer">
+                            Choose File
+                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" name="image" accept="image/*" required>
+                         <span ng-show="myFrom.image.$error.required">Image is required.</span>
+                        </label>
+                     <!--  <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                          <div class="new_file"><input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*"></div> -->
                       </div>
                   </div>
-                  <div class="form-group clearfix">
+                  <div class="form-group clearfix" style="margin-top:45px;">
                       <label class="col-sm-3 control-label">Page Name</label>
                       <div class="col-sm-9">
 
@@ -69,7 +87,7 @@
                    
 
                   <div class="form-group clearfix">
-                      <label class="col-sm-3 control-label">Expiry Date</label>
+                    <label class="col-sm-3 control-label">Expiry Date</label>
                       <div class="col-sm-9">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                              <div class="input-group">
@@ -88,7 +106,7 @@
                         <span style="color:red" ng-show="myForm.myDate.$error.date">
                          Not a valid date!</span> -->
                       </div>
-                    </div>
+                  </div>
                   <div class="form-group clearfix">
                       <label class="col-sm-3 control-label">Gift Description</label>
                       <div class="col-sm-9">
@@ -123,24 +141,24 @@
                    <table class="table table-bordered table-striped">                         
                           <tr>
                               <th>Available Coupons</th>
-                              <td><input type="number"price ng-model="availableCoupon" name="coupon" required>
+                              <td><input type="number"price class="form-control" ng-model="availableCoupon" name="coupon" required>
                                <span style="color:red;" ng-show="userFrom1.coupon.$dirty && userFrom1.coupon.$invalid">
                                               <span ng-show="userFrom1.coupon.$error.required">Enter coupons</span></td>
                           </tr>
                           <tr>
                               <th>Coupon Price</th>
-                              <td><input type="number" name="price" ng-pattern="/^[0-9]{1,10}$/" ng-model="couponPrice" required>
+                              <td><input type="number" class="form-control" name="price" ng-pattern="/^[0-9]{1,10}$/" ng-model="couponPrice" required>
                                <span style="color:red;" ng-show="userFrom1.price.$dirty && userFrom1.price.$invalid">
                                 <span ng-show="userFrom1.price.$error.required">Enter Coupon Price</span>
                                 <span ng-show="userFrom.phone.$error.pattern">Only Numbers are allowed.</span>
                               </td>
                           </tr>
-                          <tr>
-                              <th></th>
-                              <td ><input class="table-a" type="submit" ng-click="submit()" name="Post"></td>
-                          </tr>
+                         
                   </table>
                 </div>
+                 <div class="text-center">
+                            <input class="table-a" type="submit" ng-click="submit()" name="Post">
+                          </div>
                </form>
            </div>
        </div>

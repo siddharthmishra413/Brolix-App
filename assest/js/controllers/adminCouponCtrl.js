@@ -150,10 +150,13 @@ $scope.currentAllCoupons = 1;
                   "couponBuyersLength":$scope.availableCoupon
           }
           userService.postCoupon(post_id,data).then(function(success) { 
-              //console.log(JSON.stringify(success))
-              toastr.success('Coupon Created Successfully');
-                  $state.reload();
-                },function(err){
+            console.log("success",JSON.stringify(success))
+            if(success.data.responseCode == 200){
+              toastr.success(success.data.responseMessage);
+              $("#post").modal('hide');
+              $state.reload();
+            }
+              },function(err){
                   //console.log(err);
                    toastr.error('Connection error.');
             }) 

@@ -3107,6 +3107,16 @@ module.exports = {
         })
     },
 
+    "showListOFCouponWithoutPagination": function(req, res) {
+        createNewAds.find({ adsType: 'ADMINCOUPON', status: 'ACTIVE' },function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+            else if (result.length == 0) { res.send({ count: 0, responseCode: 500, responseMessage: 'No coupon found' }); } 
+            else {
+                res.send({ result: result, responseCode: 200, responseMessage: "Coupon list successfully." })
+            }
+        })
+    },
+
     "postCouponToStore": function(req, res) {
         createNewAds.findOneAndUpdate({ _id: req.params.id }, { $set: { couponSellPrice: req.body.couponSellPrice, couponBuyersLength: req.body.couponBuyersLength, sellCoupon: true } }, { new: true }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {

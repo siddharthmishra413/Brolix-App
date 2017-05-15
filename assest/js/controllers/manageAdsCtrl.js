@@ -7,6 +7,7 @@ $(window).scrollTop(0,0);
  $scope.sendMessage = {};
  $scope.myForm={};
 
+localStorage.setItem('adsTypeName','totalAds');
 
 
  $scope.removeAds = function (id) {
@@ -837,15 +838,20 @@ $scope.dashBordFilter = function(){
             joinFrom:$scope.dobFrom,
         }
         console.log("datatata",data)
+        console.log("type:                "+type)
         if(type == undefined || type == null  || type == "" )
         {
             toastr.error("First you click on show Ads button")
         }else {
+            console.log("switch type:   "+type);
             switch (type)
             {
                 case 'totalAds':
                 console.log("1");
-                    userService.adsfilter(data).success(function(res){
+                $scope.currentPage = 1;
+                console.log("data jst before service"+JSON.stringify(data));
+                    userService.adsfilter(data,$scope.currentPage).success(function(res){
+                        console.log("ressssssss",JSON.stringify(res));
                         $scope.totalAds = res.data;
                         console.log("ressssssss1",JSON.stringify($scope.totalAds));
                     })

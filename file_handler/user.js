@@ -436,10 +436,12 @@ module.exports = {
             if (!user) { res.send({ responseCode: 404, responseMessage: 'Email id does not exists.' });} 
             else {
                 var transporter = nodemailer.createTransport({
+                    // host: 'localhost',
+                    // port: 25
                     service: 'Gmail',
                     auth: {
-                        user: "dixitjorden@gmail.com",
-                        pass: "8090404689"
+                        user: "test.avi201@gmail.com",
+                        pass: "Mobiloitte1"
                     }
                 });
                 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -447,7 +449,7 @@ module.exports = {
                 for (var i = 0; i < 8; i++) link += possible.charAt(Math.floor(Math.random() * possible.length));
                 var to = req.body.email
                 var mailOption = {
-                    from: "testing.mobiloitte@gmail.com",
+                    from: "test.avi201@gmail.com",
                     to: req.body.email,
                     subject: 'Brolix Change Password ',
                     text: 'you have a new submission with following details',
@@ -1961,13 +1963,13 @@ module.exports = {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error11." }) }
                         else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct coupon Id." }) }
                         else if ((user[0].coupon.status) != 'ACTIVE') {
-                            res.send({ responseCode: 403, responseMessage: "Coupon is already exchanged with someone else." })}
+                            res.send({ responseCode: 403, responseMessage: "Coupon is already exchanged." })}
                           else{
                                 createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { 'couponExchangeReceived._id': new mongoose.Types.ObjectId(receiverRequestId) } }, function(err, user) {
                                     console.log("user---->>>", user)
                                     console.log("coupon.couponExchangeStatus--->>>", JSON.stringify(user[0].couponExchangeReceived.couponExchangeStatus))
-                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else if ((user[0].couponExchangeReceived.couponExchangeStatus) == 'ACCEPTED') {
-                                        res.send({ responseCode: 403, responseMessage: "Coupon is already exchanged." })
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else if ((user[0].couponExchangeReceived.couponExchangeStatus) == 'DECLINED') {
+                                        res.send({ responseCode: 403, responseMessage: "You have already declined for this request." })
                                     } else {
                                         createNewAds.findOneAndUpdate({ 'couponExchangeReceived._id': receiverRequestId }, { $set: { "couponExchangeReceived.$.couponExchangeStatus": "ACCEPTED" } }, { new: true }).exec(function(err, result) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else { callback(null) }
@@ -2120,7 +2122,7 @@ module.exports = {
             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
             var currentTime = Date.now(m);
             if (!req.body.receiverRequestId) { res.send({ responseCode: 400, responseMessage: "ReceiverRequestId is required." }); } else {
-                createNewAds.findOneAndUpdate({ 'couponExchange._id': receiverRequestId }, { $set: { "couponExchange.$.couponExchangeStatus": "DECLINED" } }, { new: true }).exec(function(err, result) {
+                createNewAds.findOneAndUpdate({ 'couponExchangeReceived._id': receiverRequestId }, { $set: { "couponExchangeReceived.$.couponExchangeStatus": "DECLINED" } }, { new: true }).exec(function(err, result) {
                     console.log("result-->.", result)
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                         res.send({

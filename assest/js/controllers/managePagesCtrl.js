@@ -41,11 +41,11 @@ $scope.class = false;
 
 
 
- userService.showListOFCoupon().success(function(res) {
-  //console.log("resssssssssssssss",res)
-    $scope.allCoupons = res.result;
-    //console.log("allCoupons",$scope.allCoupons);
-})
+//  userService.showListOFCouponWithoutPagination().success(function(res) {
+//   //console.log("resssssssssssssss",res)
+//     $scope.allCoupons = res.result;
+//     //console.log("allCoupons",$scope.allCoupons);
+// })
 
 
 

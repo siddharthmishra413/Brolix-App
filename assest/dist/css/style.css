@@ -426,6 +426,14 @@ border-radius: 0; margin-top: 10px; font-size: 18px; font-weight: 500
     width: 97% !important;display: block;padding: 15px;text-align: center;height: 80px;transform: none;}
 .c_modal_search {width: 50%;padding: 10px;}
 .cover-image {width: 100%;}
+.c_removecard .cover-image{text-align: left;}
+.c_removecard .cover-image img {width: 90%;}
+.c_removecard .add-remove{right: 6px;}
+.form-control.dropdown-menu{padding: 15px;height: 400px;overflow: auto;width: 95%;margin: 0;left:15px;}
+button.btn.btn-default.btn-sm.dropdown-toggle{width: 100%;position: relative;height: 36px;border-radius: 0;}
+button.btn.btn-default.btn-sm.dropdown-toggle .caret{text-align: right;position: absolute;right: 6px;}
+.tab-content .cus-table th{vertical-align:middle;}
+
 
 
 
