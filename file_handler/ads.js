@@ -535,7 +535,7 @@ module.exports = {
 
                         var date = new Date();
 
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired:true } }, function(err, result3) {
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired: true } }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
 
                                 if (result3.adsType == "cash") {
