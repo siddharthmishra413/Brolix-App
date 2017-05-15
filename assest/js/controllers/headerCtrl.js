@@ -12,7 +12,7 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
     userService.adminProfile().success(function(res) {
     	if(res.responseCode == 404){
     		$state.go('login')
-    	}else {
+    	}else if(res.responseCode == 200){
 
     		$scope.user = res.result;
         //console.log("userDetails--->",JSON.stringify($scope.user))
@@ -76,7 +76,10 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
             }else {
               $scope.addSystemUser = false;
             }
-    	}
+    	}else{
+        $state.go('login')
+
+      }
     }).error(function(status, data) {
 
 })

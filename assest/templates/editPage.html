@@ -53,13 +53,13 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="form-group">
+                                   <!--  <div class="form-group">
                                         <div class="row">
                                             <label class="control-label col-md-3">Main Category</label>
                                             <div class="col-md-9"> 
                                                 <select name="category" class="form-control" ng-change="subCategoryData();" ng-model="viewPageDetails.category" required>
                                                 <option selected="">{{viewPageDetails.category}}</option>
-                                                    <!-- <option value="">Select Category</option> -->
+                                                
                                                     <option ng-repeat="category in category">{{category}}</option>
                                                  </select> 
                                                 <span style="color:red;" class="error" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
@@ -81,7 +81,47 @@
                                                 </span> 
                                             </div>
                                         </div>
+                                    </div> -->
+
+<!-- ng-selected="{{category == viewPageDetails.category}} 
+ -->
+                                    <div class="form-group">
+                                    <div class="row">
+                                        <label class="control-label col-md-3">Main Category</label>
+                                        <div class="col-md-9"> 
+                                           <select name="category" class="form-control" ng-change="subCategoryData();" ng-model="viewPageDetails.category" required>
+                                                <option value="">Select Category</option>
+                                                <option ng-repeat="category in category" >{{category}}</option>
+                                             </select> 
+                                            <span style="color:red;" class="error" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
+                                                 <span style="color:red;" class="error" ng-show="userFrom.category.$error.required">Please Select a Category</span>
+                                            </span> 
+                                        </div>
                                     </div>
+                                </div>
+
+
+                                <div class="form-group" ng-if="subCaty">
+                                    <div class="row">
+                                        <label class="control-label col-md-3">Sub Categories</label>
+                                        <div class="col-md-9">
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                            <ul class="form-control dropdown-menu" ng-model="myForm.subCategory" name="subCategory" >
+                                            <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" unchecked ng-click="saveData(subCategoryData);"/>{{subCategoryData}}</a></li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-if="caty">
+                                    <div class="row">
+                                        <label class="control-label col-md-3">Sub Categories</label>
+                                        <div class="col-md-9">
+                                            <label>{{viewPageDetails.subCategory}}</label>
+                                        </div>
+                                    </div>
+                                </div>
 
                                     <div class="form-group">
                                         <div class="row">
@@ -95,7 +135,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Email</label>
                                             <div class="col-md-9">
-                                                <input type="email" class="form-control" name="email" ng-model="viewPageDetails.email" placeholder="Email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/"> 
+                                                <input type="email" class="form-control" name="email" ng-model="viewPageDetails.email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"> 
                                                     <span ng-show="userFrom.email.$error.email && userFrom.email.$error.pattern">Invalid email address.</span>
                                                     </span>
                                             </div>
@@ -127,7 +167,7 @@
                                         <div class="row">
                                             <label class="control-label col-md-3">Location</label>
                                             <div class="col-md-9">
-                                                  <input type="text" name="address"  autocomplete="off" id="from" placeholder="Enter Address" class="form-control" ng-model="myForm.address" ng-change="initFun()" ng-maxlength="150" maxlength="150" required/>
+                                                  <input type="text" name="address"  autocomplete="off" id="from" placeholder="Enter Address" class="form-control" ng-model="myForm.address" ng-change="initFun()" ng-maxlength="150" maxlength="150" />
 	                                                <span style="color:red;" class="error" ng-show="userFrom.address.$dirty && userFrom.address.$invalid">
 	                                                    <span style="color:red;" class="error" ng-show="userFrom.address.$error.required">Address is required.</span>
 	                                                    <span style="color:red;" class="error" ng-show=" userFrom.address.$error.maxlength">Please enter Address  shorter than 150 characters</span>
@@ -137,7 +177,7 @@
                                     
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-click="click('Step1')">Next</a>
+                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid  || {{$scope.subCategoryData.length>0}} " ng-click="click('Step1')">Next</a>
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                     </div>
                                 </fieldset>
@@ -209,12 +249,15 @@
                                                         <option value="">Select Social Media</option>
                                                         <option ng-repeat="SocialMedia in SocialMedia" value="{{SocialMedia}}">{{SocialMedia}}</option>
                                                     </select>
+                                                     <input type="text" class="form-control" name="link" ng-model="myForm.link" placeholder="Enter social link" required> 
+                                            <span style="color:red;" ng-show="media.link.$dirty && media.link.$invalid">
+                                            <span ng-show="media.link.$error.required">Link is required.</span>
                                                     <span style="color:red;" class="error" ng-show="media.social.$dirty && media.social.$invalid">
                                                          <span style="color:red;" class="error" ng-show="media.social.$error.required">Please Select a Social Media</span>
                                                     </span> 
                                                 </div>
                                                 <div class="col-cell add-remove">
-                                                    <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia)"></span>
+                                                    <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia,myForm.link)"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -230,14 +273,14 @@
                                                     <!-- <input type="text" class="form-control"> -->
                                                 </div>
                                                 <div class="col-cell add-remove" >
-                                                    <span class="fa fa-minus-circle" ng-click="removeSocialMedia(x)"></span>
+                                                    <span class="fa fa-minus-circle" ng-click="removeSocialMedia(x,myForm.link)"></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="btn2 text-center">
-                                    <button ng-disabled="viewPageDetails.socialMedia.length == 0" class="btn btn-lg btn-green" ng-disabled="media.$invalid" ng-click="click('Step3')">Next</button>
+                                    <button ng-disabled="media.link.$invalid || viewPageDetails.socialMedia.length == 0" class="btn btn-lg btn-green" ng-disabled="media.$invalid" ng-click="click('Step3')">Next</button>
                                     <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
                                 </div>
                             </fieldset>

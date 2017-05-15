@@ -58,22 +58,71 @@ app.controller('editPagesCtrl', function($scope, $window, userService, $state, t
 
     })
 
+
+$scope.subCategoryData = function(){
+  $scope.caty = false;
+$scope.subCaty = true;
+    console.log("bbb",$scope.viewPageDetails.category);
+    var data ={};
+    data = {
+      subCat:$scope.viewPageDetails.category
+      }
+      userService.subCategoryData(data).success(function(res) {
+        console.log(JSON.stringify(res))
+            if (res.responseCode == 200){
+                $scope.subCategoryData= res.result;
+                //console.log("subCategoryData",JSON.stringify(subCategoryData))
+            }else{
+              toastr.error("Something went wrong")
+            } 
+
+        })
+
+    }
+
+$scope.checkBoxArray=[];
+ $scope.saveData = function(data){
+  //console.log(data)
+  console.log("value:  "+$scope.checkBoxArray.indexOf(data))
+if(($scope.checkBoxArray.indexOf(data)) == -1)
+{
+ $scope.checkBoxArray.push(data);
+}
+else
+{
+var checkBoxArray1 = [];
+for(var i=0;i<$scope.checkBoxArray.length;i++)
+  if($scope.checkBoxArray[i]!= data)
+checkBoxArray1.push($scope.checkBoxArray[i]);
+
+$scope.checkBoxArray = []
+for(var i=0;i<checkBoxArray1.length;i++)
+$scope.checkBoxArray.push(checkBoxArray1[i]);
+
+}
+  console.log("$scope.checkBoxArray:   "+$scope.checkBoxArray);
+}
+
+
+
+
+
 // $scope.viewPageDetails.socialMedia
- $scope.addSocialMedia = function(addSocialMedia){
-  console.log("addSocialMedia",addSocialMedia);
+ $scope.addSocialMedia = function(addSocialMedia,addSocialLink){
+  console.log("addSocialLink",addSocialLink);
   
   var flag = false;
-  if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined){
+  if(addSocialLink == "" || addSocialLink ==null || addSocialLink == undefined){
     toastr.error("Please select social media");
   }else{
     console.log("000")
     if($scope.viewPageDetails.socialMedia.length == 0){
       console.log("111");
-      $scope.viewPageDetails.socialMedia.push(addSocialMedia);
+      $scope.viewPageDetails.socialMedia.push(addSocialLink);
     }else{
       console.log("array",$scope.viewPageDetails.socialMedia);
       for(var i=0; i<$scope.viewPageDetails.socialMedia.length; i++){
-        if($scope.viewPageDetails.socialMedia[i] == addSocialMedia){
+        if($scope.viewPageDetails.socialMedia[i] == addSocialLink){
           flag = true;
           break;
         }
@@ -82,7 +131,7 @@ app.controller('editPagesCtrl', function($scope, $window, userService, $state, t
         toastr.error("You have already chosen this social media");
       }else{
         console.log("jjjjj");
-        $scope.viewPageDetails.socialMedia.push(addSocialMedia);
+        $scope.viewPageDetails.socialMedia.push(addSocialLink);
       }
     }
 
@@ -181,24 +230,24 @@ $scope.removeSocialMedia = function(removeSocialMedia){
  }
 
 
- $scope.subCategoryData = function(){
-    //console.log("bbb",$scope.viewPageDetails.category);
-    var data ={};
-    data = {
-      subCat:$scope.viewPageDetails.category
-      }
-      userService.subCategoryData(data).success(function(res) {
-        //console.log(JSON.stringify(res))
-            if (res.responseCode == 200){
-                $scope.subCategoryData= res.result;
-                console.log("subCategoryData",JSON.stringify($scope.subCategoryData))
-            }else{
-              toastr.error("Something went wrong")
-            } 
+ // $scope.subCategoryData = function(){
+ //    //console.log("bbb",$scope.viewPageDetails.category);
+ //    var data ={};
+ //    data = {
+ //      subCat:$scope.viewPageDetails.category
+ //      }
+ //      userService.subCategoryData(data).success(function(res) {
+ //        //console.log(JSON.stringify(res))
+ //            if (res.responseCode == 200){
+ //                $scope.subCategoryData= res.result;
+ //                console.log("subCategoryData",JSON.stringify($scope.subCategoryData))
+ //            }else{
+ //              toastr.error("Something went wrong")
+ //            } 
 
-        })
+ //        })
 
-    }
+ //    }
 
  // $scope.addSocialMedia = function(addSocialMedia){
  //    if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined){
@@ -296,6 +345,12 @@ $scope.removeSocialMedia = function(removeSocialMedia){
               $scope.$apply("myForm");
       });         
 }
+
+
+$scope.caty = true;
+$scope.subCaty = false;
+
+
     if ($scope.id == '') {
         toastr.error("Please first select.")
         $state.go('header.managePages')
@@ -305,7 +360,6 @@ $scope.removeSocialMedia = function(removeSocialMedia){
                 $scope.viewPageDetails = res.result;
                 console.log("admin array",JSON.stringify($scope.viewPageDetails))
                 console.log("all the data",JSON.stringify(res.result));
-
                 $scope.myForm.pagephoto = $scope.viewPageDetails.pageImage;
                 $scope.myForm.userphoto=$scope.viewPageDetails.coverImage;
                 for(i=0;i<$scope.viewPageDetails.socialMedia.length;i++){
@@ -360,6 +414,8 @@ $scope.removeSocialMedia = function(removeSocialMedia){
             }
         })
     }
+
+    console.log("$scope.viewPageDetails.category:---->    "+$scope.viewPageDetails)
     $scope.cancel=function(val){
           if(val == 'Step1'){
             $scope.viewPageDetails={};
@@ -419,6 +475,10 @@ $scope.removeSocialMedia = function(removeSocialMedia){
     //     });
     // }
 
+
+//console.log("$scope.viewPageDetails.category:---->    "+$scope.viewPageDetails.category)
+
+
   $scope.submitt = function(){
   var userIdEdit = localStorage.getItem('userIdEdit');
   // console.log("adminIdss",adminIdss)
@@ -441,15 +501,18 @@ $scope.removeSocialMedia = function(removeSocialMedia){
          } 
      });
 
-
+if($scope.checkBoxArray.length<1)
+$scope.subCategoryFinal = $scope.myForm.subCategory;
+else
+$scope.subCategoryFinal = $scope.checkBoxArray;
     //console.log("allllllll data",JSON.stringify($scope.myForm));
       var data={
              "type": "ADMIN",
              "userId":userIdEdit,
              "pageType": "Business",
-             "pageName": $scope.myForm.pageName,
-             "category": $scope.myForm.mainCategory,
-             "subCategory": $scope.myForm.subCategory,
+             "pageName": $scope.viewPageDetails.pageName,
+             "category": $scope.viewPageDetails.category,
+             "subCategory": $scope.subCategoryFinal,
              "pageDiscription": $scope.myForm.description,
              "email": $scope.myForm.email,
              "phoneNumber": $scope.myForm.phon,

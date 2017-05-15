@@ -289,17 +289,18 @@
                     <div class="form-group clearfix date-picker">
                      <datepicker date-format="yyyy-MM-dd" selector="form-control" >
                        <div class="input-group">
-                           <input class="form-control" placeholder="Choose Join date" style="cursor:pointer;" ng-model="dashBordFilter.dobTo"/>
+                           <input class="form-control" placeholder="Choose Join date" style="cursor:pointer;" ng-model="dashBordFilter.dobFrom"/>
                            <span class="input-group-addon" style="cursor: pointer">
                            <!-- <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
                        </div>
                     </datepicker>
                     </div>
-                    <div class="form-group clearfix date-picker">
+                    <!-- {{dashBordFilter.dobTo==undefined}} -->
+                    <div class="form-group clearfix date-picker" >
                     <datepicker date-format="yyyy-MM-dd" selector="form-control" >
                        <div class="input-group">
-                           <input class="form-control" style="cursor:pointer;" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose From date" ng-model="dashBordFilter.dobFrom"/>
+                           <input ng-disabled="dashBordFilter.dobFrom==undefined" class="form-control" style="cursor:pointer;" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose End date" ng-model="dashBordFilter.dobTo"/>
                            <span class="input-group-addon" style="cursor: pointer">
                            <!-- <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
@@ -436,7 +437,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <input type="text" class="form-control" ng-model="test1" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -457,7 +458,7 @@
                 </thead>
                 <tbody>
                     <!-- <tr ng-repeat="x in personalUser |filter:test"> -->
-                    <tr ng-repeat="x in personalUser | customFilterUser:test">
+                    <tr ng-repeat="x in personalUser | customFilterUser:test1">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -470,7 +471,7 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUser:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUser:test1).length != 0">
                         <button ng-click="prePersonalUser()" ng-disabled="pagePersonalUser==1" class="btn paginationBtn" >Prev</button>
                         {{pagePersonalUser}}/{{noOfPagesPersonalUser}}
                         <button ng-click="nextPersonalUser()" ng-disabled="pagePersonalUser==noOfPagesPersonalUser" class="btn paginationBtn">Next</button>
@@ -519,7 +520,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <input type="text" class="form-control" ng-model="test2" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -539,7 +540,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in businessUser | customFilterUser:test">
+                    <tr ng-repeat="x in businessUser | customFilterUser:test2">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -552,7 +553,7 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(businessUser | customFilterUser:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(businessUser | customFilterUser:test2).length != 0">
                 <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBusinessUser}}/{{noOfPagesBusinessUser}}
                 <button ng-click="nextBusinessUser()" ng-disabled="pageBusinessUser==noOfPagesBusinessUser" class="btn paginationBtn">Next</button>
@@ -601,7 +602,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <input type="text" class="form-control" ng-model="test3" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -621,7 +622,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                   <tr ng-repeat="x in liveUser | customFilterUser:test">
+                   <tr ng-repeat="x in liveUser | customFilterUser:test3">
                        <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                        </td>
@@ -634,7 +635,7 @@
                </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(liveUser | customFilterUser:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(liveUser | customFilterUser:test3).length != 0">
                 <button ng-click="preLiveUser()" ng-disabled="pageLiveUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageLiveUser}}/{{noOfPagesLiveUser}}
                 <button ng-click="nextLiveUser()" ng-disabled="pageLiveUser==noOfPagesLiveUser" class="btn paginationBtn">Next</button>
@@ -683,7 +684,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <input type="text" class="form-control" ng-model="test4" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -703,7 +704,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalWinners | customFilterUser:test">
+                    <tr ng-repeat="x in totalWinners | customFilterUser:test4">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -716,7 +717,7 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(totalWinners | customFilterUser:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(totalWinners | customFilterUser:test4).length != 0">
                 <button ng-click="preTotalWinners()" ng-disabled="pageTotalWinners ==1" class="btn paginationBtn" >Prev</button>
                 {{pageTotalWinners }}/{{noOfPagesTotalWinners }}
                 <button ng-click="nextTotalWinners ()" ng-disabled="pageTotalWinners ==noOfPagesTotalWinners " class="btn paginationBtn">Next</button>
@@ -766,7 +767,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" placeholder="Search By Name or Mobile">
+                            <input type="text" class="form-control" ng-model="test5" placeholder="Search By Name or Mobile">
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -786,7 +787,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in cashWinners | customFilterUser:test">
+                    <tr ng-repeat="x in cashWinners | customFilterUser:test5">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -799,7 +800,7 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test5).length != 0">
                 <button ng-click="preCashWinners()" ng-disabled="pageCashWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCashWinners}}/{{noOfPagesCashWinners}}
                 <button ng-click="nextCashWinners()" ng-disabled="pageCashWinners==noOfPagesCashWinners" class="btn paginationBtn">Next</button>
@@ -848,7 +849,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" maxlength="16" ng-maxlength="15" ng-model="test" placeholder="Search By Name or Mobile" required>
+                            <input type="text" class="form-control" maxlength="16" ng-maxlength="15" ng-model="test6" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -868,7 +869,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in couponWinners | customFilterUser:test">
+                    <tr ng-repeat="x in couponWinners | customFilterUser:test6">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -881,7 +882,7 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test6).length != 0">
                 <button ng-click="preCouponWinners()" ng-disabled="pageCouponWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCouponWinners}}/{{noOfPagesCouponWinners}}
                 <button ng-click="nextCouponWinners()" ng-disabled="pageCouponWinners==noOfPagesCouponWinners" class="btn paginationBtn">Next</button>
@@ -908,7 +909,7 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <input type="text" class="form-control" ng-model="test7" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
                             <div class="input-group-addon">Search</div>
                         </div>
                     </div>
@@ -928,7 +929,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in allblockUser | customFilterUser: test">
+                    <tr ng-repeat="x in allblockUser | customFilterUser: test7">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -941,7 +942,7 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test).length != 0">
+            <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test7).length != 0">
                 <button ng-click="preBlockUser()" ng-disabled="pageBlockUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBlockUser}}/{{noOfPagesBlockUser}}
                 <button ng-click="nextBlockUser()" ng-disabled="pageBlockUser==noOfPagesBlockUser" class="btn paginationBtn">Next</button>
@@ -1173,10 +1174,10 @@
                                                 <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
                                                 <div class="viewwe-s">
                                                     <div class="tops-s">
-                                                         <div class="amts-top">50</div>
+                                                         <div class="amts-top">{{data.viewers}}</div>
                                                           <div class="ants-view">Viewers</div>
                                                     </div>
-                                                     <div class="bottom-dol">$23</div>
+                                                     <div class="bottom-dol">${{data.price}}</div>
 
                                                 </div>
                                                  <div class="col-cell add-remove">
@@ -1191,6 +1192,27 @@
                                     <div class="row-table" ng-repeat="data in LuckCard">
                                         <div class="col-cell">
                                             <div class="cover-image newcover-img">
+                                                <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                                <div class="viewwe-s">
+                                                    <div class="tops-s">
+                                                         <div class="amts-top">{{data.chances}}</div>
+                                                          <div class="ants-view">Chances</div>
+                                                    </div>
+                                                     <div class="bottom-dol">B{{data.brolix}}</div>
+
+                                                </div>
+                                                 <div class="col-cell add-remove">
+                                                     <span class="fa fa-send" ng-click="sendCard(data._id,'luck')"></span>
+                                                 </div>
+                                            </div>
+                                            
+                                        </div>                                       
+                                    </div>
+                                </div>
+                                <!-- <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
+                                    <div class="row-table" ng-repeat="data in LuckCard">
+                                        <div class="col-cell">
+                                            <div class="cover-image newcover-img">
                                                 <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
                                             </div>
                                         </div>
@@ -1198,7 +1220,7 @@
                                             <span class="fa fa-send" ng-click="sendCard(data._id,'luck')"></span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -1222,13 +1244,13 @@
            </div>
            <div class="row-table" ng-repeat="data in allCoupons | customSearchFilter:pageName">
             <div class="col-cell">
-                <div class="cover-image coupan-image">
+                <div class="cover-image coupan-image newcover-img">
                     <img ng-src="{{data.coverImage || '../dist/image/cover.jpg' }}" id="output">
                     <!-- {{data.pageName}} -->
                     <div class="cover-image-txt">
                         <div class="left-img-txt">
                             <div class="b-layer-txt text-center">{{data.pageName}}</div>
-                            <div class="g-layer-txt text-center">{{data.couponExpiryDate}}</div>
+                            <div class="g-layer-txt text-center">{{data.couponExpiryDate | date:'dd-MM-yyyy'}}</div>
                         </div>
                         <div class="gift-input">
                             <span type="text" placeholder="Gift Description">{{data.giftDescription}}</span>
@@ -1239,7 +1261,7 @@
                         <span class="valid-box"><i class="fa fa-circle"></i></span>
                     </div>
 
-                    <div class="add-remove">
+                    <div class="add-remove cus_add-remove">
                         <span class="fa fa-send" ng-click="sendCoupons(data._id)"></span>
                     </div>
 
@@ -1310,6 +1332,17 @@
                         <div class="table-responsive cus-table">
                             <table id="manageUserTable" class="table table-bordered table-striped">
                                 <thead>
+                                    <div class="c_modal_search">
+                                      <form class="navbar-form" role="search">
+                                        <div class="input-group add-on">
+                                          <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text" ng-model="page">
+                                          <!-- <div class="input-group-btn">
+                                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                          </div> -->
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </thead>
                                     <tr>
                                        <!--  <th>Page Type</th> -->
                                         <th>Page Name</th>
@@ -1320,7 +1353,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="x in allshowUserPage |filter:test">
+                                    <tr ng-repeat="x in allshowUserPage |filter:page">
                                         <!-- <td class="skyblue-text">{{x.pageType}}</td> -->
                                         <td class="skyblue-text">{{x.pageName}}</td>
                                         <td class="skyblue-text">{{x.category}}</td>

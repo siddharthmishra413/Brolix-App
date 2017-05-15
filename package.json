@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "main": "server.js",
   "dependencies": {
+    "2checkout-node": "0.0.1",
     "all-countries": "^2.0.2",
     "apn": "^2.1.2",
     "apns": "^0.1.0",

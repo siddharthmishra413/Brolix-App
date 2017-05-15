@@ -496,6 +496,7 @@
                         <div class="table-responsive cus-table">
                             <table id="manageUserTable" class="table table-bordered table-striped">
                                 <thead>
+                                <input type="text" ng-model="testing" placeholder="Search">
                                     <tr>
                                         <th>Ads Type</th>
                                         <th>AdContent Type</th>
@@ -506,7 +507,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="x in allAddsOnPage">
+                                    <tr ng-repeat="x in allAddsOnPage | filter:testing" >
                                         <td class="skyblue-text">{{x.pageType}}</td>
                                         <td class="skyblue-text">{{x.pageName}}</td>
                                         <td class="skyblue-text">{{x.category}}</td>
@@ -537,6 +538,7 @@
                         <div class="table-responsive cus-table">
                             <table id="manageUserTable" class="table table-bordered table-striped">
                                 <thead>
+                                 <input type="text" ng-model="testing" placeholder="Search">
                                     <tr>
                                         <th>Page Type</th>
                                         <th>Page Name</th>
@@ -547,7 +549,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="x in allshowUserPage">
+                                    <tr ng-repeat="x in allshowUserPage | filter:testing">
                                         <td class="skyblue-text">{{x.pageType}}</td>
                                         <td class="skyblue-text">{{x.pageName}}</td>
                                         <td class="skyblue-text">{{x.category}}</td>
@@ -579,6 +581,7 @@
                         <div class="table-responsive cus-table">
                             <table id="manageUserTable" class="table table-bordered table-striped">
                                 <thead>
+                                 <input type="text" ng-model="testing" placeholder="Search">
                                     <tr>
                                         <th>Admin Name</th>
                                         <th>Mobile Number</th>
@@ -589,7 +592,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="x in allAdminOnPages">
+                                    <tr ng-repeat="x in allAdminOnPages | filter:testing">
                                         <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
                                         <td class="skyblue-text">{{x.mobileNumber}}</td>
                                         <td class="skyblue-text">{{x.email}}</td>

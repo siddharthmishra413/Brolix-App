@@ -95,7 +95,7 @@ app.service('createPageService',function($http, $q){
         }
 })
 
-http://172.16.6.171:8082/admin/editPage/5832e29349df9c04411e252d
+//http://172.16.6.171:8082/admin/editPage/5832e29349df9c04411e252d
 
 
 
@@ -150,7 +150,9 @@ app.service('userService',function($http){
     editUserProfile: function(id, data) {
       return $http.put(baseurl+'/admin/editUserProfile/'+ id, data);
     },
-    
+    editAds: function(userId,pageId,data) {
+      return $http.put(baseurl+'/ads/editAd/'+ userId+'/'+pageId, data);
+    },
     showAllCashWinners: function(pageNo) {
       return $http.get(baseurl+'/admin/cashWinners/'+pageNo);
     },
@@ -163,8 +165,8 @@ app.service('userService',function($http){
      showAllLiveUsers: function(pageNo) {
      return $http.get(baseurl+'/admin/liveUser/'+pageNo);
    },
-    showListOFCoupon: function() {
-      return $http.get(baseurl+'/admin/showListOFCoupon');
+    showListOFCouponWithoutPagination: function() {
+      return $http.get(baseurl+'/admin/showListOFCouponWithoutPagination');
     },
     countryListData: function() {
       return $http.get(baseurl+'/admin/countryListData');
@@ -264,8 +266,9 @@ app.service('userService',function($http){
      return $http.get(baseurl+'/admin/listOfAds/');
     },
     
-    adsfilter: function(data){
-      return $http.post(baseurl+'/admin/adsfilter', data);
+    adsfilter: function(data,pageId){
+      console.log("data in services :   "+JSON.stringify(data)+"        page:  "+pageId)
+      return $http.post(baseurl+'/admin/adsfilter'+pageId, data);
     },
 
     adsDetail: function(id) {

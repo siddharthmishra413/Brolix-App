@@ -6,15 +6,35 @@ $scope.createAds = {};
 $scope.promoteAppGame = {};
 $scope.addCode = [];
 $scope.promoteAppValidation = [];
+ $scope.count=true;
+
+ // var regex = ($scope.count == true && $scope.createAds.appIcon == null && $scope.createAds.appIcon);
+ // console.log("regex",regex)
 
 
-$scope.validation =  function(item){
-    console.log("googlePlayLink",item)
-    
-    $scope.promoteAppValidation.push(item);
-    console.log("$scope.promoteAppValidation",$scope.promoteAppValidation)
 
+
+$scope.validation =  function(){
+
+
+
+    console.log("item 1")
+
+    if($scope.createAds.googlePlayLink || $scope.createAds.appStoreLink || $scope.createAds.windowStoreLink){
+        //console.log("tt")
+        $scope.count=false;
+    }else{
+        //console.log("ff")
+        $scope.count=true;
+    }
+    //console.log("$scope.count",$scope.count)
 }
+ $scope.ImageValidation = function(){
+    //console.log("1")
+
+
+
+ }
 
 //$scope.createAds.advertismentCover='../dist/image/cover.jpg';
 
@@ -22,10 +42,10 @@ $scope.validation =  function(item){
 $scope.addcode = function(code){
 
     if($scope.addCode.length<$scope.createAds.numberOfWinners){
-    console.log("code",code)
+    //console.log("code",code)
     $scope.addCode.push(code);
     $scope.createAds.hiddenCode="";
-    console.log("addcode",$scope.addCode)
+    //console.log("addcode",$scope.addCode)
 
     }
     else{
@@ -70,31 +90,31 @@ $scope.openTerms = function(type){
                 
             }
 
-    console.log("helll")
+    //console.log("helll")
    
 }
 
 userService.adminProfile().success(function(res) {
     if (res.responseCode == 200) {
         $scope.userId = res.result._id; 
-        console.log("$scope.userId",$scope.userId)
+        //console.log("$scope.userId",$scope.userId)
         localStorage.setItem('adminId',$scope.userId);
     } else {
         toastr.error(res.responseMessage);
         $state.go('login')
         
     }
-    console.log("resss",$scope.userId);
+    //console.log("resss",$scope.userId);
 })
 
 var adminIdss = localStorage.getItem('adminId');
-console.log("userId",adminIdss)
+//console.log("userId",adminIdss)
 
 userService.getPage().then(function(success) { 
         $scope.pageDetail=success.data.result;
-        console.log("Page>>>>>>>>>>"+JSON.stringify($scope.pageDetail))
+        //console.log("Page>>>>>>>>>>"+JSON.stringify($scope.pageDetail))
     },function(err){
-        console.log(err);
+        //console.log(err);
          toastr.error('Connection error.');
 }) 
 
@@ -109,8 +129,8 @@ userService.getPage().then(function(success) {
  $scope.cashStep5 = false;
 
  $scope.click = function(type){
-    console.log("createAds.pageName",JSON.stringify($scope.createAds))
-    console.log("type",type)
+    //console.log("createAds.pageName",JSON.stringify($scope.createAds))
+    //console.log("type",type)
     if(type == 'Step2'){
         $scope.Step1 = false;
         $scope.Step2 = true;
@@ -121,7 +141,7 @@ userService.getPage().then(function(success) {
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
         $scope.cashStep5 = false;
-        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        //console.log("createAds.pageName",JSON.stringify($scope.createAds))
     }else if(type == 'Back2'){
         $scope.Step1 = true;
         $scope.Step2 = false;
@@ -132,7 +152,7 @@ userService.getPage().then(function(success) {
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
         $scope.cashStep5 = false;
-        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        //console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Step3'){
         $scope.Step1 = false;
@@ -144,7 +164,7 @@ userService.getPage().then(function(success) {
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
         $scope.cashStep5 = false;
-        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        //console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Back3'){
         $scope.Step1 = false;
@@ -156,7 +176,7 @@ userService.getPage().then(function(success) {
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
         $scope.cashStep5 = false;
-        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        //console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'video'){
         $scope.Step1 = false;
@@ -168,7 +188,7 @@ userService.getPage().then(function(success) {
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
         $scope.cashStep5 = false;
-       console.log("createAds.pageName",JSON.stringify($scope.createAds))
+       //console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Back4'){
         $scope.Step1 = false;
@@ -180,7 +200,7 @@ userService.getPage().then(function(success) {
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
         $scope.cashStep5 = false;
-        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        //console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Step5'){
 
@@ -195,7 +215,7 @@ userService.getPage().then(function(success) {
             $scope.promoteApp = false;
             $scope.cashStep5 = false;
             $scope.cashStep5 = false;
-            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+            //console.log("createAds.pageName",JSON.stringify($scope.createAds))
         }else if($scope.createAds.giftType == 'cash'){
             $scope.Step1 = false;
             $scope.Step2 = false;
@@ -220,7 +240,7 @@ userService.getPage().then(function(success) {
             $scope.slideStep4 = false;
             $scope.promoteApp = false;
             $scope.cashStep5 = false;
-            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+            //console.log("createAds.pageName",JSON.stringify($scope.createAds))
         }else if($scope.createAds.adContentType == 'slideshow'){
             $scope.Step1 = false;
             $scope.Step2 = false;
@@ -231,7 +251,7 @@ userService.getPage().then(function(success) {
             $scope.slideStep4 = true;
             $scope.promoteApp = false;
             $scope.cashStep5 = false;
-            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+            //console.log("createAds.pageName",JSON.stringify($scope.createAds))
         }else{
             toastr.error('Something wents to wrong')
         }
@@ -245,7 +265,7 @@ userService.getPage().then(function(success) {
         $scope.slideStep4 = true;
         $scope.promoteApp = false;
         $scope.cashStep5 = false;
-       console.log("createAds.pageName",JSON.stringify($scope.createAds))
+       //console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Step6'){
         $scope.Step1 = false;
@@ -257,7 +277,7 @@ userService.getPage().then(function(success) {
         $scope.slideStep4 = false;
         $scope.promoteApp = false;
         $scope.cashStep5 = false;
-        console.log("createAds.pageName",JSON.stringify($scope.createAds))
+        //console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'Back6'){
         if($scope.createAds.giftType == 'coupon'){
@@ -270,7 +290,7 @@ userService.getPage().then(function(success) {
             $scope.slideStep4 = false;
             $scope.promoteApp = false;
             $scope.cashStep5 = false;
-            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+            //console.log("createAds.pageName",JSON.stringify($scope.createAds))
         }else if($scope.createAds.giftType == 'cash'){
             $scope.Step1 = false;
             $scope.Step2 = false;
@@ -281,7 +301,7 @@ userService.getPage().then(function(success) {
             $scope.slideStep4 = false;
             $scope.promoteApp = false;
             $scope.cashStep5 = true;
-            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+           // console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
         }
 
@@ -295,10 +315,10 @@ userService.getPage().then(function(success) {
         $scope.slideStep4 = false;
         $scope.promoteApp = true;
         $scope.cashStep5 = false;
-       console.log("createAds.pageName",JSON.stringify($scope.createAds))
+       //console.log("createAds.pageName",JSON.stringify($scope.createAds))
 
     }else if(type == 'promoteAppBack'){
-        console.log("alalalaldata",$scope.createAds.adContentType)
+        //console.log("alalalaldata",$scope.createAds.adContentType)
         if ($scope.createAds.adContentType == 'video'){
             $scope.Step1 = false;
             $scope.Step2 = false;
@@ -309,7 +329,7 @@ userService.getPage().then(function(success) {
             $scope.slideStep4 = false;
             $scope.promoteApp = false;
             $scope.cashStep5 = false;
-            console.log("createAds.pageName",JSON.stringify($scope.createAds))
+           // console.log("createAds.pageName",JSON.stringify($scope.createAds))
         }else if($scope.createAds.adContentType == 'slideshow'){
             $scope.Step1 = false;
             $scope.Step2 = false;
@@ -333,17 +353,17 @@ userService.getPage().then(function(success) {
 
 
 $scope.changeImage = function(input,type) {
-    console.log("type",type)
+    //console.log("type",type)
 
      spinnerService.show('html5spinner');  
        var file = input.files[0];
-       console.log("input type",input.files[0])
+       //console.log("input type",input.files[0])
        var ext = file.name.split('.').pop();
        if (ext == "mp3" || ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png" || ext == "3gp" || ext == "mp4" || ext == "flv" || ext == "avi" || ext == "wmv") {
            $scope.imageName = file.name;
            console.log("$scope.imageName",$scope.imageName)
            $scope.createAds.type = file.type;
-           console.log("$scope.createAds.type",$scope.createAds.type)
+           //console.log("$scope.createAds.type",$scope.createAds.type)
            if(file.type.split('/')[0]=='image') {
                 switch (type)
             {
@@ -356,7 +376,7 @@ $scope.changeImage = function(input,type) {
                     
                         }, 250);  
                     // $scope.user.photo1 = ObjS.data.result.url;
-                    console.log("advertismentCover",$scope.createAds.advertismentCover)
+                    //console.log("advertismentCover",$scope.createAds.advertismentCover)
                 })  
                 break;
 
@@ -368,7 +388,7 @@ $scope.changeImage = function(input,type) {
                     
                         }, 250);  
                     // $scope.user.photo1 = ObjS.data.result.url;
-                    console.log("image",$scope.createAds.photo1)
+                    //console.log("image",$scope.createAds.photo1)
                 })  
                 break;
 
@@ -379,7 +399,7 @@ $scope.changeImage = function(input,type) {
                     $scope.createAds.appPhoto2 = ObjS.data.result.url;
                     }, 250);  
                     // $scope.user.photo2 = ObjS.data.result.url;
-                    console.log("image",$scope.createAds.photo2)
+                    //console.log("image",$scope.createAds.photo2)
                 })  
                 break;
 
@@ -506,8 +526,8 @@ $scope.changeImage = function(input,type) {
                     spinnerService.hide('html5spinner'); 
                     $scope.createAds.adCover = ObjS.data.result.url;
                     }, 250);  
-                    console.log('adsType Image in video-->>>'+$scope.createAds.adCover)
-                    console.log(JSON.stringify($scope.createAds.adCover))
+                    //console.log('adsType Image in video-->>>'+$scope.createAds.adCover)
+                    //console.log(JSON.stringify($scope.createAds.adCover))
                 })  
                 break;
 
@@ -579,7 +599,7 @@ $scope.changeImage = function(input,type) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner'); 
                     $scope.createAds.audioUrl = ObjS.data.result.url;
-                    console.log("$scope.createAds.audioUrl",$scope.createAds.audioUrl);
+                    //console.log("$scope.createAds.audioUrl",$scope.createAds.audioUrl);
                     }, 250); 
                     //$scope.user.giftImage = ObjS.data.result.url;
 
@@ -590,7 +610,7 @@ $scope.changeImage = function(input,type) {
                     $timeout(function () {      
                     spinnerService.hide('html5spinner');   
                     $scope.createAds.vedioUrl = ObjS.data.result.url;
-                    console.log("$scope.createAds.url",$scope.createAds.vedioUrl);
+                    //console.log("$scope.createAds.url",$scope.createAds.vedioUrl);
                         }, 250);
                 })
 
@@ -605,51 +625,67 @@ $scope.changeImage = function(input,type) {
    }
 
 
+userService.countryListData().success(function(res) {
+      //console.log("ddd",JSON.stringify(res))
+      $scope.countriesList = res.result;
+    })
 
-//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-    var currentCities=[];
-    $scope.currentCountry= '';
-var BATTUTA_KEY="00000000000000000000000000000000"
-    // Populate country select box from battuta API
-  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-    $.getJSON(url,function(countries)
-    {
-      $timeout(function(){
-        $scope.countriesList=countries;
-      },100)
-      
-      
-    });
-  var countryCode;
     $scope.changeCountry = function(){
-      for(var i=0;i<$scope.countriesList.length;i++){
-        if($scope.countriesList[i].name==$scope.createAds.country){
-          countryCode=$scope.countriesList[i].code;
-          //console.log(countryCode)
-          break;
-        }
+      var obj = {};
+      obj = {
+        country:$scope.createAds.country,
       }
-      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(regions)
-      {
-        //console.log('state list:   '+JSON.stringify(regions))
-        $timeout(function(){
-        $scope.stateList = regions;
-          },100)
-      });
-    }
+      userService.cityListData(obj).success(function(res) {
+      console.log("ddd",JSON.stringify(res))
+      $scope.cityList = res.result;
+    })
 
-    $scope.changeState = function(){
-      //console.log('detail -> '+countryCode+' city name -> '+$scope.createAds.state)
-      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.createAds.state+"&key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(cities)
-      {
-        // console.log('city list:   '+JSON.stringify(cities))
-        $timeout(function(){
-          $scope.cityList = cities;
-            },100)
-      })
+
     }
+//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+//     var currentCities=[];
+//     $scope.currentCountry= '';
+// var BATTUTA_KEY="00000000000000000000000000000000"
+//     // Populate country select box from battuta API
+//   url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+//     $.getJSON(url,function(countries)
+//     {
+//       $timeout(function(){
+//         $scope.countriesList=countries;
+//       },100)
+      
+      
+//     });
+//   var countryCode;
+//     $scope.changeCountry = function(){
+//       for(var i=0;i<$scope.countriesList.length;i++){
+//         if($scope.countriesList[i].name==$scope.createAds.country){
+//           countryCode=$scope.countriesList[i].code;
+//           //console.log(countryCode)
+//           break;
+//         }
+//       }
+//       var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(regions)
+//       {
+//         //console.log('state list:   '+JSON.stringify(regions))
+//         $timeout(function(){
+//         $scope.stateList = regions;
+//           },100)
+//       });
+//     }
+
+//     $scope.changeState = function(){
+//       //console.log('detail -> '+countryCode+' city name -> '+$scope.createAds.state)
+//       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.createAds.state+"&key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(cities)
+//       {
+//         // console.log('city list:   '+JSON.stringify(cities))
+//         $timeout(function(){
+//           $scope.cityList = cities;
+//             },100)
+//       })
+//     }
     //-------------------------------END OF SELECT CASCADING-------------------------//
 
     function daysInMonth(month,year) {
@@ -663,58 +699,58 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         var currentDate = new Date()
         var year = currentDate.getFullYear();
         var month = 1+currentDate.getMonth();
-        console.log("ccccccc",year,month)
+        //console.log("ccccccc",year,month)
         var noOfDaysOne = daysInMonth(month,year);
         var noOfDaysTwo = daysInMonth(month+1,year);
         var noOfDaysThree = daysInMonth(month+2,year); 
-        console.log("noOfDays",noOfDaysOne);
-        console.log("noOfDays",noOfDaysTwo);
-        console.log("noOfDays",noOfDaysThree);
+        //console.log("noOfDays",noOfDaysOne);
+        //console.log("noOfDays",noOfDaysTwo);
+        //console.log("noOfDays",noOfDaysThree);
         var one_day = 86400000;
         var currentDateNumber = new Date().getTime();
-        console.log("currentDateNumber",currentDateNumber)
+        //console.log("currentDateNumber",currentDateNumber)
 
         switch (date)
         {
             
             case '1 Week':
             $scope.couponExpiryDate = 86400000*7;
-            console.log("1 week",$scope.couponExpiryDate)
+            //console.log("1 week",$scope.couponExpiryDate)
      
             break;
 
             case '2 Weeks': 
 
             $scope.couponExpiryDate = 86400000*14;
-            console.log("2 week",$scope.couponExpiryDate)
+            //console.log("2 week",$scope.couponExpiryDate)
               
             break;
 
             case '3 Weeks': 
 
             $scope.couponExpiryDate = 86400000*21;
-            console.log("3 week",$scope.couponExpiryDate)
+            //console.log("3 week",$scope.couponExpiryDate)
               
             break;
 
             case '1 Month':
 
             $scope.couponExpiryDate = 86400000*30;
-            console.log("1 Month",$scope.couponExpiryDate)
+            //console.log("1 Month",$scope.couponExpiryDate)
  
             break;
 
             case '2 Months': 
 
             $scope.couponExpiryDate = 86400000*60;
-            console.log("1 Month",$scope.couponExpiryDate)
+            //console.log("1 Month",$scope.couponExpiryDate)
               
             break;
 
             case '3 Months':
 
             $scope.couponExpiryDate = 86400000*90;
-            console.log("1 Month",$scope.couponExpiryDate) 
+            //console.log("1 Month",$scope.couponExpiryDate) 
               
             break;
 
@@ -734,9 +770,9 @@ var BATTUTA_KEY="00000000000000000000000000000000"
 
 
     // var onedaymilisecond = 8.64e+7;
-    console.log("$scope",JSON.stringify($scope.createAds.pageName));
+    //console.log("$scope",JSON.stringify($scope.createAds.pageName));
     pageDetails = JSON.parse($scope.createAds.pageName);
-    var whoWillSeeYourAddArray = [];
+    // var whoWillSeeYourAddArray = [];
     var slideShow = [$scope.createAds.slidePhoto1,$scope.createAds.slidePhoto2,$scope.createAds.slidePhoto3,$scope.createAds.slidePhoto4,$scope.createAds.slidePhoto5,$scope.createAds.slidePhoto6];
     var appPhoto = [];
     appPhoto= [$scope.createAds.appPhoto1,$scope.createAds.appPhoto2,$scope.createAds.appPhoto3,$scope.createAds.appPhoto4,$scope.createAds.appPhoto5,$scope.createAds.appPhoto6];
@@ -783,7 +819,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
         cashAdPrize:$scope.createAds.winnerGift,
   
     }
-    console.log("All data -->>"+JSON.stringify(modifyData));
+    //console.log("All data -->>"+JSON.stringify(modifyData));
     // userService.createAds(modifyData).success(function(res) {
     //     console.log("ressssssss",JSON.stringify(res))
     // if (res.responseCode == 200) {

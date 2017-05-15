@@ -1,6 +1,12 @@
- <div class="col-sm-12 col-md-4">
+ <div class="col-sm-12">
     <div class="row">
-        <div class="c1-notify-row">
+     <ul class="nav nav-pills card-tabs">
+      <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('user');">User info.</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('ads')">Ads info.</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('page')">Page info.</a></li>
+   </ul>
+  
+        <div class="c1-notify-row" ng-if="key == 'user'">
             <h3 class="text-center">User Related Information</h3>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
@@ -12,8 +18,9 @@
                         </tr>
                     </thead>
                     <tbody>
+                     <input type="text" ng-model="search" style="width:180px" placeholder="search by name">
                         <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
-                        <tr ng-repeat="x in userResult | customFilterUser:test">
+                        <tr ng-repeat="x in userResult | customFilterUser:test | filter:search">
                             <td >{{x.firstName}}</td>
                             <td >{{x.lastName}}</td>
                             <td >{{x.createdAt | date:'MMMM dd, yyyy'}}</td>
@@ -25,13 +32,14 @@
     </div>
 </div>
 
-<div class="col-sm-12 col-md-4">
+<div class="col-sm-12 " ng-if="key == 'ads'" >
     <div class="row">
         <div class="c1-notify-row">
             <h3 class="text-center">Ads Related Information</h3>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
                     <thead>
+                     <input type="text" ng-model="search" style="width:180px" placeholder="search by page name">
                         <tr>
                             <th>Page Name</th>
                             <th>Ads Type</th>
@@ -40,7 +48,7 @@
                     </thead>
                     <tbody>
                         <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
-                        <tr ng-repeat="x in adsResult | customFilterUser:test">
+                        <tr ng-repeat="x in adsResult | customFilterUser:test | filter:search">
                             <td >{{x.pageName}}</td>
                             <td >{{x.adsType}}</td>
                             <td >{{x.createdAt | date:'MMMM dd, yyyy'}}</td>
@@ -52,13 +60,14 @@
     </div>
 </div>
 
-<div class="col-sm-12 col-md-4">
+<div class="col-sm-12" ng-if="key == 'page'" >
     <div class="row">
         <div class="c1-notify-row">
-            <h3 class="text-center">Ads Related Information</h3>
+            <h3 class="text-center">Page Related Information</h3>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
                     <thead>
+                     <input type="text" ng-model="search" style="width:180px" placeholder="search by page name">
                         <tr>
                             <th>Page Name</th>
                             <th>Created Time</th>
@@ -66,7 +75,7 @@
                     </thead>
                     <tbody>
                         <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
-                        <tr ng-repeat="x in pageResult | customFilterUser:test">
+                        <tr ng-repeat="x in pageResult | customFilterUser:test | filter:search">
                             <td >{{x.pageName}}</td>
                             <td >{{x.createdAt | date:'MMMM dd, yyyy'}}</td>
                         </tr>

@@ -133,14 +133,18 @@ var createNewAdsSchema = new Schema({
         exchangedWithAdId: { type: String },
         senderCouponCode: { type: String },
         couponExchangeStatus: { type: String, default: 'REQUESTED' },
-        exchangedDate: { type: Date, default: Date.now }
+        exchangedDate: { type: Date, default: Date.now },
+        senderCouponId: { type: String },
+        receiverCouponId: { type: String }
     }],
     couponExchangeSent: [{
         senderId: { type: String, ref: 'brolixUser' },
         receiverId: { type: String, ref: 'brolixUser' },
         exchangedWithAdId: { type: String },
         couponExchangeStatus: { type: String, default: 'REQUESTED' },
-        exchangedDate: { type: Date, default: Date.now }
+        exchangedDate: { type: Date, default: Date.now },
+        senderCouponId: { type: String },
+        receiverCouponId: { type: String }
     }],
     couponSend: [{
         senderId: { type: String },
@@ -192,6 +196,9 @@ var createNewAdsSchema = new Schema({
     priorityNumber: { type: Number, default: 0 },
     expiryOfPriority: { type: Date, default: Date.now },
     couponSold:[],
+    uploadFile:{type:String},
+    backgroundimage:{type:String},
+    adExpired:{ type:Boolean},
     createdAt: {
         type: Date,
         default: Date.now

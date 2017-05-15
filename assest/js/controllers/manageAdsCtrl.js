@@ -7,14 +7,15 @@ $(window).scrollTop(0,0);
  $scope.sendMessage = {};
  $scope.myForm={};
 
+localStorage.setItem('adsTypeName','totalAds');
 
 
  $scope.removeAds = function (id) {
-    console.log("hhh",id)
+    //console.log("hhh",id)
         $scope.RemoveId = id;
         var adsId = $scope.RemoveId;
         //console.log("Blockidvcbc");
-        console.log("$scope.RemoveId",$scope.RemoveId)
+        //console.log("$scope.RemoveId",$scope.RemoveId)
         if ($scope.RemoveId == '' || $scope.RemoveId == undefined || $scope.RemoveId == null) {
        toastr.error("Please select user.")
        $state.go('header.manageAds')
@@ -62,7 +63,7 @@ $(window).scrollTop(0,0);
 // }
 
   $scope.sendMessagePage = function (modal) {
-      console.log($scope.myForm.checkId);
+      //console.log($scope.myForm.checkId);
         $scope.modalId = modal;
         $scope.modelData = modal;
       $("#sendMessageModelAllUser").modal('show');
@@ -80,7 +81,7 @@ $(window).scrollTop(0,0);
  }
 
   $scope.send_messageOwners = function(id){
-        console.log($scope.myForm.checkId);
+        //console.log($scope.myForm.checkId);
         if ($scope.sendMessage.massage == '' || $scope.sendMessage.massage == undefined || $scope.sendMessage.massage == null) {
             toastr.error('Please enter your message');
             return;
@@ -97,17 +98,17 @@ $(window).scrollTop(0,0);
   }
 
   $scope.showPageDetails = function(id){
-        console.log("id---------"+id);
+        //console.log("id---------"+id);
         userService.pageInfo(id).success(function(res) {
              console.log("Show(res.result)",JSON.stringify(res.result))
            $scope.allpageInfo = res.result;
             $("#pageDetails").modal('show');
-          console.log("$scope.allpageInfo",JSON.stringify($scope.allpageInfo))
+          //console.log("$scope.allpageInfo",JSON.stringify($scope.allpageInfo))
         })
     }
 
      $scope.adInfo=function(){
-         console.log($scope.myForm.checkId)
+         //console.log($scope.myForm.checkId)
          if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
         toastr.error("Please select user.")
          }
@@ -118,7 +119,7 @@ $(window).scrollTop(0,0);
                     $("#adInfo").modal('show');
                     //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
                 },function(err){
-                    console.log(err);
+                    //console.log(err);
                      toastr.error('Connection error.');
             }) 
         }
@@ -132,14 +133,14 @@ $(window).scrollTop(0,0);
                     $("#adInfo").modal('show');
                     //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))
                 },function(err){
-                    console.log(err);
+                    //console.log(err);
                      toastr.error('Connection error.');
             }) 
         
     }
 
          $scope.reportOnAd=function(id){
-        console.log("reportOnAdId>>>"+JSON.stringify(id))
+        //console.log("reportOnAdId>>>"+JSON.stringify(id))
         userService.showReportOnAd($scope.myForm.checkId).then(function(success) { 
             //console.log(JSON.stringify($scope.userDetail))
                     $scope.userDetail=success.data.result;
@@ -154,9 +155,9 @@ $(window).scrollTop(0,0);
                     else{
                          toastr.error(success.data.responseMessage);
                     }
-                    console.log("reportOnAd>>>>>>>>>>>>>"+JSON.stringify(success))
+                    //console.log("reportOnAd>>>>>>>>>>>>>"+JSON.stringify(success))
                 },function(err){
-                    console.log(err);
+                    //console.log(err);
                      toastr.error('Connection error.');
             }) 
     }
@@ -370,55 +371,72 @@ $(window).scrollTop(0,0);
 
     }
 
-//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-    var currentCities=[];
-    $scope.currentCountry= '';
-var BATTUTA_KEY="00000000000000000000000000000000"
-    // Populate country select box from battuta API
-  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-    $.getJSON(url,function(countries)
-    {
-      $timeout(function(){
-        $scope.countriesList=countries;
-      },100)
 
+    userService.countryListData().success(function(res) {
+          //console.log("ddd",JSON.stringify(res))
+          $scope.countriesList = res.result;
+        })
 
-    });
-  var countryCode;
-    $scope.changeCountry = function(){
-        console.log('Country:   '+JSON.stringify($scope.dashBordFilter.country))
-      for(var i=0;i<$scope.countriesList.length;i++){
-        if($scope.countriesList[i].name==$scope.dashBordFilter.country){
-          countryCode=$scope.countriesList[i].code;
-          //console.log(countryCode)
-          break;
-        }
-      }
-      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(regions)
-      {
-        //console.log('state list:   '+JSON.stringify(regions))
-         $timeout(function(){
-        $scope.stateList = regions;
-          },100)
-      });
+        $scope.changeCountry = function(){
+          var obj = {};
+          obj = {
+            country:$scope.dashBordFilter.country,
+          }
+          userService.cityListData(obj).success(function(res) {
+          console.log("ddd",JSON.stringify(res))
+          $scope.cityList = res.result;
+        })
     }
 
-    $scope.changeState = function(){
-        console.log('State:   '+JSON.stringify($scope.dashBordFilter.state))
-      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
-      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(cities)
-      {
-        // console.log('city list:   '+JSON.stringify(cities))
-         $timeout(function(){
-          $scope.cityList = cities;
-            },100)
-      })
+// //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+//     var currentCities=[];
+//     $scope.currentCountry= '';
+// var BATTUTA_KEY="00000000000000000000000000000000"
+//     // Populate country select box from battuta API
+//   url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+//     $.getJSON(url,function(countries)
+//     {
+//       $timeout(function(){
+//         $scope.countriesList=countries;
+//       },100)
 
-    }
-    //  console.log('City:   '+JSON.stringify($scope.dashBordFilter.city))
-    //-------------------------------END OF SELECT CASCADING-------------------------//
+
+//     });
+//   var countryCode;
+//     $scope.changeCountry = function(){
+//         console.log('Country:   '+JSON.stringify($scope.dashBordFilter.country))
+//       for(var i=0;i<$scope.countriesList.length;i++){
+//         if($scope.countriesList[i].name==$scope.dashBordFilter.country){
+//           countryCode=$scope.countriesList[i].code;
+//           //console.log(countryCode)
+//           break;
+//         }
+//       }
+//       var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(regions)
+//       {
+//         //console.log('state list:   '+JSON.stringify(regions))
+//          $timeout(function(){
+//         $scope.stateList = regions;
+//           },100)
+//       });
+//     }
+
+//     $scope.changeState = function(){
+//         console.log('State:   '+JSON.stringify($scope.dashBordFilter.state))
+//       //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
+//       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(cities)
+//       {
+//         // console.log('city list:   '+JSON.stringify(cities))
+//          $timeout(function(){
+//           $scope.cityList = cities;
+//             },100)
+//       })
+
+//     }
+//     //  console.log('City:   '+JSON.stringify($scope.dashBordFilter.city))
+//     //-------------------------------END OF SELECT CASCADING-------------------------//
 
  $scope.export = function(){
     var type = localStorage.getItem('adsTypeName');
@@ -478,7 +496,7 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     $scope.noOfPagesActiveAds = res.result.pages;
                     $scope.pageNoActiveAds = JSON.parse(res.result.page);
                     $scope.totalActiveAds = res.result.docs;
-                     console.log(JSON.stringify($scope.totalActiveAds))
+                     //console.log(JSON.stringify($scope.totalActiveAds))
                     $scope.totalActiveAdscount = res.count;
                     
                 }
@@ -820,15 +838,20 @@ $scope.dashBordFilter = function(){
             joinFrom:$scope.dobFrom,
         }
         console.log("datatata",data)
+        console.log("type:                "+type)
         if(type == undefined || type == null  || type == "" )
         {
             toastr.error("First you click on show Ads button")
         }else {
+            console.log("switch type:   "+type);
             switch (type)
             {
                 case 'totalAds':
                 console.log("1");
-                    userService.adsfilter(data).success(function(res){
+                $scope.currentPage = 1;
+                console.log("data jst before service"+JSON.stringify(data));
+                    userService.adsfilter(data,$scope.currentPage).success(function(res){
+                        console.log("ressssssss",JSON.stringify(res));
                         $scope.totalAds = res.data;
                         console.log("ressssssss1",JSON.stringify($scope.totalAds));
                     })
@@ -925,8 +948,8 @@ $scope.dashBordFilter = function(){
 
 app.filter("manageAdsFilter",function() {
    return function(items,nameValue){
-    console.log(JSON.stringify(items))
-    console.log(nameValue)
+    //console.log(JSON.stringify(items))
+    //console.log(nameValue)
      if (!nameValue) {
        return retArray = items;
        }

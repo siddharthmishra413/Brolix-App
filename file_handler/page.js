@@ -2363,7 +2363,7 @@ module.exports = {
 
     "CouponInboxWinners": function(req, res) {
         var pageId = req.params.id;
-        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }, function(err, result) {
+        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.couponStatus': 'USED' } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
                 res.send({
                     result: result,
@@ -2507,6 +2507,27 @@ module.exports = {
                     result: result,
                     responseCode: 200,
                     responseMessage: "Review List."
+                })
+            }
+        })
+    },
+
+    "sendCouponToAdvertiser":function(req, res){
+        var couponId = req.body.couponId;
+        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
+            console.log("user---->>>", user)
+            console.log("coupon.couponStatus--->>>", JSON.stringify(user[0].coupon.couponStatus))
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+            else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
+             else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: "Please enter a valid coupon to use." }); }
+              else {
+                User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                        res.send({
+                            responseCode: 200,
+                            responseMessage: "Coupon successfully sent to advertiser page."
+                        })
+                    }
                 })
             }
         })

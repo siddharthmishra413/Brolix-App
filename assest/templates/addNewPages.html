@@ -25,8 +25,8 @@
                                         <label class="control-label col-md-3">Main Category</label>
                                         <div class="col-md-9"> 
                                             <select name="category" class="form-control" ng-change="subCategoryData();" ng-model="myForm.mainCategory" required>
-                                                <option value="">Select Category</option>
-                                                <option ng-repeat="category in category">{{category}}</option>
+                                                <option value="Select Category">Select Category</option>
+                                                <option ng-repeat="category in category" >{{category}}</option>
                                              </select> 
                                             <span style="color:red;" class="error" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
                                                  <span style="color:red;" class="error" ng-show="userFrom.category.$error.required">Please Select a Category</span>
@@ -41,15 +41,15 @@
                                         <label class="control-label col-md-3">Sub Categories</label>
                                         <div class="col-md-9">
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                                            <ul class="form-control dropdown-menu" ng-model="myForm.subCategory" name="subCategory" required>
-                                            <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox"/>{{subCategoryData}}</a></li>
+                                            <ul class="form-control dropdown-menu"  name="subCategory" >
+                                            <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" unchecked ng-click="saveData(subCategoryData);"/>{{subCategoryData}}</a></li>
                                             </ul>
 
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                            <!--     <div class="form-group">
                                     <div class="row">
                                         <label class="control-label col-md-3">Sub Categories</label>
                                         <div class="col-md-9">
@@ -62,13 +62,13 @@
                                             </span> 
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <div class="row">
                                         <label class="control-label col-md-3">Description</label>
                                         <div class="col-md-9">
                                             <textarea class="form-control textarea-a" name="description" ng-model="myForm.description"  ng-maxlength="250" placeholder="Enter Description" ></textarea>
-                                            <span style="color:red;" ng-show="userFrom.description.$dirty && userFrom.description.$invalid">
+                                           <!--  <span style="color:red;" ng-show="userFrom.description.$dirty && userFrom.description.$invalid"> -->
                                         </div>
                                     </div>
                                 </div>
@@ -76,8 +76,9 @@
                                     <div class="row">
                                         <label class="control-label col-md-3">Email</label>
                                         <div class="col-md-9">
-                                            <input type="email" class="form-control" name="email" ng-model="myForm.email" placeholder="Email" ng-pattern= "/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,4}$/" > 
+                                            <input type="email" class="form-control" name="email" ng-model="myForm.email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" > 
                                                 <span style="color:red" ng-show="userFrom.email.$dirty && userFrom.email.$invalid ">
+                                                 <span style="color:red;" ng-show="userFrom.email.$dirty && userFrom.email.$error.pattern">Invalid email address</span>
                                                 </span>
                                         </div>
                                     </div>
@@ -119,9 +120,10 @@
                                 
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
-                                    <button ng-disabled="userFrom.$invalid" class="btn btn-lg btn-green"  ng-click="click('Step1')">Next</button>
+                                    <button  class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid  || {{$scope.subCategoryData.length>0}} || checkBoxArray.length==0" ng-click="click('Step1')">Next</button>
                                     <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                 </div>
+                                <!-- ng-disabled="userFrom.$invalid" -->
                             </fieldset>
                         </form>
                     </div>
@@ -147,7 +149,8 @@
                         <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || '../dist/image/cover.jpg'}}" id="output" >
                         <label class="fileContainer">
                             Choose File
-                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" accept="image/*" required>
+                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" name="image" accept="image/*" required>
+                         <span ng-show="myFrom.image.$error.required">Image is required.</span>
                         </label>
                     </div>
                     <div class="page-image clearfix">
@@ -159,8 +162,9 @@
                     </div>
 
                     <div class="btn2 text-center">
-                        <button class="btn btn-lg btn-green" ng-disabled="myForm.pagephoto == "" && myForm.userphoto == "" " ng-click="click('Step2')">Next</button> 
+                        <button class="btn btn-lg btn-green" ng-disabled="myForm.pagephoto == '' && myForm.userphoto == '' " ng-click="click('Step2')">Next</button> 
                     </div>
+                    <!-- ng-disabled="myForm.pagephoto == "" && myForm.userphoto == "" " -->
                 </div>
             </form>
         </div>
@@ -191,12 +195,15 @@
                                                     <option value="">Select Social Media</option>
                                                     <option ng-repeat="SocialMedia in SocialMedia" value="{{SocialMedia}}">{{SocialMedia}}</option>
                                                 </select>
+                                                  <input type="text" class="form-control" name="link" ng-model="myForm.link" placeholder="Enter social link" required> 
+                                            <span style="color:red;" ng-show="media.link.$dirty && media.link.$invalid">
+                                            <span ng-show="media.link.$error.required">Link is required.</span>
                                                 <span style="color:red;" class="error" ng-show="media.social.$dirty && media.social.$invalid">
                                                      <span style="color:red;" class="error" ng-show="media.social.$error.required">Please Select a Social Media</span>
                                                 </span> 
                                             </div>
                                             <div class="col-cell add-remove">
-                                                <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia)"></span>
+                                                <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia,myForm.link)"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -209,18 +216,19 @@
                                         <div class="row-table" ng-repeat="x in array">
                                             <div class="col-cell">
                                             <span class="form-control">{{x}}</span>
-                                                <!-- <input type="text" class="form-control"> -->
+                                              
                                             </div>
                                             <div class="col-cell add-remove" >
-                                                <span class="fa fa-minus-circle" ng-click="removeSocialMedia(myForm.socialMedia)"></span>
+                                                <span class="fa fa-minus-circle" ng-click="removeSocialMedia(myForm.socialMedia,myForm.link)"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div><!-- <h2>{{media.link.$invalid}}</h2> -->
                             <div class="btn2 text-center">
-                                <button class="btn btn-lg btn-green"   ng-disabled="media.$invalid or "array.length == 0" ng-click="click('Step3')">Next</button>
+                                <button class="btn btn-lg btn-green" ng-disabled="media.link.$invalid ||array.length == 0" ng-click="click('Step3')">Next</button>
                                 <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
+                                <!-- ng-disabled="media.$invalid or "array.length == 0" -->
                             </div>
                         </fieldset>
                     </form>
@@ -285,7 +293,7 @@
                             
                             <!-- Change this to a button or input when using this as a form -->
                             <div class="btn2 text-center">
-                                <button  ng-disabled="viewPageDetails.socialMedia.length == 0" class="btn btn-lg btn-green" ng-disabled="pageAdmin.$invalid" ng-click="submitt();">Add Pages</button> 
+                                <button  ng-disabled="pageAdminss.length == 0" class="btn btn-lg btn-green" ng-disabled="pageAdmin.$invalid" ng-click="submitt();">Add Pages</button> 
                                 <a class="btn btn-lg btn-green" ng-click="cancel('Step4')">Cancel</a>
                             </div>
                         </fieldset> 
