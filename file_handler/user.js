@@ -98,6 +98,7 @@ module.exports = {
 
         var createPayPage = new Object()
         createPayPage.merchant_email= 'sakshigadia@gmail.com';
+        createPayPage.paytabs_url= 'https://www.paytabs.com/apiv2/';
         createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
         createPayPage.site_url = "http://localhost:8082";
         createPayPage.return_url = "http://localhost:8082";

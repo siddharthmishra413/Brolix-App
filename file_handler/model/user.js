@@ -85,6 +85,10 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
+    brolixAds : {
+        type: Number,
+        default: 0
+    },
     brolix: {
         type: Number,
         default: 0
