@@ -74,6 +74,7 @@ var data1 = querystring.stringify({
     hash: sha512(string)
 })
 
+var paytabs = require('paytabs')
 
 var optionsNew = {
     'Content-Type': 'application/json',
@@ -90,6 +91,117 @@ var optionsNew = {
 };
 
 module.exports = {
+
+
+    "validatorPaytabs": function(req, res){
+
+        var createPayPage = new Object()
+        createPayPage.merchant_email= 'sakshigadia@gmail.com';
+        createPayPage.paytabs_url= 'https://www.paytabs.com/apiv2/';
+        createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+        createPayPage.site_url = "http://localhost:8082";
+        createPayPage.return_url = "http://localhost:8082";
+        createPayPage.title = "some title";
+        createPayPage.cc_first_name =  "ALGHABBAn";
+        createPayPage.cc_last_name= "ALGHABBAN";
+        createPayPage.cc_phone_number = "996";
+        createPayPage.phone_number = "50000000";
+        createPayPage.email = "clinet@outlook.com";
+        createPayPage.products_per_title = "some title";
+        createPayPage.unit_price = 150;
+        createPayPage.quantity=  "1";
+        createPayPage.other_charges = 0;
+        createPayPage.amount=  150;
+        createPayPage.discount = 0;
+        createPayPage.currency = "SAR";
+        createPayPage.reference_no =  "21873109128";
+        createPayPage.ip_customer = "192.168.1.1";
+        createPayPage.ip_merchant= "192.168.1.1";
+        createPayPage.billing_address = "Flat 11 Building 222 Block 333 Road 444 Riydh";
+        createPayPage.state =  "Riydh";
+        createPayPage.city = "Riydh";
+        createPayPage.postal_code=  "12345";
+        createPayPage.country =  "SAU";
+        createPayPage.shipping_first_name =  "Clinicarea";
+        createPayPage.shipping_last_name = "app";
+        createPayPage.address_shipping = "Flat abc road 123";
+        createPayPage.city_shipping = "Riydh";
+        createPayPage.state_shipping=  "Riydh";
+        createPayPage.postal_code_shipping = "403129";
+        createPayPage.country_shipping =  "SAU";
+        createPayPage.msg_lang = "ar";
+        createPayPage.cms_with_version = "1.0.0";
+         
+        paytabs.CreatePayPage(createPayPage, function(response){
+          console.log(response);
+        });
+
+        // paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
+        //   console.log(response);
+        // });
+
+    },
+
+
+
+
+    "createToken": function(req, res){
+        var args = {
+            sellerId: "901347468",
+            publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
+            ccNo: 4000000000000002,
+            cvv: 123,
+            expMonth: 01,
+            expYear: 2024
+        };
+
+        Twocheckout.loadPubKey('production', function() {
+            Twocheckout.requestToken(successCallback, errorCallback, args);
+        })
+    },
+
+    "Twocheckout":function(req, res){
+
+        var tco = new  Twocheckout({
+            sellerId: "901347468",
+            privateKey: "720B461B-ECC0-495D-B279-7CCC0057EED8",
+           // publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
+            sandbox: true   //#Uncomment to use Sandbox
+        });
+
+        var params = {
+            "merchantOrderId": "123", 
+            "token": "ZjhlYjkwZDMtZjVhZC00OGQ4LTkyY2YtMzc0YTc3MzgwMmVj",
+            "currency": "USD",
+            "total": "10.00",
+            "billingAddr": {
+                "name": "Joe Flagster",
+                "addrLine1": "123 Main Street",
+                "city": "Townsville",
+                "state": "Ohio",
+                "zipCode": "43206",
+                "country": "USA",
+                "email": "example@2co.com",
+                "phoneNumber": "8853735932"
+            }
+        };
+
+        tco.checkout.authorize(params, function (error, data) {
+            console.log("Fg")
+            if (error) {
+                console.log("error")
+                console.log(error);
+            } else {
+                res.send({
+                    
+                })
+                console.log("success")
+                console.log(JSON.stringify(data));
+            }
+        });
+
+    },
+
 
     //////////////////////////////////////////////////////////////////
     //////////////////////////////payU////////////////////////////////

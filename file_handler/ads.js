@@ -417,7 +417,8 @@ module.exports = {
                                 if (result.gender != 'Both') {
                                     if (result.gender != result1.gender) {
                                         { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
-                                    } else {
+                                    } 
+                                    else {
                                         if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
                                             // var state = result.whoWillSeeYourAdd.state;
@@ -481,7 +482,7 @@ module.exports = {
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
                             raffleCount.push(userId);
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value } }, { new: true }, function(err, result1) {
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value, brolixAds:value } }, { new: true }, function(err, result1) {
                                 console.log("raffleCount--->>>" + raffleCount.length);
                             })
 

@@ -2113,19 +2113,19 @@ module.exports = {
         var limitData = pageNumber * 10;
         var skips = limitData - 10;
         var page = String(pageNumber);
-        User.aggregate({ $unwind: "$brolix" }, { $match: updateData }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$brolixAds" }, { $match: updateData }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
-                    arr.push(parseInt(result[i].brolix));
+                    arr.push(parseInt(result[i].brolixAds));
                 }
                 var sum = arr.reduce((a, b) => a + b, 0);
 
                 var pages = Math.ceil(count / limitData);
 
-                User.aggregate({ $unwind: "$brolix" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$brolixAds" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
 
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No gift found." }); } else {
                         var limit = 0;
