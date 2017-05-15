@@ -49,14 +49,14 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     })
 
     $scope.changeCountry = function(){
-      var obj = {};
-      obj = {
-        country:$scope.dashBordFilter.country,
-      }
-      userService.cityListData(obj).success(function(res) {
-      console.log("ddd",JSON.stringify(res))
-      $scope.cityList = res.result;
-    })
+        var obj = {};
+        obj = {
+          country:$scope.dashBordFilter.country,
+        }
+        userService.cityListData(obj).success(function(res) {
+        console.log("ddd",JSON.stringify(res))
+        $scope.cityList = res.result;
+      })
 
 
     }

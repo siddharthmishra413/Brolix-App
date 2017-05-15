@@ -198,6 +198,7 @@ var createNewAdsSchema = new Schema({
     couponSold:[],
     uploadFile:{type:String},
     backgroundimage:{type:String},
+    adExpired:{ type:Boolean},
     createdAt: {
         type: Date,
         default: Date.now

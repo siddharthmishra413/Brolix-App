@@ -5,6 +5,7 @@
       <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('ads')">Ads info.</a></li>
       <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('page')">Page info.</a></li>
    </ul>
+  
         <div class="c1-notify-row" ng-if="key == 'user'">
             <h3 class="text-center">User Related Information</h3>
             <div class="table-responsive">
@@ -17,8 +18,9 @@
                         </tr>
                     </thead>
                     <tbody>
+                     <input type="text" ng-model="search" style="width:180px" placeholder="search by name">
                         <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
-                        <tr ng-repeat="x in userResult | customFilterUser:test">
+                        <tr ng-repeat="x in userResult | customFilterUser:test | filter:search">
                             <td >{{x.firstName}}</td>
                             <td >{{x.lastName}}</td>
                             <td >{{x.createdAt | date:'MMMM dd, yyyy'}}</td>
@@ -37,6 +39,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
                     <thead>
+                     <input type="text" ng-model="search" style="width:180px" placeholder="search by page name">
                         <tr>
                             <th>Page Name</th>
                             <th>Ads Type</th>
@@ -45,7 +48,7 @@
                     </thead>
                     <tbody>
                         <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
-                        <tr ng-repeat="x in adsResult | customFilterUser:test">
+                        <tr ng-repeat="x in adsResult | customFilterUser:test | filter:search">
                             <td >{{x.pageName}}</td>
                             <td >{{x.adsType}}</td>
                             <td >{{x.createdAt | date:'MMMM dd, yyyy'}}</td>
@@ -64,6 +67,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
                     <thead>
+                     <input type="text" ng-model="search" style="width:180px" placeholder="search by page name">
                         <tr>
                             <th>Page Name</th>
                             <th>Created Time</th>
@@ -71,7 +75,7 @@
                     </thead>
                     <tbody>
                         <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
-                        <tr ng-repeat="x in pageResult | customFilterUser:test">
+                        <tr ng-repeat="x in pageResult | customFilterUser:test | filter:search">
                             <td >{{x.pageName}}</td>
                             <td >{{x.createdAt | date:'MMMM dd, yyyy'}}</td>
                         </tr>

@@ -8,6 +8,7 @@ $scope.$emit('headerStatus', 'Manage Pages');
  $scope.Step3 = false;
  $scope.Step4 = false;
  $scope.array = [];
+ $scope.arrayLink = [];
  $scope.arrayPage = [];
  $scope.adminsIdd;
  $scope.subCategory = [];
@@ -85,17 +86,18 @@ $scope.checkBoxArray.push(checkBoxArray1[i]);
 
 
 
- $scope.addSocialMedia = function(addSocialMedia){
+ $scope.addSocialMedia = function(addSocialMedia,addSocialLink){
  	console.log("addSocialMedia",addSocialMedia);
  	
  	var flag = false;
- 	if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined){
+ 	if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined || addSocialLink==""||addSocialLink==null || addSocialLink==undefined){
  		toastr.error("Please select social media");
  	}else{
  		console.log("000")
- 		if($scope.array.length == 0){
+ 		if($scope.array.length == 0||$scope.arrayLink.length == 0){
  			console.log("111");
  			$scope.array.push(addSocialMedia);
+      $scope.arrayLink.push(addSocialLink);
  		}else{
  			console.log("array",$scope.array);
  			for(var i=0; i<$scope.array.length; i++){
@@ -104,24 +106,35 @@ $scope.checkBoxArray.push(checkBoxArray1[i]);
  					break;
  				}
  			}
+      for(var i=0; i<$scope.arrayLink.length; i++){
+        if($scope.arrayLink[i] == addSocialLink){
+          flag = true;
+          break;
+        }
+      }
  			if(flag){
  				toastr.error("You have already chosen this social media");
  			}else{
  				console.log("jjjjj");
  				$scope.array.push(addSocialMedia);
+        $scope.arrayLink.push(addSocialLink);
+        console.log("here we have every thng :    "+$scope.array,$scope.arrayLink)
  			}
  		}
 
  	}
  }
 
- $scope.removeSocialMedia = function(removeSocialMedia){
+ $scope.removeSocialMedia = function(removeSocialMedia,addSocialLink){
  	console.log("removeSocialMedia",removeSocialMedia)
  	var a = $scope.array.indexOf(removeSocialMedia);
+  var b = $scope.arrayLink.indexOf(addSocialLink);
  	$scope.array.splice(a);
+  $scope.arrayLink.splice(b);
  	console.log("a",a)
     // $scope.array.splice(removeSocialMedia,1);
     console.log("arrrrr",$scope.array);
+    console.log("arrrrrLink",$scope.arrayLink);
  }
 
 
@@ -362,7 +375,7 @@ $scope.submitt = function(){
 	           "city":$scope.myForm.city, 
 	           "pageImage":$scope.myForm.userphoto,
 	           "coverImage": $scope.myForm.pagephoto,
-	           "socialMedia":$scope.array, 
+	           "socialMedia":$scope.arrayLink, 
 	           "adAdmin":cond   
 	    }
 	   

@@ -167,19 +167,20 @@
                     <div class="form-group cus-select">
                          <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
                             <option value="">Select Country</option>
-                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                            <option ng-repeat="country in countriesList" value"{{country}}">{{country}}</option>
                          </select>
                     </div>
-                    <div class="form-group cus-select">
-                         <select class="form-control"  ng-change="changeState(); dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" required>
+                   <!--  <div class="form-group cus-select">
+                         <select class="form-control">
                             <option value="">Select State</option>
-                            <option ng-repeat="state in stateList">{{state.region}}</option>
-                         </select> 
-                    </div>
+                            <option value="">N/A</option> -->
+                            <!-- <option ng-repeat="state in stateList">{{state.region}}</option> -->
+                         <!-- </select> 
+                    </div> -->
                     <div class="form-group cus-select">
                          <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.city);" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
-                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                            <option ng-repeat="city in cityList">{{city}}</option>
                          </select> 
                     </div>
                     <div class="form-group cus-select">
@@ -209,17 +210,17 @@
                     </div>
                     <div class="form-group cus-select">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                              <div class="form-group">
-                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date From" ng-model="dashBordFilter.dobFrom" />
-                                              </div>
+                            <div class="form-group">
+                              <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date From" ng-model="dashBordFilter.dobFrom" />
+                            </div>
                         </datepicker>
                     </div>
                     
                      <div class="form-group cus-select">
-                        <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                              <div class="form-group">
-                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date To" ng-model="dashBordFilter.dobTo" />
-                                              </div>
+                        <datepicker  ng-disabled="dashBordFilter.dobFrom==undefined" date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
+                            <div class="form-group">
+                              <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  placeholder="Date To" ng-model="dashBordFilter.dobTo" />
+                            </div>
                         </datepicker>
                     </div>
                     <!-- <div class="form-group cus-select">

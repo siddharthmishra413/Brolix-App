@@ -370,55 +370,72 @@ $(window).scrollTop(0,0);
 
     }
 
-//-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-    var currentCities=[];
-    $scope.currentCountry= '';
-var BATTUTA_KEY="00000000000000000000000000000000"
-    // Populate country select box from battuta API
-  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-    $.getJSON(url,function(countries)
-    {
-      $timeout(function(){
-        $scope.countriesList=countries;
-      },100)
 
+    userService.countryListData().success(function(res) {
+          //console.log("ddd",JSON.stringify(res))
+          $scope.countriesList = res.result;
+        })
 
-    });
-  var countryCode;
-    $scope.changeCountry = function(){
-        console.log('Country:   '+JSON.stringify($scope.dashBordFilter.country))
-      for(var i=0;i<$scope.countriesList.length;i++){
-        if($scope.countriesList[i].name==$scope.dashBordFilter.country){
-          countryCode=$scope.countriesList[i].code;
-          //console.log(countryCode)
-          break;
-        }
-      }
-      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(regions)
-      {
-        //console.log('state list:   '+JSON.stringify(regions))
-         $timeout(function(){
-        $scope.stateList = regions;
-          },100)
-      });
+        $scope.changeCountry = function(){
+          var obj = {};
+          obj = {
+            country:$scope.dashBordFilter.country,
+          }
+          userService.cityListData(obj).success(function(res) {
+          console.log("ddd",JSON.stringify(res))
+          $scope.cityList = res.result;
+        })
     }
 
-    $scope.changeState = function(){
-        console.log('State:   '+JSON.stringify($scope.dashBordFilter.state))
-      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
-      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
-      $.getJSON(url,function(cities)
-      {
-        // console.log('city list:   '+JSON.stringify(cities))
-         $timeout(function(){
-          $scope.cityList = cities;
-            },100)
-      })
+// //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+//     var currentCities=[];
+//     $scope.currentCountry= '';
+// var BATTUTA_KEY="00000000000000000000000000000000"
+//     // Populate country select box from battuta API
+//   url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+//     $.getJSON(url,function(countries)
+//     {
+//       $timeout(function(){
+//         $scope.countriesList=countries;
+//       },100)
 
-    }
-    //  console.log('City:   '+JSON.stringify($scope.dashBordFilter.city))
-    //-------------------------------END OF SELECT CASCADING-------------------------//
+
+//     });
+//   var countryCode;
+//     $scope.changeCountry = function(){
+//         console.log('Country:   '+JSON.stringify($scope.dashBordFilter.country))
+//       for(var i=0;i<$scope.countriesList.length;i++){
+//         if($scope.countriesList[i].name==$scope.dashBordFilter.country){
+//           countryCode=$scope.countriesList[i].code;
+//           //console.log(countryCode)
+//           break;
+//         }
+//       }
+//       var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(regions)
+//       {
+//         //console.log('state list:   '+JSON.stringify(regions))
+//          $timeout(function(){
+//         $scope.stateList = regions;
+//           },100)
+//       });
+//     }
+
+//     $scope.changeState = function(){
+//         console.log('State:   '+JSON.stringify($scope.dashBordFilter.state))
+//       //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
+//       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+//       $.getJSON(url,function(cities)
+//       {
+//         // console.log('city list:   '+JSON.stringify(cities))
+//          $timeout(function(){
+//           $scope.cityList = cities;
+//             },100)
+//       })
+
+//     }
+//     //  console.log('City:   '+JSON.stringify($scope.dashBordFilter.city))
+//     //-------------------------------END OF SELECT CASCADING-------------------------//
 
  $scope.export = function(){
     var type = localStorage.getItem('adsTypeName');

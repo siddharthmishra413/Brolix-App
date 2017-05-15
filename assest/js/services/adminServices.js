@@ -95,7 +95,7 @@ app.service('createPageService',function($http, $q){
         }
 })
 
-http://172.16.6.171:8082/admin/editPage/5832e29349df9c04411e252d
+//http://172.16.6.171:8082/admin/editPage/5832e29349df9c04411e252d
 
 
 

@@ -108,21 +108,21 @@ $scope.checkBoxArray.push(checkBoxArray1[i]);
 
 
 // $scope.viewPageDetails.socialMedia
- $scope.addSocialMedia = function(addSocialMedia){
-  console.log("addSocialMedia",addSocialMedia);
+ $scope.addSocialMedia = function(addSocialMedia,addSocialLink){
+  console.log("addSocialLink",addSocialLink);
   
   var flag = false;
-  if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined){
+  if(addSocialLink == "" || addSocialLink ==null || addSocialLink == undefined){
     toastr.error("Please select social media");
   }else{
     console.log("000")
     if($scope.viewPageDetails.socialMedia.length == 0){
       console.log("111");
-      $scope.viewPageDetails.socialMedia.push(addSocialMedia);
+      $scope.viewPageDetails.socialMedia.push(addSocialLink);
     }else{
       console.log("array",$scope.viewPageDetails.socialMedia);
       for(var i=0; i<$scope.viewPageDetails.socialMedia.length; i++){
-        if($scope.viewPageDetails.socialMedia[i] == addSocialMedia){
+        if($scope.viewPageDetails.socialMedia[i] == addSocialLink){
           flag = true;
           break;
         }
@@ -131,7 +131,7 @@ $scope.checkBoxArray.push(checkBoxArray1[i]);
         toastr.error("You have already chosen this social media");
       }else{
         console.log("jjjjj");
-        $scope.viewPageDetails.socialMedia.push(addSocialMedia);
+        $scope.viewPageDetails.socialMedia.push(addSocialLink);
       }
     }
 

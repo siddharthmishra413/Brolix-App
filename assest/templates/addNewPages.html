@@ -126,7 +126,7 @@
                                 <!-- ng-disabled="userFrom.$invalid" -->
                             </fieldset>
                         </form>
-                    </div>c
+                    </div>
                 </div>
             </div>
         </div>
@@ -195,12 +195,15 @@
                                                     <option value="">Select Social Media</option>
                                                     <option ng-repeat="SocialMedia in SocialMedia" value="{{SocialMedia}}">{{SocialMedia}}</option>
                                                 </select>
+                                                  <input type="text" class="form-control" name="link" ng-model="myForm.link" placeholder="Enter social link" required> 
+                                            <span style="color:red;" ng-show="media.link.$dirty && media.link.$invalid">
+                                            <span ng-show="media.link.$error.required">Link is required.</span>
                                                 <span style="color:red;" class="error" ng-show="media.social.$dirty && media.social.$invalid">
                                                      <span style="color:red;" class="error" ng-show="media.social.$error.required">Please Select a Social Media</span>
                                                 </span> 
                                             </div>
                                             <div class="col-cell add-remove">
-                                                <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia)"></span>
+                                                <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia,myForm.link)"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -213,17 +216,17 @@
                                         <div class="row-table" ng-repeat="x in array">
                                             <div class="col-cell">
                                             <span class="form-control">{{x}}</span>
-                                                <!-- <input type="text" class="form-control"> -->
+                                              
                                             </div>
                                             <div class="col-cell add-remove" >
-                                                <span class="fa fa-minus-circle" ng-click="removeSocialMedia(myForm.socialMedia)"></span>
+                                                <span class="fa fa-minus-circle" ng-click="removeSocialMedia(myForm.socialMedia,myForm.link)"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div><!-- <h2>{{media.link.$invalid}}</h2> -->
                             <div class="btn2 text-center">
-                                <button class="btn btn-lg btn-green" ng-disabled="array.length == 0" ng-click="click('Step3')">Next</button>
+                                <button class="btn btn-lg btn-green" ng-disabled="media.link.$invalid ||array.length == 0" ng-click="click('Step3')">Next</button>
                                 <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
                                 <!-- ng-disabled="media.$invalid or "array.length == 0" -->
                             </div>

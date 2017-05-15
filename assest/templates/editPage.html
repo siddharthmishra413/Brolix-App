@@ -249,12 +249,15 @@
                                                         <option value="">Select Social Media</option>
                                                         <option ng-repeat="SocialMedia in SocialMedia" value="{{SocialMedia}}">{{SocialMedia}}</option>
                                                     </select>
+                                                     <input type="text" class="form-control" name="link" ng-model="myForm.link" placeholder="Enter social link" required> 
+                                            <span style="color:red;" ng-show="media.link.$dirty && media.link.$invalid">
+                                            <span ng-show="media.link.$error.required">Link is required.</span>
                                                     <span style="color:red;" class="error" ng-show="media.social.$dirty && media.social.$invalid">
                                                          <span style="color:red;" class="error" ng-show="media.social.$error.required">Please Select a Social Media</span>
                                                     </span> 
                                                 </div>
                                                 <div class="col-cell add-remove">
-                                                    <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia)"></span>
+                                                    <span class="fa fa-plus-circle" ng-click="addSocialMedia(myForm.socialMedia,myForm.link)"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -270,14 +273,14 @@
                                                     <!-- <input type="text" class="form-control"> -->
                                                 </div>
                                                 <div class="col-cell add-remove" >
-                                                    <span class="fa fa-minus-circle" ng-click="removeSocialMedia(x)"></span>
+                                                    <span class="fa fa-minus-circle" ng-click="removeSocialMedia(x,myForm.link)"></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="btn2 text-center">
-                                    <button ng-disabled="viewPageDetails.socialMedia.length == 0" class="btn btn-lg btn-green" ng-disabled="media.$invalid" ng-click="click('Step3')">Next</button>
+                                    <button ng-disabled="media.link.$invalid || viewPageDetails.socialMedia.length == 0" class="btn btn-lg btn-green" ng-disabled="media.$invalid" ng-click="click('Step3')">Next</button>
                                     <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
                                 </div>
                             </fieldset>

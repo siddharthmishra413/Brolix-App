@@ -10,50 +10,69 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     $scope.dashBordFilter = {};
 
 
-    //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-    var currentCities=[];
-   $scope.currentCountry= '';
-var BATTUTA_KEY="00000000000000000000000000000000"
-   // Populate country select box from battuta API
- url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-   $.getJSON(url,function(countries)
-   {
-     $timeout(function(){
-       $scope.countriesList=countries;
-     },100)
+//     //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
+//     var currentCities=[];
+//    $scope.currentCountry= '';
+// var BATTUTA_KEY="00000000000000000000000000000000"
+//    // Populate country select box from battuta API
+//  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+//    $.getJSON(url,function(countries)
+//    {
+//      $timeout(function(){
+//        $scope.countriesList=countries;
+//      },100)
      
      
-   });
- var countryCode;
-   $scope.changeCountry = function(){
-     for(var i=0;i<$scope.countriesList.length;i++){
-       if($scope.countriesList[i].name==$scope.dashBordFilter.country){
-         countryCode=$scope.countriesList[i].code;
-         //console.log(countryCode)
-         break;
-       }
-     }
-     var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-     $.getJSON(url,function(regions)
-     {
-       //console.log('state list:   '+JSON.stringify(regions))
-           $timeout(function(){
-            $scope.stateList = regions;
-           },100)
-     });
-   }
+//    });
+//  var countryCode;
+//    $scope.changeCountry = function(){
+//      for(var i=0;i<$scope.countriesList.length;i++){
+//        if($scope.countriesList[i].name==$scope.dashBordFilter.country){
+//          countryCode=$scope.countriesList[i].code;
+//          //console.log(countryCode)
+//          break;
+//        }
+//      }
+//      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
+//      $.getJSON(url,function(regions)
+//      {
+//        //console.log('state list:   '+JSON.stringify(regions))
+//            $timeout(function(){
+//             $scope.stateList = regions;
+//            },100)
+//      });
+//    }
 
-   $scope.changeState = function(){
-     //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
-     var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
-     $.getJSON(url,function(cities)
-     {
-       // console.log('city list:   '+JSON.stringify(cities))
-           $timeout(function(){
-            $scope.cityList = cities;
-           },100)
-     })
-   }
+//    $scope.changeState = function(){
+//      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
+//      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+//      $.getJSON(url,function(cities)
+//      {
+//        // console.log('city list:   '+JSON.stringify(cities))
+//            $timeout(function(){
+//             $scope.cityList = cities;
+//            },100)
+//      })
+//    }
+
+
+    userService.countryListData().success(function(res) {
+      //console.log("ddd",JSON.stringify(res))
+      $scope.countriesList = res.result;
+    })
+
+    $scope.changeCountry = function(){
+        var obj = {};
+        obj = {
+          country:$scope.dashBordFilter.country,
+        }
+        userService.cityListData(obj).success(function(res) {
+        console.log("ddd",JSON.stringify(res))
+        $scope.cityList = res.result;
+      })
+
+
+    }
 
     $scope.total_user_message = function (modal) {
 
@@ -362,7 +381,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                    $scope.totalSoldUpgradeCardCount = res.total;
                } 
                else {
-                toastr.error(res.responseMessage);
+                $scope.totalSoldUpgradeCardCount = res.total;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
@@ -396,7 +416,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                    $scope.totalIncomeFromUpgradeCard = res.total;
                } 
                else {
-                toastr.error(res.responseMessage);
+                $scope.totalIncomeFromUpgradeCard = res.total;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
@@ -433,7 +454,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     $scope.usedUpgradeCardcount = res.total;
                } 
                else {
-                toastr.error(res.responseMessage);
+                $scope.usedUpgradeCardcount = res.total;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
@@ -465,10 +487,11 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                    $scope.noOfPagesUnusedUpgradeCards = res.pages;
                    $scope.pageUnusedUpgradeCards= res.page;
                    $scope.unUsedUpgradeCard= res.docs;
-                    $scope.unUsedUpgradeCardcount = res.total;
+                   $scope.unUsedUpgradeCardcount = res.total;
                } 
                else {
-                toastr.error(res.responseMessage);
+                $scope.unUsedUpgradeCardcount = res.total;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
@@ -505,7 +528,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                    $scope.totalSoldLuckCardcount = res.total;
                } 
                else {
-                toastr.error(res.responseMessage);
+                $scope.totalSoldLuckCardcount = res.total;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
@@ -575,7 +599,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     $scope.usedLuckCardcount = res.total;
                } 
                else {
-                toastr.error(res.responseMessage);
+                $scope.usedLuckCardcount = res.total;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
@@ -609,7 +634,8 @@ var BATTUTA_KEY="00000000000000000000000000000000"
                     $scope.unUsedLuckCardcount = res.total;
                } 
                else {
-                toastr.error(res.responseMessage);
+                $scope.unUsedLuckCardcount = res.total;
+                //toastr.error(res.responseMessage);
                 }
           })
      }
