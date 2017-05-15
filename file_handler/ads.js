@@ -28,9 +28,7 @@ module.exports = {
 
     "createAds": function(req, res) {
         if (req.body.adsType == "coupon") {
-            if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); }
-            else if(req.body.numberOfWinners>req.body.viewerLenght){ res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); }
-            else {
+            if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
                 req.body.viewerLenght = 2;
@@ -401,74 +399,74 @@ module.exports = {
     "viewAd": function(req, res) { //req.body.userId, adId
         var userId = req.body.userId;
         waterfall([
-//            function(callback) {
-//                createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
-//                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
-//                        User.findOne({ _id: userId }).exec(function(err, result1) {
-//                            if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
-//                                var age = result1.dob;
-//
-//                                function _calculateAge(birthday) { // birthday is a date
-//                                    var ageDifMs = Date.now() - birthday.getTime();
-//                                    var ageDate = new Date(ageDifMs); // miliseconds from epoch
-//                                    return Math.abs(ageDate.getUTCFullYear() - 1970);
-//                                }
-//                                var myAge = _calculateAge(new Date(age))
-//                                console.log("myAge-->", myAge)
-//
-//                                if (result.gender != 'Both') {
-//                                    if (result.gender != result1.gender) {
-//                                        { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
-//                                    } else {
-//                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
-//                                            var country = result.whoWillSeeYourAdd.country;
-//                                            // var state = result.whoWillSeeYourAdd.state;
-//                                            var city = result.whoWillSeeYourAdd.city;
-//
-//                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
-//                                                callback(null)
-//                                            }
-//                                        }
-//                                    }
-//                                } else {
-//                                    if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
-//                                        var country = result.whoWillSeeYourAdd.country;
-//                                        var state = result.whoWillSeeYourAdd.state;
-//                                        var city = result.whoWillSeeYourAdd.city;
-//
-//                                        if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different state.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
-//                                            callback(null, result)
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        })
-//                    }
-//                })
-//            },
-//            function(adResult, callback) {
-//                if (adResult.adsType == 'cash') {
-//                    if (adResult.cash > 0) {
-//                        var type = "freeViewersPerCashAds";
-//                    } else {
-//                        var type = "brolixPerFreeCashAds";
-//                    }
-//                } else if (adResult.adsType == 'coupon') {
-//                    if (adResult.cash > 0) {
-//                        var type = "freeViewersPerCashAds";
-//                    } else {
-//                        var type = "brolixPerFreeCouponAds";
-//                    }
-//                }
-//                console.log("type-->>", type)
-//                brolixAndDollors.findOne({
-//                    type: type
-//                }, function(err, result) {
-//                    var value = result.value
-//                    callback(null, value)
-//                })
-//            },
-            function( callback) {
+            function(callback) {
+                createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
+                        User.findOne({ _id: userId }).exec(function(err, result1) {
+                            if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                                var age = result1.dob;
+
+                                function _calculateAge(birthday) { // birthday is a date
+                                    var ageDifMs = Date.now() - birthday.getTime();
+                                    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+                                    return Math.abs(ageDate.getUTCFullYear() - 1970);
+                                }
+                                var myAge = _calculateAge(new Date(age))
+                                console.log("myAge-->", myAge)
+
+                                if (result.gender != 'Both') {
+                                    if (result.gender != result1.gender) {
+                                        { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
+                                    } else {
+                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
+                                            var country = result.whoWillSeeYourAdd.country;
+                                            // var state = result.whoWillSeeYourAdd.state;
+                                            var city = result.whoWillSeeYourAdd.city;
+
+                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
+                                                callback(null)
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
+                                        var country = result.whoWillSeeYourAdd.country;
+                                        var state = result.whoWillSeeYourAdd.state;
+                                        var city = result.whoWillSeeYourAdd.city;
+
+                                        if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different state.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
+                                            callback(null, result)
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    }
+                })
+            },
+            function(adResult, callback) {
+                if (adResult.adsType == 'cash') {
+                    if (adResult.cash > 0) {
+                        var type = "freeViewersPerCashAds";
+                    } else {
+                        var type = "brolixPerFreeCashAds";
+                    }
+                } else if (adResult.adsType == 'coupon') {
+                    if (adResult.cash > 0) {
+                        var type = "freeViewersPerCashAds";
+                    } else {
+                        var type = "brolixPerFreeCouponAds";
+                    }
+                }
+                console.log("type-->>", type)
+                brolixAndDollors.findOne({
+                    type: type
+                }, function(err, result) {
+                    var value = result.value
+                    callback(null, value)
+                })
+            },
+            function(value, callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                         var randomIndex = [];
@@ -483,7 +481,7 @@ module.exports = {
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
                             raffleCount.push(userId);
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 200 } }, { new: true }, function(err, result1) {
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value } }, { new: true }, function(err, result1) {
                                 console.log("raffleCount--->>>" + raffleCount.length);
                             })
 
@@ -587,7 +585,7 @@ module.exports = {
                                             pageId: pageId,
                                             type: "WINNER",
                                             couponExpire: "NEVER",
-                                            expirationTime:neverExpireTime
+                                            expirationTime: neverExpireTime
                                         }
                                     } else {
                                         console.log("else")
@@ -2302,7 +2300,7 @@ module.exports = {
             });
         })
     },
-   
+
 
     "storeCouponPrice": function(req, res) {
         createNewAds.findOne({ _id: req.params.id }, function(err, result) {
