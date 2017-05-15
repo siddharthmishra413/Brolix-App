@@ -2157,7 +2157,7 @@ module.exports = {
             var updateData = query;
         } else {
             console.log("rather than query")
-            var updateData = { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' };
+            var updateData = { 'coupon.type': "WINNER" };
         }
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 10;
