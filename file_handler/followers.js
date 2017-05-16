@@ -125,7 +125,7 @@
 
      //API for Accept Follower Request
      "acceptFollowerRequest": function(req, res) {
-         console.log("req-->>",req.body)
+         console.log("req-->>", req.body)
          if (req.body.followerStatus == "accept") {
              console.log("in")
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
@@ -148,7 +148,7 @@
                  }
              })
          } else if (req.body.followerStatus == "block") {
-              console.log("req-->>",req.body)
+             console.log("req-->>", req.body)
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
                  $set: {
                      followerStatus: req.body.followerStatus,
@@ -182,7 +182,22 @@
                      });
                  }
              })
+         } else if (req.body.followerStatus == "unblock") {
+             followerList.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { blockUserId: req.body.blockUserId }] }, {
+                 $set: {
+                     followerStatus: req.body.followerStatus
+                 }
+             }, { new: true }).exec(function(err, results) {
+                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                     res.send({
+                         result: results,
+                         responseCode: 200,
+                         responseMessage: "You have unblock this user."
+                     });
+                 }
+             })
          }
+
      },
 
      "blockUserList": function(req, res) {
