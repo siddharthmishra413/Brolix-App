@@ -16,18 +16,36 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="remove-card-block" >
-                                        <div class="cover-image" ng-repeat="x in UpgradeCard">
-                                            <img style="cursor:pointer;" ng-click="showAdsDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">    
+                                        <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard">
+                                            <img style="cursor:pointer;" ng-click="showAdsDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
+                                            <div class="viewwe-s">
+                                                <div class="tops-s">
+                                                     <div class="amts-top">{{x.viewers}}</div>
+                                                      <div class="ants-view">Viewers</div>
+                                                </div>
+                                                 <div class="bottom-dol">${{x.price}}</div>
+                                            </div>    
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-sm-12">
-                                        <div class="cover-image" >
+                                        <div class="cover-image newcover-img">
                                             <img class="profile-user-img img-responsive" ng-model="cardDetails.image" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output"/>
+                                            <div class="viewwe-s">
+                                                <div class="tops-s">
+                                                     <div class="amts-top">{{cardDetails.viewers}}</div>
+                                                      <div class="ants-view">Viewers</div>
+                                                </div>
+                                                 <div class="bottom-dol">${{cardDetails.price}}</div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
+                                    <label class="fileContainer">
+                                        Choose File
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
+                                    </label>
                                     <form class="form-block" role="form" name="crtCard">
                                         <fieldset>
                                             <div class="form-group">
@@ -71,15 +89,33 @@
                         <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
                             <div class="row">
                                 <div class="col-md-6">
+                                   
                                     <div class="remove-card-block" >
-                                        <div class="cover-image" ng-repeat="x in LuckCard">
-                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" src="{{x.photo || '../dist/image/cover.jpg'}}" id="output">  
+                                        <div class="cover-image newcover-img" ng-repeat="x in LuckCard">
+                                            <img style="cursor:pointer;" ng-click="showAdsDetails(x._id)" class="profile-user-img img-responsive" src="{{x.photo || '../dist/image/cover.jpg'}}" id="output">
+                                            <div class="viewwe-s">
+                                                <div class="tops-s">
+                                                     <div class="amts-top">{{x.chances}}</div>
+                                                      <div class="ants-view">Chances</div>
+                                                </div>
+                                                 <div class="bottom-dol">B{{x.brolix}}</div>
+                                            </div>  
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="cover-image"  >
+                                <div class="col-md-12">
+                                    <div class="cover-image newcover-img">
                                     <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                     <div class="viewwe-s">
+                                                <div class="tops-s">
+                                                     <div class="amts-top">{{cardDetails.chances}}</div>
+                                                      <div class="ants-view">Chances</div>
+                                                </div>
+                                                 <div class="bottom-dol">B{{cardDetails.brolix}}</div>
+                                            </div></div></div>
+                                            <div class="col-md-12 text-center">
                                     <label class="fileContainer">
                                         Choose File
                                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
@@ -119,7 +155,7 @@
                                             </div>
                                         </fieldset>
                                     </form>
-                                </div>
+                                </div></div>
                             </div>
                         </div>
                     </div>

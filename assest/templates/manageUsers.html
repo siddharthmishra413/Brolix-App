@@ -1166,10 +1166,10 @@
                                 </li>
                                 <li><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
                             </ul>
-                            <div class="tab-content add-card newtab-s">
+                            <div class="tab-content add-card" style="padding:10px 0 0;">
                                 <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
-                                 <input class="searching form-control" ng-model='view' placeholder='search card...' style="width: 200px;">
-                                    <div class="row-table" ng-repeat="data in UpgradeCard | filterOnView:view">
+                                <div class="search_cus"><input class="searching form-control" ng-model='view' placeholder='search coupan...' style="width: 200px;"></div>
+                                    <div class="row-table" ng-repeat="data in UpgradeCard | filterOnView:view ">
                                         <div class="col-cell">
                                             <div class="cover-image newcover-img">
                                                 <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
@@ -1190,7 +1190,8 @@
                                     </div>
                                 </div>
                                 <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
-                                    <div class="row-table" ng-repeat="data in LuckCard">
+                                 <input class="searching form-control" ng-model='viewer' placeholder='search coupan...' style="width: 200px;">
+                                    <div class="row-table" ng-repeat="data in LuckCard | filterOnLuck:viewer">
                                         <div class="col-cell">
                                             <div class="cover-image newcover-img">
                                                 <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">

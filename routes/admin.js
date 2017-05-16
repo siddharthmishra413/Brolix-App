@@ -74,7 +74,7 @@ app.post('/upgradeCardUsedAd', adminHandler.upgradeCardUsedAd);
 app.get('/paymentHistoryUpgradeCard/:id', adminHandler.paymentHistoryUpgradeCard);
 app.get('/paymentHistoryLuckCard/:id', adminHandler.paymentHistoryLuckCard);
 app.get('/userInfo/:id', adminHandler.userInfo);
-app.get('/totalBrolixGift/:pageNumber', adminHandler.totalBrolixGift);
+app.get('/totalBrolixGift', adminHandler.totalBrolixGift);
 app.get('/totalCouponGifts/:pageNumber', adminHandler.totalCouponGifts);
 app.get('/cashGift/:pageNumber', adminHandler.cashGift);
 app.get('/showReportedAd/:pageNumber', adminHandler.showReportedAd);

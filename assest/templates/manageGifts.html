@@ -13,9 +13,9 @@
                                 <div class="btn-manage" ng-click="top_50_balance()">
                                     <a>Top 50 Balances</a>
                                 </div>
-                                <div class="btn-manage" ng-click="tab='contectOwner'">
+                                <!-- <div class="btn-manage" ng-click="tab='contectOwner'">
                                     <a ng-click="contact_winner_message('totalBrolixGiftWinner')">Contact Winners</a>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-block blnk-bg">
+                    <!-- <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk offerbtn-s">
                             <div class="top-box">
                                 <div class="green-box">Top 50 Coupons Providers</div>
@@ -78,13 +78,13 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="clearfix">
                     <div class="box-block  blk-drkvolit">
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
-                                <div class="total-add">Total Exchanged</div>
+                                <div class="total-add">Exchanged Coupons</div>
                                 <div class="total-amt">{{totalExchangedCoupons}}</div>
                             </div>
                             <div class="bottom-box">
@@ -97,7 +97,7 @@
                     <div class="box-block blk-drkpink">
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
-                                <div class="total-add">Total Sent Coupons</div>
+                                <div class="total-add">Sent Coupons</div>
                                 <div class="total-amt">{{totalSentCoupon}}</div>
                             </div>
                             <div class="bottom-box">
@@ -110,7 +110,7 @@
                     <div class="box-block  blk-drkyello">
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
-                                <div class="total-add">Total Sent Cash</div>
+                                <div class="total-add">Sent Cash</div>
                                 <div class="total-amt">{{totalSentCash}}</div>
                             </div>
                             <div class="bottom-box">
@@ -121,7 +121,7 @@
                         </div>
                     </div>
 
-                    <div class="box-block blnk-bg">
+                    <!-- <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk offerbtn-s">
                             <div class="top-box">
                                 <div class="green-box">Top 50 Cash Providers</div>
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-md-3 col-sm-6 dwd-border">
@@ -141,47 +141,48 @@
                      <div class="form-group cus-select">
                          <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
                             <option value="">Select Country</option>
-                            <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                            <option ng-repeat="country in countriesList" value"{{country}}">{{country}}</option>
                          </select>
                     </div>
-                    <div class="form-group cus-select">
+                    <!-- <div class="form-group cus-select">
                          <select class="form-control"  ng-change="changeState(); dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" required>
                             <option value="">Select State</option>
                             <option ng-repeat="state in stateList">{{state.region}}</option>
                          </select> 
-                    </div>
+                    </div> -->
                     <div class="form-group cus-select">
                          <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.city);" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
-                            <option ng-repeat="city in cityList">{{city.city}}</option>
+                            <option ng-repeat="city in cityList">{{city}}</option>
                          </select> 
                     </div>
                     <div class="form-group cus-select">
                         <select class="form-control" ng-model="dashBordFilter.couponStatus" ng-change="dashBordFilter();">
                             <option value="">Coupon Status</option>
-                            <option>valid</option>
-                            <option>invalid</option>
+                            <option>Valid</option>
+                            <option>Used</option>
+                            <option>Expired</option>
                         </select>
                     </div>
                     <div class="form-group cus-select">
                         <select class="form-control" ng-model="dashBordFilter.cashStatus" ng-change="dashBordFilter();">
                             <option value="">Cash Status</option>
+                            <option>Delivered</option>
                             <option>Pending</option>
                         </select>
                     </div>
-                   
                     <div class="form-group cus-select">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                              <div class="form-group">
-                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  ng-model="dashBordFilter.dobFrom" placeholder="Date From"/>
-                                              </div>
+                            <div class="form-group">
+                              <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"  ng-model="dashBordFilter.dobFrom" placeholder="Date From"/>
+                            </div>
                         </datepicker>
                     </div>
                      <div class="form-group cus-select">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                              <div class="form-group">
-                                                  <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"   ng-model="dashBordFilter.dobTo" placeholder="Date To"/>
-                                              </div>
+                            <div class="form-group">
+                              <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"   ng-model="dashBordFilter.dobTo" placeholder="Date To"/>
+                            </div>
                         </datepicker>
                      </div>
                  </div>
@@ -222,7 +223,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in totalExchangedCouponShow1 | totalExchangedFilter:search">
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id,'first')">View</td>
                         <td>{{x.exchToFirstName}} {{x.exchToLastName}}</td>
                         <td>{{x.exchFromFirstName}} {{x.exchFromLastName}}</td>
                     </tr> 
@@ -266,14 +267,18 @@
                         <th>Winner Name</th>
                         <th>Coupon Gift</th>
                         <th>Coupon Status</th>
+                        <th>Created Date</th>
+                        <th>Created Time</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in totalCouponsGiftShow | totalCouponGiftFilter:search">
                         <td>{{x.coupon.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.coupon.adId)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.coupon.adId,'first')">View</td>
                         <td>{{x.coupon.couponStatus}}</td>
+                        <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
+                        <td>{{x.createdAt | date:"HH:mm"}}</td>
                     </tr>
                     <tr ng-if="(totalCouponsGiftShow | totalCouponGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
                 </tbody>
@@ -314,14 +319,18 @@
                         <th>Winner Name</th>
                         <th>Cash Gift</th>
                         <th>Cash Status</th>
+                        <th>Created Date</th>
+                        <th>Created Time</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in totalCashGiftShow | totalCashGiftFilter:search">
                         <td>{{x.cashPrize.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text" ng-click="showCouponGift(x.cashPrize.adId)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.cashPrize.adId,'second')">View</td>
                         <td>{{x.cashPrize.cashStatus}}</td>
+                         <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
+                        <td>{{x.createdAt | date:"HH:mm"}}</td>
                      </tr>
                      <tr ng-if="(totalCashGiftShow |totalCashGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
                 </tbody>
@@ -362,14 +371,18 @@
                         <th>Winner Name</th>
                         <th>Coupon Gift</th>
                         <th>Coupon Status</th>
+                        <th>Created Date</th>
+                        <th>Created Time</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in totalHiddenGiftShow | totalHiddenGiftFilter:search">
                         <td>{{x.hiddenGifts.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.hiddenGifts.adId)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.hiddenGifts.adId,'third')">View</td>
                         <td>{{x.hiddenGifts.status}}</td>
+                        <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
+                        <td>{{x.createdAt | date:"HH:mm"}}</td>
                      </tr>
                       <tr ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
@@ -413,7 +426,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in totalSentCouponShow1 | totalSentCouponFilter:search">
-                        <td class="skyblue-text" ng-click="showCouponGift(x.id)">View</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id,'first')">View</td>
                         <td>{{x.sentFromFirstName}} {{x.sentFromLastName}}</td>
                         <td >{{x.sentToFirstName}} {{x.sentToLastName}}</td>
                      </tr>
@@ -454,6 +467,7 @@
             <table id="manageGiftTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
+                        <th>Coupon Gift</th>
                         <th>Amount</th>
                         <th>Sent From</th>
                         <th>Sent To</th>
@@ -461,6 +475,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in totalSentCashShow | totalSentCashFilter:search">
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id,'second')">View</td>
                         <td>{{totalCash}}</td>
                         <td>{{x.sendCashListObject.senderId.firstName}} {{x.sendCashListObject.senderId.lastName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
@@ -514,7 +529,7 @@
 
 <!--Coupon provider model-->
 
-<div id="top_50_couponsProviders" class="modal fade">
+<!-- <div id="top_50_couponsProviders" class="modal fade">
    <div class="modal-dialog cls_pop">
        <div class="modal-content">
            <div class="modal-header">
@@ -545,11 +560,11 @@
            </div>
        </div>
    </div>
-</div>
+</div> -->
 
 <!--Cashprovider model-->
 
-<div id="top_50_cashProviders" class="modal fade">
+<!-- <div id="top_50_cashProviders" class="modal fade">
    <div class="modal-dialog cls_pop">
        <div class="modal-content">
            <div class="modal-header">
@@ -580,7 +595,7 @@
            </div>
        </div>
    </div>
-</div>
+</div> -->
 
 <!--CouponGift Model-->
 
@@ -600,18 +615,94 @@
                                     <tr>
                                         <th>PageName</th>
                                         <th>Category</th>
-                                        <th>SubCategory</th>
-                                        <th>adsType</th>
-                                        <th>Cover Image</th>
+                                        <th>Gift Description</th>
+                                        <th>Coupon ExpiryDate</th>
+                                        <!-- <th>Cover Image</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>{{couponGiftAd.pageName}}</td>
                                         <td>{{couponGiftAd.category}}</td>
-                                        <td>{{couponGiftAd.subCategory}}</td>
-                                        <td>{{couponGiftAd.adsType}}</td>
-                                        <td><img src={{couponGiftAd.coverImage}}/></td>
+                                        <td>{{couponGiftAd.giftDescription}}</td>
+                                        <td>{{couponGiftAd.couponExpiryDate | date:'MM/dd/yyyy'}}</td>
+                                        <!-- <td><img src={{couponGiftAd.coverImage}}/></td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<div id="showCouponGiftsecond" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Coupon Gift</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageGiftTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>PageName</th>
+                                        <th>Category</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{couponGiftAd.pageName}}</td>
+                                        <td>{{couponGiftAd.category}}</td>
+                                        <td>{{couponGiftAd.cashAdPrize}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>           
+                </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<div id="showCouponGiftthird" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Coupon Gift</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <table id="manageGiftTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>PageName</th>
+                                        <th>Category</th>
+                                        <th>Gift Description</th>
+                                        <th>Coupon ExpiryDate</th>
+                                        <th>Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{couponGiftAd.pageName}}</td>
+                                        <td>{{couponGiftAd.category}}</td>
+                                        <td>{{couponGiftAd.giftDescription}}</td>
+                                        <td>{{couponGiftAd.couponExpiryDate | date:'MM/dd/yyyy'}}</td>
+                                        <td>{{couponGiftAd.couponCode}}</td>
                                     </tr>
                                 </tbody>
                             </table>

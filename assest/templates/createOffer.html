@@ -135,14 +135,28 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="remove-card-block" >
-                                        <div class="cover-image" ng-repeat="x in UpgradeCard">
-                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">    
+                                        <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard">
+                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
+                                            <div class="viewwe-s">
+                                                <div class="tops-s">
+                                                     <div class="amts-top">{{x.viewers}}</div>
+                                                      <div class="ants-view">Viewers</div>
+                                                </div>
+                                                 <div class="bottom-dol">${{x.price}}</div>
+                                            </div>    
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="cover-image" >
+                                    <div class="cover-image newcover-img" >
                                     <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                    <div class="viewwe-s">
+                                        <div class="tops-s">
+                                             <div class="amts-top">{{cardDetails.viewers}}</div>
+                                              <div class="ants-view">Viewers</div>
+                                        </div>
+                                         <div class="bottom-dol">${{cardDetails.price}}</div>
+                                    </div>
                                     </div>
                                     <div class="btn2 text-center">
                                         <a class="btn btn-lg btn-green" ng-click="createOfferNext(cardDetails._id)">Apply Offer</a>
@@ -174,14 +188,28 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="remove-card-block" >
-                                        <div class="cover-image" ng-repeat="x in UpgradeCard">
-                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">    
+                                        <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard">
+                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
+                                            <div class="viewwe-s">
+                                                <div class="tops-s">
+                                                     <div class="amts-top">{{x.chances}}</div>
+                                                      <div class="ants-view">Chances</div>
+                                                </div>
+                                                 <div class="bottom-dol">B{{x.brolix}}</div>
+                                            </div>    
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="cover-image" >
+                                    <div class="cover-image newcover-img" >
                                     <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                    <div class="viewwe-s">
+                                        <div class="tops-s">
+                                             <div class="amts-top">{{cardDetails.chances}}</div>
+                                              <div class="ants-view">Chances</div>
+                                        </div>
+                                        <div class="bottom-dol">B{{cardDetails.brolix}}</div>
+                                    </div>
                                     </div>
                                     <div class="btn2 text-center">
                                         <a class="btn btn-lg btn-green" ng-click="createOfferNext(cardDetails._id)">Apply Offer</a>

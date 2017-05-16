@@ -190,21 +190,22 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     }
 
 
- app.filter("filterOnView",function() {
-     return function(items,nameValue) {
-       if (!nameValue) {
-         return retArray = items;
-         }
-         var retArray = [];
-           for(var i=0;i<items.length;i++)
-                {
-                if (items[i].viewers.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {
-                    retArray.push(items[i]);
-                }
-           }
-           return retArray;
-        }
- });
+ // app.filter("filterOnView",function() {
+ //     return function(items,nameValue) {
+ //      console.log(items+"<--values-->"+namevalue)
+ //       if (!nameValue) {
+ //         return retArray = items;
+ //         }
+ //         var retArray = [];
+ //           for(var i=0;i<items.length;i++)
+ //                {
+ //                if (items[i].viewers == nameValue) {
+ //                    retArray.push(items[i]);
+ //                }
+ //           }
+ //           return retArray;
+ //        }
+ // });
 
     // $scope.slectCountry = function(qq){
     //     console.log("dashBordFilter.country----------",$scope.dashBordFilter.country);
@@ -2340,4 +2341,40 @@ $scope.dashBordFilter = function(){
      }
      return retArray;
    }
+ });
+
+
+
+
+  app.filter("filterOnView",function() {
+     return function(items,nameValue) {
+      console.log(items+"<--values-->"+nameValue)
+       if (!nameValue) {
+         return retArray = items;
+         }
+         var retArray = [];
+           for(var i=0;i<items.length;i++)
+                {
+                if (items[i].viewers == nameValue) {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray;
+        }
+ });
+   app.filter("filterOnLuck",function() {
+     return function(items,nameValue) {
+      console.log(items+"<--values-->"+nameValue)
+       if (!nameValue) {
+         return retArray = items;
+         }
+         var retArray = [];
+           for(var i=0;i<items.length;i++)
+                {
+                if (items[i].chances == nameValue) {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray;
+        }
  });

@@ -938,52 +938,59 @@ module.exports = {
     },
 
     "couponWinners": function(req, res) {
-        createNewAds.find({ adsType: "coupon" }).exec(function(err, result) {
-            var array = [];
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } 
+            else {
+                var count = 0;
                 for (i = 0; i < result.length; i++) {
-                    for (j = 0; j < result[i].winners.length; j++) {
-                        array.push(result[i].winners[j]);
-                    }
+                    count++;
                 }
-                User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "no winner found" }); } else {
-                        res.send({
-                            result: result,
-                            responseCode: 200,
-                            responseMessage: "all coupon winner"
+                var pages = Math.ceil(count / 10);
+                User.populate(result, 'coupon.pageId', function(err, result2) {
+                        User.populate(result2, {
+                            path: 'coupon.pageId.userId',
+                            model: 'brolixUser',
+                            select: 'firstName lastName email'
+                        }, function(err, result3) {
+                            res.send({
+                                result: result3,
+                                total: count,
+                                responseCode: 200,
+                                responseMessage: "all coupon winner"
+                            });
                         })
-                    }
-                })
+                    })
             }
-
         })
     },
 
     "cashWinners": function(req, res) {
-        createNewAds.find({ adsType: "cash" }).exec(function(err, result) {
-            var array = [];
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+
+        User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No cash gift found' }); } else {
+                console.log(result)
                 var count = 0;
-                for (var i = 0; i < result.length; i++) {
-                    for (var j = 0; j < result[i].winners.length; j++) {
-                        array.push(result[i].winners[j]);
-                        count++;
-                    }
+                for (i = 0; i < result.length; i++) {
+                    count++;
                 }
-                User.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "no winner found" }); } else {
+                User.populate(result, 'cashPrize.pageId', function(err, result2) {
+                    console.log(result2)
+                    User.populate(result2, {
+                        path: 'cashPrize.pageId.userId',
+                        model: 'brolixUser',
+                        select: 'firstName lastName email'
+                    }, function(err, result3) {
                         res.send({
-                            result: result,
+                            result: result3,
+                            total: count,
                             responseCode: 200,
-                            count: count,
-                            responseMessage: "all cash winner"
-                        })
-                    }
+                            responseMessage: "all cash winner."
+                        });
+                    })
                 })
             }
         })
-
     },
 
     "videoAds": function(req, res) {
@@ -2125,25 +2132,32 @@ module.exports = {
 
                 var pages = Math.ceil(count / limitData);
 
-                User.aggregate({ $unwind: "$brolixAds" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
-
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No gift found." }); } else {
-                        var limit = 0;
-                        for (i = 0; i < result1.length; i++) {
-                            limit++;
-                        }
-                        res.send({
-                            docs: result1,
+                res.send({
+                            docs: result,
                             totalBrolix: sum,
-                            total: count,
-                            limit: limit,
-                            page: page,
-                            pages: pages,
                             responseCode: 200,
                             responseMessage: "Total brolix Shows successfully."
-                        });
-                    }
                 });
+
+                // User.aggregate({ $unwind: "$brolixAds" }, { $match: updateData }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+
+                //     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No gift found." }); } else {
+                //         var limit = 0;
+                //         for (i = 0; i < result1.length; i++) {
+                //             limit++;
+                //         }
+                //         res.send({
+                //             docs: result1,
+                //             totalBrolix: sum,
+                //             total: count,
+                //             limit: limit,
+                //             page: page,
+                //             pages: pages,
+                //             responseCode: 200,
+                //             responseMessage: "Total brolix Shows successfully."
+                //         });
+                //     }
+                // });
                 //}
 
             }
@@ -3129,7 +3143,16 @@ module.exports = {
 
     "showPageName": function(req, res) {
         createNewPage.find({ status: 'ACTIVE' }, 'pageName category subCategory').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+            else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } 
+            else {
+                result.sort(function(a, b){
+                  //compare two values
+                  if(a.pageName.toLowerCase() < b.pageName.toLowerCase()) return -1;
+                  if(a.pageName.toLowerCase() > b.pageName.toLowerCase()) return 1;
+                  return 0;
+
+                })
                 res.send({ result: result, responseCode: 200, responseMessage: "All page with name shown successfully" })
             }
         })
