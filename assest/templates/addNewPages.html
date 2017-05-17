@@ -24,8 +24,8 @@
                                     <div class="row">
                                         <label class="control-label col-md-3">Main Category</label>
                                         <div class="col-md-9"> 
-                                            <select name="category" class="form-control" ng-change="subCategoryData();" ng-model="myForm.mainCategory" required>
-                                                <option value="Select Category">Select Category</option>
+                                            <select name="category" class="form-control" ng-change="subCategoryDataa();" ng-model="myForm.mainCategory" required>
+                                                <option value="">Select Category</option>
                                                 <option ng-repeat="category in category" >{{category}}</option>
                                              </select> 
                                             <span style="color:red;" class="error" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
@@ -42,6 +42,7 @@
                                         <div class="col-md-9">
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                                             <ul class="form-control dropdown-menu"  name="subCategory" >
+                                           <!--  <li value="">Select Sub Categories</li> -->
                                             <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" unchecked ng-click="saveData(subCategoryData);"/>{{subCategoryData}}</a></li>
                                             </ul>
 
@@ -195,9 +196,8 @@
                                                     <option value="">Select Social Media</option>
                                                     <option ng-repeat="SocialMedia in SocialMedia" value="{{SocialMedia}}">{{SocialMedia}}</option>
                                                 </select>
-                                                  <input type="text" class="form-control" name="link" ng-model="myForm.link" placeholder="Enter social link" required> 
+                                                  <input type="text" class="form-control" name="link" ng-model="myForm.link" placeholder="Enter social link"> 
                                             <span style="color:red;" ng-show="media.link.$dirty && media.link.$invalid">
-                                            <span ng-show="media.link.$error.required">Link is required.</span>
                                                 <span style="color:red;" class="error" ng-show="media.social.$dirty && media.social.$invalid">
                                                      <span style="color:red;" class="error" ng-show="media.social.$error.required">Please Select a Social Media</span>
                                                 </span> 

@@ -8,6 +8,7 @@ $scope.dashBordFilter = {};
 $scope.dashBordFilter.country="";
 $scope.dashBordFilter.state="";
 $scope.dashBordFilter.city="";
+localStorage.setItem('giftTypeName','totalCouponsGifts');
 
 
  userService.countryListData().success(function(res) {
@@ -74,7 +75,7 @@ $scope.dashBordFilter.city="";
 //    }
 
  userService.totalBrolixGift().then(function(success) {
-  console.log("success",JSON.stringify(success));
+  //console.log("success",JSON.stringify(success));
   if(success.data.responseCode == 404){
        $scope.totalBrolix = success.data.totalBrolix;
   }else if(success.data.responseCode == 200) {
@@ -293,7 +294,7 @@ $scope.currentTotalSentCoupon= 1;
 $scope.currentTotalSentCash = 1;
      $scope.nextTotalSentCashDetail = function(){
          userService.totalSentCash($scope.currentTotalSentCash).success(function(res) { 
-              console.log("val",JSON.stringify(res))
+              //console.log("val",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesTotalSentCash = res.pages;
                    $scope.pageTotalSentCash= res.page;
@@ -381,7 +382,7 @@ $scope.top_50_balance= function() {
 // }
 
 $scope.showCouponGift= function(id,key) {
-  console.log("key",key)
+  //console.log("key",key)
   if(key == 'first'){
     $("#showCouponGift").modal('show');
   }else if(key == 'second'){
@@ -582,51 +583,70 @@ $scope.top_50_balanc = function(type){
  
     $scope.dashBordFilter = function() {
 
-      if($scope.dashBordFilter.country == 'undefined' || $scope.dashBordFilter.country == null || $scope.dashBordFilter.country == '' ){
-               $scope.dashBordFilter.country = ''
+      // if($scope.dashBordFilter.country == 'undefined' || $scope.dashBordFilter.country == null || $scope.dashBordFilter.country == '' ){
+      //          $scope.dashBordFilter.country = ''
 
-       }
-       if($scope.dashBordFilter.state == 'undefined' || $scope.dashBordFilter.state == null || $scope.dashBordFilter.state == '' ){
-               $scope.dashBordFilter.state = ''
+      //  }
+      //  if($scope.dashBordFilter.state == 'undefined' || $scope.dashBordFilter.state == null || $scope.dashBordFilter.state == '' ){
+      //          $scope.dashBordFilter.state = ''
 
-       }
-       if($scope.dashBordFilter.city == 'undefined' || $scope.dashBordFilter.city == null || $scope.dashBordFilter.city == '' ){
-               $scope.dashBordFilter.city = ''
+      //  }
+      //  if($scope.dashBordFilter.city == 'undefined' || $scope.dashBordFilter.city == null || $scope.dashBordFilter.city == '' ){
+      //          $scope.dashBordFilter.city = ''
 
-       }
+      //  }
 
 
 
     var type1 = localStorage.getItem('giftTypeName');
     //console.log(type1);
-  
+    $scope.countryOne =$scope.dashBordFilter.country==undefined?'' : $scope.dashBordFilter.country;
+    $scope.cityOne =$scope.dashBordFilter.city==undefined?'' : $scope.dashBordFilter.city;
+    $scope.couponStatusOne =$scope.dashBordFilter.couponStatus==undefined?'' : $scope.dashBordFilter.couponStatus;
+    $scope.cashStatusOne =$scope.dashBordFilter.cashStatus==undefined?'' : $scope.dashBordFilter.cashStatus;
+
+
     var data = {};
         data = {
             giftsType:localStorage.getItem('giftTypeName'),
-            country: $scope.dashBordFilter.country,
-            state:$scope.dashBordFilter.state,
-            city:$scope.dashBordFilter.city,
-            couponStatus:$scope.dashBordFilter.couponStatus,
-            cashStatus:$scope.dashBordFilter.cashStatus,
+            country: $scope.countryOne,
+            city:$scope.cityOne,
+            couponStatus:$scope.dashBordFilter.couponStatusOne,
+            cashStatus:$scope.dashBordFilter.cashStatusOne,
             joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
-        //console.log("datatata",data)
+        console.log("datatata",data)
+        data.keys(data).forEach(key => data[key] === undefined ? delete data[key] : '');
+        console.log("datatata",data)
 
     switch(type1)
             {
 
                 case 'totalCouponsGifts': 
                 //console.log("1");
-                    userService.giftFilter(data).success(function(res){
-                       
-                        if(res.responseCode == 200) {
-                            $scope.totalCouponsGiftShow = res.result;
+                    $scope.currentTotalCouponsGift = 1;
+                    userService.giftFilter(data,$scope.currentTotalCouponsGift).success(function(res){
+                      //console.log("res",JSON.stringify(res));
 
-                            console.log("ressssssss1",res.result.createdAt);
-                         }else {
-                            $scope.totalCouponsGiftShow = [];
-                        }
+
+                      if (res.responseCode == 200){
+                             $scope.noOfPagesTotalCouponsGift = res.pages;
+                             $scope.pageTotalCouponsGift= res.page;
+                             $scope.totalCouponsGiftShow= res.docs;
+                              $scope.totalCouponsGift = res.total;
+                         } 
+                         else {
+                          toastr.error(res.responseMessage);
+                          }
+                       
+                        // if(res.responseCode == 200) {
+                        //     $scope.totalCouponsGiftShow = res.result;
+
+                        //     console.log("ressssssss1",res.result.createdAt);
+                        //  }else {
+                        //     $scope.totalCouponsGiftShow = [];
+                        // }
                     })
                     
                 break;
@@ -637,7 +657,7 @@ $scope.top_50_balanc = function(type){
                         
                          if(res.responseCode == 200) {
                            $scope.totalCashGiftShow = res.result;
-                           console.log("ressssssss2",JSON.stringify($scope.totalCashGiftShow));
+                           //console.log("ressssssss2",JSON.stringify($scope.totalCashGiftShow));
                          }else {
                            $scope.totalCashGiftShow = [];
                         }

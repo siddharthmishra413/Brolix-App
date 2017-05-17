@@ -478,8 +478,8 @@ app.service('userService',function($http){
     couponGiftAd: function(id) {
       return $http.get(baseurl+'/admin/adInfo/'+id);
     },
-     giftFilter: function(data){
-     return $http.post(baseurl+'/admin/giftsFilter', data);
+     giftFilter: function(data,pageId){
+     return $http.post(baseurl+'/admin/giftsFilter/'+pageId, data);
    },
 
   

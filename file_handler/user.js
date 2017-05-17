@@ -375,7 +375,7 @@ module.exports = {
                     if (!req.body.mobileNumber) res.send({ responseCode: 403, responseMessage: 'Mobile number required' });
                     else {
                         if (!validator.isNumeric((req.body.mobileNumber).toString())) return res.status(403).send({ msg: "Mobile number must be numeric" });
-                        if (!validator.isLength((req.body.mobileNumber).toString(), { min: 9, max: 12 })) return res.status(403).send({ msg: "Mobile number length must be 10 to 12." });
+                        if (!validator.isLength((req.body.mobileNumber).toString(), { min: 9, max: 12 })) return res.status(403).send({ msg: "Mobile number length must be 9 to 12." });
                         User.findOne({ mobileNumber: req.body.mobileNumber }, function(err, result1) {
                             console.log("result1-->>", result1)
                             console.log("3")
@@ -1413,7 +1413,8 @@ module.exports = {
         }
         chat.aggregate(
             [{
-                $match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
+                //$match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
+                $match:condition
             }, { $sort: { timestamp: -1 } }, {
                 $group: {
                     _id: { senderId: "$senderId", receiverId: "$receiverId" },

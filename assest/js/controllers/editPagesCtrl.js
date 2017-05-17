@@ -157,7 +157,7 @@ $scope.removeSocialMedia = function(removeSocialMedia){
 
  $scope.addNewPage = function(addNewPage){
   if(addNewPage){
-      //console.log("ssssss",JSON.stringify(addNewPage));
+      console.log("ssssss",JSON.stringify(addNewPage));
   var adminInfo=JSON.parse(addNewPage);
   //console.log("id",adminInfo)
   //console.log("al dta",JSON.stringify($scope.viewPageDetails.adAdmin));
@@ -169,8 +169,8 @@ $scope.removeSocialMedia = function(removeSocialMedia){
   if(adminInfo.firstName == "" || adminInfo.firstName ==null || adminInfo.firstName == undefined){
     toastr.error("Please select at least on admin");
   }else{
-    //console.log("000",$scope.viewPageDetails.adAdmin.length)
-    if($scope.viewPageDetails.adAdmin.length == 0){
+    console.log("LENTH:   ",JSON.stringify($scope.viewPageDetails.adAdmin))
+    if(!$scope.viewPageDetails.adAdmin.firstName){
 
       //console.log("111",$scope.viewPageDetails.adAdmin.length);
       var obj = {
@@ -218,10 +218,11 @@ $scope.removeSocialMedia = function(removeSocialMedia){
  }
 }
 
- $scope.removeNewPage = function(removeNewPage){
-  //console.log("removeSocialMedia",JSON.stringify(removeNewPage))
+ $scope.removeNewPage = function(RemoveNewPagess){
+  // console.log("removeSocialMedia",JSON.stringify(removeNewPage))
+    console.log("$scope.viewPageDetails.adAdmin[i].userId._id:     ",JSON.stringify($scope.viewPageDetails.adAdmin))
   for(var i=0;i<$scope.viewPageDetails.adAdmin.length;i++){
-    if($scope.viewPageDetails.adAdmin[i].userId._id == removeNewPage.userId._id){
+    if($scope.viewPageDetails.adAdmin[i].userId._id == RemoveNewPagess.userId._id){
       console.log("dadadad",JSON.stringify($scope.viewPageDetails.adAdmin[i]))
       $scope.viewPageDetails.adAdmin.splice(i,1);
     }

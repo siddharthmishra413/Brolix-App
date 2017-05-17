@@ -176,8 +176,12 @@
                                     </div>
                                     
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid  || {{$scope.subCategoryData.length>0}} " ng-click="click('Step1')">Next</a>
+                                     <div class="btn2 text-center" ng-if="caty">
+                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.pageName.$invalid" ng-click="click('Step1')">Next</a>
+                                        <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
+                                    </div>
+                                    <div class="btn2 text-center" ng-if="subCaty">
+                                        <a class="btn btn-lg btn-green" ng-disabled="userFrom.pageName.$invalid || checkBoxArray.length==0 " ng-click="click('Step1')">Next</a>
                                         <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
                                     </div>
                                 </fieldset>
@@ -280,7 +284,7 @@
                                     </div>
                                 </div>
                                 <div class="btn2 text-center">
-                                    <button ng-disabled="media.link.$invalid || viewPageDetails.socialMedia.length == 0" class="btn btn-lg btn-green" ng-disabled="media.$invalid" ng-click="click('Step3')">Next</button>
+                                    <button ng-disabled="viewPageDetails.socialMedia.length == 0" class="btn btn-lg btn-green" ng-disabled="media.$invalid" ng-click="click('Step3')">Next</button>
                                     <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
                                 </div>
                             </fieldset>

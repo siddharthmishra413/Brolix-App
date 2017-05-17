@@ -390,13 +390,14 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
      $scope.nextCashWinnersDetail = function(){
        //console.log('page number personalUserDetail-> '+$scope.currentCashWinners);
          userService.showAllCashWinners($scope.currentCashWinners).success(function(res) {
+          console.log("res",JSON.stringify(res.count))
             if (res.responseCode == 200){
-                   console.log("resresresres",JSON.stringify(res))
+                   //console.log("resresresres",JSON.stringify(res))
                    $scope.noOfPagesCashWinners = res.result.pages;
                    $scope.pageCashWinners= res.result.page;
                    $scope.cashWinners = res.result.docs;
-                   $scope.cashWinnersCount = res.result.total;
-                   console.log("$scope.cashWinnersCount",$scope.cashWinnersCount)
+                   $scope.cashWinnersCount = res.total;
+                   //console.log("$scope.cashWinnersCount",$scope.cashWinnersCount)
                }
                else {
                	$scope.cashWinnersCount = 0;
@@ -418,12 +419,12 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.currentCouponWinners = 1;
      $scope.nextCouponWinnersDetail = function(){
          userService.showAllCouponWinners($scope.currentCouponWinners).success(function(res) {
-            // console.log("dddd",JSON.stringify(res))
+             console.log("dddd",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.noOfPagesCouponWinners = res.result.pages;
                    $scope.pageCouponWinners= res.result.page;
                    $scope.couponWinners = res.result.docs;
-                   $scope.couponWinnersCount = res.result.total;
+                   $scope.couponWinnersCount = res.total;
                }
                else {
                 $scope.couponWinnersCount = 0;
