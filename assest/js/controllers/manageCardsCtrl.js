@@ -9,7 +9,11 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     var luck_card = {};
     $scope.dashBordFilter = {};
 
-
+$scope.key = "Discount";
+$scope.getdata = function(data)
+{
+    $scope.key = data;
+}
 //     //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
 //     var currentCities=[];
 //    $scope.currentCountry= '';
@@ -717,11 +721,11 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     }
     
     $scope.upgradeCardUsedAd=function(id) {
-        //console.log(JSON.stringify(id))
+        console.log(JSON.stringify(id))
         var data = {
                     "upgradeId":id
                     }
-        //console.log(JSON.stringify(data))
+        console.log("first",JSON.stringify(data))
         userService.upgradeCardUsedAd(data).then(function(success) { 
               if(success.data.responseCode == 200) {
                     $scope.usedAd=success.data.result;
@@ -740,7 +744,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
         var data = {
                     "luckId":id
                 }
-        //console.log(JSON.stringify(data))
+        console.log("second",JSON.stringify(data))
         userService.luckCardUsedAd(data).then(function(success) { 
                  if(success.data.responseCode == 200) {
                     $scope.usedAd=success.data.result;

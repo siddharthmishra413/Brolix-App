@@ -134,7 +134,7 @@
                         <div id="home" class="tab-pane fade in active" >
                             <div class="row">
                                 <div class="col-md-6">
-                                <input type="number" name="" ng-model="view">
+                                <input type="number" name="" ng-model="view"  placeholder="Search by Viewers" >
                                     <div class="remove-card-block" >
                                         <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard | filterOnView:view">
                                             <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
@@ -188,7 +188,7 @@
                         <div id="home" class="tab-pane fade in active" >
                             <div class="row">
                                 <div class="col-md-6">
-                                <input type="number" name="" ng-model="luck">
+                                <input type="number" name="" ng-model="luck" placeholder="Search by Chances">
                                     <div class="remove-card-block" >
                                         <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard | filterOnLuck:luck">
                                             <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">

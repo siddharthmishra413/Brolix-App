@@ -51,26 +51,37 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
         var date = new Date().getTime();
         date = date + $scope.myForm.offerTime*60*60*1000;
         // var utcDate = new Date(date).toUTCString();
-        
         $scope.myForm.offerTime = date;
-        
         console.log("$scope.myForm",$scope.myForm);
-        userService.createOffer($scope.myForm).success(function(res){
-            //console.log("dataaaaaaaaaa",res.data)
-            if (res.responseCode == 200){
-                $state.go('header.manageCards')
-                toastr.success(res.responseMessage);
-            } else if(res.responseCode == 400) {
-                toastr.error(res.responseMessage);
-                $state.go('login')
-            }
-            else {
-            toastr.error(res.responseMessage);
-            $state.go('login')
-            }
+        BootstrapDialog.show({
+        title: 'Apply Offer',
+        message: 'Are you sure want to Apply this Offer',
+        buttons: [{
+            label: 'Yes',
+            action: function(dialog) {
+                userService.createOffer($scope.myForm).success(function(res){
+                  //console.log("dataaaaaaaaaa",res.data)
+                  if (res.responseCode == 200){
+                      dialog.close();
+                      $state.go('header.manageCards')
+                      toastr.success(res.responseMessage);
+                  } else if(res.responseCode == 400) {
+                      toastr.error(res.responseMessage);
+                      $state.go('login')
+                  }
+                  else {
+                      toastr.error(res.responseMessage);
+                  }
 
-        })
-        
+              })    
+            }
+        }, {
+            label: 'No',
+            action: function(dialog) {
+                dialog.close();
+            }
+        }]
+      });   
     }
 
     $scope.showCardDetails = function(id){
@@ -86,16 +97,18 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
 
 app.filter("filterOnView",function() {
      return function(items,nameValue) {
-      console.log(items+"<--values-->"+nameValue)
+      //console.log(items+"<--values-->"+nameValue)
        if (!nameValue) {
          return retArray = items;
          }
          var retArray = [];
            for(var i=0;i<items.length;i++)
                 {
-                  var digit = items[i].viewers.toString()[1];
-                  console.log("result:   "+digit.search(nameValue))
-                if (items[i].viewers == nameValue) {
+                  var digit = items[i].viewers.toString();
+                   var digit2 = nameValue.toString();
+                  //console.log("result:   "+digit)
+                  //console.log("result2:   "+digit2)
+                if (digit.search(digit2)>=0) {
                     retArray.push(items[i]);
                 }
            }
@@ -104,14 +117,21 @@ app.filter("filterOnView",function() {
  });
    app.filter("filterOnLuck",function() {
      return function(items,nameValue) {
-      console.log(items+"<--values-->"+nameValue)
+      //console.log(items+"<--values-->"+nameValue)
        if (!nameValue) {
          return retArray = items;
          }
          var retArray = [];
            for(var i=0;i<items.length;i++)
                 {
-                if (items[i].chances == nameValue) {
+                // if (items[i].chances == nameValue) {
+                //     retArray.push(items[i]);
+                // }
+                var digit = items[i].chances.toString();
+                   var digit2 = nameValue.toString();
+                  //console.log("result:   "+digit)
+                  //console.log("result2:   "+digit2)
+                if (digit.search(digit2)>=0) {
                     retArray.push(items[i]);
                 }
            }

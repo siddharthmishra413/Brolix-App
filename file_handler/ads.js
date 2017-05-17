@@ -1155,16 +1155,52 @@ module.exports = {
         })
     },
 
-    "storeCouponList": function(req, res) {
-        createNewAds.paginate({ userId: { $ne: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "All coupon from store shown successfully."
+   "storeCouponList": function(req, res) {
+
+        waterfall([
+            function(callback){
+                brolixAndDollors.findOne({type : 'storeCouponPriceForFreeAds'}).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } 
+                    else {
+                        var value= result1.value
+                       // var value= 2
+                        callback(null, value)
+                    }
                 })
+            },
+            function(noDataValue, callback){
+                 brolixAndDollors.findOne({type : 'storeCouponPriceForUpgradedAds'}).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } 
+                    else {
+                        var value= result1.value
+                      //  var value= 4;
+                        callback(null,noDataValue, value)
+                    }
+                })
+            },
+            function(noDataValue, dataValue, callback){
+
+                createNewAds.paginate({ userId: { $ne: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
+                        for(var i = 0; i < result.docs.length; i++){
+                            if(result.docs[i].cash == 0){
+                                result.docs[i].couponSellPrice = noDataValue
+                            }
+                            else{
+                                result.docs[i].couponSellPrice = dataValue
+                            }
+                        }
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "All coupon from store shown successfully."
+                        })
+                    }
+                })
+
             }
-        })
+
+        ])
     },
 
     "viewCoupon": function(req, res) {

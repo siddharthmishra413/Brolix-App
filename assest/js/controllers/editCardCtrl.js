@@ -164,6 +164,38 @@ app.controller('editCardCtrl', function($scope, $window, userService,spinnerServ
 
 })
 
+// app.filter("filterOnView",function() {
+//      return function(items,nameValue) {
+//       console.log(items+"<--values-->"+nameValue)
+//        if (!nameValue) {
+//          return retArray = items;
+//          }
+//          var retArray = [];
+//            for(var i=0;i<items.length;i++)
+//                 {
+//                 if (items[i].viewers == nameValue) {
+//                     retArray.push(items[i]);
+//                 }
+//            }
+//            return retArray;
+//         }
+//  });
+//    app.filter("filterOnLuck",function() {
+//      return function(items,nameValue) {
+//       console.log(items+"<--values-->"+nameValue)
+//        if (!nameValue) {
+//          return retArray = items;
+//          }
+//          var retArray = [];
+//            for(var i=0;i<items.length;i++)
+//                 {
+//                 if (items[i].chances == nameValue) {
+//                     retArray.push(items[i]);
+//                 }
+//            }
+//            return retArray;
+//         }
+//  });
 app.filter("filterOnView",function() {
      return function(items,nameValue) {
       console.log(items+"<--values-->"+nameValue)
@@ -173,7 +205,11 @@ app.filter("filterOnView",function() {
          var retArray = [];
            for(var i=0;i<items.length;i++)
                 {
-                if (items[i].viewers == nameValue) {
+                  var digit = items[i].viewers.toString();
+                   var digit2 = nameValue.toString();
+                  console.log("result:   "+digit)
+                  console.log("result2:   "+digit2)
+                if (digit.search(digit2)>=0) {
                     retArray.push(items[i]);
                 }
            }
@@ -189,13 +225,21 @@ app.filter("filterOnView",function() {
          var retArray = [];
            for(var i=0;i<items.length;i++)
                 {
-                if (items[i].chances == nameValue) {
+                // if (items[i].chances == nameValue) {
+                //     retArray.push(items[i]);
+                // }
+                var digit = items[i].chances.toString();
+                   var digit2 = nameValue.toString();
+                  console.log("result:   "+digit)
+                  console.log("result2:   "+digit2)
+                if (digit.search(digit2)>=0) {
                     retArray.push(items[i]);
                 }
            }
            return retArray;
         }
  });
+
 
 
 

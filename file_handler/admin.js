@@ -6,8 +6,12 @@ var createNewReport = require("./model/reportProblem");
 var adminCards = require("./model/cardsAdmin");
 var Payment = require("./model/payment");
 var subCategory = require("./subcategory.json");
+
+
 var countryList = require('countries-cities').getCountries(); // Returns an array of country names. 
 var citiess = require('countries-cities').getCities("India"); // Returns an array of city names of the particualr country. 
+
+
 var country = require('countryjs');
 var countries = require('country-list')();
 var allCountries = require('all-countries');
@@ -18,7 +22,9 @@ var cloudinary = require('cloudinary');
 var gps = require('gps2zip');
 var _ = require('underscore-node');
 var voucher_codes = require('voucher-code-generator');
+
 var waterfall = require('async-waterfall');
+
 const cities = require("cities-list");
 //console.log(cities) // WARNING: this will print out the whole object 
 console.log(cities["london"]) // 1 
@@ -376,7 +382,7 @@ module.exports = {
             var updateData = query;
         } else {
             console.log("rather than query")
-            var updateData = {}
+            var updateData = {'upgradeCardObject.type':'PURCHASED'}
         }
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 10;
@@ -555,16 +561,17 @@ module.exports = {
         var skips = limitData - 10;
         var page = String(pageNumber);
 
-        User.aggregate({ $unwind: "$upgradeCardObject" }).exec(function(err, results) {
+        User.aggregate({ $unwind: "$upgradeCardObject" },{$match:{'upgradeCardObject.type': 'PURCHASED'}}).exec(function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];
                 var count = 0;
                 for (i = 0; i < results.length; i++) {
                     count++;
-                    arr.push(parseInt(results[i].upgradeCardObject.cash));
+                    arr.push(results[i].upgradeCardObject.cash);
                 }
                 var pages = Math.ceil(count / 10);
                 var sum = arr.reduce((a, b) => a + b, 0);
+                console.log("arr", arr);
                 console.log("arrrrr", sum);
                 User.aggregate({ $unwind: "$upgradeCardObject" }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No card found' }); } else {
@@ -1698,11 +1705,13 @@ module.exports = {
             function(tempCond, callback) {
                 var query = tempCond
                 if (data == 'soldUpgradeCards') {
+                    Object.assign(query,{'upgradeCardObject.type':'PURCHASED'});
                     module.exports.totalSoldUpgradeCard(req, res, query)
                 } else if (data == 'cashGifts') {
 
                     module.exports.cashGift(req, res, query)
                 } else {
+                    Object.assign(query,{'upgradeCardObject.type':'PURCHASED'});
                     module.exports.totalSoldUpgradeCard(req, res, query)
                 }
             }

@@ -8,5 +8,6 @@ app.post('/followerRequestSend', authUser.authUser, followerHandler.followerRequ
 app.post('/followerRequestReceive', authUser.authUser, followerHandler.followerRequestReceive);
 app.post('/acceptFollowerRequest', authUser.authUser, followerHandler.acceptFollowerRequest);
 app.post('/blockUserList', authUser.authUser, followerHandler.blockUserList);
+app.post('/blockLeader', authUser.authUser, followerHandler.blockLeader);
 
 module.exports = app;
