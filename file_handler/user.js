@@ -1414,7 +1414,7 @@ module.exports = {
         chat.aggregate(
             [{
                 //$match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
-                $match:condition
+                $match: condition
             }, { $sort: { timestamp: -1 } }, {
                 $group: {
                     _id: { senderId: "$senderId", receiverId: "$receiverId" },
