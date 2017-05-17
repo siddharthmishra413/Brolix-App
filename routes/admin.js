@@ -23,7 +23,7 @@ app.get('/viewPage/:id', adminHandler.viewPage);
 app.get('/showAllUser/:pageNumber', adminHandler.showAllUser);
 app.get('/showAllPersonalUser/:pageNumber', adminHandler.showAllPersonalUser);
 app.get('/showAllBusinessUser/:pageNumber', adminHandler.showAllBusinessUser);
-app.get('/winners/:pageNumber', adminHandler.winners);
+app.get('/winners', adminHandler.winners);
 app.get('/couponWinners/:pageNumber', adminHandler.couponWinners);
 app.get('/cashWinners/:pageNumber', adminHandler.cashWinners);
 app.get('/showAllBlockUser/:pageNumber', adminHandler.showAllBlockUser);
