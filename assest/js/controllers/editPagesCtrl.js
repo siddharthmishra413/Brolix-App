@@ -1,106 +1,84 @@
-
 app.controller('editPagesCtrl', function($scope, $window, userService, $state, toastr, $stateParams,uploadimgServeice, $http) {
-    $(window).scrollTop(0, 0);
-    $scope.class = true;
-    $scope.$emit('headerStatus', 'Manage Pages');
-    $scope.$emit('SideMenu', 'Manage Pages');
-    $scope.myForm = {};
-    $scope.viewUserProfile = {};
-    $scope.coverImage = "../dist/image/cover.jpg";
-    $scope.pageImage = "../dist/image/user-image.jpeg";
-    $scope.id = $stateParams.id;
-    console.log("Id====>>>" + $scope.id)
-    $scope.Step1 = true;
- $scope.Step2 = false;
- $scope.Step3 = false;
- $scope.Step4 = false;
- $scope.array = [];
- $scope.arrayPage = [];
- $scope.SocialMedia = ['Gmail','Facebook','Twitter'];
- var cond = [];
- //$scope.adAdminArray = [];
+  $(window).scrollTop(0, 0);
+  $scope.class = true;
+  $scope.$emit('headerStatus', 'Manage Pages');
+  $scope.$emit('SideMenu', 'Manage Pages');
+  $scope.myForm = {};
+  $scope.viewUserProfile = {};
+  $scope.coverImage = "../dist/image/cover.jpg";
+  $scope.pageImage = "../dist/image/user-image.jpeg";
+  $scope.id = $stateParams.id;
+  $scope.Step1 = true;
+  $scope.Step2 = false;
+  $scope.Step3 = false;
+  $scope.Step4 = false;
+  $scope.array = [];
+  $scope.arrayPage = [];
+  $scope.SocialMedia = ['Gmail','Facebook','Twitter'];
+  var cond = [];
 
+userService.pageAdmin().success(function(res) {
+  if (res.responseCode == 200){
+      $scope.pagesAdmin= res.result;
+      console.log("resresres",JSON.stringify($scope.pagesAdmin))
+  }else{
+    toastr.error("Something went wrong")
+  } 
+})
 
- userService.pageAdmin().success(function(res) {
-  console.log("dsfsdfsdfsd")
-    console.log(JSON.stringify(res))
-        if (res.responseCode == 200){
-            $scope.pagesAdmin= res.result;
-            console.log("resresres",JSON.stringify($scope.pagesAdmin))
-        }else{
-          toastr.error("Something went wrong")
-        } 
+userService.adminProfile().success(function(res) {
+  if (res.responseCode == 200) {
+    $scope.userId = res.result._id; 
+    localStorage.setItem('userIdEdit',$scope.userId);
+  } else {
+    toastr.error(res.responseMessage);
+    $state.go('login')  
+  }
+})
 
-    })
-
-
- userService.adminProfile().success(function(res) {
-        if (res.responseCode == 200) {
-            $scope.userId = res.result._id; 
-            localStorage.setItem('userIdEdit',$scope.userId);
-        } else {
-          toastr.error(res.responseMessage);
-            $state.go('login')
-            
-        }
-        console.log("resss",$scope.userId);
-    })
-
-
- userService.listOfCategory().success(function(res) {
-    console.log(JSON.stringify(res))
-        if (res.responseCode == 200){
-            $scope.category= res.result;
-            console.log("category",JSON.stringify(res))
-        }else{
-          toastr.error("Something went wrong")
-        } 
-
-    })
+userService.listOfCategory().success(function(res) {
+  if (res.responseCode == 200){
+    $scope.category= res.result;
+  }else{
+    toastr.error("Something went wrong")
+  } 
+})
 
 
 $scope.subCategoryData = function(){
   $scope.caty = false;
-$scope.subCaty = true;
-    console.log("bbb",$scope.viewPageDetails.category);
-    var data ={};
-    data = {
-      subCat:$scope.viewPageDetails.category
-      }
-      userService.subCategoryData(data).success(function(res) {
-        console.log(JSON.stringify(res))
-            if (res.responseCode == 200){
-                $scope.subCategoryData= res.result;
-                //console.log("subCategoryData",JSON.stringify(subCategoryData))
-            }else{
-              toastr.error("Something went wrong")
-            } 
-
-        })
-
-    }
+  $scope.subCaty = true;
+  var data ={};
+  data = {
+    subCat:$scope.viewPageDetails.category
+  }
+  userService.subCategoryData(data).success(function(res) {
+      if (res.responseCode == 200){
+        $scope.subCategoryData= res.result;
+      }else{
+        toastr.error("Something went wrong")
+      } 
+    })
+  }
 
 $scope.checkBoxArray=[];
- $scope.saveData = function(data){
-  //console.log(data)
-  console.log("value:  "+$scope.checkBoxArray.indexOf(data))
-if(($scope.checkBoxArray.indexOf(data)) == -1)
-{
- $scope.checkBoxArray.push(data);
-}
-else
-{
-var checkBoxArray1 = [];
-for(var i=0;i<$scope.checkBoxArray.length;i++)
-  if($scope.checkBoxArray[i]!= data)
-checkBoxArray1.push($scope.checkBoxArray[i]);
+$scope.saveData = function(data){
+  if(($scope.checkBoxArray.indexOf(data)) == -1)
+    {
+     $scope.checkBoxArray.push(data);
+    }
+  else
+    {
+    var checkBoxArray1 = [];
+    for(var i=0;i<$scope.checkBoxArray.length;i++)
+      if($scope.checkBoxArray[i]!= data)
+    checkBoxArray1.push($scope.checkBoxArray[i]);
 
-$scope.checkBoxArray = []
-for(var i=0;i<checkBoxArray1.length;i++)
-$scope.checkBoxArray.push(checkBoxArray1[i]);
+    $scope.checkBoxArray = []
+    for(var i=0;i<checkBoxArray1.length;i++)
+    $scope.checkBoxArray.push(checkBoxArray1[i]);
 
-}
-  console.log("$scope.checkBoxArray:   "+$scope.checkBoxArray);
+    }
 }
 
 
@@ -227,43 +205,8 @@ $scope.removeSocialMedia = function(removeSocialMedia){
       $scope.viewPageDetails.adAdmin.splice(i,1);
     }
   }
-    //console.log("arrrrr",$scope.viewPageDetails.adAdmin);
  }
-
-
- // $scope.subCategoryData = function(){
- //    //console.log("bbb",$scope.viewPageDetails.category);
- //    var data ={};
- //    data = {
- //      subCat:$scope.viewPageDetails.category
- //      }
- //      userService.subCategoryData(data).success(function(res) {
- //        //console.log(JSON.stringify(res))
- //            if (res.responseCode == 200){
- //                $scope.subCategoryData= res.result;
- //                console.log("subCategoryData",JSON.stringify($scope.subCategoryData))
- //            }else{
- //              toastr.error("Something went wrong")
- //            } 
-
- //        })
-
- //    }
-
- // $scope.addSocialMedia = function(addSocialMedia){
- //    if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined){
- //        $scope.array=[];
- //    }
- //    else{
- //      $scope.array.push(addSocialMedia);
- //      console.log("arrrrr",$scope.array)
- //    }
- // }
- // $scope.removeSocialMedia = function(removeSocialMedia){
- //    $scope.array.splice(removeSocialMedia,1);
- //    console.log("arrrrr",$scope.array);
-    
- // }
+ 
  userService.pageAdmin().success(function(res) {
     console.log(JSON.stringify(res))
         if (res.responseCode == 200){
@@ -271,7 +214,6 @@ $scope.removeSocialMedia = function(removeSocialMedia){
         } 
 
     })
-
 
  $scope.click = function(type){
     if(type=='Step1'){
@@ -417,68 +359,9 @@ $scope.subCaty = false;
     }
 
     console.log("$scope.viewPageDetails.category:---->    "+$scope.viewPageDetails)
-    $scope.cancel=function(val){
-          if(val == 'Step1'){
-            $scope.viewPageDetails={};
-            $scope.myForm.address="";
-          }
-          // else if(val == 'Step2'){
-          //   $scope.myForm.pagephoto="";
-          //   $scope.myForm.userphoto="";
-          // }
-          else if(val == 'Step3'){
-            $scope.myForm.socialMedia="";
-          }
-          else if(val == 'Step4'){
-            $scope.myForm.pageAdmin="";
-          }
-          
-        }
-    // $scope.update=function(){
-    //   var Info = {};
-    //     var address = $scope.myForm.address;
-    //     console.log(address)
-    //     Info = $scope.viewPageDetails;
-    //     var adminInfo=JSON.parse($scope.myForm.pageAdmin);
-    //     console.log(adminInfo._id);
-    //     var id=localStorage.loginData;
-    //     console.log("all var",JSON.stringify(id));
-    //     var data={
-    //            "type": "ADMIN",
-    //            "adminId":id ,
-    //            "pageType": "Business",
-    //            "pageName": Info.pageName,
-    //            "category": Info.category,
-    //            "subCategory": Info.subCategory,
-    //            "pageDiscription": Info.description,
-    //            "email": Info.email,
-    //            "phoneNumber": Info.phon,
-    //            "location": [$scope.myForm.lattitude,$scope.myForm.longitude],
-    //            "website":Info.website,
-    //            "country":$scope.myForm.country,
-    //            "state":$scope.myForm.state,
-    //            "city":$scope.myForm.city, 
-    //            "pageImage":$scope.myForm.pagephoto,
-    //            "coverImage": $scope.myForm.userphoto,
-    //            "socialMedia":[$scope.myForm.socialMedia],
-    //            "adAdmin":[{"userId":adminInfo._id,"type":"add"}]   
-    //     }
-    //     console.log(JSON.stringify(data))
-    //     userService.editPage(id,data).success(function(res) {
-    //       if(res.responseCode == 200){
-    //         toastr.success(res.responseMessage);
-    //       console.log(res)
-    //       $state.go('header.managePages');
-    //       }
-    //       else{
-    //         toastr.error(res.responseMessage);
-    //       }
-    //     });
-    // }
-
-
-//console.log("$scope.viewPageDetails.category:---->    "+$scope.viewPageDetails.category)
-
+    $scope.cancel=function(){
+      $state.go('header.managePages');
+    }
 
   $scope.submitt = function(){
   var userIdEdit = localStorage.getItem('userIdEdit');

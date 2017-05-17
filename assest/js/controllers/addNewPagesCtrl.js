@@ -335,21 +335,8 @@ $scope.addNewPage = function(addNewPage){
               $scope.$apply("myForm");
       });         
 }
-    $scope.cancel=function(val){
-      if(val == 'Step1'){
-        $scope.myForm={};
-      }
-      // else if(val == 'Step2'){
-      //   $scope.myForm.pagephoto="";
-      //   $scope.myForm.userphoto="";
-      // }
-      else if(val == 'Step3'){
-        $scope.myForm.socialMedia="";
-      }
-      else if(val == 'Step4'){
-        $scope.myForm.pageAdmin="";
-      }
-      
+    $scope.cancel=function(){
+      $state.go('header.managePages');
     }
 
 $scope.submitt = function(){

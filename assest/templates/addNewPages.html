@@ -122,7 +122,7 @@
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
                                     <button  class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid  || {{$scope.subCategoryData.length>0}} || checkBoxArray.length==0" ng-click="click('Step1')">Next</button>
-                                    <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
+                                    <a class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
                                 </div>
                                 <!-- ng-disabled="userFrom.$invalid" -->
                             </fieldset>
@@ -227,7 +227,7 @@
                             </div><!-- <h2>{{media.link.$invalid}}</h2> -->
                             <div class="btn2 text-center">
                                 <button class="btn btn-lg btn-green" ng-disabled="media.link.$invalid ||array.length == 0" ng-click="click('Step3')">Next</button>
-                                <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
+                                <a  class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
                                 <!-- ng-disabled="media.$invalid or "array.length == 0" -->
                             </div>
                         </fieldset>
@@ -294,7 +294,7 @@
                             <!-- Change this to a button or input when using this as a form -->
                             <div class="btn2 text-center">
                                 <button  ng-disabled="pageAdminss.length == 0" class="btn btn-lg btn-green" ng-disabled="pageAdmin.$invalid" ng-click="submitt();">Add Pages</button> 
-                                <a class="btn btn-lg btn-green" ng-click="cancel('Step4')">Cancel</a>
+                                <a class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
                             </div>
                         </fieldset> 
                     </form>

@@ -16,10 +16,15 @@ var mongoose = require('mongoose');
 var brolixAndDollors = require("./model/brolixAndDollors");
 
 
+// cloudinary.config({
+//     cloud_name: 'mobiloitte-in',
+//     api_key: '188884977577618',
+//     api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
+// });
 cloudinary.config({
-    cloud_name: 'mobiloitte-in',
-    api_key: '188884977577618',
-    api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
+    cloud_name: 'dfrspfd4g',
+    api_key: '399442144392731',
+    api_secret: 'BkGm-usnHDPfrun2fEloBtVqBqU'
 });
 var avoid = {
     "password": 0
