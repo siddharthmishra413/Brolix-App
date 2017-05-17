@@ -413,7 +413,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                    $scope.noOfPagesTotalIncomeUpgradeCard = res.pages;
                    $scope.pageTotalIncomeUpgradeCard= res.page;
                    $scope.totalIncomeInCashFromUpgradeCard= res.docs;
-                   $scope.totalIncomeFromUpgradeCard = res.total;
+                   $scope.totalIncomeFromUpgradeCard = res.totalIncome;
                } 
                else if (res.responseCode == 400) {
                 $scope.totalIncomeFromUpgradeCard = 0;

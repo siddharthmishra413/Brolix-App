@@ -264,13 +264,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     //*******************Total Winners****************
     $scope.currentTotalWinners = 1;
      $scope.nextTotalWinnersDetail = function(){
-         userService.totalWinners($scope.currentTotalWinners).success(function(res) {
+         userService.totalWinners().success(function(res) {
+          console.log("res",JSON.stringify(res))
 
             if (res.responseCode == 200){
-                   $scope.noOfPagesTotalWinners = res.result.pages;
-                   $scope.pageTotalWinners= res.result.page;
-                   $scope.totalWinners = res.result.docs;
-                   $scope.totalWinnersCount = res.result.total;
+                   $scope.totalWinnersCount = res.result;
                }
                else {
                 $scope.totalWinnersCount = 0;

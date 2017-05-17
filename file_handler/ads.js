@@ -14,6 +14,7 @@ var multiparty = require('multiparty');
 var Views = require("./model/views");
 var mongoose = require('mongoose');
 var brolixAndDollors = require("./model/brolixAndDollors");
+var User = require("./model/user");
 
 
 // cloudinary.config({
@@ -2338,21 +2339,22 @@ module.exports = {
         })
     },
 
-    "updateCash": function(req, res) {
-        createNewAds.findOneAndUpdate({ _id: req.params.id }, { $inc: { cash: req.body.cash } }, { new: true }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) {
-                res.send({
-                    responseCode: 404,
-                    responseMessage: 'Data not found.'
+    "updateCash": function(req, res){
+        User.findOneAndUpdate({_id: req.params.id }, {$inc: {cash: req.body.cash}},{ new: true }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                    else if(!result){
+                        res.send({
+                            responseCode: 404, responseMessage: 'Data not found.'
+                        })
+                    }
+                    else {
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "Cash updated successfully."
+                        });
+                    }
                 })
-            } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Cash updated successfully."
-                });
-            }
-        })
     }
 
 

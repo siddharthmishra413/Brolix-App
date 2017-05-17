@@ -7,6 +7,10 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     $scope.second = false;
     $scope.third = false;
 
+    $scope.cancle = function(){
+        $state.go('header.manageCards');
+    }
+
     $scope.checkVal = function(){
         if($scope.myForm.cardType == null){
             toastr.error("Please select Card Type");
@@ -17,24 +21,24 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
 
 
     $scope.createOffer = function(type){
-        console.log("ddddddddd",$scope.myForm.cardType)
+        //console.log("ddddddddd",$scope.myForm.cardType)
         if(type=='upgradeCard'){
             $scope.first = false;
             $scope.second = true;
             $scope.third = false;
             userService.viewcard('upgrade_card').success(function(res){
-                console.log("darartara",$scope.myForm);
+                //console.log("darartara",$scope.myForm);
                 $scope.UpgradeCard = res.data;
-                console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
+                //console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
             })  
         }else if(type=='luckCard'){
             $scope.first = false;
             $scope.second = false;
             $scope.third = true;
             userService.viewcard('luck_card').success(function(res){
-                console.log("darartara",$scope.myForm);
+                //console.log("darartara",$scope.myForm);
                 $scope.UpgradeCard = res.data;
-                console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
+                //console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
             })
         }
         else{
@@ -52,7 +56,7 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
         
         console.log("$scope.myForm",$scope.myForm);
         userService.createOffer($scope.myForm).success(function(res){
-            console.log("dataaaaaaaaaa",res.data)
+            //console.log("dataaaaaaaaaa",res.data)
             if (res.responseCode == 200){
                 $state.go('header.manageCards')
                 toastr.success(res.responseMessage);
@@ -71,13 +75,50 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
 
     $scope.showCardDetails = function(id){
       // $scope.user.photo = '';
-      console.log("iddddddddd",id)
+      //console.log("iddddddddd",id)
       userService.showCardDetails(id).success(function(res){
         $scope.cardDetails = res.data;
-        console.log("$scope.cardDetails",$scope.cardDetails)
+        //console.log("$scope.cardDetails",$scope.cardDetails)
       })
 
     }
 })
+
+app.filter("filterOnView",function() {
+     return function(items,nameValue) {
+      console.log(items+"<--values-->"+nameValue)
+       if (!nameValue) {
+         return retArray = items;
+         }
+         var retArray = [];
+           for(var i=0;i<items.length;i++)
+                {
+                  var digit = items[i].viewers.toString()[1];
+                  console.log("result:   "+digit.search(nameValue))
+                if (items[i].viewers == nameValue) {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray;
+        }
+ });
+   app.filter("filterOnLuck",function() {
+     return function(items,nameValue) {
+      console.log(items+"<--values-->"+nameValue)
+       if (!nameValue) {
+         return retArray = items;
+         }
+         var retArray = [];
+           for(var i=0;i<items.length;i++)
+                {
+                if (items[i].chances == nameValue) {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray;
+        }
+ });
+
+
 
  

@@ -163,3 +163,39 @@ app.controller('editCardCtrl', function($scope, $window, userService,spinnerServ
 }
 
 })
+
+app.filter("filterOnView",function() {
+     return function(items,nameValue) {
+      console.log(items+"<--values-->"+nameValue)
+       if (!nameValue) {
+         return retArray = items;
+         }
+         var retArray = [];
+           for(var i=0;i<items.length;i++)
+                {
+                if (items[i].viewers == nameValue) {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray;
+        }
+ });
+   app.filter("filterOnLuck",function() {
+     return function(items,nameValue) {
+      console.log(items+"<--values-->"+nameValue)
+       if (!nameValue) {
+         return retArray = items;
+         }
+         var retArray = [];
+           for(var i=0;i<items.length;i++)
+                {
+                if (items[i].chances == nameValue) {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray;
+        }
+ });
+
+
+

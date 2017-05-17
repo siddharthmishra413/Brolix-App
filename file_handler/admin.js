@@ -30,6 +30,12 @@ const cities = require("cities-list");
 console.log(cities["london"]) // 1 
 console.log(cities["something else"]) // undefined 
 
+cloudinary.config({
+    cloud_name: 'dfrspfd4g',
+    api_key: '399442144392731',
+    api_secret: 'BkGm-usnHDPfrun2fEloBtVqBqU'
+});
+
 
 module.exports = {
     "login": function(req, res) {
@@ -1087,7 +1093,15 @@ module.exports = {
     "viewCards": function(req, res) {
         console.log(typeof(req.params.type))
         var cardType = req.params.type;
-        adminCards.find({ type: cardType, status: "ACTIVE" }, function(err, result) {
+        if(req.params.type == 'upgrade_card'){
+            console.log("viewers")
+            var data = 'viewers'
+        }
+        else{
+            console.log("chances")
+             var data = 'chances'
+        }
+        adminCards.find({ type: cardType, status: "ACTIVE" }).sort([[data, 'descending']]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
             }

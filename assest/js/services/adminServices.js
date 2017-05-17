@@ -140,8 +140,8 @@ app.service('userService',function($http){
     showAllBusinessUser: function(pageNo) {
       return $http.get(baseurl+'/admin/showAllBusinessUser/'+pageNo);
     },
-    totalWinners: function(pageNo) {
-      return $http.get(baseurl+'/admin/winners/'+pageNo);
+    totalWinners: function() {
+      return $http.get(baseurl+'/admin/winners');
     },
     
     // userProfile: function(id) {
