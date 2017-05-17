@@ -532,12 +532,13 @@ module.exports = {
     //API for user Details  userId: { $ne: req.params.id },
     "allUserDetails": function(req, res) {
         User.find({ userId: { $ne: req.params.id }, $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
-            if (err) throw err;
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Show data successfully."
-            });
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Show data successfully."
+                });
+            }
         })
     },
 
