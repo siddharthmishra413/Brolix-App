@@ -6,12 +6,8 @@ var createNewReport = require("./model/reportProblem");
 var adminCards = require("./model/cardsAdmin");
 var Payment = require("./model/payment");
 var subCategory = require("./subcategory.json");
-
-
 var countryList = require('countries-cities').getCountries(); // Returns an array of country names. 
 var citiess = require('countries-cities').getCities("India"); // Returns an array of city names of the particualr country. 
-
-
 var country = require('countryjs');
 var countries = require('country-list')();
 var allCountries = require('all-countries');
@@ -22,9 +18,7 @@ var cloudinary = require('cloudinary');
 var gps = require('gps2zip');
 var _ = require('underscore-node');
 var voucher_codes = require('voucher-code-generator');
-
 var waterfall = require('async-waterfall');
-
 const cities = require("cities-list");
 //console.log(cities) // WARNING: this will print out the whole object 
 console.log(cities["london"]) // 1 
