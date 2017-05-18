@@ -2244,20 +2244,47 @@ module.exports = {
     "useCouponWithoutCode": function(req, res) {
         var couponId = req.body.couponId;
         var adId = req.body.adId;
-        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
-            console.log("user---->>>", user)
-            console.log("coupon.couponStatus--->>>", JSON.stringify(user[0].coupon.couponStatus))
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: "Please enter a valid coupon to use." }); } else {
-                User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                        res.send({
-                            responseCode: 200,
-                            responseMessage: "Coupon used successfully."
-                        })
-                    }
-                })
-            }
-        })
+        if (!couponId) { res.send({ responseCode: 400, responseMessage: "Please enter the couponId" }); } else if (!adId) { res.send({ responseCode: 400, responseMessage: 'Please enter the adId' }); } else {
+            User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: "Please enter a valid coupon to use." }); } else {
+                    User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+
+                            User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                                    for (var i = 0; i < user.hiddenGifts.length; i++) {
+                                        if (user.hiddenGifts[i].adId == adId) {
+                                            var code = user.hiddenGifts[i].hiddenCode;
+                                        }
+                                    }
+                                    User.update({ 'hiddenGifts.adId': adId }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result2) {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                                            console.log("result2--->>", result2)
+                                            console.log("code--->>", code)
+                                            var message = 'Your hidden gift is:' + code
+                                            if (result2.nModified == 1) {
+                                                functions.otp(req.body.mobileNumber, message)
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "The hidden gift code has been sent to your mailbox successfully."
+                                                })
+
+                                            } else {
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "Coupon used successfully."
+                                                })
+
+                                            }
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
     },
 
     "winnersFilterCodeBasis": function(req, res) {

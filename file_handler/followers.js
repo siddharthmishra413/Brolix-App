@@ -6,10 +6,9 @@
      //API Report Problem  
      "followUnfollow": function(req, res) {
          if (req.body.follow == "follow") {
-             
-             followerList.findOne({ senderId: req.body.senderId , receiverId: req.body.receiverId } ).exec(function(err, result1) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                 else {
+
+             followerList.findOne({ senderId: req.body.senderId, receiverId: req.body.receiverId }).exec(function(err, result1) {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                      if (!result1) {
                          var follow = new followerList(req.body);
                          follow.save(function(err, result) {
@@ -53,8 +52,7 @@
                                  responseCode: 201,
                                  responseMessage: "You have already block this user."
                              });
-                         }
-                         else {
+                         } else {
                              res.send({
                                  responseCode: 202,
                                  responseMessage: "You have already send request."
@@ -150,48 +148,45 @@
          } else if (req.body.followerStatus == "block") {
              console.log("block req-->>", req.body)
              var blockUserId = req.body.blockUserId;
-             User.findOne({ _id: req.body.receiverId }).exec(function(err, user) {              
-               if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) }
-              else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" }); }
-              else if(Boolean(user.blockUser.find(blockUser => blockUser == blockUserId))){ res.send({ responseCode: 400, responseMessage: "You have already block this user." }); }              
-              else{ 
-             followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $set: { followerStatus: req.body.followerStatus, userId: req.body.userId, blockUserId: req.body.blockUserId } }, { new: true }).exec(function(err, results) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+             User.findOne({ _id: req.body.receiverId }).exec(function(err, user) {
+                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" }); } else if (Boolean(user.blockUser.find(blockUser => blockUser == blockUserId))) { res.send({ responseCode: 400, responseMessage: "You have already block this user." }); } else {
+                     followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $set: { followerStatus: req.body.followerStatus, userId: req.body.userId, blockUserId: req.body.blockUserId } }, { new: true }).exec(function(err, results) {
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
 
-                     User.findOne({ _id: req.body.receiverId }).exec(function(err, result) {
-                         console.log("block result-->>",result)
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-                             var userFollowers = result.userFollowers;
-                             var mySet = new Set(userFollowers);
-                             var has = mySet.has(blockUserId)
-                             if (has) {
-                                  console.log("<<in if-->>")
-                                 User.findOneAndUpdate({ _id: req.body.receiverId },{ $push: { blockUser: req.body.blockUserId }, $pop: { userFollowers: -req.body.blockUserId } }, { new: true }, function(err, result1) {
-                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
-                                         res.send({
-                                             result: result1,
-                                             responseCode: 200,
-                                             responseMessage: "You have blocked this user."
-                                         });
+                             User.findOne({ _id: req.body.receiverId }).exec(function(err, result) {
+                                 console.log("block result-->>", result)
+                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                     var userFollowers = result.userFollowers;
+                                     var mySet = new Set(userFollowers);
+                                     var has = mySet.has(blockUserId)
+                                     if (has) {
+                                         console.log("<<in if-->>")
+                                         User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId }, $pop: { userFollowers: -req.body.blockUserId } }, { new: true }, function(err, result1) {
+                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                                 res.send({
+                                                     result: result1,
+                                                     responseCode: 200,
+                                                     responseMessage: "You have blocked this user."
+                                                 });
+                                             }
+                                         })
+                                     } else {
+                                         console.log("<<in elseif-->>")
+                                         User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId } }, { new: true }, function(err, result1) {
+                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                                 res.send({
+                                                     result: result1,
+                                                     responseCode: 200,
+                                                     responseMessage: "You have blocked this user."
+                                                 });
+                                             }
+                                         })
                                      }
-                                 })
-                             } else {
-                                 console.log("<<in elseif-->>")
-                                 User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId } }, { new: true }, function(err, result1) {
-                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
-                                         res.send({
-                                             result: result1,
-                                             responseCode: 200,
-                                             responseMessage: "You have blocked this user."
-                                         });
-                                     }
-                                 })
-                             }
+                                 }
+                             })
                          }
                      })
                  }
-             })
-              }
              })
          } else if (req.body.followerStatus == "reject") {
              console.log("req-->>", req.body)
@@ -247,52 +242,49 @@
              }
          })
      },
-   
-     "blockLeader":function(req, res){
-          console.log("blockLeader req-->>", req.body)
-             var blockUserId = req.body.blockUserId;
-          User.findOne({ _id: req.body.senderId }).exec(function(err, user) {              
-               if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) }
-              else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); }
-              else if(Boolean(user.blockUser.find(blockUser => blockUser == blockUserId))){ res.send({ responseCode: 400, responseMessage: "You have already block this user." }); }              
-              else{         
-             followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $set: { followerStatus: req.body.followerStatus, userId: req.body.userId, blockUserId: req.body.blockUserId } }, { new: true }).exec(function(err, results) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
 
-                     User.findOne({ _id: req.body.senderId }).exec(function(err, result) {
-                         console.log("blockLeader result-->>",result)
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-                             var userFollowers = result.userFollowers;
-                             var mySet = new Set(userFollowers);
-                             var has = mySet.has(blockUserId)
-                             if (has) {
-                                  console.log("<<blockLeader in if-->>")
-                                 User.findOneAndUpdate({ _id: req.body.receiverId },{ $push: { blockUser: req.body.blockUserId }, $pop: { userFollowers: -req.body.blockUserId } }, { new: true }, function(err, result1) {
-                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
-                                         res.send({
-                                             result: result1,
-                                             responseCode: 200,
-                                             responseMessage: "You have blocked this user."
-                                         });
-                                     }
-                                 })
-                             } else {
-                                 console.log("<<blockLeader in elseif-->>")
-                                 User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId } }, { new: true }, function(err, result1) {
-                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
-                                         res.send({
-                                             result: result1,
-                                             responseCode: 200,
-                                             responseMessage: "You have blocked this user."
-                                         });
-                                     }
-                                 })
+     "blockLeader": function(req, res) {
+         console.log("blockLeader req-->>", req.body)
+         var blockUserId = req.body.blockUserId;
+         User.findOne({ _id: req.body.senderId }).exec(function(err, user) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else if (Boolean(user.blockUser.find(blockUser => blockUser == blockUserId))) { res.send({ responseCode: 400, responseMessage: "You have already block this user." }); } else {
+                 followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $set: { followerStatus: req.body.followerStatus, userId: req.body.userId, blockUserId: req.body.blockUserId } }, { new: true }).exec(function(err, results) {
+                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+
+                         User.findOne({ _id: req.body.senderId }).exec(function(err, result) {
+                             console.log("blockLeader result-->>", result)
+                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                 var userFollowers = result.userFollowers;
+                                 var mySet = new Set(userFollowers);
+                                 var has = mySet.has(blockUserId)
+                                 if (has) {
+                                     console.log("<<blockLeader in if-->>")
+                                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId }, $pop: { userFollowers: -req.body.blockUserId } }, { new: true }, function(err, result1) {
+                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                             res.send({
+                                                 result: result1,
+                                                 responseCode: 200,
+                                                 responseMessage: "You have blocked this user."
+                                             });
+                                         }
+                                     })
+                                 } else {
+                                     console.log("<<blockLeader in elseif-->>")
+                                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId } }, { new: true }, function(err, result1) {
+                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                             res.send({
+                                                 result: result1,
+                                                 responseCode: 200,
+                                                 responseMessage: "You have blocked this user."
+                                             });
+                                         }
+                                     })
+                                 }
                              }
-                         }
-                     })
-                 }
-             }) 
-          }
-                                                        })
+                         })
+                     }
+                 })
+             }
+         })
      }
  }
