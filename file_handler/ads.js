@@ -14,17 +14,66 @@ var multiparty = require('multiparty');
 var Views = require("./model/views");
 var mongoose = require('mongoose');
 var brolixAndDollors = require("./model/brolixAndDollors");
-
+var multer  =   require('multer');
 
 cloudinary.config({
-    cloud_name: 'mobiloitte-in',
-    api_key: '188884977577618',
-    api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
+    cloud_name: 'dfrspfd4g',
+    api_key: '399442144392731',
+    api_secret: 'BkGm-usnHDPfrun2fEloBtVqBqU'
 });
 var avoid = {
     "password": 0
 }
+
+    var storage =   multer.diskStorage({
+      destination: function (req, file, callback) {
+       console.log("filereq",file);
+
+           var unixname = file.fieldname + Date.now();
+           console.log("fieldname",unixname);
+              var details = file;
+              console.log("details"+details);
+                var user = new Upload();  
+              //  console.log("user", user); 
+                user.unixname = unixname;
+                user.fieldname = details.fieldname;
+                console.log("user"+user.fieldname); 
+                user.originalname = details.originalname;
+                user.encoding = details.encoding;
+                user.mimetype = details.mimetype;
+                var demo = user.save(function (err) {
+            if (err) throw err;
+          })
+              //  var home;
+               
+              //  callback(null, 'user.UserID')
+      callback(null, './uploads');
+    },
+      filename: function (req, file, callback) {
+        callback(null, file.fieldname + '-' + Date.now());
+        //callback(null, file.fieldname);
+      }
+    });
+        var upload = multer({ storage : storage},{limits : {fieldNameSize : 10}}).single('userPhoto');
 module.exports = {
+
+
+    //var upload = multer({ storage : storage}).single('userPhoto');
+    //app.post('/api/photo'
+
+    //console.log("storage==>>", storage.getDestination);
+    "image" :function(req,res){
+     // console.log("req==>>", req);
+        upload(req,res,function(err) {
+            if(err) {
+                console.log(err)
+                return res.end("Error uploading file.");
+            }
+            console.log("res....",res)
+            res.end("File is uploaded");
+        });
+    },
+
 
     "createAds": function(req, res) {
         if (req.body.adsType == "coupon") {

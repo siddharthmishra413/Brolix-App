@@ -1209,16 +1209,58 @@ module.exports = {
         })
     },
 
+
     "showOfferOnCards": function(req, res) {
         var cardType = req.body.cardType;
+        if(req.body.offerType == 'discount'){
+            var groupQuery ={"buyCard": '$offer.buyCard'}
+            var fieldData = 'discount'
+        }
+        else{
+            var groupQuery ={"buyCard": '$offer.buyCard',"freeCard": '$offer.freeCard'}
+            var fieldData = 'buyGet'
+        }
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: cardType, 'offer.status': 'ACTIVE' } }
+            { $match: { type: cardType , "offer.offerType" : req.body.offerType} },
+            { $group: {
+                _id: groupQuery,
+                "count": { "$sum": 1 },
+                offerTime: { $max: "$offer.offerTime" },
+                createdAt: { $min: "$offer.createdAt" },
+                status: { 
+                  $sum: { $cond:[{ $eq: ["$offer.status", 'ACTIVE'] }, 1, 0]  }
+                },
+                offerType:{ "$sum": 0 }
+            }}
         ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                for(var i=0; i<result.length; i++){
+                     result[i].offerType = fieldData;
+                     if(result[i].status == 0){
+                          result[i].status = 'EXPIRED';
+                     }
+                     else{
+                        result[i].status = 'ACTIVE';
+                     }
+                }
                 res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
             }
         })
+    },
+
+    "getOfferList": function(req, res){
+        adminCards.aggregate([
+            { $unwind: '$offer' },
+            { $match: { type: cardType , "offer.offerType" : req.body.offerType, "offer.buyCard": req.body.buyCard} }
+        ]).exec(function(err, result){
+           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if(result.length==0){
+                res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+           }else{
+                res.send({ responseCode: 200, responseMessage: 'Card lists show successfully.', result: result });
+           }
+        })
+       
     },
 
     "createPage": function(req, res) {
@@ -1851,7 +1893,10 @@ module.exports = {
     "pageAdminsDetail": function(req, res) {
         var array = [];
         createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: err }); } 
+            else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found." }); } 
+            else {
+               
                 for (var i = 0; i < result.adAdmin.length; i++) {
                     array.push(result.adAdmin[i].userId)
                 }
@@ -4042,6 +4087,7 @@ module.exports = {
 
 
     "cityListData": function(req, res) {
+    
         var city = require('countries-cities').getCities(req.body.country);
         if (city == null || city.length == 0 || city == undefined || city == '') {
             res.send({
