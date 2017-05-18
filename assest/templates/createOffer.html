@@ -71,11 +71,11 @@
                             <div ng-show="myForm.offerType=='buyGet' && myForm.cardType!= null">
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="control-label col-sm-3">Percentage</label>
+                                        <label class="control-label col-sm-3">Buy Cards</label>
                                         <div class="col-sm-5">
                                               <input ng-model="myForm.buyCard" type="tel" name="buyCards" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" required>
                                             <span style="color:red;" ng-show="ssecond.buyCards.$dirty && ssecond.buyCards.$invalid">
-                                            <span  ng-show="ssecond.buyCards.$error.required">Percentage is required.</span> 
+                                            <span  ng-show="ssecond.buyCards.$error.required">Buy Cards Value is required.</span> 
                                             <span style="color:red;" ng-show="ssecond.buyCards.$error.pattern">Only number are allowed.</span>
                                         </div>
                                     </div>

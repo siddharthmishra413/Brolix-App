@@ -917,29 +917,103 @@
            </div>
            <div class="modal-body">
                <form name="userFrom1">
-               <div class="table-responsive cus-table">
-                   <table class="table table-bordered table-striped">                         
-                          <tr>
-                              <th>Page Name</th>
-                              <td>{{usedAd[0].pageName}}</td>
-                          </tr>
-                          <tr>
-                              <th>category</th>
-                              <td>{{usedAd[0].category}}</td>
-                          </tr>
-                          <tr>
-                              <th>subCategory</th>
-                              <td>{{usedAd[0].subCategory}}</td>
-                          </tr>
-                          <tr>
-                              <th>adsType</th>
-                              <td>{{usedAd[0].adsType}}</td>
-                          </tr>
-                          <tr>
-                              <th>coverImage</th>
-                              <td><img src="{{usedAd[0].coverImage}}" /></td>
-                          </tr>
-                    </table></div>
+                   <div class="table-responsive cus-table">
+                        <table class="table table-bordered table-striped">                         
+                              <tr>
+                                  <th>Created Date</th>
+                                  <td>{{usedAd[0].createdAt}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Last Update</th>
+                                  <td>{{usedAd[0].updatedAt}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Page Name</th>
+                                  <td>{{usedAd[0].pageName}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Page Category</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Page Sub Categories</th>
+                                  <td>{{usedAd[0].subCategory}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Ad Type</th>
+                                  <td>{{usedAd[0].adContentType}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Number of Images</th>
+                                  <td>{{dawnloadPagePhoto.length}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Video Length/Size</th>
+                                  <td>1:30/3Mb</td>
+                              </tr>
+                              <tr>
+                                  <th>Cover Image</th>
+                                  <td><img src="{{usedAd[0].coverImage}}" /></td>
+                              </tr>
+                              <tr>
+                                  <th>Download Links</th>
+                                  <td>{{usedAd[0].linkCount}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Gift Description/Value</th>
+                                  <td>{{usedAd[0].giftDescription}}/100</td>
+                              </tr>
+                              <tr>
+                                  <th>Gift Image</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Hidden Gift</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                              <tr>
+                                  <th>No. of Codes</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+
+                               <tr>
+                                  <th>Upgraded</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                               <tr>
+                                  <th>Card Price</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                               <tr>
+                                  <th>No. of Viewers</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                               <tr>
+                                  <th>No. of Winners</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                               <tr>
+                                  <th>Post on Store</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                               <tr>
+                                  <th>Targeted Location</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                               <tr>
+                                  <th>Targeted Gender</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                               <tr>
+                                  <th>Targeted Ages</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                              <tr>
+                                  <th>Coupon Cover Image</th>
+                                  <td>{{usedAd[0].category}}</td>
+                              </tr>
+                        </table>
+                    </div>
                 </form>
             </div>
         </div>

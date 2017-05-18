@@ -294,54 +294,54 @@ $scope.getdata = function(data)
     }
 
 
-    userService.showOfferOnCards(upgrade_card).success(function(res) {
-        //console.log("res",JSON.stringify(res))
-        if(res.responseCode == 200){
-            if(res.data.length == 0){
-                toastr.error("No data Found");
+    // userService.showOfferOnCards(upgrade_card).success(function(res) {
+    //     //console.log("res",JSON.stringify(res))
+    //     if(res.responseCode == 200){
+    //         if(res.data.length == 0){
+    //             toastr.error("No data Found");
 
-            }else if(res.data.length != 0){
-                var resultUpgradeCardDiscount = res.data.filter(function( obj ) {
-              return obj.offer.offerType == 'discount';
-            });
-            $scope.resultUpgradeCardDiscount = resultUpgradeCardDiscount;            
-            var resultUpgradeCardBuyGet = res.data.filter(function( obj ) {
-              return obj.offer.offerType == 'buyGet';
-            });
-            $scope.resultUpgradeCardBuyGet=resultUpgradeCardBuyGet;
-            $scope.totalOfferUpgradeCardCount=resultUpgradeCardDiscount.length+resultUpgradeCardBuyGet.length;
-            }
+    //         }else if(res.data.length != 0){
+    //             var resultUpgradeCardDiscount = res.data.filter(function( obj ) {
+    //           return obj.offer.offerType == 'discount';
+    //         });
+    //         $scope.resultUpgradeCardDiscount = resultUpgradeCardDiscount;            
+    //         var resultUpgradeCardBuyGet = res.data.filter(function( obj ) {
+    //           return obj.offer.offerType == 'buyGet';
+    //         });
+    //         $scope.resultUpgradeCardBuyGet=resultUpgradeCardBuyGet;
+    //         $scope.totalOfferUpgradeCardCount=resultUpgradeCardDiscount.length+resultUpgradeCardBuyGet.length;
+    //         }
             
 
-        }
-        else{
-            toastr.error(res.responseMessage);
-        }
+    //     }
+    //     else{
+    //         toastr.error(res.responseMessage);
+    //     }
 
-    })
+    // })
 
-    userService.showOfferOnCards(luck_card).success(function(res){
-        if(res.responseCode == 200){
-            if(res.data.length == 0){
-                toastr.error("No data Found");
+    // userService.showOfferOnCards(luck_card).success(function(res){
+    //     if(res.responseCode == 200){
+    //         if(res.data.length == 0){
+    //             toastr.error("No data Found");
 
-            }else if(res.data.length != 0){
-                var resultLuckCardDiscount = res.data.filter(function( obj ) {
-              return obj.offer.offerType == 'discount';
-            });
-            $scope.resultLuckCardDiscount = resultLuckCardDiscount;            
-            var resultLuckCardBuyGet = res.data.filter(function( obj ) {
-              return obj.offer.offerType == 'buyGet';
-            });
-            $scope.resultLuckCardBuyGet=resultLuckCardBuyGet;
-            $scope.totalOfferLuckCardCount=resultLuckCardDiscount.length+resultLuckCardBuyGet.length;
-            }
-        }
-        else{
-            toastr.error(res.responseMessage);
-        }
+    //         }else if(res.data.length != 0){
+    //             var resultLuckCardDiscount = res.data.filter(function( obj ) {
+    //           return obj.offer.offerType == 'discount';
+    //         });
+    //         $scope.resultLuckCardDiscount = resultLuckCardDiscount;            
+    //         var resultLuckCardBuyGet = res.data.filter(function( obj ) {
+    //           return obj.offer.offerType == 'buyGet';
+    //         });
+    //         $scope.resultLuckCardBuyGet=resultLuckCardBuyGet;
+    //         $scope.totalOfferLuckCardCount=resultLuckCardDiscount.length+resultLuckCardBuyGet.length;
+    //         }
+    //     }
+    //     else{
+    //         toastr.error(res.responseMessage);
+    //     }
 
-    })
+    // })
    
     
     //*******************Total Winners****************
@@ -725,8 +725,9 @@ $scope.getdata = function(data)
         var data = {
                     "upgradeId":id
                     }
-        console.log("first",JSON.stringify(data))
+        
         userService.upgradeCardUsedAd(data).then(function(success) { 
+            console.log("first",JSON.stringify(success))
               if(success.data.responseCode == 200) {
                     $scope.usedAd=success.data.result;
                     $("#luckCardUsedAd").modal('show');
@@ -744,8 +745,9 @@ $scope.getdata = function(data)
         var data = {
                     "luckId":id
                 }
-        console.log("second",JSON.stringify(data))
-        userService.luckCardUsedAd(data).then(function(success) { 
+        
+        userService.luckCardUsedAd(data).then(function(success) {
+        console.log("second",JSON.stringify(success)) 
                  if(success.data.responseCode == 200) {
                     $scope.usedAd=success.data.result;
                     $scope.img=$scope.usedAd[0].coverImage;
