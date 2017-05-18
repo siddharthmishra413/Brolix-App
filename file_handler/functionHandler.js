@@ -3,20 +3,22 @@
   var FCM = require('fcm').FCM;
   // var apn = require('apn');
   module.exports = {
-      "otp": function(req, res, mobile) {
+      "otp": function(mobile ,msg_body) {
+
           var possible = "123456789";
           var otp = "";
           for (var i = 0; i < 4; i++) {
               otp += possible.charAt(Math.floor(Math.random() * possible.length));
               console.log(otp);
           }
+           var send_msg_body = msg_body ?msg_body:'You have been registerd ' + otp + ' OTP'
           //var otp = Math.floor(Math.random() * 10000)
           var data = JSON.stringify({
               api_key: '0ec05def',
               api_secret: '48fbcc6a6fedbcaa',
               to: '+91' + mobile,
               from: '917011911324',
-              text: 'You have been registerd ' + otp + ' OTP'
+              text: send_msg_body
           });
           var options = {
               host: 'rest.nexmo.com',

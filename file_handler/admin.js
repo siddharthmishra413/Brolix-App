@@ -415,8 +415,6 @@ module.exports = {
                 })
             }
         })
-
-
     },
 
     // "totalSoldUpgradeCardFilter": function(req, res, query) {
