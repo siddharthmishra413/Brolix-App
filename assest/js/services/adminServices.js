@@ -418,8 +418,8 @@ app.service('userService',function($http){
       return $http.post(baseurl+'/admin/createOfferOnCard', data);
     },
 
-    showOfferOnCards: function(data){
-      return $http.post(baseurl+'/admin/showOfferOnCards', data);
+    showOfferOnCards: function(data,pageNo){
+      return $http.post(baseurl+'/admin/showOfferOnCards/'+pageNo, data);
     },
 
     /*filter MangeUser section*/
@@ -507,6 +507,7 @@ app.service('userService',function($http){
     zipcodFunction: function(data){
       return $http.post('/admin/zipcodFunction', data);
     },
+    //http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/showOfferOnCards/1 
 
     //******************** Manage Payment Section ******************************
 

@@ -121,13 +121,13 @@ $(window).scrollTop(0,0);
                            for(i=0;i<res.docs.length;i++) {
                                 $scope.brolix.push(res.docs[i]);
                                 //console.log(JSON.stringify($scope.brolix[i].luckCardObject.status));
-                                if($scope.brolix[i].luckCardObject.status == "INACTIVE"){
-                                    $scope.brolix[i].luckCardObject.status="Unused";
-                                }
-                                else{
-                                    $scope.brolix[i].luckCardObject.status="Used";
-                                }
-                                console.log("brolix",JSON.stringify($scope.brolix))
+                                // if($scope.brolix[i].luckCardObject.status == "INACTIVE"){
+                                //     $scope.brolix[i].luckCardObject.status="Unused";
+                                // }
+                                // else{
+                                //     $scope.brolix[i].luckCardObject.status="Used";
+                                // }
+                                //console.log("brolix",JSON.stringify($scope.brolix))
                             }
 
                        } 
@@ -544,6 +544,7 @@ $(window).scrollTop(0,0);
 
     userService.totalSoldLuckCard().success(function(res) {
         if (res.responseCode == 200){
+            console.log("ressssssssss",JSON.stringify(res))
             $scope.totalSoldLuckCard = res.result;
             // $scope.totalIncome = res.totalIncome;
              $scope.totalSoldLuckCardcount = res.count;

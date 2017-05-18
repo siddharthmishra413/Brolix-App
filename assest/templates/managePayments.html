@@ -194,7 +194,9 @@
                                                 <td ng-if="dollars.upgradeCardObject.status == 'ACTIVE' ">Not Used Yet</td>
                                                 <td ng-if="dollars.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(dollars.upgradeCardObject._id)">View</td>
                                                 <td class="skyblue-text" ng-click="pageCount(dollars._id)" style="cursor: pointer">{{dollars.pageCount}}</td>
-                                                <td class="skyblue-text" ng-click="upgradePayment(dollars._id)" style="cursor: pointer">View</td>
+                                                <td ng-if="dollars.upgradeCardObject.status == 'ACTIVE' ">Not Used Yet</td>
+                                                <td ng-if="dollars.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" ng-click="upgradePayment(dollars._id)" style="cursor: pointer">View</td>
+                                                
                                               </tr>
                                               <tr ng-if="(dollars |manageFilter:search).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                                             </tbody>
@@ -211,8 +213,8 @@
                                                 <th>Price</th>
                                                 <th>Buyer Name</th>
                                                 <th>Buyer Mobile</th>
-                                                <th>Status</th>
                                                 <th>Used Ad</th>
+                                                <th>Pages</th>
                                                 <th>Payment History</th>
                                               </tr>
                                             </thead>
@@ -222,14 +224,11 @@
                                                 <td>{{brolix.luckCardObject.brolix}}B</td>
                                                 <td class="skyblue-text" ng-click="userInfo(brolix._id)" style="cursor: pointer">{{brolix.firstName+" "+brolix.lastName}}</td>
                                                 <td>{{brolix.mobileNumber}}</td>
-                                                <td >{{brolix.luckCardObject.status}}</td>
-
                                                 <td ng-if="brolix.luckCardObject.status == 'ACTIVE' ">Not Used Yet</td>
                                                 <td ng-if="brolix.luckCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(brolix.luckCardObject._id)">View</td>
-                                                
-                                               <!--  <td class="skyblue-text" ng-click="luckCardUsedAd(brolix.luckCardObject._id)" style="cursor: pointer">
-                                                <span>View</span></td> -->
-                                                <td class="skyblue-text" ng-click="luckPayment(brolix._id)" style="cursor: pointer">View</td>
+                                                <td class="skyblue-text" ng-click="pageCount(dollars._id)" style="cursor: pointer">{{brolix.pageCount}}</td>
+                                                <td ng-if="brolix.luckCardObject.status == 'ACTIVE' ">Not Used Yet</td>
+                                                <td ng-if="brolix.luckCardObject.status == 'INACTIVE' " class="skyblue-text" ng-click="luckPayment(brolix._id)" style="cursor: pointer">View</td>
                                               </tr>
                                               <tr ng-if="(brolix |manageFilter:search).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                                             </tbody>
@@ -672,7 +671,7 @@
        <div class="modal-content">
            <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Payment History</h4>
+               <h4 class="modal-title">Payment Historyaaa</h4>
            </div>
            <div class="modal-body">
                <form name="userFrom1">
@@ -680,10 +679,10 @@
                    <table class="table table-bordered table-striped">                         
                           <tr>
                               <th>Used Ad</th>
-                              <td ng-repeat="Ad in upgradeUsedAd">{{Ad.pageName}}</td>
+                              <th>Card Type</th> 
                           </tr>
                           <tr>
-                              <th>Card Type</th>
+                              <td ng-repeat="Ad in upgradeUsedAd">{{Ad.pageName}}</td>
                               <td ng-repeat="obj in upgradeCardObject">{{obj.viewers}} viewers</td>
                           </tr>
                           <tr ng-if="upgradeUsedAd== 0 && upgradeCardObject== 0"><td colspan="2" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
@@ -698,7 +697,7 @@
        <div class="modal-content">
            <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Payment History</h4>
+               <h4 class="modal-title">Payment Historyfff</h4>
            </div>
            <div class="modal-body">
                <form name="userFrom1">
@@ -706,10 +705,10 @@
                    <table class="table table-bordered table-striped">                         
                           <tr>
                               <th>Used Ad</th>
-                              <td ng-repeat="Ad in luckUsedAd">{{Ad.pageName}}</td>
+                              <th>Card Type</th>
                           </tr>
                           <tr>
-                              <th>Card Type</th>
+                              <td ng-repeat="Ad in luckUsedAd">{{Ad.pageName}}</td>
                               <td ng-repeat="obj in luckCardObject">{{obj.chances}} Chances</td>
                           </tr>
                           <tr ng-if="luckUsedAd== 0 && luckCardObject== 0"><td colspan="2" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>

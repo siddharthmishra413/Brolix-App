@@ -52,9 +52,9 @@ module.exports = {
                 })
             }
         } else {
-            User.findOne({ _id: req.body.userId }).exec(function(err, result) {
+            User.findOne({ _id: req.body.userId },function(err, result) {
                 console.log("result-->>", result)
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash <= req.body.cashAdPrize) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash < req.body.cashAdPrize) {
                     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                 } else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
@@ -112,7 +112,8 @@ module.exports = {
                 })
             },
             function(noDataValue, dataValue, callback) {
-                createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 20 }, function(err, result) {
+                createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                    console.log("result-->>",result)
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         for (var i = 0; i < result.docs.length; i++) {
                             if (result.docs[i].cash == 0) {

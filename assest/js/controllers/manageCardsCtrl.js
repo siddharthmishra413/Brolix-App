@@ -10,6 +10,86 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     $scope.dashBordFilter = {};
 
 $scope.key = "Discount";
+
+
+upgrade_card = {
+            cardType:'upgrade_card',
+            offerType:'discount'
+        }
+
+luck_card = {
+    cardType:'luck_card',
+    offerType:'discount'
+}
+
+    $scope.currentPageNo = 1;
+    userService.showOfferOnCards(upgrade_card,$scope.currentPageNo).success(function(res) {
+        console.log("upgrade_card res",JSON.stringify(res));
+        //console.log("res",JSON.stringify(res))
+        // if(res.responseCode == 200){
+        //     if(res.data.length == 0){
+        //         toastr.error("No data Found");
+
+        //     }else if(res.data.length != 0){
+        //         var resultUpgradeCardDiscount = res.data.filter(function( obj ) {
+        //       return obj.offer.offerType == 'discount';
+        //     });
+        //     $scope.resultUpgradeCardDiscount = resultUpgradeCardDiscount;            
+        //     var resultUpgradeCardBuyGet = res.data.filter(function( obj ) {
+        //       return obj.offer.offerType == 'buyGet';
+        //     });
+        //     $scope.resultUpgradeCardBuyGet=resultUpgradeCardBuyGet;
+        //     $scope.totalOfferUpgradeCardCount=resultUpgradeCardDiscount.length+resultUpgradeCardBuyGet.length;
+        //     }
+            
+
+        // }
+        // else{
+        //     toastr.error(res.responseMessage);
+        // }
+
+    })
+
+    userService.showOfferOnCards(luck_card,$scope.currentPageNo).success(function(res){
+        console.log("luck_card res",JSON.stringify(res));
+        // if(res.responseCode == 200){
+        //     if(res.data.length == 0){
+        //         toastr.error("No data Found");
+
+        //     }else if(res.data.length != 0){
+        //         var resultLuckCardDiscount = res.data.filter(function( obj ) {
+        //       return obj.offer.offerType == 'discount';
+        //     });
+        //     $scope.resultLuckCardDiscount = resultLuckCardDiscount;            
+        //     var resultLuckCardBuyGet = res.data.filter(function( obj ) {
+        //       return obj.offer.offerType == 'buyGet';
+        //     });
+        //     $scope.resultLuckCardBuyGet=resultLuckCardBuyGet;
+        //     $scope.totalOfferLuckCardCount=resultLuckCardDiscount.length+resultLuckCardBuyGet.length;
+        //     }
+        // }
+        // else{
+        //     toastr.error(res.responseMessage);
+        // }
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $scope.getdata = function(data)
 {
     $scope.key = data;
@@ -285,63 +365,7 @@ $scope.getdata = function(data)
     }
 
 
-    upgrade_card = {
-            cardType:'upgrade_card'
-        }
-
-    luck_card = {
-        cardType:'luck_card'
-    }
-
-
-    // userService.showOfferOnCards(upgrade_card).success(function(res) {
-    //     //console.log("res",JSON.stringify(res))
-    //     if(res.responseCode == 200){
-    //         if(res.data.length == 0){
-    //             toastr.error("No data Found");
-
-    //         }else if(res.data.length != 0){
-    //             var resultUpgradeCardDiscount = res.data.filter(function( obj ) {
-    //           return obj.offer.offerType == 'discount';
-    //         });
-    //         $scope.resultUpgradeCardDiscount = resultUpgradeCardDiscount;            
-    //         var resultUpgradeCardBuyGet = res.data.filter(function( obj ) {
-    //           return obj.offer.offerType == 'buyGet';
-    //         });
-    //         $scope.resultUpgradeCardBuyGet=resultUpgradeCardBuyGet;
-    //         $scope.totalOfferUpgradeCardCount=resultUpgradeCardDiscount.length+resultUpgradeCardBuyGet.length;
-    //         }
-            
-
-    //     }
-    //     else{
-    //         toastr.error(res.responseMessage);
-    //     }
-
-    // })
-
-    // userService.showOfferOnCards(luck_card).success(function(res){
-    //     if(res.responseCode == 200){
-    //         if(res.data.length == 0){
-    //             toastr.error("No data Found");
-
-    //         }else if(res.data.length != 0){
-    //             var resultLuckCardDiscount = res.data.filter(function( obj ) {
-    //           return obj.offer.offerType == 'discount';
-    //         });
-    //         $scope.resultLuckCardDiscount = resultLuckCardDiscount;            
-    //         var resultLuckCardBuyGet = res.data.filter(function( obj ) {
-    //           return obj.offer.offerType == 'buyGet';
-    //         });
-    //         $scope.resultLuckCardBuyGet=resultLuckCardBuyGet;
-    //         $scope.totalOfferLuckCardCount=resultLuckCardDiscount.length+resultLuckCardBuyGet.length;
-    //         }
-    //     }
-    //     else{
-    //         toastr.error(res.responseMessage);
-    //     }
-
-    // })
+    
    
     
     //*******************Total Winners****************

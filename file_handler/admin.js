@@ -1153,14 +1153,81 @@ module.exports = {
         })
     },
 
+
     "showOfferOnCards": function(req, res) {
+        var pageId = req.body.pageId;
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 8;
+        var skips = limitData - 8;
+        var page = String(pageNumber);
+
         var cardType = req.body.cardType;
+        if(req.body.offerType == 'discount'){
+            var groupQuery ={"buyCard": '$offer.buyCard'}
+            var fieldData = 'discount'
+        }
+        else{
+            var groupQuery ={"buyCard": '$offer.buyCard',"freeCard": '$offer.freeCard'}
+            var fieldData = 'buyGet'
+        }
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: cardType, 'offer.status': 'ACTIVE' } }
-        ]).exec(function(err, result) {
+            { $match: { type: cardType , "offer.offerType" : req.body.offerType} },
+            { $group: {
+                _id: groupQuery,
+                "count": { "$sum": 1 },
+                offerTime: { $max: "$offer.offerTime" },
+                createdAt: { $min: "$offer.createdAt" },
+                status: { 
+                  $sum: { $cond:[{ $eq: ["$offer.status", 'ACTIVE'] }, 1, 0]  }
+                },
+                offerType:{ "$sum": 0 }
+            }}
+        ]).exec(function(err, result1) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({ responseCode: 200, responseMessage: 'Find all offers on card successfully', data: result });
+                var count = 0;
+                for (i = 0; i < result1.length; i++) {
+                    count++;
+                }
+                var pages = Math.ceil(count / 8);
+                adminCards.aggregate([
+                    { $unwind: '$offer' },
+                    { $match: { type: cardType , "offer.offerType" : req.body.offerType} },
+                    { $group: {
+                        _id: groupQuery,
+                        "count": { "$sum": 1 },
+                        offerTime: { $max: "$offer.offerTime" },
+                        createdAt: { $min: "$offer.createdAt" },
+                        status: { 
+                          $sum: { $cond:[{ $eq: ["$offer.status", 'ACTIVE'] }, 1, 0]  }
+                        },
+                        offerType:{ "$sum": 0 }
+                    }},
+                    { $limit: limitData }, { $skip: skips }
+                ]).exec(function(err, result) {
+                    var limit = 0;
+                    for(var i=0; i<result.length; i++){
+                         limit++;
+                         result[i].offerType = fieldData;
+                         if(result[i].status == 0){
+                              result[i].status = 'EXPIRED';
+                         }
+                         else{
+                            result[i].status = 'ACTIVE';
+
+                         }
+                    }
+                    res.send({ 
+                        docs: result,
+                        total: count,
+                        limit: limit,
+                        page: page,
+                        pages: pages,
+                        responseCode: 200, 
+                        responseMessage: 'Find all offers on card successfully'
+                    });
+                })
+
             }
         })
     },

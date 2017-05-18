@@ -62,7 +62,7 @@ app.get('/showCardDetails/:id', authUser.authUser,adminHandler.showCardDetails);
 app.get('/removeCard/:id', authUser.authUser,adminHandler.removeCard);
 app.post('/createOfferOnCard', authUser.authUser,adminHandler.createOfferOnCard);
 app.post('/createPage', authUser.authUser,adminHandler.createPage);
-app.post('/showOfferOnCards', authUser.authUser,adminHandler.showOfferOnCards);
+app.post('/showOfferOnCards/:pageNumber', adminHandler.showOfferOnCards);
 app.get('/showUserPage/:id', authUser.authUser,adminHandler.showUserPage);
 app.get('/adsOnPage/:id', authUser.authUser,adminHandler.adsOnPage);
 app.get('/winnersOnPage/:id', authUser.authUser,adminHandler.winnersOnPage);
