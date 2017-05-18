@@ -92,15 +92,44 @@ module.exports = {
 
     // show all ads
     "showAllAdsCouponType": function(req, res) {
-        createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Data Show successfully"
+        waterfall([
+            function(callback) {
+                brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
+                        var value = result1.value
+                            // var value= 2
+                        callback(null, value)
+                    }
+                })
+            },
+            function(noDataValue, callback) {
+                brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
+                        var value = result1.value
+                            //  var value= 4;
+                        callback(null, noDataValue, value)
+                    }
+                })
+            },
+            function(noDataValue, dataValue, callback) {
+                createNewAds.paginate({ userId: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 20 }, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
+                        for (var i = 0; i < result.docs.length; i++) {
+                            if (result.docs[i].cash == 0) {
+                                result.docs[i].couponSellPrice = noDataValue
+                            } else {
+                                result.docs[i].couponSellPrice = dataValue
+                            }
+                        }
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "Data Show successfully"
+                        })
+                    }
                 })
             }
-        })
+        ])
     },
 
     // show all ads
@@ -422,25 +451,25 @@ module.exports = {
 
                                 if (result.gender != 'Both') {
                                     if (result.gender != result1.gender) {
-                                        { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
+                                        { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); }
                                     } else {
-                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
+                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'YSorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
                                             // var state = result.whoWillSeeYourAdd.state;
                                             var city = result.whoWillSeeYourAdd.city;
 
-                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
+                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
                                                 callback(null)
                                             }
                                         }
                                     }
                                 } else {
-                                    if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
+                                    if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
                                         var country = result.whoWillSeeYourAdd.country;
                                         var state = result.whoWillSeeYourAdd.state;
                                         var city = result.whoWillSeeYourAdd.city;
 
-                                        if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different country.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different state.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to different city.' }); } else {
+                                        if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
                                             callback(null, result)
                                         }
                                     }
