@@ -6,6 +6,8 @@ var createNewReport = require("./model/reportProblem");
 var adminCards = require("./model/cardsAdmin");
 var Payment = require("./model/payment");
 var subCategory = require("./subcategory.json");
+var jwt = require('jsonwebtoken');
+var config = require('../config');
 
 
 var countryList = require('countries-cities').getCountries(); // Returns an array of country names. 
@@ -41,24 +43,29 @@ module.exports = {
     "login": function(req, res) {
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
-            User.findOne({
-                email: req.body.email,
-                password: req.body.password,
-                $or: [{ 'type': 'ADMIN' }, { 'type': 'SYSTEMADMIN' }],
-                status: 'ACTIVE'
-            }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
-                    res.send({
-                        responseCode: 404,
-                        responseMessage: "The email address that you've entered doesn't match any account."
-                    });
-                } else {
+            User.findOne({ email: req.body.email, password: req.body.password, $or: [{ 'type': 'ADMIN' }, { 'type': 'SYSTEMADMIN' }],               status: 'ACTIVE' }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                 else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); }
+                  else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); }
+                   else if (result.email != req.body.email) {
+                    res.send({responseCode: 404, responseMessage: "The email address that you've entered doesn't match any account." }); }
+                     else {
                     // sets a cookie with the user's info
                     req.session.user = result;
-                    res.send({
+                    var token = jwt.sign(result, config.secreteKey);
+                    res.header({
+                        "appToken": token
+                    }).send({
+                        result: result,
+                        token: token,
                         responseCode: 200,
                         responseMessage: "Login successfully."
                     });
+
+                    // res.send({
+                    //     responseCode: 200,
+                    //     responseMessage: "Login successfully."
+                    // });
                 }
             })
         }
@@ -382,7 +389,7 @@ module.exports = {
             var updateData = query;
         } else {
             console.log("rather than query")
-            var updateData = {'upgradeCardObject.type':'PURCHASED'}
+            var updateData = { 'upgradeCardObject.type': 'PURCHASED' }
         }
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 10;
@@ -559,7 +566,7 @@ module.exports = {
         var skips = limitData - 10;
         var page = String(pageNumber);
 
-        User.aggregate({ $unwind: "$upgradeCardObject" },{$match:{'upgradeCardObject.type': 'PURCHASED'}}).exec(function(err, results) {
+        User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.type': 'PURCHASED' } }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!results) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];
                 var count = 0;
@@ -797,7 +804,7 @@ module.exports = {
     },
 
     "totalPages": function(req, res) {
-        createNewPage.paginate({ status: "ACTIVE" ,  adsCount: { $gt: 0 } }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+        createNewPage.paginate({ status: "ACTIVE", adsCount: { $gt: 0 } }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No page found' }); } else {
                 createNewPage.populate(result.docs, {
                     path: 'userId',
@@ -1092,15 +1099,16 @@ module.exports = {
     "viewCards": function(req, res) {
         console.log(typeof(req.params.type))
         var cardType = req.params.type;
-        if(req.params.type == 'upgrade_card'){
+        if (req.params.type == 'upgrade_card') {
             console.log("viewers")
             var data = 'viewers'
-        }
-        else{
+        } else {
             console.log("chances")
-             var data = 'chances'
+            var data = 'chances'
         }
-        adminCards.find({ type: cardType, status: "ACTIVE" }).sort([[data, 'descending']]).exec(function(err, result) {
+        adminCards.find({ type: cardType, status: "ACTIVE" }).sort([
+            [data, 'descending']
+        ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
             }
@@ -1703,13 +1711,13 @@ module.exports = {
             function(tempCond, callback) {
                 var query = tempCond
                 if (data == 'soldUpgradeCards') {
-                    Object.assign(query,{'upgradeCardObject.type':'PURCHASED'});
+                    Object.assign(query, { 'upgradeCardObject.type': 'PURCHASED' });
                     module.exports.totalSoldUpgradeCard(req, res, query)
                 } else if (data == 'cashGifts') {
 
                     module.exports.cashGift(req, res, query)
                 } else {
-                    Object.assign(query,{'upgradeCardObject.type':'PURCHASED'});
+                    Object.assign(query, { 'upgradeCardObject.type': 'PURCHASED' });
                     module.exports.totalSoldUpgradeCard(req, res, query)
                 }
             }
@@ -2083,7 +2091,7 @@ module.exports = {
             var updateData = query;
         } else {
             console.log("rather than query")
-            var updateData = { 'coupon.type': "WINNER", 'coupon.status':'ACTIVE' };
+            var updateData = { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' };
         }
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 10;
