@@ -1234,79 +1234,80 @@ module.exports = {
     },
 
     "facebookLogin": function(req, res) {
-        if (req.body.facebookID) { res.send({ responseCode: 500, responseMessage: 'please enter facebookID' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-        User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                if (req.body.haveReferralCode == true) {
-                    Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            console.log("data-->>", data)
-                            var amount = data[0].value;
-                            console.log("amount-->>", amount)
-                            User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                    req.body.otp = functions.otp();
-                                    req.body.referralCode = yeast();
-                                    var user = User(req.body)
-                                    user.save(function(err, result3) {
-                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                        var token = jwt.sign(result3, config.secreteKey);
-                                        res.header({
-                                            "appToken": token
-                                        }).send({
-                                            result: result3,
-                                            token: token,
-                                            responseCode: 200,
-                                            responseMessage: "You have been registered successfully."
-                                        });
-                                    })
-                                }
-                            })
-                        }
-                    })
+        if (req.body.facebookID) { res.send({ responseCode: 500, responseMessage: 'please enter facebookID' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
+            User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
+                    if (req.body.haveReferralCode == true) {
+                        Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                console.log("data-->>", data)
+                                var amount = data[0].value;
+                                console.log("amount-->>", amount)
+                                User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                        req.body.otp = functions.otp();
+                                        req.body.referralCode = yeast();
+                                        var user = User(req.body)
+                                        user.save(function(err, result3) {
+                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                            var token = jwt.sign(result3, config.secreteKey);
+                                            res.header({
+                                                "appToken": token
+                                            }).send({
+                                                result: result3,
+                                                token: token,
+                                                responseCode: 200,
+                                                responseMessage: "You have been registered successfully."
+                                            });
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    } else {
+                        req.body.referralCode = yeast();
+                        var user = new User(req.body);
+                        user.save(function(err, result1) {
+                            var token = jwt.sign(result1, config.secreteKey);
+                            res.header({
+                                "appToken": token
+                            }).send({
+                                result: result1,
+                                token: token,
+                                responseCode: 200,
+                                responseMessage: "Signup successfully."
+                            });
+                        })
+                    }
                 } else {
-                    req.body.referralCode = yeast();
-                    var user = new User(req.body);
-                    user.save(function(err, result1) {
-                        var token = jwt.sign(result1, config.secreteKey);
-                        res.header({
-                            "appToken": token
-                        }).send({
-                            result: result1,
-                            token: token,
-                            responseCode: 200,
-                            responseMessage: "Signup successfully."
+                    if (result.facebookID == undefined) {
+                        res.send({
+                            responseCode: 201,
+                            responseMessage: "You have already register with app.",
+                            user: result
                         });
-                    })
+                    } else {
+                        User.findOneAndUpdate({ email: req.body.email }, {
+                            $set: {
+                                deviceType: req.body.deviceType,
+                                deviceToken: req.body.deviceToken
+                            }
+                        }, { new: true }).exec(function(err, user) {
+                            var token = jwt.sign(result, config.secreteKey);
+                            res.header({
+                                "appToken": token
+                            }).send({
+                                result: user,
+                                token: token,
+                                responseCode: 200,
+                                responseMessage: "Login successfully."
+                            });
+                            //console.log("what is in token-->>>" + token);
+                        })
+                    }
                 }
-            } else {
-                if (result.facebookID == undefined) {
-                    res.send({
-                        responseCode: 201,
-                        responseMessage: "You have already register with app.",
-                        user: result
-                    });
-                } else {
-                    User.findOneAndUpdate({ email: req.body.email }, {
-                        $set: {
-                            deviceType: req.body.deviceType,
-                            deviceToken: req.body.deviceToken
-                        }
-                    }, { new: true }).exec(function(err, user) {
-                        var token = jwt.sign(result, config.secreteKey);
-                        res.header({
-                            "appToken": token
-                        }).send({
-                            result: user,
-                            token: token,
-                            responseCode: 200,
-                            responseMessage: "Login successfully."
-                        });
-                        //console.log("what is in token-->>>" + token);
-                    })
-                }
-            }
-        })
+            })
+        }
     },
 
     "userCashGifts": function(req, res) { // userId in req 
@@ -1503,75 +1504,76 @@ module.exports = {
     },
 
     "googleLogin": function(req, res) {
-        if (!req.body.googleID) { res.send({ responseCode: 403, responseMessage: 'please enter googleID' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-        User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                if (req.body.haveReferralCode == true) {
-                    Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            console.log("data-->>", data)
-                            var amount = data[0].value;
-                            console.log("amount-->>", amount)
-                            User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                    req.body.otp = functions.otp();
-                                    req.body.referralCode = yeast();
-                                    var user = User(req.body)
-                                    user.save(function(err, result) {
-                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                        var token = jwt.sign(result, config.secreteKey);
-                                        res.header({
-                                            "appToken": token
-                                        }).send({
-                                            result: result,
-                                            token: token,
-                                            responseCode: 200,
-                                            responseMessage: "You have been registered successfully."
-                                        });
-                                    })
-                                }
-                            })
-                        }
-                    })
+        if (!req.body.googleID) { res.send({ responseCode: 403, responseMessage: 'please enter googleID' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
+            User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
+                    if (req.body.haveReferralCode == true) {
+                        Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                console.log("data-->>", data)
+                                var amount = data[0].value;
+                                console.log("amount-->>", amount)
+                                User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                        req.body.otp = functions.otp();
+                                        req.body.referralCode = yeast();
+                                        var user = User(req.body)
+                                        user.save(function(err, result) {
+                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                            var token = jwt.sign(result, config.secreteKey);
+                                            res.header({
+                                                "appToken": token
+                                            }).send({
+                                                result: result,
+                                                token: token,
+                                                responseCode: 200,
+                                                responseMessage: "You have been registered successfully."
+                                            });
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    } else {
+                        req.body.referralCode = yeast();
+                        var user = new User(req.body);
+                        user.save(function(err, result) {
+                            var token = jwt.sign(result, config.secreteKey);
+                            res.header({
+                                "appToken": token
+                            }).send({
+                                result: result,
+                                token: token,
+                                responseCode: 200,
+                                responseMessage: "Signup successfully."
+                            });
+                        })
+                    }
                 } else {
-                    req.body.referralCode = yeast();
-                    var user = new User(req.body);
-                    user.save(function(err, result) {
-                        var token = jwt.sign(result, config.secreteKey);
-                        res.header({
-                            "appToken": token
-                        }).send({
-                            result: result,
-                            token: token,
-                            responseCode: 200,
-                            responseMessage: "Signup successfully."
-                        });
-                    })
+                    if (result.googleID == undefined) {
+                        res.send({ responseCode: 201, responseMessage: "You have already register with app.", user: result });
+                    } else {
+                        User.findOneAndUpdate({ email: req.body.email }, {
+                            $set: {
+                                deviceType: req.body.deviceType,
+                                deviceToken: req.body.deviceToken
+                            }
+                        }, { new: true }).exec(function(err, user) {
+                            var token = jwt.sign(result, config.secreteKey);
+                            res.header({
+                                "appToken": token
+                            }).send({
+                                result: user,
+                                token: token,
+                                responseCode: 200,
+                                responseMessage: "Login successfully."
+                            });
+                            //console.log("what is in token-->>>" + token);
+                        })
+                    }
                 }
-            } else {
-                if (result.googleID == undefined) {
-                    res.send({ responseCode: 201, responseMessage: "You have already register with app.", user: result });
-                } else {
-                    User.findOneAndUpdate({ email: req.body.email }, {
-                        $set: {
-                            deviceType: req.body.deviceType,
-                            deviceToken: req.body.deviceToken
-                        }
-                    }, { new: true }).exec(function(err, user) {
-                        var token = jwt.sign(result, config.secreteKey);
-                        res.header({
-                            "appToken": token
-                        }).send({
-                            result: user,
-                            token: token,
-                            responseCode: 200,
-                            responseMessage: "Login successfully."
-                        });
-                        //console.log("what is in token-->>>" + token);
-                    })
-                }
-            }
-        })
+            })
+        }
     },
 
     "buyCoupon": function(req, res) { // user Id and ad Id and brolix in request
