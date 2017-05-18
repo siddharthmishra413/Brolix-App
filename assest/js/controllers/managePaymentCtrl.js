@@ -127,6 +127,7 @@ $(window).scrollTop(0,0);
                                 else{
                                     $scope.brolix[i].luckCardObject.status="Used";
                                 }
+                                console.log("brolix",JSON.stringify($scope.brolix))
                             }
 
                        } 
@@ -885,7 +886,7 @@ $(window).scrollTop(0,0);
                                     }
                                     else if(res.responseCode == 200){
                                         $scope.brolix = res.result;
-                                        //console.log("ressssssss2"+JSON.stringify($scope.brolix));
+                                        console.log("ressssssss2"+JSON.stringify($scope.brolix));
                                     }
                                     
                                 })

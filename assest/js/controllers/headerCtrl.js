@@ -85,6 +85,7 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
 })
     
      $scope.logout = function() {
+      localStorage.removeItem('token');
         $state.go('login')
     }
 

@@ -226,15 +226,17 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 })
 
 
-app.factory('BearerAuthInterceptor', function ($window, $q) {
+app.factory('BrolixAuthInterceptor', function ($window, $q, $location) {
     return {
         request: function(config) {
             config.headers = config.headers || {};
             if ($window.localStorage.getItem('token')) {
               // may also use sessionStorage
-                config.headers.Authorization = 'Bearer ' + $window.localStorage.getItem('token');
+                config.headers.servertoken = $window.localStorage.getItem('token');
+            }else{
+                $location.path('/login');
             }
-            //console.log(config)
+            //console.log("config",JSON.stringify(config))
             return config || $q.when(config);
         },
         response: function(response) {
@@ -248,14 +250,30 @@ app.factory('BearerAuthInterceptor', function ($window, $q) {
 
 // Register the previously created AuthInterceptor.
 app.config(function ($httpProvider) {
-    $httpProvider.interceptors.push('BearerAuthInterceptor');
+    $httpProvider.interceptors.push('BrolixAuthInterceptor');
 });
 
-// app.run(function($rootScope, $location, $window, $state) {
+
+// app.run(function($rootScope,$location,$window,$state) {
+    
+//     console.log('call run function');
+//     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){        
+//           if ( !localStorage.access_token) {                  
+//                $location.path('/login')
+//           }         
+//         });
+//    console.log(socket)
+  
+// })
+
+
+
+
+// app.run(function($rootScope, $location, $window, $state, userService) {
 //     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams, userService, $scope) {
 //         userService.adminProfile().success(function(res) {
 //             console.log(res);
-//             if (res.responseCode == 404) {
+//             if (res.responseCode == 403) {
 //                 //bootbox.alert(res.responseMessage);
 //                 $state.go('login')
 //             } else {

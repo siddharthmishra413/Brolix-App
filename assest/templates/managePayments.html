@@ -190,7 +190,9 @@
                                                 <td>{{dollars.upgradeCardObject.cash}}$</td>
                                                 <td class="skyblue-text" style="cursor:pointer;" ng-click="userInfo(dollars._id)">{{dollars.firstName+" "+dollars.lastName}}</td>
                                                 <td>{{dollars.email}}</td>
-                                                <td class="skyblue-text" ng-click="upgradeCardUsedAd(dollars.upgradeCardObject._id)" style="cursor: pointer">View</td>
+
+                                                <td ng-if="dollars.upgradeCardObject.status == 'ACTIVE' ">Not Used Yet</td>
+                                                <td ng-if="dollars.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(dollars.upgradeCardObject._id)">View</td>
                                                 <td class="skyblue-text" ng-click="pageCount(dollars._id)" style="cursor: pointer">{{dollars.pageCount}}</td>
                                                 <td class="skyblue-text" ng-click="upgradePayment(dollars._id)" style="cursor: pointer">View</td>
                                               </tr>
@@ -221,8 +223,12 @@
                                                 <td class="skyblue-text" ng-click="userInfo(brolix._id)" style="cursor: pointer">{{brolix.firstName+" "+brolix.lastName}}</td>
                                                 <td>{{brolix.mobileNumber}}</td>
                                                 <td >{{brolix.luckCardObject.status}}</td>
-                                                <td class="skyblue-text" ng-click="luckCardUsedAd(brolix.luckCardObject._id)" style="cursor: pointer">
-                                                <span>View</span></td>
+
+                                                <td ng-if="brolix.luckCardObject.status == 'ACTIVE' ">Not Used Yet</td>
+                                                <td ng-if="brolix.luckCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(brolix.luckCardObject._id)">View</td>
+                                                
+                                               <!--  <td class="skyblue-text" ng-click="luckCardUsedAd(brolix.luckCardObject._id)" style="cursor: pointer">
+                                                <span>View</span></td> -->
                                                 <td class="skyblue-text" ng-click="luckPayment(brolix._id)" style="cursor: pointer">View</td>
                                               </tr>
                                               <tr ng-if="(brolix |manageFilter:search).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
@@ -515,13 +521,13 @@
                    <table class="table table-bordered table-striped" >                         
                           <tr>
                               <th>Buyer Name</th>
-                              <th>Email</th>
                               <th>Mobile Number</th>
+                              <th>Sold Cards</th>
                           </tr>
                           <tr ng-repeat="buyer in userDetail">
                             <td>{{buyer.firstName+" "+buyer.lastName}}</td>
-                            <td >{{buyer.email}}</td>
-                            <td>{{buyer.mobileNumber}}</td>
+                            <td >{{buyer.mobileNumber}}</td>
+                            <td>{{buyer.upgradeCardObject.length}}</td>
                           </tr>
                          
                   </table></div>
@@ -580,14 +586,14 @@
        <div class="modal-content">
            <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Buyer/Owner Information</h4>
+               <h4 class="modal-title">Buyer Information</h4>
            </div>
            <div class="modal-body">
                <form name="userFrom1">
                <div class="table-responsive cus-table">
                    <table class="table table-bordered table-striped">                         
                           <tr>
-                              <th>Buyer/Owner Name</th>
+                              <th>Buyer Name</th>
                               <td>{{userDetail.firstName+" "+userDetail.lastName}}</td>
                           </tr>
                           <tr>

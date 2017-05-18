@@ -1816,7 +1816,7 @@ $scope.sendCard = function(cardId,type){
 
     /*----------DashBoardFilter----------*/
 
-console.log("dashBordFilter.dobTo   :   "+$scope.dashBordFilter.dobTo);
+// console.log("dashBordFilter.dobTo   :   "+$scope.dashBordFilter.dobTo);
 $scope.dashBordFilter = function(){
 
     var type = localStorage.getItem('userTypeName');
