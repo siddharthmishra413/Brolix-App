@@ -422,6 +422,10 @@ app.service('userService',function($http){
       return $http.post(baseurl+'/admin/showOfferOnCards/'+pageNo, data);
     },
 
+    showOfferCountOnCards: function(data){
+      return $http.post(baseurl+'/admin/showOfferCountOnCards', data);
+    },
+
     /*filter MangeUser section*/
 
     userfilter: function(data,pageId){

@@ -1232,6 +1232,44 @@ module.exports = {
         })
     },
 
+    "getOfferList": function(req, res){
+        var cardType = req.body.cardType;
+        if(req.body.offerType == 'discount'){
+           var typDate = { type: cardType , "offer.offerType" : req.body.offerType, "offer.buyCard": req.body.buyCard}
+        }
+        else{
+
+            var typDate = { type: cardType , "offer.offerType" : req.body.offerType, "offer.buyCard": req.body.buyCard, "offer.freeCard":  req.body.freeCard}
+        }
+        adminCards.aggregate([
+            { $unwind: '$offer' },
+            { $match: typDate }
+        ]).exec(function(err, result){
+           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if(result.length==0){
+                res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+           }else{
+                res.send({ responseCode: 200, responseMessage: 'Card lists show successfully.', result: result });
+           }
+        })
+       
+    },
+
+    "showOfferCountOnCards": function(req, res) { 
+        adminCards.aggregate([
+            { $unwind: '$offer' },
+            { $match: { type: req.body.cardType}}]).exec(function(err, result){
+               if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if(result.length==0){
+                 res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+               }else{
+                    var count = 0;
+                    for (i = 0; i < result.length; i++) {
+                            count++;
+                    }
+                    res.send({ responseCode: 200, responseMessage: 'Card count show successfully.', result: count });
+               }
+            })
+    },
+
     "createPage": function(req, res) {
         createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {

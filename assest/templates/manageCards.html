@@ -7,10 +7,10 @@
                     <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk offerbtn-s">
                             <div class="top-box">
-                                <div class="green-box">{{totalOfferUpgradeCardCount}} Offers</div>
+                                <div class="green-box">{{upgradeCardOffersCount}} Offers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="tab='upgradeCardOffer'">
+                                <div class="btn-manage show-btn w-100" ng-click="showOfferUpgrade(); tab='upgradeCardOffer'">
                                     <a>Show</a>
                                 </div>
                             </div>
@@ -86,10 +86,10 @@
                     <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk">
                             <div class="top-box">
-                                <div class="green-box">{{totalOfferLuckCardCount}} Offers</div>
+                                <div class="green-box">{{luckCardOffersCount}} Offers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="tab='luckCardOffer'">
+                                <div class="btn-manage show-btn w-100" ng-click="showOfferLuck(); tab='luckCardOffer'">
                                     <a >Show</a>
                                 </div>
                             </div>
@@ -684,14 +684,16 @@
             </div>
         </div>
     </div> -->
-    <div>
-     <ul class="nav nav-pills card-tabs">
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('BuyAndGet')">Buy & Get</a></li>
-   </ul>
-    <div class="col-sm-6" ng-switch="tab" ng-if="key == 'Discount'">
-        <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
-            <h2 class="text-center table-headingg"></h2>
+
+<div class="col-sm-12" ng-switch="tab">   
+    <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
+        <ul class="nav nav-pills card-tabs">
+            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
+            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="showOfferUpgrade('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
+        </ul>
+
+        <div class="col-sm-12" ng-switch="tab" ng-if="key == 'Discount'">
+            <h2 class="text-center table-headingg">Discount Offers</h2>
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -700,52 +702,151 @@
                         <th>Offer Created Time</th>
                         <th>Offer Expire Time</th>   
                         <th>Status</th>
+                        <th>Cards</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultUpgradeCardDiscount">
-                        <td >{{x.offer.offerType}}</td>
-                        <td>{{x.offer.buyCard}} %</td>
-                        <td >{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                        <td >{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                        <td >{{x.offer.status}}</td>
+                    <tr ng-repeat="x in totalSoldUpgradeCardDiscount">
+                        <td >Discount</td>
+                        <td>{{x._id.buyCard}} %</td>
+                        <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                        <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
+                        <td >{{x.status}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOffer(x._id.buyCard)" >{{x.count}}</td>
                     </tr>  
 
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCardCountDiscount | cardsFilter:test).length != 0">
+                <button ng-click="preOffer()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalSoldUpgradeCardsDiscount}}/{{noOfPagesTotalSoldUpgradeCardsDiscount}}
+                <button ng-click="nextOffer()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==noOfPagesTotalSoldUpgradeCardsDiscount" class="btn paginationBtn">Next</button>
+            </div>
+        </div>
+
+        <div class="col-sm-12" ng-switch="tab" ng-if="key == 'BuyAndGet'">
+            <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
+                <h2 class="text-center table-headingg">Buy & Get offers</h2>
+                <table id="manageCardTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr> 
+                            <th>Offer Type</th>
+                            <th>BuyCard</th>
+                            <th>FreeCard</th>
+                            <th>Offer Created Time</th>
+                            <th>Offer Expire Time</th>   
+                            <th>Status</th>
+                            <th>Cards</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="x in totalSoldUpgradeCardDiscountBuyGet">
+                            
+                            <td >Buy & Get</td>
+                            <td>{{x._id.buyCard}}</td>
+                            <td>{{x._id.freeCard}}</td>
+                            <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                            <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
+                            <td >{{x.status}}</td>
+                            <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOffer(x._id.buyCard)" >{{x.count}}</td>
+                        </tr>   
+                    </tbody>
+                </table>
+            </div>
+            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCardCountDiscountBuyGet | cardsFilter:test).length != 0">
+                <button ng-click="preOffer()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalSoldUpgradeCardsDiscountBuyGet}}/{{noOfPagesTotalSoldUpgradeCardsDiscountBuyGet}}
+                <button ng-click="nextOffer()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==noOfPagesTotalSoldUpgradeCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
+</div>
 
-    <div class="col-sm-6" ng-switch="tab" ng-if="key == 'BuyAndGet'">
-        <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
-        <h2 class="text-center table-headingg"></h2>
+
+
+
+
+<div class="col-sm-12" ng-switch="tab">   
+    <div class="row table-responsive border-table cus-table" ng-switch-when="luckCardOffer">
+        <ul class="nav nav-pills card-tabs">
+            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
+            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="showOfferLuck('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
+        </ul>
+
+        <div class="col-sm-12" ng-switch="tab" ng-if="key == 'Discount'">
+            <h2 class="text-center table-headingg">Discount Offers</h2>
             <table id="manageCardTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        
                         <th>Offer Type</th>
-                        <th>BuyCard</th>
-                        <th>FreeCard</th>
+                        <th>Offer In %</th>
                         <th>Offer Created Time</th>
                         <th>Offer Expire Time</th>   
                         <th>Status</th>
+                        <th>Cards</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in resultUpgradeCardBuyGet">
-                        
-                        <td >{{x.offer.offerType}}</td>
-                        <td>{{x.offer.buyCard}}</td>
-                        <td>{{x.offer.freeCard}}</td>
-                        <td >{{x.offer.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                        <td >{{x.offer.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                        <td >{{x.offer.status}}</td>
-                    </tr>   
+                    <tr ng-repeat="x in totalSoldLuckCardDiscount">
+                        <td >Discount</td>
+                        <td>{{x._id.buyCard}} %</td>
+                        <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                        <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
+                        <td >{{x.status}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOffer(x._id.buyCard)" >{{x.count}}</td>
+                    </tr>  
+
                 </tbody>
             </table>
+            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCardCountDiscount | cardsFilter:test).length != 0">
+                <button ng-click="preOffer()" ng-disabled="pageTotalSoldLuckCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalSoldLuckCardsDiscount}}/{{noOfPagesTotalSoldLuckCardsDiscount}}
+                <button ng-click="nextOffer()" ng-disabled="pageTotalSoldLuckCardsDiscount==noOfPagesTotalSoldLuckCardsDiscount" class="btn paginationBtn">Next</button>
+            </div>
+        </div>
+
+        <div class="col-sm-12" ng-switch="tab" ng-if="key == 'BuyAndGet'">
+            <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
+                <h2 class="text-center table-headingg">Buy & Get Offers</h2>
+                <table id="manageCardTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr> 
+                            <th>Offer Type</th>
+                            <th>BuyCard</th>
+                            <th>FreeCard</th>
+                            <th>Offer Created Time</th>
+                            <th>Offer Expire Time</th>   
+                            <th>Status</th>
+                            <th>Cards</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="x in totalSoldLuckCardDiscountBuyGet">
+                            
+                            <td >Buy & Get</td>
+                            <td>{{x._id.buyCard}}</td>
+                            <td>{{x._id.freeCard}}</td>
+                            <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                            <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
+                            <td >{{x.status}}</td>
+                            <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOffer(x._id.buyCard)" >{{x.count}}</td>
+                        </tr>   
+                    </tbody>
+                </table>
+            </div>
+            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCardCountDiscountBuyGet | cardsFilter:test).length != 0">
+                <button ng-click="preOffer()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
+                {{pageTotalSoldLuckCardsDiscountBuyGet}}/{{noOfPagesTotalSoldLuckCardsDiscountBuyGet}}
+                <button ng-click="nextOffer()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==noOfPagesTotalSoldLuckCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
+            </div>
         </div>
     </div>
-    </div>
+</div>
+
+
+        
+<!-- 
+
     <div class="col-sm-6" ng-switch="tab">
         <div class="row table-responsive border-table cus-table" ng-switch-when="luckCardOffer">
         <h2 class="text-center table-headingg"></h2>
@@ -802,7 +903,7 @@
             </table>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- upgradeOffer Table -->
 

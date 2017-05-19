@@ -5,7 +5,7 @@ var authUser = require('../middlewares/authUser');
 
 
 app.get('/countryListData', authUser.authUser, adminHandler.countryListData);
-app.post('/cityListData', authUser.authUser,adminHandler.cityListData);
+app.post('/cityListData',adminHandler.cityListData);
 
 app.post('/login', adminHandler.login);
 app.get('/adminProfile', authUser.authUser,adminHandler.adminProfile);
@@ -44,6 +44,9 @@ app.get('/unUsedUpgradeCard/:pageNumber', authUser.authUser,adminHandler.unUsedU
 
 /*-------------------------Manage ADS---------------------*/
 
+app.post('/showOfferCountOnCards', adminHandler.showOfferCountOnCards);
+
+app.post('/getOfferList', adminHandler.getOfferList);
 app.get('/totalAds/:pageNumber', authUser.authUser,adminHandler.totalAds);
 app.get('/totalActiveAds/:pageNumber', authUser.authUser,adminHandler.totalActiveAds);
 app.get('/totalExpiredAds/:pageNumber', authUser.authUser,adminHandler.totalExpiredAds);

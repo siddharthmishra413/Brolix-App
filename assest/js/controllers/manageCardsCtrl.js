@@ -11,152 +11,162 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
 
 $scope.key = "Discount";
 
+/*Country*/
+userService.countryListData().success(function(res) {
+    $scope.countriesList = res.result;
+})
+
+$scope.changeCountry = function(){
+    var obj = {};
+    obj = {
+      country:$scope.dashBordFilter.country,
+    }
+    userService.cityListData(obj).success(function(res) {
+    console.log("ddd",JSON.stringify(res))
+    $scope.cityList = res.result;
+  })
+}
+/*country End*/
 
 upgrade_card = {
+    cardType:'upgrade_card'
+}
+userService.showOfferCountOnCards(upgrade_card).success(function(res) {
+    if(res.responseCode == 200){
+        $scope.upgradeCardOffersCount = res.result;  
+    }else{
+        $scope.upgradeCardOffersCount = 0;
+    }
+})
+
+luck_card = {
+    cardType:'luck_card'
+}
+userService.showOfferCountOnCards(luck_card).success(function(res) {
+    if(res.responseCode == 200){
+        $scope.luckCardOffersCount = res.result;
+    }else{
+        $scope.luckCardOffersCount = 0;
+    }
+})
+
+
+
+
+
+$scope.cardOnOffer = function(id){
+    console.log("id",id);
+}
+
+
+$scope.currentPageNoUp = 1;
+$scope.showOfferUpgrade = function(key){
+    console.log("1")
+    if(key =='buyGet'){
+        console.log("yes")
+        upgrade_card = {
+            cardType:'upgrade_card',
+            offerType:'buyGet'
+        }
+    userService.showOfferOnCards(upgrade_card,$scope.currentPageNoUp).success(function(res) {
+        console.log("upgrade_card res buy",JSON.stringify(res));
+        if (res.responseCode == 200){
+            $scope.noOfPagesTotalSoldUpgradeCardsDiscountBuyGet = res.pages;
+            $scope.pageTotalSoldUpgradeCardsDiscountBuyGet = res.page;
+            $scope.totalSoldUpgradeCardDiscountBuyGet = res.docs;
+            $scope.totalSoldUpgradeCardCountDiscountBuyGet = res.total;
+        } 
+       else {
+            $scope.totalSoldUpgradeCardCount = 0;
+        }
+    })
+    }else{
+        upgrade_card = {
             cardType:'upgrade_card',
             offerType:'discount'
         }
-
-luck_card = {
-    cardType:'luck_card',
-    offerType:'discount'
+    
+        userService.showOfferOnCards(upgrade_card,$scope.currentPageNoUp).success(function(res) {
+            console.log("upgrade_card res discount",JSON.stringify(res));
+            if (res.responseCode == 200){
+                $scope.noOfPagesTotalSoldUpgradeCardsDiscount = res.pages;
+                $scope.pageTotalSoldUpgradeCardsDiscount= res.page;
+                $scope.totalSoldUpgradeCardDiscount= res.docs;
+                $scope.totalSoldUpgradeCardCountDiscount = res.total;
+            } 
+           else {
+                $scope.totalSoldUpgradeCardCount = 0;
+            }
+        })
+    }
 }
 
-    $scope.currentPageNo = 1;
-    userService.showOfferOnCards(upgrade_card,$scope.currentPageNo).success(function(res) {
-        console.log("upgrade_card res",JSON.stringify(res));
-        //console.log("res",JSON.stringify(res))
-        // if(res.responseCode == 200){
-        //     if(res.data.length == 0){
-        //         toastr.error("No data Found");
-
-        //     }else if(res.data.length != 0){
-        //         var resultUpgradeCardDiscount = res.data.filter(function( obj ) {
-        //       return obj.offer.offerType == 'discount';
-        //     });
-        //     $scope.resultUpgradeCardDiscount = resultUpgradeCardDiscount;            
-        //     var resultUpgradeCardBuyGet = res.data.filter(function( obj ) {
-        //       return obj.offer.offerType == 'buyGet';
-        //     });
-        //     $scope.resultUpgradeCardBuyGet=resultUpgradeCardBuyGet;
-        //     $scope.totalOfferUpgradeCardCount=resultUpgradeCardDiscount.length+resultUpgradeCardBuyGet.length;
-        //     }
-            
-
-        // }
-        // else{
-        //     toastr.error(res.responseMessage);
-        // }
-
+$scope.currentPageNoLuck = 1;
+$scope.showOfferLuck = function(key){
+    console.log("100")
+    if(key =='buyGet'){
+        console.log("yes")
+        luck_card = {
+            cardType:'luck_card',
+            offerType:'buyGet'
+        }
+    userService.showOfferOnCards(luck_card,$scope.currentPageNoLuck).success(function(res) {
+        console.log("luck_card res buy",JSON.stringify(res));
+        if (res.responseCode == 200){
+            $scope.noOfPagesTotalSoldLuckCardsDiscountBuyGet = res.pages;
+            $scope.pageTotalSoldLuckCardsDiscountBuyGet = res.page;
+            $scope.totalSoldLuckCardDiscountBuyGet = res.docs;
+            $scope.totalSoldLuckCardCountDiscountBuyGet = res.total;
+        } 
+       else {
+            $scope.totalSoldUpgradeCardCount = 0;
+        }
     })
+    }else{
+        luck_card = {
+            cardType:'luck_card',
+            offerType:'discount'
+        }
+    
+        userService.showOfferOnCards(luck_card,$scope.currentPageNoLuck).success(function(res) {
+            console.log("luck_card res discount",JSON.stringify(res));
+            if (res.responseCode == 200){
+                $scope.noOfPagesTotalSoldLuckCardsDiscount = res.pages;
+                $scope.pageTotalSoldLuckCardsDiscount= res.page;
+                $scope.totalSoldLuckCardDiscount= res.docs;
+                $scope.totalSoldLuckCardCountDiscount = res.total;
+            } 
+           else {
+                $scope.totalSoldUpgradeCardCount = 0;
+            }
+        })
+    }
+}
 
-    userService.showOfferOnCards(luck_card,$scope.currentPageNo).success(function(res){
-        console.log("luck_card res",JSON.stringify(res));
-        // if(res.responseCode == 200){
-        //     if(res.data.length == 0){
-        //         toastr.error("No data Found");
+$scope.preOffer = function(){
+    $scope.currentPageNoUp--;
+    $scope.currentPageNoLuck--;
+    $scope.showOfferUpgrade();
 
-        //     }else if(res.data.length != 0){
-        //         var resultLuckCardDiscount = res.data.filter(function( obj ) {
-        //       return obj.offer.offerType == 'discount';
-        //     });
-        //     $scope.resultLuckCardDiscount = resultLuckCardDiscount;            
-        //     var resultLuckCardBuyGet = res.data.filter(function( obj ) {
-        //       return obj.offer.offerType == 'buyGet';
-        //     });
-        //     $scope.resultLuckCardBuyGet=resultLuckCardBuyGet;
-        //     $scope.totalOfferLuckCardCount=resultLuckCardDiscount.length+resultLuckCardBuyGet.length;
-        //     }
-        // }
-        // else{
-        //     toastr.error(res.responseMessage);
-        // }
+}
 
-    })
-
-
-
-
-
-
-
-
-
-
-
-
-
+$scope.nextOffer = function(){
+    $scope.currentPageNoUp++;
+    $scope.currentPageNoLuck++;
+    $scope.showOfferUpgrade();
+}
 
 
 
 
 $scope.getdata = function(data)
 {
+    console.log("data",data)
     $scope.key = data;
 }
-//     //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-//     var currentCities=[];
-//    $scope.currentCountry= '';
-// var BATTUTA_KEY="00000000000000000000000000000000"
-//    // Populate country select box from battuta API
-//  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-//    $.getJSON(url,function(countries)
-//    {
-//      $timeout(function(){
-//        $scope.countriesList=countries;
-//      },100)
-     
-     
-//    });
-//  var countryCode;
-//    $scope.changeCountry = function(){
-//      for(var i=0;i<$scope.countriesList.length;i++){
-//        if($scope.countriesList[i].name==$scope.dashBordFilter.country){
-//          countryCode=$scope.countriesList[i].code;
-//          //console.log(countryCode)
-//          break;
-//        }
-//      }
-//      var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-//      $.getJSON(url,function(regions)
-//      {
-//        //console.log('state list:   '+JSON.stringify(regions))
-//            $timeout(function(){
-//             $scope.stateList = regions;
-//            },100)
-//      });
-//    }
-
-//    $scope.changeState = function(){
-//      //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
-//      var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
-//      $.getJSON(url,function(cities)
-//      {
-//        // console.log('city list:   '+JSON.stringify(cities))
-//            $timeout(function(){
-//             $scope.cityList = cities;
-//            },100)
-//      })
-//    }
 
 
-    userService.countryListData().success(function(res) {
-      //console.log("ddd",JSON.stringify(res))
-      $scope.countriesList = res.result;
-    })
-
-    $scope.changeCountry = function(){
-        var obj = {};
-        obj = {
-          country:$scope.dashBordFilter.country,
-        }
-        userService.cityListData(obj).success(function(res) {
-        console.log("ddd",JSON.stringify(res))
-        $scope.cityList = res.result;
-      })
-
-
-    }
+    
 
     $scope.total_user_message = function (modal) {
 
