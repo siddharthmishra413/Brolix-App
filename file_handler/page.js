@@ -2528,7 +2528,9 @@ if(req.body.pageName){
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
 
                             User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+                                else if(!user){res.send({responseCode: 200,responseMessage: "Coupon successfully sent to advertiser page."});}
+                                    else {
                                     for (var i = 0; i < user.hiddenGifts.length; i++) {
                                         if (user.hiddenGifts[i].adId == adId) {
                                             var code = user.hiddenGifts[i].hiddenCode;

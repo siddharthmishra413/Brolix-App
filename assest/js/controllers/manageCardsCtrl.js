@@ -7,6 +7,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     $scope.myForm = {};
     var upgrade_card = {};
     var luck_card = {};
+    $scope.cardDetailsOnOffer = {};
     $scope.dashBordFilter = {};
 
 $scope.key = "Discount";
@@ -54,8 +55,26 @@ userService.showOfferCountOnCards(luck_card).success(function(res) {
 
 
 
-$scope.cardOnOffer = function(id){
+$scope.cardOnOfferUpgrade = function(id,type){
     console.log("id",id);
+    console.log("type",type);
+    cardDetailsOnOffer = {
+        cardType:"upgrade_card",
+        offerType:type,
+        buyCard:id
+    }
+    console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
+}
+
+$scope.cardOnOfferLuck = function(id,type){
+    console.log("id",id);
+    console.log("type",type);
+    cardDetailsOnOffer = {
+        cardType:"luck_card",
+        offerType:type,
+        buyCard:id
+    }
+    console.log("cardOnOfferLuck",cardDetailsOnOffer);
 }
 
 

@@ -1271,25 +1271,50 @@ module.exports = {
     },
 
     "editOfferonCards": function(req, res){
-        // adminCards.findOneAndUpdate({'offer._id':req.body.offerId},{$set:req.body}).exec(function(err, result){
-        //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-        //         res.send({
-        //             result: result,
-        //             responseCode: 200,
-        //             responseMessage: "Page create successfully."
-        //         });
-        //     }
-        // })
-        adminCards.findOneAndUpdate({_id: req.body.cardId, 'offer._id': req.body.offerId}, {$set : {'offer.$.buyCard':req.body.buyCard}}, {
+
+        if(req.body.offerType == 'discount'){
+           var query = {'offer.$.buyCard':req.body.buyCard,"offer.$.offerTime":req.body.offerTime}
+        }
+        else{
+           var query = {'offer.$.buyCard':req.body.buyCard, 'offer.$.freeCard':req.body.freeCard,"offer.$.offerTime":req.body.offerTime}
+        }
+        adminCards.findOneAndUpdate({'offer._id': req.body.offerId}, {$set : query }, {
             new: true
         }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: "Ad edit."
+                responseMessage: "Successfully updated."
             });
         });
+    },
+
+    "showCardDetails": function(req, res){
+        adminCards.find({}).exec(function(err, result){
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else{
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Card details."
+                });
+            }
+        })
+    },
+
+    "removeOfferonCards": function(req, res){
+        adminCards.findOneAndUpdate({'offer._id': req.body.offerId}, {$set : {'offer.$.status' : 'REMOVED'} }, {
+            new: true
+        }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Removed successfully."
+            });
+        });
+
     },
 
     "createPage": function(req, res) {

@@ -3,8 +3,11 @@ var app = express();
 var adminHandler = require('../file_handler/admin.js');
 var authUser = require('../middlewares/authUser');
 
+app.post('/removeOfferonCards',adminHandler.removeOfferonCards);
+
 app.post('/editOfferonCards',adminHandler.editOfferonCards);
 
+app.get('/showCardDetails',adminHandler.showCardDetails);
 app.get('/countryListData', authUser.authUser, adminHandler.countryListData);
 app.post('/cityListData',adminHandler.cityListData);
 
