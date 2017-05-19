@@ -700,6 +700,262 @@ module.exports = {
         ])
     },
 
+    "allAreWinners": function(req, res) { //req.body.userId, adId
+        var userId = req.body.userId;
+        waterfall([
+            //function(callback) {
+            //     createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
+            //         if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
+            //             User.findOne({ _id: userId }).exec(function(err, result1) {
+            //                 if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+            //                     var age = result1.dob;
+
+            //                     function _calculateAge(birthday) { // birthday is a date
+            //                         var ageDifMs = Date.now() - birthday.getTime();
+            //                         var ageDate = new Date(ageDifMs); // miliseconds from epoch
+            //                         return Math.abs(ageDate.getUTCFullYear() - 1970);
+            //                     }
+            //                     var myAge = _calculateAge(new Date(age))
+            //                     console.log("myAge-->", myAge)
+
+            //                     if (result.gender != 'Both') {
+            //                         if (result.gender != result1.gender) {
+            //                             { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); }
+            //                         } else {
+            //                             if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'YSorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+            //                                 var country = result.whoWillSeeYourAdd.country;
+            //                                 // var state = result.whoWillSeeYourAdd.state;
+            //                                 var city = result.whoWillSeeYourAdd.city;
+
+            //                                 if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+            //                                     callback(null)
+            //                                 }
+            //                             }
+            //                         }
+            //                     } else {
+            //                         if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+            //                             var country = result.whoWillSeeYourAdd.country;
+            //                             var state = result.whoWillSeeYourAdd.state;
+            //                             var city = result.whoWillSeeYourAdd.city;
+
+            //                             if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+            //                                 callback(null, result)
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //             })
+            //         }
+            //     })
+            // },
+            // function(adResult, callback) {
+            //     if (adResult.adsType == 'cash') {
+            //         if (adResult.cash > 0) {
+            //             var type = "freeViewersPerCashAds";
+            //         } else {
+            //             var type = "brolixPerFreeCashAds";
+            //         }
+            //     } else if (adResult.adsType == 'coupon') {
+            //         if (adResult.cash > 0) {
+            //             var type = "freeViewersPerCashAds";
+            //         } else {
+            //             var type = "brolixPerFreeCouponAds";
+            //         }
+            //     }
+            //     console.log("type-->>", type)
+            //     brolixAndDollors.findOne({
+            //         type: type
+            //     }, function(err, result) {
+            //         var value = result.value
+            //         callback(null, value)
+            //     })
+            // },
+            function( callback) {
+                createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                        var randomIndex = [];
+                        var raffleCount = result.raffleCount;
+                        var viewerLenght = result.viewerLenght;
+                        var numberOfWinners = result.numberOfWinners;
+
+                        var mySet = new Set(raffleCount);
+                        var has = mySet.has(userId)
+                        if (has) { res.send({ responseCode: 302, responseMessage: "You have already won this raffle." }) }
+                        // else if (!has) raffleCount.push(userId);
+                        else if (!has) {
+                            raffleCount.push(userId);
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: 500, brolixAds: 500 } }, { new: true }, function(err, result1) {
+                                console.log("raffleCount--->>>" + raffleCount.length);
+                            })
+
+                            if (raffleCount.length != viewerLenght) {
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
+                                        console.log("success-->>", success)
+                                        var pageId = success.pageId;
+                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +1 } }, { new: true }).exec(function(err, result2) {
+                                            console.log("result2-->", result2)
+                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+                                                console.log("in else")
+                                            }
+                                        })
+                                    }
+                                })
+                                console.log("raffleCount--111->>>" + raffleCount.length);
+                                
+                                callback(null,  result.cashAdPrize, result.couponCode, result.hiddenGifts)
+                            } else {
+
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId } }, function(err, success) {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22." }); } else {
+                                        res.send({
+                                            responseCode: 200,
+                                            responseMessage: "You have successfully win this raffle."
+                                        })
+                                    }
+                                });
+                                callback(null,  result.cashAdPrize, result.couponCode, result.hiddenGifts)
+                            }
+                        }
+                    }
+                })
+            },
+            function( cashPrize, couponCode, hiddenGifts, callback) {
+                createNewAds.update({ _id: req.body.adId }, { $push: { winners: req.body.userId } }).lean().exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
+
+                        var date = new Date();
+
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired: true } }, function(err, result3) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
+
+                                if (result3.adsType == "cash") {
+                                    var pageId = result3.pageId;
+
+                                    var data = {
+                                        cash: cashPrize,
+                                        adId: req.body.adId,
+                                        pageId: pageId
+                                    }
+                                    User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
+                                            if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                var message = "You have successfully won this Raffle.";
+                                                functions.android_notification(result.deviceToken, message);
+                                                console.log("Android notification send!!!!")
+                                            } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                functions.iOS_notification(result.deviceToken, message);
+                                            } else {
+                                                console.log("Something wrong!!!!")
+                                            }
+                                            res.send({
+                                                responseCode: 200,
+                                                responseMessage: "Raffle is over."
+                                                    //result: result 
+                                            })
+                                        }
+                                    })
+
+                                } else {
+                                    var startTime = new Date().toUTCString();
+                                    var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+                                    var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+                                    var s = Date.now(m)
+                                    var pageId = result3.pageId;
+                                    var coupanAge = result3.couponExpiryDate;
+                                    var actualTime = parseInt(s) + parseInt(coupanAge);
+                                    console.log("coupanAge--->>", coupanAge)
+                                    var neverExpireTime = parseInt(s) + parseInt(2125651954361);
+                                    console.log("coupanAge--->>", coupanAge)
+                                    console.log("neverExpireTime--->>", neverExpireTime)
+                                    if (coupanAge == 'NEVER') {
+                                        console.log("if")
+                                        var data = {
+                                            couponCode: couponCode,
+                                            adId: req.body.adId,
+                                            pageId: pageId,
+                                            type: "WINNER",
+                                            couponExpire: "NEVER",
+                                            expirationTime: neverExpireTime
+                                        }
+                                    } else {
+                                        console.log("else")
+                                        var data = {
+                                            couponCode: couponCode,
+                                            expirationTime: actualTime,
+                                            adId: req.body.adId,
+                                            pageId: pageId,
+                                            type: "WINNER",
+                                            couponExpire: "YES"
+                                        }
+                                    }
+                                    console.log("data---->>>>", data)
+                                    if (hiddenGifts.length != 0) {
+                                        console.log("if")
+                                        var hiddenCode = hiddenGifts;
+                                        var count = 0;
+                                        for (var i = 0; i < hiddenCode.length; i++) {
+                                            var data1 = {
+                                                hiddenCode: hiddenCode[i],
+                                                adId: req.body.adId,
+                                                pageId: pageId
+                                            }
+                                            User.update({ _id: req.body.userId  }, { $push: { coupon: data, hiddenGifts: data1 }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                                console.log("4")
+                                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                    count += i;
+                                                    if ((i * i) == count) {
+                                                        if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                            var message = "You have successfully won this Raffle.";
+                                                            functions.android_notification(result.deviceToken, message);
+                                                            console.log("Android notification send!!!!")
+                                                        } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                            functions.iOS_notification(result.deviceToken, message);
+                                                        } else {
+                                                            console.log("Something wrong!!!!")
+                                                        }
+                                                        res.send({
+                                                            responseCode: 200,
+                                                            responseMessage: "Raffle is over."
+                                                                //result: result
+                                                        })
+                                                    }
+                                                }
+                                            })
+                                        }
+
+                                    } else {
+                                        console.log("else")
+                                        User.update({ _id: req.body.userId }, { $push: { coupon: data }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                            console.log("4")
+                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                    var message = "You have successfully won this Raffle.";
+                                                    functions.android_notification(result.deviceToken, message);
+                                                    console.log("Android notification send!!!!")
+                                                } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                    functions.iOS_notification(result.deviceToken, message);
+                                                } else {
+                                                    console.log("Something wrong!!!!")
+                                                }
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "Raffle is over winner decided."
+                                                        //result: result
+                                                })
+                                            }
+                                        })
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
+            }
+        ])
+    },
+
+
     //API for Follow and unfollow
     "adFollowUnfollow": function(req, res) {
         if (req.body.follow == "follow") {

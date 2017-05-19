@@ -199,6 +199,7 @@ var createNewAdsSchema = new Schema({
     uploadFile: { type: String },
     backgroundimage: { type: String },
     adExpired: { type: Boolean },
+    allAreWinners: { type: Boolean },
     createdAt: {
         type: Date,
         default: Date.now
