@@ -18,6 +18,7 @@ var product = require('./routes/product.js');
 var reportProblem = require('./routes/reportProblem.js');
 var terms = require('./routes/termsConditions.js');
 var tool = require('./routes/brolixAndDollors.js');
+var pageFollow = require('./routes/pageFollow.js');
 var mongoose = require('mongoose');
 var logger = require('morgan');
 mongoose.Promise = global.Promise;
@@ -87,6 +88,7 @@ app.use('/follower', follower);
 app.use('/product', product);
 app.use('/terms', terms);
 app.use('/tool', tool)
+app.use('/pageFollow', pageFollow)
 
 
 

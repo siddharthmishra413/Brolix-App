@@ -126,6 +126,7 @@ var createNewPageSchema = new mongoose.Schema({
         default: 0
     },
     socialMedia: [],
+    blockedUser: [],
     countryCode:{ type:String},
     locationDescription:{type:String},
     commentCount: { type: Number, default: 0 },

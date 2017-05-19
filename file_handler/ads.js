@@ -871,13 +871,18 @@ module.exports = {
                 })
             },
             function( cashPrize, couponCode, hiddenGifts, callback) {
+                console.log("cashPrize--->>",cashPrize)
+                console.log("couponCode--->>",couponCode)
+                console.log("hiddenGifts--->>",hiddenGifts)
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: req.body.userId } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
+                         console.log("result.winners)--->>",result.winners)
 
                         var date = new Date();
 
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired: true } }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
+                                console.log("result3-->>",result3)
 
                                 if (result3.adsType == "cash") {
                                     var pageId = result3.pageId;
@@ -888,6 +893,7 @@ module.exports = {
                                         pageId: pageId
                                     }
                                     User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' }, $inc: { gifts: 1 } }, { multi: true }, function(err, result) {
+                                        console.log("result-->>",result)
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                             if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
                                                 var message = "You have successfully won this Raffle.";
