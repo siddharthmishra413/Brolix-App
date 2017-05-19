@@ -1270,6 +1270,28 @@ module.exports = {
             })
     },
 
+    "editOfferonCards": function(req, res){
+        // adminCards.findOneAndUpdate({'offer._id':req.body.offerId},{$set:req.body}).exec(function(err, result){
+        //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+        //         res.send({
+        //             result: result,
+        //             responseCode: 200,
+        //             responseMessage: "Page create successfully."
+        //         });
+        //     }
+        // })
+        adminCards.findOneAndUpdate({_id: req.body.cardId, 'offer._id': req.body.offerId}, {$set : {'offer.$.buyCard':req.body.buyCard}}, {
+            new: true
+        }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "Ad edit."
+            });
+        });
+    },
+
     "createPage": function(req, res) {
         createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {

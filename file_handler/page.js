@@ -266,11 +266,17 @@ module.exports = {
 
     //API for Show Search
     "searchForPages": function(req, res) {
+if(req.body.pageName){
+            var re = new RegExp("^"+req.body.pageName,"i");
+            var page = { $regex: re ,$options: "i" }
+}else{
+    page = ""
+}
         var data = {
             'country': req.body.country,
             'state': req.body.state,
             'city': req.body.city,
-            'pageName': req.body.pageName,
+            'pageName':page ,
             'category': req.body.category,
             'subCategory': req.body.subCategory
         }

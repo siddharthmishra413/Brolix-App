@@ -718,14 +718,14 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCardCountDiscount | cardsFilter:test).length != 0">
-                <button ng-click="preOffer()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preOfferUpgradeDiscount()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldUpgradeCardsDiscount}}/{{noOfPagesTotalSoldUpgradeCardsDiscount}}
-                <button ng-click="nextOffer()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==noOfPagesTotalSoldUpgradeCardsDiscount" class="btn paginationBtn">Next</button>
+                <button ng-click="nextOfferUpgradeDiscount()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==noOfPagesTotalSoldUpgradeCardsDiscount" class="btn paginationBtn">Next</button>
             </div>
         </div>
 
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'BuyAndGet'">
-            <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
+           <!--  <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer"> -->
                 <h2 class="text-center table-headingg">Buy & Get offers</h2>
                 <table id="manageCardTable" class="table table-bordered table-striped">
                     <thead>
@@ -752,12 +752,12 @@
                         </tr>   
                     </tbody>
                 </table>
-            </div>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCardCountDiscountBuyGet | cardsFilter:test).length != 0">
-                <button ng-click="preOffer()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalSoldUpgradeCardsDiscountBuyGet}}/{{noOfPagesTotalSoldUpgradeCardsDiscountBuyGet}}
-                <button ng-click="nextOffer()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==noOfPagesTotalSoldUpgradeCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
-            </div>
+                <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCardCountDiscountBuyGet | cardsFilter:test).length != 0">
+                    <button ng-click="preOfferUpgradeBuyGet()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
+                    {{pageTotalSoldUpgradeCardsDiscountBuyGet}}/{{noOfPagesTotalSoldUpgradeCardsDiscountBuyGet}}
+                    <button ng-click="nextOfferUpgradeBuyGet()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==noOfPagesTotalSoldUpgradeCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
+                </div>
+           <!--  </div> -->
         </div>
     </div>
 </div>
@@ -799,14 +799,14 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCardCountDiscount | cardsFilter:test).length != 0">
-                <button ng-click="preOffer()" ng-disabled="pageTotalSoldLuckCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preOfferLuckCardDiscount()" ng-disabled="pageTotalSoldLuckCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldLuckCardsDiscount}}/{{noOfPagesTotalSoldLuckCardsDiscount}}
-                <button ng-click="nextOffer()" ng-disabled="pageTotalSoldLuckCardsDiscount==noOfPagesTotalSoldLuckCardsDiscount" class="btn paginationBtn">Next</button>
+                <button ng-click="nextOfferLuckCardDiscount()" ng-disabled="pageTotalSoldLuckCardsDiscount==noOfPagesTotalSoldLuckCardsDiscount" class="btn paginationBtn">Next</button>
             </div>
         </div>
 
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'BuyAndGet'">
-            <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
+            <!-- <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer"> -->
                 <h2 class="text-center table-headingg">Buy & Get Offers</h2>
                 <table id="manageCardTable" class="table table-bordered table-striped">
                     <thead>
@@ -835,11 +835,11 @@
                 </table>
             </div>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCardCountDiscountBuyGet | cardsFilter:test).length != 0">
-                <button ng-click="preOffer()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preOfferLuckcardBuyGet()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldLuckCardsDiscountBuyGet}}/{{noOfPagesTotalSoldLuckCardsDiscountBuyGet}}
-                <button ng-click="nextOffer()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==noOfPagesTotalSoldLuckCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
+                <button ng-click="nextOfferLuckcardBuyGet()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==noOfPagesTotalSoldLuckCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
             </div>
-        </div>
+<!--         </div> -->
     </div>
 </div>
 

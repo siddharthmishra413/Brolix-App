@@ -15,6 +15,7 @@ var Views = require("./model/views");
 var mongoose = require('mongoose');
 var brolixAndDollors = require("./model/brolixAndDollors");
 var User = require("./model/user");
+var uploadFile = require("./model/savedFiles")
 
 
 // cloudinary.config({
@@ -31,6 +32,55 @@ var avoid = {
     "password": 0
 }
 module.exports = {
+
+    "uploadMp3Files": function(req, res) {
+        console.log(req.files);
+        var imageUrl = [];
+        var form = new multiparty.Form();
+        form.parse(req, function(err, fields, files) {
+            var a = 0;
+            for (var i = 0; i < files.mp3files.length; i++) {
+                var img = files.mp3files[i];
+                var fileName = files.mp3files[i].originalFilename;
+                cloudinary.uploader.upload(img.path, function(result) {
+                    console.log(result)
+                    if (result.url) {
+                        var data={
+                            fileUrl: result.url,
+                            fileName:result.public_id
+                        }
+                        console.log(data)
+                        var fileData= new uploadFile(data);
+                        fileData.save(function(err, ress){
+                        a += i;
+                        if (a == i * i) {
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: "File uploaded successfully."
+                            });
+                        }
+                    })
+                    } else {
+                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+                    }
+
+                }, {
+                    resource_type: "auto",
+                    chunk_size: 6000000
+                });
+            }
+        })
+    },
+
+
+    "getMp3Files":function(req, res){
+        uploadFile.find({}, function(err, result){
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+            else {
+                res.send({ result: result, responseCode: 200, responseMessage: "Mp3 files shows successfully." });
+            }
+        })
+    },
 
     "createAds": function(req, res) {
         if (req.body.adsType == "coupon") {

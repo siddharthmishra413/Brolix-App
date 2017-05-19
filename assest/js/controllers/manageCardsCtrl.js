@@ -59,7 +59,8 @@ $scope.cardOnOffer = function(id){
 }
 
 
-$scope.currentPageNoUp = 1;
+$scope.currentPageNoUpdis = 1;
+$scope.currentPageNoUpbuy = 1;
 $scope.showOfferUpgrade = function(key){
     console.log("1")
     if(key =='buyGet'){
@@ -68,7 +69,8 @@ $scope.showOfferUpgrade = function(key){
             cardType:'upgrade_card',
             offerType:'buyGet'
         }
-    userService.showOfferOnCards(upgrade_card,$scope.currentPageNoUp).success(function(res) {
+        console.log("$scope.currentPageNoUpbuy",$scope.currentPageNoUpbuy);
+    userService.showOfferOnCards(upgrade_card,$scope.currentPageNoUpbuy).success(function(res) {
         console.log("upgrade_card res buy",JSON.stringify(res));
         if (res.responseCode == 200){
             $scope.noOfPagesTotalSoldUpgradeCardsDiscountBuyGet = res.pages;
@@ -85,8 +87,8 @@ $scope.showOfferUpgrade = function(key){
             cardType:'upgrade_card',
             offerType:'discount'
         }
-    
-        userService.showOfferOnCards(upgrade_card,$scope.currentPageNoUp).success(function(res) {
+        console.log("$scope.currentPageNoUpdis",$scope.currentPageNoUpdis);
+        userService.showOfferOnCards(upgrade_card,$scope.currentPageNoUpdis).success(function(res) {
             console.log("upgrade_card res discount",JSON.stringify(res));
             if (res.responseCode == 200){
                 $scope.noOfPagesTotalSoldUpgradeCardsDiscount = res.pages;
@@ -101,7 +103,8 @@ $scope.showOfferUpgrade = function(key){
     }
 }
 
-$scope.currentPageNoLuck = 1;
+$scope.currentPageNoLuckdis = 1;
+$scope.currentPageNoLuckbuy = 1;
 $scope.showOfferLuck = function(key){
     console.log("100")
     if(key =='buyGet'){
@@ -110,7 +113,8 @@ $scope.showOfferLuck = function(key){
             cardType:'luck_card',
             offerType:'buyGet'
         }
-    userService.showOfferOnCards(luck_card,$scope.currentPageNoLuck).success(function(res) {
+        console.log("$scope.currentPageNoLuckbuy",$scope.currentPageNoLuckbuy)
+    userService.showOfferOnCards(luck_card,$scope.currentPageNoLuckbuy).success(function(res) {
         console.log("luck_card res buy",JSON.stringify(res));
         if (res.responseCode == 200){
             $scope.noOfPagesTotalSoldLuckCardsDiscountBuyGet = res.pages;
@@ -123,12 +127,13 @@ $scope.showOfferLuck = function(key){
         }
     })
     }else{
+        console.log("$scope.currentPageNoLuckdis",$scope.currentPageNoLuckdis)
         luck_card = {
             cardType:'luck_card',
             offerType:'discount'
         }
     
-        userService.showOfferOnCards(luck_card,$scope.currentPageNoLuck).success(function(res) {
+        userService.showOfferOnCards(luck_card,$scope.currentPageNoLuckdis).success(function(res) {
             console.log("luck_card res discount",JSON.stringify(res));
             if (res.responseCode == 200){
                 $scope.noOfPagesTotalSoldLuckCardsDiscount = res.pages;
@@ -143,17 +148,49 @@ $scope.showOfferLuck = function(key){
     }
 }
 
-$scope.preOffer = function(){
-    $scope.currentPageNoUp--;
-    $scope.currentPageNoLuck--;
+$scope.preOfferUpgradeDiscount = function(){
+    $scope.currentPageNoUpdis--;
     $scope.showOfferUpgrade();
 
 }
 
-$scope.nextOffer = function(){
-    $scope.currentPageNoUp++;
-    $scope.currentPageNoLuck++;
+$scope.nextOfferUpgradeDiscount = function(){
+    $scope.currentPageNoUpdis++;
     $scope.showOfferUpgrade();
+}
+
+
+$scope.preOfferUpgradeBuyGet = function(){
+    $scope.currentPageNoUpbuy--;
+    $scope.showOfferUpgrade('buyGet');
+
+}
+
+$scope.nextOfferUpgradeBuyGet = function(){
+    $scope.currentPageNoUpbuy++;
+    $scope.showOfferUpgrade('buyGet');
+}
+
+$scope.preOfferLuckCardDiscount = function(){
+    $scope.currentPageNoLuckdis--;
+    $scope.showOfferLuck();
+
+}
+
+$scope.nextOfferLuckCardDiscount = function(){
+    $scope.currentPageNoLuckdis++;
+    $scope.showOfferLuck();
+}
+
+$scope.preOfferLuckcardBuyGet = function(){
+    $scope.currentPageNoLuckbuy--;
+    $scope.showOfferLuck('buyGet');
+
+}
+
+$scope.nextOfferLuckcardBuyGet = function(){
+    $scope.currentPageNoLuckbuy++;
+    $scope.showOfferLuck('buyGet');
 }
 
 
