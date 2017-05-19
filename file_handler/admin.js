@@ -43,13 +43,10 @@ module.exports = {
     "login": function(req, res) {
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
-            User.findOne({ email: req.body.email, password: req.body.password, $or: [{ 'type': 'ADMIN' }, { 'type': 'SYSTEMADMIN' }],               status: 'ACTIVE' }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                 else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); }
-                  else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); }
-                   else if (result.email != req.body.email) {
-                    res.send({responseCode: 404, responseMessage: "The email address that you've entered doesn't match any account." }); }
-                     else {
+            User.findOne({ email: req.body.email, password: req.body.password, $or: [{ 'type': 'ADMIN' }, { 'type': 'SYSTEMADMIN' }], status: 'ACTIVE' }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
+                    res.send({ responseCode: 404, responseMessage: "The email address that you've entered doesn't match any account." });
+                } else {
                     // sets a cookie with the user's info
                     req.session.user = result;
                     var token = jwt.sign(result, config.secreteKey);
@@ -1162,27 +1159,27 @@ module.exports = {
         var page = String(pageNumber);
 
         var cardType = req.body.cardType;
-        if(req.body.offerType == 'discount'){
-            var groupQuery ={"buyCard": '$offer.buyCard'}
+        if (req.body.offerType == 'discount') {
+            var groupQuery = { "buyCard": '$offer.buyCard' }
             var fieldData = 'discount'
-        }
-        else{
-            var groupQuery ={"buyCard": '$offer.buyCard',"freeCard": '$offer.freeCard'}
+        } else {
+            var groupQuery = { "buyCard": '$offer.buyCard', "freeCard": '$offer.freeCard' }
             var fieldData = 'buyGet'
         }
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: cardType , "offer.offerType" : req.body.offerType} },
-            { $group: {
-                _id: groupQuery,
-                "count": { "$sum": 1 },
-                offerTime: { $max: "$offer.offerTime" },
-                createdAt: { $min: "$offer.createdAt" },
-                status: { 
-                  $sum: { $cond:[{ $eq: ["$offer.status", 'ACTIVE'] }, 1, 0]  }
-                },
-                offerType:{ "$sum": 0 }
-            }}
+            { $match: { type: cardType, "offer.offerType": req.body.offerType } }, {
+                $group: {
+                    _id: groupQuery,
+                    "count": { "$sum": 1 },
+                    offerTime: { $max: "$offer.offerTime" },
+                    createdAt: { $min: "$offer.createdAt" },
+                    status: {
+                        $sum: { $cond: [{ $eq: ["$offer.status", 'ACTIVE'] }, 1, 0] }
+                    },
+                    offerType: { "$sum": 0 }
+                }
+            }
         ]).exec(function(err, result1) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var count = 0;
@@ -1192,38 +1189,38 @@ module.exports = {
                 var pages = Math.ceil(count / 8);
                 adminCards.aggregate([
                     { $unwind: '$offer' },
-                    { $match: { type: cardType , "offer.offerType" : req.body.offerType} },
-                    { $group: {
-                        _id: groupQuery,
-                        "count": { "$sum": 1 },
-                        offerTime: { $max: "$offer.offerTime" },
-                        createdAt: { $min: "$offer.createdAt" },
-                        status: { 
-                          $sum: { $cond:[{ $eq: ["$offer.status", 'ACTIVE'] }, 1, 0]  }
-                        },
-                        offerType:{ "$sum": 0 }
-                    }},
+                    { $match: { type: cardType, "offer.offerType": req.body.offerType } }, {
+                        $group: {
+                            _id: groupQuery,
+                            "count": { "$sum": 1 },
+                            offerTime: { $max: "$offer.offerTime" },
+                            createdAt: { $min: "$offer.createdAt" },
+                            status: {
+                                $sum: { $cond: [{ $eq: ["$offer.status", 'ACTIVE'] }, 1, 0] }
+                            },
+                            offerType: { "$sum": 0 }
+                        }
+                    },
                     { $limit: limitData }, { $skip: skips }
                 ]).exec(function(err, result) {
                     var limit = 0;
-                    for(var i=0; i<result.length; i++){
-                         limit++;
-                         result[i].offerType = fieldData;
-                         if(result[i].status == 0){
-                              result[i].status = 'EXPIRED';
-                         }
-                         else{
+                    for (var i = 0; i < result.length; i++) {
+                        limit++;
+                        result[i].offerType = fieldData;
+                        if (result[i].status == 0) {
+                            result[i].status = 'EXPIRED';
+                        } else {
                             result[i].status = 'ACTIVE';
 
-                         }
+                        }
                     }
-                    res.send({ 
+                    res.send({
                         docs: result,
                         total: count,
                         limit: limit,
                         page: page,
                         pages: pages,
-                        responseCode: 200, 
+                        responseCode: 200,
                         responseMessage: 'Find all offers on card successfully'
                     });
                 })
@@ -1232,53 +1229,52 @@ module.exports = {
         })
     },
 
-    "getOfferList": function(req, res){
+    "getOfferList": function(req, res) {
         var cardType = req.body.cardType;
-        if(req.body.offerType == 'discount'){
-           var typDate = { type: cardType , "offer.offerType" : req.body.offerType, "offer.buyCard": req.body.buyCard}
-        }
-        else{
+        if (req.body.offerType == 'discount') {
+            var typDate = { type: cardType, "offer.offerType": req.body.offerType, "offer.buyCard": req.body.buyCard }
+        } else {
 
-            var typDate = { type: cardType , "offer.offerType" : req.body.offerType, "offer.buyCard": req.body.buyCard, "offer.freeCard":  req.body.freeCard}
+            var typDate = { type: cardType, "offer.offerType": req.body.offerType, "offer.buyCard": req.body.buyCard, "offer.freeCard": req.body.freeCard }
         }
         adminCards.aggregate([
             { $unwind: '$offer' },
             { $match: typDate }
-        ]).exec(function(err, result){
-           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if(result.length==0){
+        ]).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: 'Data not found.' });
-           }else{
+            } else {
                 res.send({ responseCode: 200, responseMessage: 'Card lists show successfully.', result: result });
-           }
+            }
         })
-       
+
     },
 
-    "showOfferCountOnCards": function(req, res) { 
+    "showOfferCountOnCards": function(req, res) {
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: req.body.cardType}}]).exec(function(err, result){
-               if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if(result.length==0){
-                 res.send({ responseCode: 404, responseMessage: 'Data not found.' });
-               }else{
-                    var count = 0;
-                    for (i = 0; i < result.length; i++) {
-                            count++;
-                    }
-                    res.send({ responseCode: 200, responseMessage: 'Card count show successfully.', result: count });
-               }
-            })
+            { $match: { type: req.body.cardType } }
+        ]).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
+                res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+            } else {
+                var count = 0;
+                for (i = 0; i < result.length; i++) {
+                    count++;
+                }
+                res.send({ responseCode: 200, responseMessage: 'Card count show successfully.', result: count });
+            }
+        })
     },
 
-    "editOfferonCards": function(req, res){
+    "editOfferonCards": function(req, res) {
 
-        if(req.body.offerType == 'discount'){
-           var query = {'offer.$.buyCard':req.body.buyCard,"offer.$.offerTime":req.body.offerTime}
+        if (req.body.offerType == 'discount') {
+            var query = { 'offer.$.buyCard': req.body.buyCard, "offer.$.offerTime": req.body.offerTime }
+        } else {
+            var query = { 'offer.$.buyCard': req.body.buyCard, 'offer.$.freeCard': req.body.freeCard, "offer.$.offerTime": req.body.offerTime }
         }
-        else{
-           var query = {'offer.$.buyCard':req.body.buyCard, 'offer.$.freeCard':req.body.freeCard,"offer.$.offerTime":req.body.offerTime}
-        }
-        adminCards.findOneAndUpdate({'offer._id': req.body.offerId}, {$set : query }, {
+        adminCards.findOneAndUpdate({ 'offer._id': req.body.offerId }, { $set: query }, {
             new: true
         }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -1290,10 +1286,9 @@ module.exports = {
         });
     },
 
-    "showCardDetails": function(req, res){
-        adminCards.find({}).exec(function(err, result){
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else{
+    "showCardDetails": function(req, res) {
+        adminCards.find({}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -1303,8 +1298,8 @@ module.exports = {
         })
     },
 
-    "removeOfferonCards": function(req, res){
-        adminCards.findOneAndUpdate({'offer._id': req.body.offerId}, {$set : {'offer.$.status' : 'REMOVED'} }, {
+    "removeOfferonCards": function(req, res) {
+        adminCards.findOneAndUpdate({ 'offer._id': req.body.offerId }, { $set: { 'offer.$.status': 'REMOVED' } }, {
             new: true
         }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -3854,7 +3849,7 @@ module.exports = {
                     }
                     console.log("data-->>", data)
                     for (var i = 0; i < userArray.length; i++) {
-                        User.update({ _id: userArray[i] }, { $push: { coupon: data, notification: data1 }, $inc: { gifts: 1 } }, { multi: true },
+                        User.update({ _id: userArray[i] }, { $push: { coupon: data, notification: data1, gifts: couponAdId } }, { multi: true },
                             function(err, result1) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
                                     // callback(null)

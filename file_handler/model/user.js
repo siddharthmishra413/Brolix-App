@@ -81,11 +81,8 @@ var userSchema = new Schema({
         updateddAt: { type: Date, default: Date.now }
     }],
     couponPrize: [],
-    gifts: {
-        type: Number,
-        default: 0
-    },
-    brolixAds : {
+    gifts: [],
+    brolixAds: {
         type: Number,
         default: 0
     },
