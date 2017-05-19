@@ -789,7 +789,7 @@ module.exports = {
                                         else {
                                             result3.brolix += req.body.brolix;
                                             result3.save();
-                                            callback(null, result3)
+                                            callback(null, result2)
                                         }
                                         if (result3.deviceType == 'Android' || result3.notification_status == 'on' || result3.status == 'ACTIVE') {
                                             var message = "I have send you brolix";
@@ -817,7 +817,7 @@ module.exports = {
                                 User.findOneAndUpdate({ _id: receiverId }, { $push: { "sendBrolixListObject": { senderId: userId, brolix: req.body.brolix } }, "notification": { userId: userId, type: 'I have send you Brolix', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result5) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result5) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
-                                        callback(null, result5)
+                                        callback(null, result4)
                                     }
                                     if (result5.deviceType == 'Android' || result5.notification_status == 'on' || result5.status == 'ACTIVE') {
                                         var message = "I have send you brolix";
@@ -1152,7 +1152,7 @@ module.exports = {
                 result.brolix -= sum;
                 result.save();
                 res.send({
-                    //  result: result,
+                   result: result,
                     responseCode: 200,
                     responseMessage: "successfully purchased the luck card"
                 });
