@@ -52,10 +52,7 @@ userService.showOfferCountOnCards(luck_card).success(function(res) {
 })
 
 
-
-
-
-$scope.cardOnOfferUpgrade = function(id,type){
+$scope.cardOnOfferUpgradeDis = function(id,type){
     console.log("id",id);
     console.log("type",type);
     cardDetailsOnOffer = {
@@ -63,10 +60,41 @@ $scope.cardOnOfferUpgrade = function(id,type){
         offerType:type,
         buyCard:id
     }
+    userService.getOfferList(cardDetailsOnOffer).success(function(res) {
+        if(res.responseCode == 200){
+            console.log("res",JSON.stringify(res))
+            $scope.upgradecardOnOffers = res.result;
+            $("#upgradeOfferOnCard").modal('show');
+        }else{
+            console.log("res",JSON.stringify(res))
+        }
+    })
     console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
 }
 
-$scope.cardOnOfferLuck = function(id,type){
+$scope.cardOnOfferUpgradeBuy = function(buyCard,freeCard,type){
+    // console.log("id",id);
+    console.log("type",type);
+    cardDetailsOnOffer = {
+        cardType:"upgrade_card",
+        offerType:type,
+        buyCard:buyCard,
+        freeCard:freeCard
+    }
+    userService.getOfferList(cardDetailsOnOffer).success(function(res) {
+        if(res.responseCode == 200){
+            console.log("res",JSON.stringify(res))
+            $scope.upgradecardOnOffers = res.result;
+            $("#upgradeOfferOnCard").modal('show');
+        }else{
+            console.log("res",JSON.stringify(res))
+        }
+    })
+   
+}
+
+
+$scope.cardOnOfferLuckDis = function(id,type){
     console.log("id",id);
     console.log("type",type);
     cardDetailsOnOffer = {
@@ -74,8 +102,47 @@ $scope.cardOnOfferLuck = function(id,type){
         offerType:type,
         buyCard:id
     }
-    console.log("cardOnOfferLuck",cardDetailsOnOffer);
+    userService.getOfferList(cardDetailsOnOffer).success(function(res) {
+        if(res.responseCode == 200){
+            console.log("res",JSON.stringify(res))
+            $scope.luckCardOnOffers = res.result;
+            $("#luckOfferOnCard").modal('show');
+        }else{
+            console.log("res",JSON.stringify(res))
+        }
+    })
+    console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
 }
+
+$scope.cardOnOfferLuckBuy = function(buyCard,freeCard,type){
+    // console.log("id",id);
+    //console.log("cardDetailsOnOffer",cardDetailsOnOffer);
+    cardDetailsOnOffer = {
+        cardType:"luck_card",
+        offerType:type,
+        buyCard:buyCard,
+        freeCard:freeCard
+    }
+
+     console.log("cardDetailsOnOffer",cardDetailsOnOffer);
+
+    userService.getOfferList(cardDetailsOnOffer).success(function(res) {
+        if(res.responseCode == 200){
+            console.log("res",JSON.stringify(res))
+            $scope.luckCardOnOffers = res.result;
+            $("#luckOfferOnCard").modal('show');
+        }else{
+            console.log("res",JSON.stringify(res))
+        }
+    })
+   
+}
+
+
+
+
+
+
 
 
 $scope.currentPageNoUpdis = 1;
@@ -125,6 +192,8 @@ $scope.showOfferUpgrade = function(key){
 $scope.currentPageNoLuckdis = 1;
 $scope.currentPageNoLuckbuy = 1;
 $scope.showOfferLuck = function(key){
+    $scope.key = "Discount";
+
     console.log("100")
     if(key =='buyGet'){
         console.log("yes")

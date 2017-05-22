@@ -688,8 +688,8 @@
 <div class="col-sm-12" ng-switch="tab">   
     <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
         <ul class="nav nav-pills card-tabs">
-            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
-            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="showOfferUpgrade('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="showOfferUpgrade('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
         </ul>
 
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'Discount'">
@@ -712,7 +712,7 @@
                         <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
                         <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
                         <td >{{x.status}}</td>
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOfferUpgrade(x._id.buyCard,x.offerType)" >{{x.count}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOfferUpgradeDis(x._id.buyCard,x.offerType)" >{{x.count}}</td>
                     </tr>  
 
                 </tbody>
@@ -748,7 +748,7 @@
                             <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
                             <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
                             <td >{{x.status}}</td>
-                            <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOfferUpgrade(x._id.buyCard,x.offerType)" >{{x.count}}</td>
+                            <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOfferUpgradeBuy(x._id.buyCard,x._id.freeCard,x.offerType)" >{{x.count}}</td>
                         </tr>   
                     </tbody>
                 </table>
@@ -769,8 +769,8 @@
 <div class="col-sm-12" ng-switch="tab">   
     <div class="row table-responsive border-table cus-table" ng-switch-when="luckCardOffer">
         <ul class="nav nav-pills card-tabs">
-            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
-            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="showOfferLuck('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="showOfferLuck('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
         </ul>
 
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'Discount'">
@@ -793,7 +793,7 @@
                         <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
                         <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
                         <td >{{x.status}}</td>
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOfferLuck(x._id.buyCard,x.offerType)" >{{x.count}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOfferLuckDis(x._id.buyCard,x.offerType)" >{{x.count}}</td>
                     </tr>  
 
                 </tbody>
@@ -827,7 +827,7 @@
                         <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
                         <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
                         <td >{{x.status}}</td>
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOfferLuck(x._id.buyCard,x.offerType)" >{{x.count}}</td>
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="cardOnOfferLuckBuy(x._id.buyCard,x._id.freeCard,x.offerType)" >{{x.count}}</td>
                     </tr>   
                 </tbody>
             </table>
@@ -1133,6 +1133,71 @@
                    </div>
                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
                </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+
+
+<div id="upgradeOfferOnCard" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Discount Type Card Details On Offers</h4>
+           </div>
+           <div class="modal-body">
+
+           <div id="home" class="tab-pane fade in active">
+                <div class="row-table" ng-repeat="data in upgradecardOnOffers">
+                    <div class="col-cell">
+                        <div class="cover-image newcover-img">
+                            <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                            <div class="viewwe-s">
+                                <div class="tops-s">
+                                     <div class="amts-top">{{data.viewers}}</div>
+                                      <div class="ants-view">Viewers</div>
+                                </div>
+                                 <div class="bottom-dol">${{data.price}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+               
+           </div>
+       </div>
+   </div>
+</div>
+
+<div id="luckOfferOnCard" class="modal fade">
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Buy & Get Type Card Details On Offers</h4>
+           </div>
+           <div class="modal-body">
+
+           <div id="home" class="tab-pane fade in active">
+                <div class="row-table" ng-repeat="data in luckCardOnOffers ">
+                    <div class="col-cell">
+                        <div class="cover-image newcover-img">
+                            <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                            <div class="viewwe-s">
+                                <div class="tops-s">
+                                     <div class="amts-top">{{data.chances}}</div>
+                                      <div class="ants-view">Chances</div>
+                                </div>
+                                 <div class="bottom-dol">B{{data.brolix}}</div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+               
            </div>
        </div>
    </div>

@@ -205,6 +205,9 @@ app.service('userService',function($http){
     cardFilter: function(data){
      return $http.post(baseurl+'/admin/luckUpgradeCardfilter', data);
    },
+   getOfferList: function(data){
+     return $http.post(baseurl+'/admin/getOfferList', data);
+   },
 
     /*-------------------------Manage ADS---------------------*/
 

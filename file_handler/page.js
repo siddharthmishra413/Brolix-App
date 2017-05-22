@@ -2186,7 +2186,7 @@ if(req.body.pageName){
         waterfall([
             function(callback) {
                 if (req.body.type == 'coupon') {
-                    var query = { $and: [{ 'coupon.pageId': req.body.pageId }] };
+                    var query = { $and: [{ 'coupon.pageId': req.body.pageId , 'coupon.type': 'WINNER'}] };
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                         if (!(key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == 'pageId')) {

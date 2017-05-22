@@ -126,7 +126,7 @@ module.exports = {
                                         });
                                     } else {
                                         console.log("<<in elseif-->>")
-                                        createNewPage.findOne({ _id: req.body.pageId }, { $push: { blockedUser: blockUserId } }, { new: true }, function(err, result1) {
+                                        createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { blockedUser: blockUserId } }, { new: true }, function(err, result1) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                                                 res.send({
                                                     result: result1,
@@ -148,7 +148,7 @@ module.exports = {
             }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
 
-                    createNewPage.findOne({ _id: req.body.pageId }, { $pop: { blockedUser: blockUserId } }, { new: true }).exec(function(err, result) {
+                    createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $pop: { blockedUser: blockUserId } }, { new: true }).exec(function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                             res.send({
                                 result: results,

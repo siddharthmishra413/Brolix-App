@@ -1172,7 +1172,8 @@ module.exports = {
         }
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: cardType , "offer.offerType" : req.body.offerType} },
+            { $match: {$and:[{ type: cardType , "offer.offerType" : req.body.offerType}, {$or:[{'offer.status':'ACTIVE'},{'offer.status':'EXPIRED'}]}] } },
+            //{ $match: { type: cardType , "offer.offerType" : req.body.offerType} },
             { $group: {
                 _id: groupQuery,
                 "count": { "$sum": 1 },
@@ -1192,7 +1193,7 @@ module.exports = {
                 var pages = Math.ceil(count / 8);
                 adminCards.aggregate([
                     { $unwind: '$offer' },
-                    { $match: { type: cardType , "offer.offerType" : req.body.offerType} },
+                    { $match: {$and:[{ type: cardType , "offer.offerType" : req.body.offerType}, {$or:[{'offer.status':'ACTIVE'},{'offer.status':'EXPIRED'}]}] } },
                     { $group: {
                         _id: groupQuery,
                         "count": { "$sum": 1 },
