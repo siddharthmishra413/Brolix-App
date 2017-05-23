@@ -237,7 +237,7 @@ module.exports = {
                 })
             })
         } else {
-            User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "pageFollowers": { pageId: req.body.pageId } } }, { new: true }).exec(function(err, results) {
+            User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "pageFollowers": { pageId: -req.body.pageId } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $pop: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
                         res.send({

@@ -1142,7 +1142,12 @@ module.exports = {
     },
 
     "createOfferOnCard": function(req, res) {
+        console.log("req.body",JSON.stringify(req.body))
         var cardId = req.body.id;
+        // adminCards.findOne({
+        //     _id: cardId,
+        //     offer.offerTime: { $gte : req.body.offerTime }
+        // }).
         adminCards.findByIdAndUpdate(cardId, { $push: { offer: req.body } }, { new: true }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Offer created on card successfully', data: result });

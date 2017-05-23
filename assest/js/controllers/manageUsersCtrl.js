@@ -17,6 +17,14 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.ageLimits = [];
     localStorage.setItem('userTypeName','totalUsers');
 
+
+
+    $(document).ready(function(){
+        $("#dataaa").click(function(){
+          $('#manageUserTable').DataTable();
+        });
+    });
+
     for (var i = 15; i <99; i++){
       $scope.ageLimit.push(i);
     }
