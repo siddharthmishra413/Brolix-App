@@ -24,8 +24,8 @@
                                     <div class="row">
                                         <label class="control-label col-md-3">Main Category</label>
                                         <div class="col-md-9"> 
-                                            <select name="category" class="form-control" ng-change="subCategoryData();" ng-model="myForm.mainCategory" required>
-                                                <option value="Select Category">Select Category</option>
+                                            <select name="category" class="form-control" ng-change="subCategoryDataa();" ng-model="myForm.mainCategory" required>
+                                                <option value="">Select Category</option>
                                                 <option ng-repeat="category in category" >{{category}}</option>
                                              </select> 
                                             <span style="color:red;" class="error" ng-show="userFrom.category.$dirty && userFrom.category.$invalid">
@@ -42,6 +42,7 @@
                                         <div class="col-md-9">
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
                                             <ul class="form-control dropdown-menu"  name="subCategory" >
+                                           <!--  <li value="">Select Sub Categories</li> -->
                                             <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" unchecked ng-click="saveData(subCategoryData);"/>{{subCategoryData}}</a></li>
                                             </ul>
 
@@ -121,7 +122,7 @@
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
                                     <button  class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid  || {{$scope.subCategoryData.length>0}} || checkBoxArray.length==0" ng-click="click('Step1')">Next</button>
-                                    <a class="btn btn-lg btn-green" ng-click="cancel('Step1')">Cancel</a>
+                                    <a class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
                                 </div>
                                 <!-- ng-disabled="userFrom.$invalid" -->
                             </fieldset>
@@ -195,9 +196,8 @@
                                                     <option value="">Select Social Media</option>
                                                     <option ng-repeat="SocialMedia in SocialMedia" value="{{SocialMedia}}">{{SocialMedia}}</option>
                                                 </select>
-                                                  <input type="text" class="form-control" name="link" ng-model="myForm.link" placeholder="Enter social link" required> 
+                                                  <input type="text" class="form-control" name="link" ng-model="myForm.link" placeholder="Enter social link"> 
                                             <span style="color:red;" ng-show="media.link.$dirty && media.link.$invalid">
-                                            <span ng-show="media.link.$error.required">Link is required.</span>
                                                 <span style="color:red;" class="error" ng-show="media.social.$dirty && media.social.$invalid">
                                                      <span style="color:red;" class="error" ng-show="media.social.$error.required">Please Select a Social Media</span>
                                                 </span> 
@@ -227,7 +227,7 @@
                             </div><!-- <h2>{{media.link.$invalid}}</h2> -->
                             <div class="btn2 text-center">
                                 <button class="btn btn-lg btn-green" ng-disabled="media.link.$invalid ||array.length == 0" ng-click="click('Step3')">Next</button>
-                                <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
+                                <a  class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
                                 <!-- ng-disabled="media.$invalid or "array.length == 0" -->
                             </div>
                         </fieldset>
@@ -294,7 +294,7 @@
                             <!-- Change this to a button or input when using this as a form -->
                             <div class="btn2 text-center">
                                 <button  ng-disabled="pageAdminss.length == 0" class="btn btn-lg btn-green" ng-disabled="pageAdmin.$invalid" ng-click="submitt();">Add Pages</button> 
-                                <a class="btn btn-lg btn-green" ng-click="cancel('Step4')">Cancel</a>
+                                <a class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
                             </div>
                         </fieldset> 
                     </form>

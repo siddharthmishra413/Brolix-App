@@ -9,7 +9,8 @@ app.controller('editCouponCtrl', function($scope,uploadimgServeice, $window,toas
                  $scope.couponData=success.data.result;
                  $scope.user.pageName=$scope.couponData.pageName;
                  $scope.user.photo=$scope.couponData.coverImage;
-                 $scope.user.expDate = new Date($scope.couponData.couponExpiryDate);
+                  var updateDate = new Date($scope.couponData.couponExpiryDate);
+                  $scope.user.expDate = moment(updateDate).format('MM/DD/YYYY');
                  console.log($scope.user.expDate)
                  $scope.user.description=$scope.couponData.giftDescription;
              },function(err){

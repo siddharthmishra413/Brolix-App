@@ -125,7 +125,7 @@
 
      //API for Accept Follower Request
      "acceptFollowerRequest": function(req, res) {
-         console.log("req-->>",req.body)
+         console.log("req-->>", req.body)
          if (req.body.followerStatus == "accept") {
              console.log("in")
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
@@ -148,7 +148,7 @@
                  }
              })
          } else if (req.body.followerStatus == "block") {
-              console.log("req-->>",req.body)
+             console.log("req-->>", req.body)
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
                  $set: {
                      followerStatus: req.body.followerStatus,
@@ -157,7 +157,7 @@
                  }
              }, { new: true }).exec(function(err, results) {
                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId } }, { $pop: { userFollowers: -req.body.blockUserId } }, { new: true }).exec(function(err, result) {
+                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId } }, { new: true }).exec(function(err, result) {
                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                              res.send({
                                  result: results,
@@ -169,12 +169,12 @@
                  }
              })
          } else if (req.body.followerStatus == "reject") {
-             followerList.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { blockUserId: req.body.blockUserId }] }, {
-                 $set: {
-                     followerStatus: req.body.followerStatus
-                 }
-             }, { new: true }).exec(function(err, results) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+              console.log("req-->>", req.body)
+             followerList.findOneAndUpdate({ $and:  [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] },
+                {$set: { followerStatus: req.body.followerStatus }}, { new: true }).exec(function(err, results) {
+                  console.log("results-->>", results)
+                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) }
+                 else {
                      res.send({
                          result: results,
                          responseCode: 200,
@@ -182,7 +182,25 @@
                      });
                  }
              })
+         } else if (req.body.followerStatus == "unblock") {
+             followerList.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { blockUserId: req.body.blockUserId }] }, {
+                 $set: { followerStatus: req.body.followerStatus }}, { new: true }).exec(function(err, results) {
+                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                     
+                          User.findOneAndUpdate({ _id: req.body.receiverId }, { $pop: { blockUser: -req.body.blockUserId } }, { new: true }).exec(function(err, result) {
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                              res.send({
+                         result: results,
+                         responseCode: 200,
+                         responseMessage: "You have unblock this user."
+                     });
+                         }
+                     })
+
+                 }
+             })
          }
+
      },
 
      "blockUserList": function(req, res) {

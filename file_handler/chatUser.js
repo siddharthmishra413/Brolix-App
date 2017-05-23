@@ -10,6 +10,8 @@ module.exports = {
     textOneOnOne: function(senderConn, recieverConn, data) {
         console.log("textOneOnOne-------");
         console.log(JSON.stringify(data));
+        console.log("recieverConn-------");
+        console.log(recieverConn);
         var roomId;
 
         waterfall([
@@ -78,6 +80,8 @@ module.exports = {
                                 respObj = JSON.parse(respObj);
                                 respObj.roomId = roomId;
                                 console.log("respObj 91----------", respObj);
+                                console.log("recieverConnrespObj-------");
+                                console.log(recieverConn);
                                 respObj = JSON.stringify(respObj);
                                 if (recieverConn == undefined) {
                                     console.log("recieverConn gone");

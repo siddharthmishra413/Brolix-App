@@ -87,6 +87,7 @@ $scope.checkBoxArray.push(checkBoxArray1[i]);
 
 
  $scope.addSocialMedia = function(addSocialMedia,addSocialLink){
+  $scope.myForm.link = "";
  	console.log("addSocialMedia",addSocialMedia);
  	
  	var flag = false;
@@ -151,24 +152,40 @@ $scope.checkBoxArray.push(checkBoxArray1[i]);
 
     })
 
-   $scope.subCategoryData = function(){
-   	console.log("bbb",$scope.myForm.mainCategory);
-   	var data ={};
-   	data = {
-			subCat:$scope.myForm.mainCategory
-    	}
-    	userService.subCategoryData(data).success(function(res) {
+
+   $scope.subCategoryDataa = function(){
+    // alert("ddd");
+      var data ={};
+      data = {
+        subCat:$scope.myForm.mainCategory
+      }
+      userService.subCategoryData(data).success(function(res) {
         console.log(JSON.stringify(res))
             if (res.responseCode == 200){
                 $scope.subCategoryData= res.result;
                 //console.log("subCategoryData",JSON.stringify(subCategoryData))
             }else{
-            	toastr.error("Something went wrong")
+              toastr.error("Something went wrong")
             } 
+     })
+  }
 
-        })
-
-    }
+   // $scope.subCategoryData = function(){
+   // 	console.log("bbb",$scope.myForm.mainCategory);
+   // 	var data ={};
+   // 	data = {
+			// subCat:$scope.myForm.mainCategory
+   //  	}
+   //  	userService.subCategoryData(data).success(function(res) {
+   //      console.log(JSON.stringify(res))
+   //          if (res.responseCode == 200){
+   //              $scope.subCategoryData= res.result;
+   //              //console.log("subCategoryData",JSON.stringify(subCategoryData))
+   //          }else{
+   //          	toastr.error("Something went wrong")
+   //          } 
+   //      })
+   //  }
 
 $scope.addNewPage = function(addNewPage){
    if(addNewPage){
@@ -318,21 +335,8 @@ $scope.addNewPage = function(addNewPage){
               $scope.$apply("myForm");
       });         
 }
-    $scope.cancel=function(val){
-      if(val == 'Step1'){
-        $scope.myForm={};
-      }
-      // else if(val == 'Step2'){
-      //   $scope.myForm.pagephoto="";
-      //   $scope.myForm.userphoto="";
-      // }
-      else if(val == 'Step3'){
-        $scope.myForm.socialMedia="";
-      }
-      else if(val == 'Step4'){
-        $scope.myForm.pageAdmin="";
-      }
-      
+    $scope.cancel=function(){
+      $state.go('header.managePages');
     }
 
 $scope.submitt = function(){

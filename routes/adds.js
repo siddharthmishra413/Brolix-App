@@ -50,5 +50,6 @@ app.post('/CashAdStatistics', adsHandler.CashAdStatistics);
 app.post('/cashStatisticsYearClicks', adsHandler.cashStatisticsYearClicks);
 app.post('/homepageAds', adsHandler.homepageAds);
 app.get('/storeCouponPrice/:id', adsHandler.storeCouponPrice);
+app.put('/updateCash/:id', adsHandler.updateCash);
 
 module.exports = app;

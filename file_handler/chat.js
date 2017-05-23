@@ -25,7 +25,10 @@ var chat = function() {
             if (obj.msgTyp == "init") {
                 connection.ID = obj.senderId;
             }
+            console.log("connectedClients ---connectedClients ---connectedClients ---connectedClients --- ")
             console.log(obj)
+            console.log(obj.receiverId)
+            console.log(connectedClients)
             console.log(connection.ID);
             //console.log("connectedClients --- ", JSON.stringify(connectedClients));
             /* if(!connectedClients[obj.senderId]){

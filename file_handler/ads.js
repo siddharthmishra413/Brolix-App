@@ -15,6 +15,7 @@ var Views = require("./model/views");
 var mongoose = require('mongoose');
 var brolixAndDollors = require("./model/brolixAndDollors");
 var uploadFile = require("./model/savedFiles")
+
 cloudinary.config({
     cloud_name: 'dfrspfd4g',
     api_key: '399442144392731',
@@ -457,8 +458,7 @@ module.exports = {
                                 if (result.gender != 'Both') {
                                     if (result.gender != result1.gender) {
                                         { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad' }); }
-                                    } 
-                                    else {
+                                    } else {
                                         if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 1' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'You are not allowed to watch this ad due to age limit 2' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
                                             // var state = result.whoWillSeeYourAdd.state;
@@ -522,7 +522,7 @@ module.exports = {
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
                             raffleCount.push(userId);
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value, brolixAds:value } }, { new: true }, function(err, result1) {
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value, brolixAds: value } }, { new: true }, function(err, result1) {
                                 console.log("raffleCount--->>>" + raffleCount.length);
                             })
 
@@ -576,7 +576,7 @@ module.exports = {
 
                         var date = new Date();
 
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired:true } }, function(err, result3) {
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired: true } }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
 
                                 if (result3.adsType == "cash") {
@@ -2370,6 +2370,23 @@ module.exports = {
                         })
                     }
                 })
+            }
+        })
+    },
+
+    "updateCash": function(req, res) {
+        createNewAds.findOneAndUpdate({ _id: req.params.id }, { $inc: { cash: req.body.cash } }, { new: true }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) {
+                res.send({
+                    responseCode: 404,
+                    responseMessage: 'Data not found.'
+                })
+            } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Cash updated successfully."
+                });
             }
         })
     }
