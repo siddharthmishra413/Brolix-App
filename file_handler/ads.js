@@ -86,8 +86,8 @@ module.exports = {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
-                req.body.viewerLenght = 2;
-                req.body.numberOfWinners = 2;
+                req.body.viewerLenght = 5;
+                req.body.numberOfWinners = 1;
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
@@ -822,6 +822,7 @@ module.exports = {
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                        console.log("result--->>", result.raffleCount)
                         var randomIndex = [];
                         var raffleCount = result.raffleCount;
                         var viewerLenght = result.viewerLenght;
@@ -829,7 +830,7 @@ module.exports = {
 
                         var mySet = new Set(raffleCount);
                         var has = mySet.has(userId)
-                        if (has) { res.send({ responseCode: 302, responseMessage: "You have already won this raffle." }) }
+                        if (has) { res.send({ responseCode: 302, responseMessage: "You have successfully win this raffle." }) }
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
                             raffleCount.push(userId);
@@ -905,7 +906,7 @@ module.exports = {
                                             }
                                             res.send({
                                                 responseCode: 200,
-                                                responseMessage: "Raffle is over."
+                                                responseMessage: "Raffle is over.33333"
                                                     //result: result 
                                             })
                                         }
@@ -949,36 +950,31 @@ module.exports = {
                                         console.log("if")
                                         var hiddenCode = hiddenGifts;
                                         var count = 0;
-                                        for (var i = 0; i < hiddenCode.length; i++) {
-                                            var data1 = {
-                                                hiddenCode: hiddenCode[i],
-                                                adId: req.body.adId,
-                                                pageId: pageId
-                                            }
-                                            User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
-                                                console.log("4")
-                                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                                    count += i;
-                                                    if ((i * i) == count) {
-                                                        if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                                                            var message = "You have successfully won this Raffle.";
-                                                            functions.android_notification(result.deviceToken, message);
-                                                            console.log("Android notification send!!!!")
-                                                        } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                                                            functions.iOS_notification(result.deviceToken, message);
-                                                        } else {
-                                                            console.log("Something wrong!!!!")
-                                                        }
-                                                        res.send({
-                                                            responseCode: 200,
-                                                            responseMessage: "Raffle is over."
-                                                                //result: result
-                                                        })
-                                                    }
-                                                }
-                                            })
+                                        var data1 = {
+                                            hiddenCode: hiddenCode[0],
+                                            adId: req.body.adId,
+                                            pageId: pageId
                                         }
 
+                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                            console.log("4")
+                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                if (result.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                    var message = "You have successfully won this Raffle.";
+                                                    functions.android_notification(result.deviceToken, message);
+                                                    console.log("Android notification send!!!!")
+                                                } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                    functions.iOS_notification(result.deviceToken, message);
+                                                } else {
+                                                    console.log("Something wrong!!!!")
+                                                }
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "Raffle is over 11."
+                                                        //result: result
+                                                })
+                                            }
+                                        })
                                     } else {
                                         console.log("else")
                                         User.update({ _id: req.body.userId }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
@@ -995,7 +991,7 @@ module.exports = {
                                                 }
                                                 res.send({
                                                     responseCode: 200,
-                                                    responseMessage: "Raffle is over winner decided."
+                                                    responseMessage: "Raffle is over winner decided.222"
                                                         //result: result
                                                 })
                                             }
