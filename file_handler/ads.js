@@ -876,13 +876,15 @@ module.exports = {
                 console.log("hiddenGifts--->>", hiddenGifts)
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: req.body.userId } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
-                        console.log("result.winners)--->>", result.winners)
+                       
 
                         var date = new Date();
 
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired: true } }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
-                                console.log("result3-->>", result3)
+                                //console.log("result3-->>", result3)
+                                 console.log("result.winners)--->>", result3.winners)
+                        var winner = result3.winners.length;
 
                                 if (result3.adsType == "cash") {
                                     var pageId = result3.pageId;
@@ -951,7 +953,7 @@ module.exports = {
                                         var hiddenCode = hiddenGifts;
                                         var count = 0;
                                         var data1 = {
-                                            hiddenCode: hiddenCode[0],
+                                            hiddenCode: hiddenCode[winner-1],
                                             adId: req.body.adId,
                                             pageId: pageId
                                         }

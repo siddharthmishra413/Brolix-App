@@ -266,17 +266,17 @@ module.exports = {
 
     //API for Show Search
     "searchForPages": function(req, res) {
-if(req.body.pageName){
-            var re = new RegExp("^"+req.body.pageName,"i");
-            var page = { $regex: re ,$options: "i" }
-}else{
-    page = ""
-}
+        if (req.body.pageName) {
+            var re = new RegExp("^" + req.body.pageName, "i");
+            var page = { $regex: re, $options: "i" }
+        } else {
+            page = ""
+        }
         var data = {
             'country': req.body.country,
             'state': req.body.state,
             'city': req.body.city,
-            'pageName':page ,
+            'pageName': page,
             'category': req.body.category,
             'subCategory': req.body.subCategory
         }
@@ -2186,7 +2186,7 @@ if(req.body.pageName){
         waterfall([
             function(callback) {
                 if (req.body.type == 'coupon') {
-                    var query = { $and: [{ 'coupon.pageId': req.body.pageId , 'coupon.type': 'WINNER'}] };
+                    var query = { $and: [{ 'coupon.pageId': req.body.pageId, 'coupon.type': 'WINNER' }] };
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                         if (!(key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == 'pageId')) {
@@ -2528,9 +2528,7 @@ if(req.body.pageName){
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
 
                             User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
-                                else if(!user){res.send({responseCode: 200,responseMessage: "Coupon successfully sent to advertiser page."});}
-                                    else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } else {
                                     for (var i = 0; i < user.hiddenGifts.length; i++) {
                                         if (user.hiddenGifts[i].adId == adId) {
                                             var code = user.hiddenGifts[i].hiddenCode;
