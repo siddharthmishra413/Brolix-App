@@ -42,7 +42,7 @@
                                 <div class="total-amt">{{totalCashGift}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='totalCashGifts'">
+                                <div class="btn-manage" ng-click="dataTableOne('totalCashGifts'); tab='totalCashGifts'">
                                     <a ng-click="giftTypeName('totalCashGifts')">Show</a>
                                 </div>
                                 <div class="btn-manage">
@@ -58,7 +58,7 @@
                                 <div class="total-amt">{{totalHiddenGift}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='totalHiddenGifts'">
+                                <div class="btn-manage" ng-click="dataTableOne('totalHiddenGifts'); tab='totalHiddenGifts'">
                                     <a ng-click="giftTypeName('totalHiddenGifts')">Show</a>
                                 </div>
                                 <div class="btn-manage">
@@ -88,7 +88,7 @@
                                 <div class="total-amt">{{totalExchangedCoupons}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='totalExchanged'">
+                                <div class="btn-manage" ng-click="dataTableOne('totalExchanged'); tab='totalExchanged'">
                                     <a ng-click="giftTypeName('totalExchanged')">Show</a>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                                 <div class="total-amt">{{totalSentCash}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='totalSentCash'">
+                                <div class="btn-manage" ng-click="dataTableOne('totalSentCash'); tab='totalSentCash'">
                                     <a ng-click="giftTypeName('totalSentCash')">Show</a>
                                 </div>
                             </div>
@@ -202,7 +202,7 @@
                 </li>
             </ul>
         </div>
-          <div class="search-bar-cus">
+          <!-- <div class="search-bar-cus">
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
@@ -211,9 +211,9 @@
                     </div>
                 </div>
             </form>
-        </div>
+        </div> -->
     </div> 
-            <table id="manageGiftTable" class="table table-bordered table-striped">
+            <table id="manageGiftTableFour" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Coupon Gift</th>
@@ -231,11 +231,11 @@
                         
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalExchangedCouponShow1 | totalExchangedFilter:search).length != 0">
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalExchangedCouponShow1 | totalExchangedFilter:search).length != 0">
                 <button ng-click="preTotalExchangedCoupon()" ng-disabled="pageTotalExchangedCoupon==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalExchangedCoupon}}/{{noOfPagesTotalExchangedCoupon}}
                 <button ng-click="nextTotalExchangedCoupon()" ng-disabled="pageTotalExchangedCoupon==noOfPagesTotalExchangedCoupon" class="btn paginationBtn">Next</button>
-            </div>
+            </div> -->
         </div>
     </div> 
 
@@ -353,7 +353,7 @@
                 </li>
             </ul>
         </div>
-            <div class="search-bar-cus">
+            <!-- <div class="search-bar-cus">
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
@@ -362,9 +362,9 @@
                         </div>
                     </div>
                 </form>
-            </div>
+            </div> -->
            </div> 
-            <table id="manageGiftTable" class="table table-bordered table-striped">
+            <table id="manageGiftTableThree" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Page Name</th>
@@ -387,11 +387,11 @@
                       <tr ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length != 0">
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length != 0">
                 <button ng-click="preTotalHiddenGifts()" ng-disabled="pageTotalHiddenGifts==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalHiddenGifts}}/{{noOfPagesTotalHiddenGifts}}
                 <button ng-click="nextTotalHiddenGifts()" ng-disabled="pageTotalHiddenGifts==noOfPagesTotalHiddenGifts" class="btn paginationBtn">Next</button>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -405,7 +405,7 @@
                     </li>
                 </ul>
             </div>
-             <div class="search-bar-cus">
+             <!-- <div class="search-bar-cus">
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
@@ -414,7 +414,7 @@
                         </div>
                     </div>
                 </form>
-            </div>
+            </div> -->
          </div>    
             <table id="manageGiftTable" class="table table-bordered table-striped">
                 <thead>
@@ -433,11 +433,11 @@
                      <tr ng-if="(totalSentCouponShow1 | totalSentCouponFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSentCouponShow1 | totalSentCouponFilter:search).length != 0">
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalSentCouponShow1 | totalSentCouponFilter:search).length != 0">
                 <button ng-click="preTotalSentCoupon()" ng-disabled="pageTotalSentCoupon==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSentCoupon}}/{{noOfPagesTotalSentCoupon}}
                 <button ng-click="nextTotalSentCoupon()" ng-disabled="pageTotalSentCoupon==noOfPagesTotalSentCoupon" class="btn paginationBtn">Next</button>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -452,7 +452,7 @@
                 </li>
             </ul>
           </div>
-          <div class="search-bar-cus">
+          <!-- <div class="search-bar-cus">
               <div class="search-bar-cus">
                 <form class="form-inline">
                     <div class="form-group">
@@ -463,8 +463,8 @@
                     </div>
                 </form>
             </div>
-           </div> 
-            <table id="manageGiftTable" class="table table-bordered table-striped">
+           </div> --> 
+            <table id="manageGiftTableSix" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Coupon Gift</th>
@@ -483,11 +483,11 @@
                      <tr ng-if="(totalSentCashShow | totalSentCashFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSentCashShow | totalSentCashFilter:search).length != 0">
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalSentCashShow | totalSentCashFilter:search).length != 0">
                 <button ng-click="preTotalSentCash()" ng-disabled="pageTotalSentCash==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSentCash}}/{{noOfPagesTotalSentCash}}
                 <button ng-click="nextTotalSentCash()" ng-disabled="pageTotalSentCash==noOfPagesTotalSentCash" class="btn paginationBtn">Next</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

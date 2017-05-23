@@ -454,20 +454,20 @@ app.service('userService',function($http){
        return $http.get(baseurl+'/admin/totalCashGifts');
     },
 
-    totalHiddenGifts: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalHiddenGifts/'+pageNo);
+    totalHiddenGifts: function() {
+      return $http.get(baseurl+'/admin/totalHiddenGifts');
     },
     
-    totalExchangedCoupon: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalExchangedCoupon/'+pageNo);
+    totalExchangedCoupon: function() {
+      return $http.get(baseurl+'/admin/totalExchangedCoupon');
     },
     
-    totalSentCash: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalSentCash/'+pageNo);
+    totalSentCash: function() {
+      return $http.get(baseurl+'/admin/totalSentCash');
     },
     
-    totalSentCoupon: function(pageNo) {
-     return $http.get(baseurl+'/admin/totalSentCoupon/'+pageNo);
+    totalSentCoupon: function() {
+     return $http.get(baseurl+'/admin/totalSentCoupon');
    },
      
     topFiftyBalances: function() {

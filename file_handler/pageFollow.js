@@ -28,7 +28,7 @@ module.exports = {
                                 res.send({
                                     result: result2,
                                     responseCode: 200,
-                                    responseMessage: "Followed."
+                                    responseMessage: "Followed." 
                                 });
                             })
                         } else if (result1.followStatus == "block") {
