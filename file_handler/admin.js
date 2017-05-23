@@ -1155,8 +1155,7 @@ module.exports = {
         })
     },
 
-
-    "showOfferOnCards": function(req, res) {
+ "showOfferOnCards": function(req, res) {
         var pageId = req.body.pageId;
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
@@ -1236,6 +1235,7 @@ module.exports = {
         })
     },
 
+
     "getOfferList": function(req, res) {
         var cardType = req.body.cardType;
         if (req.body.offerType == 'discount') {
@@ -1293,7 +1293,7 @@ module.exports = {
         });
     },
 
-    "showCardDetails": function(req, res) {
+  "showCardDetails": function(req, res) {
         adminCards.find({}).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({
@@ -1305,7 +1305,7 @@ module.exports = {
         })
     },
 
-    "removeOfferonCards": function(req, res) {
+  "removeOfferonCards": function(req, res) {
         adminCards.findOneAndUpdate({ 'offer._id': req.body.offerId }, { $set: { 'offer.$.status': 'REMOVED' } }, {
             new: true
         }).exec(function(err, result) {
@@ -1951,7 +1951,10 @@ module.exports = {
     "pageAdminsDetail": function(req, res) {
         var array = [];
         createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: err }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: err }); } 
+            else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found." }); } 
+            else {
+               
                 for (var i = 0; i < result.adAdmin.length; i++) {
                     array.push(result.adAdmin[i].userId)
                 }
@@ -4114,6 +4117,7 @@ module.exports = {
 
 
     "cityListData": function(req, res) {
+    
         var city = require('countries-cities').getCities(req.body.country);
         if (city == null || city.length == 0 || city == undefined || city == '') {
             res.send({
