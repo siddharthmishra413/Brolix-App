@@ -31,9 +31,10 @@ cloudinary.config({
 var avoid = {
     "password": 0
 }
+
 module.exports = {
 
-    "uploadMp3Files": function(req, res) {
+      "uploadMp3Files": function(req, res) {
         console.log(req.files);
         var imageUrl = [];
         var form = new multiparty.Form();

@@ -6,6 +6,7 @@ var authUser = require('../middlewares/authUser');
 
 app.get('/getMp3Files', adsHandler.getMp3Files);
 app.post('/uploadMp3Files', adsHandler.uploadMp3Files);
+
 app.post('/createAds', adsHandler.createAds);
 app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
 app.get('/showAllAdsCouponType/:id/:pageNumber', authUser.authUser, adsHandler.showAllAdsCouponType);
