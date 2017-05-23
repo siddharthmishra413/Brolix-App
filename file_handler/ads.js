@@ -14,8 +14,7 @@ var multiparty = require('multiparty');
 var Views = require("./model/views");
 var mongoose = require('mongoose');
 var brolixAndDollors = require("./model/brolixAndDollors");
-var multer  =   require('multer');
-
+var uploadFile = require("./model/savedFiles")
 cloudinary.config({
     cloud_name: 'dfrspfd4g',
     api_key: '399442144392731',
@@ -25,53 +24,45 @@ var avoid = {
     "password": 0
 }
 
-    var storage =   multer.diskStorage({
-      destination: function (req, file, callback) {
-       console.log("filereq",file);
-
-           var unixname = file.fieldname + Date.now();
-           console.log("fieldname",unixname);
-              var details = file;
-              console.log("details"+details);
-                var user = new Upload();  
-              //  console.log("user", user); 
-                user.unixname = unixname;
-                user.fieldname = details.fieldname;
-                console.log("user"+user.fieldname); 
-                user.originalname = details.originalname;
-                user.encoding = details.encoding;
-                user.mimetype = details.mimetype;
-                var demo = user.save(function (err) {
-            if (err) throw err;
-          })
-              //  var home;
-               
-              //  callback(null, 'user.UserID')
-      callback(null, './uploads');
-    },
-      filename: function (req, file, callback) {
-        callback(null, file.fieldname + '-' + Date.now());
-        //callback(null, file.fieldname);
-      }
-    });
-        var upload = multer({ storage : storage},{limits : {fieldNameSize : 10}}).single('userPhoto');
 module.exports = {
 
+    "uploadMp3Files": function(req, res) {
+        console.log(req.files);
+        var imageUrl = [];
+        var form = new multiparty.Form();
+        form.parse(req, function(err, fields, files) {
+            var a = 0;
+            for (var i = 0; i < files.mp3files.length; i++) {
+                var img = files.mp3files[i];
+                var fileName = files.mp3files[i].originalFilename;
+                cloudinary.uploader.upload(img.path, function(result) {
+                    console.log(result)
+                    if (result.url) {
+                        var data={
+                            fileUrl: result.url,
+                            fileName:result.public_id
+                        }
+                        console.log(data)
+                        var fileData= new uploadFile(data);
+                        fileData.save(function(err, ress){
+                        a += i;
+                        if (a == i * i) {
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: "File uploaded successfully."
+                            });
+                        }
+                    })
+                    } else {
+                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+                    }
 
-    //var upload = multer({ storage : storage}).single('userPhoto');
-    //app.post('/api/photo'
-
-    //console.log("storage==>>", storage.getDestination);
-    "image" :function(req,res){
-     // console.log("req==>>", req);
-        upload(req,res,function(err) {
-            if(err) {
-                console.log(err)
-                return res.end("Error uploading file.");
+                }, {
+                    resource_type: "auto",
+                    chunk_size: 6000000
+                });
             }
-            console.log("res....",res)
-            res.end("File is uploaded");
-        });
+        })
     },
 
 

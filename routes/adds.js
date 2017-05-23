@@ -4,7 +4,7 @@ var adsHandler = require('../file_handler/ads.js');
 var authUser = require('../middlewares/authUser');
 
 
-app.post('/image', adsHandler.image);
+app.post('/uploadMp3Files', adsHandler.uploadMp3Files);
 
 app.post('/createAds', adsHandler.createAds);
 app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
