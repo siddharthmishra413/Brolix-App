@@ -2,6 +2,7 @@ app.controller('manageGiftsCtrl', function ($scope, $window, $state, toastr, $ti
 $(window).scrollTop(0,0);
 $scope.$emit('headerStatus', 'Manage Gifts');
 $scope.$emit('SideMenu', 'Manage Gifts');
+$('#manageUserTable').DataTable();
 $scope.tab= 'totalCouponsGifts';
 $scope.array = [];
 $scope.dashBordFilter = {};
@@ -9,6 +10,31 @@ $scope.dashBordFilter.country="";
 $scope.dashBordFilter.state="";
 $scope.dashBordFilter.city="";
 localStorage.setItem('giftTypeName','totalCouponsGifts');
+
+
+
+$scope.dataTableOne = function(type){
+  console.log("type",type)
+  if(type=='totalCouponsGifts'){
+    $('#manageGiftTableOne').DataTable();
+      $scope.tab= 'totalCouponsGifts'; 
+     $timeout(function(){
+        $('#manageGiftTableOne').DataTable();
+         $scope.tab= 'totalCouponsGifts';      
+     },100)
+  }else if(type=='totalCashGifts'){
+    $('#manageGiftTableTwo').DataTable();
+      $scope.tab= 'totalCashGifts'; 
+     $timeout(function(){
+        $('#manageGiftTableTwo').DataTable();
+         $scope.tab= 'totalCashGifts';      
+     },100)
+  }else{
+    consoel.log("dddddd");
+  }
+     
+  }
+
 
 
  userService.countryListData().success(function(res) {
@@ -88,13 +114,14 @@ localStorage.setItem('giftTypeName','totalCouponsGifts');
 
 $scope.currentTotalCouponsGift = 1;
      $scope.nextTotalCouponsGiftDetail = function() {
-         userService.totalCouponsGifts($scope.currentTotalCouponsGift).success(function(res) { 
-             // console.log("val",JSON.stringify(res))
+         userService.totalCouponsGifts().success(function(res) { 
+             //console.log("val",JSON.stringify(res))
             if (res.responseCode == 200){
-                   $scope.noOfPagesTotalCouponsGift = res.pages;
-                   $scope.pageTotalCouponsGift= res.page;
-                   $scope.totalCouponsGiftShow= res.docs;
-                    $scope.totalCouponsGift = res.total;
+                   // $scope.noOfPagesTotalCouponsGift = res.pages;
+                   // $scope.pageTotalCouponsGift= res.page;
+                   $scope.totalCouponsGiftShow= res.result;
+
+                    $scope.totalCouponsGift = $scope.totalCouponsGiftShow.length;
                } 
                else {
                 toastr.error(res.responseMessage);
@@ -114,13 +141,13 @@ $scope.currentTotalCouponsGift = 1;
 
   $scope.currentTotalCashGifts = 1;
      $scope.nextTotalCashGiftsDetail = function(){
-         userService.totalCashGifts($scope.currentTotalCashGifts).success(function(res) { 
-             // console.log("val",JSON.stringify(res))
+         userService.totalCashGifts().success(function(res) { 
+              // console.log("sssssssssss",JSON.stringify(res))
             if (res.responseCode == 200){
-                   $scope.noOfPagesTotalCashGifts = res.pages;
-                   $scope.pageTotalCashGifts= res.page;
-                   $scope.totalCashGiftShow= res.docs;
-                    $scope.totalCashGift = res.total;
+                   // $scope.noOfPagesTotalCashGifts = res.pages;
+                   // $scope.pageTotalCashGifts= res.page;
+                   $scope.totalCashGiftShow= res.result;
+                    $scope.totalCashGift = res.result.length;
                } 
                else {
                 toastr.error(res.responseMessage);
@@ -558,7 +585,7 @@ $scope.top_50_balanc = function(type){
         console.log(val)
         localStorage.setItem('giftTypeName',val);
 
-        $scope.currentTotalCouponsGift = 1;
+        //$scope.currentTotalCouponsGift = 1;
         $scope.nextTotalCouponsGiftDetail();
 
         $scope.currentTotalCashGifts = 1;

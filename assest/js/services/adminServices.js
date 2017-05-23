@@ -446,12 +446,12 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/totalBrolixGift');  
     },
 
-    totalCouponsGifts: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalCouponGifts/'+pageNo);
+    totalCouponsGifts: function() {
+      return $http.get(baseurl+'/admin/totalCouponGifts');
     },
  
-    totalCashGifts: function(pageNo) {
-       return $http.get(baseurl+'/admin/totalCashGifts/'+pageNo);
+    totalCashGifts: function() {
+       return $http.get(baseurl+'/admin/totalCashGifts');
     },
 
     totalHiddenGifts: function(pageNo) {
