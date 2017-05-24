@@ -25,7 +25,15 @@ var avoid = {
     "password": 0
 }
 
+// var xlsx = require('node-xlsx');
+
+// var obj = xlsx.parse(__dirname + '/uploads/Brolix new pp (1).xlsx'); // parses a file
+
+// var obj = xlsx.parse(fs.readFileSync(__dirname + '/myFile.xlsx')); // parses a buffer
+
+// console.log("buffer", obj)
 module.exports = {
+
 
     "uploadMp3Files": function(req, res) {
         console.log(req.files);

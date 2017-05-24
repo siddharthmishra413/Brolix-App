@@ -21,7 +21,7 @@ app.get('/viewPage/:id', adminHandler.viewPage);
 /*----------------------Manage Users------------------------*/
 
 app.get('/showAllUser/:pageNumber', adminHandler.showAllUser);
-app.get('/showAllPersonalUser/:pageNumber', adminHandler.showAllPersonalUser);
+app.get('/showAllPersonalUser', adminHandler.showAllPersonalUser);
 app.get('/showAllBusinessUser/:pageNumber', adminHandler.showAllBusinessUser);
 app.get('/winners', adminHandler.winners);
 app.get('/couponWinners/:pageNumber', adminHandler.couponWinners);
