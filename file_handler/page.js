@@ -1895,7 +1895,7 @@ module.exports = {
         notificationList.findOne({
             userId: req.body.userId
         }).exec(function(err, result) {
-            if (err) { responseHandler.apiResponder(req, res, 302, "Problem in data finding", err) } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     responseCode: 200,
                     responseMessage: 'Successfully.',

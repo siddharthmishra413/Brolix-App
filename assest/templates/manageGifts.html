@@ -139,19 +139,13 @@
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
                      <div class="form-group cus-select">
-                         <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
+                         <select class="form-control" ng-change="changeCountry(); dashBordFilter();" ng-model="dashBordFilter.country" required>
                             <option value="">Select Country</option>
                             <option ng-repeat="country in countriesList" value"{{country}}">{{country}}</option>
                          </select>
                     </div>
-                    <!-- <div class="form-group cus-select">
-                         <select class="form-control"  ng-change="changeState(); dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" required>
-                            <option value="">Select State</option>
-                            <option ng-repeat="state in stateList">{{state.region}}</option>
-                         </select> 
-                    </div> -->
                     <div class="form-group cus-select">
-                         <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.city);" ng-model="dashBordFilter.city" required>
+                         <select  class="form-control" id="city" ng-change="dashBordFilter();" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
                             <option ng-repeat="city in cityList">{{city}}</option>
                          </select> 
@@ -159,16 +153,16 @@
                     <div class="form-group cus-select">
                         <select class="form-control" ng-model="dashBordFilter.couponStatus" ng-change="dashBordFilter();">
                             <option value="">Coupon Status</option>
-                            <option>Valid</option>
-                            <option>Used</option>
-                            <option>Expired</option>
+                            <option>VALID</option>
+                            <option>USED</option>
+                            <option>EXPIRED</option>
                         </select>
                     </div>
                     <div class="form-group cus-select">
                         <select class="form-control" ng-model="dashBordFilter.cashStatus" ng-change="dashBordFilter();">
                             <option value="">Cash Status</option>
-                            <option>Delivered</option>
-                            <option>Pending</option>
+                            <option>DELIVERED</option>
+                            <option>PENDING</option>
                         </select>
                     </div>
                     <div class="form-group cus-select">
@@ -181,7 +175,7 @@
                      <div class="form-group cus-select">
                         <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                             <div class="form-group">
-                              <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control"   ng-model="dashBordFilter.dobTo" placeholder="Date To"/>
+                              <input ng-disabled="dashBordFilter.dobFrom==undefined"  style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" ng-model="dashBordFilter.dobTo" ng-change="dashBordFilter();" placeholder="Date To"/>
                             </div>
                         </datepicker>
                      </div>
@@ -189,56 +183,8 @@
              </div>
           </div>
       </div>
-   </div>
+    </div>
     
-    
-    <div id="tableData" class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="totalExchanged">
-        <div class="grp-search">
-        <div class="row-search">
-            <ul>
-                <li class="last">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
-                </li>
-            </ul>
-        </div>
-          <!-- <div class="search-bar-cus">
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="search" maxlength="15"  placeholder="Search By Exch From , Exch To">
-                        <div class="input-group-addon">Search</div>
-                    </div>
-                </div>
-            </form>
-        </div> -->
-    </div> 
-            <table id="manageGiftTableFour" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Coupon Gift</th>
-                        <th>Exchanged From</th>
-                        <th>Exchanged To</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="x in totalExchangedCouponShow1 | totalExchangedFilter:search">
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id,'first')">View</td>
-                        <td>{{x.exchToFirstName}} {{x.exchToLastName}}</td>
-                        <td>{{x.exchFromFirstName}} {{x.exchFromLastName}}</td>
-                    </tr> 
-                     <tr ng-if="(totalExchangedCouponShow1 | totalExchangedFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
-                        
-                </tbody>
-            </table>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalExchangedCouponShow1 | totalExchangedFilter:search).length != 0">
-                <button ng-click="preTotalExchangedCoupon()" ng-disabled="pageTotalExchangedCoupon==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalExchangedCoupon}}/{{noOfPagesTotalExchangedCoupon}}
-                <button ng-click="nextTotalExchangedCoupon()" ng-disabled="pageTotalExchangedCoupon==noOfPagesTotalExchangedCoupon" class="btn paginationBtn">Next</button>
-            </div> -->
-        </div>
-    </div> 
-
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalCouponsGifts">
         <div class="grp-search">
@@ -249,16 +195,6 @@
                 </li>
             </ul>
         </div>
-         <!-- <div class="search-bar-cus">
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="search" maxlength="15"  placeholder="Search By Page Name , Winner Name">
-                        <div class="input-group-addon">Search</div>
-                    </div>
-                </div>
-            </form>
-          </div> -->
         </div>
             <table id="manageGiftTableOne" class="table table-bordered table-striped">
                 <thead>
@@ -272,7 +208,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalCouponsGiftShow | totalCouponGiftFilter:search">
+                    <tr ng-repeat="x in totalCouponsGiftShow">
                         <td>{{x.coupon.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.coupon.adId,'first')">View</td>
@@ -280,14 +216,9 @@
                         <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
                         <td>{{x.createdAt | date:"HH:mm"}}</td>
                     </tr>
-                    <tr ng-if="(totalCouponsGiftShow | totalCouponGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
+                   <!--  <tr ng-if="totalCouponsGiftShow.length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> -->     
                 </tbody>
             </table>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalCouponsGiftShow | totalCouponGiftFilter:search).length != 0">
-                <button ng-click="preTotalCouponsGift()" ng-disabled="pageTotalCouponsGift==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalCouponsGift}}/{{noOfPagesTotalCouponsGift}}
-                <button ng-click="nextTotalCouponsGift()" ng-disabled="pageTotalCouponsGift==noOfPagesTotalCouponsGift" class="btn paginationBtn">Next</button>
-            </div> -->
         </div>
     </div>
 
@@ -301,16 +232,6 @@
                 </li>
             </ul>
         </div>
-            <!-- <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="search" maxlength="15"  placeholder="Search By Page Name , Winner Name">
-                            <div class="input-group-addon">Search</div>
-                        </div>
-                    </div>
-                </form>
-            </div> -->
         </div>
             <table id="manageGiftTableTwo" class="table table-bordered table-striped">
                 <thead>
@@ -324,7 +245,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalCashGiftShow | totalCashGiftFilter:search">
+                    <tr ng-repeat="x in totalCashGiftShow">
                         <td>{{x.cashPrize.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.cashPrize.adId,'second')">View</td>
@@ -332,66 +253,78 @@
                          <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
                         <td>{{x.createdAt | date:"HH:mm"}}</td>
                      </tr>
-                     <tr ng-if="(totalCashGiftShow |totalCashGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
+                     <tr ng-if="totalCashGiftShow.length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
                 </tbody>
             </table>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalCashGiftShow | totalCashGiftFilter:search).length != 0">
-                <button ng-click="preTotalCashGifts()" ng-disabled="pageTotalCashGifts==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalCashGifts}}/{{noOfPagesTotalCashGifts}}
-                <button ng-click="nextTotalCashGifts()" ng-disabled="pageTotalCashGifts==noOfPagesTotalCashGifts" class="btn paginationBtn">Next</button>
-            </div> -->
         </div>
     </div>
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalHiddenGifts">
-          <div class="grp-search">
-          <div class="row-search">
-            <ul>
-                <li class="last">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
-                </li>
-            </ul>
+			<div class="grp-search">
+				<div class="row-search">
+				    <ul>
+				        <li class="last">
+				            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+				        </li>
+				    </ul>
+				</div>
+			</div> 
+	        <table id="manageGiftTableThree" class="table table-bordered table-striped">
+	            <thead>
+	                <tr>
+	                    <th>Page Name</th>
+	                    <th>Winner Name</th>
+	                    <th>Coupon Gift</th>
+	                    <th>Coupon Status</th>
+	                    <th>Created Date</th>
+	                    <th>Created Time</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr ng-repeat="x in totalHiddenGiftShow">
+	                    <td>{{x.hiddenGifts.pageId.pageName}}</td>
+	                    <td>{{x.firstName}} {{x.lastName}}</td>
+	                    <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.hiddenGifts.adId,'third')">View</td>
+	                    <td>{{x.hiddenGifts.status}}</td>
+	                    <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
+	                    <td>{{x.createdAt | date:"HH:mm"}}</td>
+	                 </tr>
+	                  <tr ng-if="totalHiddenGiftShow.length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+	            </tbody>
+	        </table>
         </div>
-            <!-- <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="search" maxlength="15"  placeholder="Search By Page Name , Winner Name">
-                            <div class="input-group-addon">Search</div>
-                        </div>
-                    </div>
-                </form>
-            </div> -->
-           </div> 
-            <table id="manageGiftTableThree" class="table table-bordered table-striped">
+    </div>
+
+     <div id="tableData" class="col-sm-12" ng-switch="tab">
+        <div class="row table-responsive cus-table" ng-switch-when="totalExchanged">
+        	<div class="grp-search">
+		        <div class="row-search">
+		            <ul>
+		                <li class="last">
+		                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+		                </li>
+		            </ul>
+		        </div>
+    		</div> 
+            <table id="manageGiftTableFour" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Page Name</th>
-                        <th>Winner Name</th>
                         <th>Coupon Gift</th>
-                        <th>Coupon Status</th>
-                        <th>Created Date</th>
-                        <th>Created Time</th>
+                        <th>Exchanged From</th>
+                        <th>Exchanged To</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalHiddenGiftShow | totalHiddenGiftFilter:search">
-                        <td>{{x.hiddenGifts.pageId.pageName}}</td>
-                        <td>{{x.firstName}} {{x.lastName}}</td>
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.hiddenGifts.adId,'third')">View</td>
-                        <td>{{x.hiddenGifts.status}}</td>
-                        <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
-                        <td>{{x.createdAt | date:"HH:mm"}}</td>
-                     </tr>
-                      <tr ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                    <tr ng-repeat="x in totalExchangedCouponShowOne">
+                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id,'first')">View</td>
+                        <td>{{x.exchToFirstName}} {{x.exchToLastName}}</td>
+                        <td>{{x.exchFromFirstName}} {{x.exchFromLastName}}</td>
+                    </tr> 
+                     <tr ng-if="totalExchangedCouponShowOne.length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                        
                 </tbody>
             </table>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length != 0">
-                <button ng-click="preTotalHiddenGifts()" ng-disabled="pageTotalHiddenGifts==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalHiddenGifts}}/{{noOfPagesTotalHiddenGifts}}
-                <button ng-click="nextTotalHiddenGifts()" ng-disabled="pageTotalHiddenGifts==noOfPagesTotalHiddenGifts" class="btn paginationBtn">Next</button>
-            </div> -->
         </div>
     </div>
 
@@ -405,16 +338,6 @@
                     </li>
                 </ul>
             </div>
-             <!-- <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="search" maxlength="15"  placeholder="Search By Sent From , Sent To">
-                            <div class="input-group-addon">Search</div>
-                        </div>
-                    </div>
-                </form>
-            </div> -->
          </div>    
             <table id="manageGiftTableFive" class="table table-bordered table-striped">
                 <thead>
@@ -425,22 +348,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSentCouponShow1 | totalSentCouponFilter:search">
+                    <tr ng-repeat="x in totalSentCouponShowTwo">
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id,'first')">View</td>
                         <td>{{x.sentFromFirstName}} {{x.sentFromLastName}}</td>
                         <td >{{x.sentToFirstName}} {{x.sentToLastName}}</td>
                      </tr>
-                     <tr ng-if="(totalSentCouponShow1 | totalSentCouponFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
+                     <tr ng-if="totalSentCouponShowTwo.length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
                 </tbody>
             </table>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalSentCouponShow1 | totalSentCouponFilter:search).length != 0">
-                <button ng-click="preTotalSentCoupon()" ng-disabled="pageTotalSentCoupon==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalSentCoupon}}/{{noOfPagesTotalSentCoupon}}
-                <button ng-click="nextTotalSentCoupon()" ng-disabled="pageTotalSentCoupon==noOfPagesTotalSentCoupon" class="btn paginationBtn">Next</button>
-            </div> -->
         </div>
     </div>
-
 
     <div class="col-sm-12" ng-switch="tab">
        <div class="row table-responsive cus-table" ng-switch-when="totalSentCash">
@@ -452,18 +369,6 @@
                 </li>
             </ul>
           </div>
-          <!-- <div class="search-bar-cus">
-              <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="search" maxlength="15" placeholder="Search By Sent From , Sent To">
-                            <div class="input-group-addon">Search</div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-           </div> --> 
             <table id="manageGiftTableSix" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -474,20 +379,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSentCashShow | totalSentCashFilter:search">
+                    <tr ng-repeat="x in totalSentCashShow">
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id,'second')">View</td>
                         <td>{{totalCash}}</td>
                         <td>{{x.sendCashListObject.senderId.firstName}} {{x.sendCashListObject.senderId.lastName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
                     </tr>
-                     <tr ng-if="(totalSentCashShow | totalSentCashFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
+                     <tr ng-if="totalSentCashShow.length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
                 </tbody>
             </table>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalSentCashShow | totalSentCashFilter:search).length != 0">
-                <button ng-click="preTotalSentCash()" ng-disabled="pageTotalSentCash==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalSentCash}}/{{noOfPagesTotalSentCash}}
-                <button ng-click="nextTotalSentCash()" ng-disabled="pageTotalSentCash==noOfPagesTotalSentCash" class="btn paginationBtn">Next</button>
-            </div> -->
         </div>
     </div>
 </div>

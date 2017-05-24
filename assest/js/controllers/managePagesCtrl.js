@@ -13,7 +13,12 @@ $scope.class = false;
 
 
 
-
+ $('#managePageTable').DataTable();
+      $scope.tab= 'totalPages'; 
+     $timeout(function(){
+        $('#managePageTable').DataTable();
+         $scope.tab= 'totalPages';      
+     },100)
 
 $scope.dataTableOne = function(type){
   console.log("type",type)
@@ -264,13 +269,13 @@ for (var i = 0; i < $scope.allAdminPages.length; i++) {
  $scope.pageTypeName = function(val) {
     localStorage.setItem('pageTypeName',val);
 
-    $scope.currentTotalPages = 1;
+    //$scope.currentTotalPages = 1;
      $scope.nextTotalPagesDetail();
     
-     $scope.currentunPublishedPage = 1;
-     $scope.nextunPublishedPageDetail();
+    // $scope.currentunPublishedPage = 1;
+    // $scope.nextunPublishedPageDetail();
 
-     $scope.currentBlockedPage = 1;
+    // $scope.currentBlockedPage = 1;
      $scope.nextBlockedPageDetail();
 
      $scope.currentRemovedPages = 1;
@@ -670,6 +675,54 @@ $scope.dashBordFilter = function(){
     }
 
 
+//<------------------------------------------------------------------------------------------------------------------------------------------
+userService.totalPages().success(function(res) { 
+             //console.log("val",JSON.stringify(res))
+            
+            if (res.responseCode == 200){
+                  
+                   $scope.totalPages = res.result;
+                   //console.log("$scope.totalPages",JSON.stringify($scope.totalPages));
+                   $scope.totalPagesCount = res.result.length;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+
+         userService.unPublishedPage().success(function(res) { 
+             // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.unPublishedPage= res.result;
+                   $scope.unPublishedPageCount = res.result.length;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+
+ userService.showAllBlockedPage().success(function(res) { 
+            // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.showAllBlockedPage = res.result;
+                   $scope.showAllBlockedPageCount = res.result.length;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+userService.showAllRemovedPage().success(function(res) { 
+             // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.showAllRemovedPage= res.result;
+                   //console.log(JSON.stringify($scope.showAllRemovedPage))
+                   $scope.showAllRemovedPageCount = res.result.length;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+
 
 
 
@@ -693,22 +746,9 @@ $scope.dashBordFilter = function(){
     //     })
     // }
 
-    $scope.currentTotalPages = 1;
+    //$scope.currentTotalPages = 1;
      $scope.nextTotalPagesDetail = function(){
-         userService.totalPages($scope.currentTotalPages).success(function(res) { 
-             //console.log("val",JSON.stringify(res))
-            
-            if (res.responseCode == 200){
-                   $scope.noOfPagesTotalPages = res.result.pages;
-                   $scope.pageTotalPages= res.result.page;
-                   $scope.totalPages = res.result.docs;
-                   //console.log("$scope.totalPages",JSON.stringify($scope.totalPages));
-                   $scope.totalPagesCount = res.result.total;
-               } 
-               else {
-                toastr.error(res.responseMessage);
-                }
-          })
+         
      }
      $scope.nextTotalPagesDetail();
      $scope.nextTotalPages = function(){
@@ -730,20 +770,9 @@ $scope.dashBordFilter = function(){
  //        }        
  //    })
 
- $scope.currentBlockedPage = 1;
+ //$scope.currentBlockedPage = 1;
      $scope.nextBlockedPageDetail = function(){
-         userService.showAllBlockedPage($scope.currentBlockedPage).success(function(res) { 
-            // console.log("val",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.noOfPagesBlockedPage = res.result.pages;
-                   $scope.pageBlockedPage= res.result.page;
-                   $scope.showAllBlockedPage = res.result.docs;
-                   $scope.showAllBlockedPageCount = res.result.total;
-               } 
-               else {
-                toastr.error(res.responseMessage);
-                }
-          })
+        
      }
      $scope.nextBlockedPageDetail();
      $scope.nextBlockedPage = function(){
@@ -768,30 +797,18 @@ $scope.dashBordFilter = function(){
     // })
 
 
-    $scope.currentunPublishedPage = 1;
-     $scope.nextunPublishedPageDetail = function(){
-         userService.unPublishedPage($scope.currentunPublishedPage).success(function(res) { 
-             // console.log("val",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.noOfPagesunPublishedPage = res.result.pages;
-                   $scope.pageunPublishedPage= res.result.page;
-                   $scope.unPublishedPage= res.result.docs;
-                   $scope.unPublishedPageCount = res.result.total;
-               } 
-               else {
-                toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextunPublishedPageDetail();
-     $scope.nextunPublishedPage = function(){
-        $scope.currentunPublishedPage++;
-        $scope.nextunPublishedPageDetail();
-     }
-     $scope.preunPublishedPage= function(){
-        $scope.currentunPublishedPage--;
-        $scope.nextunPublishedPageDetail();
-     }
+    // $scope.currentunPublishedPage = 1;
+     
+    //  }
+     // $scope.nextunPublishedPageDetail();
+     // $scope.nextunPublishedPage = function(){
+     //    $scope.currentunPublishedPage++;
+     //    $scope.nextunPublishedPageDetail();
+     // }
+     // $scope.preunPublishedPage= function(){
+     //    $scope.currentunPublishedPage--;
+     //    $scope.nextunPublishedPageDetail();
+     // }
 
     // userService.unPublishedPage().success(function(res){
     //     if (res.responseCode == 200){
@@ -802,21 +819,9 @@ $scope.dashBordFilter = function(){
     //     } 
     // })
 
-    $scope.currentRemovedPages = 1;
+   // $scope.currentRemovedPages = 1;
      $scope.nextRemovedPagesDetail = function(){
-         userService.showAllRemovedPage($scope.currentRemovedPages).success(function(res) { 
-             // console.log("val",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.noOfPagesRemovedPage = res.result.pages;
-                   $scope.pageRemovedPage= res.result.page;
-                   $scope.showAllRemovedPage= res.result.docs;
-                   //console.log(JSON.stringify($scope.showAllRemovedPage))
-                   $scope.showAllRemovedPageCount = res.result.total;
-               } 
-               else {
-                toastr.error(res.responseMessage);
-                }
-          })
+         
      }
      $scope.nextRemovedPagesDetail();
      $scope.nextRemovedPages = function(){

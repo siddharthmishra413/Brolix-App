@@ -19,19 +19,19 @@ app.get('/countrys', authUser.authUser,adminHandler.countrys);
 app.get('/getAllStates/:name/:code', authUser.authUser,adminHandler.getAllStates);
 app.get('/viewProfile/:id', authUser.authUser,adminHandler.viewProfile);
 app.put('/editUserProfile/:id', authUser.authUser,adminHandler.editUserProfile);
-app.get('/totalPages/:pageNumber', authUser.authUser,adminHandler.totalPages);
+app.get('/totalPages', authUser.authUser,adminHandler.totalPages);
 app.get('/viewPage/:id', authUser.authUser,adminHandler.viewPage);
 
 
 /*----------------------Manage Users------------------------*/
 
-app.get('/showAllUser/:pageNumber', authUser.authUser,adminHandler.showAllUser);
-app.get('/showAllPersonalUser/:pageNumber', authUser.authUser,adminHandler.showAllPersonalUser);
-app.get('/showAllBusinessUser/:pageNumber', authUser.authUser,adminHandler.showAllBusinessUser);
+app.get('/showAllUser', authUser.authUser,adminHandler.showAllUser);
+app.get('/showAllPersonalUser', authUser.authUser,adminHandler.showAllPersonalUser);
+app.get('/showAllBusinessUser', authUser.authUser,adminHandler.showAllBusinessUser);
 app.get('/winners', authUser.authUser,adminHandler.winners);
-app.get('/couponWinners/:pageNumber', authUser.authUser,adminHandler.couponWinners);
-app.get('/cashWinners/:pageNumber', authUser.authUser,adminHandler.cashWinners);
-app.get('/showAllBlockUser/:pageNumber', authUser.authUser,adminHandler.showAllBlockUser);
+app.get('/couponWinners', authUser.authUser,adminHandler.couponWinners);
+app.get('/cashWinners', authUser.authUser,adminHandler.cashWinners);
+app.get('/showAllBlockUser', authUser.authUser,adminHandler.showAllBlockUser);
 app.get('/blockUser/:userId', authUser.authUser,adminHandler.blockUser);
 
 /*--------------------------Manage Cards--------------------------*/
@@ -56,12 +56,12 @@ app.get('/totalActiveAds/:pageNumber', authUser.authUser,adminHandler.totalActiv
 app.get('/totalExpiredAds/:pageNumber', authUser.authUser,adminHandler.totalExpiredAds);
 app.get('/videoAds/:pageNumber', authUser.authUser,adminHandler.videoAds);
 app.get('/slideshowAds/:pageNumber', authUser.authUser,adminHandler.slideshowAds);
-app.get('/showAllBlockedPage/:pageNumber', authUser.authUser,adminHandler.showAllBlockedPage);
+app.get('/showAllBlockedPage', authUser.authUser,adminHandler.showAllBlockedPage);
 app.get('/removePage/:id', authUser.authUser,adminHandler.removePage);
-app.get('/showAllRemovedPage/:pageNumber', authUser.authUser,adminHandler.showAllRemovedPage);
+app.get('/showAllRemovedPage', authUser.authUser,adminHandler.showAllRemovedPage);
 app.get('/sendcardAndcoupan/:id', authUser.authUser,adminHandler.sendcardAndcoupan);
 app.get('/findAllCities', authUser.authUser,adminHandler.findAllCities);
-app.get('/unPublishedPage/:pageNumber', authUser.authUser,adminHandler.unPublishedPage);
+app.get('/unPublishedPage', authUser.authUser,adminHandler.unPublishedPage);
 app.post('/createCards', authUser.authUser,adminHandler.createCards);
 app.get('/viewCards/:type', authUser.authUser,adminHandler.viewCards);
 app.post('/editCards', authUser.authUser,adminHandler.editCards);
@@ -83,7 +83,7 @@ app.get('/paymentHistoryUpgradeCard/:id', authUser.authUser,adminHandler.payment
 app.get('/paymentHistoryLuckCard/:id', authUser.authUser,adminHandler.paymentHistoryLuckCard);
 app.get('/userInfo/:id', authUser.authUser,adminHandler.userInfo);
 app.get('/totalBrolixGift', authUser.authUser,adminHandler.totalBrolixGift);
-app.get('/totalCouponGifts', authUser.authUser,adminHandler.totalCouponGifts);
+app.get('/totalCouponGifts',adminHandler.totalCouponGifts);
 app.get('/cashGift/:pageNumber', authUser.authUser,adminHandler.cashGift);
 app.get('/showReportedAd/:pageNumber', authUser.authUser,adminHandler.showReportedAd);
 app.get('/adUpgradedByDollor/:pageNumber', authUser.authUser,adminHandler.adUpgradedByDollor);
@@ -115,7 +115,7 @@ app.post('/createSystemUser', authUser.authUser,adminHandler.createSystemUser);
 app.post('/checkPermission', authUser.authUser,adminHandler.checkPermission);
 app.post('/adsfilter/:pageNumber', authUser.authUser,adminHandler.adsfilter);
 app.post('/luckUpgradeCardfilter/:pageNumber', authUser.authUser,adminHandler.luckUpgradeCardfilter);
-app.post('/giftsFilter/:pageNumber', authUser.authUser,adminHandler.giftsFilter);
+app.post('/giftsFilter', adminHandler.giftsFilter);
 app.post('/brolixPaymentFilter/:pageNumber', authUser.authUser,adminHandler.brolixPaymentFilter);
 app.post('/dollorPaymentFilter/:pageNumber', authUser.authUser,adminHandler.dollorPaymentFilter);
 app.get('/listOfAds', authUser.authUser,adminHandler.listOfAds);
@@ -133,12 +133,12 @@ app.put('/postCouponToStore/:id', authUser.authUser,adminHandler.postCouponToSto
 app.get('/listOfSystemAdmin/:pageNumber', authUser.authUser,adminHandler.listOfSystemAdmin);
 app.get('/removeSystemAdmin/:id', authUser.authUser,adminHandler.removeSystemAdmin);
 app.put('/editSystemAdmin/:id', authUser.authUser,adminHandler.editSystemAdmin);
-app.get('/notificationToAdmin', authUser.authUser,authUser.authUser,adminHandler.notificationToAdmin);
-app.post('/userfilter/:pageNumber', authUser.authUser,authUser.authUser,adminHandler.userfilter);
-app.post('/pagefilter/:pageNumber', authUser.authUser,authUser.authUser,adminHandler.pagefilter);
-app.get('/adAdminUserList', authUser.authUser,authUser.authUser,adminHandler.adAdminUserList);
-app.put('/editPage/:id', authUser.authUser,authUser.authUser,adminHandler.editPage);
-app.get('/removeAds/:id', authUser.authUser,authUser.authUser,adminHandler.removeAds);
+app.get('/notificationToAdmin',authUser.authUser,adminHandler.notificationToAdmin);
+app.post('/userfilter',authUser.authUser,adminHandler.userfilter);
+app.post('/pagefilter',authUser.authUser,adminHandler.pagefilter);
+app.get('/adAdminUserList',authUser.authUser,adminHandler.adAdminUserList);
+app.put('/editPage/:id',authUser.authUser,adminHandler.editPage);
+app.get('/removeAds/:id',authUser.authUser,adminHandler.removeAds);
 app.put('/editAdminProfile/:id', authUser.authUser,adminHandler.editAdminProfile);
 app.post('/sendCouponTOUSers', authUser.authUser,adminHandler.sendCouponTOUSers);
 app.get('/blockPage/:id', authUser.authUser,adminHandler.blockPage);
@@ -147,7 +147,7 @@ app.post('/uploads', authUser.authUser,adminHandler.uploads);
 app.post('/sendLuckCardTOUsers', authUser.authUser,adminHandler.sendLuckCardTOUsers);
 app.post('/sendUpgradeCardTOUsers', authUser.authUser,adminHandler.sendUpgradeCardTOUsers);
 app.post('/paymentHistory', authUser.authUser,adminHandler.paymentHistory);
-app.get('/liveUser/:pageNumber', authUser.authUser,adminHandler.liveUser);
+app.get('/liveUser', authUser.authUser,adminHandler.liveUser);
 app.get('/showUserAllPages/:id', authUser.authUser,adminHandler.showUserAllPages);
 app.get('/listOfCategory', authUser.authUser,adminHandler.listOfCategory);
 app.post('/subCategoryData', authUser.authUser,adminHandler.subCategoryData);

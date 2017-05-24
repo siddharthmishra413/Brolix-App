@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('MyApp', ['ui.router', 'ngCookies', 'toastr', 'angularSpinners', '720kb.datepicker'])
+var app = angular.module('MyApp', ['ui.router', 'ngCookies', 'toastr', 'angularSpinners', '720kb.datepicker', 'blockUI'])
 
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {

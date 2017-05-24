@@ -13,7 +13,12 @@ localStorage.setItem('adsTypeName','totalAds');
 
 
 
-
+ $('#manageAdsTable').DataTable();
+      $scope.tab= 'totalads'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'totalads';      
+     },0)
 
 $scope.dataTableOne = function(type){
   console.log("type",type)
@@ -547,6 +552,146 @@ $scope.dataTableOne = function(type){
 //     //  console.log('City:   '+JSON.stringify($scope.dashBordFilter.city))
 //     //-------------------------------END OF SELECT CASCADING-------------------------//
 
+userService.totalAds().success(function(res) {
+                 // console.log("response-->>"+JSON.stringify(res))
+                if(res.responseCode == 409){
+                $state.go('login')
+            }else {
+                $scope.totalAds = res.result;
+               
+                $scope.totalAdscount = res.result.length;
+                
+            }
+        }).error(function(status, data) {
+
+    })
+
+     userService.totalActiveAds().success(function(res) {
+                 // console.log("response111-->>"+JSON.stringify(res))
+                if(res.responseCode == 409){
+                    $state.go('login')
+                }
+                else {
+                    $scope.totalActiveAds = res.result;
+                     //console.log(JSON.stringify($scope.totalActiveAds))
+                    $scope.totalActiveAdscount = res.result.length;
+                    
+                }
+             }).error(function(status, data) {
+
+         })
+      userService.totalExpiredAds().success(function(res) {
+                 // console.log("response-->>"+JSON.stringify(res))
+                if(res.responseCode == 409){
+                    $state.go('login')
+                }
+                else {
+                    $scope.totalExpiredAds = res.result;
+                    $scope.totalExpiredAdscount = res.result.length;
+                    
+                }
+             }).error(function(status, data) {
+
+         })
+userService.videoAds().success(function(res) {
+                 // console.log("response-->>"+JSON.stringify(res))
+                if(res.responseCode == 409){
+                    $state.go('login')
+                }
+                else {
+                    $scope.videoAds = res.result;
+                     $scope.videoAdscount = res.result.length;
+                    
+                }
+             }).error(function(status, data) {
+
+         })
+userService.slideshowAds().success(function(res) {
+                if(res.responseCode == 409){
+                    $state.go('login')
+                }
+                else {
+                    $scope.slideshowAds = res.result;
+                    $scope.slideshowAdscount = res.result.length;
+                    
+                }
+             }).error(function(status, data) {
+
+         })
+userService.adUpgradedByDollor().success(function(res) {
+                 // console.log("response-->>"+JSON.stringify(res))
+                if(res.responseCode == 409){
+                    $state.go('login')
+                }
+                else {
+                    $scope.adUpgradedByDollor = res.result;
+                    $scope.adUpgradedByDollorcount = res.result.length;
+                    
+                }
+             }).error(function(status, data) {
+
+         })
+userService.slideshowAds().success(function(res) {
+                     // console.log("response-->>"+JSON.stringify(res))
+                    if(res.responseCode == 409){
+                        $state.go('login')
+                    }
+                    else {
+                        $scope.adUpgradedByBrolix = res.result;
+                        $scope.adUpgradedByBrolixcount= res.result.length;
+                        
+                    }
+                 }).error(function(status, data) {
+
+             })
+ userService.showReportedAd().success(function(res) {
+             // console.log("response-->>"+JSON.stringify(res))
+            if(res.responseCode == 409){
+                $state.go('login')
+            }
+            else {
+                $scope.showReportedAd = res.result;
+                $scope.showReportedAdcount= res.result.length;
+                
+            }
+         }).error(function(status, data) {
+
+     })
+
+ userService.adsWithLinks().success(function(res) {
+             console.log("resssponse-->>"+JSON.stringify(res))
+            if(res.responseCode == 409){
+                $state.go('login')
+            }
+            else {
+                $scope.adsWithLinks = res.result;
+                $scope.adsWithLinkscount= res.result.length;
+                
+            }
+         }).error(function(status, data) {
+
+     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  $scope.export = function(){
     var type = localStorage.getItem('adsTypeName');
         html2canvas(document.getElementById('manageAdsTable'), {
@@ -565,21 +710,7 @@ $scope.dataTableOne = function(type){
 //*************Total Ads****************
     $scope.currentTotalAds = 1;
          $scope.nextTotalAds = function(){
-             userService.totalAds($scope.currentTotalAds).success(function(res) {
-                 // console.log("response-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                $state.go('login')
-            }else {
-                $scope.noOfPages = res.result.pages;
-                $scope.pageNo = JSON.parse(res.result.page);
-                $scope.totalAds = res.result.docs;
-               
-                $scope.totalAdscount = res.result.total;
-                
-            }
-        }).error(function(status, data) {
-
-    })
+             
     }
      $scope.nextTotalAds();
      $scope.nextClk = function(){
@@ -596,22 +727,7 @@ $scope.dataTableOne = function(type){
     $scope.currentActiveAds = 1;
          $scope.nextActiveAds = function(){
            console.log('page number -> '+ $scope.currentActiveAds);
-             userService.totalActiveAds($scope.currentActiveAds).success(function(res) {
-                 // console.log("response111-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.noOfPagesActiveAds = res.result.pages;
-                    $scope.pageNoActiveAds = JSON.parse(res.result.page);
-                    $scope.totalActiveAds = res.result.docs;
-                     //console.log(JSON.stringify($scope.totalActiveAds))
-                    $scope.totalActiveAdscount = res.count;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
+        
     }
      $scope.nextActiveAds();
      $scope.nextActiveAdsClk = function(){
@@ -641,21 +757,7 @@ $scope.dataTableOne = function(type){
 
     $scope.currentExpiredAds = 1;
          $scope.nextExpiredAds = function(){
-             userService.totalExpiredAds($scope.currentExpiredAds).success(function(res) {
-                 // console.log("response-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.noOfPagesExpiredAds = res.result.pages;
-                    $scope.pageNoExpiredAds = res.result.page;
-                    $scope.totalExpiredAds = res.result.docs;
-                    $scope.totalExpiredAdscount = res.count;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
+       
     }
      $scope.nextExpiredAds();
      $scope.nextExpiredAdsClk = function(){
@@ -672,21 +774,7 @@ $scope.dataTableOne = function(type){
 
 $scope.currentVideoAds = 1;
          $scope.nextVideoAds = function(){
-             userService.videoAds($scope.currentVideoAds).success(function(res) {
-                 // console.log("response-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.noOfPagesVideoAds = res.result.pages;
-                    $scope.pageNoVideoAds = res.result.page;
-                    $scope.videoAds = res.result.docs;
-                     $scope.videoAdscount = res.result.total;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
+             
     }
      $scope.nextVideoAds();
      $scope.nextVideoAdsClk = function(){
@@ -702,21 +790,7 @@ $scope.currentVideoAds = 1;
 //*************** SlideShow Ads************
     $scope.currentSlideShowAds = 1;
          $scope.nextSlideShowAds = function(){
-             userService.slideshowAds($scope.currentSlideShowAds).success(function(res) {
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.noOfPagesSlideShowAds = res.result.pages;
-                    // console.log("pages>>",JSON.stringify($scope.noOfPagesSlideShowAds))
-                    $scope.pageNoSlideShowAds = JSON.parse(res.result.page);
-                    $scope.slideshowAds = res.result.docs;
-                    $scope.slideshowAdscount = res.result.total;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
+             
     }
      $scope.nextSlideShowAds();
      $scope.nextSlideShowAdsClk = function(){
@@ -731,21 +805,7 @@ $scope.currentVideoAds = 1;
 //*************** Upgraded by Dollars************
     $scope.currentUpgradedByDollars = 1;
          $scope.nextUpgradedByDollars = function(){
-             userService.adUpgradedByDollor($scope.currentUpgradedByDollars).success(function(res) {
-                 // console.log("response-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.noOfPagesUpgradedByDollars = res.result.pages;
-                    $scope.pageNoUpgradedByDollars = JSON.parse(res.result.page);
-                    $scope.adUpgradedByDollor = res.result.docs;
-                    $scope.adUpgradedByDollorcount = res.result.total;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
+             
     }
      $scope.nextUpgradedByDollars();
      $scope.nextUpgradedByDollarsClk = function(){
@@ -761,21 +821,7 @@ $scope.currentVideoAds = 1;
 
     $scope.currentUpgradedByBrolix = 1;
              $scope.nextUpgradedByBrolix = function(){
-                 userService.slideshowAds($scope.currentUpgradedByBrolix).success(function(res) {
-                     // console.log("response-->>"+JSON.stringify(res))
-                    if(res.responseCode == 409){
-                        $state.go('login')
-                    }
-                    else {
-                        $scope.noOfPagesUpgradedByBrolix = res.result.pages;
-                        $scope.pageNoUpgradedByBrolix = JSON.parse(res.result.page);
-                        $scope.adUpgradedByBrolix = res.result.docs;
-                        $scope.adUpgradedByBrolixcount= res.result.total;
-                        
-                    }
-                 }).error(function(status, data) {
-
-             })
+                 
         }
          $scope.nextUpgradedByBrolix();
          $scope.nextUpgradedByBrolixClk = function(){
@@ -791,22 +837,7 @@ $scope.currentVideoAds = 1;
 
     $scope.currentReportedAds = 1;
      $scope.nextReportedAds = function(){
-         userService.showReportedAd($scope.currentReportedAds).success(function(res) {
-             // console.log("response-->>"+JSON.stringify(res))
-            if(res.responseCode == 409){
-                $state.go('login')
-            }
-            else {
-                $scope.noOfPagesReportedAds = res.result.pages;
-                // console.log("pages>>",JSON.stringify($scope.noOfPagesReportedAds))
-                $scope.pageNoReportedAds = JSON.parse(res.result.page);
-                $scope.showReportedAd = res.result.docs;
-                $scope.showReportedAdcount= res.result.total;
-                
-            }
-         }).error(function(status, data) {
-
-     })
+        
     }
      $scope.nextReportedAds();
      $scope.nextReportedAdsClk = function(){
@@ -823,21 +854,7 @@ $scope.currentVideoAds = 1;
     $scope.currentAdsWithLinks = 1;
      $scope.nextAdsWithLinks = function(){
         console.log('Ads -> '+ $scope.currentAdsWithLinks);
-         userService.adsWithLinks($scope.currentAdsWithLinks).success(function(res) {
-             console.log("resssponse-->>"+JSON.stringify(res))
-            if(res.responseCode == 409){
-                $state.go('login')
-            }
-            else {
-                $scope.noOfPagesAdsWithLinks = res.result.pages;
-                $scope.pageNoAdsWithLinks = JSON.parse(res.result.page);
-                $scope.adsWithLinks = res.result.docs;
-                $scope.adsWithLinkscount= res.result.total;
-                
-            }
-         }).error(function(status, data) {
-
-     })
+        
     }
      $scope.nextAdsWithLinks();
      $scope.nextAdsWithLinksClk = function(){
@@ -901,31 +918,31 @@ userService.topFiftyAds().success(function(res) {
  $scope.adsTypeName = function(val) {
         localStorage.setItem('adsTypeName',val);
 
-        $scope.currentTotalAds = 1;
+        //$scope.currentTotalAds = 1;
         $scope.nextTotalAds();
 
-         $scope.currentActiveAds = 1;
+        // $scope.currentActiveAds = 1;
         $scope.nextActiveAds();
 
-        $scope.currentExpiredAds = 1;
+       // $scope.currentExpiredAds = 1;
         $scope.nextExpiredAds();
 
-        $scope.currentVideoAds = 1;
+        //$scope.currentVideoAds = 1;
         $scope.nextVideoAds();
 
-        $scope.currentSlideShowAds = 1;
+       // $scope.currentSlideShowAds = 1;
         $scope.nextSlideShowAds();
 
-        $scope.currentUpgradedByDollars = 1;
+        //$scope.currentUpgradedByDollars = 1;
         $scope.nextUpgradedByDollars();
 
-        $scope.currentUpgradedByBrolix = 1;
+        //$scope.currentUpgradedByBrolix = 1;
         $scope.nextUpgradedByBrolix();
 
-        $scope.currentReportedAds = 1;
+        //$scope.currentReportedAds = 1;
         $scope.nextReportedAds();
 
-        $scope.currentAdsWithLinks = 1;
+       // $scope.currentAdsWithLinks = 1;
         $scope.nextAdsWithLinks();
     }
 

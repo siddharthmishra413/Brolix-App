@@ -131,14 +131,14 @@ app.service('userService',function($http){
     addUser: function(data) {
       return $http.post(baseurl+'/admin/addNewUser', data);
     },
-    totalUser: function(pageNo) {
-     return $http.get(baseurl+'/admin/showAllUser/'+pageNo);
+    totalUser: function() {
+     return $http.get(baseurl+'/admin/showAllUser');
     },
-    showAllPersonalUser: function(pageNo) {
-     return $http.get(baseurl+'/admin/showAllPersonalUser/'+pageNo);
+    showAllPersonalUser: function() {
+     return $http.get(baseurl+'/admin/showAllPersonalUser');
     },
-    showAllBusinessUser: function(pageNo) {
-      return $http.get(baseurl+'/admin/showAllBusinessUser/'+pageNo);
+    showAllBusinessUser: function() {
+      return $http.get(baseurl+'/admin/showAllBusinessUser');
     },
     totalWinners: function() {
       return $http.get(baseurl+'/admin/winners');
@@ -153,17 +153,17 @@ app.service('userService',function($http){
     editAds: function(userId,pageId,data) {
       return $http.put(baseurl+'/ads/editAd/'+ userId+'/'+pageId, data);
     },
-    showAllCashWinners: function(pageNo) {
-      return $http.get(baseurl+'/admin/cashWinners/'+pageNo);
+    showAllCashWinners: function() {
+      return $http.get(baseurl+'/admin/cashWinners');
     },
-    showAllCouponWinners: function(pageNo) {
-      return $http.get(baseurl+'/admin/couponWinners/'+pageNo);
+    showAllCouponWinners: function() {
+      return $http.get(baseurl+'/admin/couponWinners');
     },
-    showAllBlockUser: function(pageNo) {
-      return $http.get(baseurl+'/admin/showAllBlockUser/'+pageNo);
+    showAllBlockUser: function() {
+      return $http.get(baseurl+'/admin/showAllBlockUser');
     },
-     showAllLiveUsers: function(pageNo) {
-     return $http.get(baseurl+'/admin/liveUser/'+pageNo);
+     showAllLiveUsers: function() {
+     return $http.get(baseurl+'/admin/liveUser');
    },
     showListOFCouponWithoutPagination: function() {
       return $http.get(baseurl+'/admin/showListOFCouponWithoutPagination');
@@ -178,29 +178,29 @@ app.service('userService',function($http){
 
     /*-------------------------Manage Cards---------------------*/
 
-    totalSoldUpgradeCard: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalSoldUpgradeCard/'+pageNo);
+    totalSoldUpgradeCard: function() {
+      return $http.get(baseurl+'/admin/totalSoldUpgradeCard');
     },
-    totalIncomeInCashFromUpgradeCard: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalIncomeInCashFromUpgradeCard/'+pageNo);
+    totalIncomeInCashFromUpgradeCard: function() {
+      return $http.get(baseurl+'/admin/totalIncomeInCashFromUpgradeCard');
     },
-    usedUpgradeCard: function(pageNo) {
-      return $http.get(baseurl+'/admin/usedUpgradeCard/'+pageNo);
+    usedUpgradeCard: function() {
+      return $http.get(baseurl+'/admin/usedUpgradeCard');
     },
-    unUsedUpgradeCard: function(pageNo) {
-      return $http.get(baseurl+'/admin/unUsedUpgradeCard/'+pageNo);
+    unUsedUpgradeCard: function() {
+      return $http.get(baseurl+'/admin/unUsedUpgradeCard');
     },
-    totalSoldLuckCard: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalSoldLuckCard/'+pageNo);
+    totalSoldLuckCard: function() {
+      return $http.get(baseurl+'/admin/totalSoldLuckCard');
     },
-    totalIncomeInBrolixFromLuckCard: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalIncomeInBrolixFromLuckCard/'+pageNo);
+    totalIncomeInBrolixFromLuckCard: function() {
+      return $http.get(baseurl+'/admin/totalIncomeInBrolixFromLuckCard');
     },
-    usedLuckCard: function(pageNo) {
-      return $http.get(baseurl+'/admin/usedLuckCard/'+pageNo);
+    usedLuckCard: function() {
+      return $http.get(baseurl+'/admin/usedLuckCard');
     },
-    unUsedLuckCard: function(pageNo) {
-      return $http.get(baseurl+'/admin/unUsedLuckCard/'+pageNo);
+    unUsedLuckCard: function() {
+      return $http.get(baseurl+'/admin/unUsedLuckCard');
     },
     cardFilter: function(data){
      return $http.post(baseurl+'/admin/luckUpgradeCardfilter', data);
@@ -218,33 +218,33 @@ app.service('userService',function($http){
       return $http.post(baseurl+'/ads/createAds', data);
     },
 
-    totalAds: function(page) {
-     return $http.get(baseurl+'/admin/totalAds/'+page);
+    totalAds: function() {
+     return $http.get(baseurl+'/admin/totalAds');
      },
-     totalActiveAds: function(page) {
-       return $http.get(baseurl+'/admin/totalActiveAds/'+page);
+     totalActiveAds: function() {
+       return $http.get(baseurl+'/admin/totalActiveAds');
      },
-     totalExpiredAds: function(page) {
-       return $http.get(baseurl+'/admin/totalExpiredAds/'+page);
+     totalExpiredAds: function() {
+       return $http.get(baseurl+'/admin/totalExpiredAds');
      },
-     videoAds: function(page) {
-       return $http.get(baseurl+'/admin/videoAds/'+page);
+     videoAds: function() {
+       return $http.get(baseurl+'/admin/videoAds');
      },
 
-    slideshowAds: function(page) {
-     return $http.get(baseurl+'/admin/slideshowAds/'+page);
+    slideshowAds: function() {
+     return $http.get(baseurl+'/admin/slideshowAds');
     },
-    adUpgradedByDollor: function(pageNo) {
-      return $http.get(baseurl+'/admin/adUpgradedByDollor/'+pageNo);
+    adUpgradedByDollor: function() {
+      return $http.get(baseurl+'/admin/adUpgradedByDollor');
     },
-    adUpgradedByBrolix: function(pageNo) {
-      return $http.get(baseurl+'/admin/adUpgradedByBrolix/'+pageNo);
+    adUpgradedByBrolix: function() {
+      return $http.get(baseurl+'/admin/adUpgradedByBrolix');
     },
-    showReportedAd: function(pageNo) {
-      return $http.get(baseurl+'/admin/showReportedAd/'+pageNo);
+    showReportedAd: function() {
+      return $http.get(baseurl+'/admin/showReportedAd');
     },
-    adsWithLinks: function(pageNo) {
-      return $http.get(baseurl+'/admin/adsWithLinks/'+pageNo);
+    adsWithLinks: function() {
+      return $http.get(baseurl+'/admin/adsWithLinks');
     },
     topFiftyAds: function(pageNo) {
       return $http.get(baseurl+'/admin/topFiftyAds');
@@ -287,8 +287,8 @@ app.service('userService',function($http){
 
     /*------------------------Manage Pages---------------------*/
 
-    totalPages: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalPages/'+pageNo);
+    totalPages: function() {
+      return $http.get(baseurl+'/admin/totalPages');
     },
 
     allAdminPages: function() {
@@ -375,12 +375,12 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/sendcardAndcoupan/'+id);
     },
 
-    unPublishedPage: function (pageNo) {
-      return $http.get(baseurl+'/admin/unPublishedPage/'+pageNo);  
+    unPublishedPage: function () {
+      return $http.get(baseurl+'/admin/unPublishedPage');  
     },
 
-    showAllRemovedPage: function (pageNo) {
-      return $http.get(baseurl+'/admin/showAllRemovedPage/'+pageNo);  
+    showAllRemovedPage: function () {
+      return $http.get(baseurl+'/admin/showAllRemovedPage');  
     },
 
     removePage: function (pageId) {
@@ -393,8 +393,8 @@ app.service('userService',function($http){
     unblockPage: function(pageId) {
       return $http.get(baseurl+'/admin/unblockPage/'+pageId);
     },
-    showAllBlockedPage: function(pageNo){
-      return $http.get(baseurl+'/admin/showAllBlockedPage/'+pageNo);
+    showAllBlockedPage: function(){
+      return $http.get(baseurl+'/admin/showAllBlockedPage');
     },
 
     addcard: function(data) {
@@ -485,8 +485,8 @@ app.service('userService',function($http){
     couponGiftAd: function(id) {
       return $http.get(baseurl+'/admin/adInfo/'+id);
     },
-     giftFilter: function(data,pageId){
-     return $http.post(baseurl+'/admin/giftsFilter/'+pageId, data);
+     giftFilter: function(data){
+     return $http.post(baseurl+'/admin/giftsFilter', data);
    },
 
   
@@ -518,14 +518,14 @@ app.service('userService',function($http){
 
     //******************** Manage Payment Section ******************************
 
-     SoldUpgradeCard: function(pageNo){
-      return $http.get(baseurl+'/admin/totalSoldUpgradeCard/'+pageNo);
+     SoldUpgradeCard: function(){
+      return $http.get(baseurl+'/admin/totalSoldUpgradeCard');
     },
       userInfo: function(id){
       return $http.get(baseurl+'/admin/userInfo/'+id);
     },
-     SoldLuckCard: function(pageNo){
-      return $http.get(baseurl+'/admin/totalSoldLuckCard/'+pageNo);
+     SoldLuckCard: function(){
+      return $http.get(baseurl+'/admin/totalSoldLuckCard');
     },
       luckCardUsedAd: function(data){
       return $http.post(baseurl+'/admin/luckCardUsedAd',data);
