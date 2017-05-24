@@ -9,7 +9,7 @@
                             <div class="total-amt">{{totalUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='totalUsers'">
+                            <div class="btn-manage" ng-click="dataTableOne('totalUsers'); tab='totalUsers'">
                                 <a ng-click="userTypeName('totalUsers')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -38,7 +38,7 @@
                             <div class="total-amt">{{personalUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='personalUser'">
+                            <div class="btn-manage"  ng-click="dataTableOne('personalUser');" ng-click="tab='personalUser'">
                                 <a ng-click="userTypeName('personalUsers')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -66,7 +66,7 @@
                             <div class="total-amt">{{businessUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='businessUser'">
+                            <div class="btn-manage" ng-click="dataTableOne('businessUser'); tab='businessUser'">
                                 <a ng-click="userTypeName('businessUsers')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -94,7 +94,7 @@
                             <div class="total-amt">{{LiveUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='liveUser'">
+                            <div class="btn-manage" ng-click="dataTableOne('liveUser'); tab='liveUser'">
                                 <a ng-click="userTypeName('liveUsers')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -206,7 +206,7 @@
                             <div class="total-amt">{{allblockUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='blockuser'">
+                            <div class="btn-manage" ng-click="dataTableOne('blockuser'); tab='blockuser'">
                                 <a ng-click="userTypeName('blockedUsers')">Show</a>
                             </div>
                             <!-- <div class="btn-manage">

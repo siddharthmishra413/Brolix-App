@@ -6,7 +6,7 @@ module.exports = {
         if (!req.body.pageId) {
             res.send({
                 responseCode: 400,
-                responseMessage: 'Please netr pageId'
+                responseMessage: 'Please enter pageId'
             });
         } else {
             console.log("request-->>>", JSON.stringify(req.body))

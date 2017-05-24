@@ -77,7 +77,7 @@ module.exports = {
     "getMp3Files": function(req, res) {
         uploadFile.find({}, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                res.send({ result: result, responseCode: 200, responseMessage: "Mp3 files shows successfully." });
+                res.send({ result: result, responseCode: 200, responseMessage: "Mp3 files show successfully." });
             }
         })
     },
@@ -504,7 +504,7 @@ module.exports = {
                                     if (result.gender != result1.gender) {
                                         { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); }
                                     } else {
-                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'YSorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
                                             // var state = result.whoWillSeeYourAdd.state;
                                             var city = result.whoWillSeeYourAdd.city;
@@ -831,7 +831,7 @@ module.exports = {
 
                         var mySet = new Set(raffleCount);
                         var has = mySet.has(userId)
-                        if (has) { res.send({ responseCode: 302, responseMessage: "You have successfully win this raffle." }) }
+                        if (has) { res.send({ responseCode: 302, responseMessage: "You have already win this raffle." }) }
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
                             raffleCount.push(userId);
@@ -909,7 +909,7 @@ module.exports = {
                                             }
                                             res.send({
                                                 responseCode: 200,
-                                                responseMessage: "Raffle is over.33333"
+                                                responseMessage: "Raffle is over"
                                                     //result: result 
                                             })
                                         }
@@ -973,7 +973,7 @@ module.exports = {
                                                 }
                                                 res.send({
                                                     responseCode: 200,
-                                                    responseMessage: "Raffle is over 11."
+                                                    responseMessage: "Raffle is over."
                                                         //result: result
                                                 })
                                             }
@@ -994,7 +994,7 @@ module.exports = {
                                                 }
                                                 res.send({
                                                     responseCode: 200,
-                                                    responseMessage: "Raffle is over winner decided.222"
+                                                    responseMessage: "Raffle is over winner decided."
                                                         //result: result
                                                 })
                                             }
@@ -1303,7 +1303,7 @@ module.exports = {
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: "Ad edit."
+                responseMessage: "Ad edit successfully."
             });
         });
     },
@@ -1702,7 +1702,7 @@ module.exports = {
                     res.send({
                         result: pageRes,
                         responseCode: 200,
-                        responseMessage: "Successfully update clicks."
+                        responseMessage: "Clicks updated successfully."
                     });
                 })
 
@@ -1718,13 +1718,13 @@ module.exports = {
                         res.send({
                             result: pageRes,
                             responseCode: 404,
-                            responseMessage: "Successfully update clicks."
+                            responseMessage: "Clicks updated successfully."
                         });
                     } else {
                         res.send({
                             result: pageRes,
                             responseCode: 200,
-                            responseMessage: "Successfully update clicks."
+                            responseMessage: "Clicks updated successfully."
                         });
                     }
                 })

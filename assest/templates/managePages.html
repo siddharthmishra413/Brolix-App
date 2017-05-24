@@ -9,7 +9,7 @@
                             <div class="total-amt">{{totalPagesCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='totalPages'">
+                            <div class="btn-manage" ng-click="dataTableOne('totalPages');  tab='totalPages'">
                                 <a ng-click="pageTypeName('totalPages')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -37,7 +37,7 @@
                             <div class="total-amt">{{unPublishedPageCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='unPublishedPage'">
+                            <div class="btn-manage" ng-click="dataTableOne('unPublishedPage');  tab='unPublishedPage'">
                                 <a ng-click="pageTypeName('unPublishedPage')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -65,7 +65,7 @@
                             <div class="total-amt">{{showAllRemovedPageCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='showAllRemovedPage'">
+                            <div class="btn-manage" ng-click="dataTableOne('showAllRemovedPage');  tab='showAllRemovedPage'">
                                 <a ng-click="pageTypeName('Removed Pages')">Show</a>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                             <div class="total-amt">{{showAllBlockedPageCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='showAllBlockedPage'">
+                            <div class="btn-manage" ng-click="dataTableOne('showAllBlockedPage');  tab='showAllBlockedPage'">
                                 <a ng-click="pageTypeName('blockedPage')">Show</a>
                             </div>
                         </div>

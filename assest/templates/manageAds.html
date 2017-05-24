@@ -9,7 +9,7 @@
                             <div class="total-amt">{{totalAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='totalads'">
+                            <div class="btn-manage" ng-click="dataTableOne('totalads');  tab='totalads'">
                                 <a ng-click="adsTypeName('totalAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -25,7 +25,7 @@
                             <div class="total-amt">{{totalActiveAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='activeads'">
+                            <div class="btn-manage" ng-click="dataTableOne('activeads'); tab='activeads'">
                                 <a ng-click="adsTypeName('totalActiveAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -41,7 +41,7 @@
                             <div class="total-amt">{{totalExpiredAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='expiredAds'">
+                            <div class="btn-manage" ng-click="dataTableOne('expiredAds'); tab='expiredAds'">
                                 <a ng-click="adsTypeName('totalExpiredAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -57,7 +57,7 @@
                             <div class="total-amt">{{showReportedAdcount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='showReportedAd'">
+                            <div class="btn-manage" ng-click="dataTableOne('showReportedAd'); tab='showReportedAd'">
                                 <a ng-click="adsTypeName('showReportedAd')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -73,7 +73,7 @@
                             <div class="total-amt">{{adsWithLinkscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='adsWithLinks'">
+                            <div class="btn-manage" ng-click="dataTableOne('adsWithLinks'); tab='adsWithLinks'">
                                 <a ng-click="adsTypeName('adsWithLinks')"> Show</a>
                             </div>
                             <div class="btn-manage">
@@ -89,7 +89,7 @@
                             <div class="total-amt">{{videoAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='videoAds'">
+                            <div class="btn-manage" ng-click="dataTableOne('videoAds'); tab='videoAds'">
                                 <a ng-click="adsTypeName('videoAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -105,7 +105,7 @@
                             <div class="total-amt">{{slideshowAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='slideShowAds'">
+                            <div class="btn-manage" ng-click="dataTableOne('slideShowAds'); tab='slideShowAds'">
                                 <a ng-click="adsTypeName('slideShowAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -121,7 +121,7 @@
                             <div class="total-amt">{{adUpgradedByDollorcount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='adUpgradedByDollor'">
+                            <div class="btn-manage" ng-click="dataTableOne('adUpgradedByDollor'); tab='adUpgradedByDollor'">
                                 <a ng-click="adsTypeName('adUpgradedByDollor')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -137,7 +137,7 @@
                             <div class="total-amt">{{adUpgradedByBrolixcount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="tab='adUpgradedByBrolix'">
+                            <div class="btn-manage" ng-click="dataTableOne('adUpgradedByBrolix'); tab='adUpgradedByBrolix'">
                                 <a ng-click="adsTypeName('adUpgradedByBrolix')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -152,7 +152,7 @@
                                 <div class="green-box">Top 50 Cash Providers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="tab='topFiftyAds'">
+                                <div class="btn-manage show-btn w-100" ng-click="dataTableOne('topFiftyAds'); tab='topFiftyAds'">
                                     <a ng-click="adsTypeName('topFiftyAds')">Show</a>
                                 </div>
                             </div>

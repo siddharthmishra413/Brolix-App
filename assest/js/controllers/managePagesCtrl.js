@@ -11,6 +11,75 @@ $scope.class = false;
  localStorage.setItem('pageTypeName','totalPages');
 
 
+
+
+
+
+$scope.dataTableOne = function(type){
+  console.log("type",type)
+  if(type=='totalPages'){
+    $('#managePageTable').DataTable();
+      $scope.tab= 'totalPages'; 
+     $timeout(function(){
+        $('#managePageTable').DataTable();
+         $scope.tab= 'totalPages';      
+     },100)
+  }else if(type=='unPublishedPage'){
+    $('#managePageTable').DataTable();
+      $scope.tab= 'unPublishedPage'; 
+     $timeout(function(){
+        $('#managePageTable').DataTable();
+         $scope.tab= 'unPublishedPage';      
+     },100)
+  }else if(type=='showAllRemovedPage'){
+    $('#managePageTable').DataTable();
+      $scope.tab= 'showAllRemovedPage'; 
+     $timeout(function(){
+        $('#managePageTable').DataTable();
+         $scope.tab= 'showAllRemovedPage';      
+     },100)
+  }else if(type=='showAllBlockedPage'){
+    $('#managePageTable').DataTable();
+      $scope.tab= 'showAllBlockedPage'; 
+     $timeout(function(){
+        $('#managePageTable').DataTable();
+         $scope.tab= 'showAllBlockedPage';      
+     },100)
+  // }else if(type=='totalSentCoupons'){
+  //   $('#manageGiftTableFive').DataTable();
+  //     $scope.tab= 'totalSentCoupons'; 
+  //    $timeout(function(){
+  //       $('#manageGiftTableFive').DataTable();
+  //        $scope.tab= 'totalSentCoupons';      
+  //    },100)
+  // }else if(type=='totalSentCash'){
+  //   $('#manageGiftTableSix').DataTable();
+  //     $scope.tab= 'totalSentCash'; 
+  //    $timeout(function(){
+  //       $('#manageGiftTableSix').DataTable();
+  //        $scope.tab= 'totalSentCash';      
+  //    },100)
+  }else{
+    console.log("dddddd");
+  }
+     
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  userService.countryListData().success(function(res) {
       //console.log("ddd",JSON.stringify(res))
       $scope.countriesList = res.result;

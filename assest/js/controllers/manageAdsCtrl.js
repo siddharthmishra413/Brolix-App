@@ -10,6 +10,115 @@ $(window).scrollTop(0,0);
 localStorage.setItem('adsTypeName','totalAds');
 
 
+
+
+
+
+
+$scope.dataTableOne = function(type){
+  console.log("type",type)
+  if(type=='totalads'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'totalads'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'totalads';      
+     },100)
+  }else if(type=='activeads'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'activeads'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'activeads';      
+     },100)
+  }else if(type=='expiredAds'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'expiredAds'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'expiredAds';      
+     },100)
+  }else if(type=='showReportedAd'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'showReportedAd'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'showReportedAd';      
+     },100)
+  }else if(type=='adsWithLinks'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'adsWithLinks'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'adsWithLinks';      
+     },100)
+  }else if(type=='videoAds'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'videoAds'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'videoAds';      
+     },100)
+  }
+  else if(type=='slideShowAds'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'slideShowAds'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'slideShowAds';      
+     },100)
+  }
+  else if(type=='adUpgradedByDollor'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'adUpgradedByDollor'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'adUpgradedByDollor';      
+     },100)
+  }
+  else if(type=='adUpgradedByBrolix'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'adUpgradedByBrolix'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'adUpgradedByBrolix';      
+     },100)
+  }
+  else if(type=='topFiftyAds'){
+    $('#manageAdsTable').DataTable();
+      $scope.tab= 'topFiftyAds'; 
+     $timeout(function(){
+        $('#manageAdsTable').DataTable();
+         $scope.tab= 'topFiftyAds';      
+     },100)
+  }else{
+    console.log("dddddd");
+  }
+     
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  $scope.removeAds = function (id) {
     //console.log("hhh",id)
         $scope.RemoveId = id;

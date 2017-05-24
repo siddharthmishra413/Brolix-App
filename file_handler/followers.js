@@ -166,7 +166,7 @@
                                                  res.send({
                                                      result: result1,
                                                      responseCode: 200,
-                                                     responseMessage: "You have blocked this user."
+                                                     responseMessage: "Successfully blocked this user."
                                                  });
                                              }
                                          })
@@ -177,7 +177,7 @@
                                                  res.send({
                                                      result: result1,
                                                      responseCode: 200,
-                                                     responseMessage: "You have blocked this user."
+                                                     responseMessage: "Successfully blocked this user."
                                                  });
                                              }
                                          })
@@ -211,7 +211,7 @@
                              res.send({
                                  result: results,
                                  responseCode: 200,
-                                 responseMessage: "You have unblock this user."
+                                 responseMessage: "Successfully unblock this user."
                              });
                          }
                      })

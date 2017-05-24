@@ -17,6 +17,69 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.ageLimits = [];
     localStorage.setItem('userTypeName','totalUsers');
 
+
+
+
+
+$scope.dataTableOne = function(type){
+  console.log("type",type)
+  if(type=='personalUser'){
+    $('#manageUserTable').DataTable();
+      $scope.tab= 'personalUser'; 
+     $timeout(function(){
+        $('#manageUserTable').DataTable();
+         $scope.tab= 'personalUser';      
+     },100)
+  }else if(type=='totalUsers'){
+    $('#manageUserTable').DataTable();
+      $scope.tab= 'totalUsers'; 
+     $timeout(function(){
+        $('#manageUserTable').DataTable();
+         $scope.tab= 'totalUsers';      
+     },100)
+  }else if(type=='businessUser'){
+    $('#manageUserTable').DataTable();
+      $scope.tab= 'businessUser'; 
+     $timeout(function(){
+        $('#manageUserTable').DataTable();
+         $scope.tab= 'businessUser';      
+     },100)
+  }else if(type=='liveUser'){
+    $('#manageUserTable').DataTable();
+      $scope.tab= 'liveUser'; 
+     $timeout(function(){
+        $('#manageUserTable').DataTable();
+         $scope.tab= 'liveUser';      
+     },100)
+  }else if(type=='blockuser'){
+    $('#manageUserTable').DataTable();
+      $scope.tab= 'blockuser'; 
+     $timeout(function(){
+        $('#manageUserTable').DataTable();
+         $scope.tab= 'blockuser';      
+     },100)
+  // }else if(type=='totalSentCash'){
+  //   $('#manageUserTable').DataTable();
+  //     $scope.tab= 'totalSentCash'; 
+  //    $timeout(function(){
+  //       $('#manageUserTable').DataTable();
+  //        $scope.tab= 'totalSentCash';      
+  //    },100)
+  // }else{
+    console.log("dddddd");
+  }
+     
+  }
+
+
+
+
+
+
+
+
+
+
     for (var i = 15; i <99; i++){
       $scope.ageLimit.push(i);
     }

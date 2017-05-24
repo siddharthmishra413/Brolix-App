@@ -953,7 +953,7 @@ module.exports = {
                         res.send({
                             result: newResult,
                             responseCode: 200,
-                            responseMessage: "Show list all followers."
+                            responseMessage: "Show list of all followers."
                         });
                     }
                 })
@@ -1016,7 +1016,7 @@ module.exports = {
                     res.send({
                         result: newResult,
                         responseCode: 200,
-                        responseMessage: "Blocked users."
+                        responseMessage: "List of all blocked users shown successfully."
                     })
                 })
             }
@@ -1029,7 +1029,7 @@ module.exports = {
                 res.send({
                     // result:result,
                     responseCode: 200,
-                    responseMessage: "logout successfully."
+                    responseMessage: "Logout successfully."
                 });
             }
         });
@@ -1115,7 +1115,7 @@ module.exports = {
                 res.send({
                     //result: result,
                     responseCode: 200,
-                    responseMessage: "successfully purchased the upgrade card"
+                    responseMessage: "Successfully purchased the upgrade card"
                 });
             }
         })
@@ -1154,7 +1154,7 @@ module.exports = {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "successfully purchased the luck card"
+                    responseMessage: "Successfully purchased the luck card"
                 });
             }
         })
@@ -1162,7 +1162,7 @@ module.exports = {
 
     "useLuckCard": function(req, res) { // userId, adId, Brolix, luckId in request parameter
         var obj = (req.body.luckId);
-        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'please enter luckId' }); } else {
+        if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'Please enter luckId' }); } else {
             createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!data) return res.status(404).send({ responseMessage: "please enter correct adId" })
                 else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: "Winner allready decided" });
@@ -1196,7 +1196,7 @@ module.exports = {
             function(callback) {
                 var obj = req.body.upgradeId;
                 var adId = req.body.adId;
-                if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter upgradeId' }); } else if (adId == null || adId == '' || adId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter adId' }); } else {
+                if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'Please enter upgradeId' }); } else if (adId == null || adId == '' || adId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter adId' }); } else {
                     for (var i = 0; i < obj.length; i++) {
                         console.log("in loop")
                         User.update({ 'upgradeCardObject._id': obj[i] }, { $push: { 'UpgradeUsedAd': { upgradeId: obj[i], adId: adId } }, $set: { 'upgradeCardObject.$.status': "INACTIVE" } }, { multi: true }, function(err, result) {
@@ -1283,7 +1283,7 @@ module.exports = {
                     if (result.facebookID == undefined) {
                         res.send({
                             responseCode: 201,
-                            responseMessage: "You have already register with app.",
+                            responseMessage: "You are already register with app.",
                             user: result
                         });
                     } else {
@@ -1409,8 +1409,10 @@ module.exports = {
     "onlineUserList": function(req, res) {
         var condition;
         if (req.body.pageId) {
+            console.log("in if")
             condition = { $or: [{ senderId: req.body.userId, pageId: req.body.pageId }, { receiverId: req.body.userId, pageId: req.body.pageId }] }
         } else {
+              console.log("in else")
             condition = { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
         }
         chat.aggregate(
@@ -1551,7 +1553,7 @@ module.exports = {
                     }
                 } else {
                     if (result.googleID == undefined) {
-                        res.send({ responseCode: 201, responseMessage: "You have already register with app.", user: result });
+                        res.send({ responseCode: 201, responseMessage: "You are already register with app.", user: result });
                     } else {
                         User.findOneAndUpdate({ email: req.body.email }, {
                             $set: {
@@ -1672,7 +1674,7 @@ module.exports = {
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: "successfully purchased the coupon."
+                responseMessage: "You have successfully purchased the coupon."
             })
         })
     },
@@ -1719,7 +1721,7 @@ module.exports = {
                             res.send({
                                 // result: result1,
                                 responseCode: 200,
-                                responseMessage: "successfully added to favourite."
+                                responseMessage: "Successfully added to favourites."
                             })
                         }
                     })
@@ -1780,7 +1782,7 @@ module.exports = {
                 if (!req.body.receiverCouponCode) { res.send({ responseCode: 400, responseMessage: "Receiver coupon code is required" }); } else if (!req.body.receiverId) { res.send({ responseCode: 400, responseMessage: "receiverId is required." }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: "senderCouponId is required." }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: "receiverCouponId is required." }) } else if (receiverId == senderId) { res.send({ responseCode: 400, responseMessage: "You can not send the exchange request to yourself." }) } else {
                     createNewAds.findOne({ _id: adId }).exec(function(err, result) {
                         if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (Boolean(result.couponExchangeReceived.find(couponExchangeReceived => couponExchangeReceived.senderCouponId == senderCouponId))) {
-                            res.send({ responseCode: 302, responseMessage: "Already request for this coupon" });
+                            res.send({ responseCode: 302, responseMessage: "Already requested for this coupon" });
                         } else {
                             User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) } }, function(err, user1) {
                                 console.log("user1---->>>", user1)
@@ -2064,7 +2066,7 @@ module.exports = {
             res.send({
                 // result: result,
                 responseCode: 200,
-                responseMessage: "Coupon send successfully"
+                responseMessage: "Coupon send to follower successfully"
             });
         })
     },
@@ -2089,7 +2091,7 @@ module.exports = {
                                     console.log("user---->>>", user)
                                     console.log("coupon.couponExchangeStatus--->>>", JSON.stringify(user[0].couponExchangeReceived.couponExchangeStatus))
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else if ((user[0].couponExchangeReceived.couponExchangeStatus) == 'DECLINED') {
-                                        res.send({ responseCode: 403, responseMessage: "You have already declined for this request." })
+                                        res.send({ responseCode: 403, responseMessage: "You have declined for this request before." })
                                     } else {
                                         createNewAds.findOneAndUpdate({ 'couponExchangeReceived._id': receiverRequestId }, { $set: { "couponExchangeReceived.$.couponExchangeStatus": "ACCEPTED" } }, { new: true }).exec(function(err, result) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else { callback(null) }

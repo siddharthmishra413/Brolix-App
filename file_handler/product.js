@@ -80,7 +80,7 @@ module.exports = {
                 res.send({
                     result: results,
                     responseCode: 200,
-                    responseMessage: "Comments save successfully."
+                    responseMessage: "Comments saved successfully."
                 });
             }
         })

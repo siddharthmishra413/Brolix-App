@@ -20,7 +20,7 @@ module.exports = {
     //API for create Page
     "createPage": function(req, res) {
         createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
             } else {
                 if (!req.body.category || !req.body.subCategory) {
@@ -162,7 +162,7 @@ module.exports = {
                     res.send({
                         result: newResult,
                         responseCode: 200,
-                        responseMessage: "Show list all follow pages."
+                        responseMessage: "List of all pages shown successfully."
                     });
                 })
             }
@@ -178,7 +178,7 @@ module.exports = {
                             res.send({
                                 result: result1,
                                 responseCode: 200,
-                                responseMessage: "Pages details updated successfully rtwrttr."
+                                responseMessage: "Pages details updated successfully."
                             })
                         }
                     })
@@ -191,7 +191,7 @@ module.exports = {
                                     res.send({
                                         result: result3,
                                         responseCode: 200,
-                                        responseMessage: "Pages details updated successfully. 544353"
+                                        responseMessage: "Pages details updated successfully."
                                     })
                                 }
                             })
@@ -209,7 +209,7 @@ module.exports = {
             else if (!result) {
                 res.send({
                     responseCode: 302,
-                    responseMessage: "Something went worng."
+                    responseMessage: "Internal server error."
                 });
             } else {
                 createNewPage.findByIdAndUpdate(req.body.pageId, { $set: { status: 'DELETE' } }, { new: true }).exec(function(err, result) {
@@ -292,7 +292,7 @@ module.exports = {
                 res.send({
                     result: results,
                     responseCode: 200,
-                    responseMessage: "All Details Found"
+                    responseMessage: "Result show successfully"
                 })
             }
         })
@@ -312,7 +312,7 @@ module.exports = {
                         res.send({
                             result: results2,
                             responseCode: 200,
-                            responseMessage: "result show successfully"
+                            responseMessage: "Result show successfully"
                         })
                     })
                 })
@@ -327,7 +327,7 @@ module.exports = {
                         res.send({
                             result: results2,
                             responseCode: 200,
-                            responseMessage: "result show successfully"
+                            responseMessage: "Result show successfully"
                         })
                     })
                 })
@@ -385,7 +385,10 @@ module.exports = {
         var mediaType = req.body.mediaType;
         var link = req.body.link;
         createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "linkSocialListObject": { userId: req.body.userId, mediaType: req.body.mediaType, link: req.body.link } } }, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad Found" }); } else if (userId == null || userId == '' || userId === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter userId' }); } else if (mediaType == null || mediaType == '' || mediaType === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter mediaType' }); } else if (link == null || link == '' || link === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter link' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad Found" }); } 
+            else if (!req.body.userId) { res.send({ responseCode: 404, responseMessage: 'Please enter userId' }); }
+            else if (!req.body.mediaType) { res.send({ responseCode: 404, responseMessage: 'Please enter mediaType' }); } else if (!req.body.link) { res.send({ responseCode: 404, responseMessage: 'Please enter link' }); } else {
                 res.send({
                     //  result: result,
                     responseCode: 200,
@@ -598,6 +601,10 @@ module.exports = {
 
     "adAdmin": function(req, res) {
         if (req.body.add == "add") {
+            createNewPage.findOne({_id:req.params.id}).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                else if (Boolean(result.adAdmin.find(adAdmin => adAdmin.userId == req.body.userId))) { res.send({ responseCode: 400, responseMessage: "This user is already added as admin." }); }
+                else {            
             createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: 1 } }, { new: true }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { type: "Advertiser" } }).exec(function(err, result1) {
@@ -611,6 +618,8 @@ module.exports = {
                     })
                 }
             });
+                }
+            })
         } else if (req.body.add == "remove") {
             createNewPage.findByIdAndUpdate(req.params.id, { $pop: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: -1 } }, { new: true }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -1294,7 +1303,7 @@ module.exports = {
                 })
             }
         ], function(err, result) {
-            if (err) { responseHandler.apiResponder(req, res, 302, "Problem in data finding", err) } else {
+            if (err) { res.send({responseCode:500, responseMessage:"Internal server error"}) } else {
                 res.send({
                     responseCode: 200,
                     responseMessage: 'Successfully.',
@@ -1968,7 +1977,7 @@ module.exports = {
         var matchData = req.body.subCat;
         res.send({
             responseCode: 200,
-            responseMessage: "Subcategory lists.",
+            responseMessage: "Subcategory list.",
             result: subCategory[matchData]
         })
     },

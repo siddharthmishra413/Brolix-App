@@ -12,6 +12,118 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
 
 $scope.key = "Discount";
 
+
+
+
+
+
+
+$scope.dataTableOne = function(type){
+  console.log("type",type)
+  if(type=='upgradeCardOffer'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'upgradeCardOffer'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'upgradeCardOffer';      
+     },100)
+  }else if(type=='SoldUpgradeCard'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'SoldUpgradeCard'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'SoldUpgradeCard';      
+     },100)
+  }else if(type=='totalincomeUpgrade'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'totalincomeUpgrade'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'totalincomeUpgrade';      
+     },100)
+  }else if(type=='usedUpgradeCard'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'usedUpgradeCard'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'usedUpgradeCard';      
+     },100)
+  }else if(type=='unUsedUpgradeCard'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'unUsedUpgradeCard'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'unUsedUpgradeCard';      
+     },100)
+  }else if(type=='luckCardOffer'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'luckCardOffer'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'luckCardOffer';      
+     },100)
+  }
+  else if(type=='SoldULuckCard'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'SoldULuckCard'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'SoldULuckCard';      
+     },100)
+  }
+  else if(type=='totalincomeLuck'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'totalincomeLuck'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'totalincomeLuck';      
+     },100)
+  }
+  else if(type=='usedLuckCard'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'usedLuckCard'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'usedLuckCard';      
+     },100)
+  }
+  else if(type=='unUsedLuckCard'){
+    $('#manageCardTable').DataTable();
+      $scope.tab= 'unUsedLuckCard'; 
+     $timeout(function(){
+        $('#manageCardTable').DataTable();
+         $scope.tab= 'unUsedLuckCard';      
+     },100)
+  // }
+  // else if(type=='BuyAndGet'){
+  //   $('#manageCardTable').DataTable();
+  //     $scope.tab= 'BuyAndGet'; 
+  //    $timeout(function(){
+  //       $('#manageCardTable').DataTable();
+  //        $scope.tab= 'BuyAndGet';      
+  //    },100)
+  }else{
+    console.log("dddddd");
+  }
+     
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*Country*/
 userService.countryListData().success(function(res) {
     $scope.countriesList = res.result;

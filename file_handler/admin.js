@@ -92,7 +92,7 @@ module.exports = {
         } else {
             res.send({
                 responseCode: 404,
-                responseMessage: "session has been expried"
+                responseMessage: "Session has been expried"
             });
             //res.redirect('/login');
         }
@@ -215,7 +215,7 @@ module.exports = {
                     else {
                         results.brolix += req.body.brolix;
                         results.save();
-                        res.send({ responseCode: 200, responseMessage: "Brolix Transferred.", result: results });
+                        res.send({ responseCode: 200, responseMessage: "Brolix transferred successfully .", result: results });
                     }
                 });
             }

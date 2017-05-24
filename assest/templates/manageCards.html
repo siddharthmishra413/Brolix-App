@@ -10,7 +10,7 @@
                                 <div class="green-box">{{upgradeCardOffersCount}} Offers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="showOfferUpgrade(); tab='upgradeCardOffer'">
+                                <div class="btn-manage show-btn w-100" ng-click="dataTableOne('upgradeCardOffer'); showOfferUpgrade(); tab='upgradeCardOffer'">
                                     <a>Show</a>
                                 </div>
                             </div>
@@ -23,7 +23,7 @@
                                 <div class="total-amt">{{totalSoldUpgradeCardCount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='SoldUpgradeCard'">
+                                <div class="btn-manage" ng-click="dataTableOne('SoldUpgradeCard'); tab='SoldUpgradeCard'">
                                     <a ng-click="cardTypeName('totalSoldCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
@@ -39,7 +39,7 @@
                                 <div class="total-amt">{{totalIncomeFromUpgradeCard}}$</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='totalincomeUpgrade'">
+                                <div class="btn-manage" ng-click="dataTableOne('totalincomeUpgrade'); tab='totalincomeUpgrade'">
                                     <a ng-click="cardTypeName('totalIncome$')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -55,7 +55,7 @@
                                 <div class="total-amt">{{usedUpgradeCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='usedUpgradeCard'">
+                                <div class="btn-manage" ng-click="dataTableOne('usedUpgradeCard'); tab='usedUpgradeCard'">
                                     <a ng-click="cardTypeName('usedCards')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -71,7 +71,7 @@
                                 <div class="total-amt">{{unUsedUpgradeCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='unUsedUpgradeCard'">
+                                <div class="btn-manage" ng-click="dataTableOne('unUsedUpgradeCard'); tab='unUsedUpgradeCard'">
                                     <a ng-click="cardTypeName('unusedCards')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -89,7 +89,7 @@
                                 <div class="green-box">{{luckCardOffersCount}} Offers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="showOfferLuck(); tab='luckCardOffer'">
+                                <div class="btn-manage show-btn w-100" ng-click="dataTableOne('luckCardOffer'); showOfferLuck(); tab='luckCardOffer'">
                                     <a >Show</a>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                                 <div class="total-amt">{{totalSoldLuckCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='SoldULuckCard'">
+                                <div class="btn-manage" ng-click="dataTableOne('SoldULuckCard'); tab='SoldULuckCard'">
                                     <a ng-click="cardTypeName('totalSoldLuckCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
@@ -118,7 +118,7 @@
                                 <div class="total-amt">{{totalIncomeLuck}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='totalincomeLuck'">
+                                <div class="btn-manage" ng-click="dataTableOne('totalincomeLuck'); tab='totalincomeLuck'">
                                     <a ng-click="cardTypeName('totalIncome$LuckCards')">Show</a>
                                 </div>
                                <!--  <div class="btn-manage">
@@ -134,7 +134,7 @@
                                 <div class="total-amt">{{usedLuckCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='usedLuckCard'">
+                                <div class="btn-manage" ng-click="dataTableOne('usedLuckCard'); tab='usedLuckCard'">
                                     <a ng-click="cardTypeName('usedCardsLuckCards')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -150,7 +150,7 @@
                                 <div class="total-amt">{{unUsedLuckCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="tab='unUsedLuckCard'">
+                                <div class="btn-manage" ng-click="dataTableOne('unUsedLuckCard'); tab='unUsedLuckCard'">
                                     <a ng-click="cardTypeName('unusedCardsLuckCards')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -688,8 +688,8 @@
 <div class="col-sm-12" ng-switch="tab">   
     <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
         <ul class="nav nav-pills card-tabs">
-            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
-            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="showOfferUpgrade('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="dataTableOne('upgradeCardOffer'); getdata('Discount')">Discount</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="dataTableOne('upgradeCardOffer'); showOfferUpgrade('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
         </ul>
 
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'Discount'">
@@ -769,8 +769,8 @@
 <div class="col-sm-12" ng-switch="tab">   
     <div class="row table-responsive border-table cus-table" ng-switch-when="luckCardOffer">
         <ul class="nav nav-pills card-tabs">
-            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
-            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="showOfferLuck('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="dataTableOne('luckCardOffer'); getdata('Discount')">Discount</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="dataTableOne('BuyAndGet'); showOfferLuck('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
         </ul>
 
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'Discount'">
