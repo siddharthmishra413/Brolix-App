@@ -338,7 +338,6 @@ module.exports = {
                                 // result: result
                         });
                     } else {
-
                         res.send({
                             responseCode: 200,
                             responseMessage: 'Successfully.',
@@ -402,14 +401,6 @@ module.exports = {
                                     user.save(function(err, result) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                                         var token = jwt.sign(result, config.secreteKey);
-                                        // res.header({
-                                        //     "appToken": token
-                                        // }).send({
-                                        //     result: result,
-                                        //     token: token,
-                                        //     responseCode: 200,
-                                        //     responseMessage: "You have been registered successfully."
-                                        // });
                                         callback(null, token, result)
                                     })
                                 }
@@ -423,14 +414,6 @@ module.exports = {
                     user.save(function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                         var token = jwt.sign(result, config.secreteKey);
-                        // res.header({
-                        //     "appToken": token
-                        // }).send({
-                        //     result: result,
-                        //     token: token,
-                        //     responseCode: 200,
-                        //     responseMessage: "You have been registered successfully."
-                        // });
                         callback(null, token, result)
                     })
                 }

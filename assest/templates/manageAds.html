@@ -254,8 +254,8 @@
                         <th>CARD</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr ng-repeat="x in totalAds | manageAdsFilter:test">
+                <tbody> 
+                    <tr dir-paginate="x in totalAds | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -272,6 +272,7 @@
                        <!--  <button ng-click="preClk()" ng-disabled="pageNo==1" class="btn paginationBtn" >Prev</button> {{pageNo}}/{{noOfPages}}
                         <button ng-click="nextClk()" ng-disabled="pageNo==noOfPages" class="btn paginationBtn">Next</button> -->
             </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 

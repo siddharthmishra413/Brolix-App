@@ -13,94 +13,94 @@ localStorage.setItem('adsTypeName','totalAds');
 
 
 
- $('#manageAdsTable').DataTable();
-      $scope.tab= 'totalads'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'totalads';      
-     },0)
+//  $('#manageAdsTable').DataTable();
+//       $scope.tab= 'totalads'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'totalads';      
+//      },0)
 
-$scope.dataTableOne = function(type){
-  console.log("type",type)
-  if(type=='totalads'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'totalads'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'totalads';      
-     },100)
-  }else if(type=='activeads'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'activeads'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'activeads';      
-     },100)
-  }else if(type=='expiredAds'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'expiredAds'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'expiredAds';      
-     },100)
-  }else if(type=='showReportedAd'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'showReportedAd'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'showReportedAd';      
-     },100)
-  }else if(type=='adsWithLinks'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'adsWithLinks'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'adsWithLinks';      
-     },100)
-  }else if(type=='videoAds'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'videoAds'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'videoAds';      
-     },100)
-  }
-  else if(type=='slideShowAds'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'slideShowAds'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'slideShowAds';      
-     },100)
-  }
-  else if(type=='adUpgradedByDollor'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'adUpgradedByDollor'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'adUpgradedByDollor';      
-     },100)
-  }
-  else if(type=='adUpgradedByBrolix'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'adUpgradedByBrolix'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'adUpgradedByBrolix';      
-     },100)
-  }
-  else if(type=='topFiftyAds'){
-    $('#manageAdsTable').DataTable();
-      $scope.tab= 'topFiftyAds'; 
-     $timeout(function(){
-        $('#manageAdsTable').DataTable();
-         $scope.tab= 'topFiftyAds';      
-     },100)
-  }else{
-    console.log("dddddd");
-  }
+// $scope.dataTableOne = function(type){
+//   console.log("type",type)
+//   if(type=='totalads'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'totalads'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'totalads';      
+//      },100)
+//   }else if(type=='activeads'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'activeads'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'activeads';      
+//      },100)
+//   }else if(type=='expiredAds'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'expiredAds'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'expiredAds';      
+//      },100)
+//   }else if(type=='showReportedAd'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'showReportedAd'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'showReportedAd';      
+//      },100)
+//   }else if(type=='adsWithLinks'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'adsWithLinks'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'adsWithLinks';      
+//      },100)
+//   }else if(type=='videoAds'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'videoAds'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'videoAds';      
+//      },100)
+//   }
+//   else if(type=='slideShowAds'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'slideShowAds'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'slideShowAds';      
+//      },100)
+//   }
+//   else if(type=='adUpgradedByDollor'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'adUpgradedByDollor'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'adUpgradedByDollor';      
+//      },100)
+//   }
+//   else if(type=='adUpgradedByBrolix'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'adUpgradedByBrolix'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'adUpgradedByBrolix';      
+//      },100)
+//   }
+//   else if(type=='topFiftyAds'){
+//     $('#manageAdsTable').DataTable();
+//       $scope.tab= 'topFiftyAds'; 
+//      $timeout(function(){
+//         $('#manageAdsTable').DataTable();
+//          $scope.tab= 'topFiftyAds';      
+//      },100)
+//   }else{
+//     console.log("dddddd");
+//   }
      
-  }
+//   }
 
 
 
@@ -552,19 +552,34 @@ $scope.dataTableOne = function(type){
 //     //  console.log('City:   '+JSON.stringify($scope.dashBordFilter.city))
 //     //-------------------------------END OF SELECT CASCADING-------------------------//
 
-userService.totalAds().success(function(res) {
-                 // console.log("response-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                $state.go('login')
-            }else {
-                $scope.totalAds = res.result;
-               
-                $scope.totalAdscount = res.result.length;
-                
-            }
-        }).error(function(status, data) {
 
-    })
+userService.totalAds().then(function(success) {
+  if(success.data.responseCode == 404){
+    toastr.error(success.responseMessage);
+  }else if(success.data.responseCode == 200) {
+    $scope.totalAds = res.result;
+    $scope.totalAdscount = res.result.length;
+  }else{
+    toastr.error(success.responseMessage);
+  }
+})
+// userService.totalAds().success(function(res) {
+//                  console.log("response-->>"+JSON.stringify(res))
+//                 if(res.responseCode == 409){
+//                 $state.go('login')
+//             }else if(res.responseCode == 200) {
+
+//                 $scope.totalAds = res.result;
+               
+//                 $scope.totalAdscount = res.result.length;
+                
+//             }
+//             else{
+//               toastr.error(responseMessage);
+//             }
+//         }).error(function(status, data) {
+
+//     })
 
      userService.totalActiveAds().success(function(res) {
                  // console.log("response111-->>"+JSON.stringify(res))

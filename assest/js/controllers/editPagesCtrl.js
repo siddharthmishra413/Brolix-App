@@ -397,11 +397,11 @@ $scope.subCategoryFinal = $scope.checkBoxArray;
              "pageName": $scope.viewPageDetails.pageName,
              "category": $scope.viewPageDetails.category,
              "subCategory": $scope.subCategoryFinal,
-             "pageDiscription": $scope.myForm.description,
-             "email": $scope.myForm.email,
-             "phoneNumber": $scope.myForm.phon,
+             "pageDiscription": $scope.viewPageDetails.pageDiscription,
+             "email": $scope.viewPageDetails.email,
+             "phoneNumber": $scope.viewPageDetails.phoneNumber,
              "location": [$scope.myForm.latitude,$scope.myForm.longitude],
-             "website":$scope.myForm.website,
+             "website":$scope.viewPageDetails.website,
              "country":$scope.myForm.country,
              "state":$scope.myForm.state,
              "city":$scope.myForm.city, 
@@ -411,9 +411,9 @@ $scope.subCategoryFinal = $scope.checkBoxArray;
              "adAdmin":cond   
       }
      
-      console.log("allllllll data",JSON.stringify(data));
+      console.log("allllllll data",data);
       userService.editPage($scope.viewPageDetails._id,data).then(function(success) {
-        console.log(JSON.stringify(success))
+        console.log("resssss",success)
              if (success.data.responseCode == 200){
                 $scope.createPageData = success.result;
                 toastr.success("successfully Created");

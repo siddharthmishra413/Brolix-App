@@ -275,13 +275,19 @@ $scope.addNewPage = function(addNewPage){
 		        if(key=='pageImage'){
                     $scope.myForm.pagephoto = ObjS.data.result.url;
                     $scope.user.pagephoto = ObjS.data.result.url;
+                    console.log("image1",$scope.myForm.pagephoto)
+                    console.log("image2",$scope.user.pagephoto)
+
                 }else{
                     $scope.myForm.userphoto = ObjS.data.result.url;
                     $scope.user.userphoto = ObjS.data.result.url;
+                    console.log("image1",$scope.myForm.userphoto)
+                    console.log("image2",$scope.user.userphoto)
                 }
 		          }, 250);  
 		        // $scope.user.photo1 = ObjS.data.result.url;
-		        //console.log("image1",$scope.myFrom.image)
+		        console.log("image1",$scope.myForm.pagephoto)
+            console.log("image2",$scope.user.pagephoto)
 		    })
 
 		}else{
@@ -385,7 +391,7 @@ $scope.submitt = function(){
 	   
 	    console.log("allllllll data",JSON.stringify(data));
 	    createPageService.createPage(data).then(function(success) {
-	      console.log(JSON.stringify(success))
+	     console.log("resssss",success)
 	           if (success.data.responseCode == 200){
 	              $scope.createPageData = success.result;
 	              toastr.success("successfully Created");

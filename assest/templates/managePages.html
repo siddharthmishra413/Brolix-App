@@ -9,7 +9,7 @@
                             <div class="total-amt">{{totalPagesCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('totalPages');  tab='totalPages'">
+                            <div class="btn-manage" ng-click="tab='totalPages'">
                                 <a ng-click="pageTypeName('totalPages')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -37,7 +37,7 @@
                             <div class="total-amt">{{unPublishedPageCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('unPublishedPage');  tab='unPublishedPage'">
+                            <div class="btn-manage" ng-click="tab='unPublishedPage'">
                                 <a ng-click="pageTypeName('unPublishedPage')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -65,7 +65,7 @@
                             <div class="total-amt">{{showAllRemovedPageCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('showAllRemovedPage');  tab='showAllRemovedPage'">
+                            <div class="btn-manage" ng-click="tab='showAllRemovedPage'">
                                 <a ng-click="pageTypeName('Removed Pages')">Show</a>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                             <div class="total-amt">{{showAllBlockedPageCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('showAllBlockedPage');  tab='showAllBlockedPage'">
+                            <div class="btn-manage" ng-click="tab='showAllBlockedPage'">
                                 <a ng-click="pageTypeName('blockedPage')">Show</a>
                             </div>
                         </div>
@@ -154,7 +154,7 @@
                     <div class="form-group clearfix date-picker">
                     <datepicker date-format="yyyy-MM-dd" selector="form-control">
                        <div class="input-group">
-                           <input class="form-control" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose a date" ng-model="dashBordFilter.dobFrom"/>
+                           <input ng-disabled="dashBordFilter.dobTo==undefined"  class="form-control" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose a date" ng-model="dashBordFilter.dobFrom"/>
                            <span class="input-group-addon" style="cursor: pointer">
                           <!--  <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
@@ -206,8 +206,8 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                       <!--  <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
-                        <div class="input-group-addon">Search</div> -->
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
+                        <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
@@ -228,7 +228,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalPages | pagesFilter:test">
+                    <tr dir-paginate="x in totalPages | pagesFilter:test | itemsPerPage:10">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -243,11 +243,7 @@
                     </tr>
                 </tbody>
             </table>
-<!--             <div style="float:right; font-size: 20px;" ng-if="(totalPages | pagesFilter:test).length != 0">
-                <button ng-click="preTotalPages()" ng-disabled="pageTotalPages==1" class="btn paginationBtn" >Prev</button>
-                {{pageTotalPages}}/{{noOfPagesTotalPages}}
-                <button ng-click="nextTotalPages()" ng-disabled="pageTotalPages==noOfPagesTotalPages" class="btn paginationBtn">Next</button>
-            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -281,8 +277,8 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                       <!--  <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
-                        <div class="input-group-addon">Search</div> -->
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
+                        <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
@@ -303,7 +299,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unPublishedPage | pagesFilter:test">
+                    <tr dir-paginate="x in unPublishedPage | pagesFilter:test | itemsPerPage:10">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -318,11 +314,7 @@
                     </tr>
                 </tbody>
             </table>
-           <!--  <div style="float:right; font-size: 20px;" ng-if="(unPublishedPage | pagesFilter:test).length != 0">
-                <button ng-click="preunPublishedPage()" ng-disabled="pageunPublishedPage==1" class="btn paginationBtn" >Prev</button>
-                {{pageunPublishedPage}}/{{noOfPagesunPublishedPage}}
-                <button ng-click="nextunPublishedPage()" ng-disabled="pageunPublishedPage==noOfPagesunPublishedPage" class="btn paginationBtn">Next</button>
-            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -346,8 +338,8 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <!-- <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
-                        <div class="input-group-addon">Search</div> -->
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
+                        <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
@@ -368,7 +360,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in showAllRemovedPage | pagesFilter:test">
+                    <tr dir-paginate="x in showAllRemovedPage | pagesFilter:test | itemsPerPage:10">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -383,11 +375,7 @@
                     </tr>
                 </tbody>
             </table>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(showAllRemovedPage | pagesFilter:test).length != 0">
-                <button ng-click="preRemovedPages()" ng-disabled="pageRemovedPage==1" class="btn paginationBtn" >Prev</button>
-                {{pageRemovedPage}}/{{noOfPagesRemovedPage}}
-                <button ng-click="nextRemovedPages()" ng-disabled="pageRemovedPage==noOfPagesRemovedPage" class="btn paginationBtn">Next</button>
-            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -415,8 +403,8 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <!-- <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
-                        <div class="input-group-addon">Search</div> -->
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
+                        <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
@@ -437,7 +425,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in showAllBlockedPage | pagesFilter:test">
+                    <tr dir-paginate="x in showAllBlockedPage | pagesFilter:test | itemsPerPage:10">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -452,11 +440,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(showAllBlockedPage | pagesFilter:test).length != 0">
-               <!--  <button ng-click="preBlockedPage()" ng-disabled="pageBlockedPage==1" class="btn paginationBtn" >Prev</button>
-                {{pageBlockedPage}}/{{noOfPagesBlockedPage}}
-                <button ng-click="nextBlockedPage()" ng-disabled="pageBlockedPage==noOfPagesBlockedPage" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 

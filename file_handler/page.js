@@ -66,13 +66,17 @@ module.exports = {
             },
             function(result, callback) {
                 createNewPage.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                    if(err){res.semd({responseCode:500, responseMessage:'Internal server error'}); }
+                    else{
                     callback(null, result, pageResult);
+                    }
                 })
             },
             function(result, pageResult, callback) {
                 var array = [];
                 var data = [];
-                for (var i = 0; i < result.pageFollowers.length; i++) {
+                if(result.pageFollowers.length>0){
+                       for (var i = 0; i < result.pageFollowers.length; i++) {
                     array.push(result.pageFollowers[i].pageId)
                 }
                 console.log("ssssssssss", array);
@@ -86,6 +90,8 @@ module.exports = {
                         }
                     }
                 }
+                    
+                }             
                 res.send({
                     result: pageResult,
                     responseCode: 200,
