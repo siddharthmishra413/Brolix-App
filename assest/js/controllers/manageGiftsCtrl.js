@@ -119,7 +119,7 @@ userService.totalHiddenGifts().success(function(res) {
 })
 
 userService.totalExchangedCoupon().success(function(res) { 
-  console.log("resssss",JSON.stringify(res))
+  //console.log("resssss",JSON.stringify(res))
   if (res.responseCode == 200){
     $scope.totalExchangedCoupons= res.result.length;
     $scope.totalExchangedCouponShowOne=[];
@@ -148,6 +148,7 @@ userService.totalSentCoupon().success(function(res) {
     $scope.totalSentCouponShowTwo=[];
     for(var i=0;i<res.result.length;i++)
     {  
+      //console.log("res.result.length",res.result.length)
       for (var j=0;j<res.result[i].coupon.adId.couponSend.length;j++) {
         $scope.totalSentCouponShowTwo.push({
         "id":res.result[i].coupon.adId._id,
@@ -158,7 +159,8 @@ userService.totalSentCoupon().success(function(res) {
         });
       }
     }
-    
+    //console.log("$scope.totalSentCouponShowTwo",$scope.totalSentCouponShowTwo.length);
+  
   } 
   else {
     toastr.error(res.responseMessage);
@@ -243,6 +245,7 @@ $scope.showCouponGift= function(id,key) {
   }
   console.log(id)
   userService.couponGiftAd(id).then(function(success) { 
+    console.log("success",success)
   $scope.couponGiftAd=success.data.result;
           },function(err){
          //console.log(err);
@@ -427,7 +430,7 @@ $scope.giftTypeName = function(val) {
             joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
-        console.log("datatata",JSON.stringify(data))
+        //console.log("datatata",JSON.stringify(data))
 
     switch(type1)
             {
@@ -435,21 +438,17 @@ $scope.giftTypeName = function(val) {
                 case 'totalCouponsGifts': 
                 //console.log("1");
                     userService.giftFilter(data).success(function(res){
-                      console.log("res123:   ",JSON.stringify(res));
+                      //console.log("1:   ",JSON.stringify(res));
                       if (res.responseCode == 200){
-                        $scope.totalCouponsGiftShow= res.result;
-                        // $('#manageGiftTableOne').DataTable();
-                        // $scope.tab= 'totalCouponsGifts'; 
+                        $scope.totalCouponsGiftShow= res.result; 
                         $timeout(function(){
-                          $('#manageGiftTableOne').DataTable();
-                           // $scope.tab= 'totalCouponsGifts';      
+                          $('#manageGiftTableOne').DataTable();     
                         },100)
                       } 
                       else {
                         $scope.totalCouponsGiftShow="";
                         $timeout(function(){
-                          $('#manageGiftTableOne').DataTable();
-                           // $scope.tab= 'totalCouponsGifts';      
+                          $('#manageGiftTableOne').DataTable();      
                         },100)
                         toastr.error(res.responseMessage);
                       }
@@ -460,13 +459,20 @@ $scope.giftTypeName = function(val) {
                 case 'totalCashGifts': 
                 //console.log("2");
                     userService.giftFilter(data).success(function(res){
-                        
-                         if(res.responseCode == 200) {
-                           $scope.totalCashGiftShow = res.result;
-                           //console.log("ressssssss2",JSON.stringify($scope.totalCashGiftShow));
-                         }else {
-                           $scope.totalCashGiftShow = [];
-                        }
+                      //console.log("2:   ",JSON.stringify(res));
+                      if (res.responseCode == 200){
+                        $scope.totalCashGiftShow= res.result; 
+                        $timeout(function(){
+                          $('#manageGiftTableTwo').DataTable();     
+                        },100)
+                      } 
+                      else {
+                        $scope.totalCashGiftShow="";
+                        $timeout(function(){
+                          $('#manageGiftTableTwo').DataTable();      
+                        },100)
+                        toastr.error(res.responseMessage);
+                      }
                     })
                     
                 break;
@@ -474,29 +480,41 @@ $scope.giftTypeName = function(val) {
                 case 'totalHiddenGifts': 
                 //console.log("3");
                     userService.giftFilter(data).success(function(res){
-                      
-                      if(res.responseCode == 200) {
-                         $scope.totalHiddenGiftShow = res.result;
-                          //console.log("ressssssss3",JSON.stringify($scope.totalHiddenGiftShow));
-                      }else {
-                         $scope.totalHiddenGiftShow = [];
+                     // console.log("3:   ",JSON.stringify(res));
+                      if (res.responseCode == 200){
+                        $scope.totalHiddenGiftShow= res.result; 
+                        $timeout(function(){
+                          $('#manageGiftTableThree').DataTable();     
+                        },100)
+                      } 
+                      else {
+                        $scope.totalHiddenGiftShow="";
+                        $timeout(function(){
+                          $('#manageGiftTableThree').DataTable();      
+                        },100)
+                        toastr.error(res.responseMessage);
                       }
-
                     })
                     
                 break;
 
                 case 'totalExchanged': 
                 //console.log("4");
-                    userService.giftFilter(data).success(function(res){
-                       
-                        if(res.responseCode == 200) {
-                         $scope.totalExchangedCouponShowOne = res.result;
-                         // console.log("ressssssss4",JSON.stringify($scope.totalExchangedCouponShow1));
-                      }else {
-                         $scope.totalExchangedCouponShowOne = [];
+                      userService.giftFilter(data).success(function(res){
+                      //console.log("4:   ",JSON.stringify(res));
+                      if (res.responseCode == 200){
+                        $scope.totalExchangedCouponShowOne= res.result; 
+                        $timeout(function(){
+                          $('#manageGiftTableFour').DataTable();     
+                        },100)
+                      } 
+                      else {
+                        $scope.totalExchangedCouponShowOne="";
+                        $timeout(function(){
+                          $('#manageGiftTableFour').DataTable();      
+                        },100)
+                        toastr.error(res.responseMessage);
                       }
-
                     })
                     
                 break;
@@ -504,13 +522,20 @@ $scope.giftTypeName = function(val) {
                 case 'totalSentCoupons':
                // console.log("5"); 
                     userService.giftFilter(data).success(function(res){
-                       
-                         if(res.responseCode == 200) {
-                         $scope.totalSentCouponShowTwo = res.result;
-                          //console.log("ressssssss4",JSON.stringify($scope.totalSentCouponShow1));
-                         }else {
-                           $scope.totalSentCouponShow1 = [];
-                         }
+                     // console.log("5:   ",JSON.stringify(res));
+                      if (res.responseCode == 200){
+                        $scope.totalSentCouponShowTwo= res.result; 
+                        $timeout(function(){
+                          $('#manageGiftTableFive').DataTable();     
+                        },100)
+                      } 
+                      else {
+                        $scope.totalSentCouponShowTwo="";
+                        $timeout(function(){
+                          $('#manageGiftTableFive').DataTable();      
+                        },100)
+                        toastr.error(res.responseMessage);
+                      }
                     })
                     
                 break;
@@ -518,15 +543,20 @@ $scope.giftTypeName = function(val) {
                 case 'totalSentCash': 
                // console.log("6");
                     userService.giftFilter(data).success(function(res){
-                        $scope.totalSentCashShow = res.result;
-
-                         if(res.responseCode == 200) {
-                         $scope.totalSentCashShow = res.result;
-                         // console.log("ressssssss4",JSON.stringify($scope.totalSentCashShow));
-                         }else {
-                           $scope.totalSentCashShow = [];
-                         }
-                      
+                     // console.log("6:   ",JSON.stringify(res));
+                      if (res.responseCode == 200){
+                        $scope.totalSentCashShow= res.result; 
+                        $timeout(function(){
+                          $('#manageGiftTableSix').DataTable();     
+                        },100)
+                      } 
+                      else {
+                        $scope.totalSentCashShow="";
+                        $timeout(function(){
+                          $('#manageGiftTableSix').DataTable();      
+                        },100)
+                        toastr.error(res.responseMessage);
+                      }
                     })
                     
                 break;

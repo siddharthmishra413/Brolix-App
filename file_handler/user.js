@@ -1462,10 +1462,32 @@ module.exports = {
                 console.log("result--->" + JSON.stringify(result));
                 for (var i = 0; i < result.length; i++) {
                     result.length - 1 == i ? j = i : j = i + 1;
-                    console.log("j--->" + j);
-                    while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
-                        j += 1;
+                    
+                    
+                    //while ((result[j]._id.senderId)) {
+                    /*if (j < result.length)
+                    {*/
+                        console.log("j--->" + j);
+                    console.log("result.length" + result.length);
+
+                    while((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
+                        console.log("inside whil;e")
+                        console.log("result[i]._id.senderId");
+                        console.log(result[i]._id.senderId);
+                        console.log("result[j]._id.receiverId");
+                        console.log(result[j]._id.receiverId);
+                        console.log("result[j]._id.senderId");
+                        console.log(result[j]._id.senderId);
+                        console.log("result[i]._id.receiverId");
+                        console.log(result[i]._id.receiverId);
+                        if (result[j+1] != undefined)
+                            j += 1;
+                        else
+                            break;
+                        console.log("j");
+                        console.log(j);
                     }
+                    //}
                     if (i != j) {
                         result[i].unread += result[j].unread;
                     }

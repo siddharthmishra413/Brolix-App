@@ -3,7 +3,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.class = true;
     $scope.$emit('headerStatus', 'Manage User');
     $scope.$emit('SideMenu', 'Manage User');
-    $scope.tab = 'totalUsers';
+    //$scope.tab = 'totalUsers';
     $scope.myForm = {};
     $scope.sendMessage = {};
     $scope.sendBrolix = {};
@@ -20,10 +20,10 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
 
 // $('#manageUserTable').DataTable();
       //$scope.tab= 'totalUsers'; 
-     $timeout(function(){
-        $('#manageUserTable').DataTable();
-         $scope.tab= 'totalUsers';      
-     },100)
+     // $timeout(function(){
+     //    $('#manageUserTable').DataTable();
+     //     $scope.tab= 'totalUsers';      
+     // },100)
 
 $scope.dataTableOne = function(type){
   console.log("type",type)
@@ -343,10 +343,9 @@ $scope.dataTableOne = function(type){
 //<--------------------------------------------------------autocall-------------------------------------------
     userService.totalUser().success(function(res) {
          //console.log(JSON.stringify(res))
-            if (res.responseCode == 200){
-                  
-                   $scope.totalUser = res.result;
-                   $scope.totalUserCount = res.result.length;
+            if (res.responseCode == 200){ 
+              $scope.totalUser = res.result;
+              $scope.totalUserCount = $scope.totalUser.length;
                }
                else {
                 $scope.totalUserCount = 0;
@@ -358,7 +357,7 @@ $scope.dataTableOne = function(type){
 userService.showAllPersonalUser().success(function(res) {
             if (res.responseCode == 200){
                    $scope.personalUser = res.result;
-                   $scope.personalUserCount = res.result.length;
+                   $scope.personalUserCount = $scope.personalUser.length;
                }
                else {
                 $scope.personalUserCount = 0;
@@ -369,7 +368,7 @@ userService.showAllPersonalUser().success(function(res) {
 userService.showAllBusinessUser().success(function(res) {
             if (res.responseCode == 200){
                    $scope.businessUser = res.result;
-                   $scope.businessUserCount = res.result.length;
+                   $scope.businessUserCount = $scope.businessUser.length;
                }
                else {
                 $scope.businessUserCount = 0;
@@ -380,9 +379,10 @@ userService.showAllBusinessUser().success(function(res) {
  // console.log("live users:     "+res)
             if (res.responseCode == 200){
                    $scope.liveUser = res.result;
-                   $scope.LiveUserCount = res.result.length;
+                   $scope.LiveUserCount = $scope.liveUser.length;
                }
                else {
+                $scope.LiveUserCount=0;
                 toastr.error(res.responseMessage);
                 }
           })
@@ -391,6 +391,7 @@ userService.showAllBusinessUser().success(function(res) {
 
             if (res.responseCode == 200){
                    $scope.totalWinnersCount = res.result;
+                   //$scope.totalWinnersCount.length;
                }
                else {
                 $scope.totalWinnersCount = 0;
@@ -401,7 +402,7 @@ userService.showAllBusinessUser().success(function(res) {
           //console.log("res",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.cashWinners = res.result;
-                   $scope.cashWinnersCount = res.result.length;
+                   //$scope.cashWinnersCount = res.result.length;
                   // console.log("$scope.cashWinnersCount",$scope.cashWinnersCount)
                }
                else {
@@ -413,7 +414,7 @@ userService.showAllCouponWinners().success(function(res) {
            // console.log("dddd",JSON.stringify(res))
             if (res.responseCode == 200){
                    $scope.couponWinners = res.result;
-                   $scope.couponWinnersCount = res.result.length;
+                   //$scope.couponWinnersCount = res.result.length;
                   // console.log("$scope.couponWinnersCount",$scope.couponWinnersCount)
                }
                else {
@@ -424,7 +425,7 @@ userService.showAllCouponWinners().success(function(res) {
 userService.showAllBlockUser().success(function(res) {
             if (res.responseCode == 200){
                    $scope.allblockUser = res.result;
-                   $scope.allblockUserCount = res.result.length;
+                   $scope.allblockUserCount = $scope.allblockUser.length;
                }
                else {
                 $scope.allblockUserCount = 0;
