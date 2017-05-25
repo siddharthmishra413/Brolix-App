@@ -275,7 +275,7 @@ $scope.dashBordFilter = function(){
                     
                 break;
 
-                case 'unPublishedPage':
+                case 'unpublishedPages':
                 console.log("cccccvvvvv")
 
                     userService.pagefilter(data).success(function(res){
@@ -291,7 +291,7 @@ $scope.dashBordFilter = function(){
                     
                 break;
 
-                case 'removedPage': 
+                case 'removedPages': 
                 //console.log("3");
                     $scope.currentPage = 1;
                     userService.pagefilter(data).success(function(res){
@@ -308,7 +308,7 @@ $scope.dashBordFilter = function(){
                     
                 break;
 
-                case 'blockedPage': 
+                case 'blockedPages': 
                 //console.log("4");
                     userService.pagefilter(data).success(function(res){
                       console.log("res",JSON.stringify(res))
@@ -859,18 +859,19 @@ $scope.showAdminPages = function(id){
 app.filter("pagesFilter",function() {
      return function(items,nameValue)
      {
-       // console.log(JSON.stringify(items));
-        //console.log(nameValue);
+       console.log("items:   "+JSON.stringify(items));
+        console.log("serach key:     "+nameValue);
        if (!nameValue) {
          return retArray = items;
             }
          var retArray = [];
            for(var i=0;i<items.length;i++) 
                {
-               //console.log(typeof items[i].phoneNumber);
-             if(items[i].phoneNumber == '' || items[i].phoneNumber == 'undefined' || items[i].pageName == null || items[i].pageName == 'undefined' || items[i].pageName == null || items[i].phoneNumber == null)
+               console.log("item[i].pageName:      " +items[i].pageName);
+             if(items[i].pageName == null || items[i].pageName == 'undefined' || items[i].pageName == null)
               {
-             }else if(items[i].phoneNumber.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {
+                console.log("no data ");
+             }else if(items[i].pageName.toString().substr(0,nameValue.length) == nameValue.toString() || items[i].pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()) {
                 retArray.push(items[i]);
                }
            

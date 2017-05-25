@@ -58,6 +58,7 @@ module.exports = {
 
     //API for Show All Pages
     "showAllOtherUserPages": function(req, res) {
+        console.log("request-->>",req.body)
         waterfall([
             function(callback) {
                 User.findOne({ _id: req.params.id }).exec(function(err, result) {
@@ -73,9 +74,12 @@ module.exports = {
                 })
             },
             function(result, pageResult, callback) {
+                console.log("pageFollowers--->>", result);
+                console.log("result.pageFollowers--->>");
+                console.log("result.pageFollowers--->>", result.pageFollowers);
                 var array = [];
                 var data = [];
-                if(result.pageFollowers.length>0){
+                if(result.pageFollowers.length!=0){
                        for (var i = 0; i < result.pageFollowers.length; i++) {
                     array.push(result.pageFollowers[i].pageId)
                 }
@@ -124,16 +128,63 @@ module.exports = {
         })
     },
     //API for Business Type
+    
     "myPages": function(req, res) {
-        createNewPage.paginate({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Pages details show successfully."
-            })
-        })
-    },
+        waterfall([
+            function(callback) {
+                var userId = req.params.id;
+                createNewPage.find({ pageType: 'Business', status: "ACTIVE" }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No page found' }); } else {
+                        var pageArray = [];
+                        for (var i = 0; i < result.length; i++) {
+                            for (var j = 0; j < result[i].adAdmin.length; j++) {
+                                if (result[i].adAdmin[j].userId == userId) {
+                                    pageArray.push(result[i]._id)
+                                }
+                            }
+                        }
+                        console.log("pages-->>", pageArray)
+                        callback(null, pageArray)
+                    }
+                })
+            },
+            function(pageArray, callback) {
+                var userId = req.params.id;
+                createNewPage.find({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        for (var k = 0; k < result1.length; k++) {
+                            pageArray.push(result1[k]._id)
+                        }
+                        console.log("pages-111->>", pageArray)
+                        callback(null, pageArray)
+                    }
+                })
+            },
+            function(pageArray, callback) {
+                createNewPage.paginate({ _id: { $in: pageArray }},{ page: req.params.pageNumber, limit: 8 }, function(err, result2) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+                        callback(null, result2)
+                    }
+                })
+                },], function(err, result2) {
+                res.send({
+                    result: result2,
+                    responseCode: 200,
+                    responseMessage: "Pages details show successfully."
+                })
+            })   
+},
+
+//    "myPages": function(req, res) {
+//        createNewPage.paginate({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+//            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); }
+//            res.send({
+//                result: result,
+//                responseCode: 200,
+//                responseMessage: "Pages details show successfully."
+//            })
+//        })
+//    },
 
     "myPagesSearch": function(req, res) {
         createNewPage.find({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, function(err, result) {
@@ -646,7 +697,7 @@ module.exports = {
     "pageViewClick": function(req, res) {
 
         var startTime = new Date(req.body.date).toUTCString();
-        var endTimeHour = req.body.date + 3600000;
+        var endTimeHour = req.body.date + 60000;
         var endTime = new Date(endTimeHour).toUTCString();
         console.log(startTime);
         console.log(endTime)

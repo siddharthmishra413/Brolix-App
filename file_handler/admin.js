@@ -241,7 +241,7 @@ module.exports = {
         User.find({ status: "BLOCK" }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No blocked found." }) } else {
                 var count = 0;
-                for (var i = 0; i < result.docs.length; i++) {
+                for (var i = 0; i < result.length; i++) {
                     count++;
                 }
                 res.send({
@@ -707,7 +707,7 @@ module.exports = {
                     count++;
                 }
                 res.send({
-                            docs: result,
+                            result: result,
                             total: count,
                             // limit: limit,
                             // page: page,
@@ -926,7 +926,7 @@ module.exports = {
         createNewAds.find({ adContentType: "video" }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
                 var count = 0;
-                for (var i = 0; i < result.docs.length; i++) {
+                for (var i = 0; i < result.length; i++) {
                     count++;
                 }
                 createNewAds.populate(result, {
@@ -956,7 +956,7 @@ module.exports = {
         createNewAds.find({ adContentType: "slideshow" }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
                 var count = 0;
-                for (var i = 0; i < result.docs.length; i++) {
+                for (var i = 0; i < result.length; i++) {
                     count++;
                 }
                 createNewAds.populate(result, {
@@ -1360,11 +1360,11 @@ module.exports = {
 
         waterfall([
             function(callback) {
-                if (data == "reportedAds" || data == "adsWithLinks" || data == "upgradedAdsBy$" || data == "upgradedAdsByB") {
+                if (data == "showReportedAd" || data == "adsWithLinks" || data == "adUpgradedByDollor" || data == "adUpgradedByBrolix") {
                     createNewAds.find({}).exec(function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                             var array = [];
-                            if (data == "reportedAds") {
+                            if (data == "showReportedAd") {
                                 for (var i = 0; i < result.length; i++) {
                                     if (result[i].reportOnAd > 0) {
                                         array.push(result[i]._id)
@@ -1378,14 +1378,14 @@ module.exports = {
                                     }
                                 }
                             }
-                            if (data == 'upgradedAdsBy$') {
+                            if (data == 'adUpgradedByDollor') {
                                 for (var i = 0; i < result.length; i++) {
                                     if (result[i].cash > 0) {
                                         array.push(result[i]._id)
                                     }
                                 }
                             }
-                            if (data == 'upgradedAdsByB') {
+                            if (data == 'adUpgradedByBrolix') {
                                 for (var i = 0; i < result.length; i++) {
                                     if (result[i].couponPurchased > 0) {
                                         array.push(result[i]._id)
@@ -1409,17 +1409,17 @@ module.exports = {
             },
             function(allAdsIds, callback) {
                 switch (data) {
-                    case 'activeAds':
+                    case 'totalActiveAds':
                         var updateData = { status: "ACTIVE" };
                         condition.$and.push(updateData)
                         break;
 
-                    case 'expiredAds':
+                    case 'totalExpiredAds':
                         var updateData = { status: "EXPIRED" };
                         condition.$and.push(updateData)
                         break;
 
-                    case 'reportedAds':
+                    case 'showReportedAd':
                         var updateData = { _id: { $in: allAdsIds } };
                         condition.$and.push(updateData)
                         break;
@@ -1439,19 +1439,26 @@ module.exports = {
                         condition.$and.push(updateData)
                         break;
 
-                    case 'upgradedAdsBy$':
+                    case 'adUpgradedByDollor':
                         var updateData = { _id: { $in: allAdsIds } };
                         condition.$and.push(updateData)
                         break;
 
-                    case 'upgradedAdsByB':
+                    case 'adUpgradedByBrolix':
                         var updateData = { _id: { $in: allAdsIds } };
                         condition.$and.push(updateData)
                         break;
 
-                    default:
-                        var updateData = {};
+                    case 'totalAds':
+                        var updateData = { status: 'ACTIVE' };
                         condition.$and.push(updateData)
+                        break;
+
+                     case 'topFiftyAds':
+                        var updateData = { };
+                        condition.$and.push(updateData)
+                        break;
+
                 }
                 console.log("condition before callback==>>" + JSON.stringify(condition))
                 console.log("updated data===>." + updateData)
@@ -1498,27 +1505,34 @@ module.exports = {
                 //                 // condition.$and.push(data)
                 //             }
                 // });
+
                 if (condition.$and.length == 0) {
                     delete condition.$and;
                 }
                 callback(null, condition)
             },
             function(condition, callback) {
+                 //var query = tempCond;
+                if (data == 'topFiftyAds') {
+                    var query = condition
+                    module.exports.topFiftyAds(req, res, query)
+                } 
+                else{
+                    console.log("condition===>.." + JSON.stringify(condition))
+                    createNewAds.find(condition, function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                            //  console.log("result;;;>"+result)
+                            callback(null, result, condition)
+                        }
+                    })
 
-
-                console.log("condition===>.." + JSON.stringify(condition))
-                createNewAds.find(condition, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        //  console.log("result;;;>"+result)
-                        callback(null, result, condition)
-                    }
-                })
+                }
             }
         ], function(err, result, condition) {
             res.send({
                 responseCode: 200,
                 responseMessage: 'Filtered Ads.',
-                data: result
+                result: result
             });
         })
     },
@@ -2025,7 +2039,7 @@ module.exports = {
                         for (var i = 0; i < result1.length; i++) {
                             count++;
                         }
-                        createNewAds.populate(result1.docs, {
+                        createNewAds.populate(result1, {
                             path: 'adAdmin.userId',
                             model: 'brolixUser',
                             select: 'firstName lastName'
@@ -3119,8 +3133,15 @@ module.exports = {
         })
     },
 
-    "topFiftyAds": function(req, res) { //sort({ viewerLenght: -1 }).limit(50).populate('pageId', 'pageName')
-        createNewAds.find({}).sort({ viewerLenght: -1 }).limit(50).exec(function(err, result) {
+    "topFiftyAds": function(req, res, query) { //sort({ viewerLenght: -1 }).limit(50).populate('pageId', 'pageName')
+         if (!(query.length == 1)) {
+            console.log("query")
+            var updateData = query;
+        } else {
+            console.log("rather than query")
+            var updateData = {};
+        }
+        createNewAds.find(updateData).sort({ viewerLenght: -1 }).limit(50).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
@@ -3712,14 +3733,10 @@ module.exports = {
                         condition.$and.push(updateData)
                         break;
 
-                    case 'pagesAdmins':
-                        var updateData = {};
+                    case 'totalPages':
+                        var updateData = { status: "ACTIVE", adsCount: { $gt: 0 } }
                         condition.$and.push(updateData)
                         break;
-
-                    default:
-                        var updateData = {};
-                        condition.$and.push(updateData)
                 }
                 console.log("condition before callback==>>" + JSON.stringify(condition))
                 console.log("updated data===>." + updateData)

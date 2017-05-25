@@ -9,7 +9,7 @@
                             <div class="total-amt">{{totalUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('totalUsers'); tab='totalUsers'">
+                            <div class="btn-manage" ng-click="tab='totalUsers'">
                                 <a ng-click="userTypeName('totalUsers')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -38,7 +38,7 @@
                             <div class="total-amt">{{personalUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage"  ng-click="dataTableOne('personalUser');" ng-click="tab='personalUser'">
+                            <div class="btn-manage" ng-click="tab='personalUser'">
                                 <a ng-click="userTypeName('personalUsers')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -66,7 +66,7 @@
                             <div class="total-amt">{{businessUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('businessUser'); tab='businessUser'">
+                            <div class="btn-manage" ng-click="tab='businessUser'">
                                 <a ng-click="userTypeName('businessUsers')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -94,7 +94,7 @@
                             <div class="total-amt">{{LiveUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('liveUser'); tab='liveUser'">
+                            <div class="btn-manage" ng-click="tab='liveUser'">
                                 <a ng-click="userTypeName('liveUsers')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -206,7 +206,7 @@
                             <div class="total-amt">{{allblockUserCount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('blockuser'); tab='blockuser'">
+                            <div class="btn-manage" ng-click="tab='blockuser'">
                                 <a ng-click="userTypeName('blockedUsers')">Show</a>
                             </div>
                             <!-- <div class="btn-manage">
@@ -239,12 +239,12 @@
                             <option ng-repeat="country in countries" value"{{country}}">{{country}}</option>
                          </select>
                     </div>
-                    <div class="form-group cus-select">
+                    <!-- <div class="form-group cus-select">
                          <select class="form-control" ng-change="changeState(); dashBordFilter(dashBordFilter.state);" ng-model="dashBordFilter.state" required>
                             <option value="">Select State</option>
                             <option ng-repeat="state in stateList">{{state.region}}</option>
                          </select>
-                    </div>
+                    </div> -->
                     <div class="form-group cus-select">
                          <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
@@ -355,8 +355,8 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <!-- <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                        <div class="input-group-addon">Search</div> -->
+                        <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                        <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
@@ -376,7 +376,8 @@
                 </thead>
                 <tbody>
                     <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
-                    <tr ng-repeat="x in totalUser">
+
+                    <tr dir-paginate="x in totalUser | customFilterUser:test | itemsPerPage:10">
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -389,10 +390,7 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="totalUser.length != 0">
-                       <!--  <button ng-click="preClk()" ng-disabled="pageNo==1" class="btn paginationBtn" >Prev</button> {{pageNo}}/{{noOfPages}}
-                        <button ng-click="nextClk()" ng-disabled="pageNo==noOfPages" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -437,8 +435,8 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                           <!--  <input type="text" class="form-control" ng-model="test1" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div> -->
+                            <input type="text" class="form-control" ng-model="test1" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <div class="input-group-addon">Search</div>
                         </div>
                     </div>
                 </form>
@@ -458,7 +456,8 @@
                 </thead>
                 <tbody>
                     <!-- <tr ng-repeat="x in personalUser |filter:test"> -->
-                    <tr ng-repeat="x in personalUser">
+                     <tr dir-paginate="x in personalUser | customFilterUser:test1 | itemsPerPage:10">
+                    <!-- <tr ng-repeat="x in personalUser | customFilterUser:test1"> -->
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -471,11 +470,12 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="personalUser.length != 0">
-                      <!--   <button ng-click="prePersonalUser()" ng-disabled="pagePersonalUser==1" class="btn paginationBtn" >Prev</button>
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUser:test1).length != 0">
+                        <button ng-click="prePersonalUser()" ng-disabled="pagePersonalUser==1" class="btn paginationBtn" >Prev</button>
                         {{pagePersonalUser}}/{{noOfPagesPersonalUser}}
-                        <button ng-click="nextPersonalUser()" ng-disabled="pagePersonalUser==noOfPagesPersonalUser" class="btn paginationBtn">Next</button> -->
-            </div>
+                        <button ng-click="nextPersonalUser()" ng-disabled="pagePersonalUser==noOfPagesPersonalUser" class="btn paginationBtn">Next</button>
+            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -520,8 +520,8 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                       <!--      <input type="text" class="form-control" ng-model="test2" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div> -->
+                            <input type="text" class="form-control" ng-model="test2" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <div class="input-group-addon">Search</div>
                         </div>
                     </div>
                 </form>
@@ -540,7 +540,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in businessUser">
+                 <tr dir-paginate="x in businessUser | customFilterUser:test2 | itemsPerPage:10">
+                   <!--  <tr ng-repeat="x in businessUser | customFilterUser:test2"> -->
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -553,11 +554,12 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="businessUser.length != 0">
-               <!--  <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button>
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(businessUser | customFilterUser:test2).length != 0">
+                <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBusinessUser}}/{{noOfPagesBusinessUser}}
-                <button ng-click="nextBusinessUser()" ng-disabled="pageBusinessUser==noOfPagesBusinessUser" class="btn paginationBtn">Next</button> -->
-            </div>
+                <button ng-click="nextBusinessUser()" ng-disabled="pageBusinessUser==noOfPagesBusinessUser" class="btn paginationBtn">Next</button>
+            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -601,9 +603,9 @@
             <div class="search-bar-cus">
                 <form class="form-inline">
                     <div class="form-group">
-                       <div class="input-group">
-                            <!-- <input type="text" class="form-control" ng-model="test3" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div> --> -->
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="test3" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <div class="input-group-addon">Search</div>
                         </div>
                     </div>
                 </form>
@@ -622,7 +624,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                   <tr ng-repeat="x in liveUser">
+                 <tr dir-paginate="x in liveUser | customFilterUser:test3 | itemsPerPage:10">
+                <!--    <tr ng-repeat="x in liveUser | customFilterUser:test3"> -->
                        <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                        </td>
@@ -635,11 +638,12 @@
                </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="liveUser.length != 0">
-             <!--    <button ng-click="preLiveUser()" ng-disabled="pageLiveUser==1" class="btn paginationBtn" >Prev</button>
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(liveUser | customFilterUser:test3).length != 0">
+                <button ng-click="preLiveUser()" ng-disabled="pageLiveUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageLiveUser}}/{{noOfPagesLiveUser}}
-                <button ng-click="nextLiveUser()" ng-disabled="pageLiveUser==noOfPagesLiveUser" class="btn paginationBtn">Next</button> -->
-            </div>
+                <button ng-click="nextLiveUser()" ng-disabled="pageLiveUser==noOfPagesLiveUser" class="btn paginationBtn">Next</button>
+            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -684,8 +688,8 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                        <!--     <input type="text" class="form-control" ng-model="test4" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div> -->
+                            <input type="text" class="form-control" ng-model="test4" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <div class="input-group-addon">Search</div>
                         </div>
                     </div>
                 </form>
@@ -704,7 +708,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalWinners">
+                 <tr dir-paginate="x in totalWinners | customFilterUser:test4 | itemsPerPage:10">
+                  <!--   <tr ng-repeat="x in totalWinners | customFilterUser:test4"> -->
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -717,11 +722,12 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="totalWinners .length != 0">
-              <!--   <button ng-click="preTotalWinners()" ng-disabled="pageTotalWinners ==1" class="btn paginationBtn" >Prev</button>
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalWinners | customFilterUser:test4).length != 0">
+                <button ng-click="preTotalWinners()" ng-disabled="pageTotalWinners ==1" class="btn paginationBtn" >Prev</button>
                 {{pageTotalWinners }}/{{noOfPagesTotalWinners }}
-                <button ng-click="nextTotalWinners ()" ng-disabled="pageTotalWinners ==noOfPagesTotalWinners " class="btn paginationBtn">Next</button> -->
-            </div>
+                <button ng-click="nextTotalWinners ()" ng-disabled="pageTotalWinners ==noOfPagesTotalWinners " class="btn paginationBtn">Next</button>
+            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -767,8 +773,8 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <!-- <input type="text" class="form-control" ng-model="test5" placeholder="Search By Name or Mobile">
-                            <div class="input-group-addon">Search</div> -->
+                            <input type="text" class="form-control" ng-model="test5" placeholder="Search By Name or Mobile">
+                            <div class="input-group-addon">Search</div>
                         </div>
                     </div>
                 </form>
@@ -787,7 +793,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in cashWinners | customFilterUser:test5">
+                 <tr dir-paginate="x in cashWinners | customFilterUser:test5 | itemsPerPage:10">
+                    <!-- <tr ng-repeat="x in cashWinners | customFilterUser:test5"> -->
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -800,11 +807,12 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test5).length != 0">
-             <!--    <button ng-click="preCashWinners()" ng-disabled="pageCashWinners==1" class="btn paginationBtn" >Prev</button>
+           <!--  <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test5).length != 0">
+                <button ng-click="preCashWinners()" ng-disabled="pageCashWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCashWinners}}/{{noOfPagesCashWinners}}
-                <button ng-click="nextCashWinners()" ng-disabled="pageCashWinners==noOfPagesCashWinners" class="btn paginationBtn">Next</button> -->
-            </div>
+                <button ng-click="nextCashWinners()" ng-disabled="pageCashWinners==noOfPagesCashWinners" class="btn paginationBtn">Next</button>
+            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -849,8 +857,8 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                          <!--   <input type="text" class="form-control" maxlength="16" ng-maxlength="15" ng-model="test6" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div> -->
+                            <input type="text" class="form-control" maxlength="16" ng-maxlength="15" ng-model="test6" placeholder="Search By Name or Mobile" required>
+                            <div class="input-group-addon">Search</div>
                         </div>
                     </div>
                 </form>
@@ -869,7 +877,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in couponWinners | customFilterUser:test6">
+                 <tr dir-paginate="x in couponWinners | customFilterUser:test6 | itemsPerPage:10">
+                   <!--  <tr ng-repeat="x in couponWinners | customFilterUser:test6"> -->
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -882,11 +891,12 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test6).length != 0">
-               <!--  <button ng-click="preCouponWinners()" ng-disabled="pageCouponWinners==1" class="btn paginationBtn" >Prev</button>
+           <!--  <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test6).length != 0">
+                <button ng-click="preCouponWinners()" ng-disabled="pageCouponWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCouponWinners}}/{{noOfPagesCouponWinners}}
-                <button ng-click="nextCouponWinners()" ng-disabled="pageCouponWinners==noOfPagesCouponWinners" class="btn paginationBtn">Next</button> -->
-            </div>
+                <button ng-click="nextCouponWinners()" ng-disabled="pageCouponWinners==noOfPagesCouponWinners" class="btn paginationBtn">Next</button>
+            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -909,8 +919,8 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <div class="input-group">
-                            <!-- <input type="text" class="form-control" ng-model="test7" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div> -->
+                            <input type="text" class="form-control" ng-model="test7" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                            <div class="input-group-addon">Search</div>
                         </div>
                     </div>
                 </form>
@@ -929,7 +939,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in allblockUser | customFilterUser: test7">
+                 <tr dir-paginate="x in allblockUser | customFilterUser:test7 | itemsPerPage:10">
+                   <!--  <tr ng-repeat="x in allblockUser | customFilterUser: test7"> -->
                         <td>
                             <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -942,11 +953,12 @@
                 </tbody>
             </table>
         </div>
-            <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test7).length != 0">
-                <!-- <button ng-click="preBlockUser()" ng-disabled="pageBlockUser==1" class="btn paginationBtn" >Prev</button>
+           <!--  <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test7).length != 0">
+                <button ng-click="preBlockUser()" ng-disabled="pageBlockUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBlockUser}}/{{noOfPagesBlockUser}}
-                <button ng-click="nextBlockUser()" ng-disabled="pageBlockUser==noOfPagesBlockUser" class="btn paginationBtn">Next</button> -->
-            </div>
+                <button ng-click="nextBlockUser()" ng-disabled="pageBlockUser==noOfPagesBlockUser" class="btn paginationBtn">Next</button>
+            </div> -->
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.class = true;
     $scope.$emit('headerStatus', 'Manage User');
     $scope.$emit('SideMenu', 'Manage User');
-    //$scope.tab = 'totalUsers';
+    $scope.tab = 'totalUsers';
     $scope.myForm = {};
     $scope.sendMessage = {};
     $scope.sendBrolix = {};
@@ -17,63 +17,101 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.ageLimits = [];
     localStorage.setItem('userTypeName','totalUsers');
 
+    userService.totalUser($scope.currentPage).success(function(res) {
+            if (res.responseCode == 200){        
+                   $scope.totalUser = res.result;
+                   $scope.totalUserCount = res.result.length;
+               }
+               else {
+                $scope.totalUserCount = 0;
+                toastr.error(res.responseMessage);
+                }
+          })
 
-// $('#manageUserTable').DataTable();
-      //$scope.tab= 'totalUsers'; 
-     // $timeout(function(){
-     //    $('#manageUserTable').DataTable();
-     //     $scope.tab= 'totalUsers';      
-     // },100)
+    userService.showAllPersonalUser().success(function(res) {
+            if (res.responseCode == 200){
+                   $scope.personalUser = res.result;
+                   $scope.personalUserCount = res.result.length;
+               }
+               else {
+                $scope.personalUserCount = 0;
+                toastr.error(res.responseMessage);
+                }
+          })
+    userService.showAllBusinessUser().success(function(res) {
+            if (res.responseCode == 200){
+                   $scope.businessUser = res.result;
+                   $scope.businessUserCount = res.result.length;
+               }
+               else {
+                $scope.businessUserCount = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
 
-$scope.dataTableOne = function(type){
-  console.log("type",type)
-  if(type=='personalUser'){
-    $('#manageUserTable').DataTable();
-      $scope.tab= 'personalUser'; 
-     $timeout(function(){
-        $('#manageUserTable').DataTable();
-         $scope.tab= 'personalUser';      
-     },100)
-  }else if(type=='totalUsers'){
-    $('#manageUserTable').DataTable();
-      $scope.tab= 'totalUsers'; 
-     $timeout(function(){
-        $('#manageUserTable').DataTable();
-         $scope.tab= 'totalUsers';      
-     },100)
-  }else if(type=='businessUser'){
-    $('#manageUserTable').DataTable();
-      $scope.tab= 'businessUser'; 
-     $timeout(function(){
-        $('#manageUserTable').DataTable();
-         $scope.tab= 'businessUser';      
-     },100)
-  }else if(type=='liveUser'){
-    $('#manageUserTable').DataTable();
-      $scope.tab= 'liveUser'; 
-     $timeout(function(){
-        $('#manageUserTable').DataTable();
-         $scope.tab= 'liveUser';      
-     },100)
-  }else if(type=='blockuser'){
-    $('#manageUserTable').DataTable();
-      $scope.tab= 'blockuser'; 
-     $timeout(function(){
-        $('#manageUserTable').DataTable();
-         $scope.tab= 'blockuser';      
-     },100)
-  // }else if(type=='totalSentCash'){
-  //   $('#manageUserTable').DataTable();
-  //     $scope.tab= 'totalSentCash'; 
-  //    $timeout(function(){
-  //       $('#manageUserTable').DataTable();
-  //        $scope.tab= 'totalSentCash';      
-  //    },100)
-  // }else{
-    console.log("dddddd");
-  }
-     
-  }
+        userService.showAllLiveUsers().success(function(res) {
+            if (res.responseCode == 200){
+                   $scope.liveUser = res.result;
+                   $scope.LiveUserCount = res.result.length;
+               }
+               else {
+                toastr.error(res.responseMessage);
+                }
+          })
+
+      userService.totalWinners().success(function(res) {
+          console.log("res",JSON.stringify(res))
+
+            if (res.responseCode == 200){
+                   $scope.totalWinnersCount = res.result;
+               }
+               else {
+                $scope.totalWinnersCount = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
+
+      userService.showAllCashWinners().success(function(res) {
+          console.log("res",JSON.stringify(res.count))
+            if (res.responseCode == 200){
+                   $scope.cashWinners = res.result;
+                   $scope.cashWinnersCount = res.result.length;
+               }
+               else {
+                $scope.cashWinnersCount = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
+
+      userService.showAllCouponWinners().success(function(res) {
+             console.log("dddd",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.couponWinners = res.result;
+                   $scope.couponWinnersCount = res.result.length;
+               }
+               else {
+                $scope.couponWinnersCount = 0;
+                toastr.error(res.responseMessage);
+                }
+          })
+
+      userService.showAllBlockUser().success(function(res) {
+            if (res.responseCode == 200){
+                   $scope.allblockUser = res.result;
+                   $scope.allblockUserCount = res.result.length;
+               }
+               else {
+                $scope.allblockUserCount = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
+
+
+
+
+
+
+
 
 
 
@@ -89,12 +127,12 @@ $scope.dataTableOne = function(type){
     }
     
     $scope.ageFunction = function(age){
-  //  console.log("$scope.dashBordFilter.ageTo",age)
+    console.log("$scope.dashBordFilter.ageTo",age)
     var agefromLimited = parseInt(age)+1;
-	    for (var i =  agefromLimited; i <99; i++){
-	      $scope.ageLimits.push(i);
-	    }
-	  //  console.log("$scope.ageLimits",$scope.ageLimits)
+      for (var i =  agefromLimited; i <99; i++){
+        $scope.ageLimits.push(i);
+      }
+      console.log("$scope.ageLimits",$scope.ageLimits)
     }
 
     userService.countryListData().success(function(res) {
@@ -107,7 +145,7 @@ $scope.dataTableOne = function(type){
           country:$scope.dashBordFilter.country,
         }
         userService.cityListData(obj).success(function(res) {
-      //  console.log("ddd",JSON.stringify(res))
+        console.log("ddd",JSON.stringify(res))
         $scope.cityList = res.result;
       })
     }
@@ -151,7 +189,7 @@ $scope.dataTableOne = function(type){
     })
 
     userService.showListOFCouponWithoutPagination().success(function(res) {
-   //   console.log("resssssssssssssss",JSON.stringify(res))
+      console.log("resssssssssssssss",JSON.stringify(res))
       if(res.responseCode == 200){
         $scope.allCoupons = res.result;
       }else{
@@ -175,72 +213,9 @@ $scope.dataTableOne = function(type){
     }
 
     $scope.userTypeName = function(val) {
-        //$state.reload();
-        //console.log("val",val)
-        localStorage.setItem('userTypeName',val);
+      localStorage.setItem('userTypeName',val);
 
-         switch (val)
-            {
-                case 'totalUsers':
-
-                //$scope.currentPage = 1;
-                $scope.nextTotalUserDetail();
-                
-
-                break;
-
-                case 'personalUsers':
-
-                //$scope.currentPersonalUser = 1;
-                $scope.nextpersonalUserDetail();
-
-                break;
-
-                case 'businessUsers':
-
-               // $scope.currentBusinessUser = 1;
-                $scope.nextBusinessUserDetail();
-
-                break;
-
-                case 'liveUsers':
-
-               // $scope.currentLiveUser = 1;
-                $scope.nextLiveUserDetail();
-
-                break;
-
-                case 'totalWinners':
-
-               // $scope.currentTotalWinners = 1;
-                $scope.nextTotalWinnersDetail();
-
-                break;
-
-                case 'cashWinners':
-
-               // $scope.currentCashWinners = 1;
-                $scope.nextCashWinnersDetail();
-
-                break;
-
-                case 'couponWinners':
-
-                //$scope.currentCouponWinners = 1;
-                $scope.nextCouponWinnersDetail();
-
-                break;
-
-                case 'blockedUsers':
-
-                //$scope.currentBlockUser = 1;
-                $scope.nextBlockUserDetail();
-
-                break;
-
-                default:
-                toastr.error("Somwthing wents to wroung");
-            }
+         
     }
 
 
@@ -315,23 +290,6 @@ $scope.dataTableOne = function(type){
     //-------------------------------END OF SELECT CASCADING-------------------------//
 
 
-    //*******************Total Winners****************
-    $scope.currentTotalWinners = 1;
-     $scope.nextTotalWinnersDetail = function(){
-        
-     }
-     $scope.nextTotalWinnersDetail();
-     $scope.nextTotalWinners = function(){
-        $scope.currentTotalWinners++;
-        $scope.nextTotalWinnersDetail();
-     }
-     $scope.preTotalWinners= function(){
-        $scope.currentTotalWinners--;
-        $scope.nextTotalWinnersDetail();
-     }
-
-
-
     userService.adminProfile().success(function(res) {
         if (res.responseCode == 404) {
             toastr.error(res.responseMessage);
@@ -340,217 +298,8 @@ $scope.dataTableOne = function(type){
             $scope.user = res.result;
         }
     })
-//<--------------------------------------------------------autocall-------------------------------------------
-    userService.totalUser().success(function(res) {
-         //console.log(JSON.stringify(res))
-            if (res.responseCode == 200){ 
-              $scope.totalUser = res.result;
-              $scope.totalUserCount = $scope.totalUser.length;
-               }
-               else {
-                $scope.totalUserCount = 0;
-                toastr.error(res.responseMessage);
-                }
-          })
 
-
-userService.showAllPersonalUser().success(function(res) {
-            if (res.responseCode == 200){
-                   $scope.personalUser = res.result;
-                   $scope.personalUserCount = $scope.personalUser.length;
-               }
-               else {
-                $scope.personalUserCount = 0;
-                toastr.error(res.responseMessage);
-                }
-          })
-
-userService.showAllBusinessUser().success(function(res) {
-            if (res.responseCode == 200){
-                   $scope.businessUser = res.result;
-                   $scope.businessUserCount = $scope.businessUser.length;
-               }
-               else {
-                $scope.businessUserCount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
- userService.showAllLiveUsers().success(function(res) {
- // console.log("live users:     "+res)
-            if (res.responseCode == 200){
-                   $scope.liveUser = res.result;
-                   $scope.LiveUserCount = $scope.liveUser.length;
-               }
-               else {
-                $scope.LiveUserCount=0;
-                toastr.error(res.responseMessage);
-                }
-          })
- userService.totalWinners().success(function(res) {
-        //  console.log("res",JSON.stringify(res))
-
-            if (res.responseCode == 200){
-                   $scope.totalWinnersCount = res.result;
-                   //$scope.totalWinnersCount.length;
-               }
-               else {
-                $scope.totalWinnersCount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
- userService.showAllCashWinners().success(function(res) {
-          //console.log("res",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.cashWinners = res.result;
-                   //$scope.cashWinnersCount = res.result.length;
-                  // console.log("$scope.cashWinnersCount",$scope.cashWinnersCount)
-               }
-               else {
-                $scope.cashWinnersCount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
-userService.showAllCouponWinners().success(function(res) {
-           // console.log("dddd",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.couponWinners = res.result;
-                   //$scope.couponWinnersCount = res.result.length;
-                  // console.log("$scope.couponWinnersCount",$scope.couponWinnersCount)
-               }
-               else {
-                $scope.couponWinnersCount = 0;
-                toastr.error(res.responseMessage);
-                }
-          })
-userService.showAllBlockUser().success(function(res) {
-            if (res.responseCode == 200){
-                   $scope.allblockUser = res.result;
-                   $scope.allblockUserCount = $scope.allblockUser.length;
-               }
-               else {
-                $scope.allblockUserCount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
-
-
-
-
-    //*******************Total User****************
-
-   // $scope.currentPage = 1;
-     $scope.nextTotalUserDetail = function(){
-       // console.log('page number TotalUserDetail -> '+$scope.currentPage);
-         
-     }
-     $scope.nextTotalUserDetail();
-     $scope.nextClk = function(){
-        //$scope.currentPage++;
-        $scope.nextTotalUserDetail();
-     }
-     $scope.preClk = function(){
-        //$scope.currentPage--;
-        $scope.nextTotalUserDetail();
-     }
-
-    //*******************Personal User****************
-
-     //$scope.currentPersonalUser = 1;
-     $scope.nextpersonalUserDetail = function(){
-         
-     }
-     $scope.nextpersonalUserDetail();
-     $scope.nextPersonalUser = function(){
-        //$scope.currentPersonalUser++;
-        $scope.nextpersonalUserDetail();
-     }
-     $scope.prePersonalUser= function(){
-        //$scope.currentPersonalUser--;
-        $scope.nextpersonalUserDetail();
-     }
-
-
-    //*******************Business User****************
-
-
-   // $scope.currentBusinessUser = 1;
-     $scope.nextBusinessUserDetail = function(){
-         
-     }
-     $scope.nextBusinessUserDetail();
-     $scope.nextBusinessUser = function(){
-       // $scope.currentBusinessUser++;
-        $scope.nextBusinessUserDetail();
-     }
-     $scope.preBusinessUser= function(){
-       // $scope.currentBusinessUser--;
-        $scope.nextBusinessUserDetail();
-     }
-
-    //*******************Cash Winners****************
-
-   // $scope.currentCashWinners = 1;
-     $scope.nextCashWinnersDetail = function(){
-       //console.log('page number personalUserDetail-> '+$scope.currentCashWinners);
-        
-     }
-     $scope.nextCashWinnersDetail();
-     $scope.nextCashWinners = function(){
-        //$scope.currentCashWinners++;
-        $scope.nextCashWinnersDetail();
-     }
-     $scope.preCashWinners= function(){
-       // $scope.currentCashWinners--;
-        $scope.nextCashWinnersDetail();
-     }
-
-    //*******************Coupon Winners****************
-    //$scope.currentCouponWinners = 1;
-     $scope.nextCouponWinnersDetail = function(){
-         
-     }
-     $scope.nextCouponWinnersDetail();
-     $scope.nextCouponWinners = function(){
-        //$scope.currentCouponWinners++;
-        $scope.nextCouponWinnersDetail();
-     }
-     $scope.preCouponWinners= function(){
-        //$scope.currentCouponWinners--;
-        $scope.nextCouponWinnersDetail();
-     }
-
-     //*******************Show AllBlockUser****************
-    // $scope.currentBlockUser = 1;
-     $scope.nextBlockUserDetail = function(){
-         
-     }
-     $scope.nextBlockUserDetail();
-     $scope.nextBlockUser = function(){
-        //$scope.currentBlockUser++;
-        $scope.nextBlockUserDetail();
-     }
-     $scope.preBlockUser= function(){
-       // $scope.currentBlockUser--;
-        $scope.nextBlockUserDetail();
-     }
-
-
-    //************** Live Users *******************
-
- //$scope.currentLiveUser = 1;
-     $scope.nextLiveUserDetail = function(){
-        
-     }
-     $scope.nextLiveUserDetail();
-     $scope.nextLiveUser = function(){
-       // $scope.currentLiveUser++;
-        $scope.nextLiveUserDetail();
-     }
-     $scope.preLiveUser= function(){
-      //  $scope.currentLiveUser--;
-        $scope.nextLiveUserDetail();
-     }
-
+    
 
     $scope.active_tab=function(active_card){
         if(active_card=='upgrade_card'){
@@ -560,7 +309,7 @@ userService.showAllBlockUser().success(function(res) {
         userService.viewcard(active_card).success(function(res) {
         //console.log("resssssssssssssss",res)
         $scope.LuckCard = res.data;
-       // console.log("LuckCard",JSON.stringify(res));
+        console.log("LuckCard",JSON.stringify(res));
     })
          $scope.active_upgrade_card=false;
             $scope.active_luck_card=true;
@@ -1238,13 +987,13 @@ $scope.total_user_card = function (modal) {
     }
 
 $scope.sendCard = function(cardId,type){
-        //  console.log("type",type)
+          console.log("type",type)
           
          var array =[];
          var data = {};
          $scope.cardId = cardId;
          var userType = localStorage.getItem('userTypeName');
-        // console.log("$scope.typesssss",type)
+         console.log("$scope.typesssss",type)
          if(type == 'upgrade'){
           $("#showAllCard").modal('hide');
             //console.log("type",type);
@@ -1901,13 +1650,13 @@ $scope.dashBordFilter = function(){
                 case 'totalUsers':
                 //console.log("aaa1");
                     $scope.currentPage = 1;
-                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                    userService.userfilter(data).success(function(res){
                       console.log("res",JSON.stringify(res))
                       if (res.responseCode == 200){
-                         $scope.noOfPages = res.data.pages;
-                         $scope.pageNo = res.data.page;
-                         $scope.totalUser = res.data.docs;
-                         $scope.totalUserCount = res.data.total;
+                         // $scope.noOfPages = res.data.pages;
+                         // $scope.pageNo = res.data.page;
+                         $scope.totalUser = res.data;
+                         $scope.totalUserCount = res.data.length;
                      }
                      else {
                       toastr.error(res.responseMessage);
@@ -1924,13 +1673,13 @@ $scope.dashBordFilter = function(){
                 case 'personalUsers':
                 //console.log("2");
                     $scope.currentPage = 1;
-                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                    userService.userfilter(data).success(function(res){
                       console.log("res",JSON.stringify(res))
                       if (res.responseCode == 200){
-                         $scope.noOfPagesPersonalUser = res.data.pages;
-                         $scope.pagePersonalUser= res.data.page;
-                         $scope.personalUser = res.data.docs;
-                         $scope.personalUserCount = res.data.total;
+                         // $scope.noOfPagesPersonalUser = res.data.pages;
+                         // $scope.pagePersonalUser= res.data.page;
+                         $scope.personalUser = res.data;
+                         $scope.personalUserCount = res.data.length;
                      }
                      else {
                       toastr.error(res.responseMessage);
@@ -1942,13 +1691,13 @@ $scope.dashBordFilter = function(){
                 case 'businessUsers':
                 //console.log("3");
                     $scope.currentPage = 1;
-                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                    userService.userfilter(data).success(function(res){
                       console.log("res",JSON.stringify(res))
                       if (res.responseCode == 200){
-                         $scope.noOfPagesBusinessUser = res.data.pages;
-                         $scope.pageBusinessUser= res.data.page;
-                         $scope.businessUser = res.data.docs;
-                         $scope.businessUserCount = res.data.total;
+                         // $scope.noOfPagesBusinessUser = res.data.pages;
+                         // $scope.pageBusinessUser= res.data.page;
+                         $scope.businessUser = res.data;
+                         $scope.businessUserCount = res.data.length;
                      }
                      else {
                       toastr.error(res.responseMessage);
@@ -1960,13 +1709,13 @@ $scope.dashBordFilter = function(){
                 case 'liveUsers':
                 //console.log("4");
                     $scope.currentPage = 1;
-                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                    userService.userfilter(data).success(function(res){
                       console.log("res",JSON.stringify(res))
                       if (res.responseCode == 200){
-                         $scope.noOfPagesLiveUser = res.data.pages;
-                         $scope.pageLiveUser= res.data.page;
-                         $scope.liveUser = res.data.docs;
-                         $scope.LiveUserCount = res.data.total;
+                         // $scope.noOfPagesLiveUser = res.data.pages;
+                         // $scope.pageLiveUser= res.data.page;
+                         $scope.liveUser = res.data;
+                         $scope.LiveUserCount = res.data.length;
                      }
                      else {
                       toastr.error(res.responseMessage);
@@ -1977,13 +1726,13 @@ $scope.dashBordFilter = function(){
 
                 case 'blockedUsers':
                   $scope.currentPage = 1;
-                    userService.userfilter(data,$scope.currentPage).success(function(res){
+                    userService.userfilter(data).success(function(res){
                       console.log("res",JSON.stringify(res))
                                 if (res.responseCode == 200){
-                             $scope.noOfPagesBlockUser = res.data.pages;
-                             $scope.pageBlockUser= res.data.page;
-                             $scope.allblockUser = res.data.docs;
-                             $scope.allblockUserCount = res.data.total;
+                             // $scope.noOfPagesBlockUser = res.data.pages;
+                             // $scope.pageBlockUser= res.data.page;
+                             $scope.allblockUser = res.data;
+                             $scope.allblockUserCount = res.data.length;
                          }
                          else {
                           toastr.error(res.responseMessage);

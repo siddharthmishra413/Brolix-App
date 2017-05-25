@@ -113,7 +113,7 @@ app.get('/showListOFCouponWithoutPagination', authUser.authUser,adminHandler.sho
 app.get('/showPageName', authUser.authUser,adminHandler.showPageName);
 app.post('/createSystemUser', authUser.authUser,adminHandler.createSystemUser);
 app.post('/checkPermission', authUser.authUser,adminHandler.checkPermission);
-app.post('/adsfilter', authUser.authUser,adminHandler.adsfilter);
+app.post('/adsfilter',adminHandler.adsfilter);
 app.post('/luckUpgradeCardfilter', authUser.authUser,adminHandler.luckUpgradeCardfilter);
 app.post('/giftsFilter', adminHandler.giftsFilter);
 app.post('/brolixPaymentFilter/:pageNumber', authUser.authUser,adminHandler.brolixPaymentFilter);
@@ -135,7 +135,7 @@ app.get('/removeSystemAdmin/:id', authUser.authUser,adminHandler.removeSystemAdm
 app.put('/editSystemAdmin/:id', authUser.authUser,adminHandler.editSystemAdmin);
 app.get('/notificationToAdmin',authUser.authUser,adminHandler.notificationToAdmin);
 app.post('/userfilter',authUser.authUser,adminHandler.userfilter);
-app.post('/pagefilter',adminHandler.pagefilter);
+app.post('/pagefilter',authUser.authUser,adminHandler.pagefilter);
 app.get('/adAdminUserList',authUser.authUser,adminHandler.adAdminUserList);
 app.put('/editPage/:id',authUser.authUser,adminHandler.editPage);
 app.get('/removeAds/:id',authUser.authUser,adminHandler.removeAds);

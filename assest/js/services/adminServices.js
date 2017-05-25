@@ -269,9 +269,8 @@ app.service('userService',function($http){
      return $http.get(baseurl+'/admin/listOfAds/');
     },
     
-    adsfilter: function(data,pageId){
-      console.log("data in services :   "+JSON.stringify(data)+"        page:  "+pageId)
-      return $http.post(baseurl+'/admin/adsfilter'+pageId, data);
+    adsfilter: function(data){
+      return $http.post(baseurl+'/admin/adsfilter', data);
     },
 
     adsDetail: function(id) {
@@ -431,8 +430,8 @@ app.service('userService',function($http){
 
     /*filter MangeUser section*/
 
-    userfilter: function(data,pageId){
-      return $http.post(baseurl+'/admin/userfilter/'+pageId, data);
+    userfilter: function(data){
+      return $http.post(baseurl+'/admin/userfilter', data);
     },
     // /*------ManageGiftSection-------*/
 

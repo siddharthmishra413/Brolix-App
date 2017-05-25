@@ -10,118 +10,96 @@ $(window).scrollTop(0,0);
 localStorage.setItem('adsTypeName','totalAds');
 
 
+userService.totalAds().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.totalAds = res.result;
+    $scope.totalAdscount = res.result.length;
+  } else {
+    $scope.totalAdscount=0;
+   }
+})
+
+userService.totalActiveAds().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.totalActiveAds = res.result;
+    $scope.totalActiveAdscount = res.result.length;
+  } else {
+      $scope.totalActiveAdscount=0;
+   }
+})
+
+userService.totalExpiredAds().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.totalExpiredAds = res.result;
+    $scope.totalExpiredAdscount = res.result.length;
+  } else {
+       $scope.totalExpiredAdscount=0;
+   }
+})
+
+userService.showReportedAd().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.showReportedAd = res.result;
+    $scope.showReportedAdcount= res.result.length;
+  } else {
+       $scope.showReportedAdcount=0;
+   }
+})
+
+userService.adsWithLinks().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.adsWithLinks = res.result;
+    $scope.adsWithLinkscount= res.result.length;
+  } else {
+       $scope.adsWithLinkscount=0;
+   }
+})
+
+userService.videoAds().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.videoAds = res.result;
+    $scope.videoAdscount = res.result.length;
+  } else {
+       $scope.videoAdscount=0;
+   }
+})
+
+userService.slideshowAds().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.slideshowAds = res.result;
+    $scope.slideshowAdscount = res.result.length;
+  } else {
+       $scope.slideshowAdscount=0;
+   }
+})
 
 
+userService.adUpgradedByDollor().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.adUpgradedByDollor = res.result;
+    $scope.adUpgradedByDollorcount = res.result.length;
+  } else {
+       $scope.adUpgradedByDollorcount=0;
+   }
+})
 
-//  $('#manageAdsTable').DataTable();
-//       $scope.tab= 'totalads'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'totalads';      
-//      },0)
+userService.adUpgradedByBrolix().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.adUpgradedByBrolix = res.result;
+    $scope.adUpgradedByBrolixcount= res.result.length;
+  } else {
+       $scope.adUpgradedByBrolixcount=0;
+   }
+})
 
-// $scope.dataTableOne = function(type){
-//   console.log("type",type)
-//   if(type=='totalads'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'totalads'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'totalads';      
-//      },100)
-//   }else if(type=='activeads'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'activeads'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'activeads';      
-//      },100)
-//   }else if(type=='expiredAds'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'expiredAds'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'expiredAds';      
-//      },100)
-//   }else if(type=='showReportedAd'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'showReportedAd'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'showReportedAd';      
-//      },100)
-//   }else if(type=='adsWithLinks'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'adsWithLinks'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'adsWithLinks';      
-//      },100)
-//   }else if(type=='videoAds'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'videoAds'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'videoAds';      
-//      },100)
-//   }
-//   else if(type=='slideShowAds'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'slideShowAds'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'slideShowAds';      
-//      },100)
-//   }
-//   else if(type=='adUpgradedByDollor'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'adUpgradedByDollor'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'adUpgradedByDollor';      
-//      },100)
-//   }
-//   else if(type=='adUpgradedByBrolix'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'adUpgradedByBrolix'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'adUpgradedByBrolix';      
-//      },100)
-//   }
-//   else if(type=='topFiftyAds'){
-//     $('#manageAdsTable').DataTable();
-//       $scope.tab= 'topFiftyAds'; 
-//      $timeout(function(){
-//         $('#manageAdsTable').DataTable();
-//          $scope.tab= 'topFiftyAds';      
-//      },100)
-//   }else{
-//     console.log("dddddd");
-//   }
-     
-//   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+userService.topFiftyAds().success(function(res) {
+ if (res.responseCode == 200){
+    $scope.topFiftyAds = res.result;
+    $scope.topFiftyAdscount = res.count;
+  } else {
+       toastr.error(res.responseMessage);
+   }
+})
 
 
  $scope.removeAds = function (id) {
@@ -160,21 +138,6 @@ localStorage.setItem('adsTypeName','totalAds');
     });
     }
 }
-
-
-// $scope.removeAds=function(id){
-//         if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
-//         toastr.error("Please select user.")
-//     }
-//     else {
-//         userService.removeAds($scope.myForm.checkId).then(function(success) { 
-
-//             },function(err){
-//                 console.log(err);
-//                  toastr.error('Connection error.');
-//         }) 
-//     }
-// }
 
   $scope.sendMessagePage = function (modal) {
       //console.log($scope.myForm.checkId);
@@ -487,7 +450,6 @@ localStorage.setItem('adsTypeName','totalAds');
 
 
     userService.countryListData().success(function(res) {
-          //console.log("ddd",JSON.stringify(res))
           $scope.countriesList = res.result;
         })
 
@@ -497,214 +459,9 @@ localStorage.setItem('adsTypeName','totalAds');
             country:$scope.dashBordFilter.country,
           }
           userService.cityListData(obj).success(function(res) {
-          console.log("ddd",JSON.stringify(res))
           $scope.cityList = res.result;
         })
     }
-
-// //-------------------------------SELECT CASCADING COUNTRY, STATE & CITY FILTER-------------------------//
-//     var currentCities=[];
-//     $scope.currentCountry= '';
-// var BATTUTA_KEY="00000000000000000000000000000000"
-//     // Populate country select box from battuta API
-//   url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-//     $.getJSON(url,function(countries)
-//     {
-//       $timeout(function(){
-//         $scope.countriesList=countries;
-//       },100)
-
-
-//     });
-//   var countryCode;
-//     $scope.changeCountry = function(){
-//         console.log('Country:   '+JSON.stringify($scope.dashBordFilter.country))
-//       for(var i=0;i<$scope.countriesList.length;i++){
-//         if($scope.countriesList[i].name==$scope.dashBordFilter.country){
-//           countryCode=$scope.countriesList[i].code;
-//           //console.log(countryCode)
-//           break;
-//         }
-//       }
-//       var url="http://battuta.medunes.net/api/region/"+countryCode+"/all/?key="+BATTUTA_KEY+"&callback=?";
-//       $.getJSON(url,function(regions)
-//       {
-//         //console.log('state list:   '+JSON.stringify(regions))
-//          $timeout(function(){
-//         $scope.stateList = regions;
-//           },100)
-//       });
-//     }
-
-//     $scope.changeState = function(){
-//         console.log('State:   '+JSON.stringify($scope.dashBordFilter.state))
-//       //console.log('detail -> '+countryCode+' city name -> '+$scope.dashBordFilter.state)
-//       var url="http://battuta.medunes.net/api/city/"+countryCode+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
-//       $.getJSON(url,function(cities)
-//       {
-//         // console.log('city list:   '+JSON.stringify(cities))
-//          $timeout(function(){
-//           $scope.cityList = cities;
-//             },100)
-//       })
-
-//     }
-//     //  console.log('City:   '+JSON.stringify($scope.dashBordFilter.city))
-//     //-------------------------------END OF SELECT CASCADING-------------------------//
-
-
-userService.totalAds().then(function(success) {
-  if(success.data.responseCode == 404){
-    toastr.error(success.responseMessage);
-  }else if(success.data.responseCode == 200) {
-    $scope.totalAds = res.result;
-    $scope.totalAdscount = res.result.length;
-  }else{
-    toastr.error(success.responseMessage);
-  }
-})
-// userService.totalAds().success(function(res) {
-//                  console.log("response-->>"+JSON.stringify(res))
-//                 if(res.responseCode == 409){
-//                 $state.go('login')
-//             }else if(res.responseCode == 200) {
-
-//                 $scope.totalAds = res.result;
-               
-//                 $scope.totalAdscount = res.result.length;
-                
-//             }
-//             else{
-//               toastr.error(responseMessage);
-//             }
-//         }).error(function(status, data) {
-
-//     })
-
-     userService.totalActiveAds().success(function(res) {
-                 // console.log("response111-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.totalActiveAds = res.result;
-                     //console.log(JSON.stringify($scope.totalActiveAds))
-                    $scope.totalActiveAdscount = res.result.length;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
-      userService.totalExpiredAds().success(function(res) {
-                 // console.log("response-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.totalExpiredAds = res.result;
-                    $scope.totalExpiredAdscount = res.result.length;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
-userService.videoAds().success(function(res) {
-                 // console.log("response-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.videoAds = res.result;
-                     $scope.videoAdscount = res.result.length;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
-userService.slideshowAds().success(function(res) {
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.slideshowAds = res.result;
-                    $scope.slideshowAdscount = res.result.length;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
-userService.adUpgradedByDollor().success(function(res) {
-                 // console.log("response-->>"+JSON.stringify(res))
-                if(res.responseCode == 409){
-                    $state.go('login')
-                }
-                else {
-                    $scope.adUpgradedByDollor = res.result;
-                    $scope.adUpgradedByDollorcount = res.result.length;
-                    
-                }
-             }).error(function(status, data) {
-
-         })
-userService.slideshowAds().success(function(res) {
-                     // console.log("response-->>"+JSON.stringify(res))
-                    if(res.responseCode == 409){
-                        $state.go('login')
-                    }
-                    else {
-                        $scope.adUpgradedByBrolix = res.result;
-                        $scope.adUpgradedByBrolixcount= res.result.length;
-                        
-                    }
-                 }).error(function(status, data) {
-
-             })
- userService.showReportedAd().success(function(res) {
-             // console.log("response-->>"+JSON.stringify(res))
-            if(res.responseCode == 409){
-                $state.go('login')
-            }
-            else {
-                $scope.showReportedAd = res.result;
-                $scope.showReportedAdcount= res.result.length;
-                
-            }
-         }).error(function(status, data) {
-
-     })
-
- userService.adsWithLinks().success(function(res) {
-             console.log("resssponse-->>"+JSON.stringify(res))
-            if(res.responseCode == 409){
-                $state.go('login')
-            }
-            else {
-                $scope.adsWithLinks = res.result;
-                $scope.adsWithLinkscount= res.result.length;
-                
-            }
-         }).error(function(status, data) {
-
-     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
  $scope.export = function(){
@@ -722,264 +479,27 @@ userService.slideshowAds().success(function(res) {
             }
         });
     }
-//*************Total Ads****************
-    $scope.currentTotalAds = 1;
-         $scope.nextTotalAds = function(){
-             
-    }
-     $scope.nextTotalAds();
-     $scope.nextClk = function(){
-        $scope.currentTotalAds++;
-        $scope.nextTotalAds();
-     }
-     $scope.preClk = function(){
-        $scope.currentTotalAds--;
-        $scope.nextTotalAds();
-     }
-
-//*********************Active Ads*******************
-
-    $scope.currentActiveAds = 1;
-         $scope.nextActiveAds = function(){
-           console.log('page number -> '+ $scope.currentActiveAds);
-        
-    }
-     $scope.nextActiveAds();
-     $scope.nextActiveAdsClk = function(){
-        $scope.currentActiveAds++;
-        $scope.nextActiveAds();
-     }
-     $scope.preActiveAdsClk = function(){
-        $scope.currentActiveAds--;
-        $scope.nextActiveAds();
-     }
-
-// userService.totalActiveAds().success(function(res) {
-//         if(res.responseCode == 409){
-//             $state.go('login')
-//         }else {
-//             $scope.totalActiveAds = res.result;
-//             $scope.totalActiveAdscount = res.count;
-//              console.log("jjjjjjj",JSON.stringify(res))
-//         }
-//     }).error(function(status, data) {
-
-// })
 
 
 
-//***************total Expired ADs******************
-
-    $scope.currentExpiredAds = 1;
-         $scope.nextExpiredAds = function(){
-       
-    }
-     $scope.nextExpiredAds();
-     $scope.nextExpiredAdsClk = function(){
-        $scope.currentExpiredAds++;
-        $scope.nextExpiredAds();
-     }
-     $scope.preExpiredAdsClk = function(){
-        $scope.currentExpiredAds--;
-        $scope.nextExpiredAds();
-     }
-
-
-//****************** Video ads *********************
-
-$scope.currentVideoAds = 1;
-         $scope.nextVideoAds = function(){
-             
-    }
-     $scope.nextVideoAds();
-     $scope.nextVideoAdsClk = function(){
-        $scope.currentVideoAds++;
-        $scope.nextVideoAds();
-     }
-     $scope.preVideoAdsClk = function(){
-        $scope.currentVideoAds--;
-        $scope.nextVideoAds();
-     }
-
-
-//*************** SlideShow Ads************
-    $scope.currentSlideShowAds = 1;
-         $scope.nextSlideShowAds = function(){
-             
-    }
-     $scope.nextSlideShowAds();
-     $scope.nextSlideShowAdsClk = function(){
-        $scope.currentSlideShowAds++;
-        $scope.nextSlideShowAds();
-     }
-     $scope.preSlideShowAdsClk = function(){
-        $scope.currentSlideShowAds--;
-        $scope.nextSlideShowAds();
-     }
-
-//*************** Upgraded by Dollars************
-    $scope.currentUpgradedByDollars = 1;
-         $scope.nextUpgradedByDollars = function(){
-             
-    }
-     $scope.nextUpgradedByDollars();
-     $scope.nextUpgradedByDollarsClk = function(){
-        $scope.currentUpgradedByDollars++;
-        $scope.nextUpgradedByDollars();
-     }
-     $scope.preUpgradedByDollarsClk = function(){
-        $scope.currentUpgradedByDollars--;
-        $scope.nextUpgradedByDollars();
-     }
-
-//*************** Upgraded By Brolix **************
-
-    $scope.currentUpgradedByBrolix = 1;
-             $scope.nextUpgradedByBrolix = function(){
-                 
-        }
-         $scope.nextUpgradedByBrolix();
-         $scope.nextUpgradedByBrolixClk = function(){
-            $scope.currentUpgradedByBrolix++;
-            $scope.nextUpgradedByBrolix();
-         }
-         $scope.preUpgradedByBrolixClk = function(){
-            $scope.currentUpgradedByBrolix--;
-            $scope.nextUpgradedByBrolix();
-         }
-
- //************** Reported Ads *********************
-
-    $scope.currentReportedAds = 1;
-     $scope.nextReportedAds = function(){
-        
-    }
-     $scope.nextReportedAds();
-     $scope.nextReportedAdsClk = function(){
-        $scope.currentReportedAds++;
-        $scope.nextReportedAds();
-     }
-     $scope.preReportedAdsClk = function(){
-        $scope.currentReportedAds--;
-        $scope.nextReportedAds();
-     }
-
-//**************  Ads With Links *********************
-
-    $scope.currentAdsWithLinks = 1;
-     $scope.nextAdsWithLinks = function(){
-        console.log('Ads -> '+ $scope.currentAdsWithLinks);
-        
-    }
-     $scope.nextAdsWithLinks();
-     $scope.nextAdsWithLinksClk = function(){
-        $scope.currentAdsWithLinks++;
-        $scope.nextAdsWithLinks();
-     }
-     $scope.preAdsWithLinksClk = function(){
-        $scope.currentAdsWithLinks--;
-        $scope.nextAdsWithLinks();
-     }
-// userService.adsWithLinks().success(function(res) {
-//         if(res.responseCode == 409){
-//             $state.go('login')
-//         }else {
-//             $scope.adsWithLinks = res.result;
-//             $scope.adsWithLinkscount = res.count;
-//              //console.log("Ads",JSON.stringify(res))
-//         }
-//     }).error(function(status, data) {
-// })
-
-//****************** Top 50 Ads ********************
-   // $scope.currentTopFiftyAds = 1;
-   //   $scope.nextTopFiftyAds = function(){
-   //       userService.topFiftyAds($scope.currentTopFiftyAds).success(function(res) {
-   //           // console.log("response-->>"+JSON.stringify(res))
-   //          if(res.responseCode == 409){
-   //              $state.go('login')
-   //          }
-   //          else {
-   //              $scope.noOfPagesTopFiftyAds = res.result.pages;
-   //              $scope.pageNoTopFiftyAds = JSON.parse(res.result.page);
-   //              $scope.topFiftyAds = res.result.docs;
-   //              $scope.topFiftyAdscount= res.result.total;
-                
-   //          }
-   //       }).error(function(status, data) {
-
-   //   })
-   //  }
-   //   $scope.nextTopFiftyAds();
-   //   $scope.nextTopFiftyAdsClk = function(){
-   //      $scope.currentTopFiftyAds++;
-   //      $scope.nextTopFiftyAds();
-   //   }
-   //   $scope.preTopFiftyAdsClk = function(){
-   //      $scope.currentTopFiftyAds--;
-   //      $scope.nextTopFiftyAds();
-   //   }
-userService.topFiftyAds().success(function(res) {
-        if(res.responseCode == 409){
-            $state.go('login')
-        }else {
-            $scope.topFiftyAds = res.result;
-            $scope.topFiftyAdscount = res.count;
-            // console.log("Ads",JSON.stringify(res))
-        }
-    }).error(function(status, data) {
-})
-
- $scope.adsTypeName = function(val) {
-        localStorage.setItem('adsTypeName',val);
-
-        //$scope.currentTotalAds = 1;
-        $scope.nextTotalAds();
-
-        // $scope.currentActiveAds = 1;
-        $scope.nextActiveAds();
-
-       // $scope.currentExpiredAds = 1;
-        $scope.nextExpiredAds();
-
-        //$scope.currentVideoAds = 1;
-        $scope.nextVideoAds();
-
-       // $scope.currentSlideShowAds = 1;
-        $scope.nextSlideShowAds();
-
-        //$scope.currentUpgradedByDollars = 1;
-        $scope.nextUpgradedByDollars();
-
-        //$scope.currentUpgradedByBrolix = 1;
-        $scope.nextUpgradedByBrolix();
-
-        //$scope.currentReportedAds = 1;
-        $scope.nextReportedAds();
-
-       // $scope.currentAdsWithLinks = 1;
-        $scope.nextAdsWithLinks();
-    }
-
+$scope.adsTypeName = function(val) {
+    localStorage.setItem('adsTypeName',val);
+}
+//activeAds, expiredAds, reportedAds,  adsWithLinks, videoAds, slideShowAds, upgradedAdsBy$, upgradedAdsByB
 $scope.dashBordFilter = function(){
 
     var type = localStorage.getItem('adsTypeName');
-
-    $scope.dobTo =$scope.dashBordFilter.dobTo==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobTo);
-    $scope.dobFrom =$scope.dashBordFilter.dobFrom==undefined?undefined : new Date().getTime($scope.dashBordFilter.dobFrom);
-    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
-    console.log("date",$scope.dashBordFilter.country);
     var data = {};
         data = {
             adsType:localStorage.getItem('adsTypeName'),
             country:$scope.dashBordFilter.country,
             state:$scope.dashBordFilter.state,
             city:$scope.dashBordFilter.city,
-            joinTo:$scope.dobTo,
-            joinFrom:$scope.dobFrom,
+            joinTo:$scope.dashBordFilter.dobTo,
+            joinFrom:$scope.dashBordFilter.dobFrom,
         }
-        console.log("datatata",data)
-        console.log("type:                "+type)
+        console.log("data",JSON.stringify(data));
+
         if(type == undefined || type == null  || type == "" )
         {
             toastr.error("First you click on show Ads button")
@@ -989,94 +509,140 @@ $scope.dashBordFilter = function(){
             {
                 case 'totalAds':
                 console.log("1");
-                $scope.currentPage = 1;
-                console.log("data jst before service"+JSON.stringify(data));
-                    userService.adsfilter(data,$scope.currentPage).success(function(res){
-                        console.log("ressssssss",JSON.stringify(res));
-                        $scope.totalAds = res.data;
-                        console.log("ressssssss1",JSON.stringify($scope.totalAds));
-                    })
+                console.log("data",JSON.stringify(data));
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.totalAds = res.result;
+                        $scope.totalAdscount = res.result.length;
+                    }else {
+                        $scope.totalAdscount=0;
+                    }
+                })
 
                 break;
 
                 case 'totalActiveAds':
                 console.log("2");
-                    userService.adsfilter(data).success(function(res){
-                        $scope.totalActiveAds = res.data;
-                        console.log("ressssssss2",JSON.stringify($scope.totalActiveAds));
-                    })
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.totalActiveAds = res.result;
+                        $scope.totalActiveAdscount = res.result.length;
+                    } else {
+                      $scope.totalActiveAdscount=0;
+                    }
+                })
 
                 break;
 
                 case 'totalExpiredAds':
                 console.log("3");
-                    userService.adsfilter(data).success(function(res){
-                        $scope.totalExpiredAds = res.data;
-                        console.log("ressssssss3",JSON.stringify($scope.totalExpiredAds));
-                    })
-
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.totalExpiredAds = res.result;
+                        $scope.totalExpiredAdscount = res.result.length;
+                    } else {
+                        $scope.totalExpiredAdscount=0;
+                    }
+                })
                 break;
 
                 case 'showReportedAd':
                 console.log("4");
-                    userService.adsfilter(data).success(function(res){
-                        $scope.showReportedAd = res.data;
-                        console.log("ressssssss4",JSON.stringify($scope.showReportedAd));
-                    })
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.showReportedAd = res.result;
+                        $scope.showReportedAdcount= res.result.length;
+                    } else {
+                       $scope.showReportedAdcount=0;
+                    }
+                })
 
                 break;
 
                 case 'adsWithLinks':
                 console.log("5");
-                    userService.adsfilter(data).success(function(res){
-                        $scope.adsWithLinks = res.data;
-                        console.log("ressssssss5",JSON.stringify($scope.adsWithLinks));
-                    })
-
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.adsWithLinks = res.result;
+                        $scope.adsWithLinkscount= res.result.length;
+                    } else {
+                       $scope.adsWithLinkscount=0;
+                    }
+                })
                 break;
 
                 case 'videoAds':
                 console.log("6");
-                    userService.adsfilter(data).success(function(res){
-                        $scope.videoAds = res.data;
-                        console.log("ressssssss6",JSON.stringify($scope.videoAds));
-                    })
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.videoAds = res.result;
+                        $scope.videoAdscount= res.result.length;
+                    } else {
+                       $scope.videoAdscount=0;
+                    }
+                })
 
                 break;
 
                 case 'slideshowAds':
                 console.log("7");
-                    userService.adsfilter(data).success(function(res){
-                        $scope.slideshowAds = res.data;
-                        console.log("ressssssss7",JSON.stringify($scope.slideshowAds));
-                    })
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.slideshowAds = res.result;
+                        $scope.slideshowAdscount= res.result.length;
+                    } else {
+                       $scope.slideshowAdscount=0;
+                    }
+                })
 
                 break;
 
                 case 'adUpgradedByDollor':
                 console.log("9");
-                    userService.adsfilter(data).success(function(res){
-                        $scope.adUpgradedByDollor = res.data;
-                        console.log("ressssssss8",JSON.stringify($scope.adUpgradedByDollor));
-                    })
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.adUpgradedByDollor = res.result;
+                        $scope.adUpgradedByDollorcount= res.result.length;
+                    } else {
+                       $scope.adUpgradedByDollorcount=0;
+                    }
+                })
 
                 break;
 
                 case 'adUpgradedByBrolix':
                 console.log("10");
-                    userService.adsfilter(data).success(function(res){
-                        $scope.adUpgradedByBrolix = res.data;
-                        console.log("ressssssss8",JSON.stringify($scope.adUpgradedByBrolix));
-                    })
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.adUpgradedByBrolix = res.result;
+                        $scope.adUpgradedByBrolixcount= res.result.length;
+                    } else {
+                       $scope.adUpgradedByBrolixcount=0;
+                    }
+                })
 
                 break;
 
                 case 'topFiftyAds':
                 console.log("11");
-                    userService.adsfilter(data).success(function(res){
-                        $scope.topFiftyAds = res.data;
-                        console.log("ressssssss8",JSON.stringify($scope.topFiftyAds));
-                    })
+                userService.adsfilter(data).success(function(res) {
+                    console.log("res",res.result.length);
+                    if (res.responseCode == 200){
+                        $scope.topFiftyAds = res.result;
+                        $scope.topFiftyAdscount= res.result.length;
+                    } else {
+                       $scope.topFiftyAdscount=0;
+                    }
+                })
 
                 break;
 

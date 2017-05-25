@@ -758,7 +758,7 @@ module.exports = {
                 var receiverId = req.body.receiverId;
                 var userId = req.body.userId;
                 User.findOne({ _id: receiverId }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.sendBrolix == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot send brolix to this user due to privacy policies" }) } else {
                         callback(null)
                     }
                 })
@@ -768,10 +768,13 @@ module.exports = {
                 var receiverId = req.body.receiverId;
                 var userId = req.body.userId;
                 User.findOne({ _id: receiverId }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendBrolix == "followers") {
-                        var flag = result1.userFollowers.find(userFollowers => userFollowers == senderId)
-                        if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "you are not friend" }); } else {
-
+                     console.log("privacy-->>",typeof(result1.privacy.sendBrolix))
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); }
+                    else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } 
+                    else if (result1.privacy.sendBrolix == "followers") {
+                   if (Boolean(result1.userFollowers.find(userFollowers => userFollowers == userId)))
+                   { 
+                           // console.log("flag-->>",flag)
                             User.findOne({ _id: userId }, function(err, result2) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result2) res.send({ responseCode: 404, responseMessage: "please enter correct senderId" });
                                 else if (result2.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account." }); } else {
@@ -798,8 +801,13 @@ module.exports = {
                                     });
                                 }
                             });
+                        
+                    }
+                        else{
+                            console.log("in else")
+                             res.send({ responseCode: 400, responseMessage: "You cannot send brolix to this user due to privacy policies" }); 
                         }
-                    } else {
+                    }else {
                         console.log("in public")
                         var receiverId = req.body.receiverId;
                         var userId = req.body.userId;
@@ -845,7 +853,7 @@ module.exports = {
                 var receiverId = req.body.receiverId;
                 var senderId = req.body.userId;
                 User.findOne({ _id: receiverId }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot send cash to this user due to privacy policies" }) } else {
                         callback(null)
                     }
                 })
@@ -857,7 +865,7 @@ module.exports = {
                 User.findOne({ _id: receiverId }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendCash == "followers") {
                         var flag = result1.userFollowers.find(userFollowers => userFollowers == senderId)
-                        if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "you are not friend" }); } else {
+                        if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "You cannot send brolix to this user due to privacy policies" }); } else {
                             var senderId = req.body.userId;
                             var receiverId = req.body.receiverId;
                             User.findOne({ _id: senderId }, function(err, result) {
@@ -1958,7 +1966,7 @@ module.exports = {
                         res.send({ responseCode: 403, responseMessage: "Please enter a valid coupon." }); }
                     else {
                         User.findOne({ _id: receiverId }, function(err, result) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "you are not allowed to send" }) } else {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot send coupon to this user due to privacy policies" }) } else {
                                 callback(null)
                             }
                         })
@@ -1980,7 +1988,7 @@ module.exports = {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.exchangeCoupon == "followers") {
                         console.log("2")
                         var flag = result1.userFollowers.find(userFollowers => userFollowers == senderId)
-                        if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "you are not friend" }); } else {
+                        if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon to this user due to privacy policies" }); } else {
                             console.log("2")
                             createNewAds.findOneAndUpdate({ _id: adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {

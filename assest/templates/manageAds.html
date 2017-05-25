@@ -9,7 +9,7 @@
                             <div class="total-amt">{{totalAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('totalads');  tab='totalads'">
+                            <div class="btn-manage" ng-click="tab='totalads'">
                                 <a ng-click="adsTypeName('totalAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -25,7 +25,7 @@
                             <div class="total-amt">{{totalActiveAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('activeads'); tab='activeads'">
+                            <div class="btn-manage" ng-click="tab='activeads'">
                                 <a ng-click="adsTypeName('totalActiveAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -41,7 +41,7 @@
                             <div class="total-amt">{{totalExpiredAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('expiredAds'); tab='expiredAds'">
+                            <div class="btn-manage" ng-click="tab='expiredAds'">
                                 <a ng-click="adsTypeName('totalExpiredAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -57,7 +57,7 @@
                             <div class="total-amt">{{showReportedAdcount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('showReportedAd'); tab='showReportedAd'">
+                            <div class="btn-manage" ng-click="tab='showReportedAd'">
                                 <a ng-click="adsTypeName('showReportedAd')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -73,7 +73,7 @@
                             <div class="total-amt">{{adsWithLinkscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('adsWithLinks'); tab='adsWithLinks'">
+                            <div class="btn-manage" ng-click="tab='adsWithLinks'">
                                 <a ng-click="adsTypeName('adsWithLinks')"> Show</a>
                             </div>
                             <div class="btn-manage">
@@ -89,7 +89,7 @@
                             <div class="total-amt">{{videoAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('videoAds'); tab='videoAds'">
+                            <div class="btn-manage" ng-click="tab='videoAds'">
                                 <a ng-click="adsTypeName('videoAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -105,7 +105,7 @@
                             <div class="total-amt">{{slideshowAdscount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('slideShowAds'); tab='slideShowAds'">
+                            <div class="btn-manage" ng-click="tab='slideShowAds'">
                                 <a ng-click="adsTypeName('slideShowAds')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -121,7 +121,7 @@
                             <div class="total-amt">{{adUpgradedByDollorcount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('adUpgradedByDollor'); tab='adUpgradedByDollor'">
+                            <div class="btn-manage" ng-click="tab='adUpgradedByDollor'">
                                 <a ng-click="adsTypeName('adUpgradedByDollor')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -137,7 +137,7 @@
                             <div class="total-amt">{{adUpgradedByBrolixcount}}</div>
                         </div>
                         <div class="bottom-box">
-                            <div class="btn-manage" ng-click="dataTableOne('adUpgradedByBrolix'); tab='adUpgradedByBrolix'">
+                            <div class="btn-manage" ng-click="tab='adUpgradedByBrolix'">
                                 <a ng-click="adsTypeName('adUpgradedByBrolix')">Show</a>
                             </div>
                             <div class="btn-manage">
@@ -152,7 +152,7 @@
                                 <div class="green-box">Top 50 Cash Providers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="dataTableOne('topFiftyAds'); tab='topFiftyAds'">
+                                <div class="btn-manage show-btn w-100" ng-click="tab='topFiftyAds'">
                                     <a ng-click="adsTypeName('topFiftyAds')">Show</a>
                                 </div>
                             </div>
@@ -164,20 +164,13 @@
                 <div class="widget widget-stats divi-blk">
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
                     <div class="form-group cus-select">
-                         <select class="form-control" ng-change="changeCountry(); dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.country" required>
+                         <select class="form-control" ng-change="changeCountry(); dashBordFilter();" ng-model="dashBordFilter.country" required>
                             <option value="">Select Country</option>
                             <option ng-repeat="country in countriesList" value"{{country}}">{{country}}</option>
                          </select>
                     </div>
                     <div class="form-group cus-select">
-                         <select class="form-control"  ng-change="changeState(); dashBordFilter(dashBordFilter.state);"  ng-model="dashBordFilter.state" required>
-                            <option value="">Select State</option>
-                            <option value="">N/A</option>
-                            <!-- <option ng-repeat="state in stateList">{{state.region}}</option> -->
-                         </select>
-                    </div>
-                    <div class="form-group cus-select">
-                         <select  class="form-control" id="city" ng-change="dashBordFilter(dashBordFilter.country);" ng-model="dashBordFilter.city" required>
+                         <select  class="form-control" id="city" ng-change="dashBordFilter();" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
                             <option ng-repeat="city in cityList">{{city}}</option>
                          </select>
@@ -194,7 +187,7 @@
                    <div class="form-group clearfix date-picker">
                    <datepicker date-format="yyyy-MM-dd" selector="form-control">
                       <div class="input-group">
-                          <input class="form-control" ng-change="dashBordFilter(dashBordFilter.dobFrom);" placeholder="Choose a date" ng-model="dashBordFilter.dobFrom"/>
+                          <input ng-disabled="dashBordFilter.dobTo==undefined"  class="form-control" ng-change="dashBordFilter();" placeholder="Choose a date" ng-model="dashBordFilter.dobFrom"/>
                           <span class="input-group-addon" style="cursor: pointer">
                           </span>
                       </div>
@@ -232,8 +225,8 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <!-- <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Mobile number" maxlength="10" >
-                        <div class="input-group-addon">Search</div> -->
+                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Mobile number" maxlength="10" >
+                        <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
@@ -254,7 +247,7 @@
                         <th>CARD</th>
                     </tr>
                 </thead>
-                <tbody> 
+                <tbody>
                     <tr dir-paginate="x in totalAds | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
@@ -268,10 +261,6 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalAds | manageAdsFilter:test).length != 0">
-                       <!--  <button ng-click="preClk()" ng-disabled="pageNo==1" class="btn paginationBtn" >Prev</button> {{pageNo}}/{{noOfPages}}
-                        <button ng-click="nextClk()" ng-disabled="pageNo==noOfPages" class="btn paginationBtn">Next</button> -->
-            </div>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
@@ -291,7 +280,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalActiveAds| manageAdsFilter:test">
+                    <tr dir-paginate="x in totalActiveAds | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -304,10 +293,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalActiveAds | manageAdsFilter:test).length != 0">
-                        <!-- <button ng-click="preActiveAdsClk()" ng-disabled="pageNoActiveAds==1" class="btn paginationBtn" >Prev</button> {{pageNoActiveAds}}/{{noOfPagesActiveAds}}
-                        <button ng-click="nextActiveAdsClk()" ng-disabled="pageNoActiveAds==noOfPagesActiveAds" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -326,7 +312,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalExpiredAds | manageAdsFilter:test">
+                    <tr dir-paginate="x in totalExpiredAds | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -339,10 +325,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalExpiredAds | manageAdsFilter:test).length != 0">
-                        <!-- <button ng-click="preExpiredAdsClk()" ng-disabled="pageNoExpiredAds==1" class="btn paginationBtn" >Prev</button> {{pageNoExpiredAds}}/{{noOfPagesExpiredAds}}
-                        <button ng-click="nextExpiredAdsClk()" ng-disabled="pageNoExpiredAds==noOfPagesExpiredAds" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -361,7 +344,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in videoAds | manageAdsFilter:test">
+                    <tr dir-paginate="x in videoAds | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -374,10 +357,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(videoAds | manageAdsFilter:test).length != 0">
-                       <!--  <button ng-click="preVideoAdsClk()" ng-disabled="pageNoVideoAds==1" class="btn paginationBtn" >Prev</button> {{pageNoVideoAds}}/{{noOfPagesVideoAds}}
-                        <button ng-click="nextVideoAdsClk()" ng-disabled="pageNoVideoAds==noOfPagesVideoAds" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -396,7 +376,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in slideshowAds | manageAdsFilter:test">
+                    <tr dir-paginate="x in slideshowAds | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -409,10 +389,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(slideshowAds | manageAdsFilter:test).length != 0">
-                       <!--  <button ng-click="preSlideShowAdsClk()" ng-disabled="pageNoSlideShowAds==1" class="btn paginationBtn" >Prev</button> {{pageNoSlideShowAds}}/{{noOfPagesSlideShowAds}}
-                        <button ng-click="nextSlideShowAdsClk()" ng-disabled="pageNoSlideShowAds==noOfPagesSlideShowAds" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -431,7 +408,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in adUpgradedByBrolix | manageAdsFilter:test">
+                    <tr dir-paginate="x in adUpgradedByBrolix | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -444,10 +421,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(adUpgradedByBrolix | manageAdsFilter:test).length != 0">
-               <!--  <button ng-click="preUpgradedByBrolixClk()" ng-disabled="pageNoUpgradedByBrolix==1" class="btn paginationBtn" >Prev</button> {{pageNoUpgradedByBrolix}}/{{noOfPagesUpgradedByBrolix}}
-                <button ng-click="nextUpgradedByBrolixClk()" ng-disabled="pageNoUpgradedByBrolix==noOfPagesUpgradedByBrolix" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -466,7 +440,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in adUpgradedByDollor | manageAdsFilter:test">
+                    <tr dir-paginate="x in adUpgradedByDollor | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -479,10 +453,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(adUpgradedByDollor | manageAdsFilter:test).length != 0">
-                <!-- <button ng-click="preUpgradedByDollarsClk()" ng-disabled="pageNoUpgradedByDollars==1" class="btn paginationBtn" >Prev</button> {{pageNoUpgradedByDollars}}/{{noOfPagesUpgradedByDollars}}
-                <button ng-click="nextUpgradedByDollarsClk()" ng-disabled="pageNoUpgradedByDollars==noOfPagesUpgradedByDollars" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
      <div class="col-sm-12" ng-switch="tab">
@@ -500,7 +471,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in showReportedAd |manageAdsFilter:test">
+                    <tr dir-paginate="x in showReportedAd | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -513,10 +484,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(showReportedAd | manageAdsFilter:test).length != 0">
-                <!-- <button ng-click="preReportedAdsClk()" ng-disabled="pageNoReportedAds==1" class="btn paginationBtn" >Prev</button> {{pageNoReportedAds}}/{{noOfPagesReportedAds}}
-                <button ng-click="nextReportedAdsClk()" ng-disabled="pageNoReportedAds==noOfPagesReportedAds" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -535,7 +503,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in adsWithLinks | manageAdsFilter:test">
+                    <tr dir-paginate="x in adsWithLinks | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -548,10 +516,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(adsWithLinks | manageAdsFilter:test).length != 0">
-                <!-- <button ng-click="preAdsWithLinksClk()" ng-disabled="pageNoAdsWithLinks==1" class="btn paginationBtn" >Prev</button> {{pageNoAdsWithLinks}}/{{noOfPagesAdsWithLinks}}
-                <button ng-click="nextAdsWithLinksClk()" ng-disabled="pageNoAdsWithLinks==noOfPagesAdsWithLinks" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -570,7 +535,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in topFiftyAds | manageAdsFilter:test">
+                    <tr dir-paginate="x in topFiftyAds | manageAdsFilter:test | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -583,10 +548,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(topFiftyAds | manageAdsFilter:test).length != 0">
-               <!--  <button ng-click="preTopFiftyAdsClk()" ng-disabled="pageNoTopFiftyAds==1" class="btn paginationBtn" >Prev</button> {{pageNoTopFiftyAds}}/{{noOfPagesTopFiftyAds}}
-                <button ng-click="nextTopFiftyAdsClk()" ng-disabled="pageNoTopFiftyAds==noOfPagesTopFiftyAds" class="btn paginationBtn">Next</button> -->
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 </div>
@@ -654,7 +616,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="x in allpageInfo |filter:test">
+                                    <tr dir-paginate="x in allpageInfo | manageAdsFilter:test | itemsPerPage:10">
                                         <td class="skyblue-text">{{x.pageType}}</td>
                                         <td class="skyblue-text">{{x.pageName}}</td>
                                         <td class="skyblue-text">{{x.category}}</td>
@@ -664,6 +626,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
                         </div>
                     </div>
                 </div>
