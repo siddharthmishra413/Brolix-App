@@ -15,8 +15,9 @@
                         <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
                             <div class="row">
                                 <div class="col-md-6">
+                                 <input type="number" ng-model="view">
                                     <div class="remove-card-block" >
-                                        <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard">
+                                        <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard | filterOnView:view">
                                             <img style="cursor:pointer;" ng-click="showAdsDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
                                             <div class="viewwe-s">
                                                 <div class="tops-s">
@@ -89,9 +90,9 @@
                         <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
                             <div class="row">
                                 <div class="col-md-6">
-                                   
+                                   <input type="number" ng-model="luck">
                                     <div class="remove-card-block" >
-                                        <div class="cover-image newcover-img" ng-repeat="x in LuckCard">
+                                        <div class="cover-image newcover-img" ng-repeat="x in LuckCard | filterOnLuck:luck">
                                             <img style="cursor:pointer;" ng-click="showAdsDetails(x._id)" class="profile-user-img img-responsive" src="{{x.photo || '../dist/image/cover.jpg'}}" id="output">
                                             <div class="viewwe-s">
                                                 <div class="tops-s">

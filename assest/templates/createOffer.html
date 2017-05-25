@@ -33,14 +33,14 @@
                             <div ng-show="myForm.offerType=='discount' && myForm.cardType!= null">   
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="control-label col-sm-3">Buy Cards</label>
+                                        <label class="control-label col-sm-3">Percentage</label>
                                         <div class="col-sm-5">
                                             <div class="input-group">
                                               <input ng-model="myForm.buyCard" type="tel" name="buyCard" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="50" required>
                                               <span class="input-group-addon" id="basic-addon2">%</span>
                                             </div>
                                               <span style="color:red;" ng-show="First.buyCard.$dirty && First.buyCard.$invalid">
-                                              <span  ng-show="First.buyCard.$error.required">Buy cards is required.</span> 
+                                              <span  ng-show="First.buyCard.$error.required">Percentage is required.</span> 
                                               <span ng-show="First.buyCard.$error.pattern">Only number are allowed.</span>
                                          </div>
                                     </div>
@@ -63,7 +63,7 @@
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
                                     <button  class="btn btn-lg btn-green" ng-disabled="First.$invalid"  ng-click="createOffer(myForm.cardType)">Next</button>
-                                    <a  class="btn btn-lg btn-green">Cancel</a>
+                                    <a  class="btn btn-lg btn-green" ng-click="cancle();">Cancel</a>
                                 </div>
                             </div>
                         </form>
@@ -75,7 +75,7 @@
                                         <div class="col-sm-5">
                                               <input ng-model="myForm.buyCard" type="tel" name="buyCards" ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" required>
                                             <span style="color:red;" ng-show="ssecond.buyCards.$dirty && ssecond.buyCards.$invalid">
-                                            <span  ng-show="ssecond.buyCards.$error.required">Buy cards is required.</span> 
+                                            <span  ng-show="ssecond.buyCards.$error.required">Buy Cards Value is required.</span> 
                                             <span style="color:red;" ng-show="ssecond.buyCards.$error.pattern">Only number are allowed.</span>
                                         </div>
                                     </div>
@@ -108,7 +108,7 @@
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
                                     <button  class="btn btn-lg btn-green"  ng-disabled="ssecond.$invalid" ng-click="createOffer(myForm.cardType)">Next</button>
-                                    <a  class="btn btn-lg btn-green">Cancel</a>
+                                    <a  class="btn btn-lg btn-green" ng-click="cancle();">Cancel</a>
                                 </div>
                             </div>
                         </form>
@@ -134,8 +134,9 @@
                         <div id="home" class="tab-pane fade in active" >
                             <div class="row">
                                 <div class="col-md-6">
+                                <input type="number" name="" ng-model="view"  placeholder="Search by Viewers" >
                                     <div class="remove-card-block" >
-                                        <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard">
+                                        <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard | filterOnView:view">
                                             <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
                                             <div class="viewwe-s">
                                                 <div class="tops-s">
@@ -160,7 +161,7 @@
                                     </div>
                                     <div class="btn2 text-center">
                                         <a class="btn btn-lg btn-green" ng-click="createOfferNext(cardDetails._id)">Apply Offer</a>
-                                        <a class="btn btn-lg btn-green">Cancel</a>
+                                        <a class="btn btn-lg btn-green" ng-click="cancle();">Cancel</a>
                                     </div>
                                 </div>
                             </div>
@@ -187,8 +188,9 @@
                         <div id="home" class="tab-pane fade in active" >
                             <div class="row">
                                 <div class="col-md-6">
+                                <input type="number" name="" ng-model="luck" placeholder="Search by Chances">
                                     <div class="remove-card-block" >
-                                        <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard">
+                                        <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard | filterOnLuck:luck">
                                             <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
                                             <div class="viewwe-s">
                                                 <div class="tops-s">
@@ -213,7 +215,7 @@
                                     </div>
                                     <div class="btn2 text-center">
                                         <a class="btn btn-lg btn-green" ng-click="createOfferNext(cardDetails._id)">Apply Offer</a>
-                                        <a class="btn btn-lg btn-green">Cancel</a>
+                                        <a class="btn btn-lg btn-green" ng-click="cancle();">Cancel</a>
                                     </div>
                                 </div>
                             </div>

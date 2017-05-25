@@ -140,8 +140,8 @@ app.service('userService',function($http){
     showAllBusinessUser: function(pageNo) {
       return $http.get(baseurl+'/admin/showAllBusinessUser/'+pageNo);
     },
-    totalWinners: function(pageNo) {
-      return $http.get(baseurl+'/admin/winners/'+pageNo);
+    totalWinners: function() {
+      return $http.get(baseurl+'/admin/winners');
     },
     
     // userProfile: function(id) {
@@ -204,6 +204,9 @@ app.service('userService',function($http){
     },
     cardFilter: function(data){
      return $http.post(baseurl+'/admin/luckUpgradeCardfilter', data);
+   },
+   getOfferList: function(data){
+     return $http.post(baseurl+'/admin/getOfferList', data);
    },
 
     /*-------------------------Manage ADS---------------------*/
@@ -418,8 +421,12 @@ app.service('userService',function($http){
       return $http.post(baseurl+'/admin/createOfferOnCard', data);
     },
 
-    showOfferOnCards: function(data){
-      return $http.post(baseurl+'/admin/showOfferOnCards', data);
+    showOfferOnCards: function(data,pageNo){
+      return $http.post(baseurl+'/admin/showOfferOnCards/'+pageNo, data);
+    },
+
+    showOfferCountOnCards: function(data){
+      return $http.post(baseurl+'/admin/showOfferCountOnCards', data);
     },
 
     /*filter MangeUser section*/
@@ -439,12 +446,12 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/totalBrolixGift');  
     },
 
-    totalCouponsGifts: function(pageNo) {
-      return $http.get(baseurl+'/admin/totalCouponGifts/'+pageNo);
+    totalCouponsGifts: function() {
+      return $http.get(baseurl+'/admin/totalCouponGifts');
     },
  
-    totalCashGifts: function(pageNo) {
-       return $http.get(baseurl+'/admin/totalCashGifts/'+pageNo);
+    totalCashGifts: function() {
+       return $http.get(baseurl+'/admin/totalCashGifts');
     },
 
     totalHiddenGifts: function(pageNo) {
@@ -507,6 +514,7 @@ app.service('userService',function($http){
     zipcodFunction: function(data){
       return $http.post('/admin/zipcodFunction', data);
     },
+    //http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/showOfferOnCards/1 
 
     //******************** Manage Payment Section ******************************
 

@@ -237,7 +237,7 @@ module.exports = {
                 })
             })
         } else {
-            User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "pageFollowers": { pageId: req.body.pageId } } }, { new: true }).exec(function(err, results) {
+            User.findOneAndUpdate({ _id: req.body.userId }, { $pop: { "pageFollowers": { pageId: -req.body.pageId } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $pop: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
                         res.send({
@@ -266,11 +266,17 @@ module.exports = {
 
     //API for Show Search
     "searchForPages": function(req, res) {
+        if (req.body.pageName) {
+            var re = new RegExp("^" + req.body.pageName, "i");
+            var page = { $regex: re, $options: "i" }
+        } else {
+            page = ""
+        }
         var data = {
             'country': req.body.country,
             'state': req.body.state,
             'city': req.body.city,
-            'pageName': req.body.pageName,
+            'pageName': page,
             'category': req.body.category,
             'subCategory': req.body.subCategory
         }
@@ -2180,7 +2186,7 @@ module.exports = {
         waterfall([
             function(callback) {
                 if (req.body.type == 'coupon') {
-                    var query = { $and: [{ 'coupon.pageId': req.body.pageId }] };
+                    var query = { $and: [{ 'coupon.pageId': req.body.pageId, 'coupon.type': 'WINNER' }] };
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
                         if (!(key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == 'pageId')) {
@@ -2262,7 +2268,7 @@ module.exports = {
                     // }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                        if (!( key == 'couponStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined ||key == 'pageId')) {
+                        if (!(key == 'couponStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == 'pageId')) {
                             //   queryOrData = { $or: [] };
                             var temporayCondData = {}
                             if (key == 'cashStatus') {
@@ -2512,24 +2518,50 @@ module.exports = {
         })
     },
 
-    "sendCouponToAdvertiser":function(req, res){
+    "sendCouponToAdvertiser": function(req, res) {
         var couponId = req.body.couponId;
-        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
-            console.log("user---->>>", user)
-            console.log("coupon.couponStatus--->>>", JSON.stringify(user[0].coupon.couponStatus))
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-            else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
-             else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: "Please enter a valid coupon to use." }); }
-              else {
-                User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                        res.send({
-                            responseCode: 200,
-                            responseMessage: "Coupon successfully sent to advertiser page."
-                        })
-                    }
-                })
-            }
-        })
-    }
+        var adId = req.body.adId;
+        if (!couponId) { res.send({ responseCode: 400, responseMessage: "Please enter the couponId" }); } else if (!adId) { res.send({ responseCode: 400, responseMessage: 'Please enter the adId' }); } else {
+            User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: "Please enter a valid coupon to use." }); } else {
+                    User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+
+                            User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } else {
+                                    for (var i = 0; i < user.hiddenGifts.length; i++) {
+                                        if (user.hiddenGifts[i].adId == adId) {
+                                            var code = user.hiddenGifts[i].hiddenCode;
+                                        }
+                                    }
+                                    User.update({ 'hiddenGifts.adId': adId }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result2) {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+                                            console.log("result2--->>", result2)
+                                            console.log("code--->>", code)
+                                            var message = 'Your hidden gift is:' + code
+                                            if (result2.nModified == 1) {
+                                                functions.otp(req.body.mobileNumber, message)
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "The hidden gift code has been sent to your mailbox successfully."
+                                                })
+
+                                            } else {
+                                                res.send({
+                                                    responseCode: 200,
+                                                    responseMessage: "Coupon successfully sent to advertiser page."
+                                                })
+
+                                            }
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    },
+
 }

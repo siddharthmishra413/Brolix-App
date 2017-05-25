@@ -23,7 +23,8 @@ app.controller('loginCtrl', function($scope, $window, $state, userService, $cook
     $scope.login = function() {
         userService.login($scope.myFrom).success(function(res) {
             if (res.responseCode == 200) {
-                console.log("Login successfully" + JSON.stringify(res))
+                //console.log("Login successfully" + JSON.stringify(res.token));
+                localStorage.setItem('token',res.token);
                 //toastr.success(res.responseMessage);
                 $state.go('header.manageUsers')
             } else if (res.responseCode == 404) {

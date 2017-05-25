@@ -13,7 +13,8 @@
                     </ul>
                     <div class="tab-content add-card">
                         <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
-                            <div class="row-table" ng-repeat="data in UpgradeCard">
+                         <input type="number" name="" ng-model="view">
+                            <div class="row-table" ng-repeat="data in UpgradeCard | filterOnView:view">
                                 <div class="col-cell">
                                     <div class="cover-image newcover-img">
                                         <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
@@ -32,7 +33,8 @@
                             </div>
                         </div>
                         <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
-                            <div class="row-table" ng-repeat="data in LuckCard">
+                         <input type="number" name="" ng-model="luck">
+                            <div class="row-table" ng-repeat="data in LuckCard | filterOnLuck:luck">
                                 <div class="col-cell">
                                     <div class="cover-image newcover-img">
                                         <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">

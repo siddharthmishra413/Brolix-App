@@ -15,36 +15,22 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.dashBordFilter = {};
     $scope.ageLimit = [];
     $scope.ageLimits = [];
-
     localStorage.setItem('userTypeName','totalUsers');
 
     for (var i = 15; i <99; i++){
       $scope.ageLimit.push(i);
     }
     
-
     $scope.ageFunction = function(age){
     console.log("$scope.dashBordFilter.ageTo",age)
     var agefromLimited = parseInt(age)+1;
-    //console.log("here "+agefromLimited)
 	    for (var i =  agefromLimited; i <99; i++){
 	      $scope.ageLimits.push(i);
-        //console.log("hi");
 	    }
 	    console.log("$scope.ageLimits",$scope.ageLimits)
     }
 
-    // for (var i =  $scope.dashBordFilter.ageTo; i <99; i++){
-    //   $scope.ageLimits.push(i);
-    // }
-    // console.log("$scope.ageLimits",$scope.ageLimits);
-// sakshi gadia (sakshigadia@gmail.com, sakshi.gadia@gmail.com)
-// http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/admin/countryListData
-
-
-
     userService.countryListData().success(function(res) {
-      //console.log("ddd",JSON.stringify(res))
       $scope.countries = res.result;
     })
 
@@ -57,23 +43,17 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
         console.log("ddd",JSON.stringify(res))
         $scope.cityList = res.result;
       })
-
-
     }
     
     $scope.showPageDetails = function(id){
-        //console.log("id---------",id);
         userService.showUserPage(id).success(function(res) {
            if(res.responseCode ==  200) {
             $scope.allshowUserPage = res.result;
             $("#pageDetails").modal('show');
-            //console.log("$scope.allshowUserPage",JSON.stringify($scope.allshowUserPage))
         }else{
           toastr.error(res.responseMessage);
-
         }
-
-        })
+      })
     }
 
 
@@ -94,15 +74,22 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
 
 
     userService.viewcard($scope.cardType).success(function(res) {
-      //console.log("resssssssssssssss",res)
+      if(res.responseCode == 200){
         $scope.UpgradeCard = res.data;
+      }else{
+        toastr.error(res.responseMessage);
+      }
+               
         //console.log("UpgradeCard",JSON.stringify(res));
     })
 
     userService.showListOFCouponWithoutPagination().success(function(res) {
       console.log("resssssssssssssss",JSON.stringify(res))
+      if(res.responseCode == 200){
         $scope.allCoupons = res.result;
-        //console.log("allCoupons",JSON.stringify($scope.allCoupons));
+      }else{
+        toastr.error(res.responseMessage);
+      }
     })
 
     $scope.export = function(){
@@ -264,13 +251,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     //*******************Total Winners****************
     $scope.currentTotalWinners = 1;
      $scope.nextTotalWinnersDetail = function(){
-         userService.totalWinners($scope.currentTotalWinners).success(function(res) {
+         userService.totalWinners().success(function(res) {
+          console.log("res",JSON.stringify(res))
 
             if (res.responseCode == 200){
-                   $scope.noOfPagesTotalWinners = res.result.pages;
-                   $scope.pageTotalWinners= res.result.page;
-                   $scope.totalWinners = res.result.docs;
-                   $scope.totalWinnersCount = res.result.total;
+                   $scope.totalWinnersCount = res.result;
                }
                else {
                 $scope.totalWinnersCount = 0;
@@ -1818,7 +1803,7 @@ $scope.sendCard = function(cardId,type){
 
     /*----------DashBoardFilter----------*/
 
-console.log("dashBordFilter.dobTo   :   "+$scope.dashBordFilter.dobTo);
+// console.log("dashBordFilter.dobTo   :   "+$scope.dashBordFilter.dobTo);
 $scope.dashBordFilter = function(){
 
     var type = localStorage.getItem('userTypeName');
