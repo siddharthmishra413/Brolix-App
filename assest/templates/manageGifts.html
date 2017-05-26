@@ -208,7 +208,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalCouponsGiftShow">
+                    <tr dir-paginate="x in totalCouponsGiftShow | itemsPerPage:10">
                         <td>{{x.coupon.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.coupon.adId,'first')">View</td>

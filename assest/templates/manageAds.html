@@ -198,43 +198,42 @@
         </div>
     </div>
 
-    <div class="grp-search">
-        <div class="row-search">
-            <ul>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
-                </li>
-                <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
-                </li>
-                 <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
-                </li>
-                <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
-                </li>
-                <li class="">
-                    <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
-                </li>
-                <li class="last">
-                    <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
-                </li>
-            </ul>
-        </div>
-        <div class="search-bar-cus">
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name or Mobile number" maxlength="10" >
-                        <div class="input-group-addon">Search</div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalads">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testOne" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped" >
                 <thead>
                     <tr>
@@ -248,7 +247,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in totalAds | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in totalAds | manageAdsFilter:testOne | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -267,6 +266,40 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="activeads">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testTwo" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -280,7 +313,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in totalActiveAds | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in totalActiveAds | manageAdsFilter:testTwo | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -299,6 +332,40 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="expiredAds">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testThree" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -312,7 +379,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in totalExpiredAds | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in totalExpiredAds | manageAdsFilter:testThree | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -331,6 +398,40 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="videoAds">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testFour" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -344,7 +445,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in videoAds | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in videoAds | manageAdsFilter:testFour | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -363,6 +464,40 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="slideShowAds">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testFive" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -376,7 +511,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in slideshowAds | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in slideshowAds | manageAdsFilter:testFive | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -395,6 +530,40 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="adUpgradedByBrolix">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testSix" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -408,7 +577,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in adUpgradedByBrolix | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in adUpgradedByBrolix | manageAdsFilter:testSix | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -427,6 +596,40 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="adUpgradedByDollor">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testSeven" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -440,7 +643,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in adUpgradedByDollor | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in adUpgradedByDollor | manageAdsFilter:testSeven | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -458,6 +661,40 @@
     </div>
      <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="showReportedAd">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testEight" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -471,7 +708,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in showReportedAd | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in showReportedAd | manageAdsFilter:testEight | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -490,6 +727,40 @@
 
      <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="adsWithLinks">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testNine" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -503,7 +774,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in adsWithLinks | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in adsWithLinks | manageAdsFilter:testNine | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -522,6 +793,40 @@
 
  <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="topFiftyAds">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="adInfo(myForm.checkId)">View Ads</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Ad</a>
+                        </li>
+                         <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab"  style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="testTen" placeholder="Search By Page Name" maxlength="10" >
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="manageAdsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -535,7 +840,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in topFiftyAds | manageAdsFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in topFiftyAds | manageAdsFilter:testTen | itemsPerPage:10">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -616,7 +921,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr dir-paginate="x in allpageInfo | manageAdsFilter:test | itemsPerPage:10">
+                                    <tr dir-paginate="x in allpageInfo | manageAdsFilter:testElevin | itemsPerPage:10">
                                         <td class="skyblue-text">{{x.pageType}}</td>
                                         <td class="skyblue-text">{{x.pageName}}</td>
                                         <td class="skyblue-text">{{x.category}}</td>

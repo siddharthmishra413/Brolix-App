@@ -135,7 +135,7 @@
                          </select>
                     </div>
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-model="dashBordFilter.categories" ng-change="dashBordFilter(dashBordFilter.category);">
+                        <select class="form-control" ng-model="dashBordFilter.categories" ng-change="dashBordFilter();">
                             <option value="">Select Category</option>
                             <option ng-repeat="category in category">{{category}}</option>
                         </select>

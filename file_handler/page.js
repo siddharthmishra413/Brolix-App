@@ -750,7 +750,7 @@ module.exports = {
                 var updateData = { $inc: { viewAds: 1 } };
                 details.viewAds = 1;
                 break;
-            case 'totalRating':
+            case 'totalReview':
                 var updateData = { $inc: { totalRating: 1 } };
                 details.totalRating = 1;
                 break;

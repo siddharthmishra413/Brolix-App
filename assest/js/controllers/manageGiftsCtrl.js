@@ -12,59 +12,9 @@ $scope.dashBordFilter.city="";
 localStorage.setItem('giftTypeName','totalCouponsGifts');
 
 
-$scope.dataTableOne = function(type){
-  console.log("type",type)
-  if(type=='totalCouponsGifts'){
-    $('#manageGiftTableOne').DataTable();
-      $scope.tab= 'totalCouponsGifts'; 
-     $timeout(function(){
-        $('#manageGiftTableOne').DataTable();
-         $scope.tab= 'totalCouponsGifts';      
-     },100)
-  }else if(type=='totalCashGifts'){
-    $('#manageGiftTableTwo').DataTable();
-      $scope.tab= 'totalCashGifts'; 
-     $timeout(function(){
-        $('#manageGiftTableTwo').DataTable();
-         $scope.tab= 'totalCashGifts';      
-     },100)
-  }else if(type=='totalHiddenGifts'){
-    $('#manageGiftTableThree').DataTable();
-      $scope.tab= 'totalHiddenGifts'; 
-     $timeout(function(){
-        $('#manageGiftTableThree').DataTable();
-         $scope.tab= 'totalHiddenGifts';      
-     },100)
-  }else if(type=='totalExchanged'){
-    $('#manageGiftTableFour').DataTable();
-      $scope.tab= 'totalExchanged'; 
-     $timeout(function(){
-        $('#manageGiftTableFour').DataTable();
-         $scope.tab= 'totalExchanged';      
-     },100)
-  }else if(type=='totalSentCoupons'){
-    $('#manageGiftTableFive').DataTable();
-      $scope.tab= 'totalSentCoupons'; 
-     $timeout(function(){
-        $('#manageGiftTableFive').DataTable();
-         $scope.tab= 'totalSentCoupons';      
-     },100)
-  }else if(type=='totalSentCash'){
-    $('#manageGiftTableSix').DataTable();
-      $scope.tab= 'totalSentCash'; 
-     $timeout(function(){
-        $('#manageGiftTableSix').DataTable();
-         $scope.tab= 'totalSentCash';      
-     },100)
-  }else{
-    console.log("dddddd");
-  }
-     
-}
-
- userService.countryListData().success(function(res) {
-      $scope.countriesList = res.result;
-    })
+userService.countryListData().success(function(res) {
+  $scope.countriesList = res.result;
+})
 
 $scope.changeCountry = function(){
   var obj = {};
@@ -77,24 +27,21 @@ $scope.changeCountry = function(){
 }
 
 userService.totalBrolixGift().then(function(success) {
-  if(success.data.responseCode == 404){
-       $scope.totalBrolix = success.data.totalBrolix;
-  }else if(success.data.responseCode == 200) {
-        $scope.contactWinners = success.data.result;
-        $scope.totalBrolix = success.data.totalBrolix;
+  if(success.data.responseCode == 200) {
+    $scope.contactWinners = success.data.result;
+    $scope.totalBrolix = success.data.totalBrolix;
   }else{
     toastr.error(success.responseMessage);
   }
 })
 
 userService.totalCouponsGifts().success(function(res) {
-  //console.log("sssss",JSON.stringify(res))
   if (res.responseCode == 200){
     $scope.totalCouponsGiftShow= res.result;
     $scope.totalCouponsGift = $scope.totalCouponsGiftShow.length;
   } 
   else {
-    toastr.error(res.responseMessage);
+    $scope.totalCouponsGift=0;
   }
 })
 
@@ -104,7 +51,7 @@ userService.totalCashGifts().success(function(res) {
     $scope.totalCashGift = res.result.length;
   } 
   else {
-    toastr.error(res.responseMessage);
+    $scope.totalCashGift=0;
   }
 })
 
@@ -114,12 +61,11 @@ userService.totalHiddenGifts().success(function(res) {
     $scope.totalHiddenGift = res.result.length;
   } 
   else {
-    toastr.error(res.responseMessage);
+    $scope.totalHiddenGift=0
   }
 })
 
 userService.totalExchangedCoupon().success(function(res) { 
-  //console.log("resssss",JSON.stringify(res))
   if (res.responseCode == 200){
     $scope.totalExchangedCoupons= res.result.length;
     $scope.totalExchangedCouponShowOne=[];
@@ -137,12 +83,11 @@ userService.totalExchangedCoupon().success(function(res) {
     }  
   } 
   else {
-    toastr.error(res.responseMessage);
+    $scope.totalExchangedCoupons=0;
   }
 })
 
 userService.totalSentCoupon().success(function(res) { 
-  //console.log("res",JSON.stringify(res))
   if (res.responseCode == 200){
     $scope.totalSentCoupon = res.result.length;
     $scope.totalSentCouponShowTwo=[];
@@ -159,23 +104,20 @@ userService.totalSentCoupon().success(function(res) {
         });
       }
     }
-    //console.log("$scope.totalSentCouponShowTwo",$scope.totalSentCouponShowTwo.length);
-  
   } 
   else {
-    toastr.error(res.responseMessage);
+    $scope.totalSentCoupon=0;
   }
 })
 
 userService.totalSentCash().success(function(res) { 
-  //console.log("val",JSON.stringify(res))
   if (res.responseCode == 200){  
     $scope.totalCash= res.totalCash;   
     $scope.totalSentCashShow= res.result;
     $scope.totalSentCash=res.result.length;
   } 
   else {
-    toastr.error(res.responseMessage);
+    $scope.totalSentCash=0;
   }
 })
 
@@ -244,13 +186,13 @@ $scope.showCouponGift= function(id,key) {
     toastr.error("Something wents to wrong");
   }
   console.log(id)
-  userService.couponGiftAd(id).then(function(success) { 
-    console.log("success",success)
-  $scope.couponGiftAd=success.data.result;
-          },function(err){
-         //console.log(err);
-          toastr.error('Connection error.');
-   }) 
+  userService.couponGiftAd(id).success(function(res) {        
+    if (res.responseCode == 200){
+      $scope.couponGiftAd=success.data.result;
+    } else {
+        toastr.error(res.responseMessage);
+    }
+  }) 
 }
 
 // $scope.showCouponGifttwo= function(id) {
@@ -264,136 +206,134 @@ $scope.showCouponGift= function(id,key) {
 //    }) 
 // }  
 
- $scope.cashGift=function(id){
-        //console.log("cashGiftId>>>"+JSON.stringify(id))
-        userService.adInfo(id).then(function(success) { 
-                    if(success.data.responseCode == 200){
-                            $scope.userDetail=success.data.result;
-                            $("#cashGift").modal('show');
-                    }
-                    else{
-                        toastr.error(success.data.responseMessage)
-                    }
-            
-                },function(err){
-                    //console.log(err);
-                     toastr.error('Connection error.');
-            }) 
+$scope.cashGift=function(id){
+  userService.adInfo(id).success(function(res) {        
+    if (res.responseCode == 200){
+      $scope.userDetail=success.data.result;
+      $("#cashGift").modal('show');
+    } else {
+        toastr.error(res.responseMessage);
     }
+  }) 
+}
 
- $scope.contact_winner_message = function (modal) {
-        $scope.modalId = modal;
-        $scope.modelData = modal;
-        $scope.sendMessage.massage= '';
-        if($scope.modalId == '' || $scope.modalId == undefined || $scope.modalId == null){
-        toastr.error("Please select user.")
-        $state.go('header.manageGifts')
-        }else {
-            $("#sendMessageModelAllUser").modal('show');
-        }
-    }
+$scope.contact_winner_message = function (modal) {
+  $scope.modalId = modal;
+  $scope.modelData = modal;
+  $scope.sendMessage.massage= '';
+  if($scope.modalId == '' || $scope.modalId == undefined || $scope.modalId == null){
+    toastr.error("Please select user.")
+    $state.go('header.manageGifts')
+  }else {
+    $("#sendMessageModelAllUser").modal('show');
+  }
+}
 
 /*-------------------------Message send to all contact winners---------------------*/
     
-    $scope.send_massage = function(){
-         var array =[];
-         var data = {};
-         switch ($scope.modelData)
-            {
-                case 'totalBrolixGiftWinner': 
-                    for (var i = 0; i < $scope.contactWinners.length; i++) {
-                        array.push($scope.contactWinners[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
+$scope.send_massage = function(){
+var array =[];
+var data = {};
+switch ($scope.modelData)
+  {
+    case 'totalBrolixGiftWinner': 
+      for (var i = 0; i < $scope.contactWinners.length; i++) {
+          array.push($scope.contactWinners[i]._id)
+      }
+      data = {
+          Message:$scope.sendMessage.massage,
+          Id:array
+      }
+      userService.sendMassageAllUser(data).success(function(res) {        
+        if (res.responseCode == 200){
+          toastr.success("Message Send Successfully to All Buyers");
+          $scope.sendMessage = '';
+          $("#sendMessageModelAllUser").modal('hide');
+          toastr.success("No of User ",array) 
+        } else {
+          toastr.error(res.responseMessage);
+        }
+      })
+    break;
 
-                case 'totalCouponGiftWinner': 
-                    for (var i = 0; i < $scope.totalCouponsGiftShow.length; i++) {
-                        array.push($scope.totalCouponsGiftShow[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
+      case 'totalCouponGiftWinner': 
+          for (var i = 0; i < $scope.totalCouponsGiftShow.length; i++) {
+              array.push($scope.totalCouponsGiftShow[i]._id)
+          }
+          data = {
+              Message:$scope.sendMessage.massage,
+              Id:array
+          }
+          userService.sendMassageAllUser(data).success(function(res) {        
+              if (res.responseCode == 200){
+                  toastr.success("Message Send Successfully to All Buyers");
+                  $scope.sendMessage = '';
+                  $("#sendMessageModelAllUser").modal('hide');
+                  toastr.success("No of User ",array)  
+              } else {
+                  toastr.error(res.responseMessage);
+              }
+          })
+      break;
 
-                case 'totalCashGiftWinner': 
-                    for (var i = 0; i < $scope.totalCashGiftShow.length; i++) {
-                        array.push($scope.totalCashGiftShow[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Winners");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
+      case 'totalCashGiftWinner': 
+          for (var i = 0; i < $scope.totalCashGiftShow.length; i++) {
+              array.push($scope.totalCashGiftShow[i]._id)
+          }
+          data = {
+              Message:$scope.sendMessage.massage,
+              Id:array
+          }
+          userService.sendMassageAllUser(data).success(function(res) {        
+              if (res.responseCode == 200){
+                  toastr.success("Message Send Successfully to All Winners");
+                  $scope.sendMessage = '';
+                  $("#sendMessageModelAllUser").modal('hide');
+                  toastr.success("No of User ",array)  
+              } else {
+                  toastr.error(res.responseMessage);
+              }
+          })
+      break;
 
-                case 'totalHiddenGiftWinner': 
-                    for (var i = 0; i < $scope.totalHiddenGiftShow.length; i++) {
-                        array.push($scope.totalHiddenGiftShow[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Buyers");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
+      case 'totalHiddenGiftWinner': 
+          for (var i = 0; i < $scope.totalHiddenGiftShow.length; i++) {
+              array.push($scope.totalHiddenGiftShow[i]._id)
+          }
+          data = {
+              Message:$scope.sendMessage.massage,
+              Id:array
+          }
+          userService.sendMassageAllUser(data).success(function(res) {        
+              if (res.responseCode == 200){
+                  toastr.success("Message Send Successfully to All Buyers");
+                  $scope.sendMessage = '';
+                  $("#sendMessageModelAllUser").modal('hide'); 
+                  toastr.success("No of User ",array) 
+              } else {
+                  toastr.error(res.responseMessage);
+              }
+          })
+      break;
 
-                default: 
-                array.push($scope.modalId)
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to User");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-            }
-
-    }
+      default: 
+      array.push($scope.modalId)
+          data = {
+              Message:$scope.sendMessage.massage,
+              Id:array
+          }
+          userService.sendMassageAllUser(data).success(function(res) {        
+              if (res.responseCode == 200){
+                  toastr.success("Message Send Successfully to User");
+                  $scope.sendMessage = '';
+                  $("#sendMessageModelAllUser").modal('hide');
+                  toastr.success("No of User ",array)  
+              } else {
+                  toastr.error(res.responseMessage);
+              }
+          })
+  }
+}
 
 $scope.top_50_balanc = function(type){
   if(type=='balances'){
@@ -409,280 +349,223 @@ $scope.giftTypeName = function(val) {
   localStorage.setItem('giftTypeName',val);
 }
 
- 
-    $scope.dashBordFilter = function() {
-
-    var type1 = localStorage.getItem('giftTypeName');
-    // //console.log(type1);
-    // $scope.countryOne =$scope.dashBordFilter.country==undefined?'' : $scope.dashBordFilter.country;
-    // $scope.cityOne =$scope.dashBordFilter.city==undefined?'' : $scope.dashBordFilter.city;
-    // $scope.couponStatusOne =$scope.dashBordFilter.couponStatus==undefined?'' : $scope.dashBordFilter.couponStatus;
-    // $scope.cashStatusOne =$scope.dashBordFilter.cashStatus==undefined?'' : $scope.dashBordFilter.cashStatus;
-
-
-    var data = {};
-        data = {
-            giftsType:localStorage.getItem('giftTypeName'),
-            country: $scope.dashBordFilter.country,
-            city:$scope.dashBordFilter.city,
-            couponStatus:$scope.dashBordFilter.couponStatus,
-            cashStatus:$scope.dashBordFilter.cashStatus,
-            joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
-            joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
-        }
-        //console.log("datatata",JSON.stringify(data))
-
-    switch(type1)
-            {
-
-                case 'totalCouponsGifts': 
-                //console.log("1");
-                    userService.giftFilter(data).success(function(res){
-                      //console.log("1:   ",JSON.stringify(res));
-                      if (res.responseCode == 200){
-                        $scope.totalCouponsGiftShow= res.result; 
-                        $timeout(function(){
-                          $('#manageGiftTableOne').DataTable();     
-                        },100)
-                      } 
-                      else {
-                        $scope.totalCouponsGiftShow="";
-                        $timeout(function(){
-                          $('#manageGiftTableOne').DataTable();      
-                        },100)
-                        toastr.error(res.responseMessage);
-                      }
-                    })
-                    
-                break;
-
-                case 'totalCashGifts': 
-                //console.log("2");
-                    userService.giftFilter(data).success(function(res){
-                      //console.log("2:   ",JSON.stringify(res));
-                      if (res.responseCode == 200){
-                        $scope.totalCashGiftShow= res.result; 
-                        $timeout(function(){
-                          $('#manageGiftTableTwo').DataTable();     
-                        },100)
-                      } 
-                      else {
-                        $scope.totalCashGiftShow="";
-                        $timeout(function(){
-                          $('#manageGiftTableTwo').DataTable();      
-                        },100)
-                        toastr.error(res.responseMessage);
-                      }
-                    })
-                    
-                break;
-
-                case 'totalHiddenGifts': 
-                //console.log("3");
-                    userService.giftFilter(data).success(function(res){
-                     // console.log("3:   ",JSON.stringify(res));
-                      if (res.responseCode == 200){
-                        $scope.totalHiddenGiftShow= res.result; 
-                        $timeout(function(){
-                          $('#manageGiftTableThree').DataTable();     
-                        },100)
-                      } 
-                      else {
-                        $scope.totalHiddenGiftShow="";
-                        $timeout(function(){
-                          $('#manageGiftTableThree').DataTable();      
-                        },100)
-                        toastr.error(res.responseMessage);
-                      }
-                    })
-                    
-                break;
-
-                case 'totalExchanged': 
-                //console.log("4");
-                      userService.giftFilter(data).success(function(res){
-                      //console.log("4:   ",JSON.stringify(res));
-                      if (res.responseCode == 200){
-                        $scope.totalExchangedCouponShowOne= res.result; 
-                        $timeout(function(){
-                          $('#manageGiftTableFour').DataTable();     
-                        },100)
-                      } 
-                      else {
-                        $scope.totalExchangedCouponShowOne="";
-                        $timeout(function(){
-                          $('#manageGiftTableFour').DataTable();      
-                        },100)
-                        toastr.error(res.responseMessage);
-                      }
-                    })
-                    
-                break;
-
-                case 'totalSentCoupons':
-               // console.log("5"); 
-                    userService.giftFilter(data).success(function(res){
-                     // console.log("5:   ",JSON.stringify(res));
-                      if (res.responseCode == 200){
-                        $scope.totalSentCouponShowTwo= res.result; 
-                        $timeout(function(){
-                          $('#manageGiftTableFive').DataTable();     
-                        },100)
-                      } 
-                      else {
-                        $scope.totalSentCouponShowTwo="";
-                        $timeout(function(){
-                          $('#manageGiftTableFive').DataTable();      
-                        },100)
-                        toastr.error(res.responseMessage);
-                      }
-                    })
-                    
-                break;
-
-                case 'totalSentCash': 
-               // console.log("6");
-                    userService.giftFilter(data).success(function(res){
-                     // console.log("6:   ",JSON.stringify(res));
-                      if (res.responseCode == 200){
-                        $scope.totalSentCashShow= res.result; 
-                        $timeout(function(){
-                          $('#manageGiftTableSix').DataTable();     
-                        },100)
-                      } 
-                      else {
-                        $scope.totalSentCashShow="";
-                        $timeout(function(){
-                          $('#manageGiftTableSix').DataTable();      
-                        },100)
-                        toastr.error(res.responseMessage);
-                      }
-                    })
-                    
-                break;
-                
-                default: 
-                toastr.error("something went to wrong");
-            }
-
+$scope.dashBordFilter = function() {
+  var type1 = localStorage.getItem('giftTypeName');
+  var data = {};
+    data = {
+        giftsType:localStorage.getItem('giftTypeName'),
+        country: $scope.dashBordFilter.country,
+        city:$scope.dashBordFilter.city,
+        couponStatus:$scope.dashBordFilter.couponStatus,
+        cashStatus:$scope.dashBordFilter.cashStatus,
+        joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
+        joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
     }
+      //console.log("datatata",JSON.stringify(data))
+  switch(type1)
+    {
+      case 'totalCouponsGifts': 
+          userService.giftFilter(data).success(function(res){
+            if (res.responseCode == 200){
+              $scope.totalCouponsGiftShow= res.result; 
+            } 
+            else {
+              toastr.error(res.responseMessage);
+            }
+          })
+          
+      break;
+
+      case 'totalCashGifts': 
+      //console.log("2");
+          userService.giftFilter(data).success(function(res){
+            //console.log("2:   ",JSON.stringify(res));
+            if (res.responseCode == 200){
+              $scope.totalCashGiftShow= res.result; 
+            } 
+            else {
+              toastr.error(res.responseMessage);
+            }
+          })
+          
+      break;
+
+      case 'totalHiddenGifts': 
+      //console.log("3");
+          userService.giftFilter(data).success(function(res){
+           // console.log("3:   ",JSON.stringify(res));
+            if (res.responseCode == 200){
+              $scope.totalHiddenGiftShow= res.result; 
+            } 
+            else {
+              toastr.error(res.responseMessage);
+            }
+          })
+          
+      break;
+
+      case 'totalExchanged': 
+      //console.log("4");
+            userService.giftFilter(data).success(function(res){
+            //console.log("4:   ",JSON.stringify(res));
+            if (res.responseCode == 200){
+              $scope.totalExchangedCouponShowOne= res.result; 
+            } 
+            else {
+              toastr.error(res.responseMessage);
+            }
+          })
+          
+      break;
+
+      case 'totalSentCoupons':
+     // console.log("5"); 
+          userService.giftFilter(data).success(function(res){
+           // console.log("5:   ",JSON.stringify(res));
+            if (res.responseCode == 200){
+              $scope.totalSentCouponShowTwo= res.result; 
+            } 
+            else {
+              toastr.error(res.responseMessage);
+            }
+          })
+          
+      break;
+
+      case 'totalSentCash': 
+     // console.log("6");
+          userService.giftFilter(data).success(function(res){
+            if (res.responseCode == 200){
+              $scope.totalSentCashShow= res.result; 
+            } 
+            else {
+              toastr.error(res.responseMessage);
+            }
+          })
+      break;
+      
+      default: 
+      toastr.error("something went to wrong");
+    }
+
+  }
 
 })
 
 /*----------ManageGiftCustomFilter----------*/
 
-// app.filter("totalCouponGiftFilter",function() {
-//     var fullName = [];
-//       return function(items,nameValue){
-//        if (!nameValue) {
-//          return retArray = items;
-//           }
-//          var retArray = [];
-//            for(var i=0;i<items.length;i++) 
-//                 {
-//                  fullName.push(items[i].firstName+' '+items[i].lastName);  
-//                 if (items[i].coupon.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || fullName[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
-//                     retArray.push(items[i]);
-//                 }
-//            }
-//            return retArray
-//         } 
-// })
+app.filter("totalCouponGiftFilter",function() {
+    var fullName = [];
+      return function(items,nameValue){
+       if (!nameValue) {
+         return retArray = items;
+          }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+                {
+                 fullName.push(items[i].firstName+' '+items[i].lastName);  
+                if (items[i].coupon.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || fullName[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray
+        } 
+})
 
-// app.filter("totalCashGiftFilter",function() {
-//     var fullName = [];
-//       return function(items,nameValue){
-//        if (!nameValue) {
-//          return retArray = items;
-//           }
-//          var retArray = [];
-//            for(var i=0;i<items.length;i++) 
-//                 {
-//                  fullName.push(items[i].firstName+' '+items[i].lastName);  
-//                 if (items[i].cashPrize.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || fullName[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
-//                     retArray.push(items[i]);
-//                 }
-//            }
-//            return retArray
-//         } 
-// })
+app.filter("totalCashGiftFilter",function() {
+    var fullName = [];
+      return function(items,nameValue){
+       if (!nameValue) {
+         return retArray = items;
+          }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+                {
+                 fullName.push(items[i].firstName+' '+items[i].lastName);  
+                if (items[i].cashPrize.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || fullName[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray
+        } 
+})
 
-// app.filter("totalHiddenGiftFilter",function() {
-//     var fullName = [];
-//       return function(items,nameValue){
-//        if (!nameValue) {
-//          return retArray = items;
-//           }
-//          var retArray = [];
-//            for(var i=0;i<items.length;i++) 
-//                 {
-//                  fullName.push(items[i].firstName+' '+items[i].lastName);  
-//                 if (items[i].hiddenGifts.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || fullName[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
-//                     retArray.push(items[i]);
-//                 }
-//            }
-//            return retArray
-//         } 
-// })
+app.filter("totalHiddenGiftFilter",function() {
+    var fullName = [];
+      return function(items,nameValue){
+       if (!nameValue) {
+         return retArray = items;
+          }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+                {
+                 fullName.push(items[i].firstName+' '+items[i].lastName);  
+                if (items[i].hiddenGifts.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || fullName[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray
+        } 
+})
 
-// app.filter("totalExchangedFilter",function() {
-//     var sentFrom = [];
-//     var sentTo = [];
-//       return function(items,nameValue){
-//        if (!nameValue) {
-//          return retArray = items;
-//           }
-//          var retArray = [];
-//            for(var i=0;i<items.length;i++) 
-//               {
-//                  sentFrom.push(items[i].exchFromFirstName+' '+items[i].exchFromLastName);
-//                  sentTo.push(items[i].exchToFirstName+' '+items[i].exchToLastName);    
-//                 if (sentFrom[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || sentTo[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
-//                     retArray.push(items[i]);
-//                    }
-//                }
-//            return retArray
-//         } 
-// })
+app.filter("totalExchangedFilter",function() {
+    var sentFrom = [];
+    var sentTo = [];
+      return function(items,nameValue){
+       if (!nameValue) {
+         return retArray = items;
+          }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+              {
+                 sentFrom.push(items[i].exchFromFirstName+' '+items[i].exchFromLastName);
+                 sentTo.push(items[i].exchToFirstName+' '+items[i].exchToLastName);    
+                if (sentFrom[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || sentTo[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
+                    retArray.push(items[i]);
+                   }
+               }
+           return retArray
+        } 
+})
 
-// app.filter("totalSentCouponFilter",function() {
-//     var sentFrom = [];
-//     var sentTo = [];
-//       return function(items,nameValue){
-//        if (!nameValue) {
-//          return retArray = items;
-//           }
-//          var retArray = [];
-//            for(var i=0;i<items.length;i++) 
-//               {
-//                  sentFrom.push(items[i].sentFromFirstName+' '+items[i].sentFromLastName);
-//                  sentTo.push(items[i].sentToFirstName+' '+items[i].sentToLastName);    
-//                 if (sentFrom[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || sentTo[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
-//                     retArray.push(items[i]);
-//                    }
-//              }
-//            return retArray
-//         } 
-// })
+app.filter("totalSentCouponFilter",function() {
+    var sentFrom = [];
+    var sentTo = [];
+      return function(items,nameValue){
+       if (!nameValue) {
+         return retArray = items;
+          }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+              {
+                 sentFrom.push(items[i].sentFromFirstName+' '+items[i].sentFromLastName);
+                 sentTo.push(items[i].sentToFirstName+' '+items[i].sentToLastName);    
+                if (sentFrom[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || sentTo[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
+                    retArray.push(items[i]);
+                   }
+             }
+           return retArray
+        } 
+})
 
-// app.filter("totalSentCashFilter",function() {
-//     var sentFrom = [];
-//     var sentTo = [];
-//       return function(items,nameValue){
-//        if (!nameValue) {
-//          return retArray = items;
-//           }
-//          var retArray = [];
-//            for(var i=0;i<items.length;i++) 
-//                 {
-//                  sentFrom.push(items[i].sendCashListObject.senderId.firstName+' '+items[i].sendCashListObject.senderId.lastName);
-//                  sentTo.push(items[i].firstName+' '+items[i].lastName);    
-//                 if (sentFrom[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || sentTo[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
-//                     retArray.push(items[i]);
-//                 }
-//            }
-//            return retArray
-//         } 
-// })
+app.filter("totalSentCashFilter",function() {
+    var sentFrom = [];
+    var sentTo = [];
+      return function(items,nameValue){
+       if (!nameValue) {
+         return retArray = items;
+          }
+         var retArray = [];
+           for(var i=0;i<items.length;i++) 
+                {
+                 sentFrom.push(items[i].sendCashListObject.senderId.firstName+' '+items[i].sendCashListObject.senderId.lastName);
+                 sentTo.push(items[i].firstName+' '+items[i].lastName);    
+                if (sentFrom[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || sentTo[i].toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase())  {
+                    retArray.push(items[i]);
+                }
+           }
+           return retArray
+        } 
+})
 
 
