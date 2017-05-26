@@ -37,14 +37,14 @@ app.get('/blockUser/:userId', authUser.authUser,adminHandler.blockUser);
 /*--------------------------Manage Cards--------------------------*/
 
 
-app.get('/totalSoldUpgradeCard/:pageNumber', authUser.authUser,adminHandler.totalSoldUpgradeCard);
+app.get('/totalSoldUpgradeCard', authUser.authUser,adminHandler.totalSoldUpgradeCard);
 app.get('/totalSoldLuckCard', authUser.authUser,adminHandler.totalSoldLuckCard);
 app.get('/totalIncomeInBrolixFromLuckCard', authUser.authUser,adminHandler.totalIncomeInBrolixFromLuckCard);
 app.get('/totalIncomeInCashFromUpgradeCard', authUser.authUser,adminHandler.totalIncomeInCashFromUpgradeCard);
 app.get('/usedLuckCard', authUser.authUser,adminHandler.usedLuckCard);
 app.get('/unUsedLuckCard', authUser.authUser,adminHandler.unUsedLuckCard);
-app.get('/usedUpgradeCard/:pageNumber', authUser.authUser,adminHandler.usedUpgradeCard);
-app.get('/unUsedUpgradeCard/:pageNumber', authUser.authUser,adminHandler.unUsedUpgradeCard);
+app.get('/usedUpgradeCard', authUser.authUser,adminHandler.usedUpgradeCard);
+app.get('/unUsedUpgradeCard', authUser.authUser,adminHandler.unUsedUpgradeCard);
 
 /*-------------------------Manage ADS---------------------*/
 
@@ -69,7 +69,7 @@ app.get('/showCardDetails/:id', authUser.authUser,adminHandler.showCardDetails);
 app.get('/removeCard/:id', authUser.authUser,adminHandler.removeCard);
 app.post('/createOfferOnCard', authUser.authUser,adminHandler.createOfferOnCard);
 app.post('/createPage', authUser.authUser,adminHandler.createPage);
-app.post('/showOfferOnCards/:pageNumber', adminHandler.showOfferOnCards);
+app.post('/showOfferOnCards', adminHandler.showOfferOnCards);
 app.get('/showUserPage/:id', authUser.authUser,adminHandler.showUserPage);
 app.get('/adsOnPage/:id', authUser.authUser,adminHandler.adsOnPage);
 app.get('/winnersOnPage/:id', authUser.authUser,adminHandler.winnersOnPage);

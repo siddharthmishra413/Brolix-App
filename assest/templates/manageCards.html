@@ -10,7 +10,7 @@
                                 <div class="green-box">{{upgradeCardOffersCount}} Offers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="dataTableOne('upgradeCardOffer'); showOfferUpgrade(); tab='upgradeCardOffer'">
+                                <div class="btn-manage show-btn w-100" ng-click="showOfferUpgrade(); tab='upgradeCardOffer'">
                                     <a>Show</a>
                                 </div>
                             </div>
@@ -23,7 +23,7 @@
                                 <div class="total-amt">{{totalSoldUpgradeCardCount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="dataTableOne('SoldUpgradeCard'); tab='SoldUpgradeCard'">
+                                <div class="btn-manage" ng-click="tab='SoldUpgradeCard'">
                                     <a ng-click="cardTypeName('totalSoldCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
@@ -39,7 +39,7 @@
                                 <div class="total-amt">{{totalIncomeFromUpgradeCard}}$</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="dataTableOne('totalincomeUpgrade'); tab='totalincomeUpgrade'">
+                                <div class="btn-manage" ng-click="tab='totalincomeUpgrade'">
                                     <a ng-click="cardTypeName('totalIncome$')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -55,7 +55,7 @@
                                 <div class="total-amt">{{usedUpgradeCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="dataTableOne('usedUpgradeCard'); tab='usedUpgradeCard'">
+                                <div class="btn-manage" ng-click="tab='usedUpgradeCard'">
                                     <a ng-click="cardTypeName('usedCards')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -71,7 +71,7 @@
                                 <div class="total-amt">{{unUsedUpgradeCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="dataTableOne('unUsedUpgradeCard'); tab='unUsedUpgradeCard'">
+                                <div class="btn-manage" ng-click="tab='unUsedUpgradeCard'">
                                     <a ng-click="cardTypeName('unusedCards')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -89,7 +89,7 @@
                                 <div class="green-box">{{luckCardOffersCount}} Offers</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage show-btn w-100" ng-click="dataTableOne('luckCardOffer'); showOfferLuck(); tab='luckCardOffer'">
+                                <div class="btn-manage show-btn w-100" ng-click="showOfferLuck(); tab='luckCardOffer'">
                                     <a >Show</a>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                                 <div class="total-amt">{{totalSoldLuckCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="dataTableOne('SoldULuckCard'); tab='SoldULuckCard'">
+                                <div class="btn-manage" ng-click="tab='SoldULuckCard'">
                                     <a ng-click="cardTypeName('totalSoldLuckCards')">Show</a>
                                 </div>
                                 <div class="btn-manage">
@@ -118,7 +118,7 @@
                                 <div class="total-amt">{{totalIncomeLuck}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="dataTableOne('totalincomeLuck'); tab='totalincomeLuck'">
+                                <div class="btn-manage" ng-click="tab='totalincomeLuck'">
                                     <a ng-click="cardTypeName('totalIncome$LuckCards')">Show</a>
                                 </div>
                                <!--  <div class="btn-manage">
@@ -134,7 +134,7 @@
                                 <div class="total-amt">{{usedLuckCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="dataTableOne('usedLuckCard'); tab='usedLuckCard'">
+                                <div class="btn-manage" ng-click="tab='usedLuckCard'">
                                     <a ng-click="cardTypeName('usedCardsLuckCards')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -150,7 +150,7 @@
                                 <div class="total-amt">{{unUsedLuckCardcount}}</div>
                             </div>
                             <div class="bottom-box">
-                                <div class="btn-manage" ng-click="dataTableOne('unUsedLuckCard'); tab='unUsedLuckCard'">
+                                <div class="btn-manage" ng-click="tab='unUsedLuckCard'">
                                     <a ng-click="cardTypeName('unusedCardsLuckCards')">Show</a>
                                 </div>
                                 <!-- <div class="btn-manage">
@@ -263,8 +263,8 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <!-- <input type="text" class="form-control" ng-model="test" maxlength="15" ng-maxlength="15" placeholder="Search By Owner Name" required>
-                        <div class="input-group-addon">Search</div> -->
+                        <input type="text" class="form-control" ng-model="test" maxlength="15" ng-maxlength="15" placeholder="Search By Owner Name" required>
+                        <div class="input-group-addon">Search</div>
                     </div>
                 </div>
             </form>
@@ -300,9 +300,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | cardsFilter:test).length != 0">
-               <!--  <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldUpgradeCards}}/{{noOfPagesTotalSoldUpgradeCards}}
-                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -326,9 +326,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length != 0">
-               <!--  <button ng-click="preTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalIncomeUpgradeCard}}/{{noOfPagesTotalIncomeUpgradeCard}}
-                <button ng-click="nextTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==noOfPagesTotalIncomeUpgradeCard" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==noOfPagesTotalIncomeUpgradeCard" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -360,9 +360,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | cardsFilter:test).length != 0">
-                <!-- <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldUpgradeCards}}/{{noOfPagesTotalSoldUpgradeCards}}
-                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -431,9 +431,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | cardsFilter:test).length != 0">
-                <!-- <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldUpgradeCards}}/{{noOfPagesTotalSoldUpgradeCards}}
-                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -509,9 +509,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCard | cardsFilter:test).length != 0">
-               <!--  <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageSoldLuckCard}}/{{noOfPagesSoldLuckCard}}
-                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -534,9 +534,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length != 0">
-               <!--  <button ng-click="preIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageIncomeInBrolixFromLuckCard}}/{{noOfPagesIncomeInBrolixFromLuckCard}}
-                <button ng-click="nextIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==noOfPagesIncomeInBrolixFromLuckCard" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==noOfPagesIncomeInBrolixFromLuckCard" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -569,9 +569,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCard | cardsFilter:test).length != 0">
-               <!--  <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageSoldLuckCard}}/{{noOfPagesSoldLuckCard}}
-                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -603,9 +603,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCard | cardsFilter:test).length != 0">
-               <!--  <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
                 {{pageSoldLuckCard}}/{{noOfPagesSoldLuckCard}}
-                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>
@@ -688,8 +688,8 @@
 <div class="col-sm-12" ng-switch="tab">   
     <div class="row table-responsive border-table cus-table" ng-switch-when="upgradeCardOffer">
         <ul class="nav nav-pills card-tabs">
-            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="dataTableOne('upgradeCardOffer'); getdata('Discount')">Discount</a></li>
-            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="dataTableOne('upgradeCardOffer'); showOfferUpgrade('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="showOfferUpgrade('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
         </ul>
 
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'Discount'">
@@ -718,9 +718,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCardCountDiscount | cardsFilter:test).length != 0">
-                <!-- <button ng-click="preOfferUpgradeDiscount()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preOfferUpgradeDiscount()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldUpgradeCardsDiscount}}/{{noOfPagesTotalSoldUpgradeCardsDiscount}}
-                <button ng-click="nextOfferUpgradeDiscount()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==noOfPagesTotalSoldUpgradeCardsDiscount" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextOfferUpgradeDiscount()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==noOfPagesTotalSoldUpgradeCardsDiscount" class="btn paginationBtn">Next</button>
             </div>
         </div>
 
@@ -753,9 +753,9 @@
                     </tbody>
                 </table>
                 <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCardCountDiscountBuyGet | cardsFilter:test).length != 0">
-                   <!--  <button ng-click="preOfferUpgradeBuyGet()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
+                    <button ng-click="preOfferUpgradeBuyGet()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
                     {{pageTotalSoldUpgradeCardsDiscountBuyGet}}/{{noOfPagesTotalSoldUpgradeCardsDiscountBuyGet}}
-                    <button ng-click="nextOfferUpgradeBuyGet()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==noOfPagesTotalSoldUpgradeCardsDiscountBuyGet" class="btn paginationBtn">Next</button> -->
+                    <button ng-click="nextOfferUpgradeBuyGet()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==noOfPagesTotalSoldUpgradeCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
                 </div>
            <!--  </div> -->
         </div>
@@ -769,8 +769,8 @@
 <div class="col-sm-12" ng-switch="tab">   
     <div class="row table-responsive border-table cus-table" ng-switch-when="luckCardOffer">
         <ul class="nav nav-pills card-tabs">
-            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="dataTableOne('luckCardOffer'); getdata('Discount')">Discount</a></li>
-            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="dataTableOne('luckCardOffer'); showOfferLuck('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="getdata('Discount')">Discount</a></li>
+            <li><a class="active" data-toggle="pill" style="cursor: pointer;" ng-click="showOfferLuck('buyGet'); getdata('BuyAndGet')">Buy & Get</a></li>
         </ul>
 
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'Discount'">
@@ -799,9 +799,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCardCountDiscount | cardsFilter:test).length != 0">
-               <!--  <button ng-click="preOfferLuckCardDiscount()" ng-disabled="pageTotalSoldLuckCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preOfferLuckCardDiscount()" ng-disabled="pageTotalSoldLuckCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldLuckCardsDiscount}}/{{noOfPagesTotalSoldLuckCardsDiscount}}
-                <button ng-click="nextOfferLuckCardDiscount()" ng-disabled="pageTotalSoldLuckCardsDiscount==noOfPagesTotalSoldLuckCardsDiscount" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextOfferLuckCardDiscount()" ng-disabled="pageTotalSoldLuckCardsDiscount==noOfPagesTotalSoldLuckCardsDiscount" class="btn paginationBtn">Next</button>
             </div>
         </div>
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'BuyAndGet'">
@@ -832,9 +832,9 @@
                 </tbody>
             </table>
             <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCardCountDiscountBuyGet | cardsFilter:test).length != 0">
-               <!--  <button ng-click="preOfferLuckcardBuyGet()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
+                <button ng-click="preOfferLuckcardBuyGet()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
                 {{pageTotalSoldLuckCardsDiscountBuyGet}}/{{noOfPagesTotalSoldLuckCardsDiscountBuyGet}}
-                <button ng-click="nextOfferLuckcardBuyGet()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==noOfPagesTotalSoldLuckCardsDiscountBuyGet" class="btn paginationBtn">Next</button> -->
+                <button ng-click="nextOfferLuckcardBuyGet()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==noOfPagesTotalSoldLuckCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
             </div>
         </div>
     </div>

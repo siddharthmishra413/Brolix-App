@@ -2005,9 +2005,12 @@ app.filter("customFilterUser", function() {
     if (!nameValue) {
       return retArray = items;
     }
+    console.log("no search: "+JSON.stringify(items));
     var retArray = [];
+    var no ="";
     for (var i = 0; i < items.length; i++) {
-      if (items[i].firstName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
+      no = items[i].mobileNumber.toString();
+      if (items[i].firstName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()|| no.substr(0, nameValue.length) == nameValue) {
         retArray.push(items[i]);
       }
     }

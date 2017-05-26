@@ -626,10 +626,10 @@ module.exports = {
     },
 
     "usedUpgradeCard": function(req, res) {
-        var pageNumber = Number(req.params.pageNumber)
-        var limitData = pageNumber * 10;
-        var skips = limitData - 10;
-        var page = String(pageNumber);
+        // var pageNumber = Number(req.params.pageNumber)
+        // var limitData = pageNumber * 10;
+        // var skips = limitData - 10;
+        // var page = String(pageNumber);
 
         User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "INACTIVE" } }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 403, responseMessage: "No matching result available." }); } else {
@@ -637,24 +637,30 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / 10);
-                User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "INACTIVE" } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No card found." }); } else {
-                        var limit = 0;
-                        for (i = 0; i < result1.length; i++) {
-                            limit++;
-                        }
-                        res.send({
-                            docs: result1,
-                            total: count,
-                            limit: limit,
-                            page: page,
-                            pages: pages,
-                            responseCode: 200,
-                            responseMessage: "Used upgrade card Shows successfully."
-                        });
-                    }
+                res.send({
+                    result: result,
+                    total: count,
+                    responseCode: 200,
+                    responseMessage: "Used upgrade card Shows successfully."
                 });
+                // var pages = Math.ceil(count / 10);
+                // User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "INACTIVE" } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                //     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No card found." }); } else {
+                //         var limit = 0;
+                //         for (i = 0; i < result1.length; i++) {
+                //             limit++;
+                //         }
+                //         res.send({
+                //             docs: result1,
+                //             total: count,
+                //             limit: limit,
+                //             page: page,
+                //             pages: pages,
+                //             responseCode: 200,
+                //             responseMessage: "Used upgrade card Shows successfully."
+                //         });
+                //     }
+                // });
             }
         });
     },
@@ -671,24 +677,30 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / 10);
-                User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "ACTIVE" } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No card found." }); } else {
-                        var limit = 0;
-                        for (i = 0; i < result1.length; i++) {
-                            limit++;
-                        }
-                        res.send({
-                            docs: result1,
-                            total: count,
-                            limit: limit,
-                            page: page,
-                            pages: pages,
-                            responseCode: 200,
-                            responseMessage: "Un Used upgrade card Shows successfully."
-                        });
-                    }
+               res.send({
+                    result: result,
+                    total: count,                            
+                    responseCode: 200,
+                    responseMessage: "Un Used upgrade card Shows successfully."
                 });
+                // var pages = Math.ceil(count / 10);
+                // User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: { 'upgradeCardObject.status': "ACTIVE" } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                //     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 403, responseMessage: "No card found." }); } else {
+                //         var limit = 0;
+                //         for (i = 0; i < result1.length; i++) {
+                //             limit++;
+                //         }
+                //         res.send({
+                //             docs: result1,
+                //             total: count,
+                //             limit: limit,
+                //             page: page,
+                //             pages: pages,
+                //             responseCode: 200,
+                //             responseMessage: "Un Used upgrade card Shows successfully."
+                //         });
+                //     }
+                // });
             }
         });
     },
@@ -1161,10 +1173,10 @@ module.exports = {
 
  "showOfferOnCards": function(req, res) {
         var pageId = req.body.pageId;
-        var pageNumber = Number(req.params.pageNumber)
-        var limitData = pageNumber * 8;
-        var skips = limitData - 8;
-        var page = String(pageNumber);
+        // var pageNumber = Number(req.params.pageNumber)
+        // var limitData = pageNumber * 8;
+        // var skips = limitData - 8;
+        // var page = String(pageNumber);
 
         var cardType = req.body.cardType;
         if (req.body.offerType == 'discount') {
@@ -1196,7 +1208,7 @@ module.exports = {
                 for (i = 0; i < result1.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / 8);
+               // var pages = Math.ceil(count / 8);
                 adminCards.aggregate([
                     { $unwind: '$offer' },
                     { $match: { $and: [{ type: cardType, "offer.offerType": req.body.offerType }, { $or: [{ 'offer.status': 'ACTIVE' }, { 'offer.status': 'EXPIRED' }] }] } }, {
@@ -1210,8 +1222,7 @@ module.exports = {
                             },
                             offerType: { "$sum": 0 }
                         }
-                    },
-                    { $limit: limitData }, { $skip: skips }
+                    }
                 ]).exec(function(err, result) {
                     var limit = 0;
                     for (var i = 0; i < result.length; i++) {
@@ -1226,10 +1237,7 @@ module.exports = {
                     }
                     res.send({
                         docs: result,
-                        total: count,
-                        limit: limit,
-                        page: page,
-                        pages: pages,
+                        total: count,                       
                         responseCode: 200,
                         responseMessage: 'Find all offers on card successfully'
                     });
@@ -1736,9 +1744,6 @@ module.exports = {
                         var matchData = {}
                         break;
 
-                    default:
-                        var updateData = { $unwind: "$cashPrize" }
-                        var matchData = {}
                 }
                 console.log("condition before callback==>>" + JSON.stringify(condition))
                 console.log("updated data===>." + updateData)
@@ -2369,7 +2374,7 @@ module.exports = {
         //             count++;
         //         }
         //         var pages = Math.ceil(count / 10);
-                User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$cashPrize" }, {$match : updateData}).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No cash gift found' }); } else {
                        // console.log(result)
                         var limit = 0;
