@@ -8,7 +8,7 @@
      "followUnfollow": function(req, res) {
          if (req.body.follow == "follow") {
              User.findOne({ _id: req.body.receiverId }, function(err, result) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.followMe == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot send follow request to this user due to privacy policies" }) } else {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.followMe == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot send follow request to this user due to privacy policies" }) } else {
                      followerList.findOne({ senderId: req.body.senderId, receiverId: req.body.receiverId }).exec(function(err, result1) {
                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                              if (!result1) {
@@ -128,7 +128,7 @@
              })
          } else {
              User.findOne({ _id: req.body.receiverId }, function(err, result1) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.ViewFollower == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot see follower of this user due to privacy policies" }) } else if (result1.privacy.ViewFollower == "followers") {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.ViewFollower == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot see follower of this user due to privacy policies" }) } else if (result1.privacy.ViewFollower == "onlyFollowers") {
                      var flag = result1.userFollowers.indexOf(req.body.viewerId)
                      console.log("flag-->>", flag)
                      if (flag == -1) { res.send({ responseCode: 400, responseMessage: "You cannot see follower of this user due to privacy policies" }); } else {
