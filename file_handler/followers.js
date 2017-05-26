@@ -1,64 +1,68 @@
  var followerList = require("./model/followersList");
  var User = require("./model/user");
  var functions = require("./functionHandler");
+ var waterfall = require('async-waterfall');
  module.exports = {
 
      //API Report Problem  
      "followUnfollow": function(req, res) {
          if (req.body.follow == "follow") {
-
-             followerList.findOne({ senderId: req.body.senderId, receiverId: req.body.receiverId }).exec(function(err, result1) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                     if (!result1) {
-                         var follow = new followerList(req.body);
-                         follow.save(function(err, result) {
-                             User.findOne({ _id: req.body.senderId }).exec(function(err, results) {
-                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                     var image = results.image;
-                                     User.findOneAndUpdate({ _id: req.body.receiverId }, {
-                                         $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", notificationType: 'follow', image: image } }
-                                     }, { new: true }).exec(function(err, results) {
-                                         if (results.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                                             var message = "req.body.message";
-                                             functions.android_notification(result.deviceToken, message);
-                                             console.log("Android notification send!!!!")
-                                         } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
-                                             functions.iOS_notification(result.deviceToken, message);
-                                         } else {
-                                             console.log("Something wrong!!!!")
+             User.findOne({ _id: req.body.receiverId }, function(err, result) {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.followMe == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot send follow request to this user due to privacy policies" }) } else {
+                     followerList.findOne({ senderId: req.body.senderId, receiverId: req.body.receiverId }).exec(function(err, result1) {
+                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                             if (!result1) {
+                                 var follow = new followerList(req.body);
+                                 follow.save(function(err, result) {
+                                     User.findOne({ _id: req.body.senderId }).exec(function(err, results) {
+                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                             var image = results.image;
+                                             User.findOneAndUpdate({ _id: req.body.receiverId }, {
+                                                 $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", notificationType: 'follow', image: image } }
+                                             }, { new: true }).exec(function(err, results) {
+                                                 if (results.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                     var message = "req.body.message";
+                                                     functions.android_notification(result.deviceToken, message);
+                                                     console.log("Android notification send!!!!")
+                                                 } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                     functions.iOS_notification(result.deviceToken, message);
+                                                 } else {
+                                                     console.log("Something wrong!!!!")
+                                                 }
+                                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                                                 res.send({
+                                                     result: result,
+                                                     responseCode: 200,
+                                                     responseMessage: "Followed."
+                                                 });
+                                             })
                                          }
+                                     })
+                                 })
+                             } else {
+                                 if (result1.followerStatus == "reject" || result1.followerStatus == "unfollow" || result1.followerStatus == "unblock") {
+                                     followerList.findOneAndUpdate({ _id: result1._id }, { $set: { followerStatus: "Sent", receiverId: req.body.receiverId, senderId: req.body.senderId } }, { new: true }).exec(function(err, result2) {
                                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                          res.send({
-                                             result: result,
+                                             result: result2,
                                              responseCode: 200,
                                              responseMessage: "Followed."
                                          });
                                      })
+                                 } else if (result1.followerStatus == "block") {
+                                     res.send({
+                                         responseCode: 201,
+                                         responseMessage: "You have already block this user."
+                                     });
+                                 } else {
+                                     res.send({
+                                         responseCode: 202,
+                                         responseMessage: "You have already send request."
+                                     });
                                  }
-                             })
-                         })
-                     } else {
-                         if (result1.followerStatus == "reject" || result1.followerStatus == "unfollow" || result1.followerStatus == "unblock") {
-                             followerList.findOneAndUpdate({ _id: result1._id }, { $set: { followerStatus: "Sent", receiverId: req.body.receiverId, senderId: req.body.senderId } }, { new: true }).exec(function(err, result2) {
-                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                                 res.send({
-                                     result: result2,
-                                     responseCode: 200,
-                                     responseMessage: "Followed."
-                                 });
-                             })
-                         } else if (result1.followerStatus == "block") {
-                             res.send({
-                                 responseCode: 201,
-                                 responseMessage: "You have already block this user."
-                             });
-                         } else {
-                             res.send({
-                                 responseCode: 202,
-                                 responseMessage: "You have already send request."
-                             });
+                             }
                          }
-                     }
+                     })
                  }
              })
          } else if (req.body.follow == "unfollow") {
@@ -102,25 +106,79 @@
      },
 
      "followerRequestReceive": function(req, res) {
-         followerList.find({ receiverId: req.body.receiverId }).exec(function(err, result) {
-             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                 var arr = [];
-                 result.forEach(function(result) {
-                     arr.push(result.senderId)
-                 })
-                 User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
-                     for (var i = 0; i < newResult.length; i++) {
-                         newResult[i].followerStatus = result[i].followerStatus;
+         var viewerId = req.body.viewerId;
+         if (req.body.viewerId == req.body.receiverId) {
+             followerList.find({ receiverId: req.body.receiverId }).exec(function(err, result) {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                     var arr = [];
+                     result.forEach(function(result) {
+                         arr.push(result.senderId)
+                     })
+                     User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
+                         for (var i = 0; i < newResult.length; i++) {
+                             newResult[i].followerStatus = result[i].followerStatus;
+                         }
+                         res.send({
+                             result: newResult,
+                             responseCode: 200,
+                             responseMessage: "Show list all followers request."
+                         });
+                     })
+                 }
+             })
+         } else {
+             User.findOne({ _id: req.body.receiverId }, function(err, result1) {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.ViewFollower == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot see follower of this user due to privacy policies" }) } else if (result1.privacy.ViewFollower == "followers") {
+                     var flag = result1.userFollowers.indexOf(req.body.viewerId)
+                     console.log("flag-->>", flag)
+                     if (flag == -1) { res.send({ responseCode: 400, responseMessage: "You cannot see follower of this user due to privacy policies" }); } else {
+                         followerList.find({ receiverId: req.body.receiverId }).exec(function(err, result) {
+                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                 var arr = [];
+                                 result.forEach(function(result) {
+                                     arr.push(result.senderId)
+                                 })
+                                 User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
+                                     for (var i = 0; i < newResult.length; i++) {
+                                         newResult[i].followerStatus = result[i].followerStatus;
+                                     }
+                                     res.send({
+                                         result: newResult,
+                                         responseCode: 200,
+                                         responseMessage: "Show list all followers request."
+                                     });
+                                 })
+                             }
+                         })
+
                      }
-                     res.send({
-                         result: newResult,
-                         responseCode: 200,
-                         responseMessage: "Show list all followers request."
-                     });
-                 })
-             }
-         })
+
+                 } else {
+                     followerList.find({ receiverId: req.body.receiverId }).exec(function(err, result) {
+                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                             var arr = [];
+                             result.forEach(function(result) {
+                                 arr.push(result.senderId)
+                             })
+                             User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
+                                 for (var i = 0; i < newResult.length; i++) {
+                                     newResult[i].followerStatus = result[i].followerStatus;
+                                 }
+                                 res.send({
+                                     result: newResult,
+                                     responseCode: 200,
+                                     responseMessage: "Show list all followers request."
+                                 });
+                             })
+                         }
+                     })
+
+                 }
+             })
+         }
      },
+
+
 
      //API for Accept Follower Request
      "acceptFollowerRequest": function(req, res) {
