@@ -181,14 +181,14 @@ var userSchema = new Schema({
         createdAt: { type: Date, default: Date.now }
     }],
     privacy: {
-        sendMessage: { type: String, default: 'public' },
-        sendCash: { type: String, default: 'public' },
-        sendCoupon: { type: String, default: 'public' },
-        followMe: { type: String, default: 'public' },
-        ViewFollower: { type: String, default: 'public' },
-        sendBrolix: { type: String, default: 'public' },
-        findMe: { type: String, default: 'public' },
-        exchangeCoupon: { type: String, default: 'public' }
+        sendMessage: { type: String, default: 'everyone' },
+        sendCash: { type: String, default: 'everyone' },
+        sendCoupon: { type: String, default: 'everyone' },
+        followMe: { type: String, default: 'everyone' },
+        ViewFollower: { type: String, default: 'everyone' },
+        sendBrolix: { type: String, default: 'everyone' },
+        findMe: { type: String, default: 'everyone' },
+        exchangeCoupon: { type: String, default: 'everyone' }
     },
     luckCardObject: [{
         brolix: { type: Number },

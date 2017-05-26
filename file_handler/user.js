@@ -524,15 +524,26 @@ module.exports = {
         })
     },
 
-    //API for user Details  userId: { $ne: req.params.id },
+    //API for user Details  userId: { $ne: req.params.id }
     "allUserDetails": function(req, res) {
         User.find({ userId: { $ne: req.params.id }, $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Show data successfully."
-                });
+                var userArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].privacy.findMe == 'everyone') {
+                        userArray.push(result[i]._id)
+                    }
+                }
+                console.log("dsdffs-->",userArray)
+                User.find({ _id: { $in: userArray } }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
+                        res.send({
+                            result: result1,
+                            responseCode: 200,
+                            responseMessage: "Show data successfully."
+                        });
+                    }
+                })
             }
         })
     },
@@ -758,7 +769,7 @@ module.exports = {
                 var receiverId = req.body.receiverId;
                 var userId = req.body.userId;
                 User.findOne({ _id: req.body.receiverId }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.sendBrolix == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot send brolix to this user due to privacy policies" }) } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.sendBrolix == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot send brolix to this user due to privacy policies" }) } else {
                         callback(null)
                     }
                 })
@@ -770,7 +781,7 @@ module.exports = {
                 User.findOne({ _id: req.body.receiverId }, function(err, result1) {
                     console.log("result1-->>", result1)
                     console.log("privacy-->>", (result1.privacy.sendBrolix))
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendBrolix == "followers") {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendBrolix == "onlyFollowers") {
                         console.log("userId-->>", req.body.userId)
                         var flag = result1.userFollowers.indexOf(req.body.userId)
                         console.log("flag-->>", flag)
@@ -849,7 +860,7 @@ module.exports = {
                 var receiverId = req.body.receiverId;
                 var senderId = req.body.userId;
                 User.findOne({ _id: req.body.receiverId }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.sendCash == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot send cash to this user due to privacy policies" }) } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.sendCash == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot send cash to this user due to privacy policies" }) } else {
                         callback(null)
                     }
                 })
@@ -859,7 +870,7 @@ module.exports = {
                 var senderId = req.body.userId;
                 var receiverId = req.body.receiverId;
                 User.findOne({ _id: req.body.receiverId }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendCash == "followers") {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendCash == "onlyFollowers") {
                         var flag = result1.userFollowers.indexOf(req.body.userId)
                         console.log("flag-->>", flag)
                         if (flag === -1) { res.send({ responseCode: 400, responseMessage: "You cannot send brolix to this user due to privacy policies" }); } else {
@@ -1963,7 +1974,7 @@ module.exports = {
                         res.send({ responseCode: 403, responseMessage: "Please enter a valid coupon." });
                     } else {
                         User.findOne({ _id: receiverId }, function(err, result) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot send coupon to this user due to privacy policies" }) } else {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.exchangeCoupon == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot send coupon to this user due to privacy policies" }) } else {
                                 callback(null)
                             }
                         })
@@ -1982,9 +1993,9 @@ module.exports = {
                 var currentTime = Date.now(m);
                 User.findOne({ _id: receiverId }, function(err, result1) {
                     console.log("receiverId--->>>", result1)
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.exchangeCoupon == "followers") {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.exchangeCoupon == "onlyFollowers") {
                         console.log("2")
-                        var flag = result1.userFollowers.find(userFollowers => userFollowers == senderId)
+                        var flag = result1.userFollowers.find(userFollowers => userFollowers == req.body.senderId)
                         if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon to this user due to privacy policies" }); } else {
                             console.log("2")
                             createNewAds.findOneAndUpdate({ _id: adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
