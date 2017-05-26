@@ -287,7 +287,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldUpgradeCard | cardsFilter:test">
+                    <tr dir-paginate="x in totalSoldUpgradeCard | cardsFilter:test | itemsPerPage:10">
                         <td >{{x.upgradeCardObject.viewers}} Viewers</td>
                         <td >{{x.upgradeCardObject.cash}}$</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="userInfo(x._id)">{{x.firstName}} {{x.lastName}}</td>
@@ -296,14 +296,10 @@
                         <td ng-if="x.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(x.upgradeCardObject._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
-                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>   
+                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length == 0"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>   
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | cardsFilter:test).length != 0">
-                <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalSoldUpgradeCards}}/{{noOfPagesTotalSoldUpgradeCards}}
-                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -317,19 +313,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalIncomeInCashFromUpgradeCard | cardsFilter:test">
+                    <tr dir-paginate="x in totalIncomeInCashFromUpgradeCard | cardsFilter:test | itemsPerPage:10">
                         <td >{{x.upgradeCardObject.viewers}} Viewers</td>
                         <td >{{x.upgradeCardObject.cash}}$</td>
                     </tr>
-                    <tr ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
+                    <tr ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length == 0"><td colspan="2" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
                     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length != 0">
-                <button ng-click="preTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalIncomeUpgradeCard}}/{{noOfPagesTotalIncomeUpgradeCard}}
-                <button ng-click="nextTotalIncomeUpgradeCard()" ng-disabled="pageTotalIncomeUpgradeCard==noOfPagesTotalIncomeUpgradeCard" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -347,7 +339,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in usedUpgradeCard | cardsFilter:test">
+                    <tr dir-paginate="x in usedUpgradeCard | cardsFilter:test | itemsPerPage:10">
                         <td >{{x.upgradeCardObject.viewers}} Viewers</td>
                         <td >{{x.upgradeCardObject.cash}}$</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="userInfo(x._id)">{{x.firstName}} {{x.lastName}}</td>
@@ -356,14 +348,10 @@
                         <td ng-if="x.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(x.upgradeCardObject._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
-                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>   
+                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length == 0"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>   
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | cardsFilter:test).length != 0">
-                <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalSoldUpgradeCards}}/{{noOfPagesTotalSoldUpgradeCards}}
-                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -418,7 +406,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unUsedUpgradeCard | cardsFilter:test">
+                    <tr dir-paginate="x in unUsedUpgradeCard | cardsFilter:test | itemsPerPage:10">
                         <td >{{x.upgradeCardObject.viewers}} Viewers</td>
                         <td >{{x.upgradeCardObject.cash}}$</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="userInfo(x._id)">{{x.firstName}} {{x.lastName}}</td>
@@ -427,14 +415,10 @@
                         <td ng-if="x.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(x.upgradeCardObject._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
-                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length == 0"><td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>   
+                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length == 0"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>   
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCard | cardsFilter:test).length != 0">
-                <button ng-click="preTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalSoldUpgradeCards}}/{{noOfPagesTotalSoldUpgradeCards}}
-                <button ng-click="nextTotalSoldUpgradeCards()" ng-disabled="pageTotalSoldUpgradeCards==noOfPagesTotalSoldUpgradeCards" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -495,7 +479,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldLuckCard |cardsFilter:test">
+                    <tr dir-paginate="x in totalSoldLuckCard | cardsFilter:test | itemsPerPage:10">
                         <td >{{x.luckCardObject.chances}}</td>
                         <td>{{x.luckCardObject.brolix}}</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="userInfo(x._id)">{{x.firstName}} {{x.lastName}}</td>
@@ -504,15 +488,11 @@
                         <td ng-if="x.luckCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(x.luckCardObject._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
-                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length == 0"><td colspan="8" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length == 0"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCard | cardsFilter:test).length != 0">
-                <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
-                {{pageSoldLuckCard}}/{{noOfPagesSoldLuckCard}}
-                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button>
-            </div>
+           <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -526,18 +506,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalIncomeInBrolixFromLuckCard | cardsFilter:test">
+                    <tr dir-paginate="x in totalIncomeInBrolixFromLuckCard | cardsFilter:test | itemsPerPage:10">
                         <td >{{x.luckCardObject.chances}} Chances</td>
                         <td >{{x.luckCardObject.brolix}} B</td>
                     </tr>
-                     <tr ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length == 0"><td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                     <tr ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length == 0"><td colspan="2" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length != 0">
-                <button ng-click="preIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==1" class="btn paginationBtn" >Prev</button> 
-                {{pageIncomeInBrolixFromLuckCard}}/{{noOfPagesIncomeInBrolixFromLuckCard}}
-                <button ng-click="nextIncomeInBrolixFromLuckCard()" ng-disabled="pageIncomeInBrolixFromLuckCard==noOfPagesIncomeInBrolixFromLuckCard" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -555,7 +531,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in usedLuckCard |cardsFilter:test">
+                    <tr dir-paginate="x in usedLuckCard | cardsFilter:test | itemsPerPage:10">
                         <td >{{x.luckCardObject.chances}}</td>
                         <td>{{x.luckCardObject.brolix}}</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="userInfo(x._id)">{{x.firstName}} {{x.lastName}}</td>
@@ -564,15 +540,11 @@
                         <td ng-if="x.luckCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(x.luckCardObject._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
-                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length == 0"><td colspan="8" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length == 0"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCard | cardsFilter:test).length != 0">
-                <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
-                {{pageSoldLuckCard}}/{{noOfPagesSoldLuckCard}}
-                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
@@ -589,7 +561,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in unUsedLuckCard |cardsFilter:test">
+                    <tr dir-paginate="x in unUsedLuckCard | cardsFilter:test | itemsPerPage:10">
                         <td >{{x.luckCardObject.chances}}</td>
                         <td>{{x.luckCardObject.brolix}}</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="userInfo(x._id)">{{x.firstName}} {{x.lastName}}</td>
@@ -598,15 +570,11 @@
                         <td ng-if="x.luckCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(x.luckCardObject._id)">View</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="pageCount(x._id)">{{x.pageCount}}</td>
                     </tr>
-                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length == 0"><td colspan="8" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length == 0"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                     
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCard | cardsFilter:test).length != 0">
-                <button ng-click="preSoldLuckCard()" ng-disabled="pageSoldLuckCard==1" class="btn paginationBtn" >Prev</button> 
-                {{pageSoldLuckCard}}/{{noOfPagesSoldLuckCard}}
-                <button ng-click="nextSoldLuckCard()" ng-disabled="pageSoldLuckCard==noOfPagesSoldLuckCard" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -706,7 +674,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldUpgradeCardDiscount">
+                    <tr dir-paginate="x in totalSoldUpgradeCardDiscount | cardsFilter:test | itemsPerPage:10">
                         <td >Discount</td>
                         <td>{{x._id.buyCard}} %</td>
                         <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
@@ -717,11 +685,7 @@
 
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCardCountDiscount | cardsFilter:test).length != 0">
-                <button ng-click="preOfferUpgradeDiscount()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalSoldUpgradeCardsDiscount}}/{{noOfPagesTotalSoldUpgradeCardsDiscount}}
-                <button ng-click="nextOfferUpgradeDiscount()" ng-disabled="pageTotalSoldUpgradeCardsDiscount==noOfPagesTotalSoldUpgradeCardsDiscount" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
 
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'BuyAndGet'">
@@ -740,7 +704,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="x in totalSoldUpgradeCardDiscountBuyGet">
+                        <tr dir-paginate="x in totalSoldUpgradeCardDiscountBuyGet | cardsFilter:test | itemsPerPage:10">
                             
                             <td >Buy & Get</td>
                             <td>{{x._id.buyCard}}</td>
@@ -752,11 +716,7 @@
                         </tr>   
                     </tbody>
                 </table>
-                <div style="float:right; font-size: 20px;" ng-if="(totalSoldUpgradeCardCountDiscountBuyGet | cardsFilter:test).length != 0">
-                    <button ng-click="preOfferUpgradeBuyGet()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
-                    {{pageTotalSoldUpgradeCardsDiscountBuyGet}}/{{noOfPagesTotalSoldUpgradeCardsDiscountBuyGet}}
-                    <button ng-click="nextOfferUpgradeBuyGet()" ng-disabled="pageTotalSoldUpgradeCardsDiscountBuyGet==noOfPagesTotalSoldUpgradeCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
-                </div>
+                <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
            <!--  </div> -->
         </div>
     </div>
@@ -787,7 +747,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldLuckCardDiscount">
+                    <tr dir-paginate="x in totalSoldLuckCardDiscount | cardsFilter:test | itemsPerPage:10">
                         <td >Discount</td>
                         <td>{{x._id.buyCard}} %</td>
                         <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
@@ -798,11 +758,7 @@
 
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCardCountDiscount | cardsFilter:test).length != 0">
-                <button ng-click="preOfferLuckCardDiscount()" ng-disabled="pageTotalSoldLuckCardsDiscount==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalSoldLuckCardsDiscount}}/{{noOfPagesTotalSoldLuckCardsDiscount}}
-                <button ng-click="nextOfferLuckCardDiscount()" ng-disabled="pageTotalSoldLuckCardsDiscount==noOfPagesTotalSoldLuckCardsDiscount" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
         <div class="col-sm-12" ng-switch="tab" ng-if="key == 'BuyAndGet'">
             <h2 class="text-center table-headingg">Buy & Get Offers</h2>
@@ -819,7 +775,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in totalSoldLuckCardDiscountBuyGet">
+                    <tr dir-paginate="x in totalSoldLuckCardDiscountBuyGet | cardsFilter:test | itemsPerPage:10">
                         
                         <td >Buy & Get</td>
                         <td>{{x._id.buyCard}}</td>
@@ -831,11 +787,7 @@
                     </tr>   
                 </tbody>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(totalSoldLuckCardCountDiscountBuyGet | cardsFilter:test).length != 0">
-                <button ng-click="preOfferLuckcardBuyGet()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==1" class="btn paginationBtn" >Prev</button> 
-                {{pageTotalSoldLuckCardsDiscountBuyGet}}/{{noOfPagesTotalSoldLuckCardsDiscountBuyGet}}
-                <button ng-click="nextOfferLuckcardBuyGet()" ng-disabled="pageTotalSoldLuckCardsDiscountBuyGet==noOfPagesTotalSoldLuckCardsDiscountBuyGet" class="btn paginationBtn">Next</button>
-            </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 </div>
@@ -919,7 +871,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="x in totalUpgradeOffer">
+                <tr dir-paginate="x in totalUpgradeOffer | cardsFilter:test | itemsPerPage:10">
                     <td>
                         <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                     </td>
@@ -930,9 +882,9 @@
                     <td class="skyblue-text">View</td>
                     <td class="skyblue-text">3</td>
                 </tr>
-                
             </tbody>
         </table>
+        <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
     </div>
 </div>
 

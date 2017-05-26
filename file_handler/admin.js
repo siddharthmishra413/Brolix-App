@@ -1236,7 +1236,7 @@ module.exports = {
                         }
                     }
                     res.send({
-                        docs: result,
+                        result: result,
                         total: count,                       
                         responseCode: 200,
                         responseMessage: 'Find all offers on card successfully'
@@ -3064,7 +3064,7 @@ module.exports = {
                     array.push(sortArray[i]._id)
                 }
                 console.log("array---->>>", array)
-                User.paginate({ _id: { $in: array }, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
+                User.find({ _id: { $in: array }, status: 'ACTIVE' }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
 
                         res.send({ result: result1, responseCode: 200, responseMessage: "Data show successfully." });
@@ -3128,7 +3128,7 @@ module.exports = {
                     array.push(sortArray[i]._id)
                 }
                 console.log("array---->>>", array)
-                User.paginate({ _id: { $in: array }, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result1) {
+                User.find({ _id: { $in: array }, status: 'ACTIVE' }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No user found' }); } else {
 
                         res.send({ result: result1, responseCode: 200, responseMessage: "Data show successfully." });
@@ -3375,8 +3375,8 @@ module.exports = {
     },
 
     "listOfSystemAdmin": function(req, res) {
-        User.paginate({ type: 'SYSTEMADMIN', status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No System user found' }); } else {
+        User.find({ type: 'SYSTEMADMIN', status: 'ACTIVE' }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: 'No System user found' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,

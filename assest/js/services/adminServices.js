@@ -246,7 +246,7 @@ app.service('userService',function($http){
     adsWithLinks: function() {
       return $http.get(baseurl+'/admin/adsWithLinks');
     },
-    topFiftyAds: function(pageNo) {
+    topFiftyAds: function() {
       return $http.get(baseurl+'/admin/topFiftyAds');
     },
     pageInfo: function(id) {
@@ -420,8 +420,8 @@ app.service('userService',function($http){
       return $http.post(baseurl+'/admin/createOfferOnCard', data);
     },
 
-    showOfferOnCards: function(data,pageNo){
-      return $http.post(baseurl+'/admin/showOfferOnCards/'+pageNo, data);
+    showOfferOnCards: function(data){
+      return $http.post(baseurl+'/admin/showOfferOnCards', data);
     },
 
     showOfferCountOnCards: function(data){
@@ -541,17 +541,17 @@ app.service('userService',function($http){
     luckCardPayment: function(id){
       return $http.get(baseurl+'/admin/paymentHistoryLuckCard/'+id);
     },
-    cashGift: function(pageNo){
-      return $http.get(baseurl+'/admin/cashGift/'+pageNo);
+    cashGift: function(){
+      return $http.get(baseurl+'/admin/cashGift');
     },
-    soldCoupons: function(pageNo){
-      return $http.get(baseurl+'/admin/soldCoupon/'+pageNo);
+    soldCoupons: function(){
+      return $http.get(baseurl+'/admin/soldCoupon');
     },
      pageInfo: function(id){
       return $http.get(baseurl+'/admin/pageInfo/'+id);
     }, 
-    top_50_dollarsBuyers: function(pageNo){
-      return $http.get(baseurl+'/admin/topFiftyUpgradeCardBuyers/'+pageNo);
+    top_50_dollarsBuyers: function(){
+      return $http.get(baseurl+'/admin/topFiftyUpgradeCardBuyers');
     },
     top_50_brolixBuyers: function(){
       return $http.get(baseurl+'/admin/topFiftyLuckCardBuyers');
@@ -587,8 +587,8 @@ app.service('userService',function($http){
       return $http.post(baseurl+'/admin/createSystemUser', data);
     },
 
-    listOfSystemAdmin: function(pageNo){
-      return $http.get(baseurl+'/admin/listOfSystemAdmin/'+pageNo);
+    listOfSystemAdmin: function(){
+      return $http.get(baseurl+'/admin/listOfSystemAdmin');
     },
 
     removeSystemAdmin: function(id){
@@ -633,8 +633,8 @@ app.service('userService',function($http){
     getPage: function(){
       return $http.get(baseurl+'/admin/showPageName');
     },
-    allCoupons: function(pageNo){
-      return $http.get(baseurl+'/admin/showListOFCoupon/'+pageNo);
+    allCoupons: function(){
+      return $http.get(baseurl+'/admin/showListOFCoupon');
     },
     viewCoupon: function(id){
       return $http.get(baseurl+'/admin/viewCoupon/'+id);

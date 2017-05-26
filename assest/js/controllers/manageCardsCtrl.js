@@ -10,6 +10,103 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     $scope.cardDetailsOnOffer = {};
     $scope.dashBordFilter = {};
 
+    userService.totalSoldUpgradeCard().success(function(res) {
+    //console.log("res",JSON.stringify(res)) 
+        if (res.responseCode == 200){
+               $scope.totalSoldUpgradeCard= res.result;
+               $scope.totalSoldUpgradeCardCount = res.count;
+           } 
+           else {
+            $scope.totalSoldUpgradeCardCount = 0;
+            //toastr.error(res.responseMessage);
+            }
+      })
+
+    userService.totalIncomeInCashFromUpgradeCard().success(function(res) { 
+       
+            if (res.responseCode == 200){
+                   $scope.totalIncomeInCashFromUpgradeCard= res.result;
+                   $scope.totalIncomeFromUpgradeCard = res.totalIncome;
+
+               } 
+               else if (res.responseCode == 400) {
+                $scope.totalIncomeFromUpgradeCard = 0;
+                //toastr.error(res.responseMessage);
+                }else{
+                     toastr.error(res.responseMessage);
+                }
+          })
+
+    userService.usedUpgradeCard().success(function(res) { 
+            
+            if (res.responseCode == 200){
+                $scope.usedUpgradeCard= res.result;
+                $scope.usedUpgradeCardcount = res.total;
+               }
+               else  {
+                $scope.usedUpgradeCardcount = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
+
+    userService.unUsedUpgradeCard().success(function(res) { 
+         
+            if (res.responseCode == 200){
+                   $scope.unUsedUpgradeCard= res.result;
+                   $scope.unUsedUpgradeCardcount = res.total;
+               } 
+               else {
+                $scope.unUsedUpgradeCardcount = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
+
+    userService.totalSoldLuckCard().success(function(res) { 
+        
+            if (res.responseCode == 200){
+                   $scope.totalSoldLuckCard= res.result;
+                   $scope.totalSoldLuckCardcount = res.count;
+               } 
+               else {
+                $scope.totalSoldLuckCardcount = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
+
+    userService.totalIncomeInBrolixFromLuckCard().success(function(res) { 
+        //console.log("resaa",JSON.stringify(res)) 
+      
+            if (res.responseCode == 200){
+                $scope.totalIncomeInBrolixFromLuckCard= res.result;
+                $scope.totalIncomeLuck = res.totalIncome;
+               } 
+               else {
+                $scope.totalIncomeLuck = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
+    userService.usedLuckCard().success(function(res) { 
+            if (res.responseCode == 200){
+                $scope.usedLuckCard= res.result;
+                $scope.usedLuckCardcount = res.total;
+               } 
+               else {
+                $scope.usedLuckCardcount = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
+    userService.unUsedLuckCard().success(function(res) { 
+             // console.log("val",JSON.stringify(res))
+            if (res.responseCode == 200){
+                   $scope.unUsedLuckCard= res.result;
+                    $scope.unUsedLuckCardcount = res.total;
+               } 
+               else {
+                $scope.unUsedLuckCardcount = 0;
+                //toastr.error(res.responseMessage);
+                }
+          })
+
 $scope.key = "Discount";
 
 /*Country*/
@@ -23,7 +120,7 @@ $scope.changeCountry = function(){
       country:$scope.dashBordFilter.country,
     }
     userService.cityListData(obj).success(function(res) {
-    console.log("ddd",JSON.stringify(res))
+    //console.log("ddd",JSON.stringify(res))
     $scope.cityList = res.result;
   })
 }
@@ -53,8 +150,8 @@ userService.showOfferCountOnCards(luck_card).success(function(res) {
 
 
 $scope.cardOnOfferUpgradeDis = function(id,type){
-    console.log("id",id);
-    console.log("type",type);
+    //console.log("id",id);
+    //console.log("type",type);
     cardDetailsOnOffer = {
         cardType:"upgrade_card",
         offerType:type,
@@ -66,10 +163,10 @@ $scope.cardOnOfferUpgradeDis = function(id,type){
             $scope.upgradecardOnOffers = res.result;
             $("#upgradeOfferOnCard").modal('show');
         }else{
-            console.log("res",JSON.stringify(res))
+            //console.log("res",JSON.stringify(res))
         }
     })
-    console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
+    //console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
 }
 
 $scope.cardOnOfferUpgradeBuy = function(buyCard,freeCard,type){
@@ -95,8 +192,8 @@ $scope.cardOnOfferUpgradeBuy = function(buyCard,freeCard,type){
 
 
 $scope.cardOnOfferLuckDis = function(id,type){
-    console.log("id",id);
-    console.log("type",type);
+    //console.log("id",id);
+    //console.log("type",type);
     cardDetailsOnOffer = {
         cardType:"luck_card",
         offerType:type,
@@ -104,14 +201,14 @@ $scope.cardOnOfferLuckDis = function(id,type){
     }
     userService.getOfferList(cardDetailsOnOffer).success(function(res) {
         if(res.responseCode == 200){
-            console.log("res",JSON.stringify(res))
+            //console.log("res",JSON.stringify(res))
             $scope.luckCardOnOffers = res.result;
             $("#luckOfferOnCard").modal('show');
         }else{
-            console.log("res",JSON.stringify(res))
+            //console.log("res",JSON.stringify(res))
         }
     })
-    console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
+    //console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
 }
 
 $scope.cardOnOfferLuckBuy = function(buyCard,freeCard,type){
@@ -124,44 +221,31 @@ $scope.cardOnOfferLuckBuy = function(buyCard,freeCard,type){
         freeCard:freeCard
     }
 
-     console.log("cardDetailsOnOffer",cardDetailsOnOffer);
+     //console.log("cardDetailsOnOffer",cardDetailsOnOffer);
 
     userService.getOfferList(cardDetailsOnOffer).success(function(res) {
         if(res.responseCode == 200){
-            console.log("res",JSON.stringify(res))
+            //console.log("res",JSON.stringify(res))
             $scope.luckCardOnOffers = res.result;
             $("#luckOfferOnCard").modal('show');
         }else{
-            console.log("res",JSON.stringify(res))
+            //console.log("res",JSON.stringify(res))
         }
     })
    
 }
 
 
-
-
-
-
-
-
-$scope.currentPageNoUpdis = 1;
-$scope.currentPageNoUpbuy = 1;
 $scope.showOfferUpgrade = function(key){
-    console.log("1")
     if(key =='buyGet'){
         console.log("yes")
         upgrade_card = {
             cardType:'upgrade_card',
             offerType:'buyGet'
         }
-        console.log("$scope.currentPageNoUpbuy",$scope.currentPageNoUpbuy);
-    userService.showOfferOnCards(upgrade_card,$scope.currentPageNoUpbuy).success(function(res) {
-        console.log("upgrade_card res buy",JSON.stringify(res));
+    userService.showOfferOnCards(upgrade_card).success(function(res) {
         if (res.responseCode == 200){
-            $scope.noOfPagesTotalSoldUpgradeCardsDiscountBuyGet = res.pages;
-            $scope.pageTotalSoldUpgradeCardsDiscountBuyGet = res.page;
-            $scope.totalSoldUpgradeCardDiscountBuyGet = res.docs;
+            $scope.totalSoldUpgradeCardDiscountBuyGet = res.result;
             $scope.totalSoldUpgradeCardCountDiscountBuyGet = res.total;
         } 
        else {
@@ -173,13 +257,9 @@ $scope.showOfferUpgrade = function(key){
             cardType:'upgrade_card',
             offerType:'discount'
         }
-        console.log("$scope.currentPageNoUpdis",$scope.currentPageNoUpdis);
-        userService.showOfferOnCards(upgrade_card,$scope.currentPageNoUpdis).success(function(res) {
-            console.log("upgrade_card res discount",JSON.stringify(res));
+        userService.showOfferOnCards(upgrade_card).success(function(res) {
             if (res.responseCode == 200){
-                $scope.noOfPagesTotalSoldUpgradeCardsDiscount = res.pages;
-                $scope.pageTotalSoldUpgradeCardsDiscount= res.page;
-                $scope.totalSoldUpgradeCardDiscount= res.docs;
+                $scope.totalSoldUpgradeCardDiscount= res.result;
                 $scope.totalSoldUpgradeCardCountDiscount = res.total;
             } 
            else {
@@ -189,25 +269,16 @@ $scope.showOfferUpgrade = function(key){
     }
 }
 
-$scope.currentPageNoLuckdis = 1;
-$scope.currentPageNoLuckbuy = 1;
 $scope.showOfferLuck = function(key){
     $scope.key = "Discount";
-
-    console.log("100")
     if(key =='buyGet'){
-        console.log("yes")
         luck_card = {
             cardType:'luck_card',
             offerType:'buyGet'
         }
-        console.log("$scope.currentPageNoLuckbuy",$scope.currentPageNoLuckbuy)
-    userService.showOfferOnCards(luck_card,$scope.currentPageNoLuckbuy).success(function(res) {
-        console.log("luck_card res buy",JSON.stringify(res));
+    userService.showOfferOnCards(luck_card).success(function(res) {
         if (res.responseCode == 200){
-            $scope.noOfPagesTotalSoldLuckCardsDiscountBuyGet = res.pages;
-            $scope.pageTotalSoldLuckCardsDiscountBuyGet = res.page;
-            $scope.totalSoldLuckCardDiscountBuyGet = res.docs;
+            $scope.totalSoldLuckCardDiscountBuyGet = res.result;
             $scope.totalSoldLuckCardCountDiscountBuyGet = res.total;
         } 
        else {
@@ -215,18 +286,13 @@ $scope.showOfferLuck = function(key){
         }
     })
     }else{
-        console.log("$scope.currentPageNoLuckdis",$scope.currentPageNoLuckdis)
         luck_card = {
             cardType:'luck_card',
             offerType:'discount'
         }
-    
-        userService.showOfferOnCards(luck_card,$scope.currentPageNoLuckdis).success(function(res) {
-            console.log("luck_card res discount",JSON.stringify(res));
+        userService.showOfferOnCards(luck_card).success(function(res) {
             if (res.responseCode == 200){
-                $scope.noOfPagesTotalSoldLuckCardsDiscount = res.pages;
-                $scope.pageTotalSoldLuckCardsDiscount= res.page;
-                $scope.totalSoldLuckCardDiscount= res.docs;
+                $scope.totalSoldLuckCardDiscount= res.result;
                 $scope.totalSoldLuckCardCountDiscount = res.total;
             } 
            else {
@@ -236,50 +302,50 @@ $scope.showOfferLuck = function(key){
     }
 }
 
-$scope.preOfferUpgradeDiscount = function(){
-    $scope.currentPageNoUpdis--;
-    $scope.showOfferUpgrade();
+// $scope.preOfferUpgradeDiscount = function(){
+//     $scope.currentPageNoUpdis--;
+//     $scope.showOfferUpgrade();
 
-}
+// }
 
-$scope.nextOfferUpgradeDiscount = function(){
-    $scope.currentPageNoUpdis++;
-    $scope.showOfferUpgrade();
-}
+// $scope.nextOfferUpgradeDiscount = function(){
+//     $scope.currentPageNoUpdis++;
+//     $scope.showOfferUpgrade();
+// }
 
 
-$scope.preOfferUpgradeBuyGet = function(){
-    $scope.currentPageNoUpbuy--;
-    $scope.showOfferUpgrade('buyGet');
+// $scope.preOfferUpgradeBuyGet = function(){
+//     $scope.currentPageNoUpbuy--;
+//     $scope.showOfferUpgrade('buyGet');
 
-}
+// }
 
-$scope.nextOfferUpgradeBuyGet = function(){
-    $scope.currentPageNoUpbuy++;
-    $scope.showOfferUpgrade('buyGet');
-}
+// $scope.nextOfferUpgradeBuyGet = function(){
+//     $scope.currentPageNoUpbuy++;
+//     $scope.showOfferUpgrade('buyGet');
+// }
 
-$scope.preOfferLuckCardDiscount = function(){
-    $scope.currentPageNoLuckdis--;
-    $scope.showOfferLuck();
+// $scope.preOfferLuckCardDiscount = function(){
+//     $scope.currentPageNoLuckdis--;
+//     $scope.showOfferLuck();
 
-}
+// }
 
-$scope.nextOfferLuckCardDiscount = function(){
-    $scope.currentPageNoLuckdis++;
-    $scope.showOfferLuck();
-}
+// $scope.nextOfferLuckCardDiscount = function(){
+//     $scope.currentPageNoLuckdis++;
+//     $scope.showOfferLuck();
+// }
 
-$scope.preOfferLuckcardBuyGet = function(){
-    $scope.currentPageNoLuckbuy--;
-    $scope.showOfferLuck('buyGet');
+// $scope.preOfferLuckcardBuyGet = function(){
+//     $scope.currentPageNoLuckbuy--;
+//     $scope.showOfferLuck('buyGet');
 
-}
+// }
 
-$scope.nextOfferLuckcardBuyGet = function(){
-    $scope.currentPageNoLuckbuy++;
-    $scope.showOfferLuck('buyGet');
-}
+// $scope.nextOfferLuckcardBuyGet = function(){
+//     $scope.currentPageNoLuckbuy++;
+//     $scope.showOfferLuck('buyGet');
+// }
 
 
 
@@ -305,7 +371,7 @@ $scope.getdata = function(data)
     $scope.send_massage = function(){
          var array =[];
          var data = {};
-         console.log(" $scope.modalId", $scope.modalId)
+         //console.log(" $scope.modalId", $scope.modalId)
          switch ($scope.modalId)
             {
                 case 'SoldUpgradeCard': 
@@ -316,67 +382,10 @@ $scope.getdata = function(data)
                         Message:$scope.sendMessage.massage,
                         Id:array
                     }
-                    console.log("data",data)
+
                     userService.sendMassageAllUser(data).success(function(res) {        
                         if (res.responseCode == 200){
                             toastr.success("Message Send Successfully to All User");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
-
-                case 'totalincomeUpgrade': 
-                    for (var i = 0; i < $scope.totalSoldUpgradeCard.length; i++) {
-                        array.push($scope.totalSoldUpgradeCard[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Personal User");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
-
-                case 'usedUpgradeCard': 
-                    for (var i = 0; i < $scope.usedUpgradeCard.length; i++) {
-                        array.push($scope.usedUpgradeCard[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Business User");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
-
-                case 'unUsedUpgradeCard': 
-                    for (var i = 0; i < $scope.unUsedUpgradeCard.length; i++) {
-                        array.push($scope.unUsedUpgradeCard[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Live User");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide'); 
                         } else {
@@ -404,63 +413,120 @@ $scope.getdata = function(data)
                     })
                 break;
 
-                case 'totalincomeLuck': 
-                    for (var i = 0; i < $scope.totalSoldLuckCard.length; i++) {
-                        array.push($scope.totalSoldLuckCard[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All CashWinners User");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
+                // case 'totalincomeUpgrade': 
+                //     for (var i = 0; i < $scope.totalSoldUpgradeCard.length; i++) {
+                //         array.push($scope.totalSoldUpgradeCard[i]._id)
+                //     }
+                //     data = {
+                //         Message:$scope.sendMessage.massage,
+                //         Id:array
+                //     }
+                //     userService.sendMassageAllUser(data).success(function(res) {        
+                //         if (res.responseCode == 200){
+                //             toastr.success("Message Send Successfully to All Personal User");
+                //             $scope.sendMessage = '';
+                //             $("#sendMessageModelAllUser").modal('hide'); 
+                //         } else {
+                //             toastr.error(res.responseMessage);
+                //         }
+                //     })
+                // break;
 
-                case 'usedLuckCard': 
-                    for (var i = 0; i < $scope.usedLuckCard.length; i++) {
-                        array.push($scope.usedLuckCard[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    console.log("90-----------------------",data)
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All CouponWinners User");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
+                // case 'usedUpgradeCard': 
+                //     for (var i = 0; i < $scope.usedUpgradeCard.length; i++) {
+                //         array.push($scope.usedUpgradeCard[i]._id)
+                //     }
+                //     data = {
+                //         Message:$scope.sendMessage.massage,
+                //         Id:array
+                //     }
+                //     userService.sendMassageAllUser(data).success(function(res) {        
+                //         if (res.responseCode == 200){
+                //             toastr.success("Message Send Successfully to All Business User");
+                //             $scope.sendMessage = '';
+                //             $("#sendMessageModelAllUser").modal('hide'); 
+                //         } else {
+                //             toastr.error(res.responseMessage);
+                //         }
+                //     })
+                // break;
 
-                case 'unUsedLuckCard': 
-                    for (var i = 0; i < $scope.unUsedLuckCard.length; i++) {
-                        array.push($scope.unUsedLuckCard[i]._id)
-                    }
-                    data = {
-                        Message:$scope.sendMessage.massage,
-                        Id:array
-                    }
-                    userService.sendMassageAllUser(data).success(function(res) {        
-                        if (res.responseCode == 200){
-                            toastr.success("Message Send Successfully to All Blocked User");
-                            $scope.sendMessage = '';
-                            $("#sendMessageModelAllUser").modal('hide'); 
-                        } else {
-                            toastr.error(res.responseMessage);
-                        }
-                    })
-                break;
+                // case 'unUsedUpgradeCard': 
+                //     for (var i = 0; i < $scope.unUsedUpgradeCard.length; i++) {
+                //         array.push($scope.unUsedUpgradeCard[i]._id)
+                //     }
+                //     data = {
+                //         Message:$scope.sendMessage.massage,
+                //         Id:array
+                //     }
+                //     userService.sendMassageAllUser(data).success(function(res) {        
+                //         if (res.responseCode == 200){
+                //             toastr.success("Message Send Successfully to All Live User");
+                //             $scope.sendMessage = '';
+                //             $("#sendMessageModelAllUser").modal('hide'); 
+                //         } else {
+                //             toastr.error(res.responseMessage);
+                //         }
+                //     })
+                // break;
+
+                // case 'totalincomeLuck': 
+                //     for (var i = 0; i < $scope.totalSoldLuckCard.length; i++) {
+                //         array.push($scope.totalSoldLuckCard[i]._id)
+                //     }
+                //     data = {
+                //         Message:$scope.sendMessage.massage,
+                //         Id:array
+                //     }
+                //     userService.sendMassageAllUser(data).success(function(res) {        
+                //         if (res.responseCode == 200){
+                //             toastr.success("Message Send Successfully to All CashWinners User");
+                //             $scope.sendMessage = '';
+                //             $("#sendMessageModelAllUser").modal('hide'); 
+                //         } else {
+                //             toastr.error(res.responseMessage);
+                //         }
+                //     })
+                // break;
+
+                // case 'usedLuckCard': 
+                //     for (var i = 0; i < $scope.usedLuckCard.length; i++) {
+                //         array.push($scope.usedLuckCard[i]._id)
+                //     }
+                //     data = {
+                //         Message:$scope.sendMessage.massage,
+                //         Id:array
+                //     }
+                //     console.log("90-----------------------",data)
+                //     userService.sendMassageAllUser(data).success(function(res) {        
+                //         if (res.responseCode == 200){
+                //             toastr.success("Message Send Successfully to All CouponWinners User");
+                //             $scope.sendMessage = '';
+                //             $("#sendMessageModelAllUser").modal('hide'); 
+                //         } else {
+                //             toastr.error(res.responseMessage);
+                //         }
+                //     })
+                // break;
+
+                // case 'unUsedLuckCard': 
+                //     for (var i = 0; i < $scope.unUsedLuckCard.length; i++) {
+                //         array.push($scope.unUsedLuckCard[i]._id)
+                //     }
+                //     data = {
+                //         Message:$scope.sendMessage.massage,
+                //         Id:array
+                //     }
+                //     userService.sendMassageAllUser(data).success(function(res) {        
+                //         if (res.responseCode == 200){
+                //             toastr.success("Message Send Successfully to All Blocked User");
+                //             $scope.sendMessage = '';
+                //             $("#sendMessageModelAllUser").modal('hide'); 
+                //         } else {
+                //             toastr.error(res.responseMessage);
+                //         }
+                //     })
+                // break;
 
                 default: 
                 toastr.error("Something Wents to wrong");
@@ -534,298 +600,7 @@ $scope.getdata = function(data)
    
     //*******************Total Sold UpgradeCard****************
 
-    $scope.currentTotalSoldUpgradeCards = 1;
-     $scope.nextTotalSoldUpgradeCardsDetail = function() {
-         userService.totalSoldUpgradeCard($scope.currentTotalSoldUpgradeCards).success(function(res) { 
-            if (res.responseCode == 200){
-                   $scope.noOfPagesTotalSoldUpgradeCards = res.pages;
-                   $scope.pageTotalSoldUpgradeCards= res.page;
-                   $scope.totalSoldUpgradeCard= res.docs;
-                   $scope.totalSoldUpgradeCardCount = res.total;
-               } 
-               else {
-                $scope.totalSoldUpgradeCardCount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextTotalSoldUpgradeCardsDetail();
-     $scope.nextTotalSoldUpgradeCards = function(){
-        $scope.currentTotalSoldUpgradeCards++;
-        $scope.nextTotalSoldUpgradeCardsDetail();
-     }
-     $scope.preTotalSoldUpgradeCards= function(){
-        $scope.currentTotalSoldUpgradeCards--;
-        $scope.nextTotalSoldUpgradeCardsDetail();
-     }
-
-    // userService.totalSoldUpgradeCard().success(function(res) {
-    //     if (res.responseCode == 200){
-    //         $scope.totalSoldUpgradeCard = res.result;
-    //         //console.log("totalSoldUpgradeCardtotalSoldUpgradeCard",JSON.stringify($scope.totalSoldUpgradeCard));
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-        
-    // })
-   $scope.currentTotalIncomeUpgradeCard = 1;
-     $scope.nextTotalIncomeUpgradeCardDetail = function(){
-         userService.totalIncomeInCashFromUpgradeCard($scope.currentTotalIncomeUpgradeCard).success(function(res) { 
-              //console.log("val11",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.noOfPagesTotalIncomeUpgradeCard = res.pages;
-                   $scope.pageTotalIncomeUpgradeCard= res.page;
-                   $scope.totalIncomeInCashFromUpgradeCard= res.docs;
-                   $scope.totalIncomeFromUpgradeCard = res.totalIncome;
-               } 
-               else if (res.responseCode == 400) {
-                $scope.totalIncomeFromUpgradeCard = 0;
-                //toastr.error(res.responseMessage);
-                }else{
-                     toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextTotalIncomeUpgradeCardDetail();
-     $scope.nextTotalIncomeUpgradeCard = function(){
-        $scope.currentTotalIncomeUpgradeCard++;
-        $scope.nextTotalIncomeUpgradeCardDetail();
-     }
-     $scope.preTotalIncomeUpgradeCard= function(){
-        $scope.currentTotalIncomeUpgradeCard--;
-        $scope.nextTotalIncomeUpgradeCardDetail();
-     }
-   // userService.totalIncomeInCashFromUpgradeCard().success(function(res) {
-   //      if (res.responseCode == 200){
-   //          $scope.totalIncomeInCashFromUpgradeCard = res.result;
-   //          $scope.totalIncomeFromUpgradeCard = res.totalIncome;
-   //          $scope.totalcount = res.count;
-   //         //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify(res));
-   //         //console.log("totalIncome",JSON.stringify($scope.totalIncomeInCashFromUpgradeCard));
-   //         //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalIncomeInCashFromUpgradeCard));
-   //      } else {
-   //          toastr.error(res.responseMessage);
-   //      }
-        
-   //  })
-   $scope.currentUsedUpgradeCard = 1;
-     $scope.nextUsedUpgradeCardDetail = function(){
-         userService.usedUpgradeCard($scope.currentUsedUpgradeCard).success(function(res) { 
-            console.log()
-            if (res.responseCode == 200){
-                   $scope.noOfPagesUsedUpgradeCard = res.pages;
-                   $scope.pageUsedUpgradeCard= res.page;
-                   $scope.usedUpgradeCard= res.docs;
-                   //console.log(JSON.stringify($scope.usedUpgradeCard));
-                    $scope.usedUpgradeCardcount = res.total;
-               }
-               else  {
-                $scope.usedUpgradeCardcount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextUsedUpgradeCardDetail();
-     $scope.nextUsedUpgradeCard = function(){
-        $scope.currentUsedUpgradeCard++;
-        $scope.nextUsedUpgradeCardDetail();
-     }
-     $scope.preUsedUpgradeCard= function(){
-        $scope.currentUsedUpgradeCard--;
-        $scope.nextUsedUpgradeCardDetail();
-     }
-   // userService.usedUpgradeCard().success(function(res) {
-   //      if (res.responseCode == 200){
-   //          $scope.usedUpgradeCard = res.result;
-   //          // $scope.totalIncome = res.totalIncome;
-   //          $scope.usedUpgradeCardcount = res.count;
-   //         //console.log("usedUpgradeCard",JSON.stringify($scope.usedUpgradeCard));
-   //      } else {
-   //          toastr.error(res.responseMessage);
-   //      }
-        
-   //  })
-
-   $scope.currentUnusedUpgradeCards = 1;
-     $scope.nextUnusedUpgradeCardsDetail = function(){
-         userService.unUsedUpgradeCard($scope.currentUnusedUpgradeCards).success(function(res) { 
-            if (res.responseCode == 200){
-                   $scope.noOfPagesUnusedUpgradeCards = res.pages;
-                   $scope.pageUnusedUpgradeCards= res.page;
-                   $scope.unUsedUpgradeCard= res.docs;
-                   $scope.unUsedUpgradeCardcount = res.total;
-               } 
-               else {
-                $scope.unUsedUpgradeCardcount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextUnusedUpgradeCardsDetail();
-     $scope.nextUnusedUpgradeCards = function(){
-        $scope.currentUnusedUpgradeCards++;
-        $scope.nextUnusedUpgradeCardsDetail();
-     }
-     $scope.preUnusedUpgradeCards= function(){
-        $scope.currentUnusedUpgradeCards--;
-        $scope.nextUnusedUpgradeCardsDetail();
-     }
-
-    // userService.unUsedUpgradeCard().success(function(res) {
-    //     if (res.responseCode == 200){
-    //         $scope.unUsedUpgradeCard = res.result;
-    //         // $scope.totalIncome = res.totalIncome;
-    //          $scope.unUsedUpgradeCardcount = res.count;
-    //        //console.log("unUsedUpgradeCard",JSON.stringify($scope.unUsedUpgradeCard));
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-        
-    // })
-
-    //*******************Total Sold LuckCard****************
-    $scope.currentSoldLuckCard = 1;
-     $scope.nextSoldLuckCardDetail = function(){
-         userService.totalSoldLuckCard($scope.currentSoldLuckCard).success(function(res) { 
-            if (res.responseCode == 200){
-                   $scope.noOfPagesSoldLuckCard = res.pages;
-                   $scope.pageSoldLuckCard= res.page;
-                   $scope.totalSoldLuckCard= res.docs;
-                   $scope.totalSoldLuckCardcount = res.total;
-               } 
-               else {
-                $scope.totalSoldLuckCardcount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextSoldLuckCardDetail();
-     $scope.nextSoldLuckCard = function(){
-        $scope.currentSoldLuckCard++;
-        $scope.nextSoldLuckCardDetail();
-     }
-     $scope.preSoldLuckCard= function(){
-        $scope.currentSoldLuckCard--;
-        $scope.nextSoldLuckCardDetail();
-     }
-
-    // userService.totalSoldLuckCard().success(function(res) {
-    //     if (res.responseCode == 200){
-    //         $scope.totalSoldLuckCard = res.result;
-    //         // $scope.totalIncome = res.totalIncome;
-    //          $scope.totalSoldLuckCardcount = res.count;
-    //        //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalSoldLuckCard));
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-        
-    // })
-    $scope.currentIncomeInBrolixFromLuckCard = 1;
-     $scope.nextIncomeInBrolixFromLuckCardDetail = function(){
-         userService.totalIncomeInBrolixFromLuckCard($scope.currentIncomeInBrolixFromLuckCard).success(function(res) { 
-      
-            if (res.responseCode == 200){
-                   $scope.noOfPagesIncomeInBrolixFromLuckCard = res.pages;
-                   $scope.pageIncomeInBrolixFromLuckCard= res.page;
-                   $scope.totalIncomeInBrolixFromLuckCard= res.result;
-                    $scope.totalIncomeLuck = res.totalIncome;
-               } 
-               else {
-                $scope.totalIncomeLuck = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextIncomeInBrolixFromLuckCardDetail();
-     $scope.nextIncomeInBrolixFromLuckCard = function(){
-        $scope.currentIncomeInBrolixFromLuckCard++;
-        $scope.nextIncomeInBrolixFromLuckCardDetail();
-     }
-     $scope.preIncomeInBrolixFromLuckCard= function(){
-        $scope.currentIncomeInBrolixFromLuckCard--;
-        $scope.nextIncomeInBrolixFromLuckCardDetail();
-     }
-    // userService.totalIncomeInBrolixFromLuckCard().success(function(res) {
-    //     if (res.responseCode == 200){
-    //         $scope.totalIncomeInBrolixFromLuckCard = res.result;
-    //          $scope.totalIncomeLuck = res.totalIncome;
-    //          $scope.totalIncomeInBrolixFromLuckCardcount = res.count;
-
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-        
-    // })
-    $scope.currentUsedLuckCard = 1;
-     $scope.nextUsedLuckCardDetail = function(){
-         userService.usedLuckCard($scope.currentUsedLuckCard).success(function(res) { 
-            if (res.responseCode == 200){
-                   $scope.noOfPagesUsedLuckCard = res.pages;
-                   $scope.pageUsedLuckCard= res.page;
-                   $scope.usedLuckCard= res.docs;
-                    $scope.usedLuckCardcount = res.total;
-               } 
-               else {
-                $scope.usedLuckCardcount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextUsedLuckCardDetail();
-     $scope.nextUsedLuckCard = function(){
-        $scope.currentUsedLuckCard++;
-        $scope.nextUsedLuckCardDetail();
-     }
-     $scope.preUsedLuckCard= function(){
-        $scope.currentUsedLuckCard--;
-        $scope.nextUsedLuckCardDetail();
-     }
-    // userService.usedLuckCard().success(function(res) {
-    //     if (res.responseCode == 200){
-    //         $scope.usedLuckCard = res.result;
-    //         $scope.usedLuckCardcount = res.count;
-    //        //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalIncome));
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-        
-    // })
-    $scope.currentUnusedLuckCard = 1;
-     $scope.nextUnusedLuckCardDetail = function(){
-         userService.unUsedLuckCard($scope.currentUnusedLuckCard).success(function(res) { 
-             // console.log("val",JSON.stringify(res))
-            if (res.responseCode == 200){
-                   $scope.noOfPagesUnusedLuckCard = res.pages;
-                   $scope.pageUnusedLuckCard= res.page;
-                   $scope.unUsedLuckCard= res.docs;
-                    $scope.unUsedLuckCardcount = res.total;
-               } 
-               else {
-                $scope.unUsedLuckCardcount = 0;
-                //toastr.error(res.responseMessage);
-                }
-          })
-     }
-     $scope.nextUnusedLuckCardDetail();
-     $scope.nextUnusedLuckCard = function(){
-        $scope.currentUnusedLuckCard++;
-        $scope.nextUnusedLuckCardDetail();
-     }
-     $scope.preUnusedLuckCard= function(){
-        $scope.currentUnusedLuckCard--;
-        $scope.nextUnusedLuckCardDetail();
-     }
-    // userService.unUsedLuckCard().success(function(res) {
-    //     if (res.responseCode == 200){
-    //         $scope.unUsedLuckCard = res.result;
-    //         $scope.unUsedLuckCardcount = res.count;
-    //        //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalIncome));
-    //     } else {
-    //         toastr.error(res.responseMessage);
-    //     }
-        
-    // })
-
+    
     $scope.userInfo=function(id) {
     //console.log(JSON.stringify(id))
     userService.userInfo(id).then(function(success) { 
@@ -886,7 +661,7 @@ $scope.getdata = function(data)
                     }
         
         userService.upgradeCardUsedAd(data).then(function(success) { 
-            console.log("first",JSON.stringify(success))
+            console.log("first",success)
               if(success.data.responseCode == 200) {
                     $scope.usedAd=success.data.result;
                     $("#luckCardUsedAd").modal('show');
@@ -921,41 +696,17 @@ $scope.getdata = function(data)
     }
 
   $scope.cardTypeName = function(val) {
-        //console.log(val)
-         localStorage.setItem('cardTypeName',val);
-         $scope.test = '';
+    localStorage.setItem('cardTypeName',val);
+$scope.key='';
 
-        $scope.currentTotalSoldUpgradeCards = 1;
-        $scope.nextTotalSoldUpgradeCardsDetail();
-
-        $scope.currentTotalIncomeUpgradeCard = 1;
-        $scope.nextTotalIncomeUpgradeCardDetail();
-
-        $scope.currentUsedUpgradeCard = 1;
-        $scope.nextUsedUpgradeCardDetail();
-
-        $scope.currentUnusedUpgradeCards = 1;
-        $scope.nextUnusedUpgradeCardsDetail();
-
-        $scope.currentSoldLuckCard = 1;
-        $scope.nextSoldLuckCardDetail();
-
-        $scope.currentIncomeInBrolixFromLuckCard = 1;
-        $scope.nextIncomeInBrolixFromLuckCardDetail();
-
-        $scope.currentUsedLuckCard = 1;
-        $scope.nextUsedLuckCardDetail();
-
-        $scope.currentUnusedLuckCard = 1;
-        $scope.nextUnusedLuckCardDetail();
+        
     }
 
  
     $scope.dashBordFilter = function() {
 
     var type = localStorage.getItem('cardTypeName');
-    //console.log(type);
-    $scope.country =$scope.dashBordFilter.country==undefined?undefined : $scope.dashBordFilter.country.name;
+    //console
 
     var data = {};
         data = {
@@ -968,25 +719,35 @@ $scope.getdata = function(data)
             joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
-       // console.log("datatata",data)
+     console.log("datatata",data)
 
     switch (type)
             {
                 case 'totalSoldCards':
-                //console.log("1"); 
                     userService.cardFilter(data).success(function(res){
-                       // console.log(JSON.stringify(res));
-                        $scope.totalSoldUpgradeCard = res.data;
-                        //console.log("ressssssss1",JSON.stringify($scope.totalSoldUpgradeCard));
+                        if (res.responseCode == 200){
+                           $scope.totalSoldUpgradeCard= res.result;
+                           $scope.totalSoldUpgradeCardCount = res.total;
+                       } 
+                       else {
+                        $scope.totalSoldUpgradeCardCount = 0;
+                        }
                     })
-                    
                 break;
 
                 case 'totalIncome$': 
                // console.log("2");
                     userService.cardFilter(data).success(function(res){
-                        $scope.totalIncomeInCashFromUpgradeCard = res.data;
-                        //console.log("ressssssss2",JSON.stringify($scope.totalIncomeInCashFromUpgradeCard));
+                        if (res.responseCode == 200){
+                           $scope.totalIncomeInCashFromUpgradeCard= res.result;
+                           $scope.totalIncomeFromUpgradeCard = res.total;
+                       } 
+                       else if (res.responseCode == 400) {
+                        $scope.totalIncomeFromUpgradeCard = 0;
+                        //toastr.error(res.responseMessage);
+                        }else{
+                             toastr.error(res.responseMessage);
+                        }
                     })
                     
                 break;
@@ -994,8 +755,15 @@ $scope.getdata = function(data)
                 case 'usedCards': 
                 //console.log("3");
                     userService.cardFilter(data).success(function(res){
-                        $scope.usedUpgradeCard = res.data;
-                        //console.log("ressssssss3",JSON.stringify($scope.usedUpgradeCard));
+                        
+                        if (res.responseCode == 200){
+                            $scope.usedUpgradeCard= res.result;
+                            $scope.usedUpgradeCardcount = res.total;
+                        }
+                        else  {
+                            $scope.usedUpgradeCardcount = 0;
+                            //toastr.error(res.responseMessage);
+                        }
                     })
                     
                 break;
@@ -1003,7 +771,14 @@ $scope.getdata = function(data)
                 case 'unusedCards': 
                 //console.log("4");
                     userService.cardFilter(data).success(function(res){
-                        $scope.unUsedUpgradeCard = res.data;
+                        if (res.responseCode == 200){
+                            $scope.unUsedUpgradeCard= res.result;
+                            $scope.unUsedUpgradeCardcount = res.total;
+                        } 
+                        else {
+                            $scope.unUsedUpgradeCardcount = 0;
+                        //toastr.error(res.responseMessage);
+                        }
                         //console.log("ressssssss4",JSON.stringify($scope.unUsedUpgradeCard));
                     })
                     
@@ -1012,8 +787,14 @@ $scope.getdata = function(data)
                 case 'totalSoldLuckCards': 
                // console.log("5");
                     userService.cardFilter(data).success(function(res){
-                        $scope.totalSoldLuckCard = res.data;
-                        //console.log("ressssssss5",JSON.stringify($scope.totalSoldLuckCard));
+                       if (res.responseCode == 200){
+                           $scope.totalSoldLuckCard= res.result;
+                           $scope.totalSoldLuckCardcount = res.total;
+                       } 
+                       else {
+                        $scope.totalSoldLuckCardcount = 0;
+                        //toastr.error(res.responseMessage);
+                        }
                     })
                     
                 break;
@@ -1021,8 +802,15 @@ $scope.getdata = function(data)
                 case 'totalIncome$LuckCards':
                // console.log("6"); 
                     userService.cardFilter(data).success(function(res){
-                        $scope.totalIncomeInBrolixFromLuckCard = res.data;
-                        //console.log("ressssssss6",JSON.stringify($scope.totalIncomeInBrolixFromLuckCard));
+                        console.log("resssss",JSON.stringify(res))
+                       if (res.responseCode == 200){
+                        $scope.totalIncomeInBrolixFromLuckCard= res.result;
+                        $scope.totalIncomeLuck = res.totalIncome;
+                       } 
+                       else {
+                        $scope.totalIncomeLuck = 0;
+                        //toastr.error(res.responseMessage);
+                        }
                     })
                     
                 break;
@@ -1030,8 +818,14 @@ $scope.getdata = function(data)
                 case 'usedCardsLuckCards': 
                 //console.log("7");
                     userService.cardFilter(data).success(function(res){
-                        $scope.usedLuckCard = res.data;
-                        //console.log("ressssssss7",JSON.stringify($scope.usedLuckCard));
+                        if (res.responseCode == 200){
+                            $scope.usedLuckCard= res.result;
+                            $scope.usedLuckCardcount = res.total;
+                           } 
+                           else {
+                            $scope.usedLuckCardcount = 0;
+                            //toastr.error(res.responseMessage);
+                            }
                     })
                     
                 break;
@@ -1039,8 +833,14 @@ $scope.getdata = function(data)
                 case 'unusedCardsLuckCards': 
                // console.log("8");
                     userService.cardFilter(data).success(function(res){
-                        $scope.unUsedLuckCard = res.data;
-                        //console.log("ressssssss8",JSON.stringify($scope.unUsedLuckCard));
+                        if (res.responseCode == 200){
+                           $scope.unUsedLuckCard= res.result;
+                            $scope.unUsedLuckCardcount = res.total;
+                       } 
+                       else {
+                        $scope.unUsedLuckCardcount = 0;
+                        //toastr.error(res.responseMessage);
+                        }
                     })
                     
                 break;
