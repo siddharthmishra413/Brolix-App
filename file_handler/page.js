@@ -631,7 +631,7 @@ module.exports = {
     "pageViewClick": function(req, res) {
 
         var startTime = new Date(req.body.date).toUTCString();
-        var endTimeHour = req.body.date + 3600000;
+        var endTimeHour = req.body.date + 60000;
         var endTime = new Date(endTimeHour).toUTCString();
         console.log(startTime);
         console.log(endTime)
