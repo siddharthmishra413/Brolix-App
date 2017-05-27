@@ -12,7 +12,7 @@
                 <th>Reported Time</th>
                 <th>Message</th>  
             </tr>
-            <tr ng-repeat="x in allReports">
+            <tr dir-paginate="x in allReports | itemsPerPage:10">
                 <td class="skyblue-text" style="cursor:pointer;">{{x.userId.firstName}} {{x.userId.lastName}}</td>
                 <!-- <td>{{x.userId.country}}</td>
                 <td>{{x.userId.email}}</td>
@@ -24,10 +24,6 @@
                 <td class="skyblue-text" style="cursor:pointer;">View</td>
             </tr> 
         </table>
-        <div style="float:right; font-size: 20px;" ng-if="(allReports ).length != 0">
-                <button ng-click="preShowReportedAd()" ng-disabled="pageShowReportedAd==1" class="btn paginationBtn" >Prev</button> 
-                {{pageShowReportedAd}}/{{noOfPagesShowReportedAd}}
-                <button ng-click="nextShowReportedAd()" ng-disabled="pageShowReportedAd==noOfPagesShowReportedAd" class="btn paginationBtn">Next</button>
-            </div>
+        <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
     </div>
 </div>

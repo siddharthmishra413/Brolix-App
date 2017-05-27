@@ -120,9 +120,8 @@ module.exports = {
         var s = Date.now(m)
         console.log("current -->>", s)
             // var actualTime = parseInt(s);
-        createEvents.find({
-            pageId: req.body.pageId
-        }).exec(function(err, result) {
+        createEvents.find({ pageId: req.body.pageId, "status" : "ACTIVE"}).exec(function(err, result) {
+            console.log("result -->>", result)
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -131,7 +130,7 @@ module.exports = {
             } else {
                 var eventArray = [];
                 for (var i = 0; i < result.length; i++) {
-                    console.log("res-->>", result.length, i)
+                    console.log("res-->>", new Date(result[i].eventStartDate), i)
                     if (s < new Date(result[i].eventStartDate)) {
                         console.log("dta->", result[i].eventStartDate)
                         eventArray.push(result[i]._id)

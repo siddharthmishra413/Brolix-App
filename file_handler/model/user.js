@@ -188,7 +188,7 @@ var userSchema = new Schema({
         ViewFollower: { type: String, default: 'everyone' },
         sendBrolix: { type: String, default: 'everyone' },
         findMe: { type: String, default: 'everyone' },
-        exchangeCoupon: { type: String, default: 'everyone' }
+        exchangeCoupon: { type: String, default: 'on' }
     },
     luckCardObject: [{
         brolix: { type: Number },

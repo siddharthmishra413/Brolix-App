@@ -20,15 +20,17 @@
                                              User.findOneAndUpdate({ _id: req.body.receiverId }, {
                                                  $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", notificationType: 'follow', image: image } }
                                              }, { new: true }).exec(function(err, results) {
-                                                 if (results.deviceType == 'Android' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                 if(results.deviceType  && result.notification_status  && result.status ){
+                                                 if (results.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                      var message = "req.body.message";
                                                      functions.android_notification(result.deviceToken, message);
                                                      console.log("Android notification send!!!!")
-                                                 } else if (result.deviceType == 'iOS' || result.notification_status == 'on' || result.status == 'ACTIVE') {
+                                                 } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                      functions.iOS_notification(result.deviceToken, message);
                                                  } else {
                                                      console.log("Something wrong!!!!")
                                                  }
+                                              }
                                                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                                  res.send({
                                                      result: result,

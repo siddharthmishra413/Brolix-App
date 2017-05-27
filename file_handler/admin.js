@@ -4164,6 +4164,20 @@ module.exports = {
                 responseMessage: "Data Show successfully."
             })
         }
+    },
+    
+    "showAllReports":function(req, res){
+        createNewReport.find({}).populate('userId', 'firstName lastName').exec(function(err, result){
+            if(err){res.send({responseCode:500, responseMessage:'Internal server error'}); }
+            else if(result.length==0){res.send({responseCode:400, responseMessage:"No report found"});}
+            else{
+                res.send({
+                result: result,
+                responseCode: 200,
+                responseMessage: "All report Shown successfully."
+            }) 
+            }
+        })
     }
 
 

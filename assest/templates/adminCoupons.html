@@ -11,7 +11,7 @@
                     <th>Price</th>
                     <th>Action</th>
                 </tr>
-                <tr ng-repeat="details in Detail">
+                <tr dir-paginate="details in Detail | itemsPerPage:10">
                     <td>#{{$index + 1}}</td>
                     <td>{{details.pageName}}</td>
                     <td>{{details.couponExpiryDate | date:'MMMM dd, yyyy'}}</td>
@@ -22,27 +22,25 @@
                         <a class="table-a" style="cursor:pointer;" ng-href="#header/editCoupon" ng-click="editCoupon(details._id)">Edit</a>
                         <a class="table-a" style="cursor:pointer;" ng-click="postCoupon(details._id)">Post</a>
                         <a class="table-a" style="cursor:pointer;" ng-click="removeCoupon(details._id)">Remove</a>
-                     </td>
+                    </td>
                 </tr>
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(Detail).length != 0">
-              <button ng-click="preAllCoupons()" ng-disabled="pageAllCoupons==1" class="btn paginationBtn" >Prev</button> 
-              {{pageAllCoupons}}/{{noOfPagesAllCoupons}}
-              <button ng-click="nextAllCoupons()" ng-disabled="pageAllCoupons==noOfPagesAllCoupons" class="btn paginationBtn">Next</button>
-          </div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12" style="text-align: center" ng-if="addNewCoupon == true">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12" style="text-align: center" ng-if="addNewCoupon == true">
         <div class="add-user panel panel-default cust-panel">
-                <div class="panel-heading">
-                    <h3 class="panel-title">ADD NEW COUPON</h3>
-                </div>
-                <div class="panel-body">
-            <!-- <span class="heading-coupon"><u>ADD NEW COUPON</u></span> -->
-            <form class="form-block" role="form" name="myForm">
-              <fieldset>
+            <div class="panel-heading">
+                <h3 class="panel-title">ADD NEW COUPON</h3>
+            </div>
+            <div class="panel-body">
+                <!-- <span class="heading-coupon"><u>ADD NEW COUPON</u></span> -->
+                <form class="form-block" role="form" name="myForm">
+                    <fieldset>
 
-             <!--  <div class="cover-image" >
+                        <!--  <div class="cover-image" >
                         <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || '../dist/image/cover.jpg'}}" id="output" >
                         <label class="fileContainer">
                             Choose File
@@ -53,115 +51,124 @@
  -->
 
 
-                  <div class="form-group clearfix">
-                      <div class="cover-image">
-                       <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
-                        <label class="fileContainer">
+                        <div class="form-group clearfix">
+                            <div class="cover-image">
+                                <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495862745/f9xiu2xrlsktd5kakq5p.jpg'}}" id="output">
+                                <label class="fileContainer">
                             Choose File
                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" name="image" accept="image/*" required>
                          <span ng-show="myFrom.image.$error.required">Image is required.</span>
                         </label>
-                     <!--  <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                                <!--  <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
                           <div class="new_file"><input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*"></div> -->
-                      </div>
-                  </div>
-                  <div class="form-group clearfix" style="margin-top:45px;">
-                      <label class="col-sm-3 control-label">Page Name</label>
-                      <div class="col-sm-9">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix" style="margin-top:45px;">
+                            <label class="col-sm-3 control-label">Page Name</label>
+                            <div class="col-sm-9">
 
-                      <select class="form-control"  ng-model="user.pageName" required>
+                                <select class="form-control" ng-model="user.pageName" required>
                           <option value="">Select Page Name</option>
                           <option ng-repeat="page in pageDetail" value="{{page}}" >{{page.pageName}}</option>
-                       </select> 
-                      <span style="color:red;" ng-show="myForm.state.$dirty && myForm.state.$invalid">
-                      <span ng-show="myForm.state.$error.required">Page is required.</span> 
-                        <!-- <select class="form-control" ng-model="user.pageName" ng-change="isSelected(user.pageName)">
+                       </select>
+                                <span style="color:red;" ng-show="myForm.state.$dirty && myForm.state.$invalid">
+                      <span ng-show="myForm.state.$error.required">Page is required.</span>
+                                <!-- <select class="form-control" ng-model="user.pageName" ng-change="isSelected(user.pageName)">
                               <option value="">Select</option>
                               <option value="{{page.pageName}}" ng-repeat="page in pageDetail">{{page.pageName}}</option>
                         </select> -->
-                      </div>
-                    </div>
+                            </div>
+                        </div>
 
 
 
-                   
 
-                  <div class="form-group clearfix">
-                    <label class="col-sm-3 control-label">Expiry Date</label>
-                      <div class="col-sm-9">
-                        <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                             <div class="input-group">
-                                 <input name="dob" class="form-control" style="cursor:pointer;" placeholder="Choose a date" ng-model="user.expDate" max="2017-04-05" />
-                                 <span class="input-group-addon">
+
+                        <div class="form-group clearfix">
+                            <label class="col-sm-3 control-label">Expiry Date</label>
+                            <div class="col-sm-9">
+                                <datepicker date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
+                                    <div class="input-group">
+                                        <input name="dob" class="form-control" style="cursor:pointer;" placeholder="Choose a date" ng-model="user.expDate" max="2017-04-05" />
+                                        <span class="input-group-addon">
                                  <!-- <i class="fa fa-lg fa-calendar"></i> -->
                                  </span>
-                             </div>
-                            </datepicker>
-                            <span style="color:red;" ng-show="myForm.dob.$dirty && myForm.dob.$invalid">>Date of birth is required.</span>
-                              <span ng-show="myForm.dob.$error.required">Date of birth is required.</span> 
-                        <!-- <input type="date" class="form-control" ng-model="user.expDate" name="myDate" required>
+                                    </div>
+                                </datepicker>
+                                <span style="color:red;" ng-show="myForm.dob.$dirty && myForm.dob.$invalid">>Date of birth is required.</span>
+                                <span ng-show="myForm.dob.$error.required">Date of birth is required.</span>
+                                <!-- <input type="date" class="form-control" ng-model="user.expDate" name="myDate" required>
                         <span style="color:red" ng-show="myForm.myDate.$dirty && myForm.myDate.$invalid">
                         <span style="color:red" ng-show="myForm.myDate.$error.required">
                          Please Select Expiry Date</span>
                         <span style="color:red" ng-show="myForm.myDate.$error.date">
                          Not a valid date!</span> -->
-                      </div>
-                  </div>
-                  <div class="form-group clearfix">
-                      <label class="col-sm-3 control-label">Gift Description</label>
-                      <div class="col-sm-9">
-                          <textarea class="form-control" ng-model="user.description" name="gift_Description"
-                           required></textarea>
-                          <span style="color:red;" ng-show="myForm.gift_Description.$dirty && myForm.gift_Description.$invalid">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="col-sm-3 control-label">Gift Description</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" ng-model="user.description" name="gift_Description" required></textarea>
+                                <span style="color:red;" ng-show="myForm.gift_Description.$dirty && myForm.gift_Description.$invalid">
                             <span ng-show="myForm.gift_Description.$error.required">Gift Description is required.</span>
-                      </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="col-sm-3 control-label">Gift Description Image</label>
+                            <div class="col-sm-9">
+                            <label class="fileContainer">
+                                Choose File
+                                <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'giftDesImage')" name="image" accept="image/*">
+                            </label>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                    <div class="btn2 text-center">
+                        <a class="btn btn-lg btn-green" ng-disabled="myForm.$invalid" ng-click="addCoupon(user)">Add</a>
+                        <a href="" class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
 
                     </div>
-            
-              </fieldset>
-            <div class="btn2 text-center">
-            <a  class="btn btn-lg btn-green" ng-disabled="myForm.$invalid" ng-click="addCoupon(user)">Add</a>
-                <a href="" class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
-                
+                </form>
             </div>
-        </form>
+        </div>
+    </div>
+    <div id="post" class="modal fade">
+        <div class="modal-dialog cls_pop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Post Coupon</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="userFrom1">
+                        <div class="table-responsive cus-table">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>Available Coupons</th>
+                                    <td><input type="number" price class="form-control" ng-model="availableCoupon" name="coupon" required>
+                                        <span style="color:red;" ng-show="userFrom1.coupon.$dirty && userFrom1.coupon.$invalid">
+                                              <span ng-show="userFrom1.coupon.$error.required">Enter coupons</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Coupon Price</th>
+                                    <td><input type="number" class="form-control" name="price" ng-pattern="/^[0-9]{1,10}$/" ng-model="couponPrice" required>
+                                        <span style="color:red;" ng-show="userFrom1.price.$dirty && userFrom1.price.$invalid">
+                                <span ng-show="userFrom1.price.$error.required">Enter Coupon Price</span>
+                                        <span ng-show="userFrom.phone.$error.pattern">Only Numbers are allowed.</span>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div class="text-center">
+                            <input class="table-a" type="submit" ng-click="submit()" name="Post">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div id="post" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Post Coupon</h4>
-           </div>
-           <div class="modal-body">
-               <form name="userFrom1">
-               <div class="table-responsive cus-table">
-                   <table class="table table-bordered table-striped">                         
-                          <tr>
-                              <th>Available Coupons</th>
-                              <td><input type="number"price class="form-control" ng-model="availableCoupon" name="coupon" required>
-                               <span style="color:red;" ng-show="userFrom1.coupon.$dirty && userFrom1.coupon.$invalid">
-                                              <span ng-show="userFrom1.coupon.$error.required">Enter coupons</span></td>
-                          </tr>
-                          <tr>
-                              <th>Coupon Price</th>
-                              <td><input type="number" class="form-control" name="price" ng-pattern="/^[0-9]{1,10}$/" ng-model="couponPrice" required>
-                               <span style="color:red;" ng-show="userFrom1.price.$dirty && userFrom1.price.$invalid">
-                                <span ng-show="userFrom1.price.$error.required">Enter Coupon Price</span>
-                                <span ng-show="userFrom.phone.$error.pattern">Only Numbers are allowed.</span>
-                              </td>
-                          </tr>
-                         
-                  </table>
-                </div>
-                 <div class="text-center">
-                            <input class="table-a" type="submit" ng-click="submit()" name="Post">
-                          </div>
-               </form>
-           </div>
-       </div>
-   </div>
-</div>
-        </div>

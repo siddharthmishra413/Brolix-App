@@ -1,11 +1,11 @@
 <div class="container-fluid">
-  <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-12" style="text-align: center">
+    <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-12" style="text-align: center">
         <div class="add-user panel panel-default cust-panel">
-                <div class="panel-heading">
-                    <h3 class="panel-title">View Coupon</h3>
-                </div>
-                <div class="panel-body">
-                  <div class="cover-image">
+            <div class="panel-heading">
+                <h3 class="panel-title">View Coupon</h3>
+            </div>
+            <div class="panel-body">
+                <div class="cover-image">
                     <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
                 </div>
                 <div class="table-responsive">
@@ -16,18 +16,15 @@
                         </tr>
                         <tr>
                             <th>Expiry Date</th>
-                             <td>{{expDate | date:'MMMM dd, yyyy'}}</td>
+                            <td>{{expDate | date:'MMMM dd, yyyy'}}</td>
                         </tr>
                         <tr>
-                          <th>Gift Description</th>
-                          <td>{{couponData.giftDescription}}</td>
+                            <th>Gift Description</th>
+                            <td>{{couponData.giftDescription}}</td>
                         </tr>
                     </table>
-              </div> 
-          </div>
-       </div>
-  </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-

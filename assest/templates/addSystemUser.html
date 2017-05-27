@@ -9,7 +9,7 @@
                     <th>Email</th>
                     <th>Action</th>
                 </tr>
-                <tr ng-repeat="x in allSystemUser">
+                <tr dir-paginate="x in allSystemUser | itemsPerPage:10">
                     <td>{{x.firstName}}</td>
                     <td>{{x.lastName}}</td>
                     <td>{{x.email}}</td>
@@ -17,11 +17,7 @@
                 </tr>
 
             </table>
-            <div style="float:right; font-size: 20px;" ng-if="(allSystemUser).length != 0">
-                    <button ng-click="preSystemAdmin()" ng-disabled="pageSystemAdmin==1" class="btn paginationBtn" >Prev</button> 
-                    {{pageSystemAdmin}}/{{noOfPagesSystemAdmin}}
-                    <button ng-click="nextSystemAdmin()" ng-disabled="pageSystemAdmin==noOfPagesSystemAdmin" class="btn paginationBtn">Next</button>
-                </div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 

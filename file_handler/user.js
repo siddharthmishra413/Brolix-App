@@ -801,15 +801,17 @@ module.exports = {
                                             result3.save();
                                             callback(null, result2)
                                         }
-                                        if (result3.deviceType == 'Android' || result3.notification_status == 'on' || result3.status == 'ACTIVE') {
+                                          if(result3.deviceType  && result3.notification_status  && result3.status ){
+                                        if (result3.deviceType == 'Android' && result3.notification_status == 'on' && result3.status == 'ACTIVE') {
                                             var message = "I have send you brolix";
                                             functions.android_notification(result3.deviceToken, message);
                                             console.log("Android notification send!!!!")
-                                        } else if (result3.deviceType == 'iOS' || result3.notification_status == 'on' || result3.status == 'ACTIVE') {
+                                        } else if (result3.deviceType == 'iOS' && result3.notification_status == 'on' && result3.status == 'ACTIVE') {
                                             functions.iOS_notification(result3.deviceToken, message);
                                         } else {
                                             console.log("Something wrong!!!!")
                                         }
+                                          }
                                     });
                                 }
                             });
@@ -829,14 +831,16 @@ module.exports = {
                                     else {
                                         callback(null, result4)
                                     }
-                                    if (result5.deviceType == 'Android' || result5.notification_status == 'on' || result5.status == 'ACTIVE') {
+                                    if(result5.deviceType  && result5.notification_status  && result5.status ){
+                                    if (result5.deviceType == 'Android' && result5.notification_status == 'on' && result5.status == 'ACTIVE') {
                                         var message = "I have send you brolix";
                                         functions.android_notification(result5.deviceToken, message);
                                         console.log("Android notification send!!!!")
-                                    } else if (result5.deviceType == 'iOS' || result5.notification_status == 'on' || result5.status == 'ACTIVE') {
+                                    } else if (result5.deviceType == 'iOS' && result5.notification_status == 'on' && result5.status == 'ACTIVE') {
                                         functions.iOS_notification(result5.deviceToken, message);
                                     } else {
                                         console.log("Something wrong!!!!")
+                                    }
                                     }
                                 });
                             }
@@ -889,14 +893,16 @@ module.exports = {
                                             user.save();
                                             //callback(null, user)
                                         }
-                                        if (user.deviceType == 'Android' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                        if(user.deviceType  && user.notification_status  && user.status ){
+                                        if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {
                                             var message = "I have sent you cash";
                                             functions.android_notification(user.deviceToken, message);
                                             console.log("Android notification send!!!!")
-                                        } else if (user.deviceType == 'iOS' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                        } else if (user.deviceType == 'iOS' && user.notification_status == 'on' && user.status == 'ACTIVE') {
                                             functions.iOS_notification(user.deviceToken, message);
                                         } else {
                                             console.log("Something wrong!!!!")
+                                        }
                                         }
                                     });
                                     callback(null, result)
@@ -919,14 +925,17 @@ module.exports = {
                                         user.save();
                                         //callback(null, user)
                                     }
-                                    if (user.deviceType == 'Android' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                    if(user.deviceType  && user.notification_status  && user.status ){
+                                    if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {
                                         var message = "I have sent you cash";
                                         functions.android_notification(user.deviceToken, message);
                                         console.log("Android notification send!!!!")
-                                    } else if (user.deviceType == 'iOS' || user.notification_status == 'on' || user.status == 'ACTIVE') {
+                                    } else if (user.deviceType == 'iOS' && user.notification_status == 'on' && user.status == 'ACTIVE') {
                                         functions.iOS_notification(user.deviceToken, message);
                                     } else {
                                         console.log("Something wrong!!!!")
+                                    }
+                                        
                                     }
                                 });
                                 callback(null, result)
@@ -1880,14 +1889,16 @@ module.exports = {
                                     }
                                 })
                             }
-                            if (result2.deviceType == 'Android' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
+                            if(result2.deviceType  && result2.notification_status  && result2.status ){
+                            if (result2.deviceType == 'Android' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
                                 var message = "You have coupon Exchange request";
                                 functions.android_notification(result2.deviceToken, message);
                                 console.log("Android notification send!!!!")
-                            } else if (result2.deviceType == 'iOS' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
+                            } else if (result2.deviceType == 'iOS' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
                                 functions.iOS_notification(result2.deviceToken, message);
                             } else {
                                 console.log("Something wrong!!!!")
+                            }
                             }
                         } else {
                             createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId } } }, { new: true }).exec(function(err, result5) {
@@ -1904,15 +1915,17 @@ module.exports = {
                                     callback(null, result5)
                                 }
                             })
-                            if (result2.deviceType == 'Android' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
+                             if(result2.deviceType  && result2.notification_status  && result2.status ){
+                            if (result2.deviceType == 'Android' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
                                 var message = "You have coupon Exchange request";
                                 functions.android_notification(result2.deviceToken, message);
                                 console.log("Android notification send!!!!")
-                            } else if (result2.deviceType == 'iOS' || result2.notification_status == 'on' || result2.status == 'ACTIVE') {
+                            } else if (result2.deviceType == 'iOS' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
                                 functions.iOS_notification(result2.deviceToken, message);
                             } else {
                                 console.log("Something wrong!!!!")
                             }
+                             }
                         }
                     })
                 }
@@ -2026,16 +2039,17 @@ module.exports = {
                                             User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, type: "I have sent you a coupon", notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                                 console.log("receiverId--->>>", result4)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
-
-                                                if (result4.deviceType == 'Android' || result4.notification_status == 'on' || result4.status == 'ACTIVE') {
+                                                 if(result4.deviceType  && result4.notification_status  && result4.status ){
+                                                if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
                                                     var message = "you have one coupon exchange request";
                                                     functions.android_notification(result4.deviceToken, message);
                                                     console.log("Android notification send!!!!")
-                                                } else if (result4.deviceType == 'iOS' || result4.notification_status == 'on' || result4.status == 'ACTIVE') {
+                                                } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
                                                     functions.iOS_notification(result4.deviceToken, message);
                                                 } else {
                                                     console.log("Something wrong!!!!")
                                                 }
+                                                 }
                                             })
                                         }
                                     })
@@ -2079,14 +2093,16 @@ module.exports = {
                                         }
                                         User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, type: "I have sent you a coupon", notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 77' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
-                                            if (result4.deviceType == 'Android' || result4.notification_status == 'on' || result4.status == 'ACTIVE') {
+                                            if(result4.deviceType  && result4.notification_status  && result4.status ){
+                                            if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
                                                 var message = "you have one coupon exchange request";
                                                 functions.android_notification(result4.deviceToken, message);
                                                 console.log("Android notification send!!!!")
-                                            } else if (result4.deviceType == 'iOS' || result4.notification_status == 'on' || result4.status == 'ACTIVE') {
+                                            } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
                                                 functions.iOS_notification(result4.deviceToken, message);
                                             } else {
                                                 console.log("Something wrong!!!!")
+                                            }
                                             }
                                         })
                                     }
