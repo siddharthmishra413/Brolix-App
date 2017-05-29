@@ -690,70 +690,90 @@ module.exports = {
                 break;
         }
 
-        Views.findOne({ pageId: req.body.pageId, date: { $gte: startTime, $lte: endTime } }, function(err, result) {
-            console.log("views r3sult==>>" + result)
-            if (err) {
-                res.send({
-                    result: err,
-                    responseCode: 302,
-                    responseMessage: "error."
-                });
-            } else if (!result) {
-                saveData = 1;
-                details.date = startTime;
-                var views = Views(details);
-                views.save(function(err, pageRes) {
-                    if (req.body.click == 'viewAds') {
-                        createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $inc: { watchedAds: 1 } }, { new: true }).exec(function(err, AdsRes) {
-                            res.send({
-                                result: pageRes,
-                                responseCode: 200,
-                                responseMessage: "Successfully update clicks."
-                            });
-                        })
-                    } else {
-                        res.send({
-                            result: pageRes,
-                            responseCode: 200,
-                            responseMessage: "Successfully update clicks."
-                        });
-                    }
+        details.date = startTime;
+        var views = Views(details);
+        views.save(function(err, pageRes) {
+            if (req.body.click == 'viewAds') {
+                createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $inc: { watchedAds: 1 } }, { new: true }).exec(function(err, AdsRes) {
+                    res.send({
+                        result: pageRes,
+                        responseCode: 200,
+                        responseMessage: "Successfully update clicks."
+                    });
                 })
-
             } else {
-                Views.findOneAndUpdate({ _id: result._id }, updateData, { new: true }).exec(function(err, pageRes) {
-                    if (err) {
-                        res.send({
-                            result: err,
-                            responseCode: 302,
-                            responseMessage: "error."
-                        });
-                    } else if (!result) {
-                        res.send({
-                            result: pageRes,
-                            responseCode: 404,
-                            responseMessage: "Successfully update clicks."
-                        });
-                    } else {
-                        if (req.body.click == 'viewAds') {
-                            createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $inc: { watchedAds: 1 } }, { new: true }).exec(function(err, AdsRes) {
-                                res.send({
-                                    result: pageRes,
-                                    responseCode: 200,
-                                    responseMessage: "Successfully update clicks."
-                                });
-                            })
-                        } else {
-                            res.send({
-                                result: pageRes,
-                                responseCode: 200,
-                                responseMessage: "Successfully update clicks."
-                            });
-                        }
-                    }
-                })
+                res.send({
+                    result: pageRes,
+                    responseCode: 200,
+                    responseMessage: "Successfully update clicks."
+                });
             }
         })
+
+        // Views.findOne({ pageId: req.body.pageId, date: { $gte: startTime, $lte: endTime } }, function(err, result) {
+        //     console.log("views r3sult==>>" + result)
+        //     if (err) {
+        //         res.send({
+        //             result: err,
+        //             responseCode: 302,
+        //             responseMessage: "error."
+        //         });
+        //     } else if (!result) {
+        //         saveData = 1;
+        //         details.date = startTime;
+        //         var views = Views(details);
+        //         views.save(function(err, pageRes) {
+        //             if (req.body.click == 'viewAds') {
+        //                 createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $inc: { watchedAds: 1 } }, { new: true }).exec(function(err, AdsRes) {
+        //                     res.send({
+        //                         result: pageRes,
+        //                         responseCode: 200,
+        //                         responseMessage: "Successfully update clicks."
+        //                     });
+        //                 })
+        //             } else {
+        //                 res.send({
+        //                     result: pageRes,
+        //                     responseCode: 200,
+        //                     responseMessage: "Successfully update clicks."
+        //                 });
+        //             }
+        //         })
+
+        //     } else {
+        //         Views.findOneAndUpdate({ _id: result._id }, updateData, { new: true }).exec(function(err, pageRes) {
+        //             if (err) {
+        //                 res.send({
+        //                     result: err,
+        //                     responseCode: 302,
+        //                     responseMessage: "error."
+        //                 });
+        //             } else if (!result) {
+        //                 res.send({
+        //                     result: pageRes,
+        //                     responseCode: 404,
+        //                     responseMessage: "Successfully update clicks."
+        //                 });
+        //             } else {
+        //                 if (req.body.click == 'viewAds') {
+        //                     createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $inc: { watchedAds: 1 } }, { new: true }).exec(function(err, AdsRes) {
+        //                         res.send({
+        //                             result: pageRes,
+        //                             responseCode: 200,
+        //                             responseMessage: "Successfully update clicks."
+        //                         });
+        //                     })
+        //                 } else {
+        //                     res.send({
+        //                         result: pageRes,
+        //                         responseCode: 200,
+        //                         responseMessage: "Successfully update clicks."
+        //                     });
+        //                 }
+        //             }
+        //         })
+        //     }
+        // })
     },
 
     "pageStatisticsFilter": function(req, res) { //pageId, 
