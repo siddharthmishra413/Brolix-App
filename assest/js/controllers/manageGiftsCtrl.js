@@ -11,6 +11,13 @@ $scope.dashBordFilter.state="";
 $scope.dashBordFilter.city="";
 localStorage.setItem('giftTypeName','totalCouponsGifts');
 
+$scope.dateValidation = function(dtaa) {
+        var dta = dtaa;
+        var timestamp = new Date(dtaa).getTime();
+        var nextday = timestamp + 8.64e+7;
+        $scope.minDatee = new Date(nextday).toDateString();
+    }
+
 
 userService.countryListData().success(function(res) {
   $scope.countriesList = res.result;

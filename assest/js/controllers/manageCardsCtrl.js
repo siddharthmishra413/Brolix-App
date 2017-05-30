@@ -10,6 +10,31 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     $scope.cardDetailsOnOffer = {};
     $scope.dashBordFilter = {};
 
+    $scope.dateValidation = function(dtaa) {
+        var dta = dtaa;
+        var timestamp = new Date(dtaa).getTime();
+        var nextday = timestamp + 8.64e+7;
+        $scope.minDatee = new Date(nextday).toDateString();
+    }
+
+    userService.upgradeCardViewersList().success(function(res) {
+        console.log("res",res)
+        if (res.responseCode == 200) {
+            $scope.dashBordFilterViewer = res.result;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+
+    userService.luckCardViewersList().success(function(res) {
+        console.log("res",res)
+        if (res.responseCode == 200) {
+            $scope.dashBordFilterChances = res.result;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+
     userService.totalSoldUpgradeCard().success(function(res) {
         //console.log("res",JSON.stringify(res)) 
         if (res.responseCode == 200) {
@@ -828,7 +853,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             joinTo: new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom: new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
-        console.log("datatata", data)
+        console.log("datatata", JSON.stringify(data))
 
         switch (type) {
             case 'totalSoldCards':

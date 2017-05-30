@@ -4171,15 +4171,16 @@ module.exports = {
     "upgradeCardViewersList":function(req, res){  // "type": "luck_card",
         adminCards.find({ "type": "upgrade_card"}).exec(function(err, result){
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else { 
-                var viewersArray = [];
-                for(var i = 0; i<result.length; i++){
-                    viewersArray.push(result[i].viewers)
+                var viewersArray=[];
+                for(var i = 0; i<result.length; i++){              
+                    if(viewersArray.indexOf(result[i].viewers)==-1){
+                     viewersArray.push(result[i].viewers)
+                    }
                 }
             res.send({
                 result:viewersArray,
                 responseCode:200,
-                responseMessage:"Result"
-                
+                responseMessage:"Result"                
             })
             }
         })
@@ -4188,10 +4189,12 @@ module.exports = {
     "luckCardViewersList":function(req, res){  
         adminCards.find({"type": "luck_card"}).exec(function(err, result){
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else { 
-                var chancesArray = [];
-                for(var i = 0; i<result.length; i++){
+                var chancesArray = [];                
+              for(var i = 0; i<result.length; i++){
+                if(chancesArray.indexOf(result[i].chances)==-1){
                     chancesArray.push(result[i].chances)
                 }
+              }
             res.send({
                 result:chancesArray,
                 responseCode:200,

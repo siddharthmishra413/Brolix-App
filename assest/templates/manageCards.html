@@ -186,44 +186,33 @@
                     <div class="form-group cus-select">
                         <select class="form-control" ng-model="dashBordFilter.upgradeCard" ng-change="dashBordFilter()">
                             <option value="">Upgrade Card Type</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="150">150</option>
-                            <option value="200">200</option>
-                            <option value="250">250</option>
+                            <option ng-repeat="viewer in dashBordFilterViewer">{{viewer}}</option>
                         </select>
                     </div>
                     <div class="form-group cus-select">
                         <select class="form-control" ng-model="dashBordFilter.luckCard" ng-change="dashBordFilter()">
                             <option value="">Luck Card Type</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                            <option value="30">30</option>
-                            <option value="35">35</option>
-                            <option value="40">40</option>
-                            <option value="45">45</option>
-                            <option value="50">50</option>
+                            <option ng-repeat="chances in dashBordFilterChances">{{chances}}</option>
+                            
                         </select>
                     </div>
+
                     <div class="form-group cus-select">
-                        <datepicker date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
+                        <datepicker date-format="yyyy-MM-dd" selector="form-control"">
                             <div class="form-group">
-                                <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="Date To" ng-model="dashBordFilter.dobTo" />
-                            </div>
-                        </datepicker>
-                    </div>
-                    <div class="form-group cus-select">
-                        <datepicker date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                            <div class="form-group">
-                                <input ng-disabled="dashBordFilter.dobTo==undefined" style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="Date From" ng-model="dashBordFilter.dobFrom" />
+                                <input ng-change="dateValidation(dashBordFilter.dobFrom);" style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="Date From" ng-model="dashBordFilter.dobFrom" />
                             </div>
                         </datepicker>
                     </div>
 
-
+                    <div class="form-group cus-select">
+                        <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDatee}}">
+                            <div class="form-group">
+                                <input ng-change="dashBordFilter();" ng-disabled="dashBordFilter.dobFrom==undefined" style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="Date To" ng-model="dashBordFilter.dobTo" />
+                            </div>
+                        </datepicker>
+                    </div>
+                
                     <!-- <div class="form-group cus-select">
                         <input style="height: 40px; background-color: #EAEAEA" class="form-control"  ng-model="dashBordFilter.dateFrom" ng-change="dashBordFilter()" type="date" placeholder="From">
                     </div>

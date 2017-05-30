@@ -176,6 +176,9 @@ app.service('userService',function($http){
 
 
     /*-------------------------Manage Cards---------------------*/
+    luckCardViewersList: function() {
+      return $http.get(baseurl+'/admin/luckCardViewersList');
+    },
     upgradeCardViewersList: function() {
       return $http.get(baseurl+'/admin/upgradeCardViewersList');
     },
