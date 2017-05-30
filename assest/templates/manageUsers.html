@@ -233,8 +233,8 @@
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
 
 
-                     <div class="form-group cus-select">
-                         <select class="form-control" ng-change="changeCountry(); dashBordFilter();" ng-model="dashBordFilter.country" required>
+                    <div class="form-group cus-select">
+                        <select class="form-control" ng-change="changeCountry(); dashBordFilter();" ng-model="dashBordFilter.country" required>
                             <option value="">Select Country</option>
                             <option ng-repeat="country in countries" value"{{country}}">{{country}}</option>
                          </select>
@@ -246,7 +246,7 @@
                          </select>
                     </div> -->
                     <div class="form-group cus-select">
-                         <select  class="form-control" id="city" ng-change="dashBordFilter();" ng-model="dashBordFilter.city" required>
+                        <select class="form-control" id="city" ng-change="dashBordFilter();" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
                             <option ng-repeat="city in cityList">{{city}}</option>
                          </select>
@@ -256,13 +256,13 @@
 
 
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-change="dashBordFilter();" ng-model="dashBordFilter.gender" >
+                        <select class="form-control" ng-change="dashBordFilter();" ng-model="dashBordFilter.gender">
                             <option value="">Both Genders</option>
                             <option>Male</option>
                             <option>Female</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group cus-select">
                         <select class="form-control" ng-change="ageFunction(dashBordFilter.ageFrom);" ng-change="dashBordFilter();" ng-model="dashBordFilter.ageFrom">
                             <option value="">Age From</option>
@@ -271,7 +271,7 @@
                     </div>
 
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-disabled="dashBordFilter.ageFrom==undefined"  ng-model="dashBordFilter.ageTo">
+                        <select class="form-control" ng-disabled="dashBordFilter.ageFrom==undefined" ng-model="dashBordFilter.ageTo">
                             <option value="">Age To</option>
                             <option ng-repeat="ages in ageLimits">{{ages}}</option>
                             
@@ -279,26 +279,26 @@
                     </div>
 
                     <div class="form-group clearfix date-picker">
-                     <datepicker date-format="yyyy-MM-dd" selector="form-control" >
-                       <div class="input-group">
-                           <input class="form-control" ng-change="dateValidation(dashBordFilter.dobFrom);" placeholder="Choose Join date" style="cursor:pointer;" ng-model="dashBordFilter.dobFrom" />
-                           <span class="input-group-addon" style="cursor: pointer">
+                        <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                            <div class="input-group">
+                                <input class="form-control" ng-change="dateValidation(dashBordFilter.dobFrom);" placeholder="Choose Join date" style="cursor:pointer;" ng-model="dashBordFilter.dobFrom" />
+                                <span class="input-group-addon" style="cursor: pointer">
                            <!-- <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
-                       </div>
-                    </datepicker>
+                            </div>
+                        </datepicker>
                     </div>
                     <!-- {{dashBordFilter.dobTo==undefined}} -->
-                    <div class="form-group clearfix date-picker" >
-                    <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDatee}}">
-                       <div class="input-group">
-                           <input ng-disabled="dashBordFilter.dobFrom==undefined" class="form-control" style="cursor:pointer;" ng-change="dashBordFilter();" placeholder="Choose End date" ng-model="dashBordFilter.dobTo"/>
-                           <span class="input-group-addon" style="cursor: pointer">
+                    <div class="form-group clearfix date-picker">
+                        <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDatee}}">
+                            <div class="input-group">
+                                <input ng-disabled="dashBordFilter.dobFrom==undefined" class="form-control" style="cursor:pointer;" ng-change="dashBordFilter();" placeholder="Choose End date" ng-model="dashBordFilter.dobTo" />
+                                <span class="input-group-addon" style="cursor: pointer">
                            <!-- <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
-                       </div>
-                    </datepicker>
-                     </div>
+                            </div>
+                        </datepicker>
+                    </div>
 
                 </div>
             </div>
@@ -307,650 +307,666 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="totalUsers">
-        <div class="grp-search">
-        <div class="row-search">
-            <ul>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
-                </li>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
-                </li>
-                <li class="active">
-                     <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
-                </li>
-               <!--  <li class="active">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                        </li>
+                        <!--  <li class="active">
                 <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
                 </li> -->
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
-                </li>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
-                </li>
-                <li class="active">
-                     <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
-                </li>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
-                </li>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
-                </li>
-                <li class="last">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
-                </li>
-            </ul>
-        </div>
-        <div class="search-bar-cus">
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                        <div class="input-group-addon">Search</div>
-                    </div>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
                 </div>
-            </form>
-        </div>
-    </div>
-        <div class="table-responsive col-sm-12">
-            <table id="manageUserTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive col-sm-12">
+                <table id="manageUserTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Pages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
 
-                    <tr dir-paginate="x in totalUser | customFilterUser:test | itemsPerPage:10">
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >{{x.firstName}}</td>
-                        <td >{{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td >{{x.email}}</td>
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+                        <tr dir-paginate="x in totalUser | customFilterUser:test | itemsPerPage:10">
+                            <td>
+                                <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                            </td>
+                            <td>{{x.firstName}}</td>
+                            <td>{{x.lastName}}</td>
+                            <td>{{x.mobileNumber}}</td>
+                            <td>{{x.email}}</td>
+                            <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="personalUser">
             <div class="grp-search">
-            <div class="row-search">
-                <ul>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
-                    </li>
-                   <!--  <li class="active">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                        </li>
+                        <!--  <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
                     </li> -->
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
-                    </li>
-                    <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test1" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test1" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                                <div class="input-group-addon">Search</div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive col-sm-12">
-            <table id="manageUserTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- <tr ng-repeat="x in personalUser |filter:test"> -->
-                     <tr dir-paginate="x in personalUser | customFilterUser:test1 | itemsPerPage:10">
-                    <!-- <tr ng-repeat="x in personalUser | customFilterUser:test1"> -->
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >{{x.firstName}}</td>
-                        <td >{{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td >{{x.email}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <div class="table-responsive col-sm-12">
+                <table id="manageUserTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Pages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr ng-repeat="x in personalUser |filter:test"> -->
+                        <tr dir-paginate="x in personalUser | customFilterUser:test1 | itemsPerPage:10">
+                            <!-- <tr ng-repeat="x in personalUser | customFilterUser:test1"> -->
+                            <td>
+                                <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                            </td>
+                            <td>{{x.firstName}}</td>
+                            <td>{{x.lastName}}</td>
+                            <td>{{x.mobileNumber}}</td>
+                            <td>{{x.email}}</td>
+                            <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <!-- <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUser:test1).length != 0">
                         <button ng-click="prePersonalUser()" ng-disabled="pagePersonalUser==1" class="btn paginationBtn" >Prev</button>
                         {{pagePersonalUser}}/{{noOfPagesPersonalUser}}
                         <button ng-click="nextPersonalUser()" ng-disabled="pagePersonalUser==noOfPagesPersonalUser" class="btn paginationBtn">Next</button>
             </div> -->
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="businessUser">
             <div class="grp-search">
-            <div class="row-search">
-                <ul>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
-                    </li>
-                    <!-- <li class="active">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                        </li>
+                        <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
                     </li> -->
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
-                    </li>
-                    <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test2" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test2" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                                <div class="input-group-addon">Search</div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive col-sm-12">
-            <table id="manageUserTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 <tr dir-paginate="x in businessUser | customFilterUser:test2 | itemsPerPage:10">
-                   <!--  <tr ng-repeat="x in businessUser | customFilterUser:test2"> -->
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >{{x.firstName}}</td>
-                        <td >{{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td >{{x.email}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <div class="table-responsive col-sm-12">
+                <table id="manageUserTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Pages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="x in businessUser | customFilterUser:test2 | itemsPerPage:10">
+                            <!--  <tr ng-repeat="x in businessUser | customFilterUser:test2"> -->
+                            <td>
+                                <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                            </td>
+                            <td>{{x.firstName}}</td>
+                            <td>{{x.lastName}}</td>
+                            <td>{{x.mobileNumber}}</td>
+                            <td>{{x.email}}</td>
+                            <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <!-- <div style="float:right; font-size: 20px;" ng-if="(businessUser | customFilterUser:test2).length != 0">
                 <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBusinessUser}}/{{noOfPagesBusinessUser}}
                 <button ng-click="nextBusinessUser()" ng-disabled="pageBusinessUser==noOfPagesBusinessUser" class="btn paginationBtn">Next</button>
             </div> -->
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="liveUser">
             <div class="grp-search">
-            <div class="row-search">
-                <ul>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
-                    </li>
-                   <!--  <li class="active">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                        </li>
+                        <!--  <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
                     </li> -->
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
-                    </li>
-                    <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test3" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test3" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                                <div class="input-group-addon">Search</div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive col-sm-12">
-            <table id="manageUserTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 <tr dir-paginate="x in liveUser | customFilterUser:test3 | itemsPerPage:10">
-                <!--    <tr ng-repeat="x in liveUser | customFilterUser:test3"> -->
-                       <td>
-                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                       </td>
-                       <td >{{x.firstName}}</td>
-                       <td >{{x.lastName}}</td>
-                       <td >{{x.mobileNumber}}</td>
-                       <td >{{x.email}}</td>
-                       <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
-                   </tr>
-               </tbody>
-            </table>
-        </div>
+            <div class="table-responsive col-sm-12">
+                <table id="manageUserTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Pages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="x in liveUser | customFilterUser:test3 | itemsPerPage:10">
+                            <!--    <tr ng-repeat="x in liveUser | customFilterUser:test3"> -->
+                            <td>
+                                <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                            </td>
+                            <td>{{x.firstName}}</td>
+                            <td>{{x.lastName}}</td>
+                            <td>{{x.mobileNumber}}</td>
+                            <td>{{x.email}}</td>
+                            <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <!-- <div style="float:right; font-size: 20px;" ng-if="(liveUser | customFilterUser:test3).length != 0">
                 <button ng-click="preLiveUser()" ng-disabled="pageLiveUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageLiveUser}}/{{noOfPagesLiveUser}}
                 <button ng-click="nextLiveUser()" ng-disabled="pageLiveUser==noOfPagesLiveUser" class="btn paginationBtn">Next</button>
             </div> -->
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="totalwinners">
             <div class="grp-search">
-            <div class="row-search">
-                <ul>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
-                    </li>
-                    <!-- <li class="active">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                        </li>
+                        <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
                     </li> -->
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
-                    </li>
-                    <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test4" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test4" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                                <div class="input-group-addon">Search</div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive col-sm-12">
-            <table id="manageUserTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>First Names</th>
-                        <th>Last Name</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 <tr dir-paginate="x in totalWinners | customFilterUser:test4 | itemsPerPage:10">
-                  <!--   <tr ng-repeat="x in totalWinners | customFilterUser:test4"> -->
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >{{x.firstName}}</td>
-                        <td >{{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td >{{x.email}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <div class="table-responsive col-sm-12">
+                <table id="manageUserTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>First Names</th>
+                            <th>Last Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Pages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="x in totalWinners | customFilterUser:test4 | itemsPerPage:10">
+                            <!--   <tr ng-repeat="x in totalWinners | customFilterUser:test4"> -->
+                            <td>
+                                <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                            </td>
+                            <td>{{x.firstName}}</td>
+                            <td>{{x.lastName}}</td>
+                            <td>{{x.mobileNumber}}</td>
+                            <td>{{x.email}}</td>
+                            <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <!-- <div style="float:right; font-size: 20px;" ng-if="(totalWinners | customFilterUser:test4).length != 0">
                 <button ng-click="preTotalWinners()" ng-disabled="pageTotalWinners ==1" class="btn paginationBtn" >Prev</button>
                 {{pageTotalWinners }}/{{noOfPagesTotalWinners }}
                 <button ng-click="nextTotalWinners ()" ng-disabled="pageTotalWinners ==noOfPagesTotalWinners " class="btn paginationBtn">Next</button>
             </div> -->
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="cashWinners">
-        <div class="grp-search">
-            <div class="row-search">
-                <ul>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
-                    </li>
-                    <!-- <li class="active">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                        </li>
+                        <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
                     </li> -->
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
-                    </li>
-                    <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test5" placeholder="Search By Name or Mobile">
-                            <div class="input-group-addon">Search</div>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test5" placeholder="Search By Name or Mobile">
+                                <div class="input-group-addon">Search</div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive col-sm-12">
-            <table id="manageUserTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 <tr dir-paginate="x in cashWinners | customFilterUser:test5 | itemsPerPage:10">
-                    <!-- <tr ng-repeat="x in cashWinners | customFilterUser:test5"> -->
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >{{x.firstName}}</td>
-                        <td >{{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td >{{x.email}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-           <!--  <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test5).length != 0">
+            <div class="table-responsive col-sm-12">
+                <table id="manageUserTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Pages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="x in cashWinners | customFilterUser:test5 | itemsPerPage:10">
+                            <!-- <tr ng-repeat="x in cashWinners | customFilterUser:test5"> -->
+                            <td>
+                                <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                            </td>
+                            <td>{{x.firstName}}</td>
+                            <td>{{x.lastName}}</td>
+                            <td>{{x.mobileNumber}}</td>
+                            <td>{{x.email}}</td>
+                            <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--  <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test5).length != 0">
                 <button ng-click="preCashWinners()" ng-disabled="pageCashWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCashWinners}}/{{noOfPagesCashWinners}}
                 <button ng-click="nextCashWinners()" ng-disabled="pageCashWinners==noOfPagesCashWinners" class="btn paginationBtn">Next</button>
             </div> -->
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="couponWinners">
-        <div class="grp-search">
-            <div class="row-search">
-                <ul>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
-                    </li>
-                    <!-- <li class="active">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="Block_User(myForm.checkId)">Block User</a>
+                        </li>
+                        <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="view_coupons(myForm.checkId)">View Coupon</a>
 
                     </li> -->
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
-                    </li>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
-                    </li>
-                    <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" maxlength="16" ng-maxlength="15" ng-model="test6" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_coupons(myForm.checkId)">Send Coupon</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_cash(myForm.checkId)">Send Cash</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_message(myForm.checkId)">Send Message</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_card(myForm.checkId)">Send Card</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="total_user_brolix(myForm.checkId)">Send Brolix</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" maxlength="16" ng-maxlength="15" ng-model="test6" placeholder="Search By Name or Mobile" required>
+                                <div class="input-group-addon">Search</div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive col-sm-12">
-            <table id="manageUserTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 <tr dir-paginate="x in couponWinners | customFilterUser:test6 | itemsPerPage:10">
-                   <!--  <tr ng-repeat="x in couponWinners | customFilterUser:test6"> -->
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >{{x.firstName}}</td>
-                        <td >{{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td >{{x.email}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-           <!--  <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test6).length != 0">
+            <div class="table-responsive col-sm-12">
+                <table id="manageUserTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Pages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="x in couponWinners | customFilterUser:test6 | itemsPerPage:10">
+                            <!--  <tr ng-repeat="x in couponWinners | customFilterUser:test6"> -->
+                            <td>
+                                <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                            </td>
+                            <td>{{x.firstName}}</td>
+                            <td>{{x.lastName}}</td>
+                            <td>{{x.mobileNumber}}</td>
+                            <td>{{x.email}}</td>
+                            <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--  <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test6).length != 0">
                 <button ng-click="preCouponWinners()" ng-disabled="pageCouponWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCouponWinners}}/{{noOfPagesCouponWinners}}
                 <button ng-click="nextCouponWinners()" ng-disabled="pageCouponWinners==noOfPagesCouponWinners" class="btn paginationBtn">Next</button>
             </div> -->
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
     <div class="col-sm-12" ng-switch="tab">
         <div class="cus-table" ng-switch-when="blockuser">
-        <div class="grp-search">
-            <div class="row-search">
-                <ul>
-                    <li class="active">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
-                    </li>
-                    <li class="active">
-                         <a data-toggle="tab" style="cursor: pointer;" ng-click="UnBlock_User(myForm.checkId)">Unblock User</a>
-                    </li>
-                    <li class="last">
-                        <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="search-bar-cus">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="test7" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
-                            <div class="input-group-addon">Search</div>
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="UnBlock_User(myForm.checkId)">Unblock User</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()">Create Report</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test7" maxlength="16" ng-maxlength="15" placeholder="Search By Name or Mobile" required>
+                                <div class="input-group-addon">Search</div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive col-sm-12">
-            <table id="manageUserTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 <tr dir-paginate="x in allblockUser | customFilterUser:test7 | itemsPerPage:10">
-                   <!--  <tr ng-repeat="x in allblockUser | customFilterUser: test7"> -->
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >{{x.firstName}}</td>
-                        <td >{{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td >{{x.email}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-           <!--  <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test7).length != 0">
+            <div class="table-responsive col-sm-12">
+                <table id="manageUserTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Pages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="x in allblockUser | customFilterUser:test7 | itemsPerPage:10">
+                            <!--  <tr ng-repeat="x in allblockUser | customFilterUser: test7"> -->
+                            <td>
+                                <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                            </td>
+                            <td>{{x.firstName}}</td>
+                            <td>{{x.lastName}}</td>
+                            <td>{{x.mobileNumber}}</td>
+                            <td>{{x.email}}</td>
+                            <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--  <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test7).length != 0">
                 <button ng-click="preBlockUser()" ng-disabled="pageBlockUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBlockUser}}/{{noOfPagesBlockUser}}
                 <button ng-click="nextBlockUser()" ng-disabled="pageBlockUser==noOfPagesBlockUser" class="btn paginationBtn">Next</button>
             </div> -->
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
 </div>
@@ -959,23 +975,23 @@
 <!-- Model open to send msg to multiple user -->
 
 <div id="sendMessageModelAllUser" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Send message to All User</h4>
-           </div>
-           <div class="modal-body">
-               <form name="sendMessage">
-                   <div class="form-group">
-                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
-                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
-                   </div>
-                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
-               </form>
-           </div>
-       </div>
-   </div>
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Send message to All User</h4>
+            </div>
+            <div class="modal-body">
+                <form name="sendMessage">
+                    <div class="form-group">
+                        <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
+                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
+                    </div>
+                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -983,52 +999,52 @@
 <!-- Model open to send brolix to multiple user -->
 
 <div id="sendbrolixModelAllUser" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Enter Brolix to pay by admin </h4>
-           </div>
-           <div class="modal-body">
-               <form name="sendBrolix" name="sendMessage">
-                   <div class="form-group">
-                   <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
-                    <span style="color:red;" ng-show="sendBrolix.brolixsend.$dirty && sendBrolix.brolixsend.$invalid">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Enter Brolix to pay by admin </h4>
+            </div>
+            <div class="modal-body">
+                <form name="sendBrolix" name="sendMessage">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
+                        <span style="color:red;" ng-show="sendBrolix.brolixsend.$dirty && sendBrolix.brolixsend.$invalid">
                     <span ng-show="sendBrolix.brolixsend.$error.required">Brolix is required.</span>
-                    <span ng-show="sendBrolix.brolixsend.$error.maxlength">Brolix have at most 10 digits.</span>
-                    <span ng-show="sendBrolix.brolixsend.$error.pattern">Only number are allowed.</span>
-                   </div>
-                   <button ng-disabled="sendBrolix.$invalid" type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_brolix('totalUser')">Send Brolix</button>
-               </form>
-           </div>
-       </div>
-   </div>
+                        <span ng-show="sendBrolix.brolixsend.$error.maxlength">Brolix have at most 10 digits.</span>
+                        <span ng-show="sendBrolix.brolixsend.$error.pattern">Only number are allowed.</span>
+                    </div>
+                    <button ng-disabled="sendBrolix.$invalid" type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_brolix('totalUser')">Send Brolix</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <!-- Model open to send cash to multiple user -->
 
 <div id="sendcashModelAllUser" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Enter Cash to pay by admin </h4>
-           </div>
-           <div class="modal-body">
-               <form name="sendCash">
-                   <div class="form-group">
-                   <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
-                    <span style="color:red;" ng-show="sendCash.cashsend.$dirty && sendCash.cashsend.$invalid">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Enter Cash to pay by admin </h4>
+            </div>
+            <div class="modal-body">
+                <form name="sendCash">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
+                        <span style="color:red;" ng-show="sendCash.cashsend.$dirty && sendCash.cashsend.$invalid">
                     <span ng-show="sendCash.cashsend.$error.required">Cash is required.</span>
-                    <span ng-show="sendCash.cashsend.$error.maxlength">Cash have at most 10 digits.</span>
-                    <span ng-show="sendCash.cashsend.$error.pattern">Only number are allowed.</span>
-                   </div>
-                   <button ng-disabled="sendCash.$invalid" type="submit" class="btn btn-danger" ng-click="send_cashall('totalUser')">Send Cash</button>
-               </form>
-           </div>
-       </div>
-   </div>
+                        <span ng-show="sendCash.cashsend.$error.maxlength">Cash have at most 10 digits.</span>
+                        <span ng-show="sendCash.cashsend.$error.pattern">Only number are allowed.</span>
+                    </div>
+                    <button ng-disabled="sendCash.$invalid" type="submit" class="btn btn-danger" ng-click="send_cashall('totalUser')">Send Cash</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -1039,80 +1055,80 @@
 
 
 <div id="ViewCoupons" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Send message to All Blocked Users</h4>
-           </div>
-           <div class="modal-body">
-               <form  name="sendMessage">
-                   <div class="form-group">
-                   <textarea type="text" id="messageInput" class="form-control" ng-model="send.massage" placeholder="Enter Your message" /></textarea>
-                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
-                   </div>
-                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
-               </form>
-           </div>
-       </div>
-   </div>
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Send message to All Blocked Users</h4>
+            </div>
+            <div class="modal-body">
+                <form name="sendMessage">
+                    <div class="form-group">
+                        <textarea type="text" id="messageInput" class="form-control" ng-model="send.massage" placeholder="Enter Your message" /></textarea>
+                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
+                    </div>
+                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="sendMessageModelsingleUser" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Send message to User</h4>
-           </div>
-           <div class="modal-body">
-               <form name="sendMessage">
-                   <div class="form-group">
-                   <textarea type="text" id="messageInput" class="form-control" ng-model="send.massageUser" placeholder="Enter Your message" /></textarea>
-                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
-                   </div>
-                   <button type="submit" class="btn btn-danger"  ng-disabled="sendMessage.$invalid" ng-click="send_massage('singleuser')">Send message</button>
-               </form>
-           </div>
-       </div>
-   </div>
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Send message to User</h4>
+            </div>
+            <div class="modal-body">
+                <form name="sendMessage">
+                    <div class="form-group">
+                        <textarea type="text" id="messageInput" class="form-control" ng-model="send.massageUser" placeholder="Enter Your message" /></textarea>
+                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
+                    </div>
+                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage('singleuser')">Send message</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <div id="sendbrolixModelsingleUser" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Enter Brolix to pay by admin </h4>
-           </div>
-           <div class="modal-body">
-               <form name="userFrom1">
-                   <div class="form-group">
-                   <input type="text" class="form-control" name="brolix" ng-model="send.singlebrolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
-                    <span style="color:red;" ng-show="userFrom1.brolix.$dirty && userFrom1.brolix.$invalid">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Enter Brolix to pay by admin </h4>
+            </div>
+            <div class="modal-body">
+                <form name="userFrom1">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="brolix" ng-model="send.singlebrolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
+                        <span style="color:red;" ng-show="userFrom1.brolix.$dirty && userFrom1.brolix.$invalid">
                     <span ng-show="userFrom1.brolix.$error.required">Mobile number is required.</span>
-                    <span ng-show="userFrom1.brolix.$error.maxlength">Must have at most 10 digits.</span>
-                    <span ng-show="userFrom1.brolix.$error.pattern">Only number are allowed.</span>
-                   </div>
-                   <button type="submit" class="btn btn-danger" ng-click="send_brolix('singleuser')">Send Brolix</button>
-               </form>
-           </div>
-       </div>
-   </div>
+                        <span ng-show="userFrom1.brolix.$error.maxlength">Must have at most 10 digits.</span>
+                        <span ng-show="userFrom1.brolix.$error.pattern">Only number are allowed.</span>
+                    </div>
+                    <button type="submit" class="btn btn-danger" ng-click="send_brolix('singleuser')">Send Brolix</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 
 <div id="ViewCoupon" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">User Coupons</h4>
-           </div>
-           <div class="modal-body">
-               <form name="userFrom1">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">User Coupons</h4>
+            </div>
+            <div class="modal-body">
+                <form name="userFrom1">
 
 
                     <!-- <div class="row table-responsive cus-table" ng-switch-when="totalUsers">
@@ -1142,26 +1158,26 @@
                         </table>
                     </div> -->
 
-                   <button type="submit" class="btn btn-danger" ng-click="send_brolix('singleuser')">Send Brolix</button>
+                    <button type="submit" class="btn btn-danger" ng-click="send_brolix('singleuser')">Send Brolix</button>
 
-               </form>
-           </div>
-       </div>
-   </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <div id="showAllCard" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Send Card to All User</h4>
-           </div>
-           <div class="modal-body">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Send Card to All User</h4>
+            </div>
+            <div class="modal-body">
                 <div class="modal-outer-block">
                     <div class="add-user panel panel-default cust-panel" style="margin:0;">
-                      <!--   <div class="panel-heading">
+                        <!--   <div class="panel-heading">
                             <h3 class="panel-title">Remove Cards</h3>
                         </div> -->
                         <div class="panel-body">
@@ -1172,47 +1188,47 @@
                             </ul>
                             <div class="tab-content add-card" style="padding:10px 0 0;">
                                 <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
-                                <div class="search_cus"><input class="searching form-control" ng-model='view' placeholder='search coupan...' style="width: 200px;"></div>
+                                    <div class="search_cus"><input class="searching form-control" ng-model='view' placeholder='search coupan...' style="width: 200px;"></div>
                                     <div class="row-table" ng-repeat="data in UpgradeCard | filterOnView:view ">
                                         <div class="col-cell">
                                             <div class="cover-image newcover-img">
                                                 <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
                                                 <div class="viewwe-s">
                                                     <div class="tops-s">
-                                                         <div class="amts-top">{{data.viewers}}</div>
-                                                          <div class="ants-view">Viewers</div>
+                                                        <div class="amts-top">{{data.viewers}}</div>
+                                                        <div class="ants-view">Viewers</div>
                                                     </div>
-                                                     <div class="bottom-dol">${{data.price}}</div>
+                                                    <div class="bottom-dol">${{data.price}}</div>
 
                                                 </div>
-                                                 <div class="col-cell add-remove">
-                                                     <span class="fa fa-send" ng-click="sendCard(data._id,'upgrade')"></span>
-                                                 </div>
+                                                <div class="col-cell add-remove">
+                                                    <span class="fa fa-send" ng-click="sendCard(data._id,'upgrade')"></span>
+                                                </div>
                                             </div>
-                                            
-                                        </div>                                       
+
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
-                                 <input class="searching form-control" ng-model='viewer' placeholder='search coupan...' style="width: 200px;">
+                                    <input class="searching form-control" ng-model='viewer' placeholder='search coupan...' style="width: 200px;">
                                     <div class="row-table" ng-repeat="data in LuckCard | filterOnLuck:viewer">
                                         <div class="col-cell">
                                             <div class="cover-image newcover-img">
                                                 <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
                                                 <div class="viewwe-s">
                                                     <div class="tops-s">
-                                                         <div class="amts-top">{{data.chances}}</div>
-                                                          <div class="ants-view">Chances</div>
+                                                        <div class="amts-top">{{data.chances}}</div>
+                                                        <div class="ants-view">Chances</div>
                                                     </div>
-                                                     <div class="bottom-dol">B{{data.brolix}}</div>
+                                                    <div class="bottom-dol">B{{data.brolix}}</div>
 
                                                 </div>
-                                                 <div class="col-cell add-remove">
-                                                     <span class="fa fa-send" ng-click="sendCard(data._id,'luck')"></span>
-                                                 </div>
+                                                <div class="col-cell add-remove">
+                                                    <span class="fa fa-send" ng-click="sendCard(data._id,'luck')"></span>
+                                                </div>
                                             </div>
-                                            
-                                        </div>                                       
+
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
@@ -1232,131 +1248,131 @@
                     </div>
                 </div>
             </div>
-       </div>
-   </div>
+        </div>
+    </div>
 </div>
 
 
 <div id="showAllCoupons" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Send Coupons to All User</h4>
-           </div>
-           <div class="modal-header">
-               <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
-               <input class="searching form-control" ng-model='pageName' placeholder='search coupan...' style="width: 200px;">
-           </div>
-           <div class="row-table" ng-repeat="data in allCoupons | customSearchFilter:pageName">
-            <div class="col-cell">
-                <div class="cover-image coupan-image newcover-img">
-                    <img ng-src="{{data.coverImage || '../dist/image/cover.jpg' }}" id="output">
-                    <!-- {{data.pageName}} -->
-                    <div class="cover-image-txt">
-                        <div class="left-img-txt">
-                            <div class="b-layer-txt text-center">{{data.pageName}}</div>
-                            <div class="g-layer-txt text-center">{{data.couponExpiryDate | date:'dd-MM-yyyy'}}</div>
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Send Coupons to All User</h4>
+            </div>
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+                <input class="searching form-control" ng-model='pageName' placeholder='search coupan...' style="width: 200px;">
+            </div>
+            <div class="row-table" ng-repeat="data in allCoupons | customSearchFilter:pageName">
+                <div class="col-cell">
+                    <div class="cover-image coupan-image newcover-img">
+                        <img ng-src="{{data.coverImage || '../dist/image/cover.jpg' }}" id="output">
+                        <!-- {{data.pageName}} -->
+                        <div class="cover-image-txt">
+                            <div class="left-img-txt">
+                                <div class="b-layer-txt text-center">{{data.pageName}}</div>
+                                <div class="g-layer-txt text-center">{{data.couponExpiryDate | date:'dd-MM-yyyy'}}</div>
+                            </div>
+                            <div class="gift-input">
+                                <span type="text" placeholder="Gift Description">{{data.giftDescription}}</span>
+                            </div>
                         </div>
-                        <div class="gift-input">
-                            <span type="text" placeholder="Gift Description">{{data.giftDescription}}</span>
+                        <div class="valid-block">
+                            <span class="valid-txt">{{data.status}}</span>
+                            <span class="valid-box"><i class="fa fa-circle"></i></span>
                         </div>
-                    </div>
-                    <div class="valid-block">
-                        <span class="valid-txt">{{data.status}}</span>
-                        <span class="valid-box"><i class="fa fa-circle"></i></span>
-                    </div>
 
-                    <div class="add-remove cus_add-remove">
-                        <span class="fa fa-send" ng-click="sendCoupons(data._id)"></span>
-                    </div>
+                        <div class="add-remove cus_add-remove">
+                            <span class="fa fa-send" ng-click="sendCoupons(data._id)"></span>
+                        </div>
 
+                    </div>
                 </div>
             </div>
         </div>
-       </div>
-   </div>
+    </div>
 </div>
 
 <div id="allCouponsDetails" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">All Coupons Details</h4>
-           </div>
-           <div class="modal-header">
-               <input type='text' ng-model='pageName' placeholder="enter name"/>
-           </div>
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">All Coupons Details</h4>
+            </div>
+            <div class="modal-header">
+                <input type='text' ng-model='pageName' placeholder="enter name" />
+            </div>
             <div class="modal-body">
-           <div class="row-table" >
+                <div class="row-table">
 
-           <table id="manageUserTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Page Name</th>
-                        <th>Cover Image</th>
-                        <th>Gift Description</th>
-                        <th>Coupon ExpiryDate</th>
-                        <th>Coupon Buyers Length</th>
-                        <th>Coupon SellPrice</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="x in allCoupons | customSearchFilter : pageName">
-                        <td class="skyblue-text">{{x.pageName}}</td>
-                        <td class="skyblue-text"><img class="img-responsive" ng-src="{{x.coverImage}}" id="output"></td>
-                        <td class="skyblue-text">{{x.giftDescription}}</td>
-                        <td class="skyblue-text">{{x.couponExpiryDate}}</td>
-                        <td class="skyblue-text">{{x.couponBuyersLength}}</td>
-                        <td class="skyblue-text">{{x.couponSellPrice}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <!-- <div class="col-cell">
+                    <table id="manageUserTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Page Name</th>
+                                <th>Cover Image</th>
+                                <th>Gift Description</th>
+                                <th>Coupon ExpiryDate</th>
+                                <th>Coupon Buyers Length</th>
+                                <th>Coupon SellPrice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in allCoupons | customSearchFilter : pageName">
+                                <td class="skyblue-text">{{x.pageName}}</td>
+                                <td class="skyblue-text"><img class="img-responsive" ng-src="{{x.coverImage}}" id="output"></td>
+                                <td class="skyblue-text">{{x.giftDescription}}</td>
+                                <td class="skyblue-text">{{x.couponExpiryDate}}</td>
+                                <td class="skyblue-text">{{x.couponBuyersLength}}</td>
+                                <td class="skyblue-text">{{x.couponSellPrice}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <div class="col-cell">
                 <div class="cover-image">
                     <img ng-src="{{data.coverImage || '../dist/image/cover.jpg'}}" id="output">
                 </div>
             </div> -->
+                </div>
             </div>
         </div>
-       </div>
-   </div>
+    </div>
 </div>
 
 
-<div id="pageDetails" class="modal fade" >
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-               <h4 class="modal-title">Page Details</h4>
-           </div>
-           <div class="modal-body">
+<div id="pageDetails" class="modal fade">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Page Details</h4>
+            </div>
+            <div class="modal-body">
                 <div class="modal-outer-block">
                     <div class="add-user panel panel-default cust-panel" style="margin:0;">
                         <div class="table-responsive cus-table">
                             <table id="manageUserTable" class="table table-bordered table-striped">
                                 <thead>
                                     <div class="c_modal_search">
-                                      <form class="navbar-form" role="search">
-                                        <div class="input-group add-on">
-                                          <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text" ng-model="page">
-                                          <!-- <div class="input-group-btn">
+                                        <form class="navbar-form" role="search">
+                                            <div class="input-group add-on">
+                                                <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text" ng-model="page">
+                                                <!-- <div class="input-group-btn">
                                             <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                                           </div> -->
-                                        </div>
-                                      </form>
+                                            </div>
+                                        </form>
                                     </div>
-                                  </thead>
-                                    <tr>
-                                       <!--  <th>Page Type</th> -->
-                                        <th>Page Name</th>
-                                        <th>Category</th>
-                                        <th>Sub Category</th>
-                                        <!-- <th>Page Discription</th> -->
-                                        <th>Status</th>
-                                    </tr>
+                                </thead>
+                                <tr>
+                                    <!--  <th>Page Type</th> -->
+                                    <th>Page Name</th>
+                                    <th>Category</th>
+                                    <th>Sub Category</th>
+                                    <!-- <th>Page Discription</th> -->
+                                    <th>Status</th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="x in allshowUserPage |filter:page">
@@ -1372,7 +1388,7 @@
                         </div>
                     </div>
                 </div>
-           </div>
-       </div>
-   </div>
+            </div>
+        </div>
+    </div>
 </div>
