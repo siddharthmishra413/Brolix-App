@@ -98,7 +98,7 @@ module.exports = {
                 res.send({
                     result: pageResult,
                     responseCode: 200,
-                    responseMessage: "User rating updated."
+                    responseMessage: "All pages show successfully."
                 })
                 callback(null, "done");
             },
@@ -308,18 +308,119 @@ module.exports = {
         }
     },
 
+    // console.log("request-->>", req.body)
+    //   waterfall([
+    //       function(callback) {
+    //           User.findOne({ _id: req.params.id }).exec(function(err, result) {
+    //               callback(null, result);
+    //           })
+    //       },
+    //       function(result, callback) {
+    //           createNewPage.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+    //               if (err) { res.semd({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+    //                   callback(null, result, pageResult);
+    //               }
+    //           })
+    //       },
+    //       function(result, pageResult, callback) {
+    //           console.log("pageFollowers--->>", result);
+    //           console.log("result.pageFollowers--->>");
+    //           console.log("result.pageFollowers--->>", result.pageFollowers);
+    //           var array = [];
+    //           var data = [];
+    //           if (result.pageFollowers.length != 0) {
+    //               for (var i = 0; i < result.pageFollowers.length; i++) {
+    //                   array.push(result.pageFollowers[i].pageId)
+    //               }
+    //               console.log("ssssssssss", array);
+    //               for (var j = 0; j < array.length; j++) {
+    //                   console.log("jjjjj", j);
+    //                   for (k = 0; k < pageResult.docs.length; k++) {
+    //                       console.log("kkkkkk", pageResult.docs[k]._id);
+    //                       console.log("kkkkkk", pageResult.docs[k]._id == array[j]);
+    //                       if (pageResult.docs[k]._id == array[j]) {
+    //                           pageResult.docs[k].pageFollowersStatus = "true"
+    //                       }
+    //                   }
+    //               }
+
+    //           }
+    //           res.send({
+    //               result: pageResult,
+    //               responseCode: 200,
+    //               responseMessage: "User rating updated."
+    //           })
+    //           callback(null, "done");
+    //       },
+    //       function(err, results) {
+
+    //       }
+    //   ])
+
     "allPagesSearch": function(req, res) {
-        var re = new RegExp(req.body.search, 'i');
-        createNewPage.paginate({ userId: { $ne: req.params.id }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+        console.log("request-->>", req.body)
+        waterfall([
+            function(callback) {
+                User.findOne({ _id: req.params.id }).exec(function(err, result) {
+                    callback(null, result);
+                })
+            },
+            function(result, callback) {
+                var re = new RegExp(req.body.search, 'i');
+                createNewPage.paginate({ userId: { $ne: req.params.id }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+                        callback(null, result, pageResult);
+                    }
+                })
+            },
+            function(result, pageResult, callback) {
+                console.log("pageFollowers--->>", result);
+                console.log("result.pageFollowers--->>");
+                console.log("result.pageFollowers--->>", result.pageFollowers);
+                var array = [];
+                var data = [];
+                if (result.pageFollowers.length != 0) {
+                    for (var i = 0; i < result.pageFollowers.length; i++) {
+                        array.push(result.pageFollowers[i].pageId)
+                    }
+                    console.log("ssssssssss", array);
+                    for (var j = 0; j < array.length; j++) {
+                        console.log("jjjjj", j);
+                        for (k = 0; k < pageResult.docs.length; k++) {
+                            console.log("kkkkkk", pageResult.docs[k]._id);
+                            console.log("kkkkkk", pageResult.docs[k]._id == array[j]);
+                            if (pageResult.docs[k]._id == array[j]) {
+                                pageResult.docs[k].pageFollowersStatus = "true"
+                            }
+                        }
+                    }
+
+                }
                 res.send({
-                    result: result,
+                    result: pageResult,
                     responseCode: 200,
                     responseMessage: "Show pages successfully."
-                });
+                })
+                callback(null, "done");
+            },
+            function(err, results) {
+
             }
-        })
+        ])
     },
+
+    // "allPagesSearch": function(req, res) {
+    //     var re = new RegExp(req.body.search, 'i');
+    //     createNewPage.paginate({ userId: { $ne: req.params.id }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, result) {
+    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+    //             res.send({
+    //                 result: result,
+    //                 responseCode: 200,
+    //                 responseMessage: "Show pages successfully."
+    //             });
+    //         }
+    //     })
+    // },
 
     //API for Show Search
     "searchForPages": function(req, res) {
@@ -2043,7 +2144,7 @@ module.exports = {
             function(callback) {
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
 
-                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city"  )) {
+                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city")) {
                         var cond = { $or: [] };
                         if (key == "subCategory") {
                             for (data in req.body[key]) {
@@ -2082,7 +2183,7 @@ module.exports = {
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                        if (!(key == "pageName" || key == "category" || key == "subCategory" ||key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
+                        if (!(key == "pageName" || key == "category" || key == "subCategory" || key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
                             var queryOrData = { $or: [] };
                             var temporayCondData = {}
 
