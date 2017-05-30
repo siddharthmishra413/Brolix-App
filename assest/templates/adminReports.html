@@ -1,29 +1,77 @@
 <div class="col-sm-12">
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped" >
-            <tr>
-                <th>User Name</th>
-                <!-- <th>Country</th>
-                <th>Email</th>
-                <th>Mobile Number</th> -->
-                <th>ReportType</th>
-                <th>Subject</th>
-               <!--  <th>Status</th> -->
-                <th>Reported Time</th>
-                <th>Message</th>  
-            </tr>
-            <tr dir-paginate="x in allReports | itemsPerPage:10">
-                <td class="skyblue-text" style="cursor:pointer;">{{x.userId.firstName}} {{x.userId.lastName}}</td>
-                <!-- <td>{{x.userId.country}}</td>
-                <td>{{x.userId.email}}</td>
-                <td>{{x.userId.mobileNumber}}</td> -->
-                <td>{{x.reportType}}</td>
-                <td>{{x.subject}}</td>
-                <!-- <td>{{x.status}}</td> -->
-                <td>{{x.createdAt | date:'MMMM dd, yyyy' }}</td>
-                <td class="skyblue-text" style="cursor:pointer;">View</td>
-            </tr> 
-        </table>
-        <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
+    <div class="row">
+        <ul class="nav nav-pills card-tabs">
+            <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('user');">User info.</a></li>
+            <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('ads')">Ads info.</a></li>
+        </ul>
+
+        <div class="c1-notify-row" ng-if="key == 'user'">
+            <h3 class="text-center">User Type Report Information</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>User Name</th>
+                        <th>ReportType</th>
+                        <th>Subject</th>
+                        <th>Reported Time</th>
+                        <th>Message</th>
+                    </tr>
+                    <tr dir-paginate="x in allReportsuserType | itemsPerPage:10">
+                        <td class="skyblue-text" style="cursor:pointer;">{{x.userId.firstName}} {{x.userId.lastName}}</td>
+                        <td>{{x.reportType}}</td>
+                        <td>{{x.subject}}</td>
+                        <td>{{x.createdAt | date:'MMMM dd, yyyy' }}</td>
+                        <td class="skyblue-text" style="cursor:pointer;" ng-click="openMessage(x.reportDiscription);">View</td>
+                    </tr>
+                </table>
+                <div class="col-sm-12 text-center ">
+                    <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
+
+<div class="col-sm-12 " ng-if="key == 'ads'">
+    <div class="row">
+        <div class="c1-notify-row">
+            <h3 class="text-center">Ads Type Report Information</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>User Name</th>
+                        <th>ReportType</th>
+                        <th>Reported Time</th>
+                    </tr>
+                    <tr dir-paginate="x in allReportsAdsType | itemsPerPage:10">
+                        <td class="skyblue-text" style="cursor:pointer;">{{x.userId.firstName}} {{x.userId.lastName}}</td>
+                        <td>{{x.reportType}}</td>
+                        <td>{{x.createdAt | date:'MMMM dd, yyyy' }}</td>
+                    </tr>
+                </table>
+                <div class="col-sm-12 text-center ">
+                    <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="adInfo" class="modal fade">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Reported Message</h4>
+            </div>
+            <div style="height:200px;">
+                <div class="col-sm-6">
+                    {{reportMessage}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

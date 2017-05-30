@@ -6,7 +6,6 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
 
     $scope.myFrom = {};
 
-
     userService.countryListData().success(function(res) {
       $scope.countries = res.result;
     })

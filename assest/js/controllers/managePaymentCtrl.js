@@ -19,70 +19,31 @@ $(window).scrollTop(0,0);
     $scope.dashBordFilter.brolixCardType ="";
         $scope.myForm.cashStatus ="";
     $scope.myForm.couponStatus ="";
+    $scope.dollars=[];
+    $scope.dollarsCashGift=[];
 
-
-    //******************** dollars Sold Upgrade Card data **********************
-   $scope.currentSoldUpgradeCard = 1;
-     $scope.nextSoldUpgradeCardDetail = function(){
-         userService.SoldUpgradeCard($scope.currentSoldUpgradeCard).success(function(res) { 
-              // console.log("val>>",JSON.stringify(res))
-             $scope.dollars=[];
+    userService.SoldUpgradeCard($scope.currentSoldUpgradeCard).success(function(res) { 
             if (res.responseCode == 200){
-                   $scope.noOfPagesSoldUpgradeCard = res.pages;
-                   $scope.pageSoldUpgradeCard= res.page;
-                    // $scope.dollars= res.docs;
-                    $scope.showAllSoldUpgradeCardCount = res.total;
-                   for(i=0;i<res.docs.length;i++) {
-                            $scope.dollars.push(res.docs[i]);
-                            // console.log("dollars>>>>>>>>>"+JSON.stringify($scope.dollars))
-                        }
+                    $scope.showAllSoldUpgradeCardCount = res.count;
+                    $scope.dollars=res.result;
                } 
                else {
                 toastr.error(res.responseMessage);
                 }
           })
-     }
-     $scope.nextSoldUpgradeCardDetail();
-     $scope.nextSoldUpgradeCard = function(){
-        $scope.currentSoldUpgradeCard++;
-        $scope.nextSoldUpgradeCardDetail();
-     }
-     $scope.preSoldUpgradeCard= function(){
-        $scope.currentSoldUpgradeCard--;
-        $scope.nextSoldUpgradeCardDetail();
-     }
 
-//***************  Cash Gifts****************************
-     $scope.currentCashGifts = 1;
-             $scope.nextCashGiftsDetail = function(){
-                 userService.cashGift($scope.currentCashGifts).success(function(res) { 
-                       //console.log("val111>>",JSON.stringify(res))
-                    $scope.dollarsCashGift=[];
-                    if (res.responseCode == 200){
-                           $scope.noOfPagesCashGifts = res.pages;
-                           $scope.pageCashGifts= res.page;
-                            // $scope.dollars= res.docs;
-                             $scope.count= res.total;
-                           for(i=0;i<res.docs.length;i++)  {
-                                $scope.dollarsCashGift.push(res.docs[i]);
-                               }
+     userService.cashGift().success(function(res) {         
+        if (res.responseCode == 200){
+                 $scope.count= res.count;
+                 $scope.dollarsCashGift = res.result;
+           } 
+           else {
+            toastr.error(res.responseMessage);
+            }
+      })
 
-                       } 
-                       else {
-                        toastr.error(res.responseMessage);
-                        }
-                  })
-             }
-             $scope.nextCashGiftsDetail();
-             $scope.nextCashGifts = function(){
-                $scope.currentCashGifts++;
-                $scope.nextCashGiftsDetail();
-             }
-             $scope.preCashGifts= function(){
-                $scope.currentCashGifts--;
-                $scope.nextCashGiftsDetail();
-             }
-    
+
+ 
     
     
 
@@ -234,7 +195,7 @@ $(window).scrollTop(0,0);
         //console.log(JSON.stringify(id))
         
         userService.userInfo(id).then(function(success) { 
-             console.log(JSON.stringify(success))
+             //console.log(JSON.stringify(success))
                     if(success.data.responseCode== 200){
                             $scope.userDetail=success.data.result
                             $("#userInfo").modal('show');
@@ -254,7 +215,7 @@ $(window).scrollTop(0,0);
     $scope.adInfo=function(id){
         //console.log("adInfoId>>>"+JSON.stringify(id))
         userService.adInfo(id).then(function(success) { 
-            console.log("adInfoId>>>"+JSON.stringify(success))
+            //console.log("adInfoId>>>"+JSON.stringify(success))
                     if(success.data.responseCode == 200){
                             $scope.userDetail=success.data.result;
                             $("#adInfo").modal('show');
@@ -266,7 +227,7 @@ $(window).scrollTop(0,0);
                     }
             
                 },function(err){
-                    console.log(err);
+                    //console.log(err);
                      toastr.error('Connection error.');
             }) 
     }
@@ -322,7 +283,7 @@ $(window).scrollTop(0,0);
 
     $scope.top_50_dollarsBuyers=function(){
             userService.top_50_dollarsBuyers(1).then(function(success) {
-                 console.log("success"+JSON.stringify(success))
+                // console.log("success"+JSON.stringify(success))
                     if(success.data.responseCode == 200){
                         $scope.userDetail=success.data.result.docs;
                             $("#top_50_buyers").modal('show');
@@ -338,7 +299,7 @@ $(window).scrollTop(0,0);
     }
     $scope.top_50_brolixBuyers=function(){
             userService.top_50_brolixBuyers(1).then(function(success) { 
-                console.log("ressss",JSON.stringify(success))
+               // console.log("ressss",JSON.stringify(success))
                     if(success.data.responseCode == 200){
                         
                         $scope.userDetail=success.data.result;
@@ -544,7 +505,7 @@ $(window).scrollTop(0,0);
 
     userService.totalSoldLuckCard().success(function(res) {
         if (res.responseCode == 200){
-            console.log("ressssssssss",JSON.stringify(res))
+            //console.log("ressssssssss",JSON.stringify(res))
             $scope.totalSoldLuckCard = res.result;
             // $scope.totalIncome = res.totalIncome;
              $scope.totalSoldLuckCardcount = res.count;
@@ -854,13 +815,13 @@ $(window).scrollTop(0,0);
                                      } 
                                      //console.log(JSON.stringify(data))
                                 userService.filterDollars(data).success(function(res){
-                                    console.log("hello"+JSON.stringify(res))
+                                    //console.log("hello"+JSON.stringify(res))
                                     if(res.responseCode == 400){
                                         $scope.dollars =[];
                                     }
                                     else if(res.responseCode == 200){
                                         $scope.dollars = res.result;
-                                        console.log("ressssssss1"+JSON.stringify($scope.dollars));
+                                        //console.log("ressssssss1"+JSON.stringify($scope.dollars));
                                     }
                                     
                                 })
@@ -887,7 +848,7 @@ $(window).scrollTop(0,0);
                                     }
                                     else if(res.responseCode == 200){
                                         $scope.brolix = res.result;
-                                        console.log("ressssssss2"+JSON.stringify($scope.brolix));
+                                        //console.log("ressssssss2"+JSON.stringify($scope.brolix));
                                     }
                                     
                                 })
@@ -914,7 +875,7 @@ $(window).scrollTop(0,0);
                                     }
                                     else if(res.responseCode == 200){
                                        $scope.dollarsCashGift = res.result;
-                                        console.log("ressssssss3"+JSON.stringify($scope.dollarsCashGift));
+                                        //console.log("ressssssss3"+JSON.stringify($scope.dollarsCashGift));
                                     }
                                    
                                 })
@@ -1020,7 +981,7 @@ app.filter("managePaymentSoldCouponFilter",function() {
         var retArray = [];
           for(var i=0;i<items.length;i++) 
              {//||  items[i].coupon.pageId.pageName || items[i].coupon.pageId.userId.firstName || items[i].coupon.pageId.userId.lastName
-                console.log(JSON.stringify(items[i].coupon));
+                //console.log(JSON.stringify(items[i].coupon));
                 if(items[i].firstName || items[i].lastName )
                 {
                     //||items[i].coupon.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].coupon.pageId.userId.lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].coupon.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()

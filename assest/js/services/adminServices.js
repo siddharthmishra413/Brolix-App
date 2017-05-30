@@ -99,7 +99,6 @@ app.service('createPageService',function($http, $q){
 
 
 
-
 app.service('userService',function($http){
 
 	return{
@@ -241,7 +240,7 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/adUpgradedByBrolix');
     },
     showReportedAd: function() {
-      return $http.get(baseurl+'/admin/showReportedAd');
+      return $http.get(baseurl+'/admin/showAllReports');
     },
     adsWithLinks: function() {
       return $http.get(baseurl+'/admin/adsWithLinks');
@@ -276,6 +275,14 @@ app.service('userService',function($http){
     adsDetail: function(id) {
       return $http.get(locaurl+'/admin/adsDetail/'+id);
     },
+
+    freeViewersPerCashAds: function() {
+       return $http.get(baseurl+'/tool/viewBrolixAndDollors/freeViewersPerCashAds');
+     },
+
+     freeViewersPerCouponAds: function() {
+       return $http.get(baseurl+'/tool/viewBrolixAndDollors/freeViewersPerCouponAds');
+     },
 
     //http://172.16.16.159:8082/admin/adsDetail/58eb50626b7bf95c7b1a47de
 

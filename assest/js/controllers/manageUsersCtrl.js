@@ -17,6 +17,14 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     $scope.ageLimits = [];
     localStorage.setItem('userTypeName', 'totalUsers');
 
+    $scope.dateValidation = function(dtaa){
+        var dta=dtaa;
+        var timestamp = new Date(dtaa).getTime();
+        var nextday =timestamp + 8.64e+7;
+        $scope.minDatee = new Date(nextday).toDateString();
+    }
+    
+
     userService.totalUser().success(function(res) {
         if (res.responseCode == 200) {
             $scope.totalUser = res.result;

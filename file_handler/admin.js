@@ -4171,8 +4171,11 @@ module.exports = {
             if(err){res.send({responseCode:500, responseMessage:'Internal server error'}); }
             else if(result.length==0){res.send({responseCode:400, responseMessage:"No report found"});}
             else{
+                var AdsType = result.filter(result => result.type == "USER");
+                var UserType = result.filter(result => result.type == "ADS");
                 res.send({
-                result: result,
+                AdsType: AdsType,
+                userType:UserType,
                 responseCode: 200,
                 responseMessage: "All report Shown successfully."
             }) 

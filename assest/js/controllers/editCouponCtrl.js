@@ -4,6 +4,11 @@ app.controller('editCouponCtrl', function($scope, uploadimgServeice, $window, to
     $scope.$emit('SideMenu', 'Admin Tools');
     $scope.coupon_id = localStorage.couponId;
     //console.log(JSON.stringify( $scope.coupon_id))
+
+    $scope.cancel = function() {
+        $state.go('header.addSystemUser')
+        $scope.user = {};
+    }
     userService.viewCoupon($scope.coupon_id).then(function(success) {
         //console.log("Coupon>>>>>>>>",success)
         $scope.couponData = success.data.result;

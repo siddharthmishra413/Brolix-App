@@ -262,22 +262,26 @@
                             <option>Female</option>
                         </select>
                     </div>
+                    
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-change="ageFunction(dashBordFilter.ageTo);" ng-model="dashBordFilter.ageTo">
-                            <option value="">Age To</option>
-                            <<option ng-repeat="age in ageLimit">{{age}}</option>
-                        </select>
-                    </div>
-                    <div class="form-group cus-select">
-                        <select class="form-control" ng-disabled="dashBordFilter.ageTo==undefined"  ng-change="dashBordFilter();" ng-model="dashBordFilter.ageFrom">
+                        <select class="form-control" ng-change="ageFunction(dashBordFilter.ageFrom);" ng-change="dashBordFilter();" ng-model="dashBordFilter.ageFrom">
                             <option value="">Age From</option>
-                            <option ng-repeat="ages in ageLimits">{{ages}}</option>
+                            <option ng-repeat="age in ageLimit">{{age}}</option>
                         </select>
                     </div>
+
+                    <div class="form-group cus-select">
+                        <select class="form-control" ng-disabled="dashBordFilter.ageFrom==undefined"  ng-model="dashBordFilter.ageTo">
+                            <option value="">Age To</option>
+                            <option ng-repeat="ages in ageLimits">{{ages}}</option>
+                            
+                        </select>
+                    </div>
+
                     <div class="form-group clearfix date-picker">
                      <datepicker date-format="yyyy-MM-dd" selector="form-control" >
                        <div class="input-group">
-                           <input class="form-control" placeholder="Choose Join date" style="cursor:pointer;" ng-model="dashBordFilter.dobTo"/>
+                           <input class="form-control" ng-change="dateValidation(dashBordFilter.dobFrom);" placeholder="Choose Join date" style="cursor:pointer;" ng-model="dashBordFilter.dobFrom" />
                            <span class="input-group-addon" style="cursor: pointer">
                            <!-- <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
@@ -286,9 +290,9 @@
                     </div>
                     <!-- {{dashBordFilter.dobTo==undefined}} -->
                     <div class="form-group clearfix date-picker" >
-                    <datepicker date-format="yyyy-MM-dd" selector="form-control" >
+                    <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDatee}}">
                        <div class="input-group">
-                           <input ng-disabled="dashBordFilter.dobFrom==undefined" class="form-control" style="cursor:pointer;" ng-change="dashBordFilter();" placeholder="Choose End date" ng-model="dashBordFilter.dobFrom"/>
+                           <input ng-disabled="dashBordFilter.dobFrom==undefined" class="form-control" style="cursor:pointer;" ng-change="dashBordFilter();" placeholder="Choose End date" ng-model="dashBordFilter.dobTo"/>
                            <span class="input-group-addon" style="cursor: pointer">
                            <!-- <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
