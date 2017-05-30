@@ -175,17 +175,6 @@ module.exports = {
         })
     },
 
-    //    "myPages": function(req, res) {
-    //        createNewPage.paginate({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-    //            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); }
-    //            res.send({
-    //                result: result,
-    //                responseCode: 200,
-    //                responseMessage: "Pages details show successfully."
-    //            })
-    //        })
-    //    },
-
     "myPagesSearch": function(req, res) {
         createNewPage.find({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
@@ -308,55 +297,6 @@ module.exports = {
         }
     },
 
-    // console.log("request-->>", req.body)
-    //   waterfall([
-    //       function(callback) {
-    //           User.findOne({ _id: req.params.id }).exec(function(err, result) {
-    //               callback(null, result);
-    //           })
-    //       },
-    //       function(result, callback) {
-    //           createNewPage.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
-    //               if (err) { res.semd({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-    //                   callback(null, result, pageResult);
-    //               }
-    //           })
-    //       },
-    //       function(result, pageResult, callback) {
-    //           console.log("pageFollowers--->>", result);
-    //           console.log("result.pageFollowers--->>");
-    //           console.log("result.pageFollowers--->>", result.pageFollowers);
-    //           var array = [];
-    //           var data = [];
-    //           if (result.pageFollowers.length != 0) {
-    //               for (var i = 0; i < result.pageFollowers.length; i++) {
-    //                   array.push(result.pageFollowers[i].pageId)
-    //               }
-    //               console.log("ssssssssss", array);
-    //               for (var j = 0; j < array.length; j++) {
-    //                   console.log("jjjjj", j);
-    //                   for (k = 0; k < pageResult.docs.length; k++) {
-    //                       console.log("kkkkkk", pageResult.docs[k]._id);
-    //                       console.log("kkkkkk", pageResult.docs[k]._id == array[j]);
-    //                       if (pageResult.docs[k]._id == array[j]) {
-    //                           pageResult.docs[k].pageFollowersStatus = "true"
-    //                       }
-    //                   }
-    //               }
-
-    //           }
-    //           res.send({
-    //               result: pageResult,
-    //               responseCode: 200,
-    //               responseMessage: "User rating updated."
-    //           })
-    //           callback(null, "done");
-    //       },
-    //       function(err, results) {
-
-    //       }
-    //   ])
-
     "allPagesSearch": function(req, res) {
         console.log("request-->>", req.body)
         waterfall([
@@ -368,7 +308,7 @@ module.exports = {
             function(result, callback) {
                 var re = new RegExp(req.body.search, 'i');
                 createNewPage.paginate({ userId: { $ne: req.params.id }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                         callback(null, result, pageResult);
                     }
                 })

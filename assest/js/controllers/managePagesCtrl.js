@@ -105,13 +105,13 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
 
     $scope.pageTypeName = function(val) {
         localStorage.setItem('pageTypeName', val);
-        scope.dashBordFilter.country = "";
+        $scope.dashBordFilter.country = "";
         $scope.dashBordFilter.city = "";
         $scope.dashBordFilter.categories = "";
         $scope.dashBordFilter.dobTo = "";
         $scope.dashBordFilter.dobFrom = "";
 
-        switch (type) {
+        switch (val) {
             case 'totalPages':
                 userService.totalPages().success(function(res) {
                     if (res.responseCode == 200) {

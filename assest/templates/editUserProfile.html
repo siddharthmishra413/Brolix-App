@@ -1,4 +1,3 @@
-
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -25,7 +24,7 @@
                                     <div class="row">
                                         <label class="control-label col-md-3">Last Name</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" name="lastName" ng-model="viewUserProfile.lastName" placeholder="Last Name" maxlength="41" ng-maxlength="40" required> 
+                                            <input type="text" class="form-control" name="lastName" ng-model="viewUserProfile.lastName" placeholder="Last Name" maxlength="41" ng-maxlength="40" required>
                                             <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid">
                                             <span ng-show="userFrom.lastName.$error.required">Last name is required.</span>
                                             <span ng-show="userFrom.lastName.$error.maxlength">Your last name should contain max 40 characters.</span>
@@ -44,23 +43,23 @@
                                 </div> -->
 
                                 <div class="form-group">
-                                        <div class="row">
+                                    <div class="row">
 
-                                            <label class="control-label col-md-3">Date of Birth</label>
-                                            <div class="col-md-9">
-                                                 <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}" required>
-                                               <div class="input-group">
-                                                   <input class="form-control" style="cursor:pointer;" placeholder="Choose a date" ng-model="viewUserProfile.dob" max="2017-04-05" />
-                                                   <span class="input-group-addon">
+                                        <label class="control-label col-md-3">Date of Birth</label>
+                                        <div class="col-md-9">
+                                            <datepicker date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" required>
+                                                <div class="input-group">
+                                                    <input class="form-control" style="cursor:pointer;" placeholder="Choose a date" ng-model="viewUserProfile.dob" max="2017-04-05" />
+                                                    <span class="input-group-addon">
                                                    <!-- <i class="fa fa-lg fa-calendar"></i> -->
                                                    </span>
-                                               </div>
-                                              </datepicker>
-                                              <span style="color:red;" ng-show="userFrom.dob.$dirty && userFrom.dob.$invalid">
-                                                <span ng-show="userFrom.dob.$error.required">Date of birth is required.</span> 
-                                            </div>
+                                                </div>
+                                            </datepicker>
+                                            <span style="color:red;" ng-show="userFrom.dob.$dirty && userFrom.dob.$invalid">
+                                                <span ng-show="userFrom.dob.$error.required">Date of birth is required.</span>
                                         </div>
                                     </div>
+                                </div>
 
 
 
@@ -80,7 +79,7 @@
                                             <span style="color:red;" ng-show="userFrom.email.$dirty && userFrom.email.$invalid">
                                             <span ng-show="userFrom.email.$error.required">Email is required.</span>
                                             <span ng-show="userFrom.email.$error.email">Invalid email address.</span>
-                                             <span style="color:red;" ng-show="userFrom.email.$dirty && userFrom.email.$error.pattern">Invalid email address</span>
+                                            <span style="color:red;" ng-show="userFrom.email.$dirty && userFrom.email.$error.pattern">Invalid email address</span>
                                             <span style="color:red;" ng-show="userFrom.email.$error.maxlength">This email address is too long.</span></span>
                                         </div>
                                     </div>
@@ -104,17 +103,17 @@
                                     <div class="row">
                                         <label class="control-label col-md-3">Mobile No</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" name="mobileNumber" ng-model="viewUserProfile.mobileNumber" placeholder="Mobile No" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required> 
+                                            <input type="text" class="form-control" name="mobileNumber" ng-model="viewUserProfile.mobileNumber" placeholder="Mobile No" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
                                             <span style="color:red;" ng-show="userFrom.mobileNumber.$dirty && userFrom.mobileNumber.$invalid">
-                                            <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required.</span> 
+                                            <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required.</span>
                                             <span ng-show="userFrom.mobileNumber.$error.maxlength">Must have at most 10 digits.</span>
-                                            <span ng-show="userFrom.mobileNumber.$error.pattern">Only number are allowed.</span>  
+                                            <span ng-show="userFrom.mobileNumber.$error.pattern">Only number are allowed.</span>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- <div class="form-group"> -->
 
-                                 <!-- <div class="row">
+                                <!-- <div class="row">
                                         <label class="control-label col-md-3">Country</label>
                                         <div class="col-md-9">
                                             <select class="form-control" ng-options="p.name for p in country" ng-model="viewUserProfile.country" ng-change="catId(p)"><option value="">{{viewUserProfile.country}}</option>
@@ -124,7 +123,7 @@
                                         </div>
                                     </div>-->
 
-                                    <!-- <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="row">
                                         <label class="control-label col-md-3">Country</label>
                                         <div class="col-md-9">
@@ -151,7 +150,7 @@
                                                 <option selected="">{{viewUserProfile.country}}</option>
                                                 <option ng-repeat="country in countriesList">{{country.name}}</option>
                                              </select> -->
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -161,28 +160,28 @@
                                         <div class="col-md-9">
                                          <select name="category" class="form-control" ng-change="changeState();" ng-model="viewUserProfile.state" required>
                                             <option >{{viewUserProfile.state}}</option> -->
-                                                <!-- <option value="">Select Category</option> -->
-                                               <!--  <option ng-repeat="state in stateList" value="{{state}}">{{state.region}}</option>
+                                <!-- <option value="">Select Category</option> -->
+                                <!--  <option ng-repeat="state in stateList" value="{{state}}">{{state.region}}</option>
                                              </select> -->
-                                            <!-- <select class="form-control" ng-change="changeState();" ng-model="viewUserProfile.state" ng-init="viewUserProfile.state = viewUserProfile.state" required>
+                                <!-- <select class="form-control" ng-change="changeState();" ng-model="viewUserProfile.state" ng-init="viewUserProfile.state = viewUserProfile.state" required>
                                                 <option selected="">{{viewUserProfile.state}}</option>
                                                 <option ng-repeat="state in stateList">{{state.region}}</option>
-                                             </select> --> 
-                                            <!-- <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid"></span> 
-                                            <span ng-show="userFrom.state.$error.required">State is required.</span> --> 
-                                     <!--    </div>
+                                             </select> -->
+                                <!-- <span style="color:red;" ng-show="userFrom.state.$dirty && userFrom.state.$invalid"></span> 
+                                            <span ng-show="userFrom.state.$error.required">State is required.</span> -->
+                                <!--    </div>
                                     </div>
                                 </div> -->
                                 <div class="form-group" ng-if="cityFirst">
                                     <div class="row">
                                         <label class="control-label col-md-3">City</label>
                                         <div class="col-md-9">
-                                            <select  class="form-control" id="city" ng-model="viewUserProfile.city" required>
+                                            <select class="form-control" id="city" ng-model="viewUserProfile.city" required>
                                                 <option selected="">{{viewUserProfile.city}}</option>
                                                 <option ng-repeat="city in cityList">{{city}}</option>
                                              </select>
-                                            <span style="color:red;" ng-show="userFrom.city.$dirty && userFrom.city.$invalid"></span> 
-                                            <span ng-show="userFrom.city.$error.required">City is required.</span> 
+                                            <span style="color:red;" ng-show="userFrom.city.$dirty && userFrom.city.$invalid"></span>
+                                            <span ng-show="userFrom.city.$error.required">City is required.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -191,12 +190,12 @@
                                     <div class="row">
                                         <label class="control-label col-md-3">City</label>
                                         <div class="col-md-9">
-                                            <select  class="form-control" id="city" ng-model="viewUserProfile.city" required>
+                                            <select class="form-control" id="city" ng-model="viewUserProfile.city" required>
                                                 <!-- <option value="">Select City</option> -->
                                                 <option ng-repeat="city in cityList">{{city}}</option>
                                              </select>
                                             <span style="color:red;" ng-show="userFrom.city.$dirty && userFrom.city.$invalid">
-                                            <span ng-show="userFrom.city.$error.required">City is required.</span> 
+                                            <span ng-show="userFrom.city.$error.required">City is required.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -204,16 +203,16 @@
                                     <div class="row" ng-if="viewUserProfile.pincode!=null">
                                         <label class="control-label col-md-3">Pincode</label>
                                         <div class="col-md-9">
-                                            <input type="tel" class="form-control" name="pincode" ng-model="viewUserProfile.pincode" placeholder="Pincode" maxlength="9" ng-maxlength="8" ng-pattern="/^[0-9]{1,9}$/" required> 
+                                            <input type="tel" class="form-control" name="pincode" ng-model="viewUserProfile.pincode" placeholder="Pincode" maxlength="9" ng-maxlength="8" ng-pattern="/^[0-9]{1,9}$/" required>
                                             <span style="color:red;" ng-show="userFrom.pincode.$dirty && userFrom.pincode.$invalid">
-                                            <span ng-show="userFrom.pincode.$error.required">Pincode is required.</span> 
+                                            <span ng-show="userFrom.pincode.$error.required">Pincode is required.</span>
                                             <span ng-show="userFrom.pincode.$error.maxlength">Must have at most 8 digits.</span>
-                                            <span ng-show="userFrom.pincode.$error.pattern">Only number are allowed.</span> 
+                                            <span ng-show="userFrom.pincode.$error.pattern">Only number are allowed.</span>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
+
+
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
                                     <button class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid" ng-click="updateUser()">Update Profile</button>
