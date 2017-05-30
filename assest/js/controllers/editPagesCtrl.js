@@ -299,6 +299,7 @@ $scope.subCaty = false;
         $state.go('header.managePages')
     } else {
         userService.viewPage($scope.id).success(function(res) {
+          console.log("ressssss",JSON.stringify(res))
             if (res.responseCode == 200) {
                 $scope.viewPageDetails = res.result;
                 console.log("admin array",JSON.stringify($scope.viewPageDetails))

@@ -10,6 +10,13 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
     $scope.cardType = 'upgrade_card';
     localStorage.setItem('pageTypeName', 'totalPages');
 
+    $scope.dateValidation = function(dtaa) {
+        var dta = dtaa;
+        var timestamp = new Date(dtaa).getTime();
+        var nextday = timestamp + 8.64e+7;
+        $scope.minDatee = new Date(nextday).toDateString();
+    }
+
     userService.totalPages().success(function(res) {
         if (res.responseCode == 200) {
             $scope.totalPages = res.result;

@@ -878,14 +878,12 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         buttons: [{
                             label: 'Yes',
                             action: function(dialog) {
-                                //$("#showAllCoupons").modal('hide');
                                 userService.sendUpgradeCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
                                         toastr.success("UpgradeCard Send Successfully to All User");
                                         $scope.sendMessage = '';
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
-                                        // $state.reload();
                                     } else {
                                         toastr.error(res.responseMessage);
                                     }
@@ -895,7 +893,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             label: 'No',
                             action: function(dialog) {
                                 dialog.close();
-                                // toastr.success("User Blocked");
                             }
                         }]
                     });
@@ -1030,7 +1027,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             label: 'No',
                             action: function(dialog) {
                                 dialog.close();
-                                // toastr.success("User Blocked");
                             }
                         }]
                     });
@@ -1052,13 +1048,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         buttons: [{
                             label: 'Yes',
                             action: function(dialog) {
-                                //$("#showAllCoupons").modal('hide');
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
                                         toastr.success("LuckCard Send Successfully to All User");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
-                                        // $state.reload();
                                     } else {
                                         toastr.error(res.responseMessage);
                                     }
@@ -1068,7 +1062,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             label: 'No',
                             action: function(dialog) {
                                 dialog.close();
-                                // toastr.success("User Blocked");
                             }
                         }]
                     });
@@ -1087,13 +1080,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         buttons: [{
                             label: 'Yes',
                             action: function(dialog) {
-                                //$("#showAllCoupons").modal('hide');
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
                                         toastr.success("LuckCard Send Successfully to All Personal User");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
-                                        // $state.reload();
                                     } else {
                                         toastr.error(res.responseMessage);
                                     }
@@ -1103,7 +1094,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             label: 'No',
                             action: function(dialog) {
                                 dialog.close();
-                                // toastr.success("User Blocked");
                             }
                         }]
                     });
@@ -1122,13 +1112,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         buttons: [{
                             label: 'Yes',
                             action: function(dialog) {
-                                //$("#showAllCoupons").modal('hide');
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
                                         toastr.success("LuckCard Send Successfully to All Business User");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
-                                        // $state.reload();
                                     } else {
                                         toastr.error(res.responseMessage);
                                     }
@@ -1138,7 +1126,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             label: 'No',
                             action: function(dialog) {
                                 dialog.close();
-                                // toastr.success("User Blocked");
                             }
                         }]
                     });
@@ -1157,13 +1144,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         buttons: [{
                             label: 'Yes',
                             action: function(dialog) {
-                                //$("#showAllCoupons").modal('hide');
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
                                         toastr.success("LuckCard Send Successfully to All Live User");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
-                                        // $state.reload();
                                     } else {
                                         toastr.error(res.responseMessage);
                                     }
@@ -1173,7 +1158,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             label: 'No',
                             action: function(dialog) {
                                 dialog.close();
-                                // toastr.success("User Blocked");
                             }
                         }]
                     });
@@ -1246,13 +1230,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         buttons: [{
                             label: 'Yes',
                             action: function(dialog) {
-                                //$("#showAllCoupons").modal('hide');
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
                                         toastr.success("LuckCard Send Successfully to All Blocked User");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
-                                        // $state.reload();
                                     } else {
                                         toastr.error(res.responseMessage);
                                     }
@@ -1262,7 +1244,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             label: 'No',
                             action: function(dialog) {
                                 dialog.close();
-                                // toastr.success("User Blocked");
                             }
                         }]
                     });
@@ -1279,13 +1260,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         buttons: [{
                             label: 'Yes',
                             action: function(dialog) {
-                                //$("#showAllCoupons").modal('hide');
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
                                         toastr.success("LuckCard Send Successfully to User");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
-                                        // $state.reload();
                                     } else {
                                         toastr.error(res.responseMessage);
                                     }
@@ -1295,7 +1274,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             label: 'No',
                             action: function(dialog) {
                                 dialog.close();
-                                // toastr.success("User Blocked");
                             }
                         }]
                     });
@@ -1322,7 +1300,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
         switch (type) {
             case 'totalUsers':
                 userService.userfilter(data).success(function(res) {
-                    console.log("res", JSON.stringify(res))
                     if (res.responseCode == 200) {
                         $scope.totalUser = res.data;
                         $scope.totalUserCount = res.data.length;
@@ -1406,13 +1383,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                     buttons: [{
                         label: 'Yes',
                         action: function(dialog) {
-                            //$("#showAllCoupons").modal('hide');
                             userService.sendCouponTOUSers(data).success(function(res) {
                                 if (res.responseCode == 200) {
                                     toastr.success(res.responseMessage);
                                     $scope.sendMessage = '';
                                     dialog.close();
-                                    //toastr.success("Coupon Send successfully");
                                     $state.reload();
                                 } else {
                                     toastr.error(res.responseMessage);
