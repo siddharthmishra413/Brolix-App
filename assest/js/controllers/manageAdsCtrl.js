@@ -31,7 +31,8 @@ app.controller('manageAdsCtrl', function($scope, $window, userService, $timeout,
       $scope.totalExpiredAdscount = 0;
     }
   })
-  userService.showReportedAd().success(function(res) {
+  userService.showReportedAdInAds().success(function(res) {
+    console.log("res", JSON.stringify(res.coode));
     if (res.responseCode == 200) {
       $scope.showReportedAd = res.result;
       $scope.showReportedAdcount = res.result.length;
@@ -193,7 +194,6 @@ app.controller('manageAdsCtrl', function($scope, $window, userService, $timeout,
   $scope.reportOnAd = function(id) {
     //console.log("reportOnAdId>>>"+JSON.stringify(id))
     userService.showReportOnAd($scope.myForm.checkId).then(function(success) {
-      //console.log(JSON.stringify($scope.userDetail))
       $scope.userDetail = success.data.result;
       if (success.data.responseCode == 404) {
         toastr.error(success.data.responseMessage);
@@ -472,8 +472,8 @@ app.controller('manageAdsCtrl', function($scope, $window, userService, $timeout,
         break;
       case 'showReportedAd':
         console.log("4");
-        userService.showReportedAd().success(function(res) {
-         // console.log("res", res.result.length);
+        userService.showReportedAdInAds().success(function(res) {
+          console.log("refis", JSON.stringify(res.result));
           if (res.responseCode == 200) {
             $scope.showReportedAd = res.result;
             $scope.showReportedAdcount = res.result.length;

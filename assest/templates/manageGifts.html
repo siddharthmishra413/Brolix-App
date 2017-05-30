@@ -273,7 +273,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in totalCashGiftShow | totalCouponGiftFilters:searchOne | itemsPerPage:10">
+                    <tr dir-paginate="x in totalCashGiftShow | totalCashGiftFilter:searchOne | itemsPerPage:10">
                         <td>{{x.cashPrize.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.cashPrize.adId,'second')">View</td>
@@ -454,7 +454,7 @@
             <table id="manageGiftTableSix" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Coupon Gift</th>
+                       <!--  <th>Coupon Gift</th> -->
                         <th>Amount</th>
                         <th>Sent From</th>
                         <th>Sent To</th>
@@ -462,7 +462,7 @@
                 </thead>
                 <tbody>
                     <tr dir-paginate="x in totalSentCashShow | totalSentCashFilter:searchFive | itemsPerPage:10">
-                        <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.id,'second')">View</td>
+                       <!--  <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x._id,'second')">View</td> -->
                         <td>{{totalCash}}</td>
                         <td>{{x.sendCashListObject.senderId.firstName}} {{x.sendCashListObject.senderId.lastName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>

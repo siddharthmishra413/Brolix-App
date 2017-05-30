@@ -1726,7 +1726,7 @@ module.exports = {
     "listOfFavouriteCoupon": function(req, res) {
         waterfall([
             function(callback) {
-                brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
+                Brolixanddollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
                             // var value= 2
@@ -1735,7 +1735,7 @@ module.exports = {
                 })
             },
             function(noDataValue, callback) {
-                brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
+                Brolixanddollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
                             //  var value= 4;

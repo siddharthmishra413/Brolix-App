@@ -239,6 +239,10 @@ app.service('userService',function($http){
     adUpgradedByBrolix: function() {
       return $http.get(baseurl+'/admin/adUpgradedByBrolix');
     },
+
+    showReportedAdInAds: function() {
+      return $http.get(baseurl+'/admin/showReportedAd');
+    },
     showReportedAd: function() {
       return $http.get(baseurl+'/admin/showAllReports');
     },

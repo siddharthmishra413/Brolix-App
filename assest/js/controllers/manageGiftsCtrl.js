@@ -173,7 +173,7 @@ $scope.top_50_balance= function() {
 // }
 
 $scope.showCouponGift= function(id,key) {
-  //console.log("key",key)
+  console.log("key",id,key)
   if(key == 'first'){
     $("#showCouponGift").modal('show');
   }else if(key == 'second'){
@@ -374,7 +374,7 @@ $scope.giftTypeName = function(val) {
       case 'totalCashGifts': 
       //console.log("2");
           userService.totalCashGifts().success(function(res){
-            //console.log("2:   ",JSON.stringify(res));
+            console.log("2:   ",JSON.stringify(res));
             if (res.responseCode == 200){
               $scope.totalCashGiftShow= res.result;
               $scope.totalCashGift = res.result.length;
@@ -463,6 +463,7 @@ $scope.giftTypeName = function(val) {
       case 'totalSentCash': 
      // console.log("6");
           userService.totalSentCash().success(function(res){
+            console.log("res",JSON.stringify(res))
             if (res.responseCode == 200){  
               $scope.totalCash= res.totalCash;   
               $scope.totalSentCashShow= res.result;
