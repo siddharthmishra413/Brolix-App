@@ -635,16 +635,16 @@ module.exports = {
                                     }
                                     User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
-                                            if(result.deviceType  && result.notification_status  && result.status ){
-                                            if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                var message = "You have successfully won this Raffle.";
-                                                functions.android_notification(result.deviceToken, message);
-                                                console.log("Android notification send!!!!")
-                                            } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                functions.iOS_notification(result.deviceToken, message);
-                                            } else {
-                                                console.log("Something wrong!!!!")
-                                            }
+                                            if (result.deviceType && result.notification_status && result.status) {
+                                                if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                    var message = "You have successfully won this Raffle.";
+                                                    functions.android_notification(result.deviceToken, message);
+                                                    console.log("Android notification send!!!!")
+                                                } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                    functions.iOS_notification(result.deviceToken, message);
+                                                } else {
+                                                    console.log("Something wrong!!!!")
+                                                }
                                             }
                                             res.send({
                                                 responseCode: 200,
@@ -703,16 +703,16 @@ module.exports = {
                                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                     count += i;
                                                     if ((i * i) == count) {
-                                                        if(result.deviceType  && result.notification_status  && result.status ){
-                                                        if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                            var message = "You have successfully won this Raffle.";
-                                                            functions.android_notification(result.deviceToken, message);
-                                                            console.log("Android notification send!!!!")
-                                                        } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                            functions.iOS_notification(result.deviceToken, message);
-                                                        } else {
-                                                            console.log("Something wrong!!!!")
-                                                        }
+                                                        if (result.deviceType && result.notification_status && result.status) {
+                                                            if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                                var message = "You have successfully won this Raffle.";
+                                                                functions.android_notification(result.deviceToken, message);
+                                                                console.log("Android notification send!!!!")
+                                                            } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                                functions.iOS_notification(result.deviceToken, message);
+                                                            } else {
+                                                                console.log("Something wrong!!!!")
+                                                            }
                                                         }
                                                         res.send({
                                                             responseCode: 200,
@@ -729,16 +729,16 @@ module.exports = {
                                         User.update({ _id: { $in: winners } }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                                if(result.deviceType  && result.notification_status  && result.status ){
-                                                if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    var message = "You have successfully won this Raffle.";
-                                                    functions.android_notification(result.deviceToken, message);
-                                                    console.log("Android notification send!!!!")
-                                                } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    functions.iOS_notification(result.deviceToken, message);
-                                                } else {
-                                                    console.log("Something wrong!!!!")
-                                                }
+                                                if (result.deviceType && result.notification_status && result.status) {
+                                                    if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                        var message = "You have successfully won this Raffle.";
+                                                        functions.android_notification(result.deviceToken, message);
+                                                        console.log("Android notification send!!!!")
+                                                    } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                        functions.iOS_notification(result.deviceToken, message);
+                                                    } else {
+                                                        console.log("Something wrong!!!!")
+                                                    }
                                                 }
                                                 res.send({
                                                     responseCode: 200,
@@ -905,16 +905,16 @@ module.exports = {
                                     User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                         console.log("result-->>", result)
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
-                                            if(result.deviceType  && result.notification_status  && result.status ){
-                                            if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                var message = "You have successfully won this Raffle.";
-                                                functions.android_notification(result.deviceToken, message);
-                                                console.log("Android notification send!!!!")
-                                            } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                functions.iOS_notification(result.deviceToken, message);
-                                            } else {
-                                                console.log("Something wrong!!!!")
-                                            }
+                                            if (result.deviceType && result.notification_status && result.status) {
+                                                if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                    var message = "You have successfully won this Raffle.";
+                                                    functions.android_notification(result.deviceToken, message);
+                                                    console.log("Android notification send!!!!")
+                                                } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                    functions.iOS_notification(result.deviceToken, message);
+                                                } else {
+                                                    console.log("Something wrong!!!!")
+                                                }
                                             }
                                             res.send({
                                                 responseCode: 200,
@@ -971,17 +971,17 @@ module.exports = {
                                         User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                                 if(result.deviceType  && result.notification_status  && result.status ){
-                                                if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    var message = "You have successfully won this Raffle.";
-                                                    functions.android_notification(result.deviceToken, message);
-                                                    console.log("Android notification send!!!!")
-                                                } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    functions.iOS_notification(result.deviceToken, message);
-                                                } else {
-                                                    console.log("Something wrong!!!!")
+                                                if (result.deviceType && result.notification_status && result.status) {
+                                                    if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                        var message = "You have successfully won this Raffle.";
+                                                        functions.android_notification(result.deviceToken, message);
+                                                        console.log("Android notification send!!!!")
+                                                    } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                        functions.iOS_notification(result.deviceToken, message);
+                                                    } else {
+                                                        console.log("Something wrong!!!!")
+                                                    }
                                                 }
-                                                 }
                                                 res.send({
                                                     responseCode: 200,
                                                     responseMessage: "Raffle is over."
@@ -994,16 +994,16 @@ module.exports = {
                                         User.update({ _id: req.body.userId }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                                if(result.deviceType  && result.notification_status  && result.status ){
-                                                if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    var message = "You have successfully won this Raffle.";
-                                                    functions.android_notification(result.deviceToken, message);
-                                                    console.log("Android notification send!!!!")
-                                                } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    functions.iOS_notification(result.deviceToken, message);
-                                                } else {
-                                                    console.log("Something wrong!!!!")
-                                                }
+                                                if (result.deviceType && result.notification_status && result.status) {
+                                                    if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                        var message = "You have successfully won this Raffle.";
+                                                        functions.android_notification(result.deviceToken, message);
+                                                        console.log("Android notification send!!!!")
+                                                    } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                        functions.iOS_notification(result.deviceToken, message);
+                                                    } else {
+                                                        console.log("Something wrong!!!!")
+                                                    }
                                                 }
                                                 res.send({
                                                     responseCode: 200,
@@ -1026,124 +1026,109 @@ module.exports = {
     //API for Follow and unfollow
     "adFollowUnfollow": function(req, res) {
         if (req.body.follow == "follow") {
-              createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
-                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                  else if(!result){ res.semd({ responseCode:404, responseMessage:'Please enter correct adId'}); }
-                  else{
-                      var pageId = result.pageId;
-                      var pageName = result.pageName;
-                      console.log(" pageId---->>>",pageId)
-                      var adFollowers = result.adFollowers;
-                      var mySet = new Set(adFollowers);
-                      var has = mySet.has(req.body.userId)
-                      if(has){ res.send({ responseCode: 400, responseMessage: 'You are already following this ad' }); }
-                      else{
-            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "adFollowers": req.body.userId } }, { new: true }).exec(function(err, results) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                else{
-                    console.log("result---->>>> ads---->>>",results)
-//                res.send({
-//                    result: results,
-//                    responseCode: 200,
-//                    responseMessage: "Followed"
-//                });
-                     PageFollowers.findOne({ userId: req.body.userId, pageId: pageId }).exec(function(err, result1) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    if (!result1) {
-                        var obj = {
-                            pageId :pageId,
-                            pageName:pageName,
-                            userId:req.body.userId,
-                            followStatus:req.body.follow
-                            
-                        }
-                        var follow = new PageFollowers(obj);
-                        follow.save(function(err, result) {
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: pageId, pageName: pageName } } }, { new: true }).exec(function(err, results) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                    createNewPage.findOneAndUpdate({ _id: pageId }, { $push: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
-                                res.send({
-                                result: results,
-                                responseCode: 200,
-                                responseMessage: "Followed"
-                            });
-                                    })
-                                }
-                            })
+            createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                    var pageId = result.pageId;
+                    var pageName = result.pageName;
+                    console.log(" pageId---->>>", pageId)
+                    var adFollowers = result.adFollowers;
+                    var mySet = new Set(adFollowers);
+                    var has = mySet.has(req.body.userId)
+                    if (has) { res.send({ responseCode: 400, responseMessage: 'You are already following this ad' }); } else {
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "adFollowers": req.body.userId } }, { new: true }).exec(function(err, results) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                console.log("result---->>>> ads---->>>", results)
+                                PageFollowers.findOne({ userId: req.body.userId, pageId: pageId }).exec(function(err, result1) {
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                        if (!result1) {
+                                            var obj = {
+                                                pageId: pageId,
+                                                pageName: pageName,
+                                                userId: req.body.userId,
+                                                followStatus: req.body.follow
+
+                                            }
+                                            var follow = new PageFollowers(obj);
+                                            follow.save(function(err, result) {
+                                                User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: pageId, pageName: pageName } } }, { new: true }).exec(function(err, results) {
+                                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                                        createNewPage.findOneAndUpdate({ _id: pageId }, { $push: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
+                                                            res.send({
+                                                                result: results,
+                                                                responseCode: 200,
+                                                                responseMessage: "Followed"
+                                                            });
+                                                        })
+                                                    }
+                                                })
+                                            })
+                                        } else {
+                                            if (result1.followStatus == "unfollow" || result1.followStatus == "unblock") {
+                                                PageFollowers.findOneAndUpdate({ _id: result1._id }, { $set: { followStatus: "follow", userId: req.body.userId, pageId: pageId } }, { new: true }).exec(function(err, result2) {
+                                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                                        res.send({
+                                                            result: result2,
+                                                            responseCode: 200,
+                                                            responseMessage: "Followed."
+                                                        });
+                                                    }
+                                                })
+                                            } else if (result1.followStatus == "block") {
+                                                res.send({
+                                                    result: results,
+                                                    responseCode: 200,
+                                                    responseMessage: "Followed"
+                                                });
+                                            } else {
+                                                res.send({
+                                                    result: results,
+                                                    responseCode: 200,
+                                                    responseMessage: "Followed"
+                                                });
+                                            }
+                                        }
+                                    }
+                                })
+                            }
                         })
-                    } else {
-                        if (result1.followStatus == "unfollow" || result1.followStatus == "unblock") {
-                            PageFollowers.findOneAndUpdate({ _id: result1._id }, { $set: { followStatus: "follow", userId: req.body.userId, pageId: pageId } }, { new: true }).exec(function(err, result2) {
-                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                                else{
-                                res.send({
-                                    result: result2,
-                                    responseCode: 200,
-                                    responseMessage: "Followed."
-                                });
-                                }
-                            })
-                        } else if (result1.followStatus == "block") {
-                             res.send({
-                                result: results,
-                                responseCode: 200,
-                                responseMessage: "Followed"
-                            });
-                        } else {
-                            res.send({
-                                result: results,
-                                responseCode: 200,
-                                responseMessage: "Followed"
-                            });
-                        }
                     }
                 }
             })
-                }
-            })
-                      }
-                  }
-              })
         } else {
-             createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
-                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                  else if(!result){ res.semd({ responseCode:404, responseMessage:'Please enter correct adId'}); }
-                  else{
-                       var pageId = result.pageId;
-                      var pageName = result.pageName;
-                      var adFollowers = result.adFollowers;
-                      var mySet = new Set(adFollowers);
-                      var has = mySet.has(req.body.userId)
-                      if(!has){ res.send({ responseCode: 400, responseMessage: 'You have already Unfollow this ad' }); }
-                      else{
-            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { "adFollowers": -req.body.userId } }, { new: true }).exec(function(err, results) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if(!results){ res.semd({ responseCode:404, responseMessage:'Please enter correct adId'}); }
-                else{
-                     PageFollowers.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { pageId: pageId }] }, { $set: { followStatus: "Unfollowed" } }, { new: true }).exec(function(err, result) {
-                console.log("result-->>", result)
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    User.findOneAndUpdate({ _id: req.body.userId }, { $pull: { pageFollowers: { pageId: pageId } } }, { new: true }).exec(function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-                            createNewPage.findOneAndUpdate({ _id: pageId }, { $pull: { pageFollowersUser: { userId: req.body.userId } } }, { new: true }).exec(function(err, result2) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
-                                    console.log("result- 111->>", result1)
-                                     res.send({
-                                        result: results,
-                                        responseCode: 200,
-                                        responseMessage: "Unfollowed"
-                                    });
-                                }
-                            })
-                        }
-                    })
+            createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                    var pageId = result.pageId;
+                    var pageName = result.pageName;
+                    var adFollowers = result.adFollowers;
+                    var mySet = new Set(adFollowers);
+                    var has = mySet.has(req.body.userId)
+                    if (!has) { res.send({ responseCode: 400, responseMessage: 'You have already Unfollow this ad' }); } else {
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { "adFollowers": -req.body.userId } }, { new: true }).exec(function(err, results) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                                PageFollowers.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { pageId: pageId }] }, { $set: { followStatus: "Unfollowed" } }, { new: true }).exec(function(err, result) {
+                                    console.log("result-->>", result)
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                        User.findOneAndUpdate({ _id: req.body.userId }, { $pull: { pageFollowers: { pageId: pageId } } }, { new: true }).exec(function(err, result1) {
+                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                                createNewPage.findOneAndUpdate({ _id: pageId }, { $pull: { pageFollowersUser: { userId: req.body.userId } } }, { new: true }).exec(function(err, result2) {
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+                                                        console.log("result- 111->>", result1)
+                                                        res.send({
+                                                            result: results,
+                                                            responseCode: 200,
+                                                            responseMessage: "Unfollowed"
+                                                        });
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
                 }
             })
-                    
-                }
-            })
-                      }
-                  }
-             })
         }
     },
 
@@ -1383,16 +1368,16 @@ module.exports = {
                                 console.log("result1-->>", result1)
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct senderId" }); } else {
                                     console.log("res--1-->>", result1)
-                                    if(result1.deviceType  && result1.notification_status  && result1.status ){
-                                    if (result1.deviceType == 'Android' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
-                                        var message = "You are taged in a ad";
-                                        functions.android_notification(result1.deviceToken, message);
-                                        console.log("Android notification send!!!!")
-                                    } else if (result1.deviceType == 'iOS' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
-                                        functions.iOS_notification(result1.deviceToken, message);
-                                    } else {
-                                        console.log("Something wrong!!!!")
-                                    }
+                                    if (result1.deviceType && result1.notification_status && result1.status) {
+                                        if (result1.deviceType == 'Android' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
+                                            var message = "You are taged in a ad";
+                                            functions.android_notification(result1.deviceToken, message);
+                                            console.log("Android notification send!!!!")
+                                        } else if (result1.deviceType == 'iOS' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
+                                            functions.iOS_notification(result1.deviceToken, message);
+                                        } else {
+                                            console.log("Something wrong!!!!")
+                                        }
                                     }
                                 }
                             });
