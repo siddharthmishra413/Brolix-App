@@ -187,8 +187,10 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
 
         switch (type) {
             case 'totalPages':
-                userService.pagefilter().success(function(res) {
+                userService.pagefilter(data).success(function(res) {
+                    console.log("res",JSON.stringify(res.data.length))
                     if (res.responseCode == 200) {
+
                         $scope.totalPages = res.data;
                         $scope.totalPagesCount = res.data.length;
                     } else {
@@ -199,7 +201,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                 break;
 
             case 'unpublishedPages':
-                userService.pagefilter().success(function(res) {
+                userService.pagefilter(data).success(function(res) {
                     if (res.responseCode == 200) {
                         $scope.unPublishedPage = res.data;
                         $scope.unPublishedPageCount = res.data.length;
@@ -211,7 +213,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                 break;
 
             case 'removedPages':
-                userService.pagefilter().success(function(res) {
+                userService.pagefilter(data).success(function(res) {
                     console.log("res", JSON.stringify(res))
                     if (res.responseCode == 200) {
                         $scope.showAllRemovedPage = res.data;
@@ -225,7 +227,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
 
             case 'blockedPages':
                 //console.log("4");
-                userService.pagefilter().success(function(res) {
+                userService.pagefilter(data).success(function(res) {
                     if (res.responseCode == 200) {
                         $scope.showAllBlockedPage = res.data;
                         $scope.showAllBlockedPageCount = res.data.length;

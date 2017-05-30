@@ -10,9 +10,9 @@ app.controller('editCardCtrl', function($scope, $window, userService,spinnerServ
     $scope.cardDetails = {};
 
     userService.viewcard($scope.cardType).success(function(res) {
-      console.log("resssssssssssssss",res)
+      //console.log("resssssssssssssss",res)
         $scope.UpgradeCard = res.data;
-        console.log("$scope.UpgradeCard",JSON.stringify($scope.UpgradeCard));
+        //console.log("$scope.UpgradeCard",JSON.stringify($scope.UpgradeCard));
         $scope.user.photo = '';
         $scope.cardDetails.photo = '';
     })
@@ -40,6 +40,7 @@ app.controller('editCardCtrl', function($scope, $window, userService,spinnerServ
       $scope.user.photo = '';
       console.log("iddddddddd",id)
       userService.showCardDetails(id).success(function(res){
+        console.log
         $scope.cardDetails = res.data;
         console.log("$scope.cardDetails",$scope.cardDetails)
       })

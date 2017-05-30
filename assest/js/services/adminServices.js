@@ -176,7 +176,9 @@ app.service('userService',function($http){
 
 
     /*-------------------------Manage Cards---------------------*/
-
+    upgradeCardViewersList: function() {
+      return $http.get(baseurl+'/admin/upgradeCardViewersList');
+    },
     totalSoldUpgradeCard: function() {
       return $http.get(baseurl+'/admin/totalSoldUpgradeCard');
     },

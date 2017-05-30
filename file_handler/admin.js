@@ -1128,7 +1128,7 @@ module.exports = {
 
     "showCardDetails": function(req, res) {
         var cardId = req.params.id;
-        adminCards.findById(cardId, function(err, result) {
+        adminCards.findOne({_id:cardId},function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
             }
@@ -1301,18 +1301,6 @@ module.exports = {
                 responseMessage: "Successfully updated."
             });
         });
-    },
-
-    "showCardDetails": function(req, res) {
-        adminCards.find({}).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Card details."
-                });
-            }
-        })
     },
 
     "removeOfferonCards": function(req, res) {
@@ -4176,6 +4164,40 @@ module.exports = {
                     responseCode: 200,
                     responseMessage: "All report Shown successfully."
                 })
+            }
+        })
+    },
+    
+    "upgradeCardViewersList":function(req, res){  // "type": "luck_card",
+        adminCards.find({ "type": "upgrade_card"}).exec(function(err, result){
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else { 
+                var viewersArray = [];
+                for(var i = 0; i<result.length; i++){
+                    viewersArray.push(result[i].viewers)
+                }
+            res.send({
+                result:viewersArray,
+                responseCode:200,
+                responseMessage:"Result"
+                
+            })
+            }
+        })
+    },
+    
+    "luckCardViewersList":function(req, res){  
+        adminCards.find({"type": "luck_card"}).exec(function(err, result){
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else { 
+                var chancesArray = [];
+                for(var i = 0; i<result.length; i++){
+                    chancesArray.push(result[i].chances)
+                }
+            res.send({
+                result:chancesArray,
+                responseCode:200,
+                responseMessage:"Result"
+                
+            })
             }
         })
     }
