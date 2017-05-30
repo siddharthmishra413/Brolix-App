@@ -9,8 +9,7 @@ app.get('/validatorPaytabs', userHandler.validatorPaytabs);
 
 app.post('/createToken', userHandler.createToken);
 
-
-//app.post('/Twocheckout', userHandler.Twocheckout);
+app.post('/Twocheckout', userHandler.Twocheckout);
 app.post('/signup', userHandler.signup);
 app.post('/login', userHandler.login);
 app.post('/verifyOtp', userHandler.verifyOtp);

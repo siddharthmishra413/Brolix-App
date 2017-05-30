@@ -20,6 +20,7 @@ var followerList = require("./model/followersList");
 var paypalPayment = require("./model/payment");
 var Brolixanddollors = require("./model/brolixAndDollors");
 var mongoose = require('mongoose');
+var Twocheckout = require('2checkout-node');
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -146,59 +147,95 @@ module.exports = {
 
 
     "createToken": function(req, res) {
-        var args = {
+        var tco = new Twocheckout({
             sellerId: "901347468",
-            publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
+            publishableKey: "0669EFD3-B132-4568-B2DB-494235857D4E",
             ccNo: 4000000000000002,
             cvv: 123,
             expMonth: 01,
             expYear: 2024
-        };
+        });
 
-        Twocheckout.loadPubKey('production', function() {
-            Twocheckout.requestToken(successCallback, errorCallback, args);
-        })
+        Twocheckout.loadPubKey('sandbox');
+        // Twocheckout.loadPubKey('production', function() {
+        //     Twocheckout.requestToken(successCallback, errorCallback, args);
+        // })
     },
 
     "Twocheckout": function(req, res) {
-
         var tco = new Twocheckout({
-            sellerId: "901347468",
-            privateKey: "720B461B-ECC0-495D-B279-7CCC0057EED8",
-            // publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
-            sandbox: true //#Uncomment to use Sandbox
+            sellerId: "901349538",
+            privateKey: "EDEF9BC9-718C-4391-A3F9-8FC34FA527FD",
+            sandbox: true  // #Uncomment to use Sandbox
         });
 
         var params = {
             "merchantOrderId": "123",
-            "token": "ZjhlYjkwZDMtZjVhZC00OGQ4LTkyY2YtMzc0YTc3MzgwMmVj",
+            "token": "MDExOTE4MzktZjY1ZS00MGIwLTkyNmEtZDc3YThjNjY4ZTdh",
             "currency": "USD",
             "total": "10.00",
             "billingAddr": {
-                "name": "Joe Flagster",
-                "addrLine1": "123 Main Street",
-                "city": "Townsville",
+                "name": "Testing Tester",
+                "addrLine1": "123 Test St",
+                "city": "Columbus",
                 "state": "Ohio",
-                "zipCode": "43206",
+                "zipCode": "43123",
                 "country": "USA",
                 "email": "example@2co.com",
-                "phoneNumber": "8853735932"
+                "phoneNumber": "5555555555"
             }
         };
 
-        tco.checkout.authorize(params, function(error, data) {
-            console.log("Fg")
+        tco.checkout.authorize(params, function (error, data) {
             if (error) {
-                console.log("error")
                 console.log(error);
             } else {
-                res.send({
-
-                })
-                console.log("success")
                 console.log(JSON.stringify(data));
             }
         });
+
+
+
+        // var tco = new Twocheckout({
+        //     sellerId: "901342356",
+        //     privateKey: "0BB89296-9BF8-4F70-9FD6-370D8FB016BC",
+        //     //publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
+        //     sandbox: true //#Uncomment to use Sandbox
+        // });
+    
+
+        // var params = {
+        //     "merchantOrderId": "1237",
+        //     "token": "MzljYmU2MDItOTQ5MC00MmYyLWExMjEtZWQ0MzY5MzkwNmU2",
+        //     "currency": "USD",
+        //     "total": "10.00",
+        //     "billingAddr": {
+        //         "name": "Joe Flagster",
+        //         "addrLine1": "123 Main Street",
+        //         "city": "Townsville",
+        //         "state": "Ohio",
+        //         "zipCode": "43206",
+        //         "country": "USA",
+        //         "email": "example@2co.com",
+        //         "phoneNumber": "8853735932"
+        //     }
+        // };
+
+        // tco.checkout.authorize(params, function(error, data) {
+        //     console.log("Fg")
+        //     if (error) {
+        //         console.log("error")
+        //         console.log(error);
+        //     } else {
+        //                         console.log(JSON.stringify(data));
+
+        //         res.send({
+
+        //         })
+        //         console.log("success")
+        //         console.log(JSON.stringify(data));
+        //     }
+        // });
 
     },
 
