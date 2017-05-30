@@ -152,6 +152,5 @@ app.get('/showUserAllPages/:id', authUser.authUser,adminHandler.showUserAllPages
 app.get('/listOfCategory', authUser.authUser,adminHandler.listOfCategory);
 app.post('/subCategoryData', authUser.authUser,adminHandler.subCategoryData);
 app.get('/adsDetail/:id', authUser.authUser,adminHandler.adsDetail);
-app.get('/showAllReports', authUser.authUser,adminHandler.showAllReports);
 
 module.exports = app;

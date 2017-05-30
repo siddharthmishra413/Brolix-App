@@ -2043,7 +2043,7 @@ module.exports = {
             function(callback) {
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
 
-                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
+                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city"  )) {
                         var cond = { $or: [] };
                         if (key == "subCategory") {
                             for (data in req.body[key]) {
@@ -2082,7 +2082,7 @@ module.exports = {
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                        if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
+                        if (!(key == "pageName" || key == "category" || key == "subCategory" ||key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
                             var queryOrData = { $or: [] };
                             var temporayCondData = {}
 
@@ -2159,7 +2159,7 @@ module.exports = {
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                        if (!(key == "pageName" || key == "category" || key == "subCategory" || key == "country" || key == "state" || key == "city" || key == 'couponStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
+                        if (!(key == "pageName" || key == "category" || key == "subCategory" || key == 'couponStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
                             //   queryOrData = { $or: [] };
                             var temporayCondData = {}
                             if (key == 'cashStatus') {

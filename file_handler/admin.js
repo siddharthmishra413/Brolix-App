@@ -169,7 +169,7 @@ module.exports = {
     "winners": function(req, res) {
         waterfall([
             function(callback) {
-                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }).exec(function(err, result) {
+                User.aggregate({ $unwind: { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                         var count1 = 0;
                         for (i = 0; i < result.length; i++) {
@@ -4148,7 +4148,6 @@ module.exports = {
         })
     },
 
-
     "cityListData": function(req, res) {
 
         var city = require('countries-cities').getCities(req.body.country);
@@ -4164,20 +4163,6 @@ module.exports = {
                 responseMessage: "Data Show successfully."
             })
         }
-    },
-    
-    "showAllReports":function(req, res){
-        createNewReport.find({}).populate('userId', 'firstName lastName').exec(function(err, result){
-            if(err){res.send({responseCode:500, responseMessage:'Internal server error'}); }
-            else if(result.length==0){res.send({responseCode:400, responseMessage:"No report found"});}
-            else{
-                res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "All report Shown successfully."
-            }) 
-            }
-        })
     }
 
 
