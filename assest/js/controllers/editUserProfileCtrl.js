@@ -14,6 +14,16 @@ app.controller('editUserProfileCtrl', function($scope, $window, userService, $st
         $scope.countriesList = res.result;
     })
 
+    // $scope.changeCountry = function() {
+    //     var obj = {};
+    //     obj = {
+    //         country: $scope.dashBordFilter.country,
+    //     }
+    //     userService.cityListData(obj).success(function(res) {
+    //         $scope.cityList = res.result;
+    //     })
+    // }
+
     $scope.changeCountry = function() {
         $scope.cityFirst = false;
         $scope.citySecond = true;
@@ -22,6 +32,7 @@ app.controller('editUserProfileCtrl', function($scope, $window, userService, $st
             country: $scope.viewUserProfile.country,
         }
         userService.cityListData(obj).success(function(res) {
+            console.log("res",res)
             $scope.cityList = res.result;
         })
     }

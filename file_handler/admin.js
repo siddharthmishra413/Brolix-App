@@ -1537,7 +1537,7 @@ module.exports = {
             function(callback) {
                 switch (data) {
                     case 'totalSoldCards':
-                        var matchCondt = { $match: {} }
+                        var matchCondt = { $match: { 'upgradeCardObject.type': 'PURCHASED' } }
                         var updateData = { $unwind: "$upgradeCardObject" };
                         break;
 
@@ -1593,12 +1593,14 @@ module.exports = {
                 }
                 var upgradeType = {}
                 if (req.body.upgradeType) {
-                    var upgradeType = { 'upgradeCardObject.viewers': req.body.upgradeType }
+                	var number_upgradeType = Number(req.body.upgradeType)
+                    var upgradeType = { 'upgradeCardObject.viewers': number_upgradeType }
                 } else {
                     var upgradeType = {}
                 }
                 if (req.body.luckCardType) {
-                    var luckCardType = { 'luckCardObject.chances': req.body.luckCardType }
+                	var number_luckCardType = Number(req.body.luckCardType)
+                    var luckCardType = { 'luckCardObject.chances': number_luckCardType }
                 } else {
                     var luckCardType = {}
                 }

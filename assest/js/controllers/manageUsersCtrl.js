@@ -31,7 +31,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.totalUserCount = res.result.length;
         } else {
             $scope.totalUserCount = 0;
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
     })
     userService.showAllPersonalUser().success(function(res) {
@@ -40,7 +40,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.personalUserCount = res.result.length;
         } else {
             $scope.personalUserCount = 0;
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
     })
     userService.showAllBusinessUser().success(function(res) {
@@ -57,7 +57,8 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.liveUser = res.result;
             $scope.LiveUserCount = res.result.length;
         } else {
-            toastr.error(res.responseMessage);
+            $scope.LiveUserCount = 0;
+            //toastr.error(res.responseMessage);
         }
     })
     userService.totalWinners().success(function(res) {
@@ -83,7 +84,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.couponWinnersCount = res.result.length;
         } else {
             $scope.couponWinnersCount = 0;
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
     })
     userService.showAllBlockUser().success(function(res) {
@@ -130,14 +131,14 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
         if (res.responseCode == 200) {
             $scope.UpgradeCard = res.data;
         } else {
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
     })
     userService.showListOFCouponWithoutPagination().success(function(res) {
         if (res.responseCode == 200) {
             $scope.allCoupons = res.result;
         } else {
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
     })
     $scope.export = function() {
@@ -1297,6 +1298,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             joinTo: new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom: new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
+        console.log("datatata", JSON.stringify(data))
         switch (type) {
             case 'totalUsers':
                 userService.userfilter(data).success(function(res) {

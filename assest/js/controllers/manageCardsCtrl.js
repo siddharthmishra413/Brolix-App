@@ -178,7 +178,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             if (res.responseCode == 200) {
                 console.log("res", JSON.stringify(res))
                 $scope.upgradecardOnOffers = res.result;
-                $("#upgradeOfferOnCard").modal('show');
+                $("#upgradeOfferOnCardd").modal('show');
             } else {
                 //console.log("res",JSON.stringify(res))
             }
@@ -612,19 +612,17 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
 
 
     $scope.userInfo = function(id) {
-        console.log(JSON.stringify(id))
-        userService.userInfo(id).then(function(success) {
-            console.log("ssssssss",success)
-            if (success.data.responseCode == 200) {
-                $scope.userDetail = success.data.result
-                $("#userInfo").modal('show');
-                // console.log(JSON.stringify($scope.userDetail))
+        // console.log("idddddddddd",id)
+        userService.userInfo(id).success(function(res) {
+            // console.log("res", JSON.stringify(res))
+            if (res.responseCode == 200) {
+                $scope.userDetail = res.result
+                $("#userInfof").modal('show');
             } else {
-                toastr.error(success.data.responseMessage)
+                toastr.error(res.responseMessage);
+
             }
-        }, function(err) {
-            // console.log(err);
-            toastr.error('Connection error.');
+
         })
     }
 
@@ -635,7 +633,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             console.log("res", JSON.stringify(res))
             if (res.responseCode == 200) {
                 $scope.page = res.result;
-                $("#Pages").modal('show');
+                $("#Pagess").modal('show');
                 console.log("$scope.res", JSON.stringify($scope.page))
             } else {
                 toastr.error(res.responseMessage);

@@ -180,8 +180,8 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
             state: $scope.dashBordFilter.state,
             city: $scope.dashBordFilter.city,
             category: $scope.dashBordFilter.categories,
-            joinTo: $scope.dashBordFilter.dobTo,
-            joinFrom: $scope.dashBordFilter.dobFrom,
+            joinTo: new Date($scope.dashBordFilter.dobTo).getTime(),
+            joinFrom: new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
         console.log("datatata", JSON.stringify(data))
 

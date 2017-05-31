@@ -35,7 +35,7 @@ app.get('/blockUser/:userId', authUser.authUser, adminHandler.blockUser);
 /*--------------------------Manage Cards--------------------------*/
 
 
-app.get('/totalSoldUpgradeCard', authUser.authUser, adminHandler.totalSoldUpgradeCard);
+app.get('/totalSoldUpgradeCard', adminHandler.totalSoldUpgradeCard);
 app.get('/totalSoldLuckCard', authUser.authUser, adminHandler.totalSoldLuckCard);
 app.get('/totalIncomeInBrolixFromLuckCard', authUser.authUser, adminHandler.totalIncomeInBrolixFromLuckCard);
 app.get('/totalIncomeInCashFromUpgradeCard', authUser.authUser, adminHandler.totalIncomeInCashFromUpgradeCard);
