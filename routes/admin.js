@@ -153,5 +153,8 @@ app.get('/adsDetail/:id', authUser.authUser, adminHandler.adsDetail);
 app.get('/showAllReports', authUser.authUser, adminHandler.showAllReports);
 app.get('/upgradeCardViewersList', authUser.authUser, adminHandler.upgradeCardViewersList);
 app.get('/luckCardViewersList', authUser.authUser, adminHandler.luckCardViewersList);
+app.get('/userCouponStatus', authUser.authUser, adminHandler.userCouponStatus);
+app.get('/userCashStatus', authUser.authUser, adminHandler.userCashStatus);
+
 
 module.exports = app;

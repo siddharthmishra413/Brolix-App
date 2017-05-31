@@ -239,7 +239,8 @@ module.exports = {
     "showAllBlockUser": function(req, res) {
         User.find({ status: "BLOCK" }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
-                res.send({ result:result,count: 0, responseCode: 404, responseMessage: "No blocked found." }) } else {
+                res.send({ result: result, count: 0, responseCode: 404, responseMessage: "No blocked found." })
+            } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -994,8 +995,9 @@ module.exports = {
 
     "showAllBlockedPage": function(req, res) { // pageId in request
         createNewPage.find({ status: "BLOCK" }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { 
-                res.send({ result:result, responseCode: 200, count: 0, responseMessage: "No blocked page found" }) } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
+                res.send({ result: result, responseCode: 200, count: 0, responseMessage: "No blocked page found" })
+            } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -1036,8 +1038,7 @@ module.exports = {
 
     "showAllRemovedPage": function(req, res) { // pageId in request
         createNewPage.find({ status: "REMOVED" }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) 
-            { res.send({ result:result, responseCode: 200, count: 0, responseMessage: "No removed page found" }) } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 200, count: 0, responseMessage: "No removed page found" }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -1131,7 +1132,7 @@ module.exports = {
 
     "showCardDetails": function(req, res) {
         var cardId = req.params.id;
-        adminCards.findOne({_id:cardId},function(err, result) {
+        adminCards.findOne({ _id: cardId }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
             }
@@ -1596,13 +1597,13 @@ module.exports = {
                 }
                 var upgradeType = {}
                 if (req.body.upgradeType) {
-                	var number_upgradeType = Number(req.body.upgradeType)
+                    var number_upgradeType = Number(req.body.upgradeType)
                     var upgradeType = { 'upgradeCardObject.viewers': number_upgradeType }
                 } else {
                     var upgradeType = {}
                 }
                 if (req.body.luckCardType) {
-                	var number_luckCardType = Number(req.body.luckCardType)
+                    var number_luckCardType = Number(req.body.luckCardType)
                     var luckCardType = { 'luckCardObject.chances': number_luckCardType }
                 } else {
                     var luckCardType = {}
@@ -3627,17 +3628,17 @@ module.exports = {
                 console.log("todayDate==>" + todayDate)
                 if (req.body.ageFrom && req.body.ageTo) {
                     //    data.setFullYear(data.getFullYear() + 1);
-                    console.log("ageFrom",req.body.ageFrom)
-                    console.log("ageTo",req.body.ageTo)
+                    console.log("ageFrom", req.body.ageFrom)
+                    console.log("ageTo", req.body.ageTo)
                     var fromDate = todayDate.setFullYear(todayDate.getFullYear() - req.body.ageFrom)
                     var toDate = newTodayDate.setFullYear(newTodayDate.getFullYear() - req.body.ageTo)
 
                     var fromUtcDate = new Date(fromDate);
                     var toUtcDate = new Date(toDate);
-                    console.log("fromUtcDate",fromUtcDate)
-                    console.log("toUtcDate",toUtcDate)
+                    console.log("fromUtcDate", fromUtcDate)
+                    console.log("toUtcDate", toUtcDate)
                     condition.$and.push({
-                        dob: { $gte: toUtcDate, $lte:fromUtcDate}
+                        dob: { $gte: toUtcDate, $lte: fromUtcDate }
                     })
                 }
                 if (req.body.joinTo && req.body.joinTo) {
@@ -4175,42 +4176,86 @@ module.exports = {
             }
         })
     },
-    
-    "upgradeCardViewersList":function(req, res){  // "type": "luck_card",
-        adminCards.find({ "type": "upgrade_card"}).exec(function(err, result){
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else { 
-                var viewersArray=[];
-                for(var i = 0; i<result.length; i++){     
-                    console.log("result--->>>",result.length, i)
-                    if(viewersArray.indexOf(result[i].viewers)==-1){
-                     viewersArray.push(result[i].viewers)
+
+    "upgradeCardViewersList": function(req, res) { // "type": "luck_card",
+        adminCards.find({ "type": "upgrade_card" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else {
+                var viewersArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (viewersArray.indexOf(result[i].viewers) == -1) {
+                        viewersArray.push(result[i].viewers)
                     }
                 }
-            res.send({
-                result:viewersArray,
-                responseCode:200,
-                responseMessage:"Result"                
-            })
+                res.send({
+                    result: viewersArray,
+                    responseCode: 200,
+                    responseMessage: "Result"
+                })
             }
         })
     },
-    
-    "luckCardViewersList":function(req, res){  
-        adminCards.find({"type": "luck_card"}).exec(function(err, result){
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else { 
-                var chancesArray = [];                
-              for(var i = 0; i<result.length; i++){
-                   console.log("result--->>>",result.length, i)
-                if(chancesArray.indexOf(result[i].chances)==-1){
-                    chancesArray.push(result[i].chances)
+
+
+    "luckCardViewersList": function(req, res) {
+        adminCards.find({ "type": "luck_card" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else {
+                var chancesArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (chancesArray.indexOf(result[i].chances) == -1) {
+                        chancesArray.push(result[i].chances)
+                    }
                 }
-              }
-            res.send({
-                result:chancesArray,
-                responseCode:200,
-                responseMessage:"Result"
-                
-            })
+                res.send({
+                    result: chancesArray,
+                    responseCode: 200,
+                    responseMessage: "Result"
+                })
+            }
+        })
+    },
+
+    "userCouponStatus": function(req, res) {
+        User.find({}, 'coupon').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'No coupon status found' }); } else {
+                var statusArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    for (var j = 0; j < result[i].coupon.length; j++) {
+                        if (statusArray.indexOf(result[i].coupon[j].couponStatus) == -1) {
+                            statusArray.push(result[i].coupon[j].couponStatus)
+                        }
+                    }
+                }
+                console.log("statusArray--->>>", statusArray)
+                res.send({
+                    result: statusArray,
+                    responseCode: 200,
+                    responseMessage: "Result"
+                })
+            }
+        })
+    },
+
+
+    "userCashStatus": function(req, res) {
+        User.find({}, 'cashPrize').exec(function(err, result) {
+            console.log("result-->>", result)
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'No cash status found' }); } else {
+                var statusArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    console.log("result   --  i --->>>", result.length, i)
+                    for (var j = 0; j < result[i].cashPrize.length; j++) {
+                        console.log("result   --  j--->>>", result[i].cashPrize[j].length, j)
+                        if (statusArray.indexOf(result[i].cashPrize[j].cashStatus) == -1) {
+                            statusArray.push(result[i].cashPrize[j].cashStatus)
+                        }
+                    }
+                }
+                console.log("statusArray--->>>", statusArray)
+                res.send({
+                    result: statusArray,
+                    responseCode: 200,
+                    responseMessage: "Result"
+                })
             }
         })
     }
