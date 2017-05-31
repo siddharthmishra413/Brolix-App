@@ -33,6 +33,24 @@ $scope.changeCountry = function(){
   })
 }
 
+userService.userCouponStatus().success(function(res) { 
+  if (res.responseCode == 200){
+    $scope.couponStatus= res.result;
+  } 
+  else {
+      toastr.error("something wents to roung")
+  }
+})
+
+userService.userCashStatus().success(function(res) { 
+  if (res.responseCode == 200){
+    $scope.cashStatus= res.result;
+  } 
+  else {
+      toastr.error("something wents to roung")
+  }
+})
+
 userService.totalBrolixGift().then(function(success) {
   if(success.data.responseCode == 200) {
     $scope.contactWinners = success.data.result;

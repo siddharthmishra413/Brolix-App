@@ -65,7 +65,7 @@ app.controller('editSystemUserCtrl', function($scope, $stateParams, $window, use
     }
 
     $scope.cancel = function() {
-        $scope.myFrom = '';
+        $state.go('header.addSystemUser');
     }
 
 })

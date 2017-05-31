@@ -5,6 +5,8 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
     $scope.couponDeatil = true;
     $scope.addNewCoupon = false;
     $scope.user = {};
+    $scope.minDate = new Date().toDateString();
+
     $scope.addCouponFun = function() {
         $scope.couponDeatil = false;
         $scope.addNewCoupon = true;
@@ -14,7 +16,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
         if (res.responseCode == 200) {
             $scope.Detail = res.result;
         } else {
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
     })
 
@@ -22,7 +24,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
         if (res.responseCode == 200) {
             $scope.pageDetail = res.result;
         } else {
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
     })
 
@@ -130,8 +132,8 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
         //console.log(JSON.stringify(localStorage.couponId));
     }
     $scope.cancel = function() {
-        $state.go('header.addSystemUser')
-        $scope.user = {};
+        $state.go('header.manageAdminTools')
+        // $scope.user = {};
     }
     $scope.postCoupon = function(post_id) {
         //console.log(JSON.stringify(post_id))

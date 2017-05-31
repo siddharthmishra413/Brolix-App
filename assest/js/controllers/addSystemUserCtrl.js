@@ -7,7 +7,7 @@ app.controller('addSystemUserCtrl', function($scope, $window, userService, $stat
     $scope.tableData=true;
     $scope.permissions = [];
 
-    userService.listOfSystemAdmin($scope.currentSystemAdmin).success(function(res) { 
+    userService.listOfSystemAdmin().success(function(res) { 
             if (res.responseCode == 200){          
                    $scope.allSystemUser= res.result;
                } 
@@ -81,7 +81,7 @@ app.controller('addSystemUserCtrl', function($scope, $window, userService, $stat
 }
 
     $scope.cancel = function() {
-        $scope.myFrom = '';
+         $state.go('header.manageAdminTools');
     }
 
 })

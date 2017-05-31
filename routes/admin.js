@@ -112,7 +112,7 @@ app.get('/showPageName', authUser.authUser, adminHandler.showPageName);
 app.post('/createSystemUser', authUser.authUser, adminHandler.createSystemUser);
 app.post('/checkPermission', authUser.authUser, adminHandler.checkPermission);
 app.post('/adsfilter', adminHandler.adsfilter);
-app.post('/luckUpgradeCardfilter', authUser.authUser, adminHandler.luckUpgradeCardfilter);
+app.post('/luckUpgradeCardfilter', adminHandler.luckUpgradeCardfilter);
 app.post('/giftsFilter', adminHandler.giftsFilter);
 app.post('/brolixPaymentFilter', authUser.authUser, adminHandler.brolixPaymentFilter);
 app.post('/dollorPaymentFilter', authUser.authUser, adminHandler.dollorPaymentFilter);

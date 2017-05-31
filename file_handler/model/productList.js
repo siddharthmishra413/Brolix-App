@@ -17,6 +17,7 @@ var pageProductSchema = new Schema({
     productType:{
         type:String
     },
+    thumbnail:{type:String},
     media: [{
         image: { type: String, trim: true },
         description: { type: String, trim: true },

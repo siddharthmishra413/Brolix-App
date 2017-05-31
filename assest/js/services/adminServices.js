@@ -274,7 +274,7 @@ app.service('userService',function($http){
     },
 
     listOfAds: function() {
-     return $http.get(baseurl+'/admin/listOfAds/');
+     return $http.get(baseurl+'/admin/listOfAds');
     },
     
     adsfilter: function(data){
@@ -505,6 +505,9 @@ app.service('userService',function($http){
    },
    userCouponStatus: function() {
       return $http.get(baseurl+'/admin/userCouponStatus');
+    },
+    userCashStatus: function() {
+      return $http.get(baseurl+'/admin/userCashStatus');
     },
 
   

@@ -26,7 +26,7 @@
                                                 <label class="control-label col-md-4">Viewers</label>
                                                 <div class="col-md-8">
                                                    <div class="input-group">
-                                                    <input ng-model="createCard.viewers" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="10,000" required>
+                                                    <input ng-model="createCard.viewers" type="tel" name="viewer" class="form-control text-center" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001"  placeholder="10,000" required>
                                                     </div> 
                                                     <span style="color:red;" ng-show="crtCard.viewer.$dirty && crtCard.viewer.$invalid">
                                                     <span ng-show="crtCard.viewer.$error.required">Viewers is required.</span> 
@@ -40,7 +40,7 @@
                                                 <label class="control-label col-md-4">Price</label>
                                                 <div class="col-md-8">
                                                     <div class="input-group">
-                                                      <input ng-model="createCard.price" type="tel" name="prices"  ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" placeholder="25" required>
+                                                      <input ng-model="createCard.price" type="tel" name="prices"  ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001" class="form-control text-center" placeholder="25" required>
                                                       <span class="input-group-addon" id="basic-addon2"><i class="fa fa-usd" ></i></span>
                                                     </div>
                                                      <span style="color:red;" ng-show="crtCard.prices.$dirty && crtCard.prices.$invalid">
@@ -72,7 +72,10 @@
                                             <div class="row">
                                                 <label class="control-label col-md-4">Chances</label>
                                                 <div class="col-md-8">
-                                                  <input ng-model="createCard.chance" type="text" class="form-control text-center" placeholder="10,000">
+                                                  <input ng-model="createCard.chance" type="tel" name="chances" class="form-control text-center" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001" placeholder="10,000">
+                                                  <span style="color:red;" ng-show="crtCard2.chances.$dirty && crtCard2.chances.$invalid">
+                                                  <span ng-show="crtCard2.chances.$error.required">Brolix is required.</span> 
+                                                  <span ng-show="crtCard2.chances.$error.pattern">Only number are allowed.</span>  
 
                                                   <!-- <input ng-model="createCard.chance" type="tel" name="chance" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="10,000" required> -->
 
@@ -88,7 +91,7 @@
                                                 <label class="control-label col-md-4">Brolix</label>
                                                 <div class="col-md-8">
                                                     <div class="input-group">
-                                                      <input ng-model="createCard.brolix" type="tel" name="brolix" class="form-control text-center" ng-pattern="/^[0-9]{1,11}$/" placeholder="25" required>
+                                                      <input ng-model="createCard.brolix" type="tel" name="brolix" class="form-control text-center" ng-pattern="/^[0-9]+(\.[0-9]{1,3})?$/" step="0.001" placeholder="25" required>
                                                       <span class="input-group-addon" id="basic-addon2"><i class="fa fa-bold" ></i></span>
                                                     </div>
                                                       <span style="color:red;" ng-show="crtCard2.brolix.$dirty && crtCard2.brolix.$invalid">

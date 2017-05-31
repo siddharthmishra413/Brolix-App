@@ -9,6 +9,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
     $scope.active_upgrade_card = true;
     $scope.cardType = 'upgrade_card';
     localStorage.setItem('pageTypeName','totalPages');
+    
 
     $scope.dateValidation = function(dtaa) {
         var dta = dtaa;

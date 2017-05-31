@@ -98,14 +98,21 @@ module.exports = {
     },
 
     "addNewUser": function(req, res) {
-        if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
+        if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); }
+        else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } 
+        else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); }
+        else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); }
+        else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); }
+        else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); }
+        else {
             User.findOne({ email: req.body.email }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result) {
-                    res.send({
-                        responseCode: 401,
-                        responseMessage: "Email should be unique."
-                    });
-                } else {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                else if (result) {res.send({responseCode: 401,responseMessage: "Email should be unique."}); }
+                else {
+                User.findOne({ mobileNumber: req.body.mobileNumber }).exec(function(err, result1) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                else if (result1) {res.send({responseCode: 401,responseMessage: "MobileNumber should be unique."}); }
+                    else{
                     var user = new User(req.body);
                     user.save(function(err, result) {
                         if (err) {
@@ -122,6 +129,8 @@ module.exports = {
                             });
                         }
                     })
+                    }
+                })
                 }
             })
         }
@@ -498,7 +507,7 @@ module.exports = {
             var updateData = query;
         } else {
             console.log("rather than query")
-            var updateData = {}
+            var updateData = {"type" : "PURCHASED"}
         }
         User.aggregate({ $unwind: "$luckCardObject" }, { $match: updateData }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -524,7 +533,7 @@ module.exports = {
         // var skips = limitData - 10;
         // var page = String(pageNumber);
 
-        User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$luckCardObject" },{ $match: {"type" : "PURCHASED"} }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];
                 var count = 0;
@@ -536,7 +545,7 @@ module.exports = {
                 //   var pages = Math.ceil(count / 10);
                 var sum = arr.reduce((a, b) => a + b, 0);
                 console.log("arrrrr", sum);
-                User.aggregate({ $unwind: "$luckCardObject" }).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$luckCardObject" },{ $match: {"type" : "PURCHASED"} }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No card found' }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
@@ -1079,12 +1088,13 @@ module.exports = {
 
     "unPublishedPage": function(req, res) {
         createNewAds.find({}, 'pageId', function(err, result) {
+            console.log("pageId-->>>",result)
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "No page found" })
             var result = result.map(function(a) {
                 return a.pageId;
             });
             var allPageIds = _.uniq(result);
-            createNewPage.find({ _id: { $nin: allPageIds } }, function(err, result) {
+            createNewPage.find({ _id: { $nin: allPageIds }, "status" : "ACTIVE" }, function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     User.populate(result, {
                         path: 'userId',
@@ -1125,7 +1135,7 @@ module.exports = {
             [data, 'descending']
         ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
+                res.send({ data: result, responseCode: 200, responseMessage: 'Card shown successfully' });
             }
         })
     },
@@ -1561,12 +1571,12 @@ module.exports = {
                         break;
 
                     case 'totalSoldLuckCards':
-                        var matchCondt = { $match: {} }
+                        var matchCondt = { $match: {"type" : "PURCHASED"} }
                         var updateData = { $unwind: "$luckCardObject" }
                         break;
 
                     case 'totalIncome$LuckCards':
-                        var matchCondt = { $match: {} }
+                        var matchCondt = { $match: {"type" : "PURCHASED"} }
                         var updateData = { $unwind: "$luckCardObject" }
                         break;
 
@@ -1624,7 +1634,7 @@ module.exports = {
                 callback(null, updateData, tempCond, matchCondt, dateMatch, luckCardType, upgradeType)
             },
             function(updateData, tempCond, matchCondt, dateMatch, luckCardType, upgradeType, callback) {
-
+               console.log("tempCond=",tempCond)
                 User.aggregate(updateData, { $match: tempCond }, matchCondt, { $match: dateMatch }).exec(function(err, userResults) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                     if (!userResults) { res.send({ results: results, responseCode: 403, responseMessage: "No matching result available." }); } else {

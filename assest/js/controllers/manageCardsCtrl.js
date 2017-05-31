@@ -9,6 +9,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     var luck_card = {};
     $scope.cardDetailsOnOffer = {};
     $scope.dashBordFilter = {};
+    localStorage.setItem('cardTypeName','totalSoldCards');
 
     $scope.dateValidation = function(dtaa) {
         var dta = dtaa;
@@ -847,7 +848,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             state: $scope.dashBordFilter.state,
             city: $scope.dashBordFilter.city,
             upgradeType: $scope.dashBordFilter.upgradeCard,
-            LuckCardType: $scope.dashBordFilter.luckCard,
+            luckCardType: $scope.dashBordFilter.luckCard,
             joinTo: new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom: new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
