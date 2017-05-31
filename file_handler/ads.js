@@ -1035,9 +1035,9 @@ module.exports = {
                     var mySet = new Set(adFollowers);
                     var has = mySet.has(req.body.userId)
                     if (has) { res.send({ responseCode: 400, responseMessage: 'You are already following this ad' }); } else {
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "adFollowers": req.body.userId } }, { new: true }).exec(function(err, results) {
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "adFollowers": req.body.userId } }, { new: true }).exec(function(err, adResults) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                console.log("result---->>>> ads---->>>", results)
+                                console.log("result---->>>> ads---->>>", adResults)
                                 PageFollowers.findOne({ userId: req.body.userId, pageId: pageId }).exec(function(err, result1) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                         if (!result1) {
@@ -1054,7 +1054,7 @@ module.exports = {
                                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                                         createNewPage.findOneAndUpdate({ _id: pageId }, { $push: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
                                                             res.send({
-                                                                result: results,
+                                                                result: adResults,
                                                                 responseCode: 200,
                                                                 responseMessage: "Followed"
                                                             });
@@ -1067,7 +1067,7 @@ module.exports = {
                                                 PageFollowers.findOneAndUpdate({ _id: result1._id }, { $set: { followStatus: "follow", userId: req.body.userId, pageId: pageId } }, { new: true }).exec(function(err, result2) {
                                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                                         res.send({
-                                                            result: result2,
+                                                            result: adResults,
                                                             responseCode: 200,
                                                             responseMessage: "Followed."
                                                         });
@@ -1075,13 +1075,13 @@ module.exports = {
                                                 })
                                             } else if (result1.followStatus == "block") {
                                                 res.send({
-                                                    result: results,
+                                                    result: adResults,
                                                     responseCode: 200,
                                                     responseMessage: "Followed"
                                                 });
                                             } else {
                                                 res.send({
-                                                    result: results,
+                                                    result: adResults,
                                                     responseCode: 200,
                                                     responseMessage: "Followed"
                                                 });
@@ -1103,10 +1103,11 @@ module.exports = {
                     var mySet = new Set(adFollowers);
                     var has = mySet.has(req.body.userId)
                     if (!has) { res.send({ responseCode: 400, responseMessage: 'You have already Unfollow this ad' }); } else {
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { "adFollowers": -req.body.userId } }, { new: true }).exec(function(err, results) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { "adFollowers": -req.body.userId } }, { new: true }).exec(function(err, adResults) {
+                            console.log("result- 11111111->>", adResults)
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!adResults) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
                                 PageFollowers.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { pageId: pageId }] }, { $set: { followStatus: "Unfollowed" } }, { new: true }).exec(function(err, result) {
-                                    console.log("result-->>", result)
+                                    console.log("result- 11111111->>", result)
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                         User.findOneAndUpdate({ _id: req.body.userId }, { $pull: { pageFollowers: { pageId: pageId } } }, { new: true }).exec(function(err, result1) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
@@ -1114,7 +1115,7 @@ module.exports = {
                                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
                                                         console.log("result- 111->>", result1)
                                                         res.send({
-                                                            result: results,
+                                                            result: adResults,
                                                             responseCode: 200,
                                                             responseMessage: "Unfollowed"
                                                         });
