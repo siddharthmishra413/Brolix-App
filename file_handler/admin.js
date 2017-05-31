@@ -238,7 +238,8 @@ module.exports = {
 
     "showAllBlockUser": function(req, res) {
         User.find({ status: "BLOCK" }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No blocked found." }) } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
+                res.send({ result:result,count: 0, responseCode: 404, responseMessage: "No blocked found." }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -993,7 +994,8 @@ module.exports = {
 
     "showAllBlockedPage": function(req, res) { // pageId in request
         createNewPage.find({ status: "BLOCK" }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 200, count: 0, responseMessage: "No blocked page found" }) } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { 
+                res.send({ result:result, responseCode: 200, count: 0, responseMessage: "No blocked page found" }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -1034,7 +1036,8 @@ module.exports = {
 
     "showAllRemovedPage": function(req, res) { // pageId in request
         createNewPage.find({ status: "REMOVED" }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 200, count: 0, responseMessage: "No removed page found" }) } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) 
+            { res.send({ result:result, responseCode: 200, count: 0, responseMessage: "No removed page found" }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
                     count++;
@@ -3624,14 +3627,17 @@ module.exports = {
                 console.log("todayDate==>" + todayDate)
                 if (req.body.ageFrom && req.body.ageTo) {
                     //    data.setFullYear(data.getFullYear() + 1);
-
+                    console.log("ageFrom",req.body.ageFrom)
+                    console.log("ageTo",req.body.ageTo)
                     var fromDate = todayDate.setFullYear(todayDate.getFullYear() - req.body.ageFrom)
                     var toDate = newTodayDate.setFullYear(newTodayDate.getFullYear() - req.body.ageTo)
 
                     var fromUtcDate = new Date(fromDate);
                     var toUtcDate = new Date(toDate);
+                    console.log("fromUtcDate",fromUtcDate)
+                    console.log("toUtcDate",toUtcDate)
                     condition.$and.push({
-                        dob: { $gte: fromUtcDate, $lte: toUtcDate }
+                        dob: { $gte: toUtcDate, $lte:fromUtcDate}
                     })
                 }
                 if (req.body.joinTo && req.body.joinTo) {
@@ -4174,7 +4180,8 @@ module.exports = {
         adminCards.find({ "type": "upgrade_card"}).exec(function(err, result){
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else { 
                 var viewersArray=[];
-                for(var i = 0; i<result.length; i++){              
+                for(var i = 0; i<result.length; i++){     
+                    console.log("result--->>>",result.length, i)
                     if(viewersArray.indexOf(result[i].viewers)==-1){
                      viewersArray.push(result[i].viewers)
                     }
@@ -4193,6 +4200,7 @@ module.exports = {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else { 
                 var chancesArray = [];                
               for(var i = 0; i<result.length; i++){
+                   console.log("result--->>>",result.length, i)
                 if(chancesArray.indexOf(result[i].chances)==-1){
                     chancesArray.push(result[i].chances)
                 }

@@ -264,14 +264,14 @@
                     </div>
 
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-change="ageFunction(dashBordFilter.ageFrom);" ng-change="dashBordFilter();" ng-model="dashBordFilter.ageFrom">
+                        <select class="form-control" ng-change="ageFunction(dashBordFilter.ageFrom);" ng-model="dashBordFilter.ageFrom">
                             <option value="">Age From</option>
                             <option ng-repeat="age in ageLimit">{{age}}</option>
                         </select>
                     </div>
 
                     <div class="form-group cus-select">
-                        <select class="form-control" ng-disabled="dashBordFilter.ageFrom==undefined" ng-model="dashBordFilter.ageTo">
+                        <select ng-change="dashBordFilter();" class="form-control" ng-disabled="dashBordFilter.ageFrom==undefined" ng-model="dashBordFilter.ageTo">
                             <option value="">Age To</option>
                             <option ng-repeat="ages in ageLimits">{{ages}}</option>
                             

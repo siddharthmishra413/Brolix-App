@@ -132,7 +132,7 @@ app.get('/listOfSystemAdmin', authUser.authUser, adminHandler.listOfSystemAdmin)
 app.get('/removeSystemAdmin/:id', authUser.authUser, adminHandler.removeSystemAdmin);
 app.put('/editSystemAdmin/:id', authUser.authUser, adminHandler.editSystemAdmin);
 app.get('/notificationToAdmin', authUser.authUser, adminHandler.notificationToAdmin);
-app.post('/userfilter', authUser.authUser, adminHandler.userfilter);
+app.post('/userfilter', adminHandler.userfilter);
 app.post('/pagefilter', authUser.authUser, adminHandler.pagefilter);
 app.get('/adAdminUserList', authUser.authUser, adminHandler.adAdminUserList);
 app.put('/editPage/:id', authUser.authUser, adminHandler.editPage);

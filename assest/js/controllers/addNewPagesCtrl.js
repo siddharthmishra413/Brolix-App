@@ -383,8 +383,8 @@ $scope.submitt = function(){
 	           "country":$scope.myForm.country,
 	           "state":$scope.myForm.state,
 	           "city":$scope.myForm.city, 
-	           "pageImage":$scope.myForm.userphoto,
-	           "coverImage": $scope.myForm.pagephoto,
+	           "pageImage":$scope.myForm.pagephoto,
+	           "coverImage":$scope.myForm.userphoto,
 	           "socialMedia":$scope.arrayLink, 
 	           "adAdmin":cond   
 	    }

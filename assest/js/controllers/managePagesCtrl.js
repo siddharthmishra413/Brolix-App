@@ -8,7 +8,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
     $scope.sendMessage = {};
     $scope.active_upgrade_card = true;
     $scope.cardType = 'upgrade_card';
-    localStorage.setItem('pageTypeName', 'totalPages');
+    localStorage.setItem('pageTypeName','totalPages');
 
     $scope.dateValidation = function(dtaa) {
         var dta = dtaa;
@@ -22,7 +22,8 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
             $scope.totalPages = res.result;
             $scope.totalPagesCount = res.result.length;
         } else {
-            toastr.error(res.responseMessage);
+            $scope.totalPagesCount = 0;
+            // toastr.error(res.responseMessage);
         }
     })
 
@@ -31,25 +32,30 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
             $scope.unPublishedPage = res.result;
             $scope.unPublishedPageCount = res.result.length;
         } else {
-            toastr.error(res.responseMessage);
+            $scope.unPublishedPageCount = 0;
+            //toastr.error(res.responseMessage);
         }
     })
 
     userService.showAllBlockedPage().success(function(res) {
+        console.log("ress",res)
         if (res.responseCode == 200) {
             $scope.showAllBlockedPage = res.result;
             $scope.showAllBlockedPageCount = res.result.length;
         } else {
-            toastr.error(res.responseMessage);
+            $scope.showAllBlockedPageCount = 0;
+            //toastr.error(res.responseMessage);
         }
     })
 
-    userService.showAllRemovedPage($scope.currentRemovedPages).success(function(res) {
+    userService.showAllRemovedPage().success(function(res) {
+        console.log("ress",res)
         if (res.responseCode == 200) {
             $scope.showAllRemovedPage = res.result;
             $scope.showAllRemovedPageCount = res.result.length;
         } else {
-            toastr.error(res.responseMessage);
+            $scope.showAllRemovedPageCount = 0;
+            //toastr.error(res.responseMessage);
         }
     })
 
@@ -58,7 +64,8 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
             $scope.allAdminPages = res.result;
             $scope.allAdminPagesCount = res.count;
         } else {
-            toastr.error(res.responseMessage);
+            $scope.allAdminPagesCount = 0;
+            //toastr.error(res.responseMessage);
         }
     })
 

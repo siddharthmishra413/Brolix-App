@@ -417,7 +417,7 @@ $scope.subCategoryFinal = $scope.checkBoxArray;
         console.log("resssss",success)
              if (success.data.responseCode == 200){
                 $scope.createPageData = success.result;
-                toastr.success("successfully Created");
+                toastr.success("Page Updated successfully");
                 $state.go('header.managePages');
              }else{
               toastr.error(success.responseMessage);
