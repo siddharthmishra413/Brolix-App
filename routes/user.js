@@ -5,6 +5,10 @@ var authUser = require('../middlewares/authUser');
 
 
 
+app.post('/massPay', userHandler.massPay);
+
+app.post('/paynow', userHandler.paynow);
+
 app.get('/validatorPaytabs', userHandler.validatorPaytabs);
 
 app.post('/createToken', userHandler.createToken);

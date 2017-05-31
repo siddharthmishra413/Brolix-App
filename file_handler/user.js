@@ -74,6 +74,7 @@ var data1 = querystring.stringify({
     salt: 'eCwWELxi',
     hash: sha512(string)
 })
+var MassPay = require('node-paypal-masspayments')
 
 var paytabs = require('paytabs')
 
@@ -91,8 +92,230 @@ var optionsNew = {
     }
 };
 
+var Paypal = require('paypal-adaptive');
+
+var paypalSdk = new Paypal({
+    userId:    'prashant.dwivedi-facilitator_api1.mobiloitte.com',
+    password:  '965ZNT59L9JKEZ5N',
+    signature: 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAv24ACqokwcC-LOvDidqgZgRZ8rS',
+    sandbox:   true //defaults to false
+});
+
 module.exports = {
 
+"success": function(req, res){
+  var params = {
+    payKey: 'AP-1WT665016G226315H'
+  };
+var payKey = 'AP-1WT665016G226315H'
+// Or the transactionId
+// var params = {
+//     transactionId: 'AP-1234567890'
+// };
+// // Or the trackingId
+// var params = {
+//     trackingId: 'AP-1234567890'
+// };
+
+// paypalSdk.paymentDetails(params, function (err, response) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         // payments details for this payKey, transactionId or trackingId
+//         console.log("success==>>"+JSON.stringify(response));
+//     }
+// });
+
+
+  var paymentId = req.session.paymentId;
+  var payerId = 'AP-1WT665016G226315H'
+
+  var details = { "payer_id": payerId };
+  paypal.payment.execute(paymentId, details, function (error, payment) {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send("Hell yeah!");
+    }
+  });
+
+// paypalSdk.getPaymentOptions(payKey, function (err, response) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         // payments options for this payKey
+//         console.log(response);
+//     }
+// });
+
+},
+
+ "paynow": function(req, res){
+  console.log("sakshi")
+
+//   var requestData = {
+//       requestEnvelope: {
+//           errorLanguage:  'en_US',
+//           detailLevel:    'ReturnAll'
+//       },
+//       payKey: 'AP-8TF499834C5223057'
+//   };
+   
+//   paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function (err, response) {
+//     if (err) {
+//         // You can see the error 
+//         console.log(err);
+//         //And the original Paypal API response too 
+//         console.log(response);
+//     } else {
+//         // Successful response :
+//         console.log(response);
+//         console.log(JSON.stringify(response.paymentInfoList.paymentInfo));
+//     }
+// });
+  
+  var trackingId;
+
+
+  var payload = {
+    requestEnvelope: {
+        errorLanguage:  'en_US'
+    },
+    actionType:     'PAY',
+    currencyCode:   'USD',
+    feesPayer:      'EACHRECEIVER',
+    memo:           'Chained payment example',
+    cancelUrl:      'http://test.com/cancel',
+    returnUrl:      'http://localhost:1406/users/successs',
+
+    transactions: {
+       
+      },
+ 
+    receiverList: {
+        receiver: [
+            {
+                email:  'primary@test.com',
+                amount: '50.00',
+                primary:'true',
+                trackingId:"123456789"
+            },
+            {
+                email:  'secondary@test.com',
+                amount: '10.00',
+                primary:'false',
+                trackingId:"123456789"
+            }
+        ]
+    }
+  };
+// paypalSdk.pay(payload, function (err, response) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         // Response will have the original Paypal API response 
+//         console.log(response);
+//         // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily 
+//         console.log('Redirect to %s', response.paymentApprovalUrl);
+//     }
+// });
+
+// paypalSdk.payment.create(payload, config_opts, function (err, res) {
+//     if (err) {
+//         throw err;
+//     }
+
+//     if (res) {
+//         console.log("Create Payment Response");
+//         console.log(res);
+//     }
+// });
+  paypalSdk.pay(payload, function (err, response) {
+      if (err) {
+          console.log(err);
+      } else {
+          // Response will have the original Paypal API response
+          console.log(response);
+          // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily
+          console.log('Redirect to %s', response.paymentApprovalUrl);
+          //res.redirect(redirectUrl);
+        if(response.payKey) {
+         // req.paymentId = payment.id;
+          var redirectUrl;
+          console.log("payment",response.payKey);
+         // for(var i=0; i < payment.links.length; i++) {
+            var link = response.paymentApprovalUrl;
+            console.log(link)
+           // if (link.method === 'REDIRECT') {
+              redirectUrl = link;
+           // }
+            console.log(redirectUrl)
+
+              var requestData = {
+                requestEnvelope: {
+                    errorLanguage:  'en_US',
+                    detailLevel:    'ReturnAll'
+                },
+                payKey: response.payKey
+                };
+                 
+                paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function (err, response) {
+                  if (err) {
+                      // You can see the error 
+                      console.log(err);
+                      //And the original Paypal API response too 
+                      console.log(response);
+                  } else {
+                      // Successful response :
+                      console.log(response);
+                     // console.log(response.paymentInfoList.);
+                      console.log(JSON.stringify(response.paymentInfoList.paymentInfo));
+                  }
+              });
+            res.redirect(redirectUrl);
+        }
+      }
+    });
+    },
+
+    "massPay": function(req, res){
+ 
+            var mp = new MassPay({
+                pwd: "QN3GR5N6JAV6A22H",
+                user: "robinsuraj-facilitator_api1.gmail.com",
+                signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AUdr.q6iklhOMRLo-CjEkoGuwBUD",
+                emailsubject: "robinsuraj@gmail.com"
+            });
+           
+            var paymentRequests = [
+              {
+                email: 'matt@email.com'                , amount: '1'
+                , uniqueId: '12345'
+                , note: 'request for matt@gc'
+              }
+            , {
+                email: 'tim@email.com'
+                , amount: '1'
+                , uniqueId: '123456'
+                , note: 'request for tim@gc'
+              }
+            ];
+
+            var batch = new MassPay.PaymentBatch(paymentRequests);
+
+            mp.pay(batch, function(err, results) {
+              if(err) {
+                res.send({
+                    err: err
+                })
+              }
+              console.log("results=>", results)
+              assert.equal(results.ACK, 'Success')
+            });
+
+
+
+    },
 
     "validatorPaytabs": function(req, res) {
 
