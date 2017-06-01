@@ -286,15 +286,23 @@ var payKey = 'AP-1WT665016G226315H'
                 signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AUdr.q6iklhOMRLo-CjEkoGuwBUD",
                 emailsubject: "robinsuraj@gmail.com"
             });
+
+            // var mp = new MassPay({
+            //     pwd: "X3NRSJQBL7FD5ZF9",
+            //     user: "sakshigadia1994-1_api1.gmail.com",
+            //     signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AhdXmittmmHtZ5I4YwBzIxOQHk3x",
+            //     emailsubject: "rinku.kumar@mobiloitte.in"
+            // });
            
             var paymentRequests = [
-              {
-                email: 'matt@email.com'                , amount: '1'
-                , uniqueId: '12345'
-                , note: 'request for matt@gc'
-              }
-            , {
-                email: 'tim@email.com'
+              // {
+              //   email: 'robinsuraj@gmail.com',
+              //   amount: '1'
+              //   , uniqueId: '12345'
+              //   , note: 'request for matt@gc'
+              // }
+             {
+                email: 'rinku.kumar@mobiloitte.in'
                 , amount: '1'
                 , uniqueId: '123456'
                 , note: 'request for tim@gc'
@@ -305,12 +313,13 @@ var payKey = 'AP-1WT665016G226315H'
 
             mp.pay(batch, function(err, results) {
               if(err) {
+                console.log("error",err)
                 res.send({
                     err: err
                 })
               }
               console.log("results=>", results)
-              assert.equal(results.ACK, 'Success')
+              //assert.equal(results.ACK, 'Success')
             });
 
 
