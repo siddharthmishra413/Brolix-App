@@ -243,7 +243,7 @@
                                     <div class="text-center">
                                         <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input ng-model="createAds.viewers" ng-pattern="/^[0-9]*$/" name="viewers"  maxlength="6" type="text" class="form-control text-center" required>
+                                            <span ng-model="createAds.viewers" ng-pattern="/^[0-9]*$/" name="viewers"  maxlength="6" type="text" class="form-control text-center" required></span>
                                                <span style="color:red" ng-show="vedioStep.viewers.$dirty && vedioStep.viewers.$invalid">
                                         <span ng-show="vedioStep.viewers.$error.required">*viewers is required.</span>
                                         <span ng-show="vedioStep.viewers.$error.pattern">*Please enter only numbers!</span>
@@ -292,17 +292,17 @@
                                     <div class="radio-btn text-left gbl-table">
                                         <div class="global-tble-cell">
                                             <label class="gbl-label">
-                                                <input type="radio" value="Winer" name="radio5" ng-model="createAds.numberOfWinners" checked>&nbsp;
+                                                <input type="radio" name="radio5" ng-model="createAds.allAreWinners" value="false" checked>&nbsp;
                                             </label>
                                         </div>
                                         <div class="global-tble-cell">
-                                            <input type="text" name="winner" ng-pattern="/^[0-9]*$/" ng-model="createAds.winner" value="" class="form-control gbl-input" maxlength="6" required>
+                                            <input type="text" name="winner" ng-pattern="/^[0-9]*$/" ng-model="createAds.numberOfWinners" value="" class="form-control gbl-input" maxlength="6" required>
                                                  <span style="color:red" ng-show="vedioStep.winner.$dirty && vedioStep.winner.$invalid">
                                         <span ng-show="vedioStep.winner.$error.required">*winner is required.</span>
                                         <span ng-show="vedioStep.winner.$error.pattern">*Please enter only numbers!</span>
                                         </div>
                                         <div class="global-tble-cell">
-                                            <span type="text" ng-model="createAds.winner" value=""  class="form-control gbl-input"></span>
+                                            <span type="text" ng-model="createAds.numberOfWinners" class="form-control gbl-input"></span>
                                         </div>
                                         <div class="global-tble-cell">
                                             <label>Coupon</label>
@@ -312,7 +312,7 @@
                                 <div class="radio-tab">
                                     <div class="radio-btn text-left">
                                         <label>
-                                            <input type="radio" ng-model="createAds.numberOfWinners"  value="All are Winer"  name="radio5" ng-model="createAds.winner" checked>&nbsp; All are Winers
+                                            <input type="radio" ng-model="createAds.allAreWinners" value="true" name="radio5" ng-model="createAds.winner" checked>&nbsp; All are Winers
                                         </label>
                                     </div>
                                 </div>
@@ -633,7 +633,7 @@
                             <div class="btn2 text-center">
                                 <div class="cus-upload-photos">
                                    <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"   ng-model="createAds.slidePhoto1"  ng-src="{{createAds.slidePhoto1}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto1"  ng-src="{{createAds.slidePhoto1}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto1')" accept="image/*">
@@ -661,7 +661,7 @@
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slidePhoto5"  ng-src="{{createAds.slidePhoto5}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto5"  ng-src="{{createAds.slidePhoto5}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto5')" accept="image/*">
@@ -679,7 +679,7 @@
                                             <div class="text-center new-upload-btns">
                                                 <label class="fileContainer">
                                                 Select Music
-                                                <input type="file" onchange="angular.element(this).scope().changeImage(this,'mp3')" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*,mp3/*">
+                                                <input type="file" onchange="angular.element(this).scope().changeImage(this,'mp3')" id="Name" class="form-control" placeholder="Name" accept="mp3/*">
                                                 </label>
                                             </div>
                                         </div>
@@ -698,7 +698,7 @@
 </div>
 
 
-<<div class="container" ng-if="promoteApp">
+<div class="container" ng-if="promoteApp">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">

@@ -200,7 +200,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             if (res.responseCode == 200) {
                 console.log("res", JSON.stringify(res))
                 $scope.upgradecardOnOffers = res.result;
-                $("#upgradeOfferOnCard").modal('show');
+                $("#upgradeOfferOnCardd").modal('show');
             } else {
                 console.log("res", JSON.stringify(res))
             }

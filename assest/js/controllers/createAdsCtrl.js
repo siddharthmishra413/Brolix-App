@@ -11,6 +11,22 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
     $scope.conditionOne = false;
     $scope.conditionTwo = false;
     $scope.conditionThree = false;
+    $scope.promoteApp = false;
+    $scope.dawnloadPagePhoto = [];
+    $scope.slideshowPhoto = [];
+
+    $scope.downloadPhotoss = function(image){
+        console.log("image------------>",image)
+        $scope.dawnloadPagePhoto.push(image)
+        console.log("$scope.dawnloadPagePhoto",$scope.dawnloadPagePhoto)
+        $scope.promoteApp = true;
+    }
+
+    $scope.slideshowPhotoFun = function(image){
+        console.log("image------------>",image)
+        $scope.slideshowPhoto.push(image)
+        console.log("$scope.slideshowPhoto",$scope.slideshowPhoto)
+    }
 
     //var promoteAppVali = ($scope.conditionOne == true && $scope.conditionTwo == true && $scope.conditionThree == true);
 
@@ -345,6 +361,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
 
 
     $scope.changeImage = function(input, type) {
+        console.log("type",type)
         spinnerService.show('html5spinner');
         var file = input.files[0];
         var ext = file.name.split('.').pop();
@@ -370,6 +387,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.appPhoto1 = ObjS.data.result.url;
+                                $scope.downloadPhotoss($scope.createAds.appPhoto1);
 
                             }, 250);
                         })
@@ -380,6 +398,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.appPhoto2 = ObjS.data.result.url;
+                                $scope.downloadPhotoss($scope.createAds.appPhoto2);
                             }, 250);
                         })
                         break;
@@ -389,6 +408,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.appPhoto3 = ObjS.data.result.url;
+                                $scope.downloadPhotoss($scope.createAds.appPhoto3);
                             }, 250);
                         })
                         break;
@@ -398,6 +418,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.appPhoto4 = ObjS.data.result.url;
+                                $scope.downloadPhotoss($scope.createAds.appPhoto4);
                             }, 250);
                         })
                         break;
@@ -407,6 +428,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.appPhoto5 = ObjS.data.result.url;
+                                $scope.downloadPhotoss($scope.createAds.appPhoto5);
                             }, 250);
                         })
                         break;
@@ -416,6 +438,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.appPhoto6 = ObjS.data.result.url;
+                                $scope.downloadPhotoss($scope.createAds.appPhoto6);
                             }, 250);
                         })
                         break;
@@ -430,10 +453,12 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                         break;
 
                     case 'slidePhoto1':
+                    console.log("xvxcvxc")
                         uploadimgServeice.user(file).then(function(ObjS) {
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.slidePhoto1 = ObjS.data.result.url;
+                                $scope.slideshowPhotoFun($scope.createAds.slidePhoto1);
                             }, 250);
                         })
                         break;
@@ -443,6 +468,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.slidePhoto2 = ObjS.data.result.url;
+                                $scope.slideshowPhotoFun($scope.createAds.slidePhoto2);
                             }, 250);
                         })
                         break;
@@ -452,6 +478,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.slidePhoto3 = ObjS.data.result.url;
+                                $scope.slideshowPhotoFun($scope.createAds.slidePhoto3);
                             }, 250);
                         })
                         break;
@@ -461,6 +488,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.slidePhoto4 = ObjS.data.result.url;
+                                $scope.slideshowPhotoFun($scope.createAds.slidePhoto4);
                             }, 250);
                         })
                         break;
@@ -470,6 +498,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.slidePhoto5 = ObjS.data.result.url;
+                                $scope.slideshowPhotoFun($scope.createAds.slidePhoto5);
                             }, 250);
                         })
                         break;
@@ -479,6 +508,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.slidePhoto6 = ObjS.data.result.url;
+                                $scope.slideshowPhotoFun($scope.createAds.slidePhoto6);
                             }, 250);
                         })
                         break;
@@ -647,8 +677,11 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
 
 
     $scope.submit = function() {
+
+
+        pageDetails = JSON.parse($scope.createAds.pageName);
         if($scope.createAds.giftType == 'coupon'){
-            if(createAds.adContentType == 'video'){
+            if($scope.createAds.adContentType == 'video'){
                 modifyData = {
                     userId: adminIdss,
                     pageId: pageDetails._id,
@@ -656,130 +689,165 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
                     category: pageDetails.category,
                     subCategory: pageDetails.subCategory,
                     adsType: $scope.createAds.giftType,
-                    adContentType: $scope.createAds.adContentType,
-                    video: $scope.createAds.vedioUrl,
                     coverImage: $scope.createAds.advertismentCover,
-                    gifyDescImage:$scope.createAds.gifyDescImage,
+                    adContentType: $scope.createAds.adContentType,
+                    numberOfWinners: $scope.createAds.numberOfWinners,
+                    allAreWinners: $scope.createAds.allAreWinners,
                     giftDescription: $scope.createAds.giftDescription,
-                    couponExpiryDate: $scope.couponExpiryDate,
                     viewerLength: $scope.createAds.viewers,
+                    hiddenGifts: $scope.addCode,
+                    couponLength: $scope.createAds.numberOfWinners,
+                    uploadGiftImage:$scope.createAds.gifyDescImage,
+                    gender: $scope.createAds.gender,
+                    ageFrom: $scope.createAds.ageFrom,
+                    ageTo: $scope.createAds.ageTo,
+                    couponBuyersLength: $scope.createAds.viewers,
                     sellCoupon: $scope.createAds.cellThisCoupon,
-
-
                     whoWillSeeYourAdd: {
                     country: $scope.createAds.country,
                     city: $scope.createAds.city
                     },
-                    gender: $scope.createAds.gender,
-                    ageFrom: $scope.createAds.ageFrom,
-                    ageTo: $scope.createAds.ageTo,
-
-
-
-
-
-                    
-                    numberOfWinners: $scope.createAds.winner,
-                    
-                    hiddenGifts: $scope.addCode,
-                    couponLength: $scope.createAds.winner,
-                    
-                    
-                    
-                    couponBuyersLength: $scope.createAds.viewers,
-                    
-                    
-                    
+                    couponExpiryDate: $scope.couponExpiryDate,
+                    appName:$scope.createAds.appName,
                     googleLink: $scope.createAds.googlePlayLink,
                     appStoreLink: $scope.createAds.appStoreLink,
                     windowsStoreLink: $scope.createAds.windowStoreLink,
                     appIcon: $scope.createAds.appIcon,
                     linkDescription: $scope.createAds.linkDescription,
-                    dawnloadPagePhoto: [$scope.createAds.appPhoto1, $scope.createAds.appPhoto2, $scope.createAds.appPhoto3, $scope.createAds.appPhoto4, $scope.createAds.appPhoto5, $scope.createAds.appPhoto6],
-                    promoteApp: promoteAppBoolean,
-                    
-                    musicFileName: $scope.createAds.audioUrl,
-                    slideShow: slideShow,
-                    brolixFees: $scope.createAds.brolixFees,
-                    cashAdPrize: $scope.createAds.winnerGift,
+                    dawnloadPagePhoto: $scope.dawnloadPagePhoto,
+                    promoteApp: $scope.promoteApp,
+                    video: $scope.createAds.vedioUrl,
                 }
 
-            }else if(createAds.adContentType == 'slideshow'){
+                console.log("modifyData",JSON.stringify(modifyData))
+                userService.createAds(modifyData).success(function(res) {
+                    console.log("ressssssss",JSON.stringify(res))
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage)
+                        $state.go('header.manageAds')
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
 
+            }else if($scope.createAds.adContentType == 'slideshow'){
+                modifyData = {
+                    userId: adminIdss,
+                    pageId: pageDetails._id,
+                    pageName: pageDetails.pageName,
+                    category: pageDetails.category,
+                    subCategory: pageDetails.subCategory,
+                    adsType: $scope.createAds.giftType,
+                    slideShow:$scope.slideshowPhoto,
+                    adContentType: $scope.createAds.adContentType,
+                    numberOfWinners: $scope.createAds.numberOfWinners,
+                    allAreWinners: $scope.createAds.allAreWinners,
+                    giftDescription: $scope.createAds.giftDescription,
+                    viewerLength: $scope.createAds.viewers,
+                    hiddenGifts: $scope.addCode,
+                    couponLength: $scope.createAds.numberOfWinners,
+                    uploadGiftImage:$scope.createAds.gifyDescImage,
+                    gender: $scope.createAds.gender,
+                    ageFrom: $scope.createAds.ageFrom,
+                    ageTo: $scope.createAds.ageTo,
+                    couponBuyersLength: $scope.createAds.viewers,
+                    sellCoupon: $scope.createAds.cellThisCoupon,
+                    whoWillSeeYourAdd: {
+                    country: $scope.createAds.country,
+                    city: $scope.createAds.city
+                    },
+                    couponExpiryDate: $scope.couponExpiryDate,
+                    appName:$scope.createAds.appName,
+                    googleLink: $scope.createAds.googlePlayLink,
+                    appStoreLink: $scope.createAds.appStoreLink,
+                    windowsStoreLink: $scope.createAds.windowStoreLink,
+                    appIcon: $scope.createAds.appIcon,
+                    linkDescription: $scope.createAds.linkDescription,
+                    dawnloadPagePhoto: $scope.dawnloadPagePhoto,
+                    promoteApp: $scope.promoteApp,
+                    musicFileName: $scope.createAds.audioUrl,
+                }
+
+                console.log("modifyData",JSON.stringify(modifyData))
+                userService.createAds(modifyData).success(function(res) {
+                    console.log("ressssssss",JSON.stringify(res))
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage)
+                        $state.go('header.manageAds')
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
             }
 
         }else if($scope.createAds.giftType == 'cash'){
-             if(createAds.adContentType == 'video'){
+             if($scope.createAds.adContentType == 'video'){
 
-            }else if(createAds.adContentType == 'slideshow'){
+            }else if($scope.createAds.adContentType == 'slideshow'){
                 
             }
 
         }
-        pageDetails = JSON.parse($scope.createAds.pageName);
-        // var whoWillSeeYourAddArray = [];
-        var slideShow = [$scope.createAds.slidePhoto1, $scope.createAds.slidePhoto2, $scope.createAds.slidePhoto3, $scope.createAds.slidePhoto4, $scope.createAds.slidePhoto5, $scope.createAds.slidePhoto6];
-        var appPhoto = [];
-        appPhoto = [$scope.createAds.appPhoto1, $scope.createAds.appPhoto2, $scope.createAds.appPhoto3, $scope.createAds.appPhoto4, $scope.createAds.appPhoto5, $scope.createAds.appPhoto6];
-        var promoteAppBoolean = appPhoto.length == 0 ? false : true;
-        var coverimage = $scope.createAds.adContentType == 'slideshow' ? $scope.createAds.slidePhoto1 : $scope.createAds.advertismentCover;
-        //console.log("ddadaaradfatya0",JSON.stringify(data));
-        var modifyData = {};
-        modifyData = {
-            userId: adminIdss,
-            pageId: pageDetails._id,
-            pageName: pageDetails.pageName,
-            category: pageDetails.category,
-            subCategory: pageDetails.subCategory,
-            adsType: $scope.createAds.giftType,
-            coverImage: coverimage,
-            adContentType: $scope.createAds.adContentType,
-            numberOfWinners: $scope.createAds.winner,
-            giftDescription: $scope.createAds.giftDescription,
-            viewerLength: $scope.createAds.viewers,
-            hiddenGifts: $scope.addCode,
-            couponLength: $scope.createAds.winner,
-            gender: $scope.createAds.gender,
-            ageFrom: $scope.createAds.ageFrom,
-            ageTo: $scope.createAds.ageTo,
-            couponBuyersLength: $scope.createAds.viewers,
-            sellCoupon: $scope.createAds.cellThisCoupon,
-            whoWillSeeYourAdd: {
-                country: $scope.createAds.country,
-                state: $scope.createAds.state,
-                city: $scope.createAds.city
-            },
-            couponExpiryDate: $scope.couponExpiryDate,
-            googleLink: $scope.createAds.googlePlayLink,
-            appStoreLink: $scope.createAds.appStoreLink,
-            windowsStoreLink: $scope.createAds.windowStoreLink,
-            appIcon: $scope.createAds.appIcon,
-            linkDescription: $scope.createAds.linkDescription,
-            dawnloadPagePhoto: [$scope.createAds.appPhoto1, $scope.createAds.appPhoto2, $scope.createAds.appPhoto3, $scope.createAds.appPhoto4, $scope.createAds.appPhoto5, $scope.createAds.appPhoto6],
-            promoteApp: promoteAppBoolean,
-            video: $scope.createAds.vedioUrl,
-            musicFileName: $scope.createAds.audioUrl,
-            slideShow: slideShow,
-            brolixFees: $scope.createAds.brolixFees,
-            cashAdPrize: $scope.createAds.winnerGift,
-
-        }
-        //console.log("All data -->>"+JSON.stringify(modifyData));
-        // userService.createAds(modifyData).success(function(res) {
-        //     console.log("ressssssss",JSON.stringify(res))
-        // if (res.responseCode == 200) {
-        //     toastr.success(res.responseMessage)
-        // } else {
-        //     toastr.error(res.responseMessage);
-        //     // $state.go('login')
-
-        // }
-        // console.log("resss",$scope.userId);
-        // })
-
     }
+        
+        // var whoWillSeeYourAddArray = [];
+    //     var slideShow = [$scope.createAds.slidePhoto1, $scope.createAds.slidePhoto2, $scope.createAds.slidePhoto3, $scope.createAds.slidePhoto4, $scope.createAds.slidePhoto5, $scope.createAds.slidePhoto6];
+    //     var appPhoto = [];
+    //     appPhoto = [$scope.createAds.appPhoto1, $scope.createAds.appPhoto2, $scope.createAds.appPhoto3, $scope.createAds.appPhoto4, $scope.createAds.appPhoto5, $scope.createAds.appPhoto6];
+    //     var promoteAppBoolean = appPhoto.length == 0 ? false : true;
+    //     var coverimage = $scope.createAds.adContentType == 'slideshow' ? $scope.createAds.slidePhoto1 : $scope.createAds.advertismentCover;
+    //     //console.log("ddadaaradfatya0",JSON.stringify(data));
+    //     var modifyData = {};
+    //     modifyData = {
+    //         userId: adminIdss,
+    //         pageId: pageDetails._id,
+    //         pageName: pageDetails.pageName,
+    //         category: pageDetails.category,
+    //         subCategory: pageDetails.subCategory,
+    //         adsType: $scope.createAds.giftType,
+    //         coverImage: coverimage,
+    //         adContentType: $scope.createAds.adContentType,
+    //         numberOfWinners: $scope.createAds.winner,
+    //         giftDescription: $scope.createAds.giftDescription,
+    //         viewerLength: $scope.createAds.viewers,
+    //         hiddenGifts: $scope.addCode,
+    //         couponLength: $scope.createAds.winner,
+    //         gender: $scope.createAds.gender,
+    //         ageFrom: $scope.createAds.ageFrom,
+    //         ageTo: $scope.createAds.ageTo,
+    //         couponBuyersLength: $scope.createAds.viewers,
+    //         sellCoupon: $scope.createAds.cellThisCoupon,
+    //         whoWillSeeYourAdd: {
+    //             country: $scope.createAds.country,
+    //             state: $scope.createAds.state,
+    //             city: $scope.createAds.city
+    //         },
+    //         couponExpiryDate: $scope.couponExpiryDate,
+    //         googleLink: $scope.createAds.googlePlayLink,
+    //         appStoreLink: $scope.createAds.appStoreLink,
+    //         windowsStoreLink: $scope.createAds.windowStoreLink,
+    //         appIcon: $scope.createAds.appIcon,
+    //         linkDescription: $scope.createAds.linkDescription,
+    //         dawnloadPagePhoto: [$scope.createAds.appPhoto1, $scope.createAds.appPhoto2, $scope.createAds.appPhoto3, $scope.createAds.appPhoto4, $scope.createAds.appPhoto5, $scope.createAds.appPhoto6],
+    //         promoteApp: promoteAppBoolean,
+    //         video: $scope.createAds.vedioUrl,
+    //         musicFileName: $scope.createAds.audioUrl,
+    //         slideShow: slideShow,
+    //         brolixFees: $scope.createAds.brolixFees,
+    //         cashAdPrize: $scope.createAds.winnerGift,
 
+    //     }
+    //     //console.log("All data -->>"+JSON.stringify(modifyData));
+    //     // userService.createAds(modifyData).success(function(res) {
+    //     //     console.log("ressssssss",JSON.stringify(res))
+    //     // if (res.responseCode == 200) {
+    //     //     toastr.success(res.responseMessage)
+    //     // } else {
+    //     //     toastr.error(res.responseMessage);
+    //     //     // $state.go('login')
 
-
+    //     // }
+    //     // console.log("resss",$scope.userId);
+    //     // })
 
 })

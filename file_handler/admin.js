@@ -582,7 +582,7 @@ module.exports = {
                 var sum = arr.reduce((a, b) => a + b, 0);
                 console.log("arr", arr);
                 console.log("arrrrr", sum);
-                User.aggregate({ $unwind: "$upgradeCardObject" }).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$upgradeCardObject" },{ $match: { 'upgradeCardObject.type': 'PURCHASED' } }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No card found' }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
@@ -1556,7 +1556,7 @@ module.exports = {
                         break;
 
                     case 'totalIncome$':
-                        var matchCondt = { $match: {} }
+                        var matchCondt = { $match: { 'upgradeCardObject.type': 'PURCHASED' } } 
                         var updateData = { $unwind: "$upgradeCardObject" };
                         break;
 
