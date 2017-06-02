@@ -295,12 +295,12 @@ var payKey = 'AP-1WT665016G226315H'
             // });
            
             var paymentRequests = [
-              // {
-              //   email: 'robinsuraj@gmail.com',
-              //   amount: '1'
-              //   , uniqueId: '12345'
-              //   , note: 'request for matt@gc'
-              // }
+              {
+                email: 'robinsuraj@gmail.com',
+                amount: '1'
+                , uniqueId: '12345'
+                , note: 'request for matt@gc'
+              },
              {
                 email: 'rinku.kumar@mobiloitte.in'
                 , amount: '1'
@@ -321,9 +321,6 @@ var payKey = 'AP-1WT665016G226315H'
               console.log("results=>", results)
               //assert.equal(results.ACK, 'Success')
             });
-
-
-
     },
 
     "validatorPaytabs": function(req, res) {
