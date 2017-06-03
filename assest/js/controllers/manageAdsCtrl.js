@@ -16,6 +16,7 @@ app.controller('manageAdsCtrl', function($scope, $window, userService, $timeout,
     }
   })
   userService.totalActiveAds().success(function(res) {
+    console.log("resss",JSON.stringify(res))
     if (res.responseCode == 200) {
       $scope.totalActiveAds = res.result;
       $scope.totalActiveAdscount = res.result.length;

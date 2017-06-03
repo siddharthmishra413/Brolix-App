@@ -45,6 +45,24 @@ app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window,
 
                 $scope.myFrom.termscouponAdCondition = $scope.couponAdTerms[0].termsConditionContent;
 
+                 $scope.hiddenGiftTerms = res.result.filter(function (obj) {
+                    return obj.type == 'hiddenGiftInfo';
+                });
+
+                $scope.myFrom.termshiddenGiftCondition = $scope.hiddenGiftTerms[0].termsConditionContent;
+
+                 $scope.cashGiftInfoTerms = res.result.filter(function (obj) {
+                    return obj.type == 'cashGiftInfo';
+                });
+
+                $scope.myFrom.termscouponGiftCondition = $scope.cashGiftInfoTerms[0].termsConditionContent;
+
+                 $scope.couponAdTerms = res.result.filter(function (obj) {
+                    return obj.type == 'couponGiftInfo';
+                });
+
+                $scope.myFrom.couponGiftTerms = $scope.couponAdTerms[0].termsConditionContent;
+
             } else {
                 toastr.error(res.responseMessage);
             }
@@ -84,6 +102,48 @@ app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window,
                 })
                 break;
             case 'couponAdCondition':
+                data = {
+                        termsConditionContent: $scope.myFrom.termscouponAdCondition,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
+            case 'couponGiftInfo':
+            data = {
+                    termsConditionContent: $scope.myFrom.termscouponAdCondition,
+                }
+            userService.editTermsCondition(type, data).success(function (res) {
+                if (res.responseCode == 200) {
+                    toastr.success(res.responseMessage);
+                  //  $state.reload();
+                } else {
+                    toastr.error(res.responseMessage);
+                }
+            })
+            break;
+
+            case 'cashGiftInfo':
+                data = {
+                        termsConditionContent: $scope.myFrom.termscouponAdCondition,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
+            case 'hiddenGiftInfo':
                 data = {
                         termsConditionContent: $scope.myFrom.termscouponAdCondition,
                     }

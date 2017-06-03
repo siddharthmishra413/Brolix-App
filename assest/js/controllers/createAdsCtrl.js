@@ -31,7 +31,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
     //var promoteAppVali = ($scope.conditionOne == true && $scope.conditionTwo == true && $scope.conditionThree == true);
 
     userService.freeViewersPerCouponAds().success(function(res) {
-        console.log("res",res)
+        console.log("res",JSON.stringify(res))
         if (res.responseCode == 200) {
             $scope.createAds.viewers = res.result[0].value;
             console.log("$scope.createAds.viewers",$scope.createAds.viewers)
@@ -42,9 +42,10 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
     })
 
     userService.freeViewersPerCashAds().success(function(res) {
-        console.log("res",res)
+        console.log("res",JSON.stringify(res))
         if (res.responseCode == 200) {
-            $scope.createAds.viewersOne = res.result.value;
+            $scope.createAds.viewersOne = res.result[0].value;
+            console.log($scope.createAds.viewersOne)
         } else {
             toastr.error(res.responseMessage);
         }
@@ -782,8 +783,100 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
 
         }else if($scope.createAds.giftType == 'cash'){
              if($scope.createAds.adContentType == 'video'){
+                modifyData = {
+                    userId: adminIdss,
+                    pageId: pageDetails._id,
+                    pageName: pageDetails.pageName,
+                    category: pageDetails.category,
+                    subCategory: pageDetails.subCategory,
+                    adsType: $scope.createAds.giftType,
+                    coverImage: $scope.createAds.advertismentCover,
+                    adContentType: $scope.createAds.adContentType,
+                    numberOfWinners: $scope.createAds.numberOfWinners,
+                    viewerLength: $scope.createAds.viewers,
+                    gender: $scope.createAds.gender,
+                    ageFrom: $scope.createAds.ageFrom,
+                    ageTo: $scope.createAds.ageTo,
+                    couponBuyersLength: $scope.createAds.viewers,
+                    whoWillSeeYourAdd: {
+                    country: $scope.createAds.country,
+                    city: $scope.createAds.city
+                    },
+                    appName:$scope.createAds.appName,
+                    googleLink: $scope.createAds.googlePlayLink,
+                    appStoreLink: $scope.createAds.appStoreLink,
+                    windowsStoreLink: $scope.createAds.windowStoreLink,
+                    appIcon: $scope.createAds.appIcon,
+                    linkDescription: $scope.createAds.linkDescription,
+                    dawnloadPagePhoto: $scope.dawnloadPagePhoto,
+                    promoteApp: $scope.promoteApp,
+                    video: $scope.createAds.vedioUrl,
+                    brolixFees:$scope.createAds.brolixFees,
+                    cashAdPrize: $scope.createAds.viewersOne,
+                }
+
+                console.log("modifyData111",JSON.stringify(modifyData))
+                userService.createAds(modifyData).success(function(res) {
+                    console.log("ressssssss",JSON.stringify(res))
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage)
+                        $state.go('header.manageAds')
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+
 
             }else if($scope.createAds.adContentType == 'slideshow'){
+                modifyData = {
+                    userId: adminIdss,
+                    pageId: pageDetails._id,
+                    pageName: pageDetails.pageName,
+                    category: pageDetails.category,
+                    subCategory: pageDetails.subCategory,
+                    adsType: $scope.createAds.giftType,
+                    slideShow:$scope.slideshowPhoto,
+                    adContentType: $scope.createAds.adContentType,
+                    numberOfWinners: $scope.createAds.numberOfWinners,
+                    allAreWinners: $scope.createAds.allAreWinners,
+                    giftDescription: $scope.createAds.giftDescription,
+                    viewerLength: $scope.createAds.viewers,
+                    hiddenGifts: $scope.addCode,
+                    couponLength: $scope.createAds.numberOfWinners,
+                    uploadGiftImage:$scope.createAds.gifyDescImage,
+                    gender: $scope.createAds.gender,
+                    ageFrom: $scope.createAds.ageFrom,
+                    ageTo: $scope.createAds.ageTo,
+                    couponBuyersLength: $scope.createAds.viewers,
+                    sellCoupon: $scope.createAds.cellThisCoupon,
+                    whoWillSeeYourAdd: {
+                    country: $scope.createAds.country,
+                    city: $scope.createAds.city
+                    },
+                    couponExpiryDate: $scope.couponExpiryDate,
+                    appName:$scope.createAds.appName,
+                    googleLink: $scope.createAds.googlePlayLink,
+                    appStoreLink: $scope.createAds.appStoreLink,
+                    windowsStoreLink: $scope.createAds.windowStoreLink,
+                    appIcon: $scope.createAds.appIcon,
+                    linkDescription: $scope.createAds.linkDescription,
+                    dawnloadPagePhoto: $scope.dawnloadPagePhoto,
+                    promoteApp: $scope.promoteApp,
+                    musicFileName: $scope.createAds.audioUrl,
+                    brolixFees:$scope.createAds.brolixFees,
+                    cashAdPrize: $scope.createAds.viewersOne,
+                }
+
+                console.log("modifyData",JSON.stringify(modifyData))
+                userService.createAds(modifyData).success(function(res) {
+                    console.log("ressssssss",JSON.stringify(res))
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage)
+                        $state.go('header.manageAds')
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
                 
             }
 
@@ -834,7 +927,7 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
     //         musicFileName: $scope.createAds.audioUrl,
     //         slideShow: slideShow,
     //         brolixFees: $scope.createAds.brolixFees,
-    //         cashAdPrize: $scope.createAds.winnerGift,
+    //         cashAdPrize: $scope.createAds.viewersOne,
 
     //     }
     //     //console.log("All data -->>"+JSON.stringify(modifyData));
