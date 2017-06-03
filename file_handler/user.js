@@ -2711,14 +2711,6 @@ var payKey = 'AP-1WT665016G226315H'
 
 
 
-
-
-
-
-
-
-
-
 cron.schedule('*/2 * * * *', function() {
     User.find({ 'coupon.couponStatus': "VALID" }).exec(function(err, result) {
         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
