@@ -74,7 +74,7 @@ var data1 = querystring.stringify({
     hash: sha512(string)
 })
 
-var paytabs = require('paytabs')
+var paytabs = require('paytabs');
 
 var optionsNew = {
     'Content-Type': 'application/json',
@@ -133,8 +133,11 @@ module.exports = {
         createPayPage.cms_with_version = "1.0.0";
 
         paytabs.CreatePayPage(createPayPage, function(response) {
-            console.log(response);
+            console.log("paytabs",response);
         });
+//         paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
+//   console.log(response);
+// });
 
         // paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
         //   console.log(response);

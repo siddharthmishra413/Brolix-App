@@ -3,26 +3,108 @@ $(window).scrollTop(0,0);
     $scope.$emit('headerStatus', 'Manage Payment');
     $scope.$emit('SideMenu', 'Manage Payment');
     $scope.tab = 'totalUsers';
-    $scope.flag=0;
-    $scope.type='dollars';
-    $scope.clr="#00B288";
-    $scope.clr1=""
     $scope.myForm={};
     $scope.dashBordFilter={};
-    $scope.dashBordFilter.country="";
-    $scope.dashBordFilter.state="";
-    $scope.dashBordFilter.city="";
-    $scope.myForm.country="";
-    $scope.myForm.state="";
-    $scope.myForm.city="";
-    $scope.dashBordFilter.dollarCardType ="";
-    $scope.dashBordFilter.brolixCardType ="";
-        $scope.myForm.cashStatus ="";
-    $scope.myForm.couponStatus ="";
     $scope.dollars=[];
     $scope.dollarsCashGift=[];
+    $scope.brolix=[];
+    $scope.brolixCoupon=[];
+    $scope.firstss = true;
+    $scope.secondss = false;
 
-    userService.SoldUpgradeCard($scope.currentSoldUpgradeCard).success(function(res) { 
+    $scope.dateValidation = function(dtaa) {
+        var dta = dtaa;
+        var timestamp = new Date(dtaa).getTime();
+        var nextday = timestamp + 8.64e+7;
+        $scope.minDatee = new Date(nextday).toDateString();
+    }
+
+    userService.upgradeCardViewersList().success(function(res) {
+        //console.log("res",res)
+        if (res.responseCode == 200) {
+            $scope.dashBordFilterViewer = res.result;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+
+    userService.luckCardViewersList().success(function(res) {
+        //console.log("res",res)
+        if (res.responseCode == 200) {
+            $scope.dashBordFilterChances = res.result;
+        } else {
+            toastr.error(res.responseMessage);
+        }
+    })
+
+    userService.userCouponStatus().success(function(res) { 
+      if (res.responseCode == 200){
+        $scope.couponStatus= res.result;
+      } 
+      else {
+          toastr.error("something wents to roung")
+      }
+    })
+
+    userService.userCashStatus().success(function(res) { 
+      if (res.responseCode == 200){
+        $scope.cashStatus= res.result;
+      } 
+      else {
+          toastr.error("something wents to roung")
+      }
+    })
+
+
+    userService.countryListData().success(function(res) {
+        $scope.countriesFirst = res.result;
+        $scope.countriesSecond = res.result;
+        $scope.countriesThird = res.result;
+        $scope.countriesFourth = res.result;
+    })
+    $scope.changeCountry = function(key) {
+
+        var obj = {};
+
+        if(key == 'first'){
+            obj = {
+            country: $scope.dashBordFilter.countriesFirst,
+        }
+            userService.cityListData(obj).success(function(res) {
+            $scope.cityListFirst = res.result;
+        })
+
+        }else if(key == 'second'){
+            obj = {
+            country: $scope.dashBordFilter.countriesSecond,
+        }
+            userService.cityListData(obj).success(function(res) {
+            $scope.cityListSecond = res.result;
+        })
+        }else if(key == 'third'){
+            obj = {
+            country: $scope.dashBordFilter.countriesThird,
+        }
+            userService.cityListData(obj).success(function(res) {
+            $scope.cityListThird = res.result;
+        })
+        }else if(key == 'fourth'){
+            obj = {
+            country: $scope.dashBordFilter.countriesFourth,
+        }
+            userService.cityListData(obj).success(function(res) {
+            $scope.cityListFourth = res.result;
+        })
+        }else{
+                toastr.error("rrrrrrrrrrrr")
+            
+        }
+        
+        
+    }
+
+            userService.SoldUpgradeCard().success(function(res) { 
+                console.log("resssss111",JSON.stringify(res))
             if (res.responseCode == 200){
                     $scope.showAllSoldUpgradeCardCount = res.count;
                     $scope.dollars=res.result;
@@ -30,65 +112,64 @@ $(window).scrollTop(0,0);
                else {
                 toastr.error(res.responseMessage);
                 }
-          })
+            })
 
-     userService.cashGift().success(function(res) {         
-        if (res.responseCode == 200){
+            userService.cashGift().success(function(res) { 
+            console.log("resssss222",JSON.stringify(res))        
+            if (res.responseCode == 200){
                  $scope.count= res.count;
                  $scope.dollarsCashGift = res.result;
-           } 
-           else {
+            } 
+            else {
             toastr.error(res.responseMessage);
             }
-      })
+            })
 
+            userService.SoldLuckCard().success(function(res) { 
+                    $scope.brolix=[];
+                    console.log("val>>",JSON.stringify(res))
+                    if (res.responseCode == 200){
+                            $scope.showAllSoldLuckCardCount = res.total;
+                           for(i=0;i<res.result.length;i++) {
+                                $scope.brolix.push(res.result[i]);
+                            }
+                       } 
+                       else {
+                        toastr.error(res.responseMessage);
+                        }
+                  })
 
- 
-    
-    
+            userService.soldCoupons().success(function(res) { 
+                       
+                    $scope.brolixCoupon=[];
+                    if (res.responseCode == 200){
+                             $scope.SoldCouponsCount = res.count;
+                           for(i=0;i<res.result.length;i++)  {
+                                $scope.brolixCoupon.push(res.result[i]);
+                               }
+                       } 
+                       else {
+                        toastr.error(res.responseMessage);
+                        }
+                  })
 
     $scope.payment=function(data){
-        $scope.type = data;
-        $scope.string = $scope.type;
+
 
         // ******************** Brolix Data *************
 
         if($scope.string == 'brolix'){
-            $scope.flag= 1;
-            $scope.clr1="#00B288";
-            $scope.dashBordFilter.city="";
-            $scope.dashBordFilter.country="";
-            $scope.dashBordFilter.state="";
-            $scope.dashBordFilter.dobFrom="";
-            $scope.dashBordFilter.dobTo="";
-            $scope.myForm.dateFrom="";
-            $scope.myForm.dateTo="";
-            $scope.search="";
-            $scope.searchdata="";
-            $scope.myForm.country="";
-            $scope.myForm.state="";
-            $scope.myForm.city="";
-            $scope.clr="";
-//**************** Sold Luck Card ****************************************
-            $scope.currentSoldLuckCard = 1;
-             $scope.nextSoldLuckCardDetail = function(){
-                 userService.SoldLuckCard($scope.currentSoldLuckCard).success(function(res) { 
+            $scope.first = false;
+            $scope.second = true;
+       
+
+            userService.SoldLuckCard().success(function(res) { 
                     $scope.brolix=[];
+                    //console.log("val>>",JSON.stringify(res))
                     if (res.responseCode == 200){
-                           $scope.noOfPagesSoldLuckCard = res.pages;
-                           $scope.pageSoldLuckCard= res.page;
-                            // $scope.dollars= res.docs;
                             $scope.showAllSoldLuckCardCount = res.total;
-                           for(i=0;i<res.docs.length;i++) {
-                                $scope.brolix.push(res.docs[i]);
-                                //console.log(JSON.stringify($scope.brolix[i].luckCardObject.status));
-                                // if($scope.brolix[i].luckCardObject.status == "INACTIVE"){
-                                //     $scope.brolix[i].luckCardObject.status="Unused";
-                                // }
-                                // else{
-                                //     $scope.brolix[i].luckCardObject.status="Used";
-                                // }
-                                //console.log("brolix",JSON.stringify($scope.brolix))
+                           for(i=0;i<res.result.length;i++) {
+                                $scope.brolix.push(res.result[i]);
                             }
 
                        } 
@@ -96,31 +177,14 @@ $(window).scrollTop(0,0);
                         toastr.error(res.responseMessage);
                         }
                   })
-             }
-             $scope.nextSoldLuckCardDetail();
-             $scope.nextSoldLuckCard = function(){
-                $scope.currentSoldLuckCard++;
-                $scope.nextSoldLuckCardDetail();
-             }
-             $scope.preSoldLuckCard= function(){
-                $scope.currentSoldLuckCard--;
-                $scope.nextSoldLuckCardDetail();
-             }
 
-//**************** Sold Coupons ****************************************
-
-             $scope.currentSoldCoupons = 1;
-             $scope.nextSoldCouponsDetail = function(){
-                 userService.soldCoupons($scope.currentSoldCoupons).success(function(res) { 
-                       //console.log("val>>",JSON.stringify(res))
+            userService.soldCoupons().success(function(res) { 
+                       
                     $scope.brolixCoupon=[];
                     if (res.responseCode == 200){
-                           $scope.noOfPagesSoldCoupons = res.pages;
-                           $scope.pageSoldCoupons= res.page;
-                            // $scope.dollars= res.docs;
-                             $scope.SoldCouponsCount = res.total;
-                           for(i=0;i<res.docs.length;i++)  {
-                                $scope.brolixCoupon.push(res.docs[i]);
+                             $scope.SoldCouponsCount = res.count;
+                           for(i=0;i<res.result.length;i++)  {
+                                $scope.brolixCoupon.push(res.result[i]);
                                }
 
                        } 
@@ -128,65 +192,37 @@ $(window).scrollTop(0,0);
                         toastr.error(res.responseMessage);
                         }
                   })
-             }
-             $scope.nextSoldCouponsDetail();
-             $scope.nextSoldCoupons = function(){
-                $scope.currentSoldCoupons++;
-                $scope.nextSoldCouponsDetail();
-             }
-             $scope.preSoldCoupons= function(){
-                $scope.currentSoldCoupons--;
-                $scope.nextSoldCouponsDetail();
-             }
         }  
 
         //****************** dollars Data *********************
 
         else if($scope.string == 'dollars'){
-            $scope.dashBordFilter.country="";
-            $scope.dashBordFilter.state="";
-            $scope.dashBordFilter.city="";
-            $scope.myForm.country="";
-            $scope.myForm.state="";
-            $scope.search="";
-            $scope.myForm.cashStatus="";
-            $scope.myForm.couponStatus="";
-            $scope.dashBordFilter.dollarCardType="";
-            $scope.dashBordFilter.brolixCardType="";
-            $scope.dashBordFilter.dobFrom="";
-            $scope.dashBordFilter.dobTo="";
-            $scope.myForm.dateFrom="";
-            $scope.myForm.dateTo="";
-            $scope.searchdata="";
-            $scope.myForm.city="";
-            $scope.flag= 0;
-            $scope.clr="#00B288";
-            $scope.clr1="";
+            $scope.first = true;
+    $scope.second = false;
+        
 
-            $scope.dollars=[];
-            $scope.currentSoldUpgradeCard = 1;
-            $scope.nextSoldUpgradeCardDetail();
-             $scope.nextSoldUpgradeCard = function(){
-                $scope.currentSoldUpgradeCard++;
-                $scope.nextSoldUpgradeCardDetail();
-             }
-             $scope.preSoldUpgradeCard= function(){
-                $scope.currentSoldUpgradeCard--;
-                $scope.nextSoldUpgradeCardDetail();
-             }
+            userService.SoldUpgradeCard().success(function(res) { 
+            if (res.responseCode == 200){
+                    $scope.showAllSoldUpgradeCardCount = res.count;
+                    $scope.dollars=res.result;
+               } 
+               else {
+                toastr.error(res.responseMessage);
+                }
+            })
+
+            userService.cashGift().success(function(res) {         
+            if (res.responseCode == 200){
+                 $scope.count= res.count;
+                 $scope.dollarsCashGift = res.result;
+            } 
+            else {
+            toastr.error(res.responseMessage);
+            }
+            })
+
+            
         } 
-        $scope.dollarsCashGift =[];
-        $scope.currentCashGifts = 1;
-        $scope.nextCashGiftsDetail();
-             $scope.nextCashGifts = function(){
-                $scope.currentCashGifts++;
-                $scope.nextCashGiftsDetail();
-             }
-             $scope.preCashGifts= function(){
-                $scope.currentCashGifts--;
-                $scope.nextCashGiftsDetail();
-             }
-
     }
 
     //********************** User Info (click on Name) ********************
@@ -220,7 +256,7 @@ $(window).scrollTop(0,0);
                             $scope.userDetail=success.data.result;
                             $("#adInfo").modal('show');
                             $scope.newDate = success.data.result.couponExpiryDate;
-                            console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success.data.result))
+                            //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success.data.result))
                     }
                     else{
                         toastr.error(success.data.responseMessage)
@@ -678,96 +714,166 @@ $(window).scrollTop(0,0);
 
     }
     
-    // ***************Filters for Country, State and City*********************
+  //   // ***************Filters for Country, State and City*********************
 
-    var currentCities=[];
-    $scope.currentCountry= '';
-    $scope.countriesList=[];
-    $scope.myForm={};
-    var BATTUTA_KEY="00000000000000000000000000000000"
-  url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
-    $.getJSON(url,function(countries)
-    {
-      $timeout(function(){
-        $scope.countriesList=countries;
-         $scope.brolixCountryList=countries;
-      },100)
+  //   var currentCities=[];
+  //   $scope.currentCountry= '';
+  //   $scope.countriesList=[];
+  //   $scope.myForm={};
+  //   var BATTUTA_KEY="00000000000000000000000000000000"
+  // url="http://battuta.medunes.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+  //   $.getJSON(url,function(countries)
+  //   {
+  //     $timeout(function(){
+  //       $scope.countriesList=countries;
+  //        $scope.brolixCountryList=countries;
+  //     },100)
       
       
-    });
-  $scope.country1Code;
-  $scope.country2Code;
-    $scope.changeCountry = function(ind){
-        if(ind=='1'){
-            for(var i=0; i<$scope.countriesList.length;i++) {
-                if($scope.countriesList[i].name==$scope.dashBordFilter.country) {
-                   $scope.country1Code=$scope.countriesList[i].code;
-                   break;
-                }
-            }
-        }
-        else{
-            for(var i=0;i<$scope.brolixCountryList.length;i++) {
-                if($scope.brolixCountryList[i].name==$scope.myForm.country) {
-                    $scope.country2Code=$scope.brolixCountryList[i].code;
-                    break;
-                }
+  //   });
+  // $scope.country1Code;
+  // $scope.country2Code;
+  //   $scope.changeCountry = function(ind){
+  //       if(ind=='1'){
+  //           for(var i=0; i<$scope.countriesList.length;i++) {
+  //               if($scope.countriesList[i].name==$scope.dashBordFilter.country) {
+  //                  $scope.country1Code=$scope.countriesList[i].code;
+  //                  break;
+  //               }
+  //           }
+  //       }
+  //       else{
+  //           for(var i=0;i<$scope.brolixCountryList.length;i++) {
+  //               if($scope.brolixCountryList[i].name==$scope.myForm.country) {
+  //                   $scope.country2Code=$scope.brolixCountryList[i].code;
+  //                   break;
+  //               }
                 
-            }
-        }
+  //           }
+  //       }
         
-      // }
-      if(ind=='1') {
-              var url="http://battuta.medunes.net/api/region/"+$scope.country1Code+"/all/?key="+BATTUTA_KEY+"&callback=?";
-              $.getJSON(url,function(regions)
-              {
-                 $timeout(function(){
-                        $scope.state1List = regions;
-                  },100)
-              });
+  //     // }
+  //     if(ind=='1') {
+  //             var url="http://battuta.medunes.net/api/region/"+$scope.country1Code+"/all/?key="+BATTUTA_KEY+"&callback=?";
+  //             $.getJSON(url,function(regions)
+  //             {
+  //                $timeout(function(){
+  //                       $scope.state1List = regions;
+  //                 },100)
+  //             });
             
-        }
-        else{
-            var url="http://battuta.medunes.net/api/region/"+$scope.country2Code+"/all/?key="+BATTUTA_KEY+"&callback=?";
-              $.getJSON(url,function(regions)
-              {
-                 $timeout(function(){
-                        $scope.state2List = regions;
-                        // console.log("State2 List",JSON.stringify( $scope.state2List))
-                  },100)
-              });
-            }
-        }
+  //       }
+  //       else{
+  //           var url="http://battuta.medunes.net/api/region/"+$scope.country2Code+"/all/?key="+BATTUTA_KEY+"&callback=?";
+  //             $.getJSON(url,function(regions)
+  //             {
+  //                $timeout(function(){
+  //                       $scope.state2List = regions;
+  //                       // console.log("State2 List",JSON.stringify( $scope.state2List))
+  //                 },100)
+  //             });
+  //           }
+  //       }
 
-    $scope.changeState = function(ind){
-        if(ind=='1') {
-                //console.log('State:   '+JSON.stringify($scope.dashBordFilter.state))
-              var url="http://battuta.medunes.net/api/city/"+$scope.country1Code+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
-              $.getJSON(url,function(cities)
-              {
-                 $timeout(function(){
-                        $scope.city1List = cities;
-                    },100)
-              })
-         }
-         else{
-            //console.log('State:   '+JSON.stringify($scope.myForm.state))
-              var url="http://battuta.medunes.net/api/city/"+$scope.country2Code+"/search/?region="+$scope.myForm.state+"&key="+BATTUTA_KEY+"&callback=?";
-              $.getJSON(url,function(cities)
-              {
-                 $timeout(function(){
-                        $scope.city2List = cities;
-                    },100)
-              })
-         }
+  //   $scope.changeState = function(ind){
+  //       if(ind=='1') {
+  //               //console.log('State:   '+JSON.stringify($scope.dashBordFilter.state))
+  //             var url="http://battuta.medunes.net/api/city/"+$scope.country1Code+"/search/?region="+$scope.dashBordFilter.state+"&key="+BATTUTA_KEY+"&callback=?";
+  //             $.getJSON(url,function(cities)
+  //             {
+  //                $timeout(function(){
+  //                       $scope.city1List = cities;
+  //                   },100)
+  //             })
+  //        }
+  //        else{
+  //           //console.log('State:   '+JSON.stringify($scope.myForm.state))
+  //             var url="http://battuta.medunes.net/api/city/"+$scope.country2Code+"/search/?region="+$scope.myForm.state+"&key="+BATTUTA_KEY+"&callback=?";
+  //             $.getJSON(url,function(cities)
+  //             {
+  //                $timeout(function(){
+  //                       $scope.city2List = cities;
+  //                   },100)
+  //             })
+  //        }
      
-    }
+  //   }
    
    //-------------------------------END OF SELECT CASCADING-------------------------//
 
 
 
     // ******************DashBoard Filters *********************
+
+
+    $scope.dashBordFilter = function(key) {
+        console.log("key",key)
+        var data = {};
+        if(key == 'soldUpgradeCards'){
+            data = {
+                paymentCardType:'soldUpgradeCards',
+                country: $scope.dashBordFilter.countriesFirst,
+                city: $scope.dashBordFilter.cityListFirst,
+                cardType: parseInt($scope.dashBordFilter.dollarCardTypeFirst),
+                joinFrom: new Date($scope.dashBordFilter.dobFromFirst).getTime(),
+                joinTo: new Date($scope.dashBordFilter.dobToFirst).getTime(),
+            }
+            console.log("datatata", JSON.stringify(data))
+
+            userService.filterDollars(data).success(function(res){
+                console.log("ressss111",JSON.stringify(res))
+                if(res.responseCode == 400){
+                    $scope.dollars =[];
+                }
+                else if(res.responseCode == 200){
+                    $scope.dollars = res.result;
+                }
+            })
+
+        }else if(key == 'cashGifts'){
+            console.log("22")
+            data = {
+                paymentCardType:'cashGifts',
+                country: $scope.dashBordFilter.countriesSecond,
+                city: $scope.dashBordFilter.cityListSecond,
+                cashStatus: $scope.dashBordFilter.cashStatus,
+                joinFrom: new Date($scope.dashBordFilter.dobFromSecond).getTime(),
+                joinTo: new Date($scope.dashBordFilter.dobToSecond).getTime(),
+            }
+            console.log("datatata", JSON.stringify(data))
+
+            userService.filterDollars(data).success(function(res){
+                if(res.responseCode == 400){
+                    $scope.dollars =[];
+                }
+                else if(res.responseCode == 200){
+                    $scope.dollars = res.result;
+                }
+            })
+
+        }else if(key == 'soldLuckCard'){
+            console.log("22")
+            data = {
+                paymentCardType:'soldLuckCard',
+                country: $scope.dashBordFilter.countriesThird,
+                city: $scope.dashBordFilter.cityListThird,
+                cashStatus: $scope.dashBordFilter.cashStatus,
+                joinFrom: new Date($scope.dashBordFilter.dobFromThird).getTime(),
+                joinTo: new Date($scope.dashBordFilter.dobToThird).getTime(),
+            }
+            console.log("datatata", JSON.stringify(data))
+
+            userService.filterBrolix(data).success(function(res){
+                if(res.responseCode == 400){
+                    $scope.brolix =[];
+                }
+                else if(res.responseCode == 200){
+                    $scope.brolix = res.result;
+                }
+            })
+
+        }
+    }
 
     $scope.newdashBordFilter = function(type){
         //console.log("country---"+$scope.dashBordFilter.country)
@@ -814,17 +920,7 @@ $(window).scrollTop(0,0);
 
                                      } 
                                      //console.log(JSON.stringify(data))
-                                userService.filterDollars(data).success(function(res){
-                                    //console.log("hello"+JSON.stringify(res))
-                                    if(res.responseCode == 400){
-                                        $scope.dollars =[];
-                                    }
-                                    else if(res.responseCode == 200){
-                                        $scope.dollars = res.result;
-                                        //console.log("ressssssss1"+JSON.stringify($scope.dollars));
-                                    }
-                                    
-                                })
+                                
                                 
                             break;
 
@@ -836,7 +932,6 @@ $(window).scrollTop(0,0);
                                         joinTo:new Date($scope.dashBordFilter.dobTo).getTime(),
                                         joinFrom:new Date($scope.dashBordFilter.dobFrom).getTime(),
                                         country:$scope.dashBordFilter.country,
-                                        state:$scope.dashBordFilter.state,
                                         city: $scope.dashBordFilter.city,
                                         cardType:$scope.dashBordFilter.brolixCardType
                                      }

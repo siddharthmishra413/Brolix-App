@@ -1,12 +1,13 @@
 <div class="col-sm-12">
 <div class="row">
    <ul class="nav nav-pills card-tabs">
-      <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata(); show = 1">Sign up</a></li>
+      <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 1">Sign up</a></li>
       <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 2">Cash Add</a></li>
       <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 3">Coupon Add</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="restTerms('couponGiftInfo'); show = 4">Coupon Gift</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="restTerms('cashGiftInfo'); show = 5">Cash Gift</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="restTerms('hiddenGiftInfo'); show = 6">Hidden Gift</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 4">Coupon Gift</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 5">Cash Gift</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 6">Hidden Gift</a></li> 
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 7">Create Page Terms</a></li>
    </ul>
    <div class="col-sm-12" ng-show="show==1">
       <div class="form-group">
@@ -34,10 +35,10 @@
    </div>
    <div class="col-sm-12" ng-show="show==4">
       <div class="form-group">
-         <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.couponGiftTerms" ></textarea>
+         <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscouponGiftCondition" ></textarea>
       </div>
       <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="updateRestTerms('couponGiftInfo')">Update</a>
+         <a class="btn btn-lg btn-green" ng-click="click('couponGiftInfo')">Update</a>
       </div>
    </div>
    <div class="col-sm-12" ng-show="show==5">
@@ -45,7 +46,7 @@
          <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscashGiftCondition" ></textarea>
       </div>
       <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="updateRestTerms('cashGiftInfo')">Update</a>
+         <a class="btn btn-lg btn-green" ng-click="click('cashGiftInfo')">Update</a>
       </div>
    </div>
    <div class="col-sm-12" ng-show="show==6">
@@ -53,7 +54,15 @@
          <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition" ></textarea>
       </div>
       <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="updateRestTerms('hiddenGiftInfo')">Update</a>
+         <a class="btn btn-lg btn-green" ng-click="click('hiddenGiftInfo')">Update</a>
+      </div>
+   </div>
+   <div class="col-sm-12" ng-show="show==7">
+      <div class="form-group">
+         <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition" ></textarea>
+      </div>
+      <div class="btn2 text-center">
+         <a class="btn btn-lg btn-green" ng-click="click('createPage')">Update</a>
       </div>
    </div>
 </div>

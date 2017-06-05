@@ -6,26 +6,7 @@ app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window,
     $scope.show = 1;
 
     userService.viewAllTerms().success(function (res) {
-        console.log(JSON.stringify(res))
-            
-            if (res.responseCode == 200) {
-                $scope.signUpTerms = res.result.filter(function (obj) {
-                    return obj.type == 'signUpCondition';
-                });
-                $scope.myFrom.termssignUpCondition = $scope.signUpTerms[0].termsConditionContent;
-                console.log($scope.myFrom.termssignUpCondition)
-            } else {
-                toastr.error(res.responseMessage);
-            }
-        })
-
-
-
-
-
-
-    $scope.getdata = function () {
-        userService.viewAllTerms().success(function (res) {
+        console.log("reee",JSON.stringify(res))
 
             if (res.responseCode == 200) {
                 $scope.signUpTerms = res.result.filter(function (obj) {
@@ -45,29 +26,82 @@ app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window,
 
                 $scope.myFrom.termscouponAdCondition = $scope.couponAdTerms[0].termsConditionContent;
 
-                 $scope.hiddenGiftTerms = res.result.filter(function (obj) {
-                    return obj.type == 'hiddenGiftInfo';
+                $scope.couponAdTerms = res.result.filter(function (obj) {
+                    return obj.type == 'couponGiftInfo';
                 });
 
-                $scope.myFrom.termshiddenGiftCondition = $scope.hiddenGiftTerms[0].termsConditionContent;
+                $scope.myFrom.termscouponGiftCondition = $scope.couponAdTerms[0].termsConditionContent;
 
                  $scope.cashGiftInfoTerms = res.result.filter(function (obj) {
                     return obj.type == 'cashGiftInfo';
                 });
 
-                $scope.myFrom.termscouponGiftCondition = $scope.cashGiftInfoTerms[0].termsConditionContent;
+                $scope.myFrom.termscashGiftCondition = $scope.cashGiftInfoTerms[0].termsConditionContent;
 
-                 $scope.couponAdTerms = res.result.filter(function (obj) {
-                    return obj.type == 'couponGiftInfo';
+                $scope.hiddenGiftTerms = res.result.filter(function (obj) {
+                return obj.type == 'hiddenGiftInfo';
                 });
 
-                $scope.myFrom.couponGiftTerms = $scope.couponAdTerms[0].termsConditionContent;
+                $scope.myFrom.termshiddenGiftCondition = $scope.hiddenGiftTerms[0].termsConditionContent;
 
+                $scope.createPageTerms = res.result.filter(function (obj) {
+                return obj.type == 'createPage';
+                });
+
+                $scope.myFrom.termscreatePageCondition = $scope.createPageTerms[0].termsConditionContent;
             } else {
                 toastr.error(res.responseMessage);
             }
         })
-    }
+
+
+
+
+
+
+    // $scope.getdata = function () {
+    //     userService.viewAllTerms().success(function (res) {
+
+    //         if (res.responseCode == 200) {
+    //             $scope.signUpTerms = res.result.filter(function (obj) {
+    //                 return obj.type == 'signUpCondition';
+    //             });
+    //             $scope.myFrom.termssignUpCondition = $scope.signUpTerms[0].termsConditionContent;
+    //             console.log($scope.myFrom.termssignUpCondition)
+
+    //             $scope.cashAdTerms = res.result.filter(function (obj) {
+    //                 return obj.type == 'cashAdCondition';
+    //             });
+    //             $scope.myFrom.termscashAdCondition = $scope.cashAdTerms[0].termsConditionContent;
+
+    //             $scope.couponAdTerms = res.result.filter(function (obj) {
+    //                 return obj.type == 'couponAdCondition';
+    //             });
+
+    //             $scope.myFrom.termscouponAdCondition = $scope.couponAdTerms[0].termsConditionContent;
+
+    //             $scope.couponAdTerms = res.result.filter(function (obj) {
+    //                 return obj.type == 'couponGiftInfo';
+    //             });
+
+    //             $scope.myFrom.termscouponGiftCondition = $scope.couponAdTerms[0].termsConditionContent;
+
+    //              $scope.cashGiftInfoTerms = res.result.filter(function (obj) {
+    //                 return obj.type == 'cashGiftInfo';
+    //             });
+
+    //             $scope.myFrom.termscashGiftCondition = $scope.cashGiftInfoTerms[0].termsConditionContent;
+
+    //             $scope.hiddenGiftTerms = res.result.filter(function (obj) {
+    //             return obj.type == 'hiddenGiftInfo';
+    //             });
+
+    //             $scope.myFrom.termshiddenGiftCondition = $scope.hiddenGiftTerms[0].termsConditionContent;
+    //         } else {
+    //             toastr.error(res.responseMessage);
+    //         }
+    //     })
+    // }
 
 
 
@@ -117,7 +151,7 @@ app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window,
 
             case 'couponGiftInfo':
             data = {
-                    termsConditionContent: $scope.myFrom.termscouponAdCondition,
+                    termsConditionContent: $scope.myFrom.termscouponGiftCondition,
                 }
             userService.editTermsCondition(type, data).success(function (res) {
                 if (res.responseCode == 200) {
@@ -131,7 +165,7 @@ app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window,
 
             case 'cashGiftInfo':
                 data = {
-                        termsConditionContent: $scope.myFrom.termscouponAdCondition,
+                        termsConditionContent: $scope.myFrom.termscashGiftCondition,
                     }
                 userService.editTermsCondition(type, data).success(function (res) {
                     if (res.responseCode == 200) {
@@ -145,7 +179,20 @@ app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window,
 
             case 'hiddenGiftInfo':
                 data = {
-                        termsConditionContent: $scope.myFrom.termscouponAdCondition,
+                        termsConditionContent: $scope.myFrom.termshiddenGiftCondition,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+            case 'createPage':
+                data = {
+                        termsConditionContent: $scope.myFrom.termscreatePageCondition,
                     }
                 userService.editTermsCondition(type, data).success(function (res) {
                     if (res.responseCode == 200) {
@@ -162,26 +209,26 @@ app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window,
     }
 
 
-    $scope.restTerms = function (type) {
-    userService.viewRestTerms(type).success(function (res) {
-        if (res.responseCode == 200) {
-            $scope.myFrom.termsContent = res.result[0].termsConditionContent;
-        } else {
-            toastr.error(res.responseMessage);
-        }
-    })
-}
+//     $scope.restTerms = function (type) {
+//     userService.viewRestTerms(type).success(function (res) {
+//         if (res.responseCode == 200) {
+//             $scope.myFrom.termsContent = res.result[0].termsConditionContent;
+//         } else {
+//             toastr.error(res.responseMessage);
+//         }
+//     })
+// }
 
-$scope.updateRestTerms = function (type) {
-    var data = {
-        termsConditionContent: $scope.myFrom.termsContent
-    }
-    userService.editRestTerms(type, data).success(function (res) {
-        if (res.responseCode == 200) {
-            toastr.success(res.responseMessage);
-        } else {
-            toastr.error(res.responseMessage);
-        }
-    })
-}
+// $scope.updateRestTerms = function (type) {
+//     var data = {
+//         termsConditionContent: $scope.myFrom.termsContent
+//     }
+//     userService.editRestTerms(type, data).success(function (res) {
+//         if (res.responseCode == 200) {
+//             toastr.success(res.responseMessage);
+//         } else {
+//             toastr.error(res.responseMessage);
+//         }
+//     })
+// }
 })

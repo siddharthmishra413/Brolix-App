@@ -16,6 +16,9 @@ var termsConditionSchema = new Schema({
     termsConditionContent: {
         type: String
     },
+    pageCost:{
+        type: Number
+    },
     type: {
         type: String
     },

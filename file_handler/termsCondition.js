@@ -35,7 +35,7 @@ module.exports = {
 
     "editTermsCondition": function(req, res) {
         var conditionType = req.params.type;
-        TermsCondition.findOneAndUpdate({ type: conditionType }, { $set: { termsConditionContent: req.body.termsConditionContent } }, { new: true }).exec(function(err, result) {
+        TermsCondition.findOneAndUpdate({ type: conditionType }, { $set:  req.body }, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'No terms and contions found.' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: "Terms and conditions updated successfully." })
             }
