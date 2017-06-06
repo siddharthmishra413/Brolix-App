@@ -3,6 +3,8 @@ var app = express();
 var pageHandler = require('../file_handler/page.js');
 var authUser = require('../middlewares/authUser');
 
+app.post('/createPagePayment', pageHandler.createPagePayment);
+app.post('/returnPage', pageHandler.returnPage);
 
 
 app.post('/createPage', pageHandler.createPage);

@@ -9,6 +9,9 @@ var Schema = mongoose.Schema;
 /* Payment schema */
 
 var paypalPaymentSchema = new Schema({
+    paymentMode:{
+        type: String  //paypal or visaCard or massPay
+    },
     userId: {
         type: String,
         ref: 'brolixUser'
@@ -24,8 +27,12 @@ var paypalPaymentSchema = new Schema({
         type:String,
         ref: 'createNewAds'
     },
+    pageId:{
+        type:String,
+        ref: 'createNewPage'
+    },
     Type:{
-        type:String
+        type:String  //createPage //createAd //upgradeCardPurchase //sendFollower //getCash
     },
     createdAt: {
         type: Date,

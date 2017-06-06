@@ -363,7 +363,7 @@ var payKey = 'AP-1WT665016G226315H'
         createPayPage.cms_with_version = "1.0.0";
 
         paytabs.CreatePayPage(createPayPage, function(response) {
-            console.log(response);
+            console.log("paytabs",response);
         });
 
         // paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){

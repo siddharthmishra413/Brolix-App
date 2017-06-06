@@ -5,15 +5,20 @@ var createNewReport = require("./model/reportProblem");
 var addsComments = require("./model/addsComments");
 //var notificationList = require("./model/notificationList");
 var subCategory = require("./subcategory.json");
-
+var Payment = require("./model/payment");
 var Views = require("./model/views");
 var User = require("./model/user");
 var waterfall = require('async-waterfall');
 var _ = require('underscore')
+var adminCards = require("./model/cardsAdmin");
+
     //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
 var moment = require('moment')
+
+var paytabs = require('paytabs')
+
 
 module.exports = {
 
@@ -2583,5 +2588,126 @@ module.exports = {
             })
         }
     },
+
+     "createPagePayment": function(req, res){
+
+        User.findOne({ _id: "593676c58b80641e81da2f84" }).exec(function(err, user) {
+           if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+           else if (!user) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } 
+           else {
+            console.log("user",user)
+                if(req.body.paymentMode == 'paypal'){
+                   var payment = new Payment();
+                   payment.save(function(err, result){
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                    else if (!result) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } 
+                    else {
+                        adminCards.findOne({
+                           type : "upgrade_card", price : req.body.amount
+                        },function(err, cardRes){
+                            var card_viewers = cardRes.viewers;
+                            var data = {
+                                cash: req.body.amount,
+                                viewers: card_viewers,
+                                type: "SENDBYADMIN"
+                            }
+                            User.update({ _id: req.body.userId }, { $push: { upgradeCardObject: data } }, function(err, result1) {
+
+
+
+                        })
+                    }
+                   })
+                }
+                else{
+                    waterfall([
+                        function(callback){
+                            paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
+                              console.log(response);
+                              if(response.result == 'valid'){
+                                callback(null, response)
+                              }
+                              else{
+                                res.send({
+                                    responseCode: 404,
+                                    responseMessage: "Internal server error."
+                                })
+                              }
+                            });
+                        },
+                        function(result, callback){
+                            if(user.country == 'United Arab Emirates'){
+                                var country_shipping = "ARE"
+                            }
+                            else if(user.country == 'Jordan'){
+                                var country_shipping = "JOR"
+                            }
+                            else{
+                                res.send({
+                                    responseCode: 404,
+                                    responseMessage: "User can pay only for country UAE and Jordan."
+                                })
+                            }
+                            var createPayPage = new Object()
+                            createPayPage.merchant_email = 'sakshigadia@gmail.com';
+                            createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
+                            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+                            createPayPage.site_url = "http://localhost:8082";
+                            createPayPage.return_url = "http://localhost:8082/page/returnPage";
+                            createPayPage.title = "Brolix";
+                            createPayPage.cc_first_name = user.firstName;
+                            createPayPage.cc_last_name = user.lastName;
+                            createPayPage.cc_phone_number = user.mobileNumber;
+                            createPayPage.phone_number = user.mobileNumber;
+                            createPayPage.email = user.email;
+                            createPayPage.products_per_title = "Payment";
+                            createPayPage.unit_price = req.body.amount;
+                            createPayPage.quantity = "1";
+                            createPayPage.other_charges = 0;
+                            createPayPage.amount = req.body.amount;
+                            createPayPage.discount = 0;
+                            createPayPage.currency = "USD"; //EUR JOD
+                            createPayPage.reference_no = "21873109128";
+                            createPayPage.ip_customer = "192.168.1.1";
+                            createPayPage.ip_merchant = "192.168.1.1";
+                            createPayPage.billing_address = "ydh";
+                            createPayPage.state = user.state;
+                            createPayPage.city = user.city;
+                            createPayPage.postal_code = user.pincode;
+                            createPayPage.country = country_shipping;
+                            createPayPage.shipping_first_name = user.firstName;
+                            createPayPage.shipping_last_name = user.lastName;
+                            createPayPage.address_shipping = "Flat";
+                            createPayPage.city_shipping = user.city;
+                            createPayPage.state_shipping = user.state;
+                            createPayPage.postal_code_shipping = user.pincode;
+                            createPayPage.country_shipping = country_shipping; //JOR ARE
+                            createPayPage.msg_lang = "English";
+                            createPayPage.cms_with_version = "1.0.0";
+                            paytabs.CreatePayPage(createPayPage, function(response) {
+                                res.send({
+                                    responseCode: 200,
+                                    responseMessage: "Payment url.",
+                                    result: response
+                                })
+                            });
+                        }
+                    ])
+                }
+           }
+        })
+    },
+
+    "returnPage": function(req, res){
+         var verfiyPaymentRequest = new Object();
+        verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
+        verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+        verfiyPaymentRequest.payment_reference = "84545";
+        paytabs.VerfiyPayment(verfiyPaymentRequest, function(response){
+            res.json({
+                result:response
+            })
+        });   
+    }
 
 }
