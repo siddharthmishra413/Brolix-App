@@ -48,7 +48,67 @@ app.directive('ckEditor', [function () {
         }
     };
 }])
- app.service('ckeditorService', function() {
+ app.service('ckeditorService', function($rootScope) {
+
+  CKEDITOR.plugins.add( 'tokens',
+{   
+   requires : ['richcombo'], //, 'styles' ],
+   init : function( editor )
+   {
+      var config = editor.config,
+         lang = editor.lang.format;
+         //console.log("viewer",editorPage)
+
+      // Gets the list of tags from the settings.
+      var tags = $rootScope.viewerss;
+      console.log("tags",tags)
+      console.log("$rootScope.viewerss",$rootScope.viewerss)
+       //new Array();
+      //this.add('value', 'drop_text', 'drop_label');
+      // tags[0]=["[contact_name]", "Name", "Name"];
+      // tags[1]=["[contact_email]", "email", "email"];
+      // tags[2]=["[contact_user_name]", "User name", "User name"];
+      
+      // Create style objects for all defined styles.
+
+      editor.ui.addRichCombo( 'tokens',
+         {
+            label : "Page Price",
+            title :"Page Price",
+            voiceLabel : "Page Price",
+            className : 'cke_format',
+            multiSelect : false,
+
+            // panel :
+            // {
+            //    css : [ config.contentsCss, CKEDITOR.getUrl( editor.skinPath + 'editor.css' ) ],
+            //    voiceLabel : lang.panelVoiceLabel
+            // },
+
+            init : function()
+            {
+               //this.startGroup( "Tokens" );
+               //this.add('value', 'drop_text', 'drop_label');
+               for (var this_tag in tags){
+                  this.add(tags[this_tag]);
+               }
+            },
+
+            onClick : function( value )
+            {         
+               editor.focus();
+               editor.fire( 'saveSnapshot' );
+               var val = editor.insertHtml(value);
+               console.log("val",value)
+               $rootScope.pageCost = value;
+
+               editor.fire( 'saveSnapshot' );
+            }
+         });
+   }
+});
+
+
     var self=this;
 
     this.cEditor=function(){
@@ -211,6 +271,10 @@ app.service('userService',function($http){
    },
    getOfferList: function(data){
      return $http.post(baseurl+'/admin/getOfferList', data);
+   },
+   removeOfferonCards: function(data){
+    console.log("data",data)
+     return $http.post(baseurl+'/admin/removeOfferonCards', data);
    },
 
     /*-------------------------Manage ADS---------------------*/

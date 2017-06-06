@@ -10,7 +10,7 @@ app.controller('homepageAdsCtrl', function($scope, $window, userService,spinnerS
     $scope.cardDetails = {};
 
     userService.listOfAds().success(function(res) {
-      console.log("resssssssssssssss",res)
+      console.log("resssssssssssssss",JSON.stringify(res))
       $scope.couponAds = res.couponType;
       $scope.cashType = res.cashType;
       console.log("$scope.cashType",$scope.cashType)

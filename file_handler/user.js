@@ -1648,6 +1648,7 @@ module.exports = {
         waterfall([
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
+                    console.log("result",result)
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
                         if (result.adsType == 'cash') {
                             if (result.cash > 0) {
@@ -1655,7 +1656,7 @@ module.exports = {
                             } else {
                                 var type = "storeCouponPriceForFreeAds";
                             }
-                        } else if (result.adsType == 'coupon') {
+                        } else if (result.adsType == 'coupon' || result.adsType == 'ADMINCOUPON') {
                             if (result.cash > 0) {
                                 var type = "storeCouponPriceForUpgradedAds";
                             } else {

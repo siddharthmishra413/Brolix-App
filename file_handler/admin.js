@@ -1318,9 +1318,7 @@ module.exports = {
     },
 
     "removeOfferonCards": function(req, res) {
-        adminCards.findOneAndUpdate({ 'offer._id': req.body.offerId }, { $set: { 'offer.$.status': 'REMOVED' } }, {
-            new: true
-        }).exec(function(err, result) {
+        adminCards.findOne({ 'offer._id': req.body.offerId }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,
@@ -1875,7 +1873,7 @@ module.exports = {
                 var tempCond = {};
 
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                    if (!(key == "paymentCardType" || key == "joinFrom" || key == "joinTo" || key == 'cardType' || req.body[key] == "")) {
+                    if (!(key == "paymentCardType" || key == "joinFrom" || key == "joinTo" || key == 'cardType' || req.body[key] == "" ||key == "cashStatus")) {
                         tempCond[key] = req.body[key];
                         console.log("tempCOndition===>" + JSON.stringify(tempCond))
 
@@ -1893,7 +1891,7 @@ module.exports = {
                     Object.assign(query, { 'upgradeCardObject.type': 'PURCHASED' });
                     module.exports.totalSoldUpgradeCard(req, res, query)
                 } else if (data == 'cashGifts') {
-
+                    console.log("cash gifts",JSON.stringify(query))
                     module.exports.cashGift(req, res, query)
                 } else {
                     Object.assign(query, { 'upgradeCardObject.type': 'PURCHASED' });

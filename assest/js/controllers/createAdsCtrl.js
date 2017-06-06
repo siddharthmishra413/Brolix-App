@@ -14,11 +14,12 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
     $scope.promoteApp = false;
     $scope.dawnloadPagePhoto = [];
     $scope.slideshowPhoto = [];
-
+console.log("length:    ",$scope.dawnloadPagePhoto.length);
     $scope.downloadPhotoss = function(image){
         console.log("image------------>",image)
         $scope.dawnloadPagePhoto.push(image)
         console.log("$scope.dawnloadPagePhoto",$scope.dawnloadPagePhoto)
+        console.log("length:    ",$scope.dawnloadPagePhoto.length);
         $scope.promoteApp = true;
     }
 
@@ -640,6 +641,9 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
         var currentDateNumber = new Date().getTime();
 
         switch (date) {
+            case '':
+                 $scope.couponExpiryDate = 'NEVER';
+                break;
 
             case '1 Week':
                 $scope.couponExpiryDate = 86400000 * 7;

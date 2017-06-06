@@ -11,6 +11,50 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     $scope.dashBordFilter = {};
     localStorage.setItem('cardTypeName','totalSoldCards');
 
+    $scope.removeOffers = function(id){
+        console.log("sssss",id)
+
+        $scope.offerId = id;
+        //var userId = $scope.RemoveId;
+        if ($scope.offerId == '' || $scope.offerId == undefined || $scope.offerId == null) {
+            toastr.error("Please select user.")
+            $state.go('header.manageCards')
+        } else {
+                var data={
+                offerId:$scope.offerId,
+                status:"REMOVED",
+                }
+                $("#upgradeOfferOnCardd").modal('hide');
+            BootstrapDialog.show({
+                title: 'Remove Offer',
+                message: 'Are you sure want to Remove this offer',
+                buttons: [{
+                    label: 'Yes',
+                    action: function(dialog) {
+                        userService.removeOfferonCards(data).success(function(res) {
+                            if (res.responseCode == 200) {
+                                dialog.close();
+                                
+                                // $state.reload();
+                                toastr.success(res.responseMessage);
+                                
+                            } else if (res.responseCode == 404) {
+                                toastr.error(res.responseMessage);
+                            }
+                        })
+                    }
+                }, {
+                    label: 'No',
+                    action: function(dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+        }
+
+
+    }
+
     $scope.dateValidation = function(dtaa) {
         var dta = dtaa;
         var timestamp = new Date(dtaa).getTime();
@@ -177,7 +221,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
         }
         userService.getOfferList(cardDetailsOnOffer).success(function(res) {
             if (res.responseCode == 200) {
-                console.log("res", JSON.stringify(res))
+                console.log("aaaaaaaaaa", JSON.stringify(res))
                 $scope.upgradecardOnOffers = res.result;
                 $("#upgradeOfferOnCardd").modal('show');
             } else {
@@ -275,6 +319,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                 offerType: 'discount'
             }
             userService.showOfferOnCards(upgrade_card).success(function(res) {
+                console.log("res",JSON.stringify(res))
                 if (res.responseCode == 200) {
                     $scope.totalSoldUpgradeCardDiscount = res.result;
                     $scope.totalSoldUpgradeCardCountDiscount = res.total;

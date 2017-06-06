@@ -115,7 +115,7 @@ app.post('/adsfilter', adminHandler.adsfilter);
 app.post('/luckUpgradeCardfilter', adminHandler.luckUpgradeCardfilter);
 app.post('/giftsFilter', adminHandler.giftsFilter);
 app.post('/brolixPaymentFilter', authUser.authUser, adminHandler.brolixPaymentFilter);
-app.post('/dollorPaymentFilter', authUser.authUser, adminHandler.dollorPaymentFilter);
+app.post('/dollorPaymentFilter', adminHandler.dollorPaymentFilter);
 app.get('/listOfAds', authUser.authUser, adminHandler.listOfAds);
 app.get('/listOfAllAds', authUser.authUser, adminHandler.listOfAllAds);
 app.get('/allCountriesfind', authUser.authUser, adminHandler.allCountriesfind);

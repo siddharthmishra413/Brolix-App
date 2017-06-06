@@ -20,7 +20,7 @@
                     </div>
 
 
-                    <div class="main-container-s">
+                    <div class="main-container-s" ng-if="firstss">
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <div class="search-bar-cus">
@@ -28,7 +28,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdata">
-                                                <div class="input-group-addon">Search1111</div>
+                                                <div class="input-group-addon">Search</div>
                                             </div>
                                         </div>
                                     </form>
@@ -51,7 +51,7 @@
                                                 </div>
                                                 <div class="bottom-box">
                                                     <div class="btn-manage">
-                                                        <a ng-click="dashBordFilter('soldUpgradeCards')" style="cursor: pointer">Showw</a>
+                                                        <a ng-click="dashBordFilter('soldUpgradeCards')" style="cursor: pointer">Show</a>
                                                     </div>
                                                     <div class="btn-manage">
                                                         <a ng-click="total_user_message('dollars')" style="cursor: pointer">Contact Buyers</a>
@@ -142,7 +142,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr dir-paginate="dollars in dollars | manageFilter:search | itemsPerPage:10 ">
+                                                                    <tr dir-paginate="dollars in dollars | manageFilter:searchdata | itemsPerPage:10" pagination-id="tableOne">
                                                                         <td>{{dollars.upgradeCardObject.viewers}} Viewers</td>
                                                                         <td>{{dollars.upgradeCardObject.cash}}$</td>
                                                                         <td class="skyblue-text" style="cursor:pointer;" ng-click="userInfo(dollars._id)">{{dollars.firstName+" "+dollars.lastName}}</td>
@@ -162,7 +162,7 @@
                                                             </table>
                                                             <div>
                                                                 <div class="col-sm-12 text-center">
-                                                                    <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                                                                    <dir-pagination-controls pagination-id="tableOne" max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -210,7 +210,7 @@
                                                     <form class="form-inline">
                                                         <div class="form-group">
                                                             <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdata">
+                                                                <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdataCash">
                                                                 <div class="input-group-addon">Search</div>
                                                             </div>
                                                         </div>
@@ -311,8 +311,8 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Page Name</th>
-                                                                        <th>Page Owner/Admin</th>
-                                                                        <th>Owner/Admin PayPal</th>
+                                                                        <!-- <th>Page Owner/Admin</th>
+                                                                        <th>Owner/Admin PayPal</th> -->
                                                                         <th>Cash Gift</th>
                                                                         <th>Winner Name</th>
                                                                         <th>Winner Paypal</th>
@@ -320,12 +320,12 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr dir-paginate="dollarsCash in dollarsCashGift | managePaymentFilter:searchdata | itemsPerPage:10 ">
+                                                                    <tr dir-paginate="dollarsCash in dollarsCashGift | managePaymentFilter:searchdataCash | itemsPerPage:10" pagination-id="tableTwo">
                                                                         <td class="skyblue-text" ng-click="pageInfo(dollarsCash.cashPrize.pageId._id)" style="cursor: pointer">{{dollarsCash.cashPrize.pageId.pageName}}</td>
-                                                                        <td class="skyblue-text" ng-click="userInfo(dollarsCash.cashPrize.pageId.userId._id)" style="cursor: pointer">{{dollarsCash.cashPrize.pageId.userId.firstName+" "+dollarsCash.cashPrize.pageId.userId.lastName}}</td>
-                                                                        <td>{{dollarsCash.cashPrize.pageId.userId.email}}</td>
+                                                                        <!-- <td class="skyblue-text" ng-click="userInfo(dollarsCash.cashPrize.pageId.userId._id)" style="cursor: pointer">{{dollarsCash.cashPrize.pageId.userId.firstName+" "+dollarsCash.cashPrize.pageId.userId.lastName}}</td>
+                                                                        <td>{{dollarsCash.cashPrize.pageId.userId.email}}</td> -->
                                                                         <td class="skyblue-text" ng-click="cashGift(dollarsCash.cashPrize.adId)" style="cursor: pointer">View</td>
-                                                                        <td>{{dollarsCash.firstName+" "+dollarsCash.lastName}}</td>
+                                                                        <td lass="skyblue-text" ng-click="winnerInfo()" style="cursor: pointer">{{dollarsCash.firstName+" "+dollarsCash.lastName}}</td>
                                                                         <td>{{dollarsCash.email}}</td>
                                                                         <td>{{dollarsCash.cashPrize.cashStatus}}</td>
                                                                     </tr>
@@ -335,7 +335,7 @@
                                                                 </tbody>
                                                             </table>
                                                             <div class="col-sm-12 text-center ">
-                                                                <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                                                                <dir-pagination-controls pagination-id="tableTwo" max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
                                                             </div>
                                                             
                                                         </div>
@@ -351,15 +351,15 @@
 
                     <!---->
 
-                    <div class="main-container-s">
+                    <div class="main-container-s" ng-if="secondss">
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <div class="search-bar-cus">
                                     <form class="form-inline">
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdata">
-                                                <div class="input-group-addon">Search1111</div>
+                                                <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdataBrolix">
+                                                <div class="input-group-addon">Search</div>
                                             </div>
                                         </div>
                                     </form>
@@ -407,7 +407,7 @@
                                             <div class="row">
                                                 <div class="col-md-2 col-sm-6 col-p fltr">
                                                     <div class="form-group cus-select">
-                                                        <select class="form-control" ng-change="changeCountry('1')" ng-model="dashBordFilter.countriesThird" required>
+                                                        <select class="form-control" ng-change="changeCountry('third')" ng-model="dashBordFilter.countriesThird" required>
                                             <option value="">Select Country</option>
                                             <option ng-repeat="country in countriesThird" >{{country}}</option>
                                          </select>
@@ -470,7 +470,8 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr ng-repeat="brolix in brolix |manageFilter:search ">
+                                                                <tr dir-paginate="brolix in brolix | manageFilter:searchdataBrolix | itemsPerPage:10" pagination-id="tableThree">
+                                                                    <!-- <tr ng-repeat="brolix in brolix |manageFilter:search" pagination-id="tableThree"> -->
                                                                         <td>{{brolix.luckCardObject.chances}} Chances</td>
                                                                         <td>{{brolix.luckCardObject.brolix}}B</td>
                                                                         <td class="skyblue-text" ng-click="userInfo(brolix._id)" style="cursor: pointer">{{brolix.firstName+" "+brolix.lastName}}</td>
@@ -486,6 +487,9 @@
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
+                                                            <div class="col-sm-12 text-center ">
+                                                                <dir-pagination-controls pagination-id="tableThree" max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                                                            </div>
 
                                                         </div>
                                                     </div>
@@ -515,7 +519,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="box-block blnk-bg wd100 ipad-50">
+                                    <!-- <div class="box-block blnk-bg wd100 ipad-50">
                                         <div class="widget widget-stats divi-blk offerbtn-s">
                                             <div class="top-box">
                                                 <div class="green-box" style="height: 123px; width: 119px;">Top 50 Ads</div>
@@ -526,7 +530,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
 
@@ -566,7 +570,7 @@
                                                     <form class="form-inline">
                                                         <div class="form-group">
                                                             <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdata">
+                                                                <input type="text" class="form-control" placeholder="Search By Page, Owner, Winner" ng-model="searchdataBrolixCash">
                                                                 <div class="input-group-addon">Search</div>
                                                             </div>
                                                         </div>
@@ -590,7 +594,7 @@
                                                     </div>
                                                     <div class="bottom-box">
                                                         <div class="btn-manage">
-                                                            <a ng-click="newdashBordFilter('brolixCoupon')" style="cursor: pointer">Show</a>
+                                                            <a ng-click="dashBordFilter('soldCoupon')" style="cursor: pointer">Show</a>
                                                         </div>
                                                         <div class="btn-manage">
                                                             <a ng-click="total_user_message('brolixCoupon')" style="cursor: pointer">Contact Buyers</a>
@@ -613,64 +617,49 @@
                                                 <div class="row">
                                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                                         <div class="form-group cus-select">
-                                                            <select class="form-control" id="country" ng-model="myForm.country" ng-change="changeCountry('2')" required>
+                                                            <select class="form-control" id="country" ng-model="dashBordFilter.countriesFourth" ng-change="changeCountry('fourth')" required>
                                             <option value="">Select Country</option>
-                                            <option  ng-repeat="country in brolixCountryList">{{country.name}}</option>
+                                            <option  ng-repeat="country in countriesFourth">{{country}}</option>
                                         </select>
                                                         </div>
                                                     </div>
+                                                   
                                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                                         <div class="form-group cus-select">
-                                                            <div class="form-group cus-select">
-                                                                <select class="form-control" id="region" ng-model="myForm.state" ng-change="changeState('2')" required>
-                                            <option value="">Select State</option>
-                                            <option  ng-repeat="state in state2List" >{{state.region}}</option>
-                                          </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2 col-sm-6 col-p fltr">
-                                                        <div class="form-group cus-select">
-                                                            <select class="form-control" id="city" ng-model="myForm.city" required>
+                                                            <select class="form-control" id="city" ng-model="dashBordFilter.cityListFourth" required>
                                             <option value="">Select City</option>
-                                            <option ng-repeat="city in city2List">{{city.city}}</option>
+                                            <option ng-repeat="city in cityListFourth">{{city}}</option>
                                          </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 col-sm-6 col-p fltr">
                                                         <div class="form-group cus-select">
                                                         
-                                                            <select class="form-control" ng-model="myForm.couponStatus" >
+                                                            <select class="form-control" ng-model="dashBordFilter.couponStatus" >
                                               <option value="">Coupon Status</option>
-                                              <option>Used</option>
-                                              <option>Expired</option>
+                                              <option ng-repeat="coupon in couponStatus">{{coupon}}</option>
                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 col-sm-6 col-p fltr">
-                                                        <div class="form-group cus-select">
-                                                            <datepicker date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                                                <div class="input-group">
-                                                                    <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="From" ng-model="myForm.dateFrom" />
-                                                                    <!-- <span class="input-group-addon" style="cursor: pointer">
-                                                   <i class="fa fa-lg fa-calendar"></i>
-                                                   </span> -->
-                                                                </div>
-                                                            </datepicker>
-                                                        </div>
+                                                    <div class="form-group cus-select">
+                                                        <datepicker date-format="yyyy-MM-dd" selector="form-control"">
+                                                            <div class="form-group">
+                                                            <input ng-change="dateValidation(dashBordFilter.dobFromFourth);" style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="Date From" ng-model="dashBordFilter.dobFromFourth" />
+                                                            </div>
+                                                        </datepicker>
                                                     </div>
-                                                    <div class="col-md-2 col-sm-6 col-p fltr">
-                                                        <div class="form-group cus-select">
-                                                            <datepicker date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
-                                                                <div class="input-group">
-                                                                    <input style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="To" ng-model="myForm.dateTo" />
-                                                                    <!-- <span class="input-group-addon" style="cursor: pointer">
-                                                   <i class="fa fa-lg fa-calendar"></i>
-                                                   </span> -->
-                                                                </div>
-                                                            </datepicker>
-                                                        </div>
+                                                </div>
+
+                                                <div class="col-md-2 col-sm-6 col-p fltr">
+                                                    <div class="form-group cus-select">
+                                                        <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDatee}}">
+                                                            <div class="form-group">
+                                                            <input ng-disabled="dashBordFilter.dobFromFourth==undefined" style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="Date To" ng-model="dashBordFilter.dobToFourth" />
+                                                            </div>
+                                                        </datepicker>
                                                     </div>
+                                                </div>
                                                 </div>
 
                                                 <div class="row">
@@ -681,7 +670,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Page Name</th>
-                                                                        <th>Page Owner</th>
+                                                                        <!-- <th>Page Owner</th> -->
                                                                         <th>Page Admins</th>
                                                                         <th>Buyer Name</th>
                                                                         <th>Sold Coupon</th>
@@ -690,10 +679,10 @@
                                                                         <th>Coupon Status</th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
-                                                                    <tr ng-repeat="Coupon in brolixCoupon |managePaymentSoldCouponFilter:searchdata">
-                                                                        <td class="skyblue-text" ng-click="pageInfo(Coupon.coupon.pageId._id)">{{Coupon.coupon.pageId.pageName}}</td>
-                                                                        <td class="skyblue-text" ng-click="userInfo(Coupon.coupon.pageId.userId._id)" style="cursor: pointer">{{Coupon.coupon.pageId.userId.firstName+" "+Coupon.coupon.pageId.userId.lastName}}</td>
+                                                                <tbody><tr dir-paginate="Coupon in brolixCoupon | managePaymentSoldCouponFilter:searchdataBrolixCash | itemsPerPage:10" pagination-id="tableFour">
+                                                                    <!-- <tr ng-repeat="Coupon in brolixCoupon |managePaymentSoldCouponFilter:searchdata"> -->
+                                                                        <!-- <td class="skyblue-text" ng-click="pageInfo(Coupon.coupon.pageId._id)" style="cursor: pointer"> --><td>{{Coupon.coupon.pageId.pageName}}</td>
+                                                                        <!-- <td class="skyblue-text" ng-click="userInfo(Coupon.coupon.pageId.userId._id)" style="cursor: pointer">{{Coupon.coupon.pageId.userId.firstName+" "+Coupon.coupon.pageId.userId.lastName}}</td> -->
                                                                         <td class="skyblue-text" ng-click="pageCount(Coupon._id)" style="cursor: pointer">{{Coupon.coupon.pageId.adAdminCount}}</td>
                                                                         <td class="skyblue-text" style="cursor: pointer" ng-click="userInfo(Coupon._id)">{{Coupon.firstName+" "+Coupon.lastName}}</td>
                                                                         <td class="skyblue-text" ng-click="adInfo(Coupon.coupon.adId._id)" style="cursor: pointer">View</td>
@@ -706,6 +695,9 @@
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
+                                                            <div class="col-sm-12 text-center ">
+                                                                <dir-pagination-controls pagination-id="tableFour" max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                                                            </div>
                                                            
                                                         </div>
                                                     </div>
@@ -837,10 +829,10 @@
                                 <th>Country</th>
                                 <td>{{userDetail.country}}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <th>State</th>
                                 <td>{{userDetail.state}}</td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <th>City</th>
                                 <td>{{userDetail.city}}</td>

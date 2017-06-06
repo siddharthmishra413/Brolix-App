@@ -652,9 +652,18 @@
 
         <div class="col-sm-12 " ng-switch="tab " ng-if="key=='Discount' ">
             <h2 class="text-center table-headingg ">Discount Offers</h2>
+            <ul>
+                <li class="">
+                    <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editAds/{{myForm.checkId}}">Edit Offer</a>
+                </li>
+                 <li class="">
+                    <a data-toggle="tab" style="cursor:pointer;" ng-click="removeOffers(myForm.checkId)">Remove Offer</a>
+                </li>
+            </ul>
             <table id="manageCardTable " class="table table-bordered table-striped ">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Offer Type</th>
                         <th>Offer In %</th>
                         <th>Offer Created Time</th>
@@ -665,6 +674,9 @@
                 </thead>
                 <tbody>
                     <tr dir-paginate="x in totalSoldUpgradeCardDiscount | cardsFilter:test | itemsPerPage:10 ">
+                        <td>
+                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                        </td>
                         <td >Discount</td>
                         <td>{{x._id.buyCard}} %</td>
                         <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
@@ -1099,6 +1111,9 @@
                                  <div class="bottom-dol ">${{data.price}}</div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-cell add-remove">
+                        <span class="fa fa-times-circle" ng-click="removeOffers(data._id)"></span>
                     </div>
                 </div>
             </div>

@@ -1,13 +1,13 @@
 <div class="col-sm-12">
 <div class="row">
    <ul class="nav nav-pills card-tabs">
-      <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 1">Sign up</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 2">Cash Add</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 3">Coupon Add</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 4">Coupon Gift</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 5">Cash Gift</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 6">Hidden Gift</a></li> 
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="show = 7">Create Page Terms</a></li>
+      <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata(); show = 1">Sign up</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata(); show = 2">Cash Add</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata(); show = 3">Coupon Add</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata(); show = 4">Coupon Gift</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata(); show = 5">Cash Gift</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata(); show = 6">Hidden Gift</a></li> 
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata(); show = 7">Create Page Terms</a></li>
    </ul>
    <div class="col-sm-12" ng-show="show==1">
       <div class="form-group">
@@ -59,10 +59,16 @@
    </div>
    <div class="col-sm-12" ng-show="show==7">
       <div class="form-group">
-         <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition" ></textarea>
+         <textarea id="editorPage" data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition" ></textarea>
       </div>
       <div class="btn2 text-center">
          <a class="btn btn-lg btn-green" ng-click="click('createPage')">Update</a>
       </div>
+      <!-- <div class="form-group cus-select">
+         <select class="form-control" ng-model="dashBordFilter.upgradeCard">
+             <option value="">Upgrade Card Type</option>
+             <option ng-repeat="viewer in dashBordFilterViewer">{{viewer}}</option>
+         </select>
+      </div> -->
    </div>
 </div>
