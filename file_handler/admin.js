@@ -1263,10 +1263,10 @@ module.exports = {
     "getOfferList": function(req, res) {
         var cardType = req.body.cardType;
         if (req.body.offerType == 'discount') {
-            var typDate = { type: cardType, "offer.offerType": req.body.offerType, "offer.buyCard": req.body.buyCard }
+            var typDate = { type: cardType, "offer.offerType": req.body.offerType, "offer.buyCard": req.body.buyCard, "offer.status":'ACTIVE' }
         } else {
 
-            var typDate = { type: cardType, "offer.offerType": req.body.offerType, "offer.buyCard": req.body.buyCard, "offer.freeCard": req.body.freeCard }
+            var typDate = { type: cardType, "offer.offerType": req.body.offerType, "offer.buyCard": req.body.buyCard, "offer.freeCard": req.body.freeCard, "offer.status":'ACTIVE' }
         }
         adminCards.aggregate([
             { $unwind: '$offer' },
@@ -1284,7 +1284,7 @@ module.exports = {
     "showOfferCountOnCards": function(req, res) {
         adminCards.aggregate([
             { $unwind: '$offer' },
-            { $match: { type: req.body.cardType } }
+            { $match: { type: req.body.cardType, "offer.status":'ACTIVE' } }
         ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: 'Data not found.' });
@@ -1301,12 +1301,14 @@ module.exports = {
     "editOfferonCards": function(req, res) {
 
         if (req.body.offerType == 'discount') {
-            var query = { 'offer.$.buyCard': req.body.buyCard, "offer.$.offerTime": req.body.offerTime }
+            var matchquery ={type: req.body.type, 'offer.buyCard':req.body.buyCard }
+            var query = { 'offer.$.buyCard': req.body.updatebuyCard, "offer.$.offerTime": req.body.offerTime }
         } else {
-            var query = { 'offer.$.buyCard': req.body.buyCard, 'offer.$.freeCard': req.body.freeCard, "offer.$.offerTime": req.body.offerTime }
+            var matchquery ={type: req.body.type, 'offer.buyCard':req.body.buyCard, 'offer.freeCard':req.body.freeCard }
+            var query = { 'offer.$.buyCard': req.body.updatebuyCard, 'offer.$.freeCard': req.body.updatefreeCard, "offer.$.offerTime": req.body.offerTime }
         }
-        adminCards.findOneAndUpdate({ 'offer._id': req.body.offerId }, { $set: query }, {
-            new: true
+        adminCards.update(matchquery, { $set: query }, {
+            multi: true
         }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
@@ -1318,7 +1320,13 @@ module.exports = {
     },
 
     "removeOfferonCards": function(req, res) {
-        adminCards.findOne({ 'offer._id': req.body.offerId }).exec(function(err, result) {
+        if(req.body.offerType == 'discount'){
+           var query ={type: req.body.type, 'offer.buyCard':req.body.buyCard }
+        }
+        else{
+           var query ={type: req.body.type, 'offer.buyCard':req.body.buyCard, 'offer.freeCard':req.body.freeCard }
+        }
+        adminCards.update(query, { $set: { 'offer.$.status': 'REMOVED' } }, {multi: true}).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,

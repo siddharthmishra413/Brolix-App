@@ -276,6 +276,10 @@ app.service('userService',function($http){
     console.log("data",data)
      return $http.post(baseurl+'/admin/removeOfferonCards', data);
    },
+   getOfferList : function(data){
+    console.log("data",data)
+     return $http.post(baseurl+'/admin/getOfferList ', data);
+   },
 
     /*-------------------------Manage ADS---------------------*/
 

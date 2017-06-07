@@ -114,6 +114,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: 'templates/editAds.html'
     })
 
+    .state('header.editOffers', {
+        url: '/editOffers/:id/:type',
+        controller: 'editOffersCtrl',
+        templateUrl: 'templates/editOffers.html'
+    })
+
     .state('header.manageCards', {
         url: '/manageCards',
         controller: 'manageCardsCtrl',
