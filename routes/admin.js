@@ -23,6 +23,7 @@ app.get('/viewPage/:id', authUser.authUser, adminHandler.viewPage);
 
 /*----------------------Manage Users------------------------*/
 
+
 app.get('/showAllUser', authUser.authUser, adminHandler.showAllUser);
 app.get('/showAllPersonalUser', authUser.authUser, adminHandler.showAllPersonalUser);
 app.get('/showAllBusinessUser', authUser.authUser, adminHandler.showAllBusinessUser);
@@ -31,6 +32,7 @@ app.get('/couponWinners', authUser.authUser, adminHandler.couponWinners);
 app.get('/cashWinners', authUser.authUser, adminHandler.cashWinners);
 app.get('/showAllBlockUser', authUser.authUser, adminHandler.showAllBlockUser);
 app.get('/blockUser/:userId', authUser.authUser, adminHandler.blockUser);
+
 
 /*--------------------------Manage Cards--------------------------*/
 

@@ -3232,30 +3232,7 @@ module.exports = {
         })
     },
 
-    "postCouponToStore": function(req, res) {
-        createNewAds.findOneAndUpdate({ _id: req.params.id }, { $set: { couponSellPrice: req.body.couponSellPrice, couponBuyersLength: req.body.couponBuyersLength, sellCoupon: true } }, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
-                res.send({ responseCode: 200, responseMessage: "Coupon posted to store successfully." })
-            }
-        })
-    },
-
-    "showPageName": function(req, res) {
-        createNewPage.find({ status: 'ACTIVE' }, 'pageName category subCategory').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
-                result.sort(function(a, b) {
-                    //compare two values
-                    if (a.pageName.toLowerCase() < b.pageName.toLowerCase()) return -1;
-                    if (a.pageName.toLowerCase() > b.pageName.toLowerCase()) return 1;
-                    return 0;
-
-                })
-                res.send({ result: result, responseCode: 200, responseMessage: "All page with name shown successfully" })
-            }
-        })
-    },
-
-    "createSystemUser": function(req, res) {
+       "createSystemUser": function(req, res) {
         waterfall([
             function(callback) {
                 if (!req.body.permissions) { res.send({ responseCode: 403, responseMessage: 'Please enter permission to system admin' }); } else if (req.body.permissions.length == 0) { res.send({ responseCode: 403, responseMessage: 'Please give atleast one permission to system admin' }); } else {
@@ -3357,6 +3334,31 @@ module.exports = {
             });
         })
     },
+
+    "postCouponToStore": function(req, res) {
+        createNewAds.findOneAndUpdate({ _id: req.params.id }, { $set: { couponSellPrice: req.body.couponSellPrice, couponBuyersLength: req.body.couponBuyersLength, sellCoupon: true } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
+                res.send({ responseCode: 200, responseMessage: "Coupon posted to store successfully." })
+            }
+        })
+    },
+
+    "showPageName": function(req, res) {
+        createNewPage.find({ status: 'ACTIVE' }, 'pageName category subCategory').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+                result.sort(function(a, b) {
+                    //compare two values
+                    if (a.pageName.toLowerCase() < b.pageName.toLowerCase()) return -1;
+                    if (a.pageName.toLowerCase() > b.pageName.toLowerCase()) return 1;
+                    return 0;
+
+                })
+                res.send({ result: result, responseCode: 200, responseMessage: "All page with name shown successfully" })
+            }
+        })
+    },
+
+ 
 
     "checkPermission": function(req, res) {
         User.findOne({ _id: req.body.userId }).exec(function(err, result) {

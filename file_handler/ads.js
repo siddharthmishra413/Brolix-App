@@ -14,6 +14,7 @@ var multiparty = require('multiparty');
 var Views = require("./model/views");
 var mongoose = require('mongoose');
 var brolixAndDollors = require("./model/brolixAndDollors");
+
 var User = require("./model/user");
 var uploadFile = require("./model/savedFiles")
 var PageFollowers = require("./model/pageFollow");
@@ -24,6 +25,7 @@ var PageFollowers = require("./model/pageFollow");
 //     api_key: '188884977577618',
 //     api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
 // });
+
 cloudinary.config({
     cloud_name: 'dfrspfd4g',
     api_key: '399442144392731',
@@ -33,9 +35,18 @@ var avoid = {
     "password": 0
 }
 
+// var xlsx = require('node-xlsx');
+
+// var obj = xlsx.parse(__dirname + '/uploads/Brolix new pp (1).xlsx'); // parses a file
+
+// var obj = xlsx.parse(fs.readFileSync(__dirname + '/myFile.xlsx')); // parses a buffer
+
+// console.log("buffer", obj)
 module.exports = {
 
+
     "uploadMp3Files": function(req, res) {
+
         console.log(req.files);
         var imageUrl = [];
         var form = new multiparty.Form();
