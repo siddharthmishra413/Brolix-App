@@ -2591,33 +2591,64 @@ module.exports = {
 
      "createPagePayment": function(req, res){
 
-        User.findOne({ _id: "593676c58b80641e81da2f84" }).exec(function(err, user) {
+        User.findOne({ _id: req.body.userId }).exec(function(err, user) {
            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
            else if (!user) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } 
            else {
             console.log("user",user)
                 if(req.body.paymentMode == 'paypal'){
-                   var payment = new Payment();
-                   payment.save(function(err, result){
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                    else if (!result) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } 
-                    else {
-                        adminCards.findOne({
-                           type : "upgrade_card", price : req.body.amount
-                        },function(err, cardRes){
+                    waterfall([
+                        function(callback){
+                            var details = {
+                                paymentMode: req.body.paymentMode,
+                                userId: req.body.userId,
+                                amount: req.body.amount,
+                                transcationId: ,
+                                pageId: req.body.pageId,
+                                Type: "createPage"
+                            }
+                            var payment = new Payment();
+                            payment.save(function(err, paymentResult){
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                            else if (!paymentResult) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                            else {
+                                callback(null, paymentResult)
+                            }
+                            })
+                        },
+                        function(paymentResult, callback){
+                            adminCards.findOne({
+                               type : "upgrade_card", price : req.body.amount
+                            },function(err, cardRes){
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                                else if (!cardRes) { res.send({ responseCode: 200, responseMessage: "No cards available." }); } 
+                                else {
+                                    callback(null, cardRes)
+                                }
+                            })
+                        },
+                        function(cardRes, callback){
                             var card_viewers = cardRes.viewers;
                             var data = {
                                 cash: req.body.amount,
                                 viewers: card_viewers,
                                 type: "SENDBYADMIN"
                             }
-                            User.update({ _id: req.body.userId }, { $push: { upgradeCardObject: data } }, function(err, result1) {
-
-
-
-                        })
-                    }
-                   })
+                            User.update({ _id: req.body.userId }, { $push: { upgradeCardObject: data } }, function(err, userRes) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                                else if (!userRes) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                                else {
+                                    callback(null, userRes)
+                                }
+                            })
+                        }
+                    ],function(err, result){
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                        else if (!result) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                        else {
+                            res.send({ responseCode: 500, responseMessage: "Cards updated successfully." });
+                        }
+                    })
                 }
                 else{
                     waterfall([
@@ -2699,15 +2730,73 @@ module.exports = {
     },
 
     "returnPage": function(req, res){
-         var verfiyPaymentRequest = new Object();
-        verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
-        verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-        verfiyPaymentRequest.payment_reference = "84545";
-        paytabs.VerfiyPayment(verfiyPaymentRequest, function(response){
-            res.json({
-                result:response
-            })
-        });   
+       
+
+        waterfall([
+            function(callback){
+                var verfiyPaymentRequest = new Object();
+                verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
+                verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+                verfiyPaymentRequest.payment_reference = "84545";
+                paytabs.VerfiyPayment(verfiyPaymentRequest, function(response){
+                    console.log("verify response",response)
+                    callback(null, response)
+                    // res.json({
+                    //     result:response
+                    // })
+                }); 
+            },
+            function(response, callback){
+                var details = {
+                    paymentMode: ,
+                    userId: ,
+                    amount: ,
+                    transcationId: ,
+                    pageId: ,
+                    Type: "createPage"
+                }
+                var payment = new Payment(details);
+                payment.save(function(err, paymentResult){
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                else if (!paymentResult) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                else {
+                    callback(null, paymentResult)
+                }
+                })
+            },
+            function(paymentResult, callback){
+                adminCards.findOne({
+                   type : "upgrade_card", price : req.body.amount
+                },function(err, cardRes){
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                    else if (!cardRes) { res.send({ responseCode: 200, responseMessage: "No cards available." }); } 
+                    else {
+                        callback(null, cardRes)
+                    }
+                })
+            },
+            function(cardRes, callback){
+                var card_viewers = cardRes.viewers;
+                var data = {
+                    cash: req.body.amount,
+                    viewers: card_viewers,
+                    type: "SENDBYADMIN"
+                }
+                User.update({ _id: req.body.userId }, { $push: { upgradeCardObject: data } }, function(err, userRes) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                    else if (!userRes) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                    else {
+                        callback(null, userRes)
+                    }
+                })
+            }
+        ],function(err, result){
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+            else if (!result) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+            else {
+                res.send({ responseCode: 500, responseMessage: "Cards updated successfully." });
+            }
+        })  
     }
 
 }
