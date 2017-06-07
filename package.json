@@ -55,6 +55,6 @@
     "yeast": "^0.1.2"
   },
   "devDependencies": {
-    "nodemon": "^1.10.2"
+    "nodemon": "^1.9.2"
   }
 }

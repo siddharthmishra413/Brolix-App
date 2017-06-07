@@ -18,7 +18,8 @@ var mongoose = require('mongoose');
 var moment = require('moment')
 
 var paytabs = require('paytabs')
-
+var NodeCache = require( "node-cache" );
+var myCache = new NodeCache();
 
 module.exports = {
 
@@ -2593,7 +2594,7 @@ module.exports = {
 
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-           else if (!user) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } 
+           else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } 
            else {
             console.log("user",user)
                 if(req.body.paymentMode == 'paypal'){
@@ -2603,14 +2604,13 @@ module.exports = {
                                 paymentMode: req.body.paymentMode,
                                 userId: req.body.userId,
                                 amount: req.body.amount,
-                                transcationId: ,
-                                pageId: req.body.pageId,
-                                Type: "createPage"
+                                transcationId: req.body.transcationId,
+                                Type: req.body.Type
                             }
-                            var payment = new Payment();
+                            var payment = new Payment(details);
                             payment.save(function(err, paymentResult){
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                            else if (!paymentResult) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                            else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
                             else {
                                 callback(null, paymentResult)
                             }
@@ -2621,7 +2621,7 @@ module.exports = {
                                type : "upgrade_card", price : req.body.amount
                             },function(err, cardRes){
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                                else if (!cardRes) { res.send({ responseCode: 200, responseMessage: "No cards available." }); } 
+                                else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } 
                                 else {
                                     callback(null, cardRes)
                                 }
@@ -2634,9 +2634,9 @@ module.exports = {
                                 viewers: card_viewers,
                                 type: "SENDBYADMIN"
                             }
-                            User.update({ _id: req.body.userId }, { $push: { upgradeCardObject: data } }, function(err, userRes) {
+                            User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { upgradeCardObject: data } }, function(err, userRes) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                                else if (!userRes) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                                else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
                                 else {
                                     callback(null, userRes)
                                 }
@@ -2644,13 +2644,13 @@ module.exports = {
                         }
                     ],function(err, result){
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                        else if (!result) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                        else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
                         else {
-                            res.send({ responseCode: 500, responseMessage: "Cards updated successfully." });
+                            res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
                         }
                     })
                 }
-                else{
+                else{            
                     waterfall([
                         function(callback){
                             paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
@@ -2716,11 +2716,19 @@ module.exports = {
                             createPayPage.msg_lang = "English";
                             createPayPage.cms_with_version = "1.0.0";
                             paytabs.CreatePayPage(createPayPage, function(response) {
-                                res.send({
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                                else if (!(response.response_code == "4012")) { 
+                                    res.send({ responseCode: 404, responseMessage: "User details are invalid." }); } 
+                                else {
+                                    var obj = { userId: req.body.userId, paymentMode: req.body.paymentMode,amount: req.body.amount, Type: req.body.Type,p_id: response.p_id };
+                                    myCache.set( "myKey", obj, 10000 );
+
+                                    res.send({
                                     responseCode: 200,
                                     responseMessage: "Payment url.",
                                     result: response
                                 })
+                                }
                             });
                         }
                     ])
@@ -2730,35 +2738,31 @@ module.exports = {
     },
 
     "returnPage": function(req, res){
-       
-
+        var value = myCache.get( "myKey" );
+        console.log("value",value)
         waterfall([
             function(callback){
                 var verfiyPaymentRequest = new Object();
                 verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
                 verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-                verfiyPaymentRequest.payment_reference = "84545";
+                verfiyPaymentRequest.payment_reference = value.p_id;
                 paytabs.VerfiyPayment(verfiyPaymentRequest, function(response){
                     console.log("verify response",response)
                     callback(null, response)
-                    // res.json({
-                    //     result:response
-                    // })
                 }); 
             },
             function(response, callback){
                 var details = {
-                    paymentMode: ,
-                    userId: ,
-                    amount: ,
-                    transcationId: ,
-                    pageId: ,
-                    Type: "createPage"
+                    paymentMode:value.paymentMode,
+                    userId: value.userId,
+                    amount: value.amount,
+                    transcationId: response.transaction_id,
+                    Type: value.Type
                 }
                 var payment = new Payment(details);
                 payment.save(function(err, paymentResult){
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                else if (!paymentResult) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
                 else {
                     callback(null, paymentResult)
                 }
@@ -2766,11 +2770,12 @@ module.exports = {
             },
             function(paymentResult, callback){
                 adminCards.findOne({
-                   type : "upgrade_card", price : req.body.amount
+                   type : "upgrade_card", price : value.amount
                 },function(err, cardRes){
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                    else if (!cardRes) { res.send({ responseCode: 200, responseMessage: "No cards available." }); } 
+                    else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } 
                     else {
+                        console.log("card res0",cardRes)
                         callback(null, cardRes)
                     }
                 })
@@ -2778,23 +2783,25 @@ module.exports = {
             function(cardRes, callback){
                 var card_viewers = cardRes.viewers;
                 var data = {
-                    cash: req.body.amount,
+                    cash: value.amount,
                     viewers: card_viewers,
                     type: "SENDBYADMIN"
                 }
-                User.update({ _id: req.body.userId }, { $push: { upgradeCardObject: data } }, function(err, userRes) {
+                console.log(data)
+                User.findByIdAndUpdate({ _id: value.userId }, { $push: { upgradeCardObject: data } }, function(err, userRes) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                    else if (!userRes) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+                    else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
                     else {
+                        console.log("userRes========>",userRes)
                         callback(null, userRes)
                     }
                 })
             }
         ],function(err, result){
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-            else if (!result) { res.send({ responseCode: 200, responseMessage: "Something went wrong." }); } 
+            else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
             else {
-                res.send({ responseCode: 500, responseMessage: "Cards updated successfully." });
+                res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
             }
         })  
     }
