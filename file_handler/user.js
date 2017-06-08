@@ -20,6 +20,7 @@ var followerList = require("./model/followersList");
 var paypalPayment = require("./model/payment");
 var Brolixanddollors = require("./model/brolixAndDollors");
 var mongoose = require('mongoose');
+var Twocheckout = require('2checkout-node');
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -73,6 +74,7 @@ var data1 = querystring.stringify({
     salt: 'eCwWELxi',
     hash: sha512(string)
 })
+var MassPay = require('node-paypal-masspayments')
 
 var paytabs = require('paytabs');
 
@@ -90,8 +92,236 @@ var optionsNew = {
     }
 };
 
+var Paypal = require('paypal-adaptive');
+
+var paypalSdk = new Paypal({
+    userId:    'prashant.dwivedi-facilitator_api1.mobiloitte.com',
+    password:  '965ZNT59L9JKEZ5N',
+    signature: 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAv24ACqokwcC-LOvDidqgZgRZ8rS',
+    sandbox:   true //defaults to false
+});
+
 module.exports = {
 
+"success": function(req, res){
+  var params = {
+    payKey: 'AP-1WT665016G226315H'
+  };
+var payKey = 'AP-1WT665016G226315H'
+// Or the transactionId
+// var params = {
+//     transactionId: 'AP-1234567890'
+// };
+// // Or the trackingId
+// var params = {
+//     trackingId: 'AP-1234567890'
+// };
+
+// paypalSdk.paymentDetails(params, function (err, response) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         // payments details for this payKey, transactionId or trackingId
+//         console.log("success==>>"+JSON.stringify(response));
+//     }
+// });
+
+
+  var paymentId = req.session.paymentId;
+  var payerId = 'AP-1WT665016G226315H'
+
+  var details = { "payer_id": payerId };
+  paypal.payment.execute(paymentId, details, function (error, payment) {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send("Hell yeah!");
+    }
+  });
+
+// paypalSdk.getPaymentOptions(payKey, function (err, response) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         // payments options for this payKey
+//         console.log(response);
+//     }
+// });
+
+},
+
+ "paynow": function(req, res){
+  console.log("sakshi")
+
+//   var requestData = {
+//       requestEnvelope: {
+//           errorLanguage:  'en_US',
+//           detailLevel:    'ReturnAll'
+//       },
+//       payKey: 'AP-8TF499834C5223057'
+//   };
+   
+//   paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function (err, response) {
+//     if (err) {
+//         // You can see the error 
+//         console.log(err);
+//         //And the original Paypal API response too 
+//         console.log(response);
+//     } else {
+//         // Successful response :
+//         console.log(response);
+//         console.log(JSON.stringify(response.paymentInfoList.paymentInfo));
+//     }
+// });
+  
+  var trackingId;
+
+
+  var payload = {
+    requestEnvelope: {
+        errorLanguage:  'en_US'
+    },
+    actionType:     'PAY',
+    currencyCode:   'USD',
+    feesPayer:      'EACHRECEIVER',
+    memo:           'Chained payment example',
+    cancelUrl:      'http://test.com/cancel',
+    returnUrl:      'http://localhost:1406/users/successs',
+
+    transactions: {
+       
+      },
+ 
+    receiverList: {
+        receiver: [
+            {
+                email:  'primary@test.com',
+                amount: '50.00',
+                primary:'true',
+                trackingId:"123456789"
+            },
+            {
+                email:  'secondary@test.com',
+                amount: '10.00',
+                primary:'false',
+                trackingId:"123456789"
+            }
+        ]
+    }
+  };
+// paypalSdk.pay(payload, function (err, response) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         // Response will have the original Paypal API response 
+//         console.log(response);
+//         // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily 
+//         console.log('Redirect to %s', response.paymentApprovalUrl);
+//     }
+// });
+
+// paypalSdk.payment.create(payload, config_opts, function (err, res) {
+//     if (err) {
+//         throw err;
+//     }
+
+//     if (res) {
+//         console.log("Create Payment Response");
+//         console.log(res);
+//     }
+// });
+  paypalSdk.pay(payload, function (err, response) {
+      if (err) {
+          console.log(err);
+      } else {
+          // Response will have the original Paypal API response
+          console.log(response);
+          // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily
+          console.log('Redirect to %s', response.paymentApprovalUrl);
+          //res.redirect(redirectUrl);
+        if(response.payKey) {
+         // req.paymentId = payment.id;
+          var redirectUrl;
+          console.log("payment",response.payKey);
+         // for(var i=0; i < payment.links.length; i++) {
+            var link = response.paymentApprovalUrl;
+            console.log(link)
+           // if (link.method === 'REDIRECT') {
+              redirectUrl = link;
+           // }
+            console.log(redirectUrl)
+
+              var requestData = {
+                requestEnvelope: {
+                    errorLanguage:  'en_US',
+                    detailLevel:    'ReturnAll'
+                },
+                payKey: response.payKey
+                };
+                 
+                paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function (err, response) {
+                  if (err) {
+                      // You can see the error 
+                      console.log(err);
+                      //And the original Paypal API response too 
+                      console.log(response);
+                  } else {
+                      // Successful response :
+                      console.log(response);
+                     // console.log(response.paymentInfoList.);
+                      console.log(JSON.stringify(response.paymentInfoList.paymentInfo));
+                  }
+              });
+            res.redirect(redirectUrl);
+        }
+      }
+    });
+    },
+
+    "massPay": function(req, res){
+ 
+            var mp = new MassPay({
+                pwd: "QN3GR5N6JAV6A22H",
+                user: "robinsuraj-facilitator_api1.gmail.com",
+                signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AUdr.q6iklhOMRLo-CjEkoGuwBUD",
+                emailsubject: "robinsuraj@gmail.com"
+            });
+
+            // var mp = new MassPay({
+            //     pwd: "X3NRSJQBL7FD5ZF9",
+            //     user: "sakshigadia1994-1_api1.gmail.com",
+            //     signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AhdXmittmmHtZ5I4YwBzIxOQHk3x",
+            //     emailsubject: "rinku.kumar@mobiloitte.in"
+            // });
+           
+            var paymentRequests = [
+              {
+                email: 'robinsuraj@gmail.com',
+                amount: '1'
+                , uniqueId: '12345'
+                , note: 'request for matt@gc'
+              },
+             {
+                email: 'rinku.kumar@mobiloitte.in'
+                , amount: '1'
+                , uniqueId: '123456'
+                , note: 'request for tim@gc'
+              }
+            ];
+
+            var batch = new MassPay.PaymentBatch(paymentRequests);
+
+            mp.pay(batch, function(err, results) {
+              if(err) {
+                console.log("error",err)
+                res.send({
+                    err: err
+                })
+              }
+              console.log("results=>", results)
+              //assert.equal(results.ACK, 'Success')
+            });
+    },
 
     "validatorPaytabs": function(req, res) {
 
@@ -113,7 +343,7 @@ module.exports = {
         createPayPage.other_charges = 0;
         createPayPage.amount = 150;
         createPayPage.discount = 0;
-        createPayPage.currency = "SAR";
+        createPayPage.currency = "AED";
         createPayPage.reference_no = "21873109128";
         createPayPage.ip_customer = "192.168.1.1";
         createPayPage.ip_merchant = "192.168.1.1";
@@ -121,7 +351,7 @@ module.exports = {
         createPayPage.state = "Riydh";
         createPayPage.city = "Riydh";
         createPayPage.postal_code = "12345";
-        createPayPage.country = "SAU";
+        createPayPage.country = "ARE";
         createPayPage.shipping_first_name = "Clinicarea";
         createPayPage.shipping_last_name = "app";
         createPayPage.address_shipping = "Flat abc road 123";
@@ -149,59 +379,95 @@ module.exports = {
 
 
     "createToken": function(req, res) {
-        var args = {
+        var tco = new Twocheckout({
             sellerId: "901347468",
-            publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
+            publishableKey: "0669EFD3-B132-4568-B2DB-494235857D4E",
             ccNo: 4000000000000002,
             cvv: 123,
             expMonth: 01,
             expYear: 2024
-        };
+        });
 
-        Twocheckout.loadPubKey('production', function() {
-            Twocheckout.requestToken(successCallback, errorCallback, args);
-        })
+        Twocheckout.loadPubKey('sandbox');
+        // Twocheckout.loadPubKey('production', function() {
+        //     Twocheckout.requestToken(successCallback, errorCallback, args);
+        // })
     },
 
     "Twocheckout": function(req, res) {
-
         var tco = new Twocheckout({
-            sellerId: "901347468",
-            privateKey: "720B461B-ECC0-495D-B279-7CCC0057EED8",
-            // publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
-            sandbox: true //#Uncomment to use Sandbox
+            sellerId: "901349538",
+            privateKey: "EDEF9BC9-718C-4391-A3F9-8FC34FA527FD",
+            sandbox: true  // #Uncomment to use Sandbox
         });
 
         var params = {
             "merchantOrderId": "123",
-            "token": "ZjhlYjkwZDMtZjVhZC00OGQ4LTkyY2YtMzc0YTc3MzgwMmVj",
+            "token": "MDExOTE4MzktZjY1ZS00MGIwLTkyNmEtZDc3YThjNjY4ZTdh",
             "currency": "USD",
             "total": "10.00",
             "billingAddr": {
-                "name": "Joe Flagster",
-                "addrLine1": "123 Main Street",
-                "city": "Townsville",
+                "name": "Testing Tester",
+                "addrLine1": "123 Test St",
+                "city": "Columbus",
                 "state": "Ohio",
-                "zipCode": "43206",
+                "zipCode": "43123",
                 "country": "USA",
                 "email": "example@2co.com",
-                "phoneNumber": "8853735932"
+                "phoneNumber": "5555555555"
             }
         };
 
-        tco.checkout.authorize(params, function(error, data) {
-            console.log("Fg")
+        tco.checkout.authorize(params, function (error, data) {
             if (error) {
-                console.log("error")
                 console.log(error);
             } else {
-                res.send({
-
-                })
-                console.log("success")
                 console.log(JSON.stringify(data));
             }
         });
+
+
+
+        // var tco = new Twocheckout({
+        //     sellerId: "901342356",
+        //     privateKey: "0BB89296-9BF8-4F70-9FD6-370D8FB016BC",
+        //     //publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
+        //     sandbox: true //#Uncomment to use Sandbox
+        // });
+    
+
+        // var params = {
+        //     "merchantOrderId": "1237",
+        //     "token": "MzljYmU2MDItOTQ5MC00MmYyLWExMjEtZWQ0MzY5MzkwNmU2",
+        //     "currency": "USD",
+        //     "total": "10.00",
+        //     "billingAddr": {
+        //         "name": "Joe Flagster",
+        //         "addrLine1": "123 Main Street",
+        //         "city": "Townsville",
+        //         "state": "Ohio",
+        //         "zipCode": "43206",
+        //         "country": "USA",
+        //         "email": "example@2co.com",
+        //         "phoneNumber": "8853735932"
+        //     }
+        // };
+
+        // tco.checkout.authorize(params, function(error, data) {
+        //     console.log("Fg")
+        //     if (error) {
+        //         console.log("error")
+        //         console.log(error);
+        //     } else {
+        //                         console.log(JSON.stringify(data));
+
+        //         res.send({
+
+        //         })
+        //         console.log("success")
+        //         console.log(JSON.stringify(data));
+        //     }
+        // });
 
     },
 
@@ -2574,14 +2840,6 @@ module.exports = {
 
 
 }
-
-
-
-
-
-
-
-
 
 
 
