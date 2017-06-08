@@ -35,6 +35,33 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                 //console.log("$scope.offerData BuyAndGet",$scope.offerData)
             }
             console.log("$scope.offerData BuyAndGet",$scope.offerData)
+        }
+    }
+
+    $scope.removeOffers = function(id,key){
+        console.log("sssss",id)
+        if (id == '' || id == undefined || id == null) {
+            toastr.error("Please select user.")
+            $state.go('header.manageCards')
+        }else{
+            var cardOfferType = JSON.parse(id);
+            var cardType = localStorage.getItem('cardType')
+            $scope.offerData = {};
+                if(key == 'Discount'){
+                    $scope.offerData = {
+                    type:cardType,
+                    buyCard:cardOfferType.buyCard,
+                }
+                //console.log("$scope.offerData Discount",$scope.offerData)
+            }else if(key == 'BuyAndGet'){
+                $scope.offerData = {
+                    type:cardType,
+                    buyCard:cardOfferType.buyCard,
+                    freeCard:cardOfferType.freeCard,
+                }
+                //console.log("$scope.offerData BuyAndGet",$scope.offerData)
+            }
+            console.log("$scope.offerData BuyAndGet",$scope.offerData)
 
             $("#upgradeOfferOnCardd").modal('hide');
             BootstrapDialog.show({
@@ -292,7 +319,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
         }
         userService.getOfferList(cardDetailsOnOffer).success(function(res) {
             if (res.responseCode == 200) {
-                console.log("aaaaaaaaaa", JSON.stringify(res))
+                console.log("lllllllllll", JSON.stringify(res))
                 $scope.upgradecardOnOffers = res.result;
                 $("#upgradeOfferOnCardd").modal('show');
             } else {
@@ -325,8 +352,8 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
 
 
     $scope.cardOnOfferLuckDis = function(id, type) {
-        //console.log("id",id);
-        //console.log("type",type);
+        console.log("id",id);
+        console.log("type",type);
         cardDetailsOnOffer = {
             cardType: "luck_card",
             offerType: type,
@@ -334,18 +361,22 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
         }
         userService.getOfferList(cardDetailsOnOffer).success(function(res) {
             if (res.responseCode == 200) {
-                //console.log("res",JSON.stringify(res))
+                console.log("res",JSON.stringify(res))
                 $scope.luckCardOnOffers = res.result;
-                $("#luckOfferOnCard").modal('show');
+                 $("#luckOfferOnCardd").modal('show');
+
+                // $("#luckOfferOnCardd").modal('show');
             } else {
-                //console.log("res",JSON.stringify(res))
+                toastr.error(res.responseMessage);
             }
         })
         //console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
     }
 
     $scope.cardOnOfferLuckBuy = function(buyCard, freeCard, type) {
-        // console.log("id",id);
+        console.log("buyCard",buyCard);
+        console.log("freeCard",freeCard);
+        console.log("type",type);
         //console.log("cardDetailsOnOffer",cardDetailsOnOffer);
         cardDetailsOnOffer = {
             cardType: "luck_card",
@@ -358,11 +389,11 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
 
         userService.getOfferList(cardDetailsOnOffer).success(function(res) {
             if (res.responseCode == 200) {
-                //console.log("res",JSON.stringify(res))
+                console.log("res",JSON.stringify(res))
                 $scope.luckCardOnOffers = res.result;
-                $("#luckOfferOnCard").modal('show');
+                $("#luckOfferOnCardd").modal('show');
             } else {
-                //console.log("res",JSON.stringify(res))
+                toastr.error(res.responseMessage);
             }
         })
 

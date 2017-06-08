@@ -1259,7 +1259,6 @@ module.exports = {
         })
     },
 
-
     "getOfferList": function(req, res) {
         var cardType = req.body.cardType;
         if (req.body.offerType == 'discount') {
@@ -1268,10 +1267,12 @@ module.exports = {
 
             var typDate = { type: cardType, "offer.offerType": req.body.offerType, "offer.buyCard": req.body.buyCard, "offer.freeCard": req.body.freeCard, "offer.status":'ACTIVE' }
         }
+        console.log("typDate",typDate)
         adminCards.aggregate([
             { $unwind: '$offer' },
             { $match: typDate }
         ]).exec(function(err, result) {
+            console.log(result)
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: 'Data not found.' });
             } else {
@@ -4274,6 +4275,52 @@ module.exports = {
                 })
             }
         })
+    },
+
+    "removePageRequest": function(req, res){
+        createNewPage.find({'adminRequest': 'REQUESTED'},function(err, result){
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'Data not found.' }); }
+            else {
+                 res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Remove pages request."
+                })
+            }
+        })
+    },
+
+    "approvalStatus": function(req, res){
+        if(req.body.status == 'ACCEPTED'){
+            //createNewPage.find({'adminRequest': 'REQUESTED'},function(err, result){
+            createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: {adminRequest: 'REMOVED', 'status': 'REMOVED'}}).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'Data not found.' }); }
+                else {
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "Page removed successfully."
+                    })
+                }
+            })
+
+        }
+        else{
+            console.log("else")
+            createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: {adminRequest: 'REMOVED', 'status': 'ACTIVE'}}).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'Data not found.' }); }
+                else {
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "Page removed successfully."
+                    })
+                }
+            })
+
+        }
+
+
     }
 
 

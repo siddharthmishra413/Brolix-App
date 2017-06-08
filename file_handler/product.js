@@ -13,15 +13,50 @@ module.exports = {
     },
 
     "productList": function(req, res) {
-        pageProductList.paginate({ pageId: req.params.id, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 11 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Product List."
+        var pageNumber = Number(req.params.pageNumber)
+        var limitData = pageNumber * 8;
+        var skips = limitData - 8;
+        var page = String(pageNumber);
+
+        pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }).exec(function(err, result) {
+            console.log("1")
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+            else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Data not found." }); } else {
+                var count = 0;
+                for (i = 0; i < result.length; i++) {
+                    count++;
+                }
+                var pages = Math.ceil(count / 8);
+                pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                    console.log("2")
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+                    else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "Data not found." }); } 
+                    else {
+                      res.send({
+                            docs: result1,
+                            total: count,
+                            limit: limitData,
+                            page: page,
+                            pages: pages,
+                            responseCode: 200,
+                            responseMessage: "Product List."
+                        })
+                    }
                 })
             }
         })
+
+
+
+        // pageProductList.paginate({ pageId: req.params.id, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 11 }, function(err, result) {
+        //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+        //         res.send({
+        //             result: result,
+        //             responseCode: 200,
+        //             responseMessage: "Product List."
+        //         })
+        //     }
+        // })
     },
 
     "productDetail": function(req, res) {
@@ -147,23 +182,67 @@ module.exports = {
     },
 
     "removeProduct": function(req, res) {
-        pageProductList.findOneAndUpdate({ _id: req.params.id }, { $set: { 'status': 'REMOVED' } }, function(err, result) {
+        pageProductList.update({ _id: req.params.id , 'media._id': req.params.mediaId}, { $pull: { "media" : { _id: req.params.mediaId } } }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No product found." }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "Product removed successfully."
+                pageProductList.findOne({_id: req.params.id},function(err, result1){
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No product found." }); } else {
+                        if(result1.media.length == 0){
+                            console.log("meadia lenght==0")
+
+                            pageProductList.findOneAndUpdate({ _id: req.params.id }, { $set: { 'status': 'REMOVED' } }, function(err, result2) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No product found." }); } else {
+                                    res.send({
+                                        result: result,
+                                        responseCode: 200,
+                                        responseMessage: "Product removed successfully."
+                                    })
+                                }
+                            })
+                             
+                        }
+                        else{
+                            console.log("meadia lenght>0")
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "Product removed successfully."
+                            })
+
+                        }
+
+                    }
                 })
+               
+
+            
             }
         })
+
+        // pageProductList.findOneAndUpdate({ _id: req.params.id }, { $set: { 'status': 'REMOVED' } }, function(err, result) {
+        //     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No product found." }); } else {
+        //         res.send({
+        //             result: result,
+        //             responseCode: 200,
+        //             responseMessage: "Product removed successfully."
+        //         })
+        //     }
+        // })
     },
 
     "editProduct": function(req, res) {
-        pageProductList.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
+        console.log("req. body", JSON.stringify(req.body))
+        pageProductList.findOneAndUpdate({ _id: req.params.id , 'media._id': req.params.mediaId}, { $set: { 'media.$.description': req.body.description } }, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct product id' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: "Product updated successfully." })
             }
         })
+
+
+        // pageProductList.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
+        //     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct product id' }); } else {
+        //         res.send({ result: result, responseCode: 200, responseMessage: "Product updated successfully." })
+        //     }
+        // })
     }
 
 }

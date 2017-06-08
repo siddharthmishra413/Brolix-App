@@ -74,7 +74,7 @@
                                     <div>Users will discover your page & advertisements then the intrested users will watch the Ads, Jion the raffle and win.</div>
                                 </div>
                                 <div class="btn2 text-center col-sm-12">
-                                    <a class="btn btn-lg btn-green"  ng-click="click('Back2')">Back</a>
+                                    <button class="btn btn-lg btn-green"  ng-click="click('Back2')">Back</button>
                                 </div>
                             </div>
                         </div>               
@@ -113,7 +113,7 @@
                                     </label>
                                 </div>
                                 <div class="btn2 text-center col-sm-12">
-                                    <a class="btn btn-lg btn-green"  ng-click="click('Back3')" >Back</a>
+                                    <button class="btn btn-lg btn-green"  ng-click="click('Back3')" >Back</button>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                                         </div>
                                         <div class="col-sm-12">
                                             <div class="text-center cus-new-btn">
-                                                <a class="btn btn-lg btn-green" ng-click="click('promoteApp')">Promote App, Game</a>
+                                                <button class="btn btn-lg btn-green" ng-click="click('promoteApp')">Promote App, Game</button>
                                             </div>
                                         </div>
                                     </div>
@@ -362,7 +362,7 @@
                                         <div><label>From</label></div>
                                          <div><input type="text" ng-model="createAds.ageFrom" class="form-control"></div>
                                          <div><label>To</label></div>
-                                         <div><input type="text" ng-model="createAds.ageTo" class="form-control"></div>
+                                         <div><input type="number" min="{{createAds.ageFrom}}" ng-model="createAds.ageTo" class="form-control"></div>
                                     </div>
                                 </div>
                             </div>
@@ -464,8 +464,8 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 btn2 text-center">
-                                <a  class="btn btn-lg btn-green" ng-click="click('Back5')">Back</a>
-                                <a class="btn btn-lg btn-green" ng-click="click('Step6')">Next</a>
+                                <button  class="btn btn-lg btn-green" ng-click="click('Back5')">Back</button>
+                                <button class="btn btn-lg btn-green" ng-click="click('Step6')">Next</button>
                             </div>
                         </div>
                     </div>
@@ -499,8 +499,8 @@
                                 </ul>
                             </div>
                             <div class="btn2 text-center">
-                                <a  class="btn btn-lg btn-green" ng-click="submit(createAds)" >Agree & Publish</a>
-                                <a  class="btn btn-lg btn-green" ng-click="click('Back6')">Back</a>
+                                <button  class="btn btn-lg btn-green" ng-click="submit(createAds)" >Agree & Publish</button>
+                                <button  class="btn btn-lg btn-green" ng-click="click('Back6')">Back</button>
                             </div>
                         </div>
                     </div>
@@ -683,11 +683,11 @@
                                                 </label>
                                             </div>
                                         </div>
-                                <a  class="btn btn-lg btn-green" ng-model="createAds.promoteApp" value="true" ng-click="click('promoteApp')">Promote App, Game</a>
+                                <button  class="btn btn-lg btn-green" ng-model="createAds.promoteApp" value="true" ng-click="click('promoteApp')">Promote App, Game</button>
                             </div>
                             <div class="btn2 text-center">
                                 <button class="btn btn-lg btn-green" ng-disabled="slideshowPhoto.length < 1 " ng-click="click('Step5')">Next</button>
-                                 <a class="btn btn-lg btn-green"  ng-click="click('Back4')" >Back</a>
+                                 <button class="btn btn-lg btn-green"  ng-click="click('Back4')" >Back</button>
                             </div>
                         </div>
                     </div>
@@ -845,7 +845,7 @@
                                           <!-- <input type="text" ng-model="createAds.promoteDescr" placeholder="Description...">  -->
                                         <div class="btn2 text-center">
                                             <button  ng-disabled="count == true && createAds.appIcon == null" class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">{{createAds.appIcon == null?true:false}}Next</button>
-                                            <a  class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">Back</a>
+                                            <button  class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">Back</button>
                                         </div>
                                     </fieldset>
                                 </form>
@@ -878,7 +878,7 @@
               </p>
           </div>
           <div class="btn2 text-center">
-              <a href="index.html" class="btn btn-lg btn-green">Back</a>
+              <button href="index.html" class="btn btn-lg btn-green">Back</button>
           </div>
       </div>
     </div>
@@ -960,12 +960,12 @@
                 </div>
               </div>
               <div class="text-center">
-                  <a  ng-click="addcode(createAds.hiddenCode)" class="btn btn-lg btn-green">Add</a>
+                  <button  ng-click="addcode(createAds.hiddenCode)" class="btn btn-lg btn-green">Add</button>
               </div>
           </div>
           <div class="text-center">
-              <a ng-click="openTerms('close')" class="btn btn-lg btn-green">Back</a>
-              <a ng-click="openTerms('close')" class="btn btn-lg btn-green">Next</a>
+              <button ng-click="openTerms('close')" class="btn btn-lg btn-green">Back</button>
+              <button ng-click="openTerms('close')" ng-disabled="addCode.length < createAds.numberOfWinners || addCode.length ==0" class="btn btn-lg btn-green">Next</button>
           </div>
       </div>
     </div>

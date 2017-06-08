@@ -1,4 +1,4 @@
-app.controller('createOfferCtrl', function($scope, $state, $window, userService, $state, toastr, $stateParams, $http ){
+app.controller('editOffersCtrl', function($scope, $state, $window, userService, $state, toastr, $stateParams, $http ){
     $(window).scrollTop(0, 0);
     $scope.$emit('headerStatus', 'Manage Cards');
     $scope.$emit('SideMenu', 'Manage Cards');
@@ -6,100 +6,94 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     $scope.first = true;
     $scope.second = false;
     $scope.third = false;
-    
-
-
+    var offerTime;
+    var offerCreateTime;
 
     $scope.type = $stateParams.type;
     $scope.idDetails = $stateParams.id;
-    console.log("type===",$scope.type,$scope.idDetails)
+
+        if ($scope.type == '' || $scope.type == undefined || $scope.type == null) {
+            toastr.error("Please select user.")
+            $state.go('header.manageCards')
+        }else{
+          console.log("1")
+            var cardOfferType = JSON.parse($scope.idDetails);
+            $scope.cardType = localStorage.getItem('cardType')
+            $scope.offerData = {};
+                if($scope.type == 'discount'){
+                    $scope.offerData = {
+                    cardType:$scope.cardType,
+                    buyCard:cardOfferType.buyCard,
+                    offerType:$scope.type,
+                }
+            }else if($scope.type == 'buyGet'){
+              console.log("2")
+                $scope.offerData = {
+                    cardType:$scope.cardType,
+                    buyCard:cardOfferType.buyCard,
+                    freeCard:cardOfferType.freeCard,
+                    offerType:$scope.type,
+                }
+            }
+            userService.getOfferList($scope.offerData).success(function(res) {
+                if (res.responseCode == 200) {
+                  $scope.myForm = res.result[0];
+                  $scope.previousBuyCard = res.result[0].offer.buyCard;
+                  $scope.previousFreeCard = res.result[0].offer.freeCard;
+                  offerTime = new Date(res.result[0].offer.offerTime).getTime();
+                  console.log("offerTime",offerTime)
+
+                  offerCreateTime = new Date(res.result[0].offer.createdAt).getTime();
+                  console.log("offerCreateTime",offerCreateTime)
+                  var hoursMiliSecond = offerTime - offerCreateTime;
+                  $scope.myForm.offerTimes = parseInt(hoursMiliSecond*2.77778e-7)
+                } else if (res.responseCode == 404) {
+                    toastr.error(res.responseMessage);
+                }
+            })
+        }
+
+        $scope.updateoffer = function(){
+            var date = new Date().getTime();
+            date = date + $scope.myForm.offerTimes*60*60*1000;
+
+            if($scope.type == 'discount'){
+                $scope.offerDataUpdated = {
+                buyCard:$scope.previousBuyCard,
+                offerType:$scope.myForm.offer.offerType,
+                offerTime:date,
+                type:$scope.myForm.type,
+                updatebuyCard:$scope.myForm.offer.buyCard,
+            }
+                console.log("$scope.offerData Discount",$scope.offerDataUpdated)
+            }else if($scope.type == 'buyGet'){
+                $scope.offerDataUpdated = {
+                buyCard:$scope.previousBuyCard,
+                offerType:$scope.myForm.offer.offerType,
+                offerTime:date,
+                type:$scope.myForm.type,
+                updatebuyCard:$scope.myForm.offer.buyCard,
+                updatefreeCard:$scope.myForm.offer.freeCard,
+                freeCard:$scope.previousFreeCard,
+                }
+            }
+            console.log("$scope.offerData Discount",$scope.offerDataUpdated)
+            userService.editOfferonCards($scope.offerDataUpdated).success(function(res) {
+                if (res.responseCode == 200) {
+                  toastr.success(res.responseMessage);
+                  $state.go('header.manageCards')
+                } else if (res.responseCode == 404) {
+                    toastr.error(res.responseMessage);
+                }
+            })
+            console.log("$scope.offerData Discount",$scope.offerDataUpdated)
+        }
 
     $scope.cancle = function(){
         $state.go('header.manageCards');
     }
 
-    $scope.checkVal = function(){
-        if($scope.myForm.cardType == null){
-            toastr.error("Please select Card Type");
-        }else{
-            toastr.success("You Chose "+$scope.myForm.cardType);
-        }
-    }
-
-
-    $scope.createOffer = function(type){
-        //console.log("ddddddddd",$scope.myForm.cardType)
-        if(type=='upgradeCard'){
-            $scope.first = false;
-            $scope.second = true;
-            $scope.third = false;
-            userService.viewcard('upgrade_card').success(function(res){
-                //console.log("darartara",$scope.myForm);
-                $scope.UpgradeCard = res.data;
-                //console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
-            })  
-        }else if(type=='luckCard'){
-            $scope.first = false;
-            $scope.second = false;
-            $scope.third = true;
-            userService.viewcard('luck_card').success(function(res){
-                //console.log("darartara",$scope.myForm);
-                $scope.UpgradeCard = res.data;
-                //console.log("$scope.UpgradeCard$scope.UpgradeCard",$scope.UpgradeCard)
-            })
-        }
-        else{
-            toastr.error("Something Wents to wrong")
-        }   
-    }
-
-    $scope.createOfferNext = function(id){
-        $scope.myForm.id = id;
-        var date = new Date().getTime();
-        date = date + $scope.myForm.offerTime*60*60*1000;
-        // var utcDate = new Date(date).toUTCString();
-        $scope.myForm.offerTime = date;
-        console.log("$scope.myForm",$scope.myForm);
-        BootstrapDialog.show({
-        title: 'Apply Offer',
-        message: 'Are you sure want to Apply this Offer',
-        buttons: [{
-            label: 'Yes',
-            action: function(dialog) {
-                userService.createOffer($scope.myForm).success(function(res){
-                  //console.log("dataaaaaaaaaa",res.data)
-                  if (res.responseCode == 200){
-                      dialog.close();
-                      $state.go('header.manageCards')
-                      toastr.success(res.responseMessage);
-                  } else if(res.responseCode == 400) {
-                      toastr.error(res.responseMessage);
-                      $state.go('login')
-                  }
-                  else {
-                      toastr.error(res.responseMessage);
-                  }
-
-              })    
-            }
-        }, {
-            label: 'No',
-            action: function(dialog) {
-                dialog.close();
-            }
-        }]
-      });   
-    }
-
-    $scope.showCardDetails = function(id){
-      // $scope.user.photo = '';
-      //console.log("iddddddddd",id)
-      userService.showCardDetails(id).success(function(res){
-        $scope.cardDetails = res.data;
-        //console.log("$scope.cardDetails",$scope.cardDetails)
-      })
-
-    }
+   
 })
 
 

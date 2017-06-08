@@ -4,6 +4,9 @@ var adminHandler = require('../file_handler/admin.js');
 var authUser = require('../middlewares/authUser');
 
 app.post('/removeOfferonCards', adminHandler.removeOfferonCards);
+app.get('/removePageRequest', adminHandler.removePageRequest);
+app.post('/approvalStatus', adminHandler.approvalStatus);
+
 
 app.post('/editOfferonCards', adminHandler.editOfferonCards);
 app.get('/countryListData', authUser.authUser, adminHandler.countryListData);

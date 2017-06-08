@@ -84,7 +84,12 @@ var createNewAdsSchema = new Schema({
     },
     adContentType: { type: String },
     musicFileName: { type: String },
+    musicFileUrl: { type: String },
+
     couponSellPrice: {
+        type: Number
+    },
+    winnerPrice:{
         type: Number
     },
     couponBuyersLength: {
@@ -113,6 +118,7 @@ var createNewAdsSchema = new Schema({
         trim: true
     },
     raffleCount: [],
+    NontargetedCount: [],
     like: [],
     winners: [],
     viewerLenght: { type: Number },
@@ -212,6 +218,7 @@ var createNewAdsSchema = new Schema({
         type: Number,
         default: 0
     },
+    removedUser:[],
     status: {
         type: String,
         default: 'ACTIVE',

@@ -138,6 +138,11 @@ var createNewPageSchema = new mongoose.Schema({
         type: String,
         default: 'ACTIVE',
         trim: true
+    },
+    adminRequest: {
+        type: String,
+        default: 'ACTIVE',
+        trim: true
     }
 });
 createNewPageSchema.plugin(mongoosePaginate);

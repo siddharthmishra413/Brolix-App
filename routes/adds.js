@@ -4,13 +4,17 @@ var adsHandler = require('../file_handler/ads.js');
 var authUser = require('../middlewares/authUser');
 
 
+app.post('/removeAds', adsHandler.removeAds);
+
+app.post('/continueAd', adsHandler.continueAd);
+
 app.get('/getMp3Files', adsHandler.getMp3Files);
 app.post('/uploadMp3Files', adsHandler.uploadMp3Files);
 
 app.post('/createAds', adsHandler.createAds);
 app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
-app.get('/showAllAdsCouponType/:id/:pageNumber', authUser.authUser, adsHandler.showAllAdsCouponType);
-app.get('/showAllAdsCashType/:id/:pageNumber', authUser.authUser, adsHandler.showAllAdsCashType);
+app.get('/showAllAdsCouponType/:id/:pageNumber', adsHandler.showAllAdsCouponType);
+app.get('/showAllAdsCashType/:id/:pageNumber', adsHandler.showAllAdsCashType);
 app.post('/couponsSearch', authUser.authUser, adsHandler.couponsSearch); //Not in docs
 app.post('/searchForCoupons/:pageNumber', authUser.authUser, adsHandler.searchForCoupons);
 app.post('/likeAndUnlike', authUser.authUser, adsHandler.likeAndUnlike);
