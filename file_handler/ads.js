@@ -483,74 +483,86 @@ module.exports = {
         })
     },
 
-    "viewAd": function(req, res) { //req.body.userId, adId
+    "targetedOrNottargeted": function(req, res) {
         var userId = req.body.userId;
-        waterfall([
-            function(callback) {
-                createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
-                        User.findOne({ _id: userId }).exec(function(err, result1) {
-                            if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
-                                var age = result1.dob;
+        var adId = req.body.adId;
+        createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
+                User.findOne({ _id: userId }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                        var age = result1.dob;
 
-                                function _calculateAge(birthday) { // birthday is a date
-                                    var ageDifMs = Date.now() - birthday.getTime();
-                                    var ageDate = new Date(ageDifMs); // miliseconds from epoch
-                                    return Math.abs(ageDate.getUTCFullYear() - 1970);
-                                }
-                                var myAge = _calculateAge(new Date(age))
-                                console.log("myAge-->", myAge)
+                        function _calculateAge(birthday) { // birthday is a date
+                            var ageDifMs = Date.now() - birthday.getTime();
+                            var ageDate = new Date(ageDifMs); // miliseconds from epoch
+                            return Math.abs(ageDate.getUTCFullYear() - 1970);
+                        }
+                        var myAge = _calculateAge(new Date(age))
+                        console.log("myAge-->", myAge)
 
-                                if (result.gender != 'Both') {
-                                    if (result.gender != result1.gender) {
-                                        { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); }
-                                    } else {
-                                        if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
-                                            var country = result.whoWillSeeYourAdd.country;
-                                            // var state = result.whoWillSeeYourAdd.state;
-                                            var city = result.whoWillSeeYourAdd.city;
+                        if (result.gender != 'Both') {
+                            if (result.gender != result1.gender) {
+                                { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); }
+                            } else {
+                                if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+                                    var country = result.whoWillSeeYourAdd.country;
+                                    // var state = result.whoWillSeeYourAdd.state;
+                                    var city = result.whoWillSeeYourAdd.city;
 
-                                            if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
-                                                callback(null)
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
-                                        var country = result.whoWillSeeYourAdd.country;
-                                        var state = result.whoWillSeeYourAdd.state;
-                                        var city = result.whoWillSeeYourAdd.city;
-
-                                        if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
-                                            callback(null, result)
-                                        }
+                                    if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+                                        callback(null)
                                     }
                                 }
                             }
-                        })
+                        } else {
+                            if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+                                var country = result.whoWillSeeYourAdd.country;
+                                var state = result.whoWillSeeYourAdd.state;
+                                var city = result.whoWillSeeYourAdd.city;
+
+                                if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (result1.state != state) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+                                    if (city == null || city == undefined) { res.send({ responseCode: 200, responseMessage: 'You can watch this add' }) } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+                                        res.send({ responseCode: 200, responseMessage: 'You can watch this add' })
+                                    }
+                                }
+                            }
+                        }
                     }
                 })
-            },
-            function(adResult, callback) {
-                if (adResult.adsType == 'cash') {
-                    if (adResult.cash > 0) {
-                        var type = "freeViewersPerCashAds";
-                    } else {
-                        var type = "brolixPerFreeCashAds";
+            }
+        })
+    }
+
+        "viewAd": function(req, res) { //req.body.userId, adId
+        var userId = req.body.userId;
+        waterfall([
+            function(callback) {
+                var userId = req.body.userId;
+                var adId = req.body.adId;
+                createNewAds.findOne({ _id: req.body.adId }).exec(function(err, adResult) {
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!adResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (adResult.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
+
+                        if (adResult.adsType == 'cash') {
+                            if (adResult.cash > 0) {
+                                var type = "freeViewersPerCashAds";
+                            } else {
+                                var type = "brolixPerFreeCashAds";
+                            }
+                        } else if (adResult.adsType == 'coupon') {
+                            if (adResult.cash > 0) {
+                                var type = "freeViewersPerCashAds";
+                            } else {
+                                var type = "brolixPerFreeCouponAds";
+                            }
+                        }
+                        console.log("type-->>", type)
+                        brolixAndDollors.findOne({
+                            type: type
+                        }, function(err, result) {
+                            var value = result.value
+                            callback(null, value)
+                        })
                     }
-                } else if (adResult.adsType == 'coupon') {
-                    if (adResult.cash > 0) {
-                        var type = "freeViewersPerCashAds";
-                    } else {
-                        var type = "brolixPerFreeCouponAds";
-                    }
-                }
-                console.log("type-->>", type)
-                brolixAndDollors.findOne({
-                    type: type
-                }, function(err, result) {
-                    var value = result.value
-                    callback(null, value)
                 })
             },
             function(value, callback) {
