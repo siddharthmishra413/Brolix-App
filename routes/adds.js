@@ -57,5 +57,6 @@ app.post('/homepageAds', adsHandler.homepageAds);
 app.get('/storeCouponPrice/:id', adsHandler.storeCouponPrice);
 app.put('/updateCash/:id', adsHandler.updateCash);
 app.post('/allAreWinners', adsHandler.allAreWinners);
+app.post('/targetedOrNottargeted', adsHandler.targetedOrNottargeted);
 
 module.exports = app;

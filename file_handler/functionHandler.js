@@ -4,7 +4,6 @@
   // var apn = require('apn');
   module.exports = {
       "otp": function(mobile ,msg_body) {
-
           var possible = "123456789";
           var otp = "";
           for (var i = 0; i < 4; i++) {
