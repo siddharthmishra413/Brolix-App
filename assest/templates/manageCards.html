@@ -198,40 +198,40 @@
                     </div>
 
                     <div class="form-group cus-select">
-                        <datepicker date-format="yyyy-MM-dd" selector="form-control"">
-                            <div class="form-group">
-                                <input ng-change="dateValidation(dashBordFilter.dobFrom);" style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="Date From" ng-model="dashBordFilter.dobFrom" />
+                        <datepicker date-format="yyyy-MM-dd" selector="form-control" ">
+                            <div class="form-group ">
+                                <input ng-change="dateValidation(dashBordFilter.dobFrom); " style="height: 40px; background-color: #EAEAEA; cursor: pointer " class="form-control " class="form-control " placeholder="Date From " ng-model="dashBordFilter.dobFrom " />
                             </div>
                         </datepicker>
                     </div>
 
-                    <div class="form-group cus-select">
-                        <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDatee}}">
-                            <div class="form-group">
-                                <input ng-change="dashBordFilter();" ng-disabled="dashBordFilter.dobFrom==undefined" style="height: 40px; background-color: #EAEAEA; cursor: pointer" class="form-control" class="form-control" placeholder="Date To" ng-model="dashBordFilter.dobTo" />
+                    <div class="form-group cus-select ">
+                        <datepicker date-format="yyyy-MM-dd " selector="form-control " date-min-limit="{{minDatee}} ">
+                            <div class="form-group ">
+                                <input ng-change="dashBordFilter(); " ng-disabled="dashBordFilter.dobFrom==undefined " style="height: 40px; background-color: #EAEAEA; cursor: pointer " class="form-control " class="form-control " placeholder="Date To " ng-model="dashBordFilter.dobTo " />
                             </div>
                         </datepicker>
                     </div>
                 
-                    <!-- <div class="form-group cus-select">
-                        <input style="height: 40px; background-color: #EAEAEA" class="form-control"  ng-model="dashBordFilter.dateFrom" ng-change="dashBordFilter()" type="date" placeholder="From">
+                    <!-- <div class="form-group cus-select ">
+                        <input style="height: 40px; background-color: #EAEAEA " class="form-control "  ng-model="dashBordFilter.dateFrom " ng-change="dashBordFilter() " type="date " placeholder="From ">
                     </div>
-                    <div class="form-group cus-select">
-                        <input style="height: 40px;background-color: #EAEAEA" class="form-control" type="date"  ng-model="dashBordFilter.dateTo" ng-change="dashBordFilter()" placeholder="To">
+                    <div class="form-group cus-select ">
+                        <input style="height: 40px;background-color: #EAEAEA " class="form-control " type="date "  ng-model="dashBordFilter.dateTo " ng-change="dashBordFilter() " placeholder="To ">
                     </div> -->
                 </div>
             </div>
         </div>
     </div>
-    <!-- <div class="grp-search">
-        <div class="row-search">
+    <!-- <div class="grp-search ">
+        <div class="row-search ">
         </div>
-        <div class="search-bar-cus">
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test.firstName" placeholder="Search By Buyer Name">
-                        <div class="input-group-addon">Search</div>
+        <div class="search-bar-cus ">
+            <form class="form-inline ">
+                <div class="form-group ">
+                    <div class="input-group ">
+                        <input type="text " class="form-control " ng-model="test.firstName " placeholder="Search By Buyer Name ">
+                        <div class="input-group-addon ">Search</div>
                     </div>
                 </div>
             </form>
@@ -239,113 +239,125 @@
     </div> -->
 
 
-    <div class="grp-search">
-        <div class="row-search">
-            <ul>
-                <li class="last">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()" ">Create Report</a>
-                </li>
-            </ul>
-        </div>
+    <div class="grp-search ">
         <div class="row-search ">
-        </div>
-        <div class="search-bar-cus ">
-            <form class="form-inline ">
-                <div class="form-group ">
-                    <div class="input-group ">
-                        <input type="text " class="form-control " ng-model="test " maxlength="15 " ng-maxlength="15 " placeholder="Search By Owner Name " required>
-                        <div class="input-group-addon ">Search</div>
+            <ul>
+                <li class="last ">
+                    <a data-toggle="tab " style="cursor: pointer; " ng-click="export() " ">Create Report</a>
+                            </li>
+                            </ul>
+                    </div>
+                    <div class="row-search ">
+                    </div>
+                    <div class="search-bar-cus ">
+                        <form class="form-inline ">
+                            <div class="form-group ">
+                                <div class="input-group ">
+                                    <input type="text " class="form-control " ng-model="test " maxlength="15 " ng-maxlength="15 " placeholder="Search By Owner Name " required>
+                                    <div class="input-group-addon ">Search</div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
 
- <!-- Upgrade Cards Table -->
+                <!-- Upgrade Cards Table -->
 
-    <div class="col-sm-12 " ng-switch="tab ">
-        <div class="row table-responsive cus-table " ng-switch-when="SoldUpgradeCard ">
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th>Cards Type</th>
-                        <th>Price</th>
-                        <th>Owner Name</th>
-                        <th>Buyer PayPal</th>
-                        <th>Used Ad</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in totalSoldUpgradeCard | cardsFilter:test | itemsPerPage:10 ">
-                        <td >{{x.upgradeCardObject.viewers}} Viewers</td>
-                        <td >{{x.upgradeCardObject.cash}}$</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
-                        <td >{{x.email}}</td>
-                        <td ng-if="x.upgradeCardObject.status=='ACTIVE' ">Not Used Yet</td>
-                        <td ng-if="x.upgradeCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="upgradeCardUsedAd(x.upgradeCardObject._id) ">View</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
-                    </tr>
-                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0 "><td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td></tr>   
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-    </div>
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive cus-table " ng-switch-when="SoldUpgradeCard ">
+                        <table id="manageCardTable " class="table table-bordered table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Cards Type</th>
+                                    <th>Price</th>
+                                    <th>Owner Name</th>
+                                    <th>Buyer PayPal</th>
+                                    <th>Used Ad</th>
+                                    <th>Pages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="x in totalSoldUpgradeCard | cardsFilter:test | itemsPerPage:10 ">
+                                    <td>{{x.upgradeCardObject.viewers}} Viewers</td>
+                                    <td>{{x.upgradeCardObject.cash}}$</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
+                                    <td>{{x.email}}</td>
+                                    <td ng-if="x.upgradeCardObject.status=='ACTIVE' ">Not Used Yet</td>
+                                    <td ng-if="x.upgradeCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="upgradeCardUsedAd(x.upgradeCardObject._id) ">View</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
+                                </tr>
+                                <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0 ">
+                                    <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12 text-center ">
+                            <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="col-sm-12 " ng-switch="tab ">
-        <div class="row table-responsive cus-table " ng-switch-when="totalincomeUpgrade ">
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th>Cards Type</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in totalIncomeInCashFromUpgradeCard | cardsFilter:test | itemsPerPage:10 ">
-                        <td >{{x.upgradeCardObject.viewers}} Viewers</td>
-                        <td >{{x.upgradeCardObject.cash}}$</td>
-                    </tr>
-                    <tr ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length==0 "><td colspan="2 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td></tr> 
-                    
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-    </div>
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive cus-table " ng-switch-when="totalincomeUpgrade ">
+                        <table id="manageCardTable " class="table table-bordered table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Cards Type</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="x in totalIncomeInCashFromUpgradeCard | cardsFilter:test | itemsPerPage:10 ">
+                                    <td>{{x.upgradeCardObject.viewers}} Viewers</td>
+                                    <td>{{x.upgradeCardObject.cash}}$</td>
+                                </tr>
+                                <tr ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length==0 ">
+                                    <td colspan="2 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                </tr>
 
-    <div class="col-sm-12 " ng-switch="tab ">
-        <div class="row table-responsive cus-table " ng-switch-when="usedUpgradeCard ">
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th>Cards Type</th>
-                        <th>Price</th>
-                        <th>Owner Name</th>
-                        <th>Buyer PayPal</th>
-                        <th>Used Ad</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in usedUpgradeCard | cardsFilter:test | itemsPerPage:10 ">
-                        <td >{{x.upgradeCardObject.viewers}} Viewers</td>
-                        <td >{{x.upgradeCardObject.cash}}$</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
-                        <td >{{x.email}}</td>
-                        <td ng-if="x.upgradeCardObject.status=='ACTIVE' ">Not Used Yet</td>
-                        <td ng-if="x.upgradeCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="upgradeCardUsedAd(x.upgradeCardObject._id) ">View</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
-                    </tr>
-                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0 "><td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td></tr>   
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-    </div>
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12 text-center ">
+                            <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- <div class="col-sm-12 " ng-switch="tab ">
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive cus-table " ng-switch-when="usedUpgradeCard ">
+                        <table id="manageCardTable " class="table table-bordered table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Cards Type</th>
+                                    <th>Price</th>
+                                    <th>Owner Name</th>
+                                    <th>Buyer PayPal</th>
+                                    <th>Used Ad</th>
+                                    <th>Pages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="x in usedUpgradeCard | cardsFilter:test | itemsPerPage:10 ">
+                                    <td>{{x.upgradeCardObject.viewers}} Viewers</td>
+                                    <td>{{x.upgradeCardObject.cash}}$</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
+                                    <td>{{x.email}}</td>
+                                    <td ng-if="x.upgradeCardObject.status=='ACTIVE' ">Not Used Yet</td>
+                                    <td ng-if="x.upgradeCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="upgradeCardUsedAd(x.upgradeCardObject._id) ">View</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
+                                </tr>
+                                <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0 ">
+                                    <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12 text-center ">
+                            <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-sm-12 " ng-switch="tab ">
         <div class="row table-responsive cus-table " ng-switch-when="usedUpgradeCard ">
             <table id="manageCardTable " class="table table-bordered table-striped ">
                 <thead>
@@ -382,39 +394,43 @@
             </div>
         </div>
     </div> -->
-     <div class="col-sm-12 " ng-switch="tab ">
-        <div class="row table-responsive cus-table " ng-switch-when="unUsedUpgradeCard ">
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th>Cards Type</th>
-                        <th>Price</th>
-                        <th>Owner Name</th>
-                        <th>Buyer PayPal</th>
-                        <th>Used Ad</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in unUsedUpgradeCard | cardsFilter:test | itemsPerPage:10 ">
-                        <td >{{x.upgradeCardObject.viewers}} Viewers</td>
-                        <td >{{x.upgradeCardObject.cash}}$</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
-                        <td >{{x.email}}</td>
-                        <td ng-if="x.upgradeCardObject.status=='ACTIVE' ">Not Used Yet</td>
-                        <td ng-if="x.upgradeCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="upgradeCardUsedAd(x.upgradeCardObject._id) ">View</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
-                    </tr>
-                       <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0 "><td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td></tr>   
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-    </div>
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive cus-table " ng-switch-when="unUsedUpgradeCard ">
+                        <table id="manageCardTable " class="table table-bordered table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Cards Type</th>
+                                    <th>Price</th>
+                                    <th>Owner Name</th>
+                                    <th>Buyer PayPal</th>
+                                    <th>Used Ad</th>
+                                    <th>Pages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="x in unUsedUpgradeCard | cardsFilter:test | itemsPerPage:10 ">
+                                    <td>{{x.upgradeCardObject.viewers}} Viewers</td>
+                                    <td>{{x.upgradeCardObject.cash}}$</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
+                                    <td>{{x.email}}</td>
+                                    <td ng-if="x.upgradeCardObject.status=='ACTIVE' ">Not Used Yet</td>
+                                    <td ng-if="x.upgradeCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="upgradeCardUsedAd(x.upgradeCardObject._id) ">View</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
+                                </tr>
+                                <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0 ">
+                                    <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12 text-center ">
+                            <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
 
 
 
-    <!-- <div class="col-sm-12 " ng-switch="tab ">
+                <!-- <div class="col-sm-12 " ng-switch="tab ">
         <div class="row table-responsive cus-table " ng-switch-when="unUsedUpgradeCard ">
             <table id="manageCardTable " class="table table-bordered table-striped ">
                 <thead>
@@ -451,124 +467,140 @@
             </div>
         </div>
     </div> -->
-    <!--  -->
+                <!--  -->
 
-    <!-- Luck Cards -->
+                <!-- Luck Cards -->
 
-    <div class="col-sm-12 " ng-switch="tab ">
-        <div class="row table-responsive cus-table " ng-switch-when="SoldULuckCard ">
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th>Chances</th>
-                        <th>Brolix</th>
-                        <th>Owner Name</th>
-                        <th>Mobile Number</th>
-                        <th>Used Ad</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in totalSoldLuckCard | cardsFilter:test | itemsPerPage:10 ">
-                        <td >{{x.luckCardObject.chances}}</td>
-                        <td>{{x.luckCardObject.brolix}}</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td ng-if="x.luckCardObject.status=='ACTIVE' ">Not Used Yet</td>
-                        <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
-                    </tr>
-                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 "><td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td></tr>
-                    
-                </tbody>
-            </table>
-           <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-    </div>
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive cus-table " ng-switch-when="SoldULuckCard ">
+                        <table id="manageCardTable " class="table table-bordered table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Chances</th>
+                                    <th>Brolix</th>
+                                    <th>Owner Name</th>
+                                    <th>Mobile Number</th>
+                                    <th>Used Ad</th>
+                                    <th>Pages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="x in totalSoldLuckCard | cardsFilter:test | itemsPerPage:10 ">
+                                    <td>{{x.luckCardObject.chances}}</td>
+                                    <td>{{x.luckCardObject.brolix}}</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
+                                    <td>{{x.mobileNumber}}</td>
+                                    <td ng-if="x.luckCardObject.status=='ACTIVE' ">Not Used Yet</td>
+                                    <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
+                                </tr>
+                                <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 ">
+                                    <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                </tr>
 
-    <div class="col-sm-12 " ng-switch="tab ">
-        <div class="row table-responsive cus-table " ng-switch-when="totalincomeLuck ">
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th>Cards Type</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in totalIncomeInBrolixFromLuckCard | cardsFilter:test | itemsPerPage:10 ">
-                        <td >{{x.luckCardObject.chances}} Chances</td>
-                        <td >{{x.luckCardObject.brolix}} B</td>
-                    </tr>
-                     <tr ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length==0 "><td colspan="2 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td></tr>
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-    </div>
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12 text-center ">
+                            <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="col-sm-12 " ng-switch="tab ">
-        <div class="row table-responsive cus-table " ng-switch-when="usedLuckCard ">
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th>Chances</th>
-                        <th>Brolix</th>
-                        <th>Owner Name</th>
-                        <th>Mobile Number</th>
-                        <th>Used Ad</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in usedLuckCard | cardsFilter:test | itemsPerPage:10 ">
-                        <td >{{x.luckCardObject.chances}}</td>
-                        <td>{{x.luckCardObject.brolix}}</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td ng-if="x.luckCardObject.status=='ACTIVE' ">Not Used Yet</td>
-                        <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
-                    </tr>
-                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 "><td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td></tr>
-                    
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-    </div>
-    <div class="col-sm-12 " ng-switch="tab ">
-        <div class="row table-responsive cus-table " ng-switch-when="unUsedLuckCard ">
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th>Chances</th>
-                        <th>Brolix</th>
-                        <th>Owner Name</th>
-                        <th>Mobile Number</th>
-                        <th>Used Ad</th>
-                        <th>Pages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in unUsedLuckCard | cardsFilter:test | itemsPerPage:10 ">
-                        <td >{{x.luckCardObject.chances}}</td>
-                        <td>{{x.luckCardObject.brolix}}</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
-                        <td >{{x.mobileNumber}}</td>
-                        <td ng-if="x.luckCardObject.status=='ACTIVE' ">Not Used Yet</td>
-                        <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
-                    </tr>
-                    <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 "><td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td></tr>
-                    
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-    </div>
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive cus-table " ng-switch-when="totalincomeLuck ">
+                        <table id="manageCardTable " class="table table-bordered table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Cards Type</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="x in totalIncomeInBrolixFromLuckCard | cardsFilter:test | itemsPerPage:10 ">
+                                    <td>{{x.luckCardObject.chances}} Chances</td>
+                                    <td>{{x.luckCardObject.brolix}} B</td>
+                                </tr>
+                                <tr ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length==0 ">
+                                    <td colspan="2 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12 text-center ">
+                            <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- <div class="col-sm-12 " ng-switch="tab ">
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive cus-table " ng-switch-when="usedLuckCard ">
+                        <table id="manageCardTable " class="table table-bordered table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Chances</th>
+                                    <th>Brolix</th>
+                                    <th>Owner Name</th>
+                                    <th>Mobile Number</th>
+                                    <th>Used Ad</th>
+                                    <th>Pages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="x in usedLuckCard | cardsFilter:test | itemsPerPage:10 ">
+                                    <td>{{x.luckCardObject.chances}}</td>
+                                    <td>{{x.luckCardObject.brolix}}</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
+                                    <td>{{x.mobileNumber}}</td>
+                                    <td ng-if="x.luckCardObject.status=='ACTIVE' ">Not Used Yet</td>
+                                    <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
+                                </tr>
+                                <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 ">
+                                    <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12 text-center ">
+                            <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive cus-table " ng-switch-when="unUsedLuckCard ">
+                        <table id="manageCardTable " class="table table-bordered table-striped ">
+                            <thead>
+                                <tr>
+                                    <th>Chances</th>
+                                    <th>Brolix</th>
+                                    <th>Owner Name</th>
+                                    <th>Mobile Number</th>
+                                    <th>Used Ad</th>
+                                    <th>Pages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="x in unUsedLuckCard | cardsFilter:test | itemsPerPage:10 ">
+                                    <td>{{x.luckCardObject.chances}}</td>
+                                    <td>{{x.luckCardObject.brolix}}</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
+                                    <td>{{x.mobileNumber}}</td>
+                                    <td ng-if="x.luckCardObject.status=='ACTIVE' ">Not Used Yet</td>
+                                    <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
+                                    <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
+                                </tr>
+                                <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 ">
+                                    <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12 text-center ">
+                            <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-sm-12 " ng-switch="tab ">
         <div class="row table-responsive cus-table " ng-switch-when="usedLuckCard ">
             <table id="manageCardTable " class="table table-bordered table-striped ">
                 <thead>
@@ -606,7 +638,7 @@
     </div> -->
 
 
-   <!--  <div class="col-sm-12 " ng-switch="tab ">
+                <!--  <div class="col-sm-12 " ng-switch="tab ">
         <div class="row table-responsive cus-table " ng-switch-when="unUsedLuckCard ">
             <table id="manageCardTable " class="table table-bordered table-striped ">
                 <thead>
@@ -643,194 +675,210 @@
         </div>
     </div> -->
 
-<div class="col-sm-12 " ng-switch="tab ">   
-    <div class="row table-responsive border-table cus-table " ng-switch-when="upgradeCardOffer ">
-        <ul class="nav nav-pills card-tabs ">
-            <li><a class="active " data-toggle="pill " style="cursor: pointer; " ng-click="getdata( 'Discount') ">Discount</a></li>
-            <li><a class="active " data-toggle="pill " style="cursor: pointer; " ng-click="showOfferUpgrade( 'buyGet'); getdata( 'BuyAndGet') ">Buy & Get</a></li>
-        </ul>
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive border-table cus-table " ng-switch-when="upgradeCardOffer ">
+                        <ul class="nav nav-pills card-tabs ">
+                            <li><a class="active " data-toggle="pill " style="cursor: pointer; " ng-click="getdata( 'Discount') ">Discount</a></li>
+                            <li><a class="active " data-toggle="pill " style="cursor: pointer; " ng-click="showOfferUpgrade( 'buyGet'); getdata( 'BuyAndGet') ">Buy & Get</a></li>
+                        </ul>
 
-        <div class="col-sm-12 " ng-switch="tab " ng-if="key=='Discount' ">
-            <h2 class="text-center table-headingg ">Discount Offers</h2>
-            <ul>
-                <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editOffers/{{myForm.checkId}}/discount">Edit Offer</a>
-                </li>
-                 <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-click="removeOffers(myForm.checkId,'Discount')">Remove Offer</a>
-                </li>
-            </ul>
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Offer Type</th>
-                        <th>Offer In %</th>
-                        <th>Offer Created Time</th>
-                        <th>Offer Expire Time</th>   
-                        <th>Status</th>
-                        <th>Cards</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in totalSoldUpgradeCardDiscount | cardsFilter:test | itemsPerPage:10 ">
-                        <td>
-                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >Discount</td>
-                        <td>{{x._id.buyCard}} %</td>
-                        <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                        <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                        <td >{{x.status}}</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferUpgradeDis(x._id.buyCard,x.offerType) " >{{x.count}}</td>
-                    </tr>  
+                        <div class="col-sm-12 " ng-switch="tab " ng-if="key=='Discount' ">
+                            <h2 class="text-center table-headingg ">Discount Offers</h2>
+                            <div class="offer-li-s">
+                                <ul class="nav nav-pills card-tabs ">
+                                    <li class="">
+                                        <a ng-disabled="myForm.checkId" data-toggle="tab" style="cursor:pointer;" ng-href="#header/editOffers/{{myForm.checkId}}/discount">Edit Offer</a>
+                                    </li>
+                                    <li class="">
+                                        <a data-toggle="tab" style="cursor:pointer;" ng-click="removeOffers(myForm.checkId,'discount','upgrade_card')">Remove Offer</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <table id="manageCardTable " class="table table-bordered table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Offer Type</th>
+                                        <th>Offer In %</th>
+                                        <th>Offer Created Time</th>
+                                        <th>Offer Expire Time</th>
+                                        <th>Status</th>
+                                        <th>Cards</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="x in totalSoldUpgradeCardDiscount | cardsFilter:test | itemsPerPage:10 ">
+                                        <td>
+                                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                                        </td>
+                                        <td>Discount</td>
+                                        <td>{{x._id.buyCard}} %</td>
+                                        <td>{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                                        <td>{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>
+                                        <td>{{x.status}}</td>
+                                        <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferUpgradeDis(x._id.buyCard,x.offerType) ">{{x.count}}</td>
+                                    </tr>
 
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
+                                </tbody>
+                            </table>
+                            <div class="col-sm-12 text-center ">
+                                <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                            </div>
+                        </div>
 
-        <div class="col-sm-12 " ng-switch="tab " ng-if="key=='BuyAndGet' ">
-           <!--  <div class="row table-responsive border-table cus-table " ng-switch-when="upgradeCardOffer "> -->
-                <h2 class="text-center table-headingg ">Buy & Get offers</h2>
-                    <ul>
-                        <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editOffers/{{myForm.checkId}}/buyGet">Edit Offer</a>
-                        </li>
-                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;" ng-click="removeOffers(myForm.checkId,'BuyAndGet')">Remove Offer</a>
-                        </li>
-                    </ul>
-                <table id="manageCardTable " class="table table-bordered table-striped ">
-                    <thead>
-                        <tr>
-                            <th></th> 
-                            <th>Offer Type</th>
-                            <th>BuyCard</th>
-                            <th>FreeCard</th>
-                            <th>Offer Created Time</th>
-                            <th>Offer Expire Time</th>   
-                            <th>Status</th>
-                            <th>Cards</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr dir-paginate="x in totalSoldUpgradeCardDiscountBuyGet | cardsFilter:test | itemsPerPage:10 ">
-                            <td>
-                                <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                            </td>
-                            <td >Buy & Get</td>
-                            <td>{{x._id.buyCard}}</td>
-                            <td>{{x._id.freeCard}}</td>
-                            <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                            <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                            <td >{{x.status}}</td>
-                            <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferUpgradeBuy(x._id.buyCard,x._id.freeCard,x.offerType) " >{{x.count}}</td>
-                        </tr>   
-                    </tbody>
-                </table>
-                <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-           <!--  </div> -->
-        </div>
-    </div>
-</div>
-
-
-
-
-
-<div class="col-sm-12 " ng-switch="tab ">   
-    <div class="row table-responsive border-table cus-table " ng-switch-when="luckCardOffer ">
-        <ul class="nav nav-pills card-tabs ">
-            <li><a class="active " data-toggle="pill " style="cursor: pointer; " ng-click="getdata( 'Discount') ">Discount</a></li>
-            <li><a class="active " data-toggle="pill " style="cursor: pointer; " ng-click="showOfferLuck( 'buyGet'); getdata( 'BuyAndGet') ">Buy & Get</a></li>
-        </ul>
-
-        <div class="col-sm-12 " ng-switch="tab " ng-if="key=='Discount' ">
-            <h2 class="text-center table-headingg ">Discount Offers</h2>
-            <ul>
-                <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editOffers/{{myForm.checkId}}/discount">Edit Offer</a>
-                </li>
-                 <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-click="removeOffers(myForm.checkId,'Discount')">Remove Offer</a>
-                </li>
-            </ul>
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Offer Type</th>
-                        <th>Offer In %</th>
-                        <th>Offer Created Time</th>
-                        <th>Offer Expire Time</th>   
-                        <th>Status</th>
-                        <th>Cards</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in totalSoldLuckCardDiscount | cardsFilter:test | itemsPerPage:10 ">
-                        <td>
-                           <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >Discount</td>
-                        <td>{{x._id.buyCard}} %</td>
-                        <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                        <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                        <td >{{x.status}}</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferLuckDis(x._id.buyCard,x.offerType) " >{{x.count}}</td>
-                    </tr>  
-
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-        <div class="col-sm-12 " ng-switch="tab " ng-if="key=='BuyAndGet' ">
-            <h2 class="text-center table-headingg ">Buy & Get Offers</h2>
-            <ul>
-                <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-href="#header/editOffers/{{myForm.checkId}}/buyGet">Edit Offerss</a>
-                </li>
-                 <li class="">
-                    <a data-toggle="tab" style="cursor:pointer;" ng-click="removeOffers(myForm.checkId,'BuyAndGet')">Remove Offer</a>
-                </li>
-            </ul>
-            <table id="manageCardTable " class="table table-bordered table-striped ">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Offer Type</th>
-                        <th>BuyCard</th>
-                        <th>FreeCard</th>
-                        <th>Offer Created Time</th>
-                        <th>Offer Expire Time</th>   
-                        <th>Status</th>
-                        <th>Cards</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr dir-paginate="x in totalSoldLuckCardDiscountBuyGet | cardsFilter:test | itemsPerPage:10 ">
-                        <td>
-                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
-                        </td>
-                        <td >Buy & Get</td>
-                        <td>{{x._id.buyCard}}</td>
-                        <td>{{x._id.freeCard}}</td>
-                        <td >{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
-                        <td >{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>    
-                        <td >{{x.status}}</td>
-                        <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferLuckBuy(x._id.buyCard,x._id.freeCard,x.offerType) " >{{x.count}}</td>
-                    </tr>   
-                </tbody>
-            </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
-        </div>
-    </div>
-</div>
+                        <div class="col-sm-12 " ng-switch="tab " ng-if="key=='BuyAndGet' ">
+                            <!--  <div class="row table-responsive border-table cus-table " ng-switch-when="upgradeCardOffer "> -->
+                            <h2 class="text-center table-headingg ">Buy & Get offers</h2>
+                            <div class="offer-li-s">
+                                <ul class="nav nav-pills card-tabs">
+                                    <li class="">
+                                        <a data-toggle="tab" ng-disabled="myForm.checkId" style="cursor:pointer;" ng-href="#header/editOffers/{{myForm.checkId}}/buyGet">Edit Offer</a>
+                                    </li>
+                                    <li class="">
+                                        <a data-toggle="tab" style="cursor:pointer;" ng-click="removeOffers(myForm.checkId,'buyGet','upgrade_card')">Remove Offer</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <table id="manageCardTable " class="table table-bordered table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Offer Type</th>
+                                        <th>BuyCard</th>
+                                        <th>FreeCard</th>
+                                        <th>Offer Created Time</th>
+                                        <th>Offer Expire Time</th>
+                                        <th>Status</th>
+                                        <th>Cards</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="x in totalSoldUpgradeCardDiscountBuyGet | cardsFilter:test | itemsPerPage:10 ">
+                                        <td>
+                                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                                        </td>
+                                        <td>Buy & Get</td>
+                                        <td>{{x._id.buyCard}}</td>
+                                        <td>{{x._id.freeCard}}</td>
+                                        <td>{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                                        <td>{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>
+                                        <td>{{x.status}}</td>
+                                        <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferUpgradeBuy(x._id.buyCard,x._id.freeCard,x.offerType) ">{{x.count}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-sm-12 text-center ">
+                                <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                            </div>
+                            <!--  </div> -->
+                        </div>
+                    </div>
+                </div>
 
 
-        
-<!-- 
+
+
+
+                <div class="col-sm-12 " ng-switch="tab ">
+                    <div class="row table-responsive border-table cus-table " ng-switch-when="luckCardOffer ">
+                        <ul class="nav nav-pills card-tabs ">
+                            <li><a class="active " data-toggle="pill " style="cursor: pointer; " ng-click="getdata( 'Discount') ">Discount</a></li>
+                            <li><a class="active " data-toggle="pill " style="cursor: pointer; " ng-click="showOfferLuck( 'buyGet'); getdata( 'BuyAndGet') ">Buy & Get</a></li>
+                        </ul>
+
+                        <div class="col-sm-12 " ng-switch="tab " ng-if="key=='Discount' ">
+                            <h2 class="text-center table-headingg ">Discount Offers</h2>
+                            <div class="offer-li-s">
+                                <ul class="nav nav-pills card-tabs">
+                                    <li class="">
+                                        <a data-toggle="tab" ng-disabled="myForm.checkId" style="cursor:pointer;" ng-href="#header/editOffers/{{myForm.checkId}}/discount">Edit Offer</a>
+                                    </li>
+                                    <li class="">
+                                        <a data-toggle="tab" style="cursor:pointer;" ng-click="removeOffers(myForm.checkId,'discount','luck_card')">Remove Offer</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <table id="manageCardTable " class="table table-bordered table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Offer Type</th>
+                                        <th>Offer In %</th>
+                                        <th>Offer Created Time</th>
+                                        <th>Offer Expire Time</th>
+                                        <th>Status</th>
+                                        <th>Cards</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="x in totalSoldLuckCardDiscount | cardsFilter:test | itemsPerPage:10 ">
+                                        <td>
+                                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                                        </td>
+                                        <td>Discount</td>
+                                        <td>{{x._id.buyCard}} %</td>
+                                        <td>{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                                        <td>{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>
+                                        <td>{{x.status}}</td>
+                                        <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferLuckDis(x._id.buyCard,x.offerType) ">{{x.count}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="col-sm-12 text-center ">
+                                <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 " ng-switch="tab " ng-if="key=='BuyAndGet' ">
+                            <h2 class="text-center table-headingg ">Buy & Get Offers</h2>
+                            <div class="offer-li-s">
+                                <ul class="nav nav-pills card-tabs">
+                                    <li class="">
+                                        <a data-toggle="tab" ng-disabled="myForm.checkId" style="cursor:pointer;" ng-href="#header/editOffers/{{myForm.checkId}}/buyGet">Edit Offerss</a>
+                                    </li>
+                                    <li class="">
+                                        <a data-toggle="tab" style="cursor:pointer;" ng-click="removeOffers(myForm.checkId,'buyGet','luck_card')">Remove Offer</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <table id="manageCardTable " class="table table-bordered table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Offer Type</th>
+                                        <th>BuyCard</th>
+                                        <th>FreeCard</th>
+                                        <th>Offer Created Time</th>
+                                        <th>Offer Expire Time</th>
+                                        <th>Status</th>
+                                        <th>Cards</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="x in totalSoldLuckCardDiscountBuyGet | cardsFilter:test | itemsPerPage:10 ">
+                                        <td>
+                                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
+                                        </td>
+                                        <td>Buy & Get</td>
+                                        <td>{{x._id.buyCard}}</td>
+                                        <td>{{x._id.freeCard}}</td>
+                                        <td>{{x.createdAt | date:'dd-M-yyyy H:mm'}}</td>
+                                        <td>{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>
+                                        <td>{{x.status}}</td>
+                                        <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferLuckBuy(x._id.buyCard,x._id.freeCard,x.offerType) ">{{x.count}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-sm-12 text-center ">
+                                <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- 
 
     <div class="col-sm-6 " ng-switch="tab ">
         <div class="row table-responsive border-table cus-table " ng-switch-when="luckCardOffer ">
@@ -890,9 +938,9 @@
     </div>
 </div> -->
 
-<!-- upgradeOffer Table -->
+                <!-- upgradeOffer Table -->
 
-<!-- <div class="col-sm-12 " ng-switch="tab ">
+                <!-- <div class="col-sm-12 " ng-switch="tab ">
     <div class="row table-responsive cus-table " ng-switch-when="upgradeOffer ">
         <table id="manageCardTable " class="table table-bordered table-striped ">
             <thead>
@@ -924,265 +972,439 @@
     </div>
 </div> -->
 
-<div id="userInfof" class="modal fade ">
-   <div class="modal-dialog cls_pop ">
-       <div class="modal-content ">
-           <div class="modal-header ">
-               <h4 class="modal-title ">Buyer/Owner Information</h4>
-           </div>
-           <div class="modal-body ">
-               <form name="userFrom1 ">
-               <div class="table-responsive cus-table ">
-                   <table class="table table-bordered table-striped ">                         
-                          <tr>
-                              <th>Buyer/Owner Name</th>
-                              <td>{{userDetail.firstName+" "+userDetail.lastName}}</td>
-                          </tr>
-                          <tr>
-                              <th>Email</th>
-                              <td>{{userDetail.email}}</td>
-                          </tr>
-                          <tr>
-                              <th>Mobile No.</th>
-                              <td>{{userDetail.mobileNumber}}</td>
-                          </tr>
-                          <tr>
-                              <th>Gender</th>
-                              <td>{{userDetail.gender}}</td>
-                          </tr>
-                          <tr>
-                              <th>Country</th>
-                              <td>{{userDetail.country}}</td>
-                          </tr>
-                          <tr>
-                              <th>City</th>
-                              <td>{{userDetail.city}}</td>
-                          </tr>
-                  </table></div>
-               </form>
-           </div>
-       </div>
-   </div>
-</div>
-
-<div id="Pagess" class="modal fade ">
-   <div class="modal-dialog cls_pop ">
-       <div class="modal-content ">
-           <div class="modal-header ">
-               <h4 class="modal-title ">All Pages</h4>
-           </div>
-           <div class="modal-body ">
-               <form name="userFrom1 ">
-                   <div class="table-responsive cus-table ">
-                   <table class="table table-bordered table-striped ">                         
-                          <tr>
-                              <th>Page Name</th>
-                          </tr>
-                          <tr ng-repeat="page in page ">
-                            <td >{{page.pageName}}</td>
-                          </tr>
-                          <tr ng-if="page.length==0 "><td style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td></tr>
-                         
-                  </table></div>
-
-               </form>
-           </div>
-       </div>
-   </div>
-</div>
-
-<div id="luckCardUsedAd " class="modal fade ">
-   <div class="modal-dialog cls_pop ">
-       <div class="modal-content ">
-           <div class="modal-header ">
-               <h4 class="modal-title ">Used Ad Information</h4>
-           </div>
-           <div class="modal-body ">
-               <form name="userFrom1 ">
-                   <div class="table-responsive cus-table ">
-                        <table class="table table-bordered table-striped ">                         
-                              <tr>
-                                  <th>Created Date</th>
-                                  <td>{{usedAd[0].createdAt}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Last Update</th>
-                                  <td>{{usedAd[0].updatedAt}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Page Name</th>
-                                  <td>{{usedAd[0].pageName}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Page Category</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Page Sub Categories</th>
-                                  <td>{{usedAd[0].subCategory}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Ad Type</th>
-                                  <td>{{usedAd[0].adContentType}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Number of Images</th>
-                                  <td>{{dawnloadPagePhoto.length}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Video Length/Size</th>
-                                  <td>1:30/3Mb</td>
-                              </tr>
-                              <tr>
-                                  <th>Cover Image</th>
-                                  <td><img src="{{usedAd[0].coverImage}} " /></td>
-                              </tr>
-                              <tr>
-                                  <th>Download Links</th>
-                                  <td>{{usedAd[0].linkCount}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Gift Description/Value</th>
-                                  <td>{{usedAd[0].giftDescription}}/100</td>
-                              </tr>
-                              <tr>
-                                  <th>Gift Image</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Hidden Gift</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                              <tr>
-                                  <th>No. of Codes</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-
-                               <tr>
-                                  <th>Upgraded</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                               <tr>
-                                  <th>Card Price</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                               <tr>
-                                  <th>No. of Viewers</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                               <tr>
-                                  <th>No. of Winners</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                               <tr>
-                                  <th>Post on Store</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                               <tr>
-                                  <th>Targeted Location</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                               <tr>
-                                  <th>Targeted Gender</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                               <tr>
-                                  <th>Targeted Ages</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                              <tr>
-                                  <th>Coupon Cover Image</th>
-                                  <td>{{usedAd[0].category}}</td>
-                              </tr>
-                        </table>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="sendMessageModelAllUser " class="modal fade ">
-   <div class="modal-dialog cls_pop ">
-       <div class="modal-content ">
-           <div class="modal-header ">
-               <h4 class="modal-title ">Send message Buyer</h4>
-           </div>
-           <div class="modal-body ">
-               <form name="sendMessage ">
-                   <div class="form-group ">
-                   <textarea type="text " id="messageInput " class="form-control " ng-model="sendMessage.massage " placeholder="Enter Your message " required></textarea>
-                       <!-- <input type="textarea " class="form-control " ng-model="category " placeholder="Enter Your massage "> -->
-                   </div>
-                   <button type="submit " class="btn btn-danger " ng-disabled="sendMessage.$invalid " ng-click="send_massage() ">Send message</button>
-               </form>
-           </div>
-       </div>
-   </div>
-</div>
-
-
-
-
-<div id="upgradeOfferOnCardd" class="modal fade ">
-   <div class="modal-dialog cls_pop ">
-       <div class="modal-content ">
-           <div class="modal-header ">
-               <h4 class="modal-title ">Discount Type Card Details On Offers</h4>
-           </div>
-           <div class="modal-body ">
-
-           <div id="home " class="tab-pane fade in active ">
-                <div class="row-table " ng-repeat="data in upgradecardOnOffers ">
-                    <div class="col-cell ">
-                        <div class="cover-image newcover-img ">
-                            <img ng-src="{{data.photo || '../dist/image/cover.jpg'}} " id="output ">
-                            <div class="viewwe-s ">
-                                <div class="tops-s ">
-                                     <div class="amts-top ">{{data.viewers}}</div>
-                                      <div class="ants-view ">Viewers</div>
-                                </div>
-                                 <div class="bottom-dol ">${{data.price}}</div>
+                <div id="userInfof" class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">Buyer/Owner Information</h4>
+                            </div>
+                            <div class="modal-body ">
+                                <form name="userFrom1 ">
+                                    <div class="table-responsive cus-table ">
+                                        <table class="table table-bordered table-striped ">
+                                            <tr>
+                                                <th>Buyer/Owner Name</th>
+                                                <td>{{userDetail.firstName+" "+userDetail.lastName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Email</th>
+                                                <td>{{userDetail.email}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Mobile No.</th>
+                                                <td>{{userDetail.mobileNumber}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Gender</th>
+                                                <td>{{userDetail.gender}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Country</th>
+                                                <td>{{userDetail.country}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>City</th>
+                                                <td>{{userDetail.city}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-cell add-remove">
-                        <span class="fa fa-times-circle" ng-click="removeOffers(data._id)"></span>
-                    </div> -->
                 </div>
-            </div>
-               
-           </div>
-       </div>
-   </div>
-</div>
 
-<div id="luckOfferOnCardd " class="modal fade ">
-   <div class="modal-dialog cls_pop ">
-       <div class="modal-content ">
-           <div class="modal-header ">
-               <h4 class="modal-title ">Buy & Get Type Card Details On Offers</h4>
-           </div>
-           <div class="modal-body ">
+                <div id="Pagess" class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">All Pages</h4>
+                            </div>
+                            <div class="modal-body ">
+                                <form name="userFrom1 ">
+                                    <div class="table-responsive cus-table ">
+                                        <table class="table table-bordered table-striped ">
+                                            <tr>
+                                                <th>Page Name</th>
+                                            </tr>
+                                            <tr ng-repeat="page in page ">
+                                                <td>{{page.pageName}}</td>
+                                            </tr>
+                                            <tr ng-if="page.length==0 ">
+                                                <td style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                            </tr>
 
-           <div id="home " class="tab-pane fade in active ">
-                <div class="row-table " ng-repeat="data in luckCardOnOffers ">
-                    <div class="col-cell ">
-                        <div class="cover-image newcover-img ">
-                            <img class="profile-user-img img-responsive " ng-src="{{data.photo || '../dist/image/cover.jpg'}} " id="output ">
-                            <div class="viewwe-s ">
-                                <div class="tops-s ">
-                                     <div class="amts-top ">{{data.chances}}</div>
-                                      <div class="ants-view ">Chances</div>
-                                </div>
-                                 <div class="bottom-dol ">B{{data.brolix}}</div>
-                            </div> 
+                                        </table>
+                                    </div>
+
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-               
-           </div>
-       </div>
-   </div>
-</div>
+
+                <div id="luckCardUsedAd " class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">Used Ad Information</h4>
+                            </div>
+                            <div class="modal-body ">
+                                <form name="userFrom1 ">
+                                    <div class="table-responsive cus-table ">
+                                        <table class="table table-bordered table-striped ">
+                                            <tr>
+                                                <th>Created Date</th>
+                                                <td>{{usedAd[0].createdAt}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Last Update</th>
+                                                <td>{{usedAd[0].updatedAt}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Page Name</th>
+                                                <td>{{usedAd[0].pageName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Page Category</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Page Sub Categories</th>
+                                                <td>{{usedAd[0].subCategory}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Ad Type</th>
+                                                <td>{{usedAd[0].adContentType}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Number of Images</th>
+                                                <td>{{dawnloadPagePhoto.length}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Video Length/Size</th>
+                                                <td>1:30/3Mb</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Cover Image</th>
+                                                <td><img src="{{usedAd[0].coverImage}} " /></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Download Links</th>
+                                                <td>{{usedAd[0].linkCount}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Gift Description/Value</th>
+                                                <td>{{usedAd[0].giftDescription}}/100</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Gift Image</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Hidden Gift</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>No. of Codes</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Upgraded</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Card Price</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>No. of Viewers</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>No. of Winners</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Post on Store</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Targeted Location</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Targeted Gender</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Targeted Ages</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Coupon Cover Image</th>
+                                                <td>{{usedAd[0].category}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sendMessageModelAllUser " class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">Send message Buyer</h4>
+                            </div>
+                            <div class="modal-body ">
+                                <form name="sendMessage ">
+                                    <div class="form-group ">
+                                        <textarea type="text " id="messageInput " class="form-control " ng-model="sendMessage.massage " placeholder="Enter Your message " required></textarea>
+                                        <!-- <input type="textarea " class="form-control " ng-model="category " placeholder="Enter Your massage "> -->
+                                    </div>
+                                    <button type="submit " class="btn btn-danger " ng-disabled="sendMessage.$invalid " ng-click="send_massage() ">Send message</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="luckOfferOnCardd " class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">Buy & Get Type Card Details On Offers</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="home" class="tab-pane fade in active">
+                                    <div class="row-table " ng-repeat="data in luckCardOnOffers">
+                                        <div class="col-cell ">
+                                            <div class="cover-image newcover-img ">
+                                                <img class="profile-user-img img-responsive " ng-src="{{data.photo || '../dist/image/cover.jpg'}} " id="output ">
+                                                <div class="viewwe-s">
+                                                    <div class="tops-s">
+                                                        <div class="amts-top">{{data.chances}}</div>
+                                                        <div class="ants-view">Chances</div>
+                                                    </div>
+                                                    <div class="bottom-dol">B{{data.brolix}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="upgradeOfferOnCardd" class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">Discount Type Card Details On Offers</h4>
+                            </div>
+                            <div class="modal-body ">
+
+                                <div id="home " class="tab-pane fade in active ">
+                                    <div class="row-table " ng-repeat="data in upgradecardOnOffers ">
+                                        <div class="col-cell ">
+                                            <div class="cover-image newcover-img ">
+                                                <img ng-src="{{data.photo || '../dist/image/cover.jpg'}} " id="output ">
+                                                <div class="viewwe-s ">
+                                                    <div class="tops-s ">
+                                                        <div class="amts-top ">{{data.viewers}}</div>
+                                                        <div class="ants-view ">Viewers</div>
+                                                    </div>
+                                                    <div class="bottom-dol ">${{data.price}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-cell add-remove">
+                        <span class="fa fa-times-circle" ng-click="removeOffers(data._id)"></span>
+                    </div> -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="upgradeOfferOnCarddRemoveDis" class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">Remove offer On Discount</h4>
+                            </div>
+                            <div class="modal-body ">
+
+                                <div id="home " class="tab-pane fade in active ">
+                                    <div class="row-table " ng-repeat="data in upgradecardOnOffersRemove">
+                                        <div class="col-cell ">
+                                            <div class="cover-image newcover-img ">
+                                                <img ng-src="{{data.photo || '../dist/image/cover.jpg'}} " id="output ">
+                                                <div class="viewwe-s ">
+                                                    <div class="tops-s ">
+
+                                                        <div class="ants-view ">Percentage</div>
+                                                        <div class="amts-top ">{{data.offer.buyCard}}</div>
+                                                    </div>
+                                                    <div class="ants-view ">Offer Time</div>
+                                                    <div class="bottom-dol ">{{data.offer.offerTime}} Hours</div>
+                                                </div>
+                                                <div class="viewwe-s ">
+                                                    <div class="tops-s ">
+                                                        <div class="amts-top ">{{data.viewers}}</div>
+                                                        <div class="ants-view ">Viewers</div>
+                                                    </div>
+                                                    <div class="bottom-dol ">${{data.price}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-cell add-remove">
+                                            <span class="fa fa-times-circle" ng-click="removeOffer(data._id,data.offer._id)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="upgradeOfferOnCarddRemoveBuy" class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">Remove offer On Buy And Get</h4>
+                            </div>
+                            <div class="modal-body ">
+
+                                <div id="home " class="tab-pane fade in active ">
+                                    <div class="row-table " ng-repeat="data in upgradecardOnOffersRemove ">
+                                        <div class="col-cell ">
+                                            <div class="cover-image newcover-img ">
+                                                <img ng-src="{{data.photo || '../dist/image/cover.jpg'}} " id="output ">
+                                                <div class="viewwe-s ">
+                                                    <div class="tops-s ">
+                                                        <div class="ants-view ">Percentage</div>
+                                                        <div class="amts-top ">{{data.offer.buyCard}}</div>
+                                                    </div>
+                                                    <div class="tops-s ">
+                                                        <div class="ants-view ">Buy Cards</div>
+                                                        <div class="amts-top ">{{data.offer.freeCard}}</div>
+                                                    </div>
+                                                    <div class="ants-view ">Offer Time</div>
+                                                    <div class="bottom-dol ">{{data.offer.offerTime}} Hours</div>
+
+                                                </div>
+
+                                                <div class="viewwe-s ">
+                                                    <div class="tops-s ">
+                                                        <div class="amts-top ">{{data.viewers}}</div>
+                                                        <div class="ants-view ">Viewers</div>
+                                                    </div>
+                                                    <div class="bottom-dol ">${{data.price}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-cell add-remove">
+                                            <span class="fa fa-times-circle" ng-click="removeOffer(data._id,data.offer._id)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="luckOfferOnCarddRemoveDis" class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">Remove offer On Discount</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="home" class="tab-pane fade in active">
+                                    <div class="row-table " ng-repeat="data in luckOfferOnCarddRemove">
+                                        <div class="col-cell ">
+                                            <div class="cover-image newcover-img ">
+                                                <img class="profile-user-img img-responsive " ng-src="{{data.photo || '../dist/image/cover.jpg'}} " id="output ">
+                                                <div class="viewwe-s ">
+                                                    <div class="tops-s ">
+                                                        <div class="ants-view ">Percentage</div>
+                                                        <div class="amts-top ">{{data.offer.buyCard}}</div>
+                                                    </div>
+                                                    <div class="ants-view ">Offer Time</div>
+                                                    <div class="bottom-dol ">{{data.offer.offerTime}} Hours</div>
+                                                </div>
+                                                <div class="viewwe-s">
+                                                    <div class="tops-s">
+                                                        <div class="amts-top">{{data.chances}}</div>
+                                                        <div class="ants-view">Chances</div>
+                                                    </div>
+                                                    <div class="bottom-dol">B{{data.brolix}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-cell add-remove">
+                                            <span class="fa fa-times-circle" ng-click="removeOffer(data._id,data.offer._id)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="luckOfferOnCarddRemoveBuy" class="modal fade ">
+                    <div class="modal-dialog cls_pop ">
+                        <div class="modal-content ">
+                            <div class="modal-header ">
+                                <h4 class="modal-title ">Remove offer On Buy & Get</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="home" class="tab-pane fade in active">
+                                    <div class="row-table " ng-repeat="data in luckOfferOnCarddRemove">
+                                        <div class="col-cell ">
+                                            <div class="cover-image newcover-img ">
+                                                <img class="profile-user-img img-responsive " ng-src="{{data.photo || '../dist/image/cover.jpg'}} " id="output ">
+                                                <div class="viewwe-s ">
+                                                    <div class="tops-s ">
+                                                        <div class="ants-view ">Percentage</div>
+                                                        <div class="amts-top ">{{data.offer.buyCard}}</div>
+                                                    </div>
+                                                    <div class="tops-s ">
+                                                        <div class="ants-view ">Buy Cards</div>
+                                                        <div class="amts-top ">{{data.offer.freeCard}}</div>
+                                                    </div>
+                                                    <div class="ants-view ">Offer Time</div>
+                                                    <div class="bottom-dol ">{{data.offer.offerTime}} Hours</div>
+
+                                                </div>
+                                                <div class="viewwe-s">
+                                                    <div class="tops-s">
+                                                        <div class="amts-top">{{data.chances}}</div>
+                                                        <div class="ants-view">Chances</div>
+                                                    </div>
+                                                    <div class="bottom-dol">B{{data.brolix}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-cell add-remove">
+                                            <span class="fa fa-times-circle" ng-click="removeOffer(data._id,data.offer._id)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

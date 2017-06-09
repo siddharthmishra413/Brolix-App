@@ -23,6 +23,7 @@ app.put('/editUserProfile/:id', authUser.authUser, adminHandler.editUserProfile)
 app.get('/totalPages', authUser.authUser, adminHandler.totalPages);
 app.get('/viewPage/:id', authUser.authUser, adminHandler.viewPage);
 
+app.post('/showOneOfferDetail', adminHandler.showOneOfferDetail);
 
 /*----------------------Manage Users------------------------*/
 

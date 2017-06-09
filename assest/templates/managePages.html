@@ -117,7 +117,7 @@
                     <div class="Dashboard-filter-text">DASHBOARD FILTER</div>
 
                     <div class="form-group cus-select">
-                         <select class="form-control" ng-change="changeCountry(); dashBordFilter();" ng-model="dashBordFilter.country" required>
+                        <select class="form-control" ng-change="changeCountry(); dashBordFilter();" ng-model="dashBordFilter.country" required>
                             <option value="">Select Country</option>
                             <option ng-repeat="country in countriesList" value"{{country}}">{{country}}</option>
                          </select>
@@ -129,7 +129,7 @@
                          </select>
                     </div> -->
                     <div class="form-group cus-select">
-                         <select  class="form-control" id="city" ng-change="dashBordFilter();" ng-model="dashBordFilter.city" required>
+                        <select class="form-control" id="city" ng-change="dashBordFilter();" ng-model="dashBordFilter.city" required>
                             <option value="">Select City</option>
                             <option ng-repeat="city in cityList">{{city}}</option>
                          </select>
@@ -142,27 +142,27 @@
                     </div>
 
                     <div class="form-group clearfix date-picker">
-                    <datepicker date-format="yyyy-MM-dd" selector="form-control">
-                       <div class="input-group">
-                           <input style="cursor: pointer" ng-change="dateValidation(dashBordFilter.dobFrom);" class="form-control"  placeholder="Choose a date" ng-model="dashBordFilter.dobFrom"/>
-                           <span class="input-group-addon" style="cursor: pointer">
+                        <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                            <div class="input-group">
+                                <input style="cursor: pointer" ng-change="dateValidation(dashBordFilter.dobFrom);" class="form-control" placeholder="Choose a date" ng-model="dashBordFilter.dobFrom" />
+                                <span class="input-group-addon" style="cursor: pointer">
                           <!--  <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
-                       </div>
-                    </datepicker>
-                     </div>
+                            </div>
+                        </datepicker>
+                    </div>
 
                     <div class="form-group clearfix date-picker">
-                     <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDatee}}">
-                       <div class="input-group">
-                           <input class="form-control" ng-change="dashBordFilter();" ng-disabled="dashBordFilter.dobFrom==undefined" style="cursor: pointer" placeholder="Choose a date" ng-model="dashBordFilter.dobTo"/>
-                           <span class="input-group-addon" >
+                        <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDatee}}">
+                            <div class="input-group">
+                                <input class="form-control" ng-change="dashBordFilter();" ng-disabled="dashBordFilter.dobFrom==undefined" style="cursor: pointer" placeholder="Choose a date" ng-model="dashBordFilter.dobTo" />
+                                <span class="input-group-addon">
                            <!-- <i class="fa fa-lg fa-calendar"></i> -->
                            </span>
-                       </div>
-                    </datepicker>
+                            </div>
+                        </datepicker>
                     </div>
-                    
+
                     <!-- <div class="form-group cus-select">
                         <div class="col-md-9">
                             <input type="date" class="form-control" name="dob" ng-model="dashBordFilter.dobTo" placeholder="Date of Birth">
@@ -181,41 +181,41 @@
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="totalPages">
-        <div class="grp-search">
-        <div class="row-search">
-            <ul>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
-                </li>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editPage/{{myForm.pageId}}">Edit Page</a>
-                </li>
-                <li class="active">
-                     <a data-toggle="tab" style="cursor: pointer;" ng-click="Remove_User(myForm.pageId)">Remove</a>
-                </li>
-                <li class="">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="blockPage(myForm.pageId)">Block</a>
-                </li>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="sendMessagePage(myForm.pageId)">Send Message</a>
-                </li>
-                <li class="last">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editPage/{{myForm.pageId}}">Edit Page</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="Remove_User(myForm.pageId)">Remove</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="blockPage(myForm.pageId)">Block</a>
+                        </li>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="sendMessagePage(myForm.pageId)">Send Message</a>
+                        </li>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()" ">Create Report</a>
                 </li>
             </ul>
         </div>
-        <div class="search-bar-cus">
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
-                        <div class="input-group-addon">Search</div>
+        <div class="search-bar-cus ">
+            <form class="form-inline ">
+                <div class="form-group ">
+                    <div class="input-group ">
+                        <input type="text " class="form-control " ng-model="test " placeholder="Search By Page Name ">
+                        <div class="input-group-addon ">Search</div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-            <table id="managePageTable" class="table table-bordered table-striped">
+            <table id="managePageTable " class="table table-bordered table-striped ">
                 <thead>
                     <tr>
                         <th></th>
@@ -230,62 +230,62 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in totalPages | pagesFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in totalPages | pagesFilter:test | itemsPerPage:10 ">
                         <td>
-                            <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
+                            <input ng-model="myForm.pageId" name="name " ng-value="{{x._id}}" type="radio">
                         </td>
                         <td >{{x.pageName}}</td>
                         <td >{{x.category}}</td>
-                        <!-- <td class="skyblue-text" style="cursor:pointer;" ng-click="ownerDetails(x.userId._id)">{{x.userId.firstName}}</td>
+                        <!-- <td class="skyblue-text " style="cursor:pointer; " ng-click="ownerDetails(x.userId._id) ">{{x.userId.firstName}}</td>
                         <td >{{x.email}}</td>
                         <td >{{x.phoneNumber}}</td> -->
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
+                        <td class="skyblue-text " style="cursor:pointer; " ng-click="showAdds(x._id) ">{{x.adsCount}}</td>
                         <td >{{x.winnersCount}}</td>
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
+                        <td class="skyblue-text " style="cursor:pointer; " ng-click="showAdminPages(x._id) ">{{x.adAdminCount}}</td>
                     </tr>
                 </tbody>
             </table>
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
         </div>
     </div>
 
 
-    <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="unPublishedPage">
-        <div class="grp-search">
-        <div class="row-search">
+    <div class="col-sm-12 " ng-switch="tab ">
+        <div class="row table-responsive cus-table " ng-switch-when="unPublishedPage ">
+        <div class="grp-search ">
+        <div class="row-search ">
             <ul>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
+                <li class="active ">
+                    <a data-toggle="tab " style="cursor: pointer; " ng-href="#header/viewPage/{{myForm.pageId}} ">View Page</a>
                 </li>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editPage/{{myForm.pageId}}">Edit Page</a>
+                <li class="active ">
+                    <a data-toggle="tab " style="cursor: pointer; " ng-href="#header/editPage/{{myForm.pageId}} ">Edit Page</a>
                 </li>
-                <li class="active">
-                     <a data-toggle="tab" style="cursor: pointer;" ng-click="Remove_User(myForm.pageId)">Remove</a>
+                <li class="active ">
+                     <a data-toggle="tab " style="cursor: pointer; " ng-click="Remove_User(myForm.pageId) ">Remove</a>
                 </li>
-                <li class="">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="blockPage(myForm.pageId)">Block</a>
+                <li class=" ">
+                    <a data-toggle="tab " style="cursor: pointer; " ng-click="blockPage(myForm.pageId) ">Block</a>
                 </li>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="sendMessagePage(myForm.pageId)">Send Message</a>
+                <li class="active ">
+                    <a data-toggle="tab " style="cursor: pointer; " ng-click="sendMessagePage(myForm.pageId) ">Send Message</a>
                 </li>
-                <li class="last">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
-                </li>
-            </ul>
-        </div>
-        <div class="search-bar-cus">
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
-                        <div class="input-group-addon">Search</div>
-                    </div>
+                <li class="last ">
+                    <a data-toggle="tab " style="cursor: pointer; " ng-click="export() "">Create Report</a>
+                        </li>
+                    </ul>
                 </div>
-            </form>
-        </div>
-    </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="managePageTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -305,49 +305,51 @@
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td >{{x.pageName}}</td>
-                        <td >{{x.category}}</td>
+                        <td>{{x.pageName}}</td>
+                        <td>{{x.category}}</td>
                         <!-- <td class="skyblue-text" style="cursor:pointer;" ng-click="ownerDetails(x._id)">{{x.firstName}}</td>
                         <td >{{x.userId.email}}</td>
                         <td >{{x.userId.mobileNumber}}</td> -->
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
-                        <td >{{x.winnersCount}}</td>
+                        <td>{{x.winnersCount}}</td>
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
                     </tr>
                 </tbody>
             </table>
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
 
-     <div class="col-sm-12" ng-switch="tab">
+    <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="showAllRemovedPage">
-        <div class="grp-search">
-        <div class="row-search">
-            <ul>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
-                </li>
-                <!-- <li class="active">
+            <div class="grp-search">
+                <div class="row-search">
+                    <ul>
+                        <li class="active">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
+                        </li>
+                        <!-- <li class="active">
                     <a data-toggle="tab" style="cursor: pointer;" ng-click="sendMessagePage(myForm.pageId)">Send Message</a>
                 </li> -->
-                <li class="last">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
+                        <li class="last">
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="export()" ">Create Report</a>
                 </li>
             </ul>
         </div>
-        <div class="search-bar-cus">
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
-                        <div class="input-group-addon">Search</div>
+        <div class="search-bar-cus ">
+            <form class="form-inline ">
+                <div class="form-group ">
+                    <div class="input-group ">
+                        <input type="text " class="form-control " ng-model="test " placeholder="Search By Page Name ">
+                        <div class="input-group-addon ">Search</div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-            <table id="managePageTable" class="table table-bordered table-striped">
+            <table id="managePageTable " class="table table-bordered table-striped ">
                 <thead>
                     <tr>
                         <th></th>
@@ -362,56 +364,56 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in showAllRemovedPage | pagesFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in showAllRemovedPage | pagesFilter:test | itemsPerPage:10 ">
                         <td>
-                            <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
+                            <input ng-model="myForm.pageId" name="name " value="{{x._id}} " type="radio ">
                         </td>
                         <td >{{x.pageName}}</td>
                         <td >{{x.category}}</td>
-                        <!-- <td class="skyblue-text" style="cursor:pointer;" ng-click="ownerDetails(x._id)">{{x.firstName}}</td>
+                        <!-- <td class="skyblue-text " style="cursor:pointer; " ng-click="ownerDetails(x._id) ">{{x.firstName}}</td>
                         <td >{{x.email}}</td>
                         <td >{{x.phoneNumber}}</td> -->
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
+                        <td class="skyblue-text " style="cursor:pointer; " ng-click="showAdds(x._id) ">{{x.adsCount}}</td>
                         <td>{{x.winnersCount}}</td>
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
+                        <td class="skyblue-text " style="cursor:pointer; " ng-click="showAdminPages(x._id) ">{{x.adAdminCount}}</td>
                     </tr>
                 </tbody>
             </table>
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
         </div>
     </div>
 
-    <div class="col-sm-12" ng-switch="tab">
-        <div class="row table-responsive cus-table" ng-switch-when="showAllBlockedPage">
+    <div class="col-sm-12 " ng-switch="tab ">
+        <div class="row table-responsive cus-table " ng-switch-when="showAllBlockedPage ">
 
-        <div class="grp-search">
-        <div class="row-search">
+        <div class="grp-search ">
+        <div class="row-search ">
             <ul>
-                <li class="active">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewPage/{{myForm.pageId}}">View Page</a>
+                <li class="active ">
+                    <a data-toggle="tab " style="cursor: pointer; " ng-href="#header/viewPage/{{myForm.pageId}} ">View Page</a>
                 </li>
-                <li class="active">
-                     <a data-toggle="tab" style="cursor: pointer;" ng-click="Remove_User(myForm.pageId)">Remove</a>
+                <li class="active ">
+                     <a data-toggle="tab " style="cursor: pointer; " ng-click="Remove_User(myForm.pageId) ">Remove</a>
                 </li>
-                <li class="">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="unblockPage(myForm.pageId)">Unblock</a>
+                <li class=" ">
+                    <a data-toggle="tab " style="cursor: pointer; " ng-click="unblockPage(myForm.pageId) ">Unblock</a>
                 </li>
-                <li class="last">
-                    <a data-toggle="tab" style="cursor: pointer;" ng-click="export()"">Create Report</a>
-                </li>
-            </ul>
-        </div>
-        <div class="search-bar-cus">
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
-                        <div class="input-group-addon">Search</div>
-                    </div>
+                <li class="last ">
+                    <a data-toggle="tab " style="cursor: pointer; " ng-click="export() "">Create Report</a>
+                        </li>
+                    </ul>
                 </div>
-            </form>
-        </div>
-    </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="managePageTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -431,201 +433,208 @@
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
-                        <td >{{x.pageName}}</td>
-                        <td >{{x.category}}</td>
+                        <td>{{x.pageName}}</td>
+                        <td>{{x.category}}</td>
                         <!-- <td class="skyblue-text" style="cursor:pointer;" ng-click="ownerDetails(x._id)">{{x.firstName}}</td>
                         <td >{{x.email}}</td>
                         <td >{{x.phoneNumber}}</td> -->
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdds(x._id)">{{x.adsCount}}</td>
-                        <td >{{x.winnersCount}}</td>
+                        <td>{{x.winnersCount}}</td>
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
                     </tr>
                 </tbody>
             </table>
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
         </div>
     </div>
 
 
-<div id="sendMessageModelAllUser" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h4 class="modal-title">Send message to All User</h4>
-           </div>
-           <div class="modal-body">
-               <form name="sendMessage">
-                   <div class="form-group">
-                   <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" /></textarea>
-                       <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
-                   </div>
-                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send massage</button>
-               </form>
-           </div>
-       </div>
-   </div>
-</div>
+    <div id="sendMessageModelAllUser" class="modal fade">
+        <div class="modal-dialog cls_pop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Send message to All User</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="sendMessage">
+                        <div class="form-group">
+                            <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your massage" /></textarea>
+                            <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
+                        </div>
+                        <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send massage</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
-<div id="adsDetails" class="modal fade" >
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h4 class="modal-title">Page Details</h4>
-           </div>
-           <div class="modal-body">
-                <div class="modal-outer-block">
-                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
-                        <div class="table-responsive cus-table">
-                            <table id="manageUserTable" class="table table-bordered table-striped">
-                                <thead>
-                                <input type="text" ng-model="testing" placeholder="Search">
-                                    <tr>
-                                        <th>Ad Date</th>
-                                        <th>Gift Description</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="x in allAddsOnPage | filter:testing" >
-                                        <td class="skyblue-text">{{x.createdAt | date:'dd-MM-yyyy'}}</td>
-                                        <td class="skyblue-text">{{x.giftDescription}}</td>
-                                        <td class="skyblue-text">{{x.status}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+    <div id="adsDetails" class="modal fade">
+        <div class="modal-dialog cls_pop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Page Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-outer-block">
+                        <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                            <div class="table-responsive cus-table">
+                                <table id="manageUserTable" class="table table-bordered table-striped">
+                                    <thead>
+                                        <div class="cus-search-c">
+                                            <input type="text" ng-model="testing" placeholder="Search" class="form-control">
+                                        </div>
+                                        <tr>
+                                            <th>Ad Date</th>
+                                            <th>Gift Description</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="x in allAddsOnPage | filter:testing">
+                                            <td class="skyblue-text">{{x.createdAt | date:'dd-MM-yyyy'}}</td>
+                                            <td class="skyblue-text">{{x.giftDescription}}</td>
+                                            <td class="skyblue-text">{{x.status}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-           </div>
-       </div>
-   </div>
-</div>
+            </div>
+        </div>
+    </div>
 
-<div id="pageWinnerDetails" class="modal fade" >
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h4 class="modal-title">Page Details</h4>
-           </div>
-           <div class="modal-body">
-                <div class="modal-outer-block">
-                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
-                        <div class="table-responsive cus-table">
-                            <table id="manageUserTable" class="table table-bordered table-striped">
-                                <thead>
-                                 <input type="text" ng-model="testing" placeholder="Search">
-                                    <tr>
-                                        <th>Page Type</th>
-                                        <th>Page Name</th>
-                                        <th>Category</th>
-                                        <th>Sub Category</th>
-                                        <th>Page Discription</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="x in allshowUserPage | filter:testing">
-                                        <td class="skyblue-text">{{x.pageType}}</td>
-                                        <td class="skyblue-text">{{x.pageName}}</td>
-                                        <td class="skyblue-text">{{x.category}}</td>
-                                        <td class="skyblue-text">{{x.subCategory}}</td>
-                                        <td class="skyblue-text">{{x.pageDiscription}}</td>
-                                        <td class="skyblue-text">{{x.status}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+    <div id="pageWinnerDetails" class="modal fade">
+        <div class="modal-dialog cls_pop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Page Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-outer-block">
+                        <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                            <div class="table-responsive cus-table">
+                                <table id="manageUserTable" class="table table-bordered table-striped">
+                                    <thead>
+                                        <input type="text" ng-model="testing" placeholder="Search">
+                                        <tr>
+                                            <th>Page Type</th>
+                                            <th>Page Name</th>
+                                            <th>Category</th>
+                                            <th>Sub Category</th>
+                                            <th>Page Discription</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="x in allshowUserPage | filter:testing">
+                                            <td class="skyblue-text">{{x.pageType}}</td>
+                                            <td class="skyblue-text">{{x.pageName}}</td>
+                                            <td class="skyblue-text">{{x.category}}</td>
+                                            <td class="skyblue-text">{{x.subCategory}}</td>
+                                            <td class="skyblue-text">{{x.pageDiscription}}</td>
+                                            <td class="skyblue-text">{{x.status}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-           </div>
-       </div>
-   </div>
-</div>
+            </div>
+        </div>
+    </div>
 
 
-<div id="pageAdminDetails" class="modal fade" >
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h4 class="modal-title">Pages Admin Details</h4>
-           </div>
-           <div class="modal-body">
-                <div class="modal-outer-block">
-                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
-                        <div class="table-responsive cus-table">
-                            <table id="manageUserTable" class="table table-bordered table-striped">
-                                <thead>
-                                 <input type="text" ng-model="testing" placeholder="Search">
-                                    <tr>
-                                        <th>Admin Name</th>
-                                        <th>Mobile Number</th>
-                                        <th>Email</th>
-                                        <th>Country</th>
-                                        
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="x in allAdminOnPages | filter:testing">
-                                        <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
-                                        <td class="skyblue-text">{{x.mobileNumber}}</td>
-                                        <td class="skyblue-text">{{x.email}}</td>
-                                        <td class="skyblue-text">{{x.country}}</td>
-                                        
-                                        <td class="skyblue-text">{{x.status}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+    <div id="pageAdminDetails" class="modal fade">
+        <div class="modal-dialog cls_pop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Pages Admin Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-outer-block">
+                        <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                            <div class="table-responsive cus-table">
+                                <table id="manageUserTable" class="table table-bordered table-striped">
+                                    <thead>
+                                        <div class="cus-search-c">
+                                            <input type="text" ng-model="testing" placeholder="Search" class="form-control">
+                                        </div>
+                                        <tr>
+                                            <th>Admin Name</th>
+                                            <th>Mobile Number</th>
+                                            <th>Email</th>
+                                            <th>Country</th>
+
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="x in allAdminOnPages | filter:testing">
+                                            <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
+                                            <td class="skyblue-text">{{x.mobileNumber}}</td>
+                                            <td class="skyblue-text">{{x.email}}</td>
+                                            <td class="skyblue-text">{{x.country}}</td>
+
+                                            <td class="skyblue-text">{{x.status}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-           </div>
-       </div>
-   </div>
-</div>
+            </div>
+        </div>
+    </div>
 
-<div id="showAllCard" class="modal fade">
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h4 class="modal-title">Send CArd to All User</h4>
-           </div>
-           <div class="modal-body">
-                <div class="modal-outer-block">
-                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
-                      <!--   <div class="panel-heading">
+    <div id="showAllCard" class="modal fade">
+        <div class="modal-dialog cls_pop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Send CArd to All User</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-outer-block">
+                        <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                            <!--   <div class="panel-heading">
                             <h3 class="panel-title">Remove Cards</h3>
                         </div> -->
-                        <div class="panel-body">
-                            <ul class="nav nav-pills card-tabs">
-                                <li class="active"><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('upgrade_card')">Upgrade Card</a>
-                                </li>
-                                <li><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
-                            </ul>
-                            <div class="tab-content add-card">
-                                <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
-                                    <div class="row-table" ng-repeat="data in UpgradeCard">
-                                        <div class="col-cell">
-                                            <div class="cover-image">
-                                                <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                            <div class="panel-body">
+                                <ul class="nav nav-pills card-tabs">
+                                    <li class="active"><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('upgrade_card')">Upgrade Card</a>
+                                    </li>
+                                    <li><a data-toggle="pill" style="cursor:pointer;" ng-click="active_tab('luck_card')">Luck Cards</a></li>
+                                </ul>
+                                <div class="tab-content add-card">
+                                    <div id="home" class="tab-pane fade in active" ng-if="active_upgrade_card">
+                                        <div class="row-table" ng-repeat="data in UpgradeCard">
+                                            <div class="col-cell">
+                                                <div class="cover-image">
+                                                    <img ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-cell add-remove">
-                                            <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                            <div class="col-cell add-remove">
+                                                <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
-                                    <div class="row-table" ng-repeat="data in LuckCard">
-                                        <div class="col-cell">
-                                            <div class="cover-image">
-                                                <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                    <div id="home" class="tab-pane fade in active" ng-if="active_luck_card">
+                                        <div class="row-table" ng-repeat="data in LuckCard">
+                                            <div class="col-cell">
+                                                <div class="cover-image">
+                                                    <img class="profile-user-img img-responsive" ng-src="{{data.photo || '../dist/image/cover.jpg'}}" id="output">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-cell add-remove">
-                                            <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                            <div class="col-cell add-remove">
+                                                <span class="fa fa-send" ng-click="sendCard(data._id)"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -634,13 +643,12 @@
                     </div>
                 </div>
             </div>
-       </div>
-   </div>
-</div>
+        </div>
+    </div>
 
 
 
-<!-- <div id="sendbrolixModelAllUser" class="modal fade">
+    <!-- <div id="sendbrolixModelAllUser" class="modal fade">
    <div class="modal-dialog cls_pop">
        <div class="modal-content">
            <div class="modal-header">
@@ -664,7 +672,7 @@
 </div> -->
 
 
-<!-- <div id="sendcashModelAllUser" class="modal fade">
+    <!-- <div id="sendcashModelAllUser" class="modal fade">
    <div class="modal-dialog cls_pop">
        <div class="modal-content">
            <div class="modal-header">
@@ -687,7 +695,7 @@
    </div>
 </div> -->
 
-<!-- <div id="showAllCoupons" class="modal fade">
+    <!-- <div id="showAllCoupons" class="modal fade">
    <div class="modal-dialog cls_pop">
        <div class="modal-content">
            <div class="modal-header">
@@ -708,36 +716,36 @@
    </div>
 </div> -->
 
-<div id="ownerDetails" class="modal fade" >
-   <div class="modal-dialog cls_pop">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h4 class="modal-title">Owner Details</h4>
-           </div>
-           <div class="modal-body">
-                <div class="modal-outer-block">
-                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
-                        <div class="table-responsive cus-table">
-                            <table id="manageUserTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Owner Name</th>
-                                        <th>Email</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="skyblue-text">{{ownerDetails.firstName}} {{ownerDetails.lastName}}</td>
-                                        <td class="skyblue-text">{{ownerDetails.email}}</td>
-                                        <td class="skyblue-text">{{ownerDetails.status}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+    <div id="ownerDetails" class="modal fade">
+        <div class="modal-dialog cls_pop">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Owner Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-outer-block">
+                        <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                            <div class="table-responsive cus-table">
+                                <table id="manageUserTable" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Owner Name</th>
+                                            <th>Email</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="skyblue-text">{{ownerDetails.firstName}} {{ownerDetails.lastName}}</td>
+                                            <td class="skyblue-text">{{ownerDetails.email}}</td>
+                                            <td class="skyblue-text">{{ownerDetails.status}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-           </div>
-       </div>
-   </div>
-</div>
+            </div>
+        </div>
+    </div>

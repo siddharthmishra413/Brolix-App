@@ -277,8 +277,11 @@ app.service('userService',function($http){
      return $http.post(baseurl+'/admin/removeOfferonCards', data);
    },
    editOfferonCards: function(data){
-    console.log("data",data)
+    console.log("data",JSON.stringify(data))
      return $http.post(baseurl+'/admin/editOfferonCards', data);
+   },
+   showOneOfferDetail: function(data){
+     return $http.post(baseurl+'/admin/showOneOfferDetail', data);
    },
    // getOfferList : function(data){
    //  console.log("data",data)

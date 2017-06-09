@@ -1063,8 +1063,9 @@ var payKey = 'AP-1WT665016G226315H'
                         if (flag == -1) { res.send({ responseCode: 400, responseMessage: "You cannot send brolix to this user due to privacy policies" }); } else {
                             console.log("flag-->>", flag)
                             User.findOne({ _id: req.body.userId }, function(err, result2) {
+                                console.log("dfdfgdf-->>",result2.brolix)
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result2) res.send({ responseCode: 404, responseMessage: "please enter correct senderId" });
-                                else if (result2.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account." }); } else {
+                                else if (result2.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account." }); } else {
                                     var image = result2.image;
                                     result2.brolix -= req.body.brolix;
                                     result2.save();
@@ -1097,7 +1098,7 @@ var payKey = 'AP-1WT665016G226315H'
                         var userId = req.body.userId;
                         User.findOne({ _id: req.body.userId }, function(err, result4) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result4) res.send({ responseCode: 404, responseMessage: "please enter correct senderId" });
-                            else if (result4.brolix <= req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account." }); } else {
+                            else if (result4.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account." }); } else {
                                 var image = result4.image;
                                 result4.brolix -= req.body.brolix;
                                 result4.save();
@@ -1157,7 +1158,7 @@ var payKey = 'AP-1WT665016G226315H'
                             var receiverId = req.body.receiverId;
                             User.findOne({ _id: req.body.userId }, function(err, result) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-                                else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
+                                else if (result.cash < req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
                                     var image = result.image;
                                     result.cash -= req.body.cash;
                                     result.save();
@@ -1189,7 +1190,7 @@ var payKey = 'AP-1WT665016G226315H'
                         var receiverId = req.body.receiverId;
                         User.findOne({ _id: req.body.userId }, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) res.send({ responseCode: 404, responseMessage: "please enter correct userId" });
-                            else if (result.cash <= req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
+                            else if (result.cash < req.body.cash) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account." }); } else {
                                 var image = result.image;
                                 result.cash -= req.body.cash;
                                 result.save();

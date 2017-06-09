@@ -40,7 +40,6 @@ app.controller('editCardCtrl', function($scope, $window, userService,spinnerServ
       $scope.user.photo = '';
       console.log("iddddddddd",id)
       userService.showCardDetails(id).success(function(res){
-        console.log
         $scope.cardDetails = res.data;
         console.log("$scope.cardDetails",$scope.cardDetails)
       })

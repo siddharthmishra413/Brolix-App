@@ -11,6 +11,7 @@ var config = require('../config');
 
 var countryList = require('countries-cities').getCountries(); // Returns an array of country names. 
 var citiess = require('countries-cities').getCities("India"); // Returns an array of city names of the particualr country. 
+var mongoose = require('mongoose');
 
 
 var country = require('countryjs');
@@ -1282,6 +1283,25 @@ module.exports = {
 
     },
 
+    "showOneOfferDetail": function(req, res) {
+       console.log()
+        var typDate = { _id:new mongoose.Types.ObjectId(req.body.cardId), 'offer._id': new mongoose.Types.ObjectId(req.body.offerId), "offer.status":'ACTIVE' }
+        console.log("typDate",typDate)
+        adminCards.aggregate([
+            { $unwind: '$offer' },
+            { $match: typDate }
+        ]).exec(function(err, result) {
+            console.log(result)
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
+                res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+            } else {
+                res.send({ responseCode: 200, responseMessage: 'Card details show successfully.', result: result });
+            }
+        })
+
+    },
+
+
     "showOfferCountOnCards": function(req, res) {
         adminCards.aggregate([
             { $unwind: '$offer' },
@@ -1300,16 +1320,13 @@ module.exports = {
     },
 
     "editOfferonCards": function(req, res) {
-
         if (req.body.offerType == 'discount') {
-            var matchquery ={type: req.body.type, 'offer.buyCard':req.body.buyCard }
-            var query = { 'offer.$.buyCard': req.body.updatebuyCard, "offer.$.offerTime": req.body.offerTime }
+            var query = { 'offer.$.buyCard': req.body.buyCard, "offer.$.offerTime": req.body.offerTime, "offer.$.createdAt":req.body.createdAt}
         } else {
-            var matchquery ={type: req.body.type, 'offer.buyCard':req.body.buyCard, 'offer.freeCard':req.body.freeCard }
-            var query = { 'offer.$.buyCard': req.body.updatebuyCard, 'offer.$.freeCard': req.body.updatefreeCard, "offer.$.offerTime": req.body.offerTime }
+            var query = { 'offer.$.buyCard': req.body.buyCard, 'offer.$.freeCard': req.body.freeCard, "offer.$.offerTime": req.body.offerTime, "offer.$.createdAt":req.body.createdAt }
         }
-        adminCards.update(matchquery, { $set: query }, {
-            multi: true
+        adminCards.findOneAndUpdate({ _id:req.body.cardId, 'offer._id': req.body.offerId }, { $set: query }, {
+            new: true
         }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
@@ -1318,16 +1335,32 @@ module.exports = {
                 responseMessage: "Successfully updated."
             });
         });
+
+
+
+        // if (req.body.offerType == 'discount') {
+        //     var matchquery ={type: req.body.type, 'offer.buyCard':req.body.buyCard }
+        //     var query = { 'offer.$.buyCard': req.body.updatebuyCard, "offer.$.offerTime": req.body.offerTime }
+        // } else {
+        //     var matchquery ={type: req.body.type, 'offer.buyCard':req.body.buyCard, 'offer.freeCard':req.body.freeCard }
+        //     var query = { 'offer.$.buyCard': req.body.updatebuyCard, 'offer.$.freeCard': req.body.updatefreeCard, "offer.$.offerTime": req.body.offerTime }
+        // }
+        // adminCards.update(matchquery, { $set: query }, {
+        //     multi: true
+        // }).exec(function(err, result) {
+        //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+        //     res.send({
+        //         result: result,
+        //         responseCode: 200,
+        //         responseMessage: "Successfully updated."
+        //     });
+        // });
     },
 
     "removeOfferonCards": function(req, res) {
-        if(req.body.offerType == 'discount'){
-           var query ={type: req.body.type, 'offer.buyCard':req.body.buyCard }
-        }
-        else{
-           var query ={type: req.body.type, 'offer.buyCard':req.body.buyCard, 'offer.freeCard':req.body.freeCard }
-        }
-        adminCards.update(query, { $set: { 'offer.$.status': 'REMOVED' } }, {multi: true}).exec(function(err, result) {
+        adminCards.findOneAndUpdate({_id:req.body.cardId, 'offer._id': req.body.offerId }, { $set: { 'offer.$.status': 'REMOVED' } }, {
+            new: true
+        }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,
@@ -1336,6 +1369,20 @@ module.exports = {
             });
         });
 
+        // if(req.body.offerType == 'discount'){
+        //    var query ={type: req.body.type, 'offer.buyCard':req.body.buyCard }
+        // }
+        // else{
+        //    var query ={type: req.body.type, 'offer.buyCard':req.body.buyCard, 'offer.freeCard':req.body.freeCard }
+        // }
+        // adminCards.update(query, { $set: { 'offer.$.status': 'REMOVED' } }, {multi: true}).exec(function(err, result) {
+        //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+        //     res.send({
+        //         result: result,
+        //         responseCode: 200,
+        //         responseMessage: "Removed successfully."
+        //     });
+        // });
     },
 
     "createPage": function(req, res) {
@@ -3233,7 +3280,30 @@ module.exports = {
         })
     },
 
-       "createSystemUser": function(req, res) {
+    "postCouponToStore": function(req, res) {
+        createNewAds.findOneAndUpdate({ _id: req.params.id }, { $set: { couponSellPrice: req.body.couponSellPrice, couponBuyersLength: req.body.couponBuyersLength, sellCoupon: true } }, { new: true }, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
+                res.send({ responseCode: 200, responseMessage: "Coupon posted to store successfully." })
+            }
+        })
+    },
+
+    "showPageName": function(req, res) {
+        createNewPage.find({ status: 'ACTIVE' }, 'pageName category subCategory').exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+                result.sort(function(a, b) {
+                    //compare two values
+                    if (a.pageName.toLowerCase() < b.pageName.toLowerCase()) return -1;
+                    if (a.pageName.toLowerCase() > b.pageName.toLowerCase()) return 1;
+                    return 0;
+
+                })
+                res.send({ result: result, responseCode: 200, responseMessage: "All page with name shown successfully" })
+            }
+        })
+    },
+
+    "createSystemUser": function(req, res) {
         waterfall([
             function(callback) {
                 if (!req.body.permissions) { res.send({ responseCode: 403, responseMessage: 'Please enter permission to system admin' }); } else if (req.body.permissions.length == 0) { res.send({ responseCode: 403, responseMessage: 'Please give atleast one permission to system admin' }); } else {
@@ -3335,31 +3405,6 @@ module.exports = {
             });
         })
     },
-
-    "postCouponToStore": function(req, res) {
-        createNewAds.findOneAndUpdate({ _id: req.params.id }, { $set: { couponSellPrice: req.body.couponSellPrice, couponBuyersLength: req.body.couponBuyersLength, sellCoupon: true } }, { new: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
-                res.send({ responseCode: 200, responseMessage: "Coupon posted to store successfully." })
-            }
-        })
-    },
-
-    "showPageName": function(req, res) {
-        createNewPage.find({ status: 'ACTIVE' }, 'pageName category subCategory').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
-                result.sort(function(a, b) {
-                    //compare two values
-                    if (a.pageName.toLowerCase() < b.pageName.toLowerCase()) return -1;
-                    if (a.pageName.toLowerCase() > b.pageName.toLowerCase()) return 1;
-                    return 0;
-
-                })
-                res.send({ result: result, responseCode: 200, responseMessage: "All page with name shown successfully" })
-            }
-        })
-    },
-
- 
 
     "checkPermission": function(req, res) {
         User.findOne({ _id: req.body.userId }).exec(function(err, result) {

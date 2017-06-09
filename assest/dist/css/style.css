@@ -452,4 +452,22 @@ button.btn.btn-default.btn-sm.dropdown-toggle .caret{text-align: right;position:
  border-color:#cccccc; 
 }
 
+.cus-search-c{margin:15px;width:300px;}
+
+.offer-li-s .nav-pills>li.active>a, .card-tabs.nav-pills>li.active>a:focus, .card-tabs.nav-pills>li.active>a:hover{background-color: transparent; color: rgb(53,179,135);}
+.offer-li-s .nav>li>a:focus, .card-tabs.nav>li>a:hover{background-color: transparent;}
+.offer-li-s .nav>li>a{color: #000; padding: 10px 15px; font-weight: 600; font-size: 15px; position: relative;}
+.offer-li-s .nav>li:first-child>a{padding: 10px 15px 10px 0;}
+.offer-li-s .nav>li>a:after{content: '|'; position: absolute; right: -5px; color: #000; cursor: default;}
+.offer-li-s .nav>li:last-child>a:after{content: '';}
+
+.gift-input.c_gift-heading{width: 350px;text-align: left;}
+.gift-input.c_gift-heading h3{color: #08A783;font-size: 20px;text-align: left;}
+.gift-input.c_gift-heading{color: #fff;}
+.box-block {width: 18%;}
+.type-s {color: #fff; background: #08A783;width: 160px; text-align: center;margin: 5px 0; padding: 4px;font-size: 13px;}
+.middle-row-c1.middle-price-text {margin: 0 20px;}
+.middle-row-c1.middle-price-text h3 {color: #fff;text-decoration: underline; font-size: 18px; margin: 0;}
+
+
 

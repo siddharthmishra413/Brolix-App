@@ -9,73 +9,85 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     var luck_card = {};
     $scope.cardDetailsOnOffer = {};
     $scope.dashBordFilter = {};
-    localStorage.setItem('cardTypeName','totalSoldCards');
+    localStorage.setItem('cardTypeName', 'totalSoldCards');
 
-    $scope.removeOffers = function(id,key){
-        console.log("sssss",id)
+    $scope.removeOffers = function(id, key, type) {
         if (id == '' || id == undefined || id == null) {
             toastr.error("Please select user.")
             $state.go('header.manageCards')
-        }else{
+        } else {
+
             var cardOfferType = JSON.parse(id);
-            var cardType = localStorage.getItem('cardType')
+            $scope.cardType = key
             $scope.offerData = {};
-                if(key == 'Discount'){
-                    $scope.offerData = {
-                    type:cardType,
-                    buyCard:cardOfferType.buyCard,
-                }
-                //console.log("$scope.offerData Discount",$scope.offerData)
-            }else if(key == 'BuyAndGet'){
+            if ($scope.cardType == 'discount') {
                 $scope.offerData = {
-                    type:cardType,
-                    buyCard:cardOfferType.buyCard,
-                    freeCard:cardOfferType.freeCard,
+                    cardType: type,
+                    buyCard: cardOfferType.buyCard,
+                    offerType: $scope.cardType,
                 }
-                //console.log("$scope.offerData BuyAndGet",$scope.offerData)
+            } else if ($scope.cardType == 'buyGet') {
+                $scope.offerData = {
+                    cardType: type,
+                    buyCard: cardOfferType.buyCard,
+                    freeCard: cardOfferType.freeCard,
+                    offerType: $scope.cardType,
+                }
             }
-            console.log("$scope.offerData BuyAndGet",$scope.offerData)
+            userService.getOfferList($scope.offerData).success(function(res) {
+                if (res.responseCode == 200) {
+                    for (let i = 0; i < res.result.length; i++) {
+                        let offerTime = new Date(res.result[i].offer.offerTime).getTime();
+                        let offerCreateTime = new Date(res.result[i].offer.createdAt).getTime();
+                        let hoursMiliSecond = offerTime - offerCreateTime;
+                        let offerthour = parseInt(hoursMiliSecond * 2.77778e-7)
+                        res.result[i].offer.offerTime = offerthour;
+                    }
+                    if (res.result[0].type == 'upgrade_card') {
+                        $scope.upgradecardOnOffersRemove = res.result;
+                        if (res.result[0].offer.offerType == 'discount') {
+                            $("#upgradeOfferOnCarddRemoveDis").modal('show');
+                        } else if (res.result[0].offer.offerType == 'buyGet') {
+                            $("#upgradeOfferOnCarddRemoveBuy").modal('show');
+                        }
+
+                    } else if (res.result[0].type == 'luck_card') {
+                        $scope.luckOfferOnCarddRemove = res.result;
+                        if (res.result[0].offer.offerType == 'discount') {
+                            $("#luckOfferOnCarddRemoveDis").modal('show');
+                        } else if (res.result[0].offer.offerType == 'buyGet') {
+                            $("#luckOfferOnCarddRemoveBuy").modal('show');
+                        }
+                    }
+                }
+            })
         }
     }
 
-    $scope.removeOffers = function(id,key){
-        console.log("sssss",id)
-        if (id == '' || id == undefined || id == null) {
-            toastr.error("Please select user.")
-            $state.go('header.manageCards')
-        }else{
-            var cardOfferType = JSON.parse(id);
-            var cardType = localStorage.getItem('cardType')
-            $scope.offerData = {};
-                if(key == 'Discount'){
-                    $scope.offerData = {
-                    type:cardType,
-                    buyCard:cardOfferType.buyCard,
-                }
-                //console.log("$scope.offerData Discount",$scope.offerData)
-            }else if(key == 'BuyAndGet'){
-                $scope.offerData = {
-                    type:cardType,
-                    buyCard:cardOfferType.buyCard,
-                    freeCard:cardOfferType.freeCard,
-                }
-                //console.log("$scope.offerData BuyAndGet",$scope.offerData)
+    $scope.removeOffer = function(cardId, offerId) {
+        if (cardId == null || cardId == undefined || cardId == "") {
+            toastr.error("Something wrong");
+        } else {
+            let obj = {
+                cardId: cardId,
+                offerId: offerId
             }
-            console.log("$scope.offerData BuyAndGet",$scope.offerData)
-
-            $("#upgradeOfferOnCardd").modal('hide');
+            $("#upgradeOfferOnCarddRemoveDis").modal('hide');
+            $("#upgradeOfferOnCarddRemoveBuy").modal('hide');
+            $("#luckOfferOnCarddRemoveDis").modal('hide');
+            $("#luckOfferOnCarddRemoveBuy").modal('hide');
             BootstrapDialog.show({
                 title: 'Remove Offer',
                 message: 'Are you sure want to Remove this offer',
                 buttons: [{
                     label: 'Yes',
                     action: function(dialog) {
-                        userService.removeOfferonCards($scope.offerData).success(function(res) {
+                        userService.removeOfferonCards(obj).success(function(res) {
                             if (res.responseCode == 200) {
                                 dialog.close();
                                 toastr.success(res.responseMessage);
                                 $state.reload();
-                                
+
                             } else if (res.responseCode == 404) {
                                 toastr.error(res.responseMessage);
                             }
@@ -90,68 +102,6 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             });
         }
     }
-        
-
-        // }
-        
-        
-        //console.log("$scope.offerData",$scope.offerData)
-
-        // if(key == 'Discount'){
-        //    $scope.offerDate = {
-        //     type:
-        //    } 
-
-        // }
-        // if(data == 'Discount'){
-        //     localStorage.setItem('offerType', 'Discount' );
-        // }else if(data == 'BuyAndGet'){
-        //     localStorage.setItem('offerType', 'BuyAndGet' );  
-        // }
-
-        // var cardType = localStorage.getItem('cardType');
-        // var offerTypeName = localStorage.getItem('offerTypeName');
-        // if(offerTypeName == 'Discount'){
-
-        //     var data={
-        //         type:cardType,
-        //         status:"REMOVED",
-        //         }
-
-        // }
-
-        // $scope.offerId = id;
-        // if ($scope.offerId == '' || $scope.offerId == undefined || $scope.offerId == null) {
-        //     toastr.error("Please select user.")
-        //     $state.go('header.manageCards')
-        // } else {
-                
-        //         $("#upgradeOfferOnCardd").modal('hide');
-        //     BootstrapDialog.show({
-        //         title: 'Remove Offer',
-        //         message: 'Are you sure want to Remove this offer',
-        //         buttons: [{
-        //             label: 'Yes',
-        //             action: function(dialog) {
-        //                 userService.removeOfferonCards(data).success(function(res) {
-        //                     if (res.responseCode == 200) {
-        //                         dialog.close();
-        //                         toastr.success(res.responseMessage);
-                                
-        //                     } else if (res.responseCode == 404) {
-        //                         toastr.error(res.responseMessage);
-        //                     }
-        //                 })
-        //             }
-        //         }, {
-        //             label: 'No',
-        //             action: function(dialog) {
-        //                 dialog.close();
-        //             }
-        //         }]
-        //     });
-        // }
-
 
     $scope.dateValidation = function(dtaa) {
         var dta = dtaa;
@@ -161,7 +111,6 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     }
 
     userService.upgradeCardViewersList().success(function(res) {
-        console.log("res",res)
         if (res.responseCode == 200) {
             $scope.dashBordFilterViewer = res.result;
         } else {
@@ -170,7 +119,6 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     })
 
     userService.luckCardViewersList().success(function(res) {
-        console.log("res",res)
         if (res.responseCode == 200) {
             $scope.dashBordFilterChances = res.result;
         } else {
@@ -179,49 +127,41 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     })
 
     userService.totalSoldUpgradeCard().success(function(res) {
-        //console.log("res",JSON.stringify(res)) 
         if (res.responseCode == 200) {
             $scope.totalSoldUpgradeCard = res.result;
             $scope.totalSoldUpgradeCardCount = res.count;
         } else {
             $scope.totalSoldUpgradeCardCount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
 
     userService.totalIncomeInCashFromUpgradeCard().success(function(res) {
-
         if (res.responseCode == 200) {
             $scope.totalIncomeInCashFromUpgradeCard = res.result;
             $scope.totalIncomeFromUpgradeCard = res.totalIncome;
 
         } else if (res.responseCode == 400) {
             $scope.totalIncomeFromUpgradeCard = 0;
-            //toastr.error(res.responseMessage);
         } else {
             toastr.error(res.responseMessage);
         }
     })
 
     userService.usedUpgradeCard().success(function(res) {
-
         if (res.responseCode == 200) {
             $scope.usedUpgradeCard = res.result;
             $scope.usedUpgradeCardcount = res.total;
         } else {
             $scope.usedUpgradeCardcount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
 
     userService.unUsedUpgradeCard().success(function(res) {
-
         if (res.responseCode == 200) {
             $scope.unUsedUpgradeCard = res.result;
             $scope.unUsedUpgradeCardcount = res.total;
         } else {
             $scope.unUsedUpgradeCardcount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
 
@@ -232,19 +172,15 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             $scope.totalSoldLuckCardcount = res.count;
         } else {
             $scope.totalSoldLuckCardcount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
 
     userService.totalIncomeInBrolixFromLuckCard().success(function(res) {
-        //console.log("resaa",JSON.stringify(res)) 
-
         if (res.responseCode == 200) {
             $scope.totalIncomeInBrolixFromLuckCard = res.result;
             $scope.totalIncomeLuck = res.totalIncome;
         } else {
             $scope.totalIncomeLuck = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     userService.usedLuckCard().success(function(res) {
@@ -253,23 +189,19 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             $scope.usedLuckCardcount = res.total;
         } else {
             $scope.usedLuckCardcount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     userService.unUsedLuckCard().success(function(res) {
-        // console.log("val",JSON.stringify(res))
         if (res.responseCode == 200) {
             $scope.unUsedLuckCard = res.result;
             $scope.unUsedLuckCardcount = res.total;
         } else {
             $scope.unUsedLuckCardcount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
 
     $scope.key = "Discount";
 
-    /*Country*/
     userService.countryListData().success(function(res) {
         $scope.countriesList = res.result;
     })
@@ -280,11 +212,9 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             country: $scope.dashBordFilter.country,
         }
         userService.cityListData(obj).success(function(res) {
-            //console.log("ddd",JSON.stringify(res))
             $scope.cityList = res.result;
         })
     }
-    /*country End*/
 
     upgrade_card = {
         cardType: 'upgrade_card'
@@ -310,8 +240,6 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
 
 
     $scope.cardOnOfferUpgradeDis = function(id, type) {
-        //console.log("id",id);
-        //console.log("type",type);
         cardDetailsOnOffer = {
             cardType: "upgrade_card",
             offerType: type,
@@ -322,16 +250,11 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                 console.log("lllllllllll", JSON.stringify(res))
                 $scope.upgradecardOnOffers = res.result;
                 $("#upgradeOfferOnCardd").modal('show');
-            } else {
-                //console.log("res",JSON.stringify(res))
-            }
+            } else {}
         })
-        //console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
     }
 
     $scope.cardOnOfferUpgradeBuy = function(buyCard, freeCard, type) {
-        // console.log("id",id);
-        console.log("type", type);
         cardDetailsOnOffer = {
             cardType: "upgrade_card",
             offerType: type,
@@ -340,20 +263,15 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
         }
         userService.getOfferList(cardDetailsOnOffer).success(function(res) {
             if (res.responseCode == 200) {
-                console.log("res", JSON.stringify(res))
                 $scope.upgradecardOnOffers = res.result;
                 $("#upgradeOfferOnCardd").modal('show');
-            } else {
-                console.log("res", JSON.stringify(res))
-            }
+            } else {}
         })
 
     }
 
 
     $scope.cardOnOfferLuckDis = function(id, type) {
-        console.log("id",id);
-        console.log("type",type);
         cardDetailsOnOffer = {
             cardType: "luck_card",
             offerType: type,
@@ -361,35 +279,24 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
         }
         userService.getOfferList(cardDetailsOnOffer).success(function(res) {
             if (res.responseCode == 200) {
-                console.log("res",JSON.stringify(res))
                 $scope.luckCardOnOffers = res.result;
-                 $("#luckOfferOnCardd").modal('show');
-
-                // $("#luckOfferOnCardd").modal('show');
+                $("#luckOfferOnCardd").modal('show');
             } else {
                 toastr.error(res.responseMessage);
             }
         })
-        //console.log("cardOnOfferUpgrade",cardDetailsOnOffer);
     }
 
     $scope.cardOnOfferLuckBuy = function(buyCard, freeCard, type) {
-        console.log("buyCard",buyCard);
-        console.log("freeCard",freeCard);
-        console.log("type",type);
-        //console.log("cardDetailsOnOffer",cardDetailsOnOffer);
         cardDetailsOnOffer = {
             cardType: "luck_card",
             offerType: type,
             buyCard: buyCard,
             freeCard: freeCard
         }
-
-        //console.log("cardDetailsOnOffer",cardDetailsOnOffer);
-
         userService.getOfferList(cardDetailsOnOffer).success(function(res) {
             if (res.responseCode == 200) {
-                console.log("res",JSON.stringify(res))
+                console.log("res", JSON.stringify(res))
                 $scope.luckCardOnOffers = res.result;
                 $("#luckOfferOnCardd").modal('show');
             } else {
@@ -401,7 +308,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
 
 
     $scope.showOfferUpgrade = function(key) {
-        localStorage.setItem('cardType','upgrade_card');
+        localStorage.setItem('cardType', 'upgrade_card');
         if (key == 'buyGet') {
             console.log("yes")
             upgrade_card = {
@@ -409,7 +316,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                 offerType: 'buyGet'
             }
             userService.showOfferOnCards(upgrade_card).success(function(res) {
-                console.log("ressss",JSON.stringify(res))
+                console.log("ressss", JSON.stringify(res))
                 if (res.responseCode == 200) {
                     $scope.totalSoldUpgradeCardDiscountBuyGet = res.result;
                     $scope.totalSoldUpgradeCardCountDiscountBuyGet = res.total;
@@ -423,7 +330,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                 offerType: 'discount'
             }
             userService.showOfferOnCards(upgrade_card).success(function(res) {
-                console.log("ressss",JSON.stringify(res))
+                console.log("ressss", JSON.stringify(res))
                 if (res.responseCode == 200) {
                     $scope.totalSoldUpgradeCardDiscount = res.result;
                     $scope.totalSoldUpgradeCardCountDiscount = res.total;
@@ -435,7 +342,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
     }
 
     $scope.showOfferLuck = function(key) {
-        localStorage.setItem('cardType','luck_card');
+        localStorage.setItem('cardType', 'luck_card');
         $scope.key = "Discount";
         if (key == 'buyGet') {
             luck_card = {
@@ -515,12 +422,12 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
 
 
     $scope.getdata = function(data) {
-        if(data == 'Discount'){
-            localStorage.setItem('offerType', 'Discount' );
-        }else if(data == 'BuyAndGet'){
-            localStorage.setItem('offerType', 'BuyAndGet' );  
+        if (data == 'Discount') {
+            localStorage.setItem('offerType', 'Discount');
+        } else if (data == 'BuyAndGet') {
+            localStorage.setItem('offerType', 'BuyAndGet');
         }
-        
+
         console.log("data", data)
         $scope.key = data;
     }

@@ -1033,22 +1033,31 @@
                         <img src="{{userDetail.coverImage}}" style="height:300px;" class="img-responsive">
                         <div class="gift-images-data">
                             <div class="top-row-c1">
+                                <div class="left-img-txt">
+                                    <div class="type-s">gfhh</div>
+                                    <div class="g-layer-txt text-center">fgdfgdf</div>
+                                    <div class="type-s">Type: {{userDetail.adsType}}</div>
+                                </div>
                                 <div class="top-row-c1-left">
-                                    <h4>{{userDetail.pageName}}</h4>
-                                    <h4>Type: {{userDetail.adsType}}</h4>
+                                   <!--  <h4>{{userDetail.pageName}}</h4> -->
+                                    <!-- <h4>Type: {{userDetail.adsType}}</h4> -->
                                     <!-- <div class="cus-date-c1"><label>Valid Till : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div> -->
                                 </div>
-                                <div class="top-row-c1-right">
+                                <!-- <div class="top-row-c1-right">
                                     <div class="c1-used">Cash Status: {{userDetail.cashStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
-                                    <!-- <div class="c1-share"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</div> -->
+                                  
+                                </div> -->
+                                <div class="valid-block">
+                                    <span class="valid-txt">{{data.status}}</span>
+                                    <span class="valid-box"><i class="fa fa-circle"></i></span>
                                 </div>
-                                <div class="middle-row-c1">
+                                <div class="middle-row-c1 middle-price-text">
                                     <h3>Gift Description</h3>
                                     <p>{{userDetail.giftDescription}}</p>
                                 </div>
-                                <div class="middle-row-c1">
-                                    <h3>Price</h3>
-                                    <p>{{userDetail.cashAdPrize}}</p>
+                                <div class="middle-row-c1 middle-price-text">
+                                    <h3>Price :  <span>{{userDetail.cashAdPrize}}</span></h3>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -1058,6 +1067,11 @@
         </div>
     </div>
 </div>
+
+
+
+
+
 
 <div id="top_50_Ads" class="modal fade">
     <div class="modal-dialog cls_pop">
