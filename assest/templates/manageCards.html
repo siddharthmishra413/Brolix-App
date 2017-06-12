@@ -554,7 +554,7 @@
                                     <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
                                     <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
                                 </tr>
-                                <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 ">
+                                <tr ng-if="(usedLuckCard | cardsFilter:test).length==0 ">
                                     <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
 
@@ -588,7 +588,7 @@
                                     <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
                                     <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
                                 </tr>
-                                <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 ">
+                                <tr ng-if="(unUsedLuckCard | cardsFilter:test).length==0 ">
                                     <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
 
