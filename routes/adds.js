@@ -4,6 +4,9 @@ var adsHandler = require('../file_handler/ads.js');
 var authUser = require('../middlewares/authUser');
 
 
+app.post('/deleteComments', adsHandler.deleteComments);
+app.post('/editComments', adsHandler.editComments);
+
 app.post('/removeAds', adsHandler.removeAds);
 
 app.post('/continueAd', adsHandler.continueAd);
@@ -16,7 +19,7 @@ app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
 app.get('/showAllAdsCouponType/:id/:pageNumber', adsHandler.showAllAdsCouponType);
 app.get('/showAllAdsCashType/:id/:pageNumber', adsHandler.showAllAdsCashType);
 app.post('/couponsSearch', authUser.authUser, adsHandler.couponsSearch); //Not in docs
-app.post('/searchForCoupons/:pageNumber', authUser.authUser, adsHandler.searchForCoupons);
+app.post('/searchForCoupons/:pageNumber', adsHandler.searchForCoupons);
 app.post('/likeAndUnlike', authUser.authUser, adsHandler.likeAndUnlike);
 app.post('/commentOnAds', authUser.authUser, adsHandler.commentOnAds);
 app.post('/replyOnComment', authUser.authUser, adsHandler.replyOnComment);
@@ -32,7 +35,7 @@ app.post('/viewAd', adsHandler.viewAd);
 app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);
 app.get('/couponWinners/:pageNumber', authUser.authUser, adsHandler.couponWinners);
 app.get('/cashWinners/:pageNumber', authUser.authUser, adsHandler.cashWinners);
-app.get('/adsCommentList/:id/:pageNumber', authUser.authUser, adsHandler.adsCommentList);
+app.get('/adsCommentList/:id/:pageNumber', adsHandler.adsCommentList);
 app.post('/tagOnads', authUser.authUser, adsHandler.tagOnads);
 app.put('/editAd/:id/:userId', adsHandler.editAd);
 app.post('/adsDateFilter/:id/:pageNumber', authUser.authUser, adsHandler.adsDateFilter);

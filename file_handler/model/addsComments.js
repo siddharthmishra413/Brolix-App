@@ -27,7 +27,8 @@ var addsCommentSchema = new Schema({
         userName: { type: String, trim: true },
         userImage: { type: String, trim: true },
         replyComment: { type: String },
-        createdAt: { type: Date, default: Date.now }
+        createdAt: { type: Date, default: Date.now },
+        status: { type: String, default: 'ACTIVE'}
     }],
     createdAt: {
         type: Date,

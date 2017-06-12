@@ -84,6 +84,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="box-block  blk-browen">
+                    <div class="widget widget-stats divi-blk">
+                        <div class="top-box">
+                            <div class="total-add">Remove Page Request</div>
+                            <div class="total-amt">{{removePageRequestCount}}</div>
+                        </div>
+                        <div class="bottom-box">
+                            <div class="btn-manage" ng-click="tab='removePagerequest'">
+                                <a ng-click="pageTypeName('removePagerequest')">Show</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- <div class="box-block blk-drkblue">
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
@@ -232,7 +245,8 @@
                 <tbody>
                     <tr dir-paginate="x in totalPages | pagesFilter:test | itemsPerPage:10 ">
                         <td>
-                            <input ng-model="myForm.pageId" name="name " ng-value="{{x._id}}" type="radio">
+                           
+                            <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
                         <td >{{x.pageName}}</td>
                         <td >{{x.category}}</td>
@@ -366,7 +380,8 @@
                 <tbody>
                     <tr dir-paginate="x in showAllRemovedPage | pagesFilter:test | itemsPerPage:10 ">
                         <td>
-                            <input ng-model="myForm.pageId" name="name " value="{{x._id}} " type="radio ">
+                        <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
+                            <!-- <input ng-model="myForm.pageId" name="name " value="{{x._id}} " type="radio"> -->
                         </td>
                         <td >{{x.pageName}}</td>
                         <td >{{x.category}}</td>
@@ -450,6 +465,49 @@
         </div>
     </div>
 
+<div class="col-sm-12 " ng-switch="tab ">
+        <div class="row table-responsive cus-table " ng-switch-when="removePagerequest ">
+
+        <div class="grp-search ">
+        <div class="row-search ">
+                </div>
+                <div class="search-bar-cus">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="test" placeholder="Search By Page Name">
+                                <div class="input-group-addon">Search</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <table id="managePageTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Page Name</th>
+                        <th>Main Category</th>
+                        <th>Sub Category</th>
+                        <th>Accept Request</th>
+                        <th>Reject Request</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr dir-paginate="x in removePageRequest | pagesFilter:test | itemsPerPage:10">
+                        <td>{{x.pageName}}</td>
+                        <td>{{x.category}}</td>
+                        <td>{{x.category}}</td>
+                        <td><a class="skyblue-text" style="cursor:pointer;" ng-click="pageRequest(x._id,'ACCEPTED')">Accept</a></td>
+                        <td><a class="skyblue-text" style="cursor:pointer;" ng-click="pageRequest(x._id,'REJECTED')">Reject</a></td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+            <div class="col-sm-12 text-center">
+                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
 
     <div id="sendMessageModelAllUser" class="modal fade">
         <div class="modal-dialog cls_pop">

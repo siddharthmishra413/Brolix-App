@@ -3792,6 +3792,11 @@ module.exports = {
                         var updateData = { status: "ACTIVE", adsCount: { $gt: 0 } }
                         condition.$and.push(updateData)
                         break;
+
+                    case 'removePagerequest':
+                        var updateData =  {'adminRequest': 'REQUESTED'}
+                        condition.$and.push(updateData)
+                        break;
                 }
                 console.log("condition before callback==>>" + JSON.stringify(condition))
                 console.log("updated data===>." + updateData)
@@ -4343,11 +4348,17 @@ module.exports = {
             createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: {adminRequest: 'REMOVED', 'status': 'REMOVED'}}).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'Data not found.' }); }
                 else {
-                    res.send({
+                    var userId = result.userId;
+                    User.findByIdAndUpdate({_id:userId}, {$inc:{pageCount:-1}}, {new:true}).exec(function(err, result1){
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                        else{
+                            res.send({
                         result: result,
                         responseCode: 200,
                         responseMessage: "Page removed successfully."
                     })
+                        }                        
+                    })                    
                 }
             })
 

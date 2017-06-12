@@ -487,8 +487,16 @@ app.service('userService',function($http){
       return $http.get(baseurl+'/admin/showAllBlockedPage');
     },
 
+    removePageRequest : function(){
+      return $http.get(baseurl+'/admin/removePageRequest');
+    },
+
     addcard: function(data) {
       return $http.post(baseurl+'/admin/createCards', data);
+    },
+
+    approvalStatus: function(data) {
+      return $http.post(baseurl+'/admin/approvalStatus', data);
     },
 
     viewcard: function(type) {

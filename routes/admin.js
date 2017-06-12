@@ -28,7 +28,7 @@ app.post('/showOneOfferDetail', adminHandler.showOneOfferDetail);
 /*----------------------Manage Users------------------------*/
 
 
-app.get('/showAllUser', authUser.authUser, adminHandler.showAllUser);
+app.get('/showAllUser', adminHandler.showAllUser);
 app.get('/showAllPersonalUser', authUser.authUser, adminHandler.showAllPersonalUser);
 app.get('/showAllBusinessUser', authUser.authUser, adminHandler.showAllBusinessUser);
 app.get('/winners', authUser.authUser, adminHandler.winners);

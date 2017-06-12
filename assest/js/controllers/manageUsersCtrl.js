@@ -31,7 +31,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.totalUserCount = res.result.length;
         } else {
             $scope.totalUserCount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     userService.showAllPersonalUser().success(function(res) {
@@ -40,7 +39,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.personalUserCount = res.result.length;
         } else {
             $scope.personalUserCount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     userService.showAllBusinessUser().success(function(res) {
@@ -49,7 +47,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.businessUserCount = res.result.length;
         } else {
             $scope.businessUserCount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     userService.showAllLiveUsers().success(function(res) {
@@ -58,7 +55,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.LiveUserCount = res.result.length;
         } else {
             $scope.LiveUserCount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     userService.totalWinners().success(function(res) {
@@ -66,7 +62,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.totalWinnersCount = res.result;
         } else {
             $scope.totalWinnersCount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     userService.showAllCashWinners().success(function(res) {
@@ -75,7 +70,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.cashWinnersCount = res.result.length;
         } else {
             $scope.cashWinnersCount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     userService.showAllCouponWinners().success(function(res) {
@@ -84,7 +78,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.couponWinnersCount = res.result.length;
         } else {
             $scope.couponWinnersCount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     userService.showAllBlockUser().success(function(res) {
@@ -93,7 +86,6 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $scope.allblockUserCount = res.result.length;
         } else {
             $scope.allblockUserCount = 0;
-            //toastr.error(res.responseMessage);
         }
     })
     for (var i = 15; i < 99; i++) {
@@ -130,16 +122,12 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
     userService.viewcard($scope.cardType).success(function(res) {
         if (res.responseCode == 200) {
             $scope.UpgradeCard = res.data;
-        } else {
-            //toastr.error(res.responseMessage);
-        }
+        } else {}
     })
     userService.showListOFCouponWithoutPagination().success(function(res) {
         if (res.responseCode == 200) {
             $scope.allCoupons = res.result;
-        } else {
-            //toastr.error(res.responseMessage);
-        }
+        } else {}
     })
     $scope.export = function() {
         html2canvas(document.getElementById('manageUserTable'), {
@@ -1298,7 +1286,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             joinTo: new Date($scope.dashBordFilter.dobTo).getTime(),
             joinFrom: new Date($scope.dashBordFilter.dobFrom).getTime(),
         }
-        console.log("datatata", JSON.stringify(data))
+        // console.log("datatata", JSON.stringify(data))
         switch (type) {
             case 'totalUsers':
                 userService.userfilter(data).success(function(res) {
@@ -1504,14 +1492,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 });
                 break;
             default:
-                console.log("default")
-                console.log("scope.modalId", $scope.modalIdcoupon)
                 array.push($scope.modalIdcoupon)
                 data = {
                     couponId: $scope.couponId,
                     Id: array
                 }
-                console.log("dataIn", data)
                 BootstrapDialog.show({
                     title: 'Send Coupon',
                     message: 'Are you sure want to send coupon ??',
@@ -1540,7 +1525,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
         }
     }
 });
-app.filter("customFilterUser", function() {
+app.filter("customFilterUserss", function() {
     return function(items, nameValue) {
         if (!nameValue) {
             return retArray = items;
@@ -1550,6 +1535,20 @@ app.filter("customFilterUser", function() {
         for (var i = 0; i < items.length; i++) {
             no = items[i].mobileNumber.toString();
             if (items[i].firstName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase() || no.substr(0, nameValue.length) == nameValue) {
+                retArray.push(items[i]);
+            }
+        }
+        return retArray;
+    }
+});
+app.filter("filter", function() {
+    return function(items, nameValue) {
+        if (!nameValue) {
+            return retArray = items;
+        }
+        var retArray = [];
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].pageName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
                 retArray.push(items[i]);
             }
         }

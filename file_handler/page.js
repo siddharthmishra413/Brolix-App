@@ -266,11 +266,20 @@ module.exports = {
             } else {
                 createNewPage.findByIdAndUpdate(req.body.pageId, { $set: { status: 'DELETE' } }, { new: true }).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "Pages delete successfully."
-                    })
+                    else{
+                        console.log("page data---->>>",result)
+                        var userId = result.userId;
+                        User.findByIdAndUpdate({_id:userId},{$inc:{pageCount:-1}}, {new:true}).exec(function(err, result1){
+                              console.log("user data---->>>",result1)
+                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }else{
+                                 res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "Pages delete successfully."
+                            })                                 
+                             }                            
+                        })                    
+                    }
                 })
             }
         })
@@ -2112,13 +2121,32 @@ module.exports = {
 
                     if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city")) {
                         var cond = { $or: [] };
-                        if (key == "subCategory") {
-                            for (data in req.body[key]) {
-                                cond.$or.push({ subCategory: req.body[key][data] })
+                        var tempCond = {};
+                            
+
+                        if (key == "pageName") {
+                            // for (data in req.body[key]) {
+                            //     console.log("data",data)
+                            //     cond.$or.push({ subCategory: req.body[key] })
+                            // }
+                            console.log("ssSSSSS",req.body[key])
+                            var re = new RegExp(req.body[key], 'i');
+                            console.log(re)
+                            var data = { pageName: { $regex: re } }
+                          //  condition.$and.push(data)({ subCategory: req.body[key] })
+                            condition.$and.push(data)
+                        }
+                        // // else if(key == "pageName"){
+
+                        else if (key == "subCategory") {
+                           for (data in req.body[key]) {
+                              cond.$or.push({ subCategory: req.body[key][data] })
                             }
                             condition.$and.push(cond)
-                        } else {
-                            var tempCond = {};
+                        }
+                        // // }
+                        else {
+                           
                             tempCond[key] = req.body[key];
                             condition.$and.push(tempCond)
                         }
@@ -2168,7 +2196,15 @@ module.exports = {
 
                                 }
                                 query.$and.push(queryOrData)
-                            } else {
+                            } 
+                            else if(key == "firstName") {
+                            
+                                var re = new RegExp(req.body[key], 'i');
+                                var data = { firstName: { $regex: re } }
+                                query.$and.push(data)
+                            }
+
+                            else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
                                 query.$and.push(temporayCond)
@@ -2242,7 +2278,14 @@ module.exports = {
                                 }
                                 // console.log("queryOrData",queryOrData)
                                 queryData.$and.push(queryOrData)
-                            } else {
+                            } 
+                            else if(key == "firstName") {
+                            
+                                var re = new RegExp(req.body[key], 'i');
+                                var data = { firstName: { $regex: re } }
+                                query.$and.push(data)
+                            }
+                            else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
                                 queryData.$and.push(temporayCond)
@@ -2336,7 +2379,15 @@ module.exports = {
 
                                 }
                                 query.$and.push(queryOrData)
-                            } else {
+                            }
+                            else if (key == "firstName") {
+                                console.log("ssSSSSS",req.body[key])
+                                var re = new RegExp(req.body[key], 'i');
+                                console.log(re)
+                                var data = { firstName: { $regex: re } }
+                                query.$and.push(data)
+                            }
+                            else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
                                 query.$and.push(temporayCond)
@@ -2642,6 +2693,56 @@ module.exports = {
                     responseCode: 200,
                     responseMessage: "Review List."
                 })
+            }
+        })
+    },
+
+    "deleteCommentsOnPage": function(req, res){
+        if(req.body.type == 'comment'){
+            var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId }
+            var setCondition = { status : 'INACTIVE'}
+        }
+        else{
+            var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId , 'reply._id': req.body.replyId}
+            var setCondition = { 'reply.$.status' : 'INACTIVE'}
+        }
+
+        addsComments.findOneAndUpdate(pageQuery, setCondition, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else if(results == null || results == undefined){
+                res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
+            }
+            else {
+                res.send({
+                    result: results,
+                    responseCode: 200,
+                    responseMessage: "Comment deleted successfully."
+                });
+            }
+        })
+    },
+
+    "editCommentsonPage": function(req, res){
+        if(req.body.type == 'comment'){
+            var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId }
+            var setCondition = { comment : req.body.comment}
+        }
+        else{
+            var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId , 'reply._id': req.body.replyId}
+            var setCondition = { 'reply.$.replyComment' : req.body.replyComment}
+        }
+
+        addsComments.findOneAndUpdate(pageQuery, setCondition, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else if(results == null || results == undefined){
+                res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
+            }
+            else {
+                res.send({
+                    result: results,
+                    responseCode: 200,
+                    responseMessage: "Comment edited successfully."
+                });
             }
         })
     },

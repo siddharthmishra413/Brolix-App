@@ -60,6 +60,16 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
         }
     })
 
+    userService.removePageRequest().success(function(res) {
+        if (res.responseCode == 200) {
+            $scope.removePageRequest = res.result;
+            $scope.removePageRequestCount = res.result.length;
+        } else {
+            $scope.removePageRequestCount = 0;
+            // toastr.error(res.responseMessage);
+        }
+    })
+
     userService.allAdminPages().success(function(res) {
         if (res.responseCode == 200) {
             $scope.allAdminPages = res.result;
@@ -118,6 +128,68 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
         })
     }
 
+    $scope.pageRequest = function(pageId,status){
+        let obj = {};
+        if(pageId == null || pageId == undefined || pageId == ""){
+            toastr.error("Page Id Not get")
+        }else{
+            obj = {
+            pageId:pageId,
+            status:status,
+        }
+        if(status == 'ACCEPTED'){
+            BootstrapDialog.show({
+                title: 'Block Page',
+                message: 'Are you sure want to Accept this request',
+                buttons: [{
+                    label: 'Yes',
+                    action: function(dialog) {
+                        userService.approvalStatus(obj).success(function(res) {
+                            if (res.responseCode == 200) {
+                            toastr.success(res.responseMessage);
+                            $state.reload();
+                            } else {
+                                toastr.error(res.responseMessage);
+                            }
+                        })
+                    }
+                }, {
+                    label: 'No',
+                    action: function(dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+
+        }else{
+            BootstrapDialog.show({
+                title: 'Block Page',
+                message: 'Are you sure want to Reject this request',
+                buttons: [{
+                    label: 'Yes',
+                    action: function(dialog) {
+                        userService.approvalStatus(obj).success(function(res) {
+                            if (res.responseCode == 200) {
+                            toastr.success(res.responseMessage);
+                            $state.reload();
+                            } else {
+                                toastr.error(res.responseMessage);
+                            }
+                        })
+                    }
+                }, {
+                    label: 'No',
+                    action: function(dialog) {
+                        dialog.close();
+                    }
+                }]
+            });
+        }
+        
+        
+        }
+    }
+
     $scope.pageTypeName = function(val) {
         localStorage.setItem('pageTypeName', val);
         $scope.dashBordFilter.country = "";
@@ -167,6 +239,18 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                         $scope.showAllBlockedPageCount = res.result.length;
                     } else {
                         toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+            case 'removePagerequest':
+                userService.removePageRequest().success(function(res) {
+                    console.log("resll",JSON.stringify(res))
+                    if (res.responseCode == 200) {
+                        $scope.removePageRequest = res.result;
+                        $scope.removePageRequestCount = res.result.length;
+                    } else {
+                        $scope.removePageRequestCount = 0;
+                        // toastr.error(res.responseMessage);
                     }
                 })
                 break;
@@ -239,6 +323,19 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                     if (res.responseCode == 200) {
                         $scope.showAllBlockedPage = res.data;
                         $scope.showAllBlockedPageCount = res.data.length;
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+
+                break;
+
+            case 'removePagerequest':
+                //console.log("4");
+                userService.pagefilter(data).success(function(res) {
+                    if (res.responseCode == 200) {
+                        $scope.removePageRequest = res.result;
+                        $scope.removePageRequestCount = res.result.length;
                     } else {
                         toastr.error(res.responseMessage);
                     }

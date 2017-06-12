@@ -257,11 +257,13 @@ module.exports = {
 
     //API for Show Search
     "searchForCoupons": function(req, res) {
+        var re = new RegExp(req.body.pageName, 'i');
+
         var data = {
             'whoWillSeeYourAdd.country': req.body.country,
             'whoWillSeeYourAdd.state': req.body.state,
             'whoWillSeeYourAdd.city': req.body.city,
-            'pageName': req.body.pageName,
+            'pageName': { $regex: re },
             'adsType': req.body.type,
             'category': req.body.category,
             'subCategory': req.body.subCategory,
@@ -340,13 +342,69 @@ module.exports = {
     },
 
     "adsCommentList": function(req, res) {
-        addsComments.paginate({ addId: req.params.id }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+        addsComments.paginate({ addId: req.params.id , status : "ACTIVE"}, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                 for(var i=0; i<result.docs.length; i++){
+                     var reply=result.docs[i].reply;
+                     var data=reply.filter(reply=>reply.status=='ACTIVE');
+                     console.log("data--->>"+data)
+                     result.docs[i].reply = data;
+                   }
                 res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Comments List."
                 })
+            }
+        })
+    },
+
+    "deleteComments": function(req, res){
+        if(req.body.type == 'comment'){
+            var adQuery = { addId: req.body.adId, _id: req.body.commentId }
+            var setCondition = { status : 'INACTIVE'}
+        }
+        else{
+            var adQuery = { addId: req.body.adId, _id: req.body.commentId , 'reply._id': req.body.replyId}
+            var setCondition = { 'reply.$.status' : 'INACTIVE'}
+        }
+
+        addsComments.findOneAndUpdate(adQuery, setCondition, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else if(results == null || results == undefined){
+                res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
+            }
+            else {
+                res.send({
+                    result: results,
+                    responseCode: 200,
+                    responseMessage: "Comment deleted successfully."
+                });
+            }
+        })
+    },
+
+    "editComments": function(req, res){
+        if(req.body.type == 'comment'){
+            var adQuery = { addId: req.body.adId, _id: req.body.commentId }
+            var setCondition = { comment : req.body.comment}
+        }
+        else{
+            var adQuery = { addId: req.body.adId, _id: req.body.commentId , 'reply._id': req.body.replyId}
+            var setCondition = { 'reply.$.replyComment' : req.body.replyComment}
+        }
+
+        addsComments.findOneAndUpdate(adQuery, setCondition, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else if(results == null || results == undefined){
+                res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
+            }
+            else {
+                res.send({
+                    result: results,
+                    responseCode: 200,
+                    responseMessage: "Comment edited successfully."
+                });
             }
         })
     },
@@ -1752,7 +1810,15 @@ module.exports = {
                             cond.$or.push({ subCategory: obj[key][data] })
                         }
                         condition.$and.push(cond)
-                    } else {
+                    } 
+                    else  if (key == "pageName") {
+                        console.log("ssSSSSS",obj[key])
+                        var re = new RegExp(obj[key], 'i');
+                        console.log(re)
+                        var data = { pageName: { $regex: re } }
+                        condition.$and.push(data)
+                    }
+                    else {
                         var tempCond = {};
                         tempCond[key] = obj[key];
                         condition.$and.push(tempCond)
@@ -1800,7 +1866,15 @@ module.exports = {
                                 cond.$or.push({ subCategory: obj[key][data] })
                             }
                             condition.$and.push(cond)
-                        } else {
+                        } 
+                        else  if (key == "pageName") {
+                            console.log("ssSSSSS",obj[key])
+                            var re = new RegExp(obj[key], 'i');
+                            console.log(re)
+                            var data = { pageName: { $regex: re } }
+                            condition.$and.push(data)
+                        }
+                        else {
                             var tempCond = {};
                             tempCond[key] = obj[key];
                             condition.$and.push(tempCond)

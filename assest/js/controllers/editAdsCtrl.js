@@ -3,7 +3,6 @@ $(window).scrollTop(0,0);
 $scope.class = true;
 $scope.$emit('headerStatus', 'Manage Ads');
 $scope.$emit('SideMenu', 'Manage Ads');
-console.log("sss")
 $scope.createAds = {};
 
 

@@ -7,6 +7,9 @@ app.post('/createPagePayment', pageHandler.createPagePayment);
 app.post('/returnPage', pageHandler.returnPage);
 
 
+app.post('/deleteCommentsOnPage', pageHandler.deleteCommentsOnPage);
+app.post('/editCommentsonPage', pageHandler.editCommentsonPage);
+
 app.post('/createPage', pageHandler.createPage);
 app.get('/showAllPages/:pageNumber', authUser.authUser, pageHandler.showAllPages);
 app.get('/showAllOtherUserPages/:id/:pageNumber', authUser.authUser, pageHandler.showAllOtherUserPages);

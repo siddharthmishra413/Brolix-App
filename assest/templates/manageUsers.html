@@ -369,7 +369,7 @@
                     <tbody>
                         <!-- <tr ng-repeat="x in totalUser |filter:test"> -->
 
-                        <tr dir-paginate="x in totalUser | customFilterUser:test | itemsPerPage:10">
+                        <tr dir-paginate="x in totalUser | customFilterUserss:test | itemsPerPage:10">
                             <td>
                                 <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                             </td>
@@ -450,8 +450,8 @@
                     </thead>
                     <tbody>
                         <!-- <tr ng-repeat="x in personalUser |filter:test"> -->
-                        <tr dir-paginate="x in personalUser | customFilterUser:test1 | itemsPerPage:10">
-                            <!-- <tr ng-repeat="x in personalUser | customFilterUser:test1"> -->
+                        <tr dir-paginate="x in personalUser | customFilterUserss:test1 | itemsPerPage:10">
+                            <!-- <tr ng-repeat="x in personalUser | customFilterUserssest1"> -->
                             <td>
                                 <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                             </td>
@@ -464,7 +464,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUser:test1).length != 0">
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(personalUser | customFilterUserssest1).length != 0">
                         <button ng-click="prePersonalUser()" ng-disabled="pagePersonalUser==1" class="btn paginationBtn" >Prev</button>
                         {{pagePersonalUser}}/{{noOfPagesPersonalUser}}
                         <button ng-click="nextPersonalUser()" ng-disabled="pagePersonalUser==noOfPagesPersonalUser" class="btn paginationBtn">Next</button>
@@ -536,8 +536,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr dir-paginate="x in businessUser | customFilterUser:test2 | itemsPerPage:10">
-                            <!--  <tr ng-repeat="x in businessUser | customFilterUser:test2"> -->
+                        <tr dir-paginate="x in businessUser | customFilterUserss:test2 | itemsPerPage:10">
+                            <!--  <tr ng-repeat="x in businessUser | customFilterUserssest2"> -->
                             <td>
                                 <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                             </td>
@@ -550,7 +550,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(businessUser | customFilterUser:test2).length != 0">
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(businessUser | customFilterUserssest2).length != 0">
                 <button ng-click="preBusinessUser()" ng-disabled="pageBusinessUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBusinessUser}}/{{noOfPagesBusinessUser}}
                 <button ng-click="nextBusinessUser()" ng-disabled="pageBusinessUser==noOfPagesBusinessUser" class="btn paginationBtn">Next</button>
@@ -622,8 +622,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr dir-paginate="x in liveUser | customFilterUser:test3 | itemsPerPage:10">
-                            <!--    <tr ng-repeat="x in liveUser | customFilterUser:test3"> -->
+                        <tr dir-paginate="x in liveUser | customFilterUserss:test3 | itemsPerPage:10">
+                            <!--    <tr ng-repeat="x in liveUser | customFilterUserssest3"> -->
                             <td>
                                 <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                             </td>
@@ -636,7 +636,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(liveUser | customFilterUser:test3).length != 0">
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(liveUser | customFilterUserssest3).length != 0">
                 <button ng-click="preLiveUser()" ng-disabled="pageLiveUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageLiveUser}}/{{noOfPagesLiveUser}}
                 <button ng-click="nextLiveUser()" ng-disabled="pageLiveUser==noOfPagesLiveUser" class="btn paginationBtn">Next</button>
@@ -708,8 +708,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr dir-paginate="x in totalWinners | customFilterUser:test4 | itemsPerPage:10">
-                            <!--   <tr ng-repeat="x in totalWinners | customFilterUser:test4"> -->
+                        <tr dir-paginate="x in totalWinners | customFilterUserssest4 | itemsPerPage:10">
+                            <!--   <tr ng-repeat="x in totalWinners | customFilterUserssest4"> -->
                             <td>
                                 <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                             </td>
@@ -722,7 +722,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalWinners | customFilterUser:test4).length != 0">
+            <!-- <div style="float:right; font-size: 20px;" ng-if="(totalWinners | customFilterUserssest4).length != 0">
                 <button ng-click="preTotalWinners()" ng-disabled="pageTotalWinners ==1" class="btn paginationBtn" >Prev</button>
                 {{pageTotalWinners }}/{{noOfPagesTotalWinners }}
                 <button ng-click="nextTotalWinners ()" ng-disabled="pageTotalWinners ==noOfPagesTotalWinners " class="btn paginationBtn">Next</button>
@@ -795,8 +795,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr dir-paginate="x in cashWinners | customFilterUser:test5 | itemsPerPage:10">
-                            <!-- <tr ng-repeat="x in cashWinners | customFilterUser:test5"> -->
+                        <tr dir-paginate="x in cashWinners | customFilterUserssest5 | itemsPerPage:10">
+                            <!-- <tr ng-repeat="x in cashWinners | customFilterUserssest5"> -->
                             <td>
                                 <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                             </td>
@@ -809,7 +809,7 @@
                     </tbody>
                 </table>
             </div>
-            <!--  <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUser:test5).length != 0">
+            <!--  <div style="float:right; font-size: 20px;" ng-if="(cashWinners | customFilterUserssest5).length != 0">
                 <button ng-click="preCashWinners()" ng-disabled="pageCashWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCashWinners}}/{{noOfPagesCashWinners}}
                 <button ng-click="nextCashWinners()" ng-disabled="pageCashWinners==noOfPagesCashWinners" class="btn paginationBtn">Next</button>
@@ -881,8 +881,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr dir-paginate="x in couponWinners | customFilterUser:test6 | itemsPerPage:10">
-                            <!--  <tr ng-repeat="x in couponWinners | customFilterUser:test6"> -->
+                        <tr dir-paginate="x in couponWinners | customFilterUserssest6 | itemsPerPage:10">
+                            <!--  <tr ng-repeat="x in couponWinners | customFilterUserssest6"> -->
                             <td>
                                 <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                             </td>
@@ -895,7 +895,7 @@
                     </tbody>
                 </table>
             </div>
-            <!--  <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUser:test6).length != 0">
+            <!--  <div style="float:right; font-size: 20px;" ng-if="(couponWinners | customFilterUserssest6).length != 0">
                 <button ng-click="preCouponWinners()" ng-disabled="pageCouponWinners==1" class="btn paginationBtn" >Prev</button>
                 {{pageCouponWinners}}/{{noOfPagesCouponWinners}}
                 <button ng-click="nextCouponWinners()" ng-disabled="pageCouponWinners==noOfPagesCouponWinners" class="btn paginationBtn">Next</button>
@@ -945,8 +945,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr dir-paginate="x in allblockUser | customFilterUser:test7 | itemsPerPage:10">
-                            <!--  <tr ng-repeat="x in allblockUser | customFilterUser: test7"> -->
+                        <tr dir-paginate="x in allblockUser | customFilterUserss:test7 | itemsPerPage:10">
+                            <!--  <tr ng-repeat="x in allblockUser | customFilterUsersstest7"> -->
                             <td>
                                 <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                             </td>
@@ -959,7 +959,7 @@
                     </tbody>
                 </table>
             </div>
-            <!--  <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUser:test7).length != 0">
+            <!--  <div style="float:right; font-size: 20px;" ng-if="(allblockUser | customFilterUserssest7).length != 0">
                 <button ng-click="preBlockUser()" ng-disabled="pageBlockUser==1" class="btn paginationBtn" >Prev</button>
                 {{pageBlockUser}}/{{noOfPagesBlockUser}}
                 <button ng-click="nextBlockUser()" ng-disabled="pageBlockUser==noOfPagesBlockUser" class="btn paginationBtn">Next</button>
@@ -1254,7 +1254,7 @@
             </div>
             <div class="modal-header">
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
-                <input class="searching form-control" ng-model='pageName' placeholder='search coupan...' style="width: 200px;">
+                <input class="searching form-control" ng-model='pageName' placeholder='Search by Page Name...' style="width: 200px;">
             </div>
             <div class="row-table" ng-repeat="data in allCoupons | customSearchFilter:pageName">
                 <div class="col-cell">
@@ -1348,7 +1348,7 @@
                                     <div class="c_modal_search">
                                         <form class="navbar-form" role="search">
                                             <div class="input-group add-on">
-                                                <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text" ng-model="page">
+                                                <input class="form-control" placeholder="Search by page name" name="srch-term" id="srch-term" type="text" ng-model="page">
                                                 <!-- <div class="input-group-btn">
                                             <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                                           </div> -->

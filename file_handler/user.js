@@ -2711,7 +2711,8 @@ var payKey = 'AP-1WT665016G226315H'
         var name = req.body.name;
         if (req.body.type == 'withCode') {
             if (!(req.body.name == null || req.body.name == undefined || req.body.name == '')) {
-                var condition = { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstName': name }
+                  var re = new RegExp(name, 'i');
+                var condition = { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstName':  { $regex: re } }
             } else {
                 var condition = { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" }
             }
@@ -2727,7 +2728,8 @@ var payKey = 'AP-1WT665016G226315H'
         } else {
 
             if (!(req.body.name == null || req.body.name == undefined || req.body.name == '')) {
-                var condition = { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE", 'firstName': name }
+                var re = new RegExp(name, 'i');
+                var condition = { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE", 'firstName': { $regex: re } }
             } else {
                 var condition = { 'coupon.pageId': pageId, 'coupon.status': "ACTIVE" }
             }

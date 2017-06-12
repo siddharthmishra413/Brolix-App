@@ -241,13 +241,10 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-center">
-                                        <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
+                                        <label  class="coupon-date col-sm-12">Number of Viewers</label>
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <span ng-model="createAds.viewers" ng-pattern="/^[0-9]*$/" name="viewers"  maxlength="6" type="text" class="form-control text-center" required></span>
-                                               <span style="color:red" ng-show="vedioStep.viewers.$dirty && vedioStep.viewers.$invalid">
-                                        <span ng-show="vedioStep.viewers.$error.required">*viewers is required.</span>
-                                        <span ng-show="vedioStep.viewers.$error.pattern">*Please enter only numbers!</span>
-                                        </span>
+                                            <span ng-model="createAds.viewers" type="text" class="form-control text-center"></span>
+                                               
                                         </div>
                                     </div>
                                 </div>
@@ -844,7 +841,7 @@
                                         </div>
                                           <!-- <input type="text" ng-model="createAds.promoteDescr" placeholder="Description...">  -->
                                         <div class="btn2 text-center">
-                                            <button  ng-disabled="count == true && createAds.appIcon == null" class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">{{createAds.appIcon == null?true:false}}Next</button>
+                                            <button  ng-disabled="count == true && createAds.appIcon == null" class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">Next</button>
                                             <button  class="btn btn-lg btn-green" ng-click="click('promoteAppBack')">Back</button>
                                         </div>
                                     </fieldset>

@@ -25,10 +25,16 @@
                                         <label class="control-label col-md-3">Last Name</label>
                                         <div class="col-md-9">
                                             <input type="text" class="form-control" name="lastName" ng-model="myFrom.lastName" placeholder="Last Name" maxlength="31" ng-maxlength="30" required>
-                                            <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid"></span>
+                                            <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid">
                                                 <span ng-show="userFrom.lastName.$error.required">Last name is required.</span>
                                             <span ng-show="userFrom.lastName.$error.maxlength">Your last name should contain max 30 alphabets.</span>
                                         </div>
+                                        <!-- <div class="col-md-9">
+                                            <input type="text" class="form-control" name="lastName" ng-model="myFrom.lastName" placeholder="Last Name" maxlength="31" ng-maxlength="30" required>
+                                            <span style="color:red;" ng-show="userFrom.lastName.$dirty && userFrom.lastName.$invalid"></span>
+                                                <span ng-show="userFrom.lastName.$error.required">Last name is required.</span>
+                                            <span ng-show="userFrom.lastName.$error.maxlength">Your last name should contain max 30 alphabets.</span>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">

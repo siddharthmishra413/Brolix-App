@@ -138,6 +138,7 @@ app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window,
                 });
 
                 $scope.myFrom.termscreatePageCondition = $scope.createPageTerms[0].termsConditionContent;
+                console.log("$scope.myFrom.termscreatePageCondition",$scope.myFrom.termscreatePageCondition)
             } else {
                 toastr.error(res.responseMessage);
             }
