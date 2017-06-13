@@ -379,7 +379,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.advertismentCover = ObjS.data.result.url;
-
+                                console.log("createAds.advertismentCover",$scope.createAds.advertismentCover)
                             }, 250);
                         })
                         break;
@@ -450,6 +450,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                             $timeout(function() {
                                 spinnerService.hide('html5spinner');
                                 $scope.createAds.appIcon = ObjS.data.result.url;
+                                console.log($scope.createAds.appIcon,$scope.createAds.appIcon)
                             }, 250);
                         })
                         break;
