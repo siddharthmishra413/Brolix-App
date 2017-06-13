@@ -1,7 +1,9 @@
   var https = require('https');
   var nodemailer = require('nodemailer');
   var FCM = require('fcm').FCM;
-  // var apn = require('apn');
+ var config = require("../config.js")
+console.log("secreteKey-->>>",config.secreteKey)
+  var apn = require('apn');
   module.exports = {
       "otp": function(mobile ,msg_body) {
           var possible = "123456789";
@@ -33,8 +35,7 @@
           request.end();
           return otp;
           console.log("-------Your OTP------" + otp)
-      },
-
+      },        
       "mail": function(email, massege, otp) {
           var transporter = nodemailer.createTransport({
               service: 'Gmail',
@@ -62,6 +63,7 @@
       },
 
       "android_notification": function(deviceToken, message1) {
+           console.log("message1--->>>",message1)
           var serverKey = 'AAAA0wDwq1I:APA91bHUyLivU-szb-z_23Ui532XPOxY0yqB07F27-HMme9Vu1psCS2TZI970av_HS1NswVHyKhX4qKoERYWmCChqY2fOVCVlZwTdudwXAk_rda5Z98z7fxK2r6kaf0o5x4cDSFzQqdc ';
           var fcm = new FCM(serverKey);
           var message = {
@@ -79,11 +81,12 @@
       },
 
       "iOS_notification": function(deviceToken, message) {
+          console.log("message--->>>",message)
+           console.log("deviceToken--->>>",deviceToken)
           var options = {
               "cert": config.iOSPemFile,
               "key": config.iOSPemFile,
               "passphrase": "Mobiloitte1",
-
               "gateway": "gateway.push.apple.com",
               "port": 2195,
               "enhanced": true,
@@ -97,7 +100,7 @@
           var apnConnection = new apn.Connection(options);
           var myDevice = new apn.Device(deviceToken);
           var note = new apn.Notification();
-
+           console.log("mydevice-1111-->>>",myDevice)
           //note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
           note.badge = 1;
           note.alert = message;
@@ -108,6 +111,6 @@
           } catch (ex) {
               console.log("Error in push notification-- ", ex);
           }
-      }
+      },
 
   }

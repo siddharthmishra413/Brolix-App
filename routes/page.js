@@ -5,6 +5,8 @@ var authUser = require('../middlewares/authUser');
 
 app.post('/createPagePayment', pageHandler.createPagePayment);
 app.post('/returnPage', pageHandler.returnPage);
+app.post('/deleteSocialMediaLink', pageHandler.deleteSocialMediaLink);
+app.post('/editSocialMediaLink', pageHandler.editSocialMediaLink);
 
 
 app.post('/deleteCommentsOnPage', pageHandler.deleteCommentsOnPage);
@@ -27,7 +29,7 @@ app.get('/showBlockedPage/:pageNumber', authUser.authUser, pageHandler.showBlock
 app.post('/removePage', authUser.authUser, pageHandler.removePage);
 app.get('/showAllRemovedPage/:pageNumber', authUser.authUser, pageHandler.showAllRemovedPage);
 app.post('/linkSocialMedia', authUser.authUser, pageHandler.linkSocialMedia);
-app.post('/getSocialMediaLink', authUser.authUser, pageHandler.getSocialMediaLink);
+app.post('/getSocialMediaLink', pageHandler.getSocialMediaLink);
 app.post('/particularPageCouponWinners/:pageNumber', pageHandler.particularPageCouponWinners);
 app.post('/particularPageCashWinners/:pageNumber', authUser.authUser, pageHandler.particularPageCashWinners);
 app.put('/adAdmin/:id', authUser.authUser, pageHandler.adAdmin);

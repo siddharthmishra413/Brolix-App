@@ -213,7 +213,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -279,7 +279,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -345,7 +345,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -411,7 +411,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -477,7 +477,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -543,7 +543,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -609,7 +609,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -674,7 +674,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -738,7 +738,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -804,7 +804,7 @@
                             <a data-toggle="tab" style="cursor:pointer;" ng-click="removeAds(myForm.checkId)">Remove Ad</a>
                         </li>
                         <li class="">
-                            <a data-toggle="tab" style="cursor:pointer;">Set on home page</a>
+                            <a data-toggle="tab" style="cursor:pointer;" ng-click="setOnHomePage(myForm.checkId)">Set on home page</a>
                         </li>
                         <li class="">
                             <a data-toggle="tab"  style="cursor: pointer;" ng-click="contactOwner()">Contact Owner</a>
@@ -950,6 +950,18 @@
                     <div class="add-user panel panel-default cust-panel" style="margin:0;">
                         <div class="table-responsive cus-table">
                             <table id="manageUserTable" class="table table-bordered table-striped">
+                                    <tr>                                      
+                                        <th>CreatedAt</th>
+                                        <td class="skyblue-text">{{userDetail.createdAt | date:'MM-dd-yyyy'}}</td>
+                                     </tr>   
+                                     <tr>
+                                        <th>Updated At</th>
+                                        <td class="skyblue-text">{{userDetail.updatedAt | date:'MM-dd-yyyy'}}</td>
+                                     </tr>
+                                    <tr>
+                                        <th>Page Name</th>
+                                        <td class="skyblue-text">{{userDetail.pageName}}</td>
+                                    </tr>
                                      <tr>
                                          <th>Category</th>
                                         <td class="skyblue-text">{{userDetail.category}}</td>
@@ -957,27 +969,82 @@
                                      <tr>
                                         <th>Sub Category</th>
                                         <td class="skyblue-text">{{userDetail.subCategory}}</td>
-                                     </tr>  
+                                     </tr>
                                      <tr>
                                         <th>Ad Type</th>
-                                        <td class="skyblue-text">{{userDetail.adContentType}}</td>
+                                        <td class="skyblue-text">{{userDetail.adsType}}</td>
+                                     </tr>  
+                                     <tr>
+                                        <th>Number of Images</th>
+                                        <td class="skyblue-text">{{userDetail.dawnloadPagePhoto.length}}</td>
+                                     </tr>
+                                     <tr>
+                                        <th>Video Length</th>
+                                        <td class="skyblue-text">1:30/3Mb</td>
                                      </tr>
                                      <tr>   
                                         <th>Cover Image</th>                               
                                         <td class="skyblue-text"><img ng-src="{{userDetail.coverImage}}"height="50px" ></td>
-                                     </tr>  
+                                     </tr>
+                                     <tr>   
+                                        <th>Download Links</th>                               
+                                        <td class="skyblue-text">{{userDetail.linkCount}}</td>
+                                     </tr>
+                                     <tr>   
+                                        <th>Gift Description</th>                               
+                                        <td class="skyblue-text">{{userDetail.giftDescription}}</td>
+                                     </tr>
+                                     <tr>   
+                                        <th>Gift Image</th>                               
+                                         <td class="skyblue-text">{{userDetail.giftDescription == "" ? "No" : "Yes"}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Hidden Gift</th> 
+                                        <td class="skyblue-text">{{userDetail.hiddenGifts.length > 0 ? "Yes" : "No"}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>No. of Codes</th> 
+                                        <td class="skyblue-text">{{userDetail.hiddenGifts.length}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Upgraded</th> 
+                                        <td class="skyblue-text">{{userDetail.luckCardListObject == "" ? "No" : "Yes"}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Card Price</th> 
+                                        <td class="skyblue-text">{{userDetail.cash}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>No. of Viewers</th> 
+                                        <td class="skyblue-text">{{userDetail.viewers}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>No. of Winners</th> 
+                                        <td class="skyblue-text">{{userDetail.numberOfWinners}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Post on Store</th> 
+                                        <td class="skyblue-text">{{userDetail.postonStore == "" ? "No" : "Yes"}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Targeted Location</th> 
+                                        <td class="skyblue-text">Country - {{userDetail.whoWillSeeYourAdd.country}} , city - {{userDetail.whoWillSeeYourAdd.city}}</td>
+                                       
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Targeted Gender</th> 
+                                        <td class="skyblue-text">{{userDetail.gender}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Targeted Age</th> 
+                                        <td class="skyblue-text">{{userDetail.ageFrom}}-{{userDetail.ageTo}}</td>
+                                     </tr> 
+                                      
                                      <tr>                                       
                                         <th>Status</th>
                                         <td class="skyblue-text">{{userDetail.status}}</td>
                                      </tr>
-                                     <tr>                                      
-                                        <th>CreatedAt</th>
-                                        <td class="skyblue-text">{{userDetail.createdAt | date:'MM-dd-yyyy'}}</td>
-                                     </tr>   
-                                     <tr>
-                                        <th>Updated At</th>
-                                        <td class="skyblue-text">{{userDetail.updatedAt | date:'MM-dd-yyyy'}}</td>
-                                     </tr>   
+                                        
                                      <tr>
                                         <th>Reports on Ad</th>
                                         <td class="skyblue-text">{{userDetail.reportOnAd}}</td>
@@ -1026,5 +1093,58 @@
                 </div>
            </div>
        </div>
-</div>     
+</div> 
+
+
+<div id="setOnHomePage" class="modal fade" >
+   <div class="modal-dialog cls_pop">
+       <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <h4 class="modal-title">Set On Home Page</h4>
+           </div>
+           <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="control-label col-md-4">Position</label>
+                            <select class="form-control" ng-model="setpriority.position" required>
+                            <option value="">please determine the position</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="control-label col-md-4">Time</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                  <input ng-model="setpriority.time" type="tel" name="prices"  ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" placeholder="Enter Expire Time" required>
+                                  <span class="input-group-addon" id="basic-addon2"></span>
+                                </div>
+                                <span style="color:red;" ng-show="crtCard.prices.$dirty && crtCard.prices.$invalid">
+                                <span ng-show="crtCard.prices.$error.required">Time is required.</span> 
+                                <span ng-show="crtCard.prices.$error.pattern">Only number are allowed.</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn2 text-center">
+                        <button class="btn btn-lg btn-green " ng-disabled="crtCard.$invalid" ng-click="setPriority()">Set On Home Page</button>
+                        <!-- <a href="index.html" class="btn btn-lg btn-green">Cancel</a> -->
+                    </div>
+                </div>
+           </div>
+       </div>
+   </div>
+</div>    
 

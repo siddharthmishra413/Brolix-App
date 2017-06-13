@@ -883,11 +883,15 @@ var payKey = 'AP-1WT665016G226315H'
                 } else {
                     var password = req.body.newpass;
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                        else{
                         res.send({
                             responseCode: 200,
                             responseMessage: "Password changed."
                         });
+                        }                        
                     })
+                   
                 }
             }
         })
@@ -1077,9 +1081,9 @@ var payKey = 'AP-1WT665016G226315H'
                                             result3.save();
                                             callback(null, result2)
                                         }
-                                        if (result3.deviceType && result3.notification_status && result3.status) {
-                                            if (result3.deviceType == 'Android' && result3.notification_status == 'on' && result3.status == 'ACTIVE') {
-                                                var message = "I have send you brolix";
+                                        if (result3.deviceToken && result3.deviceType && result3.notification_status && result3.status) {
+                                            var message = "I have send you brolix";
+                                            if (result3.deviceType == 'Android' && result3.notification_status == 'on' && result3.status == 'ACTIVE') {                                                
                                                 functions.android_notification(result3.deviceToken, message);
                                                 console.log("Android notification send!!!!")
                                             } else if (result3.deviceType == 'iOS' && result3.notification_status == 'on' && result3.status == 'ACTIVE') {
@@ -1107,9 +1111,10 @@ var payKey = 'AP-1WT665016G226315H'
                                     else {
                                         callback(null, result4)
                                     }
-                                    if (result5.deviceType && result5.notification_status && result5.status) {
+                                    if (result5.deviceToken && result5.deviceType && result5.notification_status && result5.status) {
+                                        var message = "I have send you brolix";
                                         if (result5.deviceType == 'Android' && result5.notification_status == 'on' && result5.status == 'ACTIVE') {
-                                            var message = "I have send you brolix";
+                                            
                                             functions.android_notification(result5.deviceToken, message);
                                             console.log("Android notification send!!!!")
                                         } else if (result5.deviceType == 'iOS' && result5.notification_status == 'on' && result5.status == 'ACTIVE') {
@@ -1169,9 +1174,9 @@ var payKey = 'AP-1WT665016G226315H'
                                             user.save();
                                             //callback(null, user)
                                         }
-                                        if (user.deviceType && user.notification_status && user.status) {
-                                            if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {
-                                                var message = "I have sent you cash";
+                                        if (user.deviceToken && user.deviceType && user.notification_status && user.status) {
+                                            var message = "I have sent you cash";
+                                            if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {                                               
                                                 functions.android_notification(user.deviceToken, message);
                                                 console.log("Android notification send!!!!")
                                             } else if (user.deviceType == 'iOS' && user.notification_status == 'on' && user.status == 'ACTIVE') {
@@ -1201,9 +1206,10 @@ var payKey = 'AP-1WT665016G226315H'
                                         user.save();
                                         //callback(null, user)
                                     }
-                                    if (user.deviceType && user.notification_status && user.status) {
+                                    if (user.deviceToken && user.deviceType && user.notification_status && user.status) {
+                                         var message = "I have sent you cash";
                                         if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {
-                                            var message = "I have sent you cash";
+                                           
                                             functions.android_notification(user.deviceToken, message);
                                             console.log("Android notification send!!!!")
                                         } else if (user.deviceType == 'iOS' && user.notification_status == 'on' && user.status == 'ACTIVE') {
@@ -2236,9 +2242,10 @@ var payKey = 'AP-1WT665016G226315H'
                                     }
                                 })
                             }
-                            if (result2.deviceType && result2.notification_status && result2.status) {
+                            if (result2.deviceToken && result2.deviceType && result2.notification_status && result2.status) {
+                                var message = "You have coupon Exchange request";
                                 if (result2.deviceType == 'Android' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
-                                    var message = "You have coupon Exchange request";
+                                    
                                     functions.android_notification(result2.deviceToken, message);
                                     console.log("Android notification send!!!!")
                                 } else if (result2.deviceType == 'iOS' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
@@ -2262,9 +2269,10 @@ var payKey = 'AP-1WT665016G226315H'
                                     callback(null, result5)
                                 }
                             })
-                            if (result2.deviceType && result2.notification_status && result2.status) {
+                            if (result2.deviceToken && result2.deviceType && result2.notification_status && result2.status) {
+                                 var message = "You have coupon Exchange request";
                                 if (result2.deviceType == 'Android' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
-                                    var message = "You have coupon Exchange request";
+                                   
                                     functions.android_notification(result2.deviceToken, message);
                                     console.log("Android notification send!!!!")
                                 } else if (result2.deviceType == 'iOS' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
@@ -2386,9 +2394,9 @@ var payKey = 'AP-1WT665016G226315H'
                                             User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, type: "I have sent you a coupon", notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                                 console.log("receiverId--->>>", result4)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
-                                                if (result4.deviceType && result4.notification_status && result4.status) {
-                                                    if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
-                                                        var message = "you have one coupon exchange request";
+                                                if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
+                                                     var message = "you have one coupon exchange request";
+                                                    if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {                                                       
                                                         functions.android_notification(result4.deviceToken, message);
                                                         console.log("Android notification send!!!!")
                                                     } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
@@ -2440,9 +2448,9 @@ var payKey = 'AP-1WT665016G226315H'
                                         }
                                         User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, type: "I have sent you a coupon", notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 77' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
-                                            if (result4.deviceType && result4.notification_status && result4.status) {
-                                                if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
-                                                    var message = "you have one coupon exchange request";
+                                            if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
+                                                var message = "you have one coupon exchange request";
+                                                if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {                                                    
                                                     functions.android_notification(result4.deviceToken, message);
                                                     console.log("Android notification send!!!!")
                                                 } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {

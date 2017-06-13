@@ -854,9 +854,117 @@
                 <h4 class="modal-title">Used Ad Information</h4>
             </div>
             <div class="modal-body">
+                <div class="modal-outer-block">
+                    <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                        <div class="table-responsive cus-table">
+                            <!-- <table id="manageUserTable" class="table table-bordered table-striped">
+                                    <tr>                                      
+                                        <th>CreatedAt</th>
+                                        <td class="skyblue-text">{{usedAd.createdAt | date:'MM-dd-yyyy'}}</td>
+                                     </tr>   
+                                     <tr>
+                                        <th>Updated At</th>
+                                        <td class="skyblue-text">{{usedAd.updatedAt | date:'MM-dd-yyyy'}}</td>
+                                     </tr>
+                                    <tr>
+                                        <th>Page Name</th>
+                                        <td class="skyblue-text">{{usedAd.pageName}}</td>
+                                    </tr>
+                                     <tr>
+                                         <th>Category</th>
+                                        <td class="skyblue-text">{{usedAd.category}}</td>
+                                     </tr>
+                                     <tr>
+                                        <th>Sub Category</th>
+                                        <td class="skyblue-text">{{usedAd.subCategory}}</td>
+                                     </tr>
+                                     <tr>
+                                        <th>Ad Type</th>
+                                        <td class="skyblue-text">{{usedAd.adsType}}</td>
+                                     </tr>  
+                                     <tr>
+                                        <th>Number of Images</th>
+                                        <td class="skyblue-text">{{usedAd.dawnloadPagePhoto.length}}</td>
+                                     </tr>
+                                     <tr>
+                                        <th>Video Length</th>
+                                        <td class="skyblue-text">1:30/3Mb</td>
+                                     </tr>
+                                     <tr>   
+                                        <th>Cover Image</th>                               
+                                        <td class="skyblue-text"><img ng-src="{{usedAd.coverImage}}"height="50px" ></td>
+                                     </tr>
+                                     <tr>   
+                                        <th>Download Links</th>                               
+                                        <td class="skyblue-text">{{usedAd.linkCount}}</td>
+                                     </tr>
+                                     <tr>   
+                                        <th>Gift Description</th>                               
+                                        <td class="skyblue-text">{{usedAd.giftDescription}}</td>
+                                     </tr>
+                                     <tr>   
+                                        <th>Gift Image</th>                               
+                                         <td class="skyblue-text">{{usedAd.giftDescription == "" ? "No" : "Yes"}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Hidden Gift</th> 
+                                        <td class="skyblue-text">{{usedAd.hiddenGifts.length > 0 ? "Yes" : "No"}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>No. of Codes</th> 
+                                        <td class="skyblue-text">{{usedAd.hiddenGifts.length}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Upgraded</th> 
+                                        <td class="skyblue-text">{{usedAd.luckCardListObject == "" ? "No" : "Yes"}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Card Price</th> 
+                                        <td class="skyblue-text">{{usedAd.cash}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>No. of Viewers</th> 
+                                        <td class="skyblue-text">{{usedAd.viewers}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>No. of Winners</th> 
+                                        <td class="skyblue-text">{{usedAd.numberOfWinners}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Post on Store</th> 
+                                        <td class="skyblue-text">{{usedAd.postonStore == "" ? "No" : "Yes"}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Targeted Location</th> 
+                                        <td class="skyblue-text">Country - {{usedAd.whoWillSeeYourAdd.country}} , city - {{usedAd.whoWillSeeYourAdd.city}}</td>
+                                       
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Targeted Gender</th> 
+                                        <td class="skyblue-text">{{usedAd.gender}}</td>
+                                     </tr>
+                                     <tr>                                       
+                                        <th>Targeted Age</th> 
+                                        <td class="skyblue-text">{{usedAd.ageFrom}}-{{usedAd.ageTo}}</td>
+                                     </tr> 
+                                      
+                                     <tr>                                       
+                                        <th>Status</th>
+                                        <td class="skyblue-text">{{usedAd.status}}</td>
+                                     </tr>
+                                        
+                                     <tr>
+                                        <th>Reports on Ad</th>
+                                        <td class="skyblue-text">{{usedAd.reportOnAd}}</td>
+                                    </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+           </div> -->
+            <div class="modal-body">
                 <form name="userFrom1">
                     <div class="table-responsive cus-table">
-                        <!-- <table class="table table-bordered table-striped" >                          -->
                         <div class="gift-images" ng-repeat="usedAd in usedAd">
                             <img src="{{usedAd.coverImage}} " style="height:300px;" class="img-responsive">
                             <div class="gift-images-data">

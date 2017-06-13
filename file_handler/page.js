@@ -512,10 +512,45 @@ module.exports = {
         createNewPage.findOne({ _id: req.body.pageId }, 'linkSocialListObject').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No page found." }))
             else {
+                 // for(var i=0; i<result.length; i++){
+                 //     var reply=result.docs[i].reply;
+                 //     var data=reply.filter(reply=>reply.status=='ACTIVE');
+                 //     console.log("data--->>"+data)
+                 //     result.docs[i].reply = data;
+                 //   }
+                var data=result.linkSocialListObject.filter(linkSocialListObject=>linkSocialListObject.status=='ACTIVE');
+                console.log("data--->>"+data)
+                result.linkSocialListObject = data;
                 res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Post saved successfully"
+                })
+            }
+        })
+    },
+
+    "deleteSocialMediaLink": function(req, res){
+         createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'linkSocialListObject._id': req.body.linkId}, {'linkSocialListObject.$.status': 'INACTIVE'},{new:true}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No link found." }))
+            else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Link deleted successfully."
+                })
+            }
+        })
+    },
+
+    "editSocialMediaLink": function(req, res){
+        createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'linkSocialListObject._id': req.body.linkId}, {'linkSocialListObject.$.link': req.body.link},{new:true}).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No link found." }))
+            else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Link edited successfully."
                 })
             }
         })
@@ -2634,7 +2669,7 @@ module.exports = {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
                             res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
                         }
-                    })
+                })
             }
         })
     },
@@ -2686,8 +2721,14 @@ module.exports = {
     },
 
     "reviewCommentList": function(req, res) {
-        addsComments.paginate({ pageId: req.params.id }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+        addsComments.paginate({ pageId: req.params.id, "status" : "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                 for(var i=0; i<result.docs.length; i++){
+                     var reply=result.docs[i].reply;
+                     var data=reply.filter(reply=>reply.status=='ACTIVE');
+                     console.log("data--->>"+data)
+                     result.docs[i].reply = data;
+                   }
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -2713,11 +2754,24 @@ module.exports = {
                 res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
             }
             else {
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: "Comment deleted successfully."
-                });
+                if(req.body.type == 'comment'){
+                    createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { commentCount: -1 } }, { new: true }).exec(function(err, resul) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                            res.send({
+                                result: results,
+                                responseCode: 200,
+                                responseMessage: "Comment deleted successfully."
+                            });
+                        }
+                    })
+                }
+                else{
+                    res.send({
+                        result: results,
+                        responseCode: 200,
+                        responseMessage: "Comment deleted successfully."
+                    });
+                }
             }
         })
     },

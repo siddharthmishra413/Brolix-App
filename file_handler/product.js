@@ -121,6 +121,69 @@ module.exports = {
         })
     },
 
+    "deleteComments": function(req, res){
+        if(req.body.type == 'comment'){
+            var productQuery = { productId: req.body.productId, _id: req.body.commentId }
+            var setCondition = { status : 'INACTIVE'}
+        }
+        else{
+            var productQuery = { productId: req.body.productId, _id: req.body.commentId , 'reply._id': req.body.replyId}
+            var setCondition = { 'reply.$.status' : 'INACTIVE'}
+        }
+
+        productComments.findOneAndUpdate(productQuery, setCondition, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else if(results == null || results == undefined){
+                res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
+            }
+            else {
+                if(req.body.type == 'comment'){
+                    pageProductList.findOneAndUpdate({ _id: req.body.productId }, { $inc: { commentCount: -1 } }, { new: true }).exec(function(err, resul) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                            res.send({
+                                result: results,
+                                responseCode: 200,
+                                responseMessage: "Comment deleted successfully."
+                            });
+                        }
+                    })
+                }
+                else{
+                    res.send({
+                        result: results,
+                        responseCode: 200,
+                        responseMessage: "Comment deleted successfully."
+                    });
+                }
+            }
+        })
+    },
+
+    "editComments": function(req, res){
+        if(req.body.type == 'comment'){
+            var productQuery = { productId: req.body.productId, _id: req.body.commentId }
+            var setCondition = { comment : req.body.comment}
+        }
+        else{
+            var productQuery = { productId: req.body.productId, _id: req.body.commentId , 'reply._id': req.body.replyId}
+            var setCondition = { 'reply.$.replyComment' : req.body.replyComment}
+        }
+
+        productComments.findOneAndUpdate(productQuery, setCondition, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else if(results == null || results == undefined){
+                res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
+            }
+            else {
+                res.send({
+                    result: results,
+                    responseCode: 200,
+                    responseMessage: "Comment edited successfully."
+                });
+            }
+        })
+    },
+
     "tagOnProduct": function(req, res) {
         waterfall([
             function(callback) {
@@ -170,8 +233,14 @@ module.exports = {
     },
 
     "productCommentList": function(req, res) {
-        productComments.paginate({ productId: req.params.id }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+        productComments.paginate({ productId: req.params.id , 'status':'ACTIVE'}, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
+                for(var i=0; i<result.docs.length; i++){
+                     var reply=result.docs[i].reply;
+                     var data=reply.filter(reply=>reply.status=='ACTIVE');
+                     console.log("data--->>"+data)
+                     result.docs[i].reply = data;
+                }
                 res.send({
                     result: result,
                     responseCode: 200,

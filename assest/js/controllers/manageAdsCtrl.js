@@ -6,6 +6,7 @@ app.controller('manageAdsCtrl', function($scope, $window, userService, $timeout,
   $scope.dashBordFilter = {};
   $scope.sendMessage = {};
   $scope.myForm = {};
+  $scope.setpriority = {};
   localStorage.setItem('adsTypeName', 'totalAds');
   userService.totalAds().success(function(res) {
     if (res.responseCode == 200) {
@@ -89,6 +90,35 @@ app.controller('manageAdsCtrl', function($scope, $window, userService, $timeout,
       toastr.error(res.responseMessage);
     }
   })
+
+  $scope.setOnHomePage = function(id){
+    console.log(id)
+    $scope.setOnAddId = id;
+    $("#setOnHomePage").modal('show');
+  }
+
+
+  $scope.setPriority = function(){
+    let date = new Date().getTime();
+    date = date + $scope.setpriority.time*60*60*1000;
+    let data = {};
+    data = {
+      priorityNumber:$scope.setpriority.position,
+      adId:$scope.setOnAddId,
+      expiryOfPriority:date,
+    }
+    console.log("data",JSON.stringify(data))
+    userService.homepageAds(data).success(function(res) {
+    if (res.responseCode == 200) {
+      $("#setOnHomePage").modal('hide');
+      toastr.success(res.responseMessage);
+    } else {
+      toastr.error(res.responseMessage);
+    }
+  }) 
+  }
+
+
   $scope.removeAds = function(id) {
     //console.log("hhh",id)
     $scope.RemoveId = id;
@@ -171,7 +201,7 @@ app.controller('manageAdsCtrl', function($scope, $window, userService, $timeout,
       toastr.error("Please select user.")
     } else {
       userService.adInfo($scope.myForm.checkId).then(function(success) {
-        //console.log(JSON.stringify($scope.userDetail))
+        console.log(JSON.stringify($scope.userDetail))
         $scope.userDetail = success.data.result;
         $("#adInfo").modal('show');
         //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success))

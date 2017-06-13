@@ -735,7 +735,8 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
             console.log("first", success)
             if (success.data.responseCode == 200) {
                 $scope.usedAd = success.data.result;
-                $("#luckCardUsedAd").modal('show');
+                console.log("$scope.usedAd",JSON.stringify($scope.usedAd));
+                $("#luckCardUsedAdd").modal('show');
             } else {
                 toastr.error(success.data.responseMessage)
             }

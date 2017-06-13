@@ -68,7 +68,8 @@ var createNewPageSchema = new mongoose.Schema({
     linkSocialListObject: [{
         userId: { type: String },
         mediaType: { type: String },
-        link: { type: String }
+        link: { type: String },
+        status: { type: String, default: 'ACTIVE'}
     }],
     adAdmin: [{
         userId: { type: String, ref: 'brolixUser' },

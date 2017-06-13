@@ -3,6 +3,8 @@ var app = express();
 var productHandler = require('../file_handler/product.js');
 var authUser = require('../middlewares/authUser');
 
+app.post('/deleteComments', productHandler.deleteComments);
+app.post('/editComments', productHandler.editComments);
 
 app.post('/createProduct', authUser.authUser, productHandler.createProduct);
 app.get('/productList/:id/:pageNumber', productHandler.productList);
