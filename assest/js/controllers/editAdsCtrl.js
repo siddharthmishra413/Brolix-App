@@ -25,36 +25,63 @@ $scope.createAds = {};
 
 
 
-console.log("id:   "+$stateParams.id);
+console.log("id:"+$stateParams.id);
 var id = $stateParams.id;
 if(id=="" || id==undefined || id==null)
 {
-
+    toastr.error("Please select Add");
+    $state.go("header.manageCard")
 }
 else
-{
-	var data = {params: {user_id: id}}
- userService.adInfo(id).then(function(objS){
-      console.log('success: -->  '+JSON.stringify(objS));
-      $scope.createAds = objS.data.result;
-      console.log('image: -->  '+JSON.stringify($scope.createAds.slideShow[0]));
-      if(objS.data.result.adsType)
-      {
-      	$scope.createAds.giftType = objS.data.result.adsType;
-      if(objS.data.result.adContentType) {
-        if(objS.data.result.adContentType=="slideshow")
-        		$scope.slideStep4 = true;
-        	else if(objS.data.result.adContentType=="video")
-        		$scope.vedioStep4 = true;
-      } 
-      else
-      {
+{   
+    userService.adInfo(id).success(function(res) {
+        console.log("res",JSON.stringify(res))
+    if (res.responseCode == 200) {
+        $scope.createAds = res.result;
+        if(res.result.adsType)
+        {
+        $scope.createAds.giftType = res.result.adsType;
+        if(res.result.adContentType) {
+        if(res.result.adContentType=="slideshow")
+                $scope.slideStep4 = true;
+            else if(objS.result.adContentType=="video")
+                $scope.vedioStep4 = true;
+        } 
+        else
+        {
          $scope.value ='';
-      }
+        }
+        }
+    } else {
+        toastr.error(res.responseMessage);
+        $state.go('login')
+        
     }
-    },function(objE){
-      console.log('error:    '+JSON.stringify(objE))
-    });
+    console.log("resss",$scope.userId);
+})
+
+	// var data = {params: {user_id: id}}
+ // userService.adInfo(id).then(function(objS){
+ //      console.log('success: -->  '+objS);
+ //      $scope.createAds = objS.data.result;
+ //      console.log('image: -->  '+JSON.stringify($scope.createAds.slideShow[0]));
+ //      if(objS.data.result.adsType)
+ //      {
+ //      	$scope.createAds.giftType = objS.data.result.adsType;
+ //      if(objS.data.result.adContentType) {
+ //        if(objS.data.result.adContentType=="slideshow")
+ //        		$scope.slideStep4 = true;
+ //        	else if(objS.data.result.adContentType=="video")
+ //        		$scope.vedioStep4 = true;
+ //      } 
+ //      else
+ //      {
+ //         $scope.value ='';
+ //      }
+ //    }
+ //    },function(objE){
+ //      console.log('error:    '+JSON.stringify(objE))
+ //    });
 
 }
 
@@ -79,8 +106,6 @@ userService.countryListData().success(function(res) {
 
 $scope.cityBeg = true;
 $scope.cityEnd = false;
-
-
 $scope.promoteAppGame = {};
 $scope.addCode = [];
 $scope.promoteAppValidation = [];
@@ -88,7 +113,6 @@ $scope.promoteAppValidation = [];
 
 $scope.validation =  function(item){
     console.log("googlePlayLink",item)
-    
     $scope.promoteAppValidation.push(item);
     console.log("$scope.promoteAppValidation",$scope.promoteAppValidation)
 
@@ -98,7 +122,6 @@ $scope.validation =  function(item){
 
 
 $scope.addcode = function(code){
-
     if($scope.addCode.length<$scope.createAds.numberOfWinners){
     console.log("code",code)
     $scope.addCode.push(code);
