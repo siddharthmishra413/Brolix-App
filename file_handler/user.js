@@ -95,232 +95,226 @@ var optionsNew = {
 var Paypal = require('paypal-adaptive');
 
 var paypalSdk = new Paypal({
-    userId:    'prashant.dwivedi-facilitator_api1.mobiloitte.com',
-    password:  '965ZNT59L9JKEZ5N',
+    userId: 'prashant.dwivedi-facilitator_api1.mobiloitte.com',
+    password: '965ZNT59L9JKEZ5N',
     signature: 'AiPC9BjkCyDFQXbSkoZcgqH3hpacAv24ACqokwcC-LOvDidqgZgRZ8rS',
-    sandbox:   true //defaults to false
+    sandbox: true //defaults to false
 });
 
 module.exports = {
 
-"success": function(req, res){
-  var params = {
-    payKey: 'AP-1WT665016G226315H'
-  };
-var payKey = 'AP-1WT665016G226315H'
-// Or the transactionId
-// var params = {
-//     transactionId: 'AP-1234567890'
-// };
-// // Or the trackingId
-// var params = {
-//     trackingId: 'AP-1234567890'
-// };
+    "success": function(req, res) {
+        var params = {
+            payKey: 'AP-1WT665016G226315H'
+        };
+        var payKey = 'AP-1WT665016G226315H'
+            // Or the transactionId
+            // var params = {
+            //     transactionId: 'AP-1234567890'
+            // };
+            // // Or the trackingId
+            // var params = {
+            //     trackingId: 'AP-1234567890'
+            // };
 
-// paypalSdk.paymentDetails(params, function (err, response) {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         // payments details for this payKey, transactionId or trackingId
-//         console.log("success==>>"+JSON.stringify(response));
-//     }
-// });
-
-
-  var paymentId = req.session.paymentId;
-  var payerId = 'AP-1WT665016G226315H'
-
-  var details = { "payer_id": payerId };
-  paypal.payment.execute(paymentId, details, function (error, payment) {
-    if (error) {
-      console.log(error);
-    } else {
-      res.send("Hell yeah!");
-    }
-  });
-
-// paypalSdk.getPaymentOptions(payKey, function (err, response) {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         // payments options for this payKey
-//         console.log(response);
-//     }
-// });
-
-},
-
- "paynow": function(req, res){
-  console.log("sakshi")
-
-//   var requestData = {
-//       requestEnvelope: {
-//           errorLanguage:  'en_US',
-//           detailLevel:    'ReturnAll'
-//       },
-//       payKey: 'AP-8TF499834C5223057'
-//   };
-   
-//   paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function (err, response) {
-//     if (err) {
-//         // You can see the error 
-//         console.log(err);
-//         //And the original Paypal API response too 
-//         console.log(response);
-//     } else {
-//         // Successful response :
-//         console.log(response);
-//         console.log(JSON.stringify(response.paymentInfoList.paymentInfo));
-//     }
-// });
-  
-  var trackingId;
+        // paypalSdk.paymentDetails(params, function (err, response) {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         // payments details for this payKey, transactionId or trackingId
+        //         console.log("success==>>"+JSON.stringify(response));
+        //     }
+        // });
 
 
-  var payload = {
-    requestEnvelope: {
-        errorLanguage:  'en_US'
-    },
-    actionType:     'PAY',
-    currencyCode:   'USD',
-    feesPayer:      'EACHRECEIVER',
-    memo:           'Chained payment example',
-    cancelUrl:      'http://test.com/cancel',
-    returnUrl:      'http://localhost:1406/users/successs',
+        var paymentId = req.session.paymentId;
+        var payerId = 'AP-1WT665016G226315H'
 
-    transactions: {
-       
-      },
- 
-    receiverList: {
-        receiver: [
-            {
-                email:  'primary@test.com',
-                amount: '50.00',
-                primary:'true',
-                trackingId:"123456789"
-            },
-            {
-                email:  'secondary@test.com',
-                amount: '10.00',
-                primary:'false',
-                trackingId:"123456789"
+        var details = { "payer_id": payerId };
+        paypal.payment.execute(paymentId, details, function(error, payment) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.send("Hell yeah!");
             }
-        ]
-    }
-  };
-// paypalSdk.pay(payload, function (err, response) {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         // Response will have the original Paypal API response 
-//         console.log(response);
-//         // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily 
-//         console.log('Redirect to %s', response.paymentApprovalUrl);
-//     }
-// });
+        });
 
-// paypalSdk.payment.create(payload, config_opts, function (err, res) {
-//     if (err) {
-//         throw err;
-//     }
+        // paypalSdk.getPaymentOptions(payKey, function (err, response) {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         // payments options for this payKey
+        //         console.log(response);
+        //     }
+        // });
 
-//     if (res) {
-//         console.log("Create Payment Response");
-//         console.log(res);
-//     }
-// });
-  paypalSdk.pay(payload, function (err, response) {
-      if (err) {
-          console.log(err);
-      } else {
-          // Response will have the original Paypal API response
-          console.log(response);
-          // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily
-          console.log('Redirect to %s', response.paymentApprovalUrl);
-          //res.redirect(redirectUrl);
-        if(response.payKey) {
-         // req.paymentId = payment.id;
-          var redirectUrl;
-          console.log("payment",response.payKey);
-         // for(var i=0; i < payment.links.length; i++) {
-            var link = response.paymentApprovalUrl;
-            console.log(link)
-           // if (link.method === 'REDIRECT') {
-              redirectUrl = link;
-           // }
-            console.log(redirectUrl)
-
-              var requestData = {
-                requestEnvelope: {
-                    errorLanguage:  'en_US',
-                    detailLevel:    'ReturnAll'
-                },
-                payKey: response.payKey
-                };
-                 
-                paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function (err, response) {
-                  if (err) {
-                      // You can see the error 
-                      console.log(err);
-                      //And the original Paypal API response too 
-                      console.log(response);
-                  } else {
-                      // Successful response :
-                      console.log(response);
-                     // console.log(response.paymentInfoList.);
-                      console.log(JSON.stringify(response.paymentInfoList.paymentInfo));
-                  }
-              });
-            res.redirect(redirectUrl);
-        }
-      }
-    });
     },
 
-    "massPay": function(req, res){
- 
-            var mp = new MassPay({
-                pwd: "QN3GR5N6JAV6A22H",
-                user: "robinsuraj-facilitator_api1.gmail.com",
-                signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AUdr.q6iklhOMRLo-CjEkoGuwBUD",
-                emailsubject: "robinsuraj@gmail.com"
-            });
+    "paynow": function(req, res) {
+        console.log("sakshi")
 
-            // var mp = new MassPay({
-            //     pwd: "X3NRSJQBL7FD5ZF9",
-            //     user: "sakshigadia1994-1_api1.gmail.com",
-            //     signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AhdXmittmmHtZ5I4YwBzIxOQHk3x",
-            //     emailsubject: "rinku.kumar@mobiloitte.in"
-            // });
-           
-            var paymentRequests = [
-              {
-                email: 'robinsuraj@gmail.com',
-                amount: '1'
-                , uniqueId: '12345'
-                , note: 'request for matt@gc'
-              },
-             {
-                email: 'rinku.kumar@mobiloitte.in'
-                , amount: '1'
-                , uniqueId: '123456'
-                , note: 'request for tim@gc'
-              }
-            ];
+        //   var requestData = {
+        //       requestEnvelope: {
+        //           errorLanguage:  'en_US',
+        //           detailLevel:    'ReturnAll'
+        //       },
+        //       payKey: 'AP-8TF499834C5223057'
+        //   };
 
-            var batch = new MassPay.PaymentBatch(paymentRequests);
+        //   paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function (err, response) {
+        //     if (err) {
+        //         // You can see the error 
+        //         console.log(err);
+        //         //And the original Paypal API response too 
+        //         console.log(response);
+        //     } else {
+        //         // Successful response :
+        //         console.log(response);
+        //         console.log(JSON.stringify(response.paymentInfoList.paymentInfo));
+        //     }
+        // });
 
-            mp.pay(batch, function(err, results) {
-              if(err) {
-                console.log("error",err)
+        var trackingId;
+
+
+        var payload = {
+            requestEnvelope: {
+                errorLanguage: 'en_US'
+            },
+            actionType: 'PAY',
+            currencyCode: 'USD',
+            feesPayer: 'EACHRECEIVER',
+            memo: 'Chained payment example',
+            cancelUrl: 'http://test.com/cancel',
+            returnUrl: 'http://localhost:1406/users/successs',
+
+            transactions: {
+
+            },
+
+            receiverList: {
+                receiver: [{
+                    email: 'primary@test.com',
+                    amount: '50.00',
+                    primary: 'true',
+                    trackingId: "123456789"
+                }, {
+                    email: 'secondary@test.com',
+                    amount: '10.00',
+                    primary: 'false',
+                    trackingId: "123456789"
+                }]
+            }
+        };
+        // paypalSdk.pay(payload, function (err, response) {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         // Response will have the original Paypal API response 
+        //         console.log(response);
+        //         // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily 
+        //         console.log('Redirect to %s', response.paymentApprovalUrl);
+        //     }
+        // });
+
+        // paypalSdk.payment.create(payload, config_opts, function (err, res) {
+        //     if (err) {
+        //         throw err;
+        //     }
+
+        //     if (res) {
+        //         console.log("Create Payment Response");
+        //         console.log(res);
+        //     }
+        // });
+        paypalSdk.pay(payload, function(err, response) {
+            if (err) {
+                console.log(err);
+            } else {
+                // Response will have the original Paypal API response
+                console.log(response);
+                // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily
+                console.log('Redirect to %s', response.paymentApprovalUrl);
+                //res.redirect(redirectUrl);
+                if (response.payKey) {
+                    // req.paymentId = payment.id;
+                    var redirectUrl;
+                    console.log("payment", response.payKey);
+                    // for(var i=0; i < payment.links.length; i++) {
+                    var link = response.paymentApprovalUrl;
+                    console.log(link)
+                        // if (link.method === 'REDIRECT') {
+                    redirectUrl = link;
+                    // }
+                    console.log(redirectUrl)
+
+                    var requestData = {
+                        requestEnvelope: {
+                            errorLanguage: 'en_US',
+                            detailLevel: 'ReturnAll'
+                        },
+                        payKey: response.payKey
+                    };
+
+                    paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function(err, response) {
+                        if (err) {
+                            // You can see the error 
+                            console.log(err);
+                            //And the original Paypal API response too 
+                            console.log(response);
+                        } else {
+                            // Successful response :
+                            console.log(response);
+                            // console.log(response.paymentInfoList.);
+                            console.log(JSON.stringify(response.paymentInfoList.paymentInfo));
+                        }
+                    });
+                    res.redirect(redirectUrl);
+                }
+            }
+        });
+    },
+
+    "massPay": function(req, res) {
+
+        var mp = new MassPay({
+            pwd: "QN3GR5N6JAV6A22H",
+            user: "robinsuraj-facilitator_api1.gmail.com",
+            signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AUdr.q6iklhOMRLo-CjEkoGuwBUD",
+            emailsubject: "robinsuraj@gmail.com"
+        });
+
+        // var mp = new MassPay({
+        //     pwd: "X3NRSJQBL7FD5ZF9",
+        //     user: "sakshigadia1994-1_api1.gmail.com",
+        //     signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AhdXmittmmHtZ5I4YwBzIxOQHk3x",
+        //     emailsubject: "rinku.kumar@mobiloitte.in"
+        // });
+
+        var paymentRequests = [{
+            email: 'robinsuraj@gmail.com',
+            amount: '1',
+            uniqueId: '12345',
+            note: 'request for matt@gc'
+        }, {
+            email: 'rinku.kumar@mobiloitte.in',
+            amount: '1',
+            uniqueId: '123456',
+            note: 'request for tim@gc'
+        }];
+
+        var batch = new MassPay.PaymentBatch(paymentRequests);
+
+        mp.pay(batch, function(err, results) {
+            if (err) {
+                console.log("error", err)
                 res.send({
                     err: err
                 })
-              }
-              console.log("results=>", results)
-              //assert.equal(results.ACK, 'Success')
-            });
+            }
+            console.log("results=>", results)
+                //assert.equal(results.ACK, 'Success')
+        });
     },
 
     "validatorPaytabs": function(req, res) {
@@ -363,11 +357,11 @@ var payKey = 'AP-1WT665016G226315H'
         createPayPage.cms_with_version = "1.0.0";
 
         paytabs.CreatePayPage(createPayPage, function(response) {
-            console.log("paytabs",response);
+            console.log("paytabs", response);
         });
-//         paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
-//   console.log(response);
-// });
+        //         paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
+        //   console.log(response);
+        // });
 
         // paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
         //   console.log(response);
@@ -398,7 +392,7 @@ var payKey = 'AP-1WT665016G226315H'
         var tco = new Twocheckout({
             sellerId: "901349538",
             privateKey: "EDEF9BC9-718C-4391-A3F9-8FC34FA527FD",
-            sandbox: true  // #Uncomment to use Sandbox
+            sandbox: true // #Uncomment to use Sandbox
         });
 
         var params = {
@@ -418,7 +412,7 @@ var payKey = 'AP-1WT665016G226315H'
             }
         };
 
-        tco.checkout.authorize(params, function (error, data) {
+        tco.checkout.authorize(params, function(error, data) {
             if (error) {
                 console.log(error);
             } else {
@@ -434,7 +428,7 @@ var payKey = 'AP-1WT665016G226315H'
         //     //publishableKey: "521B76B5-72A0-4CC0-B643-946ACE46B281",
         //     sandbox: true //#Uncomment to use Sandbox
         // });
-    
+
 
         // var params = {
         //     "merchantOrderId": "1237",
@@ -657,29 +651,27 @@ var payKey = 'AP-1WT665016G226315H'
             },
             function(callback) {
                 if (req.body.haveReferralCode == true) {
-                    User.find({referralCode:req.body.referredCode},function(err, user){
-                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                        else if(!user){ res.send({ responseCode: 400, responseMessage: 'Please enter valid reffralcode' }); }
-                        else{                  
-                    Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            console.log("data-->>", data)
-                            var amount = data[0].value;
-                            console.log("amount-->>", amount)
-                            User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                    User.find({ referralCode: req.body.referredCode }, function(err, user) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid reffralcode' }); } else {
+                            Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                    req.body.otp = functions.otp();
-                                    req.body.referralCode = yeast();
-                                    var user = User(req.body)
-                                    user.save(function(err, result) {
-                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                        var token = jwt.sign(result, config.secreteKey);
-                                        callback(null, token, result)
+                                    console.log("data-->>", data)
+                                    var amount = data[0].value;
+                                    console.log("amount-->>", amount)
+                                    User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                            req.body.otp = functions.otp();
+                                            req.body.referralCode = yeast();
+                                            var user = User(req.body)
+                                            user.save(function(err, result) {
+                                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                                var token = jwt.sign(result, config.secreteKey);
+                                                callback(null, token, result)
+                                            })
+                                        }
                                     })
                                 }
                             })
-                        }
-                    })
                         }
                     })
                 } else {
@@ -883,16 +875,15 @@ var payKey = 'AP-1WT665016G226315H'
                 } else {
                     var password = req.body.newpass;
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { password: password } }, { new: true }).exec(function(err, user) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                        else{
-                        res.send({
-                            responseCode: 200,
-                            responseMessage: "Password changed."
-                        });
-                        } 
-                          
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: "Password changed."
+                            });
+                        }
+
                     })
-                   
+
                 }
             }
         })
@@ -1068,14 +1059,14 @@ var payKey = 'AP-1WT665016G226315H'
                         if (flag == -1) { res.send({ responseCode: 400, responseMessage: "You cannot send brolix to this user due to privacy policies" }); } else {
                             console.log("flag-->>", flag)
                             User.findOne({ _id: req.body.userId }, function(err, result2) {
-                                console.log("dfdfgdf-->>",result2.brolix)
+                                console.log("dfdfgdf-->>", result2.brolix)
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result2) res.send({ responseCode: 404, responseMessage: "please enter correct senderId" });
                                 else if (result2.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account." }); } else {
                                     var image = result2.image;
                                     result2.brolix -= req.body.brolix;
                                     result2.save();
 
-                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, message: 'I have send you Brolix',type:'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result3) {
+                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, message: 'I have send you Brolix', type: 'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result3) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                         else {
                                             result3.brolix += req.body.brolix;
@@ -1084,7 +1075,7 @@ var payKey = 'AP-1WT665016G226315H'
                                         }
                                         if (result3.deviceToken && result3.deviceType && result3.notification_status && result3.status) {
                                             var message = "I have send you brolix";
-                                            if (result3.deviceType == 'Android' && result3.notification_status == 'on' && result3.status == 'ACTIVE') {                                                
+                                            if (result3.deviceType == 'Android' && result3.notification_status == 'on' && result3.status == 'ACTIVE') {
                                                 functions.android_notification(result3.deviceToken, message);
                                                 console.log("Android notification send!!!!")
                                             } else if (result3.deviceType == 'iOS' && result3.notification_status == 'on' && result3.status == 'ACTIVE') {
@@ -1107,7 +1098,7 @@ var payKey = 'AP-1WT665016G226315H'
                                 var image = result4.image;
                                 result4.brolix -= req.body.brolix;
                                 result4.save();
-                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, message: 'I have send you Brolix',type:'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result5) {
+                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, message: 'I have send you Brolix', type: 'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result5) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result5) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
                                         callback(null, result4)
@@ -1115,7 +1106,7 @@ var payKey = 'AP-1WT665016G226315H'
                                     if (result5.deviceToken && result5.deviceType && result5.notification_status && result5.status) {
                                         var message = "I have send you brolix";
                                         if (result5.deviceType == 'Android' && result5.notification_status == 'on' && result5.status == 'ACTIVE') {
-                                            
+
                                             functions.android_notification(result5.deviceToken, message);
                                             console.log("Android notification send!!!!")
                                         } else if (result5.deviceType == 'iOS' && result5.notification_status == 'on' && result5.status == 'ACTIVE') {
@@ -1168,7 +1159,7 @@ var payKey = 'AP-1WT665016G226315H'
                                     var image = result.image;
                                     result.cash -= req.body.cash;
                                     result.save();
-                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, message: 'I have send you Cash', type:'profile',notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
+                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, message: 'I have send you Cash', type: 'profile', notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                         else {
                                             user.cash += req.body.cash;
@@ -1177,7 +1168,7 @@ var payKey = 'AP-1WT665016G226315H'
                                         }
                                         if (user.deviceToken && user.deviceType && user.notification_status && user.status) {
                                             var message = "I have sent you cash";
-                                            if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {                                               
+                                            if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {
                                                 functions.android_notification(user.deviceToken, message);
                                                 console.log("Android notification send!!!!")
                                             } else if (user.deviceType == 'iOS' && user.notification_status == 'on' && user.status == 'ACTIVE') {
@@ -1200,7 +1191,7 @@ var payKey = 'AP-1WT665016G226315H'
                                 var image = result.image;
                                 result.cash -= req.body.cash;
                                 result.save();
-                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, message: 'I have send you Cash',type:'profile', notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
+                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, message: 'I have send you Cash', type: 'profile', notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
                                         user.cash += req.body.cash;
@@ -1208,9 +1199,9 @@ var payKey = 'AP-1WT665016G226315H'
                                         //callback(null, user)
                                     }
                                     if (user.deviceToken && user.deviceType && user.notification_status && user.status) {
-                                         var message = "I have sent you cash";
+                                        var message = "I have sent you cash";
                                         if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {
-                                           
+
                                             functions.android_notification(user.deviceToken, message);
                                             console.log("Android notification send!!!!")
                                         } else if (user.deviceType == 'iOS' && user.notification_status == 'on' && user.status == 'ACTIVE') {
@@ -1541,40 +1532,38 @@ var payKey = 'AP-1WT665016G226315H'
             User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
                     if (req.body.haveReferralCode == true) {
-                        User.find({referralCode: req.body.referredCode},function(err, user){
-                               if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                        else if(!user){ res.send({ responseCode: 400, responseMessage: 'Please enter valid reffralcode' }); }
-                        else{
-                                 
-                        Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                console.log("data-->>", data)
-                                var amount = data[0].value;
-                                console.log("amount-->>", amount)
-                                User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                        User.find({ referralCode: req.body.referredCode }, function(err, user) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid reffralcode' }); } else {
+
+                                Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                        req.body.otp = functions.otp();
-                                        req.body.referralCode = yeast();
-                                        var user = User(req.body)
-                                        user.save(function(err, result3) {
-                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                            var token = jwt.sign(result3, config.secreteKey);
-                                            res.header({
-                                                "appToken": token
-                                            }).send({
-                                                result: result3,
-                                                token: token,
-                                                responseCode: 200,
-                                                responseMessage: "You have been registered successfully."
-                                            });
+                                        console.log("data-->>", data)
+                                        var amount = data[0].value;
+                                        console.log("amount-->>", amount)
+                                        User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                                req.body.otp = functions.otp();
+                                                req.body.referralCode = yeast();
+                                                var user = User(req.body)
+                                                user.save(function(err, result3) {
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                                    var token = jwt.sign(result3, config.secreteKey);
+                                                    res.header({
+                                                        "appToken": token
+                                                    }).send({
+                                                        result: result3,
+                                                        token: token,
+                                                        responseCode: 200,
+                                                        responseMessage: "You have been registered successfully."
+                                                    });
+                                                })
+                                            }
                                         })
                                     }
                                 })
                             }
                         })
-                        }
-                    })
-                    
+
                     } else {
                         req.body.referralCode = yeast();
                         var user = new User(req.body);
@@ -1844,38 +1833,36 @@ var payKey = 'AP-1WT665016G226315H'
             User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
                     if (req.body.haveReferralCode == true) {
-                         User.find({referralCode: req.body.referredCode},function(err, user){
-                               if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                        else if(!user){ res.send({ responseCode: 400, responseMessage: 'Please enter valid reffralcode' }); }
-                        else{
-                        Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                console.log("data-->>", data)
-                                var amount = data[0].value;
-                                console.log("amount-->>", amount)
-                                User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                        User.find({ referralCode: req.body.referredCode }, function(err, user) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid reffralcode' }); } else {
+                                Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                        req.body.otp = functions.otp();
-                                        req.body.referralCode = yeast();
-                                        var user = User(req.body)
-                                        user.save(function(err, result) {
-                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                            var token = jwt.sign(result, config.secreteKey);
-                                            res.header({
-                                                "appToken": token
-                                            }).send({
-                                                result: result,
-                                                token: token,
-                                                responseCode: 200,
-                                                responseMessage: "You have been registered successfully."
-                                            });
+                                        console.log("data-->>", data)
+                                        var amount = data[0].value;
+                                        console.log("amount-->>", amount)
+                                        User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                                req.body.otp = functions.otp();
+                                                req.body.referralCode = yeast();
+                                                var user = User(req.body)
+                                                user.save(function(err, result) {
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                                    var token = jwt.sign(result, config.secreteKey);
+                                                    res.header({
+                                                        "appToken": token
+                                                    }).send({
+                                                        result: result,
+                                                        token: token,
+                                                        responseCode: 200,
+                                                        responseMessage: "You have been registered successfully."
+                                                    });
+                                                })
+                                            }
                                         })
                                     }
                                 })
                             }
                         })
-                        }
-                    })
                     } else {
                         req.body.referralCode = yeast();
                         var user = new User(req.body);
@@ -1922,7 +1909,7 @@ var payKey = 'AP-1WT665016G226315H'
         waterfall([
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
-                    console.log("result",result)
+                    console.log("result", result)
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
                         if (result.adsType == 'cash') {
                             if (result.cash > 0) {
@@ -2246,7 +2233,7 @@ var payKey = 'AP-1WT665016G226315H'
                             if (result2.deviceToken && result2.deviceType && result2.notification_status && result2.status) {
                                 var message = "You have coupon Exchange request";
                                 if (result2.deviceType == 'Android' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
-                                    
+
                                     functions.android_notification(result2.deviceToken, message);
                                     console.log("Android notification send!!!!")
                                 } else if (result2.deviceType == 'iOS' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
@@ -2271,9 +2258,9 @@ var payKey = 'AP-1WT665016G226315H'
                                 }
                             })
                             if (result2.deviceToken && result2.deviceType && result2.notification_status && result2.status) {
-                                 var message = "You have coupon Exchange request";
+                                var message = "You have coupon Exchange request";
                                 if (result2.deviceType == 'Android' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
-                                   
+
                                     functions.android_notification(result2.deviceToken, message);
                                     console.log("Android notification send!!!!")
                                 } else if (result2.deviceType == 'iOS' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
@@ -2298,12 +2285,10 @@ var payKey = 'AP-1WT665016G226315H'
 
     "seeExchangeRequest": function(req, res) {
         var receiverId = req.body.userId;
-        createNewAds.aggregate({ $unwind: '$couponExchangeReceived' },{ $match: { _id :new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeReceived.receiverId':receiverId } }).exec(function(err, user) {       
-            console.log("datatatata--->>>",user)
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else if(!user){res.send({ responseCode: 400, responseMessage: 'No ad found' });}
-            else{
-                   createNewAds.populate(user, {
+        createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeReceived.receiverId': receiverId } }).exec(function(err, user) {
+            console.log("datatatata--->>>", user)
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
+                createNewAds.populate(user, {
                     path: 'couponExchangeReceived.senderId',
                     model: 'brolixUser',
                     select: 'firstName lastName image country state city'
@@ -2314,8 +2299,8 @@ var payKey = 'AP-1WT665016G226315H'
                         responseMessage: "All request show successfully"
                     })
                 })
-        }
-    })
+            }
+        })
     },
 
     "couponRequestsSearch": function(req, res) {
@@ -2395,12 +2380,12 @@ var payKey = 'AP-1WT665016G226315H'
                                                 couponExpire: couponExpire
                                             }
 
-                                            User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, message: "I have sent you a coupon",type:'coupon', notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
+                                            User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, message: "I have sent you a coupon", type: 'coupon', notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                                 console.log("receiverId--->>>", result4)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                                 if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
-                                                     var message = "you have one coupon exchange request";
-                                                    if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {                                                       
+                                                    var message = "you have one coupon exchange request";
+                                                    if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
                                                         functions.android_notification(result4.deviceToken, message);
                                                         console.log("Android notification send!!!!")
                                                     } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
@@ -2450,11 +2435,11 @@ var payKey = 'AP-1WT665016G226315H'
                                             type: type,
                                             couponExpire: couponExpire
                                         }
-                                        User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, message: "I have sent you a coupon",type:'coupon', notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
+                                        User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, message: "I have sent you a coupon", type: 'coupon', notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 77' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                             if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
                                                 var message = "you have one coupon exchange request";
-                                                if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {                                                    
+                                                if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
                                                     functions.android_notification(result4.deviceToken, message);
                                                     console.log("Android notification send!!!!")
                                                 } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
@@ -2723,8 +2708,8 @@ var payKey = 'AP-1WT665016G226315H'
         var name = req.body.name;
         if (req.body.type == 'withCode') {
             if (!(req.body.name == null || req.body.name == undefined || req.body.name == '')) {
-                  var re = new RegExp(name, 'i');
-                var condition = { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstName':  { $regex: re } }
+                var re = new RegExp(name, 'i');
+                var condition = { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE", 'firstName': { $regex: re } }
             } else {
                 var condition = { 'hiddenGifts.pageId': pageId, 'hiddenGifts.status': "ACTIVE" }
             }
@@ -2780,7 +2765,7 @@ var payKey = 'AP-1WT665016G226315H'
     "seeExchangeSentRequest": function(req, res) {
         var senderId = req.body.userId;
         console.log("receiverId-->>", senderId)
-        createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id :new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId } }, function(err, result) {
+        createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); } else {
 
                 createNewAds.populate(result, {

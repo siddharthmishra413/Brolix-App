@@ -18,19 +18,19 @@
                                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                              var image = results.image;
                                              User.findOneAndUpdate({ _id: req.body.receiverId }, {
-                                                 $push: { "notification": { userId: req.body.senderId, message: "You have one follow request",type:'profile', notificationType: 'follow', image: image } }
+                                                 $push: { "notification": { userId: req.body.senderId, message: "You have one follow request", type: 'profile', notificationType: 'follow', image: image } }
                                              }, { new: true }).exec(function(err, results) {
-                                                 if( results.deviceToken && results.deviceType  && results.notification_status  && results.status ){
-                                                      var message = "You have one follow request";
-                                                 if (results.deviceType == 'Android' && results.notification_status == 'on' && results.status == 'ACTIVE') {                                                    
-                                                     functions.android_notification(results.deviceToken, message);
-                                                     console.log("Android notification send!!!!")
-                                                 } else if (results.deviceType == 'iOS' && results.notification_status == 'on' && results.status == 'ACTIVE') {
-                                                     functions.iOS_notification(results.deviceToken, message);
-                                                 } else {
-                                                     console.log("Something wrong!!!!")
+                                                 if (results.deviceToken && results.deviceType && results.notification_status && results.status) {
+                                                     var message = "You have one follow request";
+                                                     if (results.deviceType == 'Android' && results.notification_status == 'on' && results.status == 'ACTIVE') {
+                                                         functions.android_notification(results.deviceToken, message);
+                                                         console.log("Android notification send!!!!")
+                                                     } else if (results.deviceType == 'iOS' && results.notification_status == 'on' && results.status == 'ACTIVE') {
+                                                         functions.iOS_notification(results.deviceToken, message);
+                                                     } else {
+                                                         console.log("Something wrong!!!!")
+                                                     }
                                                  }
-                                              }
                                                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                                  res.send({
                                                      result: result,
