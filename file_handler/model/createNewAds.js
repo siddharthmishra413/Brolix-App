@@ -84,6 +84,7 @@ var createNewAdsSchema = new Schema({
     },
     adContentType: { type: String },
     musicFileName: { type: String },
+    musicFileUrl: { type: String },
     couponSellPrice: {
         type: Number
     },

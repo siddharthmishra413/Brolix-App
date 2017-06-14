@@ -56,7 +56,7 @@ module.exports = {
                 var img = files.mp3files[i];
                 var fileName = files.mp3files[i].originalFilename;
                 cloudinary.uploader.upload(img.path, function(result) {
-                    console.log(result)
+                    console.log("rrrrrrrrrrr",result)
                     if (result.url) {
                         var data = {
                             fileUrl: result.url,
@@ -773,9 +773,11 @@ module.exports = {
         waterfall([
             function(callback) {
                 createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } 
+                    else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                         User.findOne({ _id: userId }).exec(function(err, result1) {
-                            if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                            if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); }
+                             else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                                 var age = result1.dob;
 
                                 function _calculateAge(birthday) { // birthday is a date
@@ -840,7 +842,8 @@ module.exports = {
             },
             function(value, callback) {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
-                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+                    if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } 
+                    else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                         console.log("result--->>", result.raffleCount)
                         var randomIndex = [];
                         var raffleCount = result.raffleCount;

@@ -453,13 +453,13 @@ module.exports = {
     },
 
     "removePage": function(req, res) { // pageId in request
-        createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: { 'status': 'REMOVED' } }, { new: true }, function(err, result) {
+        createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: { 'status': 'REQUESTED' } }, { new: true }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
             else {
                 res.send({
                     // result: result,
                     responseCode: 200,
-                    responseMessage: "Page removed successfully."
+                    responseMessage: "Page remove request send successfully."
                 });
             }
         });

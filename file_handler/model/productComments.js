@@ -27,7 +27,8 @@ var productCommentSchema = new Schema({
         replyComment: { type: String },
         userName: { type: String, trim: true },
         userImage: { type: String, trim: true },
-        createdAt: { type: Date, default: Date.now }
+        createdAt: { type: Date, default: Date.now },
+        status: { type: String, default: 'ACTIVE'}
     }],
     createdAt: {
         type: Date,
