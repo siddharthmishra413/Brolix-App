@@ -3942,15 +3942,17 @@ module.exports = {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
                                     // callback(null)
                                 }
-                                if (result1.deviceType == 'Android' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
-                                    var message = "req.body.message";
+                             if (result1.deviceToken && result1.deviceType && result1.notification_status && result1.status) {
+                                 var message = "Hello !! i have sent you a coupon";
+                                if (result1.deviceType == 'Android' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
                                     functions.android_notification(result1.deviceToken, message);
                                     console.log("Android notification send!!!!")
-                                } else if (result1.deviceType == 'iOS' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                                } else if (result1.deviceType == 'iOS' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
                                     functions.iOS_notification(result1.deviceToken, message);
                                 } else {
                                     console.log("Something wrong!!!!")
                                 }
+                             }
                             })
                     }
                     callback(null)
@@ -4012,14 +4014,16 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
                                 // callback(null)
                             }
-                            if (result1.deviceType == 'Android' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
-                                var message = "req.body.message";
+                            if (result1.deviceToken && result1.deviceType && result1.notification_status && result1.status) {
+                                 var message = "Hello !! i have sent you a luck card";
+                            if (result1.deviceType == 'Android' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
                                 functions.android_notification(result1.deviceToken, message);
                                 console.log("Android notification send!!!!")
-                            } else if (result1.deviceType == 'iOS' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                            } else if (result1.deviceType == 'iOS' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
                                 functions.iOS_notification(result1.deviceToken, message);
                             } else {
                                 console.log("Something wrong!!!!")
+                            }
                             }
                         })
                     }
@@ -4071,15 +4075,17 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
                                 // callback(null)
                             }
-                            if (result1.deviceType == 'Android' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
-                                var message = "req.body.message";
+                             if (result1.deviceToken && result1.deviceType && result1.notification_status && result1.status) {
+                                 var message = "Hello !! i have sent you an upgrade card";
+                            if (result1.deviceType == 'Android' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
                                 functions.android_notification(result1.deviceToken, message);
                                 console.log("Android notification send!!!!")
-                            } else if (result1.deviceType == 'iOS' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                            } else if (result1.deviceType == 'iOS' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
                                 functions.iOS_notification(result1.deviceToken, message);
                             } else {
                                 console.log("Something wrong!!!!")
                             }
+                             }
                         })
                     }
                     callback(null)

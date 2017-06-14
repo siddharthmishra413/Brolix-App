@@ -889,7 +889,8 @@ var payKey = 'AP-1WT665016G226315H'
                             responseCode: 200,
                             responseMessage: "Password changed."
                         });
-                        }                        
+                        } 
+                          
                     })
                    
                 }
@@ -1074,7 +1075,7 @@ var payKey = 'AP-1WT665016G226315H'
                                     result2.brolix -= req.body.brolix;
                                     result2.save();
 
-                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, type: 'I have send you Brolix', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result3) {
+                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, message: 'I have send you Brolix',type:'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result3) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                         else {
                                             result3.brolix += req.body.brolix;
@@ -1106,7 +1107,7 @@ var payKey = 'AP-1WT665016G226315H'
                                 var image = result4.image;
                                 result4.brolix -= req.body.brolix;
                                 result4.save();
-                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, type: 'I have send you Brolix', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result5) {
+                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, message: 'I have send you Brolix',type:'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result5) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result5) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
                                         callback(null, result4)
@@ -1167,7 +1168,7 @@ var payKey = 'AP-1WT665016G226315H'
                                     var image = result.image;
                                     result.cash -= req.body.cash;
                                     result.save();
-                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, type: 'I have send you Cash', notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
+                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, message: 'I have send you Cash', type:'profile',notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                         else {
                                             user.cash += req.body.cash;
@@ -1199,7 +1200,7 @@ var payKey = 'AP-1WT665016G226315H'
                                 var image = result.image;
                                 result.cash -= req.body.cash;
                                 result.save();
-                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, type: 'I have send you Cash', notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
+                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, message: 'I have send you Cash',type:'profile', notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
                                         user.cash += req.body.cash;
@@ -2297,9 +2298,12 @@ var payKey = 'AP-1WT665016G226315H'
 
     "seeExchangeRequest": function(req, res) {
         var receiverId = req.body.userId;
-        createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { 'couponExchangeReceived.receiverId': receiverId } }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); } else {
-                createNewAds.populate(result, {
+        createNewAds.aggregate({ $unwind: '$couponExchangeReceived' },{ $match: { _id :new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeReceived.receiverId':receiverId } }).exec(function(err, user) {       
+            console.log("datatatata--->>>",user)
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else if(!user){res.send({ responseCode: 400, responseMessage: 'No ad found' });}
+            else{
+                   createNewAds.populate(user, {
                     path: 'couponExchangeReceived.senderId',
                     model: 'brolixUser',
                     select: 'firstName lastName image country state city'
@@ -2310,8 +2314,8 @@ var payKey = 'AP-1WT665016G226315H'
                         responseMessage: "All request show successfully"
                     })
                 })
-            }
-        })
+        }
+    })
     },
 
     "couponRequestsSearch": function(req, res) {
@@ -2391,7 +2395,7 @@ var payKey = 'AP-1WT665016G226315H'
                                                 couponExpire: couponExpire
                                             }
 
-                                            User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, type: "I have sent you a coupon", notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
+                                            User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, message: "I have sent you a coupon",type:'coupon', notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                                 console.log("receiverId--->>>", result4)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                                 if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
@@ -2446,7 +2450,7 @@ var payKey = 'AP-1WT665016G226315H'
                                             type: type,
                                             couponExpire: couponExpire
                                         }
-                                        User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, type: "I have sent you a coupon", notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
+                                        User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, message: "I have sent you a coupon",type:'coupon', notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 77' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                             if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
                                                 var message = "you have one coupon exchange request";
@@ -2776,7 +2780,7 @@ var payKey = 'AP-1WT665016G226315H'
     "seeExchangeSentRequest": function(req, res) {
         var senderId = req.body.userId;
         console.log("receiverId-->>", senderId)
-        createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { 'couponExchangeSent.senderId': senderId } }, function(err, result) {
+        createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id :new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); } else {
 
                 createNewAds.populate(result, {

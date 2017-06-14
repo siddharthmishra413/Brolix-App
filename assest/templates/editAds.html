@@ -10,12 +10,12 @@
                         <div class="login-block">
                             <div class="video-container new-video1">
                                 <div class="video-part text-center">
-                                    <video width="720" height="240" controls src={{createAds.vedioUrl}} required>
+                                    <video width="720" height="240" controls src={{createAds.video}} required>
                                       Your browser does not support the video tag.
                                     </video>
                                     <p class="global-text">Please upload the advertisement cover, it will appear in home page.11</p>
                                     <div class="cover-image">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.advertismentCover"  ng-src="{{createAds.advertismentCover}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.coverImage"  ng-src="{{createAds.coverImage}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
                                             <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'advertismentCover')" accept="image/*" required>
@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
                                 <div class="btn2 text-center col-sm-12">
-                                    <button class="btn btn-lg btn-green" ng-disabled="createAds.vedioUrl == null && createAds.advertismentCover == null" ng-click="click('Step5')" >Next</button>
+                                    <button class="btn btn-lg btn-green" ng-disabled="createAds.video == null && createAds.coverImage == null" ng-click="click('Step5')" >Next</button>
                                     <button class="btn btn-lg btn-green"  ng-click="click('Back4')" >Back</button>
                                 </div>
                             </div>
@@ -174,25 +174,25 @@
                             <div class="col-sm-12 sell-coupon">
                                 <h3>Who will see your add?</h3>
                                 <div class="col-sm-4">
-                                   <select class="form-control" ng-change="changeCountry()" ng-model="createAds.whoWillSeeYourAdd.country" required>
+                                   <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
                                        <option value="">Select Country</option>
-                                       <option ng-repeat="country in countries" value"{{country.code}}">{{country}}</option>
+                                       <option ng-repeat="country in countries" value="country">{{createAds.country}}</option>
                                    </select>
                                 </div>
-                                <div class="col-sm-4">
+                                <!-- <div class="col-sm-4">
                                    <select class="form-control" ng-change="changeState()" ng-model="createAds.whoWillSeeYourAdd.state" required>
                                       <option value="">Select State</option>
                                       <option ng-repeat="state in stateList">{{state}}</option>
                                    </select> 
-                                </div>
-                                <div class="col-sm-4" ng-if="cityBeg">
+                                </div> -->
+                                <!-- <div class="col-sm-4" ng-if="cityBeg">
                                     
                                       <label>{{createAds.whoWillSeeYourAdd.city}}</label> 
-                                </div>
-                                <div class="col-sm-4" ng-if="cityEnd">
-                                    <select  class="form-control" id="city" ng-model="createAds.whoWillSeeYourAdd.city" required>
+                                </div> -->
+                                <div class="col-sm-4">
+                                    <select  class="form-control" id="city" ng-model="createAds.city" required>
                                       <option value="">Select City</option>
-                                      <option ng-repeat="city in cityList">{{city}}</option>
+                                      <option ng-repeat="city in cityList">{{createAds.city}}</option>
                                     </select> 
                                 </div>
                             </div>

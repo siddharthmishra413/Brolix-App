@@ -143,12 +143,12 @@ var userSchema = new Schema({
     }],
     notification_status: { type: String, default: 'on', trim: true },
     notification: [{
-        type: { type: String },
+        message: { type: String },
         image: { type: String },
         notificationType: { type: String },
         userId: { type: String },
         adId: { type: String, ref: 'createNewAds' },
-        linkType:{type: String },
+        type:{type: String },
         productId: { type: String },
         CreatedAt: { type: Date, default: Date.now }
     }],

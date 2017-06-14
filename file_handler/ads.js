@@ -767,7 +767,7 @@ module.exports = {
                                         adId: req.body.adId,
                                         pageId: pageId
                                     }
-                                    User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                    User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, message: 'You have successfully won this raffle',type:'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                             if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
                                                  var message = "You have successfully won this Raffle.";
@@ -832,7 +832,7 @@ module.exports = {
                                                 adId: req.body.adId,
                                                 pageId: pageId
                                             }
-                                            User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                            User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, "notification": { adId: req.body.adId, message: 'You have successfully won this raffle',type:'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                                 console.log("4")
                                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                     count += i;
@@ -860,7 +860,7 @@ module.exports = {
 
                                     } else {
                                         console.log("else")
-                                        User.update({ _id: { $in: winners } }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                        User.update({ _id: { $in: winners } }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, message: 'You have successfully won this raffle',type:'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                 if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
@@ -1064,7 +1064,7 @@ module.exports = {
                                         pageId: pageId
                                     }
                                     console.log("cash---data--->>>",data)
-                                    User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                    User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, message: 'You have successfully won this raffle', type:'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                         console.log("result-->>", result)
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                             if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
@@ -1132,7 +1132,7 @@ module.exports = {
                                             pageId: pageId
                                         }
 
-                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, "notification": { adId: req.body.adId, message: 'You have successfully won this raffle', type:'profile',notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                 if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
@@ -1156,7 +1156,7 @@ module.exports = {
                                         })
                                     } else {
                                         console.log("else")
-                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId,message: 'You have successfully won this raffle', type:'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                 if (result.deviceToken && result.deviceType && result.notification_status && result.status) {

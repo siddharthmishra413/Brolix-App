@@ -30,7 +30,7 @@ var id = $stateParams.id;
 if(id=="" || id==undefined || id==null)
 {
     toastr.error("Please select Add");
-    $state.go("header.manageCard")
+    $state.go("header.manageCard");
 }
 else
 {   
@@ -38,14 +38,22 @@ else
         console.log("res",JSON.stringify(res))
     if (res.responseCode == 200) {
         $scope.createAds = res.result;
+        $scope.createAds.country = res.result.whoWillSeeYourAdd.country;
+        $scope.createAds.city = res.result.whoWillSeeYourAdd.city;
+        console.log("vedio",$scope.createAds.country)
+        console.log("image",$scope.createAds.city)
         if(res.result.adsType)
         {
         $scope.createAds.giftType = res.result.adsType;
         if(res.result.adContentType) {
-        if(res.result.adContentType=="slideshow")
-                $scope.slideStep4 = true;
-            else if(objS.result.adContentType=="video")
+            if(res.result.adContentType=="slideshow"){
+                 $scope.slideStep4 = true;
+            }else if(res.result.adContentType=="video"){
                 $scope.vedioStep4 = true;
+            }else{
+                toastr.error(res.responseMessage);
+                $state.go('login')
+            }
         } 
         else
         {
