@@ -469,5 +469,28 @@ button.btn.btn-default.btn-sm.dropdown-toggle .caret{text-align: right;position:
 .middle-row-c1.middle-price-text {margin: 0 20px;}
 .middle-row-c1.middle-price-text h3 {color: #fff;text-decoration: underline; font-size: 18px; margin: 0;}
 
+.viewwe-s1 {
+    left: 10px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.viewwe-s1 .tops-s .amts-top{font-size: 3em;
+    font-weight: bold;
+    color: #fff;}
+    .viewwe-s1 .tops-s .ants-view {
+    font-size: 3em;
+    font-weight: bold;
+    color: #fff;
+}
+.viewwe-s1 .bottom-dol {
+    font-size: 3em;
+    font-weight: bold;
+    color: #fff;
+}
+
 
 
