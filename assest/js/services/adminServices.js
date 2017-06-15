@@ -215,6 +215,20 @@ app.service('hiddenGiftInfo', function() {
     }
 });
 
+app.service('sellThisCouponInfo', function() {
+    var self = this;
+    this.cEditor = function(flag) {
+        console.log(flag);
+
+        CKEDITOR.replace('sellThisCouponEditor', {
+            width: '100%',
+            height: 270,
+            toolbarGroups: flag == false ? [] : enable_tools,
+            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+        });
+    }
+});
+
 app.service('createPage', function($rootScope) {
     var self = this;
     CKEDITOR.plugins.add('tokens', {
@@ -855,6 +869,9 @@ app.service('userService', function($http) {
         },
 
         editTermsCondition: function(type, data) {
+            console.log("data",JSON.stringify(data))
+            console.log("type",JSON.stringify(type))
+
             return $http.put(baseurl + '/terms/editTermsCondition/' + type, data);
         },
 

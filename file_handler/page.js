@@ -798,7 +798,7 @@ module.exports = {
                 break;
             case 'callUsClick':
                 var updateData = { $inc: { callUsClick: 1 } };
-                details.productView = 1;
+                details.callUsClick = 1;
                 break;
             case 'locationClicks':
                 var updateData = { $inc: { locationClicks: 1 } };
@@ -1295,7 +1295,7 @@ module.exports = {
                         var winnersLength = 0;
                         callback(null, winnersLength)
                     } else {
-                        console.log(result)
+                        console.log("winner=====>",result)
                         var winnersLength = 0;
                         for (var i = 0; i < result.length; i++) {
                             winnersLength += result[i].winners.length;
@@ -1428,7 +1428,7 @@ module.exports = {
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, couponExpResult, callback) {
-                var updateDataVALID = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'VALID', 'coupon.couponStatus': 'EXPIRED', 'coupon.updateddAt': { $gte: startTime, $lte: endTime } } };
+                var updateDataVALID = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'VALID', 'coupon.updateddAt': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataVALID = { $unwind: "$coupon" };
                 var groupCondVALID = {
                     $group: {

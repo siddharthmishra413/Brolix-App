@@ -6,8 +6,9 @@
       <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('couponAdCondition'); show = 3">Coupon Add</a></li>
       <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('couponGiftInfo'); show = 4">Coupon Gift</a></li>
       <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('cashGiftInfo'); show = 5">Cash Gift</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('hiddenGiftInfo'); show = 6">Hidden Gift</a></li> 
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('createPage'); show = 7">Create Page Terms</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('hiddenGiftInfo'); show = 6">Hidden Gift</a></li>
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('sellThisCoupon'); show = 7">Sell Coupon</a></li> 
+      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('createPage'); show = 8">Create Page Terms</a></li>
    </ul>
    <div class="col-sm-12" ng-show="show==1">
       <div class="form-group">
@@ -64,6 +65,15 @@
       </div>
    </div>
    <div class="col-sm-12" ng-show="show==7">
+      <div class="form-group">
+         <textarea name="sellThisCouponEditor" class="form-control pos_ckeditor" ng-model="myFrom.termssellThisCouponCondition"></textarea>
+         <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition" ></textarea> -->
+      </div>
+      <div class="btn2 text-center">
+         <a class="btn btn-lg btn-green" ng-click="click('sellThisCoupon')">Update</a>
+      </div>
+   </div>
+   <div class="col-sm-12" ng-show="show==8">
       <div class="form-group">
        <textarea name="createPageEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition"></textarea>
         <!--  <textarea id="editorPage" data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition" ></textarea> -->

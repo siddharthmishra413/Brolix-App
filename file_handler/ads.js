@@ -153,7 +153,7 @@ module.exports = {
                             res.send({
                                 result: results,
                                 responseCode: 200,
-                                responseMessage: "flag You cannot watch this Ad."
+                                responseMessage: "Ad removed successfully."
                             });
 
                         }
@@ -162,7 +162,7 @@ module.exports = {
                     res.send({
                         result: results,
                         responseCode: 200,
-                        responseMessage: "You cannot watch this Ad."
+                        responseMessage: "Ad removed successfully."
                     });
                 }
             }

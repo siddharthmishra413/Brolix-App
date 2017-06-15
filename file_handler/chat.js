@@ -6,9 +6,9 @@ var connectedClients = {}
 var wsServer = new WebSocketServer({
     httpServer: server
 });
-server.listen(8086, function() {
-    console.log((new Date()) + ' Server is listening on port ---->>>>' + 8086);
-});
+// server.listen(8086, function() {
+//     console.log((new Date()) + ' Server is listening on port ---->>>>' + 8086);
+// });
 
 var chat = function() {
     wsServer.on('request', function(r) {

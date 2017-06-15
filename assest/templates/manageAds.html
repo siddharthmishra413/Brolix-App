@@ -1108,7 +1108,7 @@
                     <div class="form-group">
                         <div class="row">
                             <label class="control-label col-md-4">Position</label>
-                            <div class="col-md-10">
+                            <div class="col-md-8">
                                 <div class="input-group">
                                 <select class="form-control" ng-model="setpriority.position" required>
                                     <option value="">please determine the position</option>
@@ -1126,13 +1126,13 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
+                    <!-- </div>
+                    <div class="form-group"> -->
                         <div class="row">
                             <label class="control-label col-md-4">Time</label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                  <input ng-model="setpriority.time" type="tel" name="prices"  ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" placeholder="Enter Expire Time" required>
+                                  <input ng-model="setpriority.time" type="tel" name="prices"  ng-pattern="/^[0-9]{1,11}$/" class="form-control text-center" placeholder="Enter Priority Expire Hours" required>
                                   <span class="input-group-addon" id="basic-addon2"></span>
                                 </div>
                                 <span style="color:red;" ng-show="crtCard.prices.$dirty && crtCard.prices.$invalid">

@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-center">
-                                        <label ng-model="createAds.viewers" class="coupon-date col-sm-12">Number of Viewers</label>
+                                        <label class="coupon-date col-sm-12">Number of Viewers</label>
                                         <div class="col-sm-6 col-sm-offset-3">
                                             <input ng-model="createAds.viewers" type="text" class="form-control text-center"/>
                                         </div>
@@ -118,10 +118,10 @@
                             <div class="col-sm-12">
                                 <div class="new_banner-img">
                                     <img src="../dist/image/cover.jpg" class="img-responsive cus-img1">
-                                    <div class="new-banner_btm-btn">
+                                    <!-- <div class="new-banner_btm-btn">
                                         <button class="btn btn-green">My Upgrade Card</button>
                                         <button class="btn btn-green">Go to Cards Store</button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>  
                             <div class="col-sm-12 sell-coupon new_coupon">
@@ -149,7 +149,7 @@
                                     <div class="radio-btn text-left gbl-table">
                                         <div class="global-tble-cell">
                                             <label class="gbl-label">
-                                                <input type="radio" ng-model="createAds.winner" value="Winer" name="radio5" ng-model="createAds.numberOfWinners" checked>&nbsp;
+                                                <input type="radio" value="Winer" name="radio5" ng-model="createAds.numberOfWinners" checked>&nbsp;
                                             </label>
                                         </div>
                                         <div class="global-tble-cell">
@@ -166,7 +166,7 @@
                                 <div class="radio-tab">
                                     <div class="radio-btn text-left">
                                         <label>
-                                            <input type="radio" ng-model="createAds.winner"  value="All are Winer"  name="radio5" ng-model="createAds.winner" checked>&nbsp; All are Winers
+                                            <input type="radio" ng-model="createAds.winner"  value="All are Winer"  name="radio5" ng-model="createAds.numberOfWinners" checked>&nbsp; All are Winers
                                         </label>
                                     </div>
                                 </div>
@@ -175,24 +175,20 @@
                                 <h3>Who will see your add?</h3>
                                 <div class="col-sm-4">
                                    <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
-                                       <option value="">Select Country</option>
-                                       <option ng-repeat="country in countries" value="country">{{createAds.country}}</option>
+                                       <option selected="">{{createAds.country}}</option>
+                                       <option ng-repeat="country in countries" value="{{country}}">{{country}}</option>
                                    </select>
                                 </div>
-                                <!-- <div class="col-sm-4">
-                                   <select class="form-control" ng-change="changeState()" ng-model="createAds.whoWillSeeYourAdd.state" required>
-                                      <option value="">Select State</option>
-                                      <option ng-repeat="state in stateList">{{state}}</option>
-                                   </select> 
-                                </div> -->
-                                <!-- <div class="col-sm-4" ng-if="cityBeg">
-                                    
-                                      <label>{{createAds.whoWillSeeYourAdd.city}}</label> 
-                                </div> -->
-                                <div class="col-sm-4">
+                                <div class="col-sm-4" ng-if="cityFirst">
                                     <select  class="form-control" id="city" ng-model="createAds.city" required>
-                                      <option value="">Select City</option>
-                                      <option ng-repeat="city in cityList">{{createAds.city}}</option>
+                                      <option selected="">{{createAds.city}}</option>
+                                      <option ng-repeat="city in cityList">{{city}}</option>
+                                    </select> 
+                                </div>
+                                <div class="col-sm-4" ng-if="citySecond">
+                                    <select  class="form-control" id="city" ng-model="createAds.city" required>
+                                        
+                                      <option ng-repeat="city in cityList">{{city}}</option>
                                     </select> 
                                 </div>
                             </div>
@@ -259,7 +255,7 @@
                                 <div class="col-xs-5">
                                     <label>Cash Gift for the Winner</label>
                                     <div class="form-group">
-                                        <input type="text" ng-model="createAds.winnerGift" class="form-control">
+                                        <input type="text" ng-model="createAds.numberOfWinners" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-2 m-t-20">
@@ -276,20 +272,20 @@
                                 <h3>Who will see your add?</h3>
                                 <div class="col-sm-4">
                                    <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
-                                       <option value="">Select Country</option>
-                                       <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                                       <option selected="">{{createAds.country}}</option>
+                                       <option ng-repeat="country in countries" value="{{country}}">{{country}}</option>
                                    </select>
                                 </div>
-                                <div class="col-sm-4">
-                                   <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
-                                      <option value="">Select State</option>
-                                      <option ng-repeat="state in stateList">{{state.region}}</option>
-                                   </select> 
-                                </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-4" ng-if="cityFirst">
                                     <select  class="form-control" id="city" ng-model="createAds.city" required>
-                                      <option value="">Select City</option>
-                                      <option ng-repeat="city in cityList">{{city.city}}</option>
+                                      <option selected="">{{createAds.city}}</option>
+                                      <option ng-repeat="city in cityList">{{city}}</option>
+                                    </select> 
+                                </div>
+                                <div class="col-sm-4" ng-if="citySecond">
+                                    <select  class="form-control" id="city" ng-model="createAds.city" required>
+                                        
+                                      <option ng-repeat="city in cityList">{{city}}</option>
                                     </select> 
                                 </div>
                             </div>
@@ -490,35 +486,35 @@
                             <div class="btn2 text-center">
                                 <div class="cus-upload-photos">
                                    <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"   ng-model="createAds.slideShow[0]"  ng-src="{{createAds.slideShow[0]}}" id="output">
+                                        <img class="profile-user-img img-responsive"   ng-model="createAds.slidePhoto1"  ng-src="{{createAds.slideShow[0]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slideShow[0]')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slideShow[1]"  ng-src="{{createAds.slideShow[1]}}" id="output">
+                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slidePhoto2"  ng-src="{{createAds.slideShow[1]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slideShow[1]')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.slideShow[2]"  ng-src="{{createAds.slideShow[2]}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto3"  ng-src="{{createAds.slideShow[2]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slideShow[2]')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.slideShow[3]"  ng-src="{{createAds.slideShow[3]}}" id="output">
+                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto4"  ng-src="{{createAds.slideShow[3]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slideShow[3]')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slideShow[4]"  ng-src="{{createAds.slideShow[4]}}" id="output">
+                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slidePhoto5"  ng-src="{{createAds.slideShow[4]}}" id="output">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slideShow[4]')" accept="image/*">

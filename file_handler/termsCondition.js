@@ -2,7 +2,7 @@ var TermsCondition = require("./model/termsCondition");
 var functions = require("./functionHandler");
 var User = require("./model/user");
 
-// couponGiftInfo , cashGiftInfo, hiddenGiftInfo, cashAdCondition, cashAdCondition, signUpCondition
+// couponGiftInfo , cashGiftInfo, hiddenGiftInfo, cashAdCondition, cashAdCondition, signUpCondition sellThisCoupon
 
 module.exports = {
 

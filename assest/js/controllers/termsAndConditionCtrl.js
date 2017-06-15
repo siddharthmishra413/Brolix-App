@@ -1,5 +1,5 @@
 app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window, signUpCondition, cashAdCondition, couponAdCondition,
-couponGiftInfo, cashGiftInfo, hiddenGiftInfo, createPage, userService, $rootScope, $state, toastr, $http, $timeout) {
+couponGiftInfo, cashGiftInfo, hiddenGiftInfo, sellThisCouponInfo, createPage, userService, $rootScope, $state, toastr, $http, $timeout) {
     $(window).scrollTop(0, 0);
     $scope.$emit('headerStatus', 'Admin Tools');
     $scope.$emit('SideMenu', 'Admin Tools');
@@ -235,6 +235,16 @@ couponGiftInfo, cashGiftInfo, hiddenGiftInfo, createPage, userService, $rootScop
                     
                 break;
 
+                case 'sellThisCoupon':
+                $scope.sellThisCouponTerms = res.result.filter(function (obj) {
+                return obj.type == 'sellThisCoupon';
+                });
+
+                $scope.myFrom.termssellThisCouponCondition = $scope.sellThisCouponTerms[0].termsConditionContent;
+                sellThisCouponInfo.cEditor(true); 
+                    
+                break;
+
                 case 'createPage':
                 $scope.createPageTerms = res.result.filter(function (obj) {
                 return obj.type == 'createPage';
@@ -347,6 +357,23 @@ couponGiftInfo, cashGiftInfo, hiddenGiftInfo, createPage, userService, $rootScop
                     }
                 })
                 break;
+
+            case 'sellThisCoupon':
+            console.log("1")
+                $scope.myFrom.termssellThisCouponCondition = CKEDITOR.instances.sellThisCouponEditor.getData();
+                data = {
+                        termsConditionContent: $scope.myFrom.termssellThisCouponCondition,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
             case 'createPage':
             	$scope.myFrom.termscreatePageCondition = CKEDITOR.instances.createPageEditor.getData();
                 data = {

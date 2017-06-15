@@ -7,7 +7,7 @@ var encrypt = require('mongoose-encryption');
 var Schema = mongoose.Schema;
 
 /* Notification schema */
-// cashAdCondition  couponAdCondition  signUpCondition cashAdGift couponAdGift hiddenAdGift
+// cashAdCondition  couponAdCondition  signUpCondition cashAdGift couponAdGift hiddenAdGift sellThisCoupon
 
 var termsConditionSchema = new Schema({
     userId: {
