@@ -6,6 +6,7 @@ $scope.$emit('SideMenu', 'Manage Ads');
 $scope.createAds = {};
 $scope.cityFirst = true;
 $scope.citySecond = false;
+$scope.dawnloadPagePhoto = [];
 
 
 // if ($scope.myForm.checkId == '' || $scope.myForm.checkId == undefined || $scope.myForm.checkId == null) {
@@ -111,30 +112,23 @@ userService.countryListData().success(function(res) {
    })
 
    $scope.changeCountry = function(){
-    $scope.cityFirst = false;
-    $scope.citySecond = true;
      var obj = {};
      obj = {
        country:$scope.createAds.country
      }
      userService.cityListData(obj).success(function(res) {
-     //console.log("ddd",JSON.stringify(res))
+     console.log("ddd",JSON.stringify(res))
      $scope.cityList = res.result;
    })
    }
 
-$scope.cityBeg = true;
-$scope.cityEnd = false;
 $scope.promoteAppGame = {};
 $scope.addCode = [];
 $scope.promoteAppValidation = [];
 
 
 $scope.validation =  function(item){
-    //console.log("googlePlayLink",item)
     $scope.promoteAppValidation.push(item);
-    //console.log("$scope.promoteAppValidation",$scope.promoteAppValidation)
-
 }
 
 //$scope.createAds.advertismentCover='../dist/image/cover.jpg';

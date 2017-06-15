@@ -69,7 +69,7 @@ app.post('/seeExchangeSentRequest', authUser.authUser, userHandler.seeExchangeSe
 app.post('/savePaymentRequest', userHandler.savePaymentRequest);
 app.post('/userCashGifts', authUser.authUser, userHandler.userCashGifts);
 app.post('/blockUserSearch', authUser.authUser, userHandler.blockUserSearch);
-app.post('/userNotification', authUser.authUser, userHandler.userNotification);
+app.post('/userNotification', userHandler.userNotification);
 
 
 app.post('/payU', userHandler.payU)

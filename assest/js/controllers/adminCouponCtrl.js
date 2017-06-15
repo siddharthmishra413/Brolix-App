@@ -70,8 +70,10 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
 
     $scope.addCoupon = function(info) {
         var couponData = JSON.parse(info.pageName);
-        //console.log("info",JSON.stringify(couponData))
-        //console.log("info",$scope.user.pageName)
+        // console.log("info",JSON.stringify(couponData))
+        $scope.expDate = new Date(info.expDate).getTime()
+
+        console.log("info",$scope.expDate)
 
         var data = {
             "pageId": couponData._id,

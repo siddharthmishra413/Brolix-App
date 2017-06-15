@@ -20,6 +20,7 @@
                                              User.findOneAndUpdate({ _id: req.body.receiverId }, {
                                                  $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", linkType: 'profile', notificationType: 'follow', image: image } }
                                              }, { new: true }).exec(function(err, results) {
+                                                if(!(results.deviceToken == undefined ||results.deviceToken == null)){
                                                  if (results.deviceToken && results.deviceType && results.notification_status && results.status) {
                                                      var message = "You have one follow request";
                                                      if (results.deviceType == 'Android' && results.notification_status == 'on' && results.status == 'ACTIVE') {
@@ -30,6 +31,10 @@
                                                      } else {
                                                          console.log("Something wrong!!!!")
                                                      }
+                                                 }
+                                             }
+                                                 else{
+                                                    console.log("no deviceToken")
                                                  }
                                                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                                  res.send({

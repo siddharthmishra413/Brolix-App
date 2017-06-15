@@ -417,19 +417,19 @@
                                 <div class="col-sm-4">
                                    <select class="form-control" ng-change="changeCountry()" ng-model="createAds.country" required>
                                        <option value="">Select Country</option>
-                                       <option ng-repeat="country in countriesList" value"{{country.code}}">{{country.name}}</option>
+                                       <option ng-repeat="country in countriesList" value"{{country}}">{{country}}</option>
                                    </select>
                                 </div>
-                                <div class="col-sm-4">
+                                <!-- <div class="col-sm-4">
                                    <select class="form-control" ng-change="changeState()" ng-model="createAds.state" required>
                                       <option value="">Select State</option>
                                       <option ng-repeat="state in stateList">{{state.region}}</option>
                                    </select> 
-                                </div>
+                                </div> -->
                                 <div class="col-sm-4">
                                     <select  class="form-control" id="city" ng-model="createAds.city" required>
                                       <option value="">Select City</option>
-                                      <option ng-repeat="city in cityList">{{city.city}}</option>
+                                      <option ng-repeat="city in cityList">{{city}}</option>
                                     </select> 
                                 </div>
                             </div>
