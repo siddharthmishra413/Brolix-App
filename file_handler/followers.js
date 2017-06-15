@@ -18,7 +18,7 @@
                                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                              var image = results.image;
                                              User.findOneAndUpdate({ _id: req.body.receiverId }, {
-                                                 $push: { "notification": { userId: req.body.senderId, message: "You have one follow request", type: 'profile', notificationType: 'follow', image: image } }
+                                                 $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", linkType: 'profile', notificationType: 'follow', image: image } }
                                              }, { new: true }).exec(function(err, results) {
                                                  if (results.deviceToken && results.deviceType && results.notification_status && results.status) {
                                                      var message = "You have one follow request";

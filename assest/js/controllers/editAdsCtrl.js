@@ -42,6 +42,16 @@ else
         $scope.createAds = res.result;
         $scope.createAds.country = res.result.whoWillSeeYourAdd.country;
         $scope.createAds.city = res.result.whoWillSeeYourAdd.city;
+        console.log("slidesahow",res.result.slideShow)
+        $scope.createAds.slidePhoto1 = res.result.slideShow[0];
+        $scope.createAds.slidePhoto2 = res.result.slideShow[1];
+        $scope.createAds.slidePhoto3 = res.result.slideShow[2];
+        $scope.createAds.slidePhoto4 = res.result.slideShow[3];
+        $scope.createAds.slidePhoto5 = res.result.slideShow[4];
+        $scope.createAds.slidePhoto6 = res.result.slideShow[5];
+
+
+        
         console.log("country",$scope.createAds.country)
         console.log("city",$scope.createAds.city)
         if(res.result.adsType)
@@ -65,7 +75,6 @@ else
     } else {
         toastr.error(res.responseMessage);
         $state.go('login')
-        
     }
     //console.log("resss",$scope.userId);
 })
