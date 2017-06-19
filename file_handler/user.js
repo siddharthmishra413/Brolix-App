@@ -776,15 +776,36 @@ module.exports = {
                     req.body.otp = otp1;
                     req.body.status = "inActive";
                 } else {
-                    User.findByIdAndUpdate(req.params.id, req.body, {
-                        new: true
-                    }).exec(function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                        res.send({
-                            result: result,
-                            responseCode: 200,
-                            responseMessage: "Profile updated successfully."
-                        });
+                    User.findOne({ _id: req.params.id }).exec(function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
+                            if (result.email == req.body.email || result.mobileNumber == req.body.mobileNumber) {
+                                User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result1) {
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                        res.send({
+                                            result: result,
+                                            responseCode: 200,
+                                            responseMessage: "Profile updated successfully."
+                                        });
+                                    }
+                                })
+                            } else {
+                                var email = req.body.email;
+                                var mobileNumber = req.body.mobileNumber;
+                                User.findOne({ $or: [{ email: req.body.email }, { mobileNumber: req.body.mobileNumber }], _id: { $ne: req.params.id } }).exec(function(err, result2) {
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) { res.send({ responseCode: 500, responseMessage: 'Email or mobile must be unique' }); } else {
+                                        User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result3) {
+                                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
+                                                res.send({
+                                                    result: result3,
+                                                    responseCode: 200,
+                                                    responseMessage: "Profile updated successfully."
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        }
                     });
                 }
             }

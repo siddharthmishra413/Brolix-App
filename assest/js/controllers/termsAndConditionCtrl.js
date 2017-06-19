@@ -133,7 +133,7 @@ couponGiftInfo, cashGiftInfo, hiddenGiftInfo, sellThisCouponInfo, createPage, us
     // }
     // } );
 
-    userService.upgradeCardViewersList().success(function(res) {
+    userService.upgradeCardPriceList().success(function(res) {
         console.log("res",JSON.stringify(res))
         if (res.responseCode == 200) {
             $rootScope.viewerss = res.result;

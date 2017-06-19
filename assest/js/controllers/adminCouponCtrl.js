@@ -65,6 +65,57 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
 
     }
 
+    $scope.expDate = function(date) {
+        // var currentDate = new Date()
+        // var year = currentDate.getFullYear();
+        // var month = 1 + currentDate.getMonth();
+        // var noOfDaysOne = daysInMonth(month, year);
+        // var noOfDaysTwo = daysInMonth(month + 1, year);
+        // var noOfDaysThree = daysInMonth(month + 2, year);
+        // var one_day = 86400000;
+        // var currentDateNumber = new Date().getTime();
+        console.log("date",date)
+
+        switch (date) {
+            case '':
+                 $scope.couponExpiryDate = 'NEVER';
+                break;
+
+            case '1 Week':
+                $scope.couponExpiryDate = 86400000 * 7;
+                break;
+
+            case '2 Weeks':
+
+                $scope.couponExpiryDate = 86400000 * 14;
+                break;
+
+            case '3 Weeks':
+
+                $scope.couponExpiryDate = 86400000 * 21;
+                break;
+
+            case '1 Month':
+
+                $scope.couponExpiryDate = 86400000 * 30;
+                break;
+
+            case '2 Months':
+
+                $scope.couponExpiryDate = 86400000 * 60;
+                break;
+
+            case '3 Months':
+
+                $scope.couponExpiryDate = 86400000 * 90;
+                break;
+
+            default:
+                toastr.error("Something Wents to wrong")
+
+        }
+    }
+
 
 
 
@@ -79,7 +130,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
             "pageId": couponData._id,
             "pageName": couponData.pageName,
             "coverImage": $scope.user.photo,
-            "couponExpiryDate": info.expDate,
+            "couponExpiryDate": $scope.couponExpiryDate,
             "giftDescription": info.description,
             "giftDescriptionImage":$scope.user.giftImage
 

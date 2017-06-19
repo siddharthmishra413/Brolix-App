@@ -382,6 +382,9 @@ app.service('userService', function($http) {
         upgradeCardViewersList: function() {
             return $http.get(baseurl + '/admin/upgradeCardViewersList');
         },
+        upgradeCardPriceList: function() {
+            return $http.get(baseurl + '/admin/upgradeCardPriceList');
+        },
         totalSoldUpgradeCard: function() {
             return $http.get(baseurl + '/admin/totalSoldUpgradeCard');
         },

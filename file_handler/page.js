@@ -2956,9 +2956,11 @@ module.exports = {
                         },
                         function(result, callback){
                             if(user.country == 'United Arab Emirates'){
+                                var state = 'UAE'
                                 var country_shipping = "ARE"
                             }
                             else if(user.country == 'Jordan'){
+                                var state = 'Jordan'
                                 var country_shipping = "JOR"
                             }
                             else{
@@ -2967,12 +2969,13 @@ module.exports = {
                                     responseMessage: "User can pay only for country UAE and Jordan."
                                 })
                             }
+
                             var createPayPage = new Object()
                             createPayPage.merchant_email = 'sakshigadia@gmail.com';
                             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
                             createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-                            createPayPage.site_url = "http://localhost:8082";
-                            createPayPage.return_url = "http://localhost:8082/page/returnPage";
+                            createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
+                            createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnPage";
                             createPayPage.title = "Brolix";
                             createPayPage.cc_first_name = user.firstName;
                             createPayPage.cc_last_name = user.lastName;
@@ -2990,16 +2993,16 @@ module.exports = {
                             createPayPage.ip_customer = "192.168.1.1";
                             createPayPage.ip_merchant = "192.168.1.1";
                             createPayPage.billing_address = "ydh";
-                            createPayPage.state = user.state;
+                            createPayPage.state = state;
                             createPayPage.city = user.city;
-                            createPayPage.postal_code = user.pincode;
+                            createPayPage.postal_code = '110020';
                             createPayPage.country = country_shipping;
                             createPayPage.shipping_first_name = user.firstName;
                             createPayPage.shipping_last_name = user.lastName;
                             createPayPage.address_shipping = "Flat";
                             createPayPage.city_shipping = user.city;
-                            createPayPage.state_shipping = user.state;
-                            createPayPage.postal_code_shipping = user.pincode;
+                            createPayPage.state_shipping = state;
+                            createPayPage.postal_code_shipping = '110020';
                             createPayPage.country_shipping = country_shipping; //JOR ARE
                             createPayPage.msg_lang = "English";
                             createPayPage.cms_with_version = "1.0.0";

@@ -161,6 +161,7 @@ app.get('/upgradeCardViewersList', authUser.authUser, adminHandler.upgradeCardVi
 app.get('/luckCardViewersList', authUser.authUser, adminHandler.luckCardViewersList);
 app.get('/userCouponStatus', authUser.authUser, adminHandler.userCouponStatus);
 app.get('/userCashStatus', authUser.authUser, adminHandler.userCashStatus);
+app.get('/upgradeCardPriceList', authUser.authUser, adminHandler.upgradeCardPriceList);
 
 
 module.exports = app;

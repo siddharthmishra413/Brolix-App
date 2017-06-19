@@ -3299,16 +3299,12 @@ module.exports = {
                         password: req.body.password,
                         type: 'SYSTEMADMIN'
                     };
-                    User.findOne({ email: req.body.email }, function(err, result) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result) { res.send({ responseCode: 400, responseMessage: "Email id must be unique" }); } else {
-                            var objuser = new User(obj);
-                            objuser.save(function(err, result) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else {
-                                    callback(null, result)
-                                }
+                  var objuser = new User(obj);
+                  objuser.save(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else {
+                        callback(null, result)
+                      }
                             })
-                        }
-                    })
                 }
             },
             function(result, callback) {
@@ -4363,11 +4359,26 @@ module.exports = {
                     })
                 }
             })
-
         }
-
-
-    }
+    },
+    
+       "upgradeCardPriceList": function(req, res) { // "type": "luck_card",
+        adminCards.find({ "type": "upgrade_card" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else {
+                var priceArray = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (priceArray.indexOf(result[i].price) == -1) {
+                        priceArray.push(result[i].price)
+                    }
+                }
+                res.send({
+                    result: priceArray,
+                    responseCode: 200,
+                    responseMessage: "Result"
+                })
+            }
+        })
+    },
 
 
 }

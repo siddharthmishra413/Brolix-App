@@ -53,7 +53,7 @@
 
                         <div class="form-group clearfix">
                             <div class="cover-image">
-                                <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495862745/f9xiu2xrlsktd5kakq5p.jpg'}}" id="output">
+                                <img class="profile-user-img img-responsive" src="{{user.photo || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495862745/f9xiu2xrlsktd5kakq5p.jpg'}}" id="output">
                                 <label class="fileContainer">
                             Choose File
                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" name="image" accept="image/*" required>
@@ -80,6 +80,23 @@
                             </div>
                         </div>
 
+                       <!--  <div class="col-sm-6">
+                                    <div class="text-center">
+                                        <label class="coupon-date col-sm-12">Coupon Expiry Date</label>
+                                        <div class="col-sm-6 col-sm-offset-3">
+                                            <select ng-model="createAds.couponExpiryDate" class="form-control" ng-change="expDate(createAds.couponExpiryDate)">
+                                                <option value="">Never</option>
+                                                <option value="1 Week">1 Week </option>
+                                                <option value="2 Weeks">2 Weeks</option>
+                                                <option value="3 Weeks">3 Weeks</option>
+                                                <option value="1 Month">1 Month</option>
+                                                <option value="2 Months">2 Months</option>
+                                                <option value="3 Months">3 Months</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div> -->
+
 
 
 
@@ -87,14 +104,23 @@
                         <div class="form-group clearfix">
                             <label class="col-sm-3 control-label">Expiry Date</label>
                             <div class="col-sm-9">
-                                <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDate}}">
+                                <select ng-model="user.expDate" class="form-control" ng-change="expDate(user.expDate)">
+                                    <option value="">Never</option>
+                                    <option value="1 Week">1 Week </option>
+                                    <option value="2 Weeks">2 Weeks</option>
+                                    <option value="3 Weeks">3 Weeks</option>
+                                    <option value="1 Month">1 Month</option>
+                                    <option value="2 Months">2 Months</option>
+                                    <option value="3 Months">3 Months</option>
+                                </select>
+                                <!-- <datepicker date-format="yyyy-MM-dd" selector="form-control" date-min-limit="{{minDate}}">
                                     <div class="input-group">
                                         <input name="dob" class="form-control" style="cursor:pointer;" placeholder="Choose a date" ng-model="user.expDate" />
-                                        <span class="input-group-addon">
+                                        <span class="input-group-addon"> -->
                                  <!-- <i class="fa fa-lg fa-calendar"></i> -->
-                                 </span>
+                                <!--  </span>
                                     </div>
-                                </datepicker>
+                                </datepicker> -->
                                 <span style="color:red;" ng-show="myForm.dob.$dirty && myForm.dob.$invalid">>Date of birth is required.</span>
                                 <span ng-show="myForm.dob.$error.required">Date of birth is required.</span>
                                 <!-- <input type="date" class="form-control" ng-model="user.expDate" name="myDate" required>
