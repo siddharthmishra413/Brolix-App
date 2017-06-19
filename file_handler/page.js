@@ -2854,16 +2854,47 @@ module.exports = {
            else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } 
            else {
             console.log("user",user)
-                if(req.body.paymentMode == 'paypal'){
+                if(req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet'){
                     waterfall([
                         function(callback){
-                            var details = {
-                                paymentMode: req.body.paymentMode,
-                                userId: req.body.userId,
-                                amount: req.body.amount,
-                                transcationId: req.body.transcationId,
-                                Type: req.body.Type
+                            if(req.body.paymentMode == 'paypal'){
+                               var cashAmount  = user.cash - req.body.brolixAmount;
                             }
+                            else  if(req.body.paymentMode == 'payWithWallet'){
+                                 var cashAmount  = user.cash - req.body.amount;
+                            }
+                                
+                            User.findOneAndUpdate({ _id: req.body.userId },{$set:{cash:cashAmount}},{new: true}).exec(function(err, result){
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                                else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+                                else {
+                                    callback(null, "null")
+                                }
+                            })
+                            
+                        },
+                        function(nullResult, callback){
+                            if(req.body.paymentMode == 'paypal'){
+                                var details = {
+                                    paymentMode: req.body.paymentMode,
+                                    userId: req.body.userId,
+                                    amount: req.body.amount,
+                                    paymentAmount: req.body.paymentAmount,
+                                    brolixAmount: req.body.brolixAmount,
+                                    transcationId: req.body.transcationId,
+                                    Type: req.body.Type
+                                }
+                            }
+                            else  if(req.body.paymentMode == 'payWithWallet'){
+                                var details = {
+                                    paymentMode: req.body.paymentMode,
+                                    userId: req.body.userId,
+                                    amount: req.body.amount,
+                                    transcationId: "brolixAccount",
+                                    Type: req.body.Type
+                                }
+                            }
+                           
                             var payment = new Payment(details);
                             payment.save(function(err, paymentResult){
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
@@ -2949,10 +2980,10 @@ module.exports = {
                             createPayPage.phone_number = user.mobileNumber;
                             createPayPage.email = user.email;
                             createPayPage.products_per_title = "Payment";
-                            createPayPage.unit_price = req.body.amount;
+                            createPayPage.unit_price = req.body.paymentAmount;
                             createPayPage.quantity = "1";
                             createPayPage.other_charges = 0;
-                            createPayPage.amount = req.body.amount;
+                            createPayPage.amount = req.body.paymentAmount;
                             createPayPage.discount = 0;
                             createPayPage.currency = "USD"; //EUR JOD
                             createPayPage.reference_no = "21873109128";
@@ -2977,7 +3008,16 @@ module.exports = {
                                 else if (!(response.response_code == "4012")) { 
                                     res.send({ responseCode: 404, responseMessage: "User details are invalid." }); } 
                                 else {
-                                    var obj = { userId: req.body.userId, paymentMode: req.body.paymentMode,amount: req.body.amount, Type: req.body.Type,p_id: response.p_id };
+                                    var obj = {
+                                        userId: req.body.userId,
+                                        paymentMode: req.body.paymentMode,
+                                        amount: req.body.amount,
+                                        userCashAmount: user.cash,
+                                        paymentAmount: req.body.paymentAmount,
+                                        brolixAmount: req.body.brolixAmount,
+                                        Type: req.body.Type,
+                                        p_id: response.p_id
+                                    };
                                     myCache.set( "myKey", obj, 10000 );
 
                                     res.send({
@@ -3013,6 +3053,8 @@ module.exports = {
                     paymentMode:value.paymentMode,
                     userId: value.userId,
                     amount: value.amount,
+                    paymentAmount: value.paymentAmount,
+                    brolixAmount: value.brolixAmount,
                     transcationId: response.transaction_id,
                     Type: value.Type
                 }
@@ -3045,7 +3087,9 @@ module.exports = {
                     type: "SENDBYADMIN"
                 }
                 console.log(data)
-                User.findByIdAndUpdate({ _id: value.userId }, { $push: { upgradeCardObject: data } }, function(err, userRes) {
+                var cashAmount = value.userCashAmount - value.brolixAmount
+                console.log("cashAmount",cashAmount)
+                User.findByIdAndUpdate({ _id: value.userId }, { $push: { upgradeCardObject: data } , $set: {cash: cashAmount}}, function(err, userRes) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
                     else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
                     else {
@@ -3062,5 +3106,4 @@ module.exports = {
             }
         })  
     }
-
 }

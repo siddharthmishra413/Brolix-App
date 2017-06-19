@@ -2165,10 +2165,11 @@ module.exports = {
                 var adId = req.body.receiverAdId;
                 if (!req.body.receiverCouponCode) { res.send({ responseCode: 400, responseMessage: "Receiver coupon code is required" }); } else if (!req.body.receiverId) { res.send({ responseCode: 400, responseMessage: "receiverId is required." }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: "senderCouponId is required." }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: "receiverCouponId is required." }) } else if (receiverId == senderId) { res.send({ responseCode: 400, responseMessage: "You can not send the exchange request to yourself." }) } else {
                     User.findOne({_id:req.body.receiverId}).exec(function(err, userResult){
-                        console.log("userResult-1111223112342353456-->>>",userResult.privacy.exchangeCoupon)
+                        console.log("***********************-->>>",userResult.privacy.exchangeCoupon)
+                          console.log("############################")
                      if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); }
                      else if(!userResult){ res.send({ responseCode: 400, responseMessage: "Please enter correct ReceiverId." }); }
-                     else if(userResult.privacy.exchangeCoupon == "Off"){ res.send({ responseCode: 400, responseMessage: "You cannot send coupon exchange request to this user due to privacy policies." }); }
+                     else if(userResult.privacy.exchangeCoupon == "off"){ res.send({ responseCode: 400, responseMessage: "You cannot send coupon exchange request to this user due to privacy policies." }); }
                     else {  
                     createNewAds.findOne({ _id: adId }).exec(function(err, result) {
                         if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (Boolean(result.couponExchangeReceived.find(couponExchangeReceived => couponExchangeReceived.senderCouponId == senderCouponId))) {

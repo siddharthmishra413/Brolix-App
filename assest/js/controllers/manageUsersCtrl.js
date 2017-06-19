@@ -119,16 +119,8 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             }
         })
     }
-    userService.viewcard($scope.cardType).success(function(res) {
-        if (res.responseCode == 200) {
-            $scope.UpgradeCard = res.data;
-        } else {}
-    })
-    userService.showListOFCouponWithoutPagination().success(function(res) {
-        if (res.responseCode == 200) {
-            $scope.allCoupons = res.result;
-        } else {}
-    })
+    
+    
     $scope.export = function() {
         html2canvas(document.getElementById('manageUserTable'), {
             onrendered: function(canvas) {
@@ -434,10 +426,12 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 for (var i = 0; i < $scope.totalUser.length; i++) {
                     array.push($scope.totalUser[i]._id)
                 }
+
                 data = {
                     Brolix: $scope.sendBrolix.brolix,
                     Id: array
                 }
+                console.log("totalUser",JSON.stringify(data))
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
                         toastr.success("Brolix Send successfully to All User");
@@ -456,6 +450,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                     Brolix: $scope.sendBrolix.brolix,
                     Id: array
                 }
+                console.log("totalUser",JSON.stringify(data))
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
                         toastr.success("Brolix Send successfully all Personal User");
@@ -474,6 +469,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                     Brolix: $scope.sendBrolix.brolix,
                     Id: array
                 }
+                console.log("totalUser",JSON.stringify(data))
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
                         toastr.success("Brolix Send successfully to all Business User");
@@ -492,6 +488,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                     Brolix: $scope.sendBrolix.brolix,
                     Id: array
                 }
+                console.log("totalUser",JSON.stringify(data))
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
                         toastr.success("Brolix Send successfully to all Live User");
@@ -843,6 +840,11 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $state.go('header.manageUsers')
         } else {
             $("#showAllCard").modal('show');
+            userService.viewcard($scope.cardType).success(function(res) {
+        if (res.responseCode == 200) {
+            $scope.UpgradeCard = res.data;
+        } else {}
+    })
         }
     }
     $scope.sendCard = function(cardId, type) {
@@ -1349,6 +1351,13 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             toastr.error("Please select user.")
             $state.go('header.manageUsers')
         } else {
+            userService.showListOFCouponWithoutPagination().success(function(res) {
+                if (res.responseCode == 200) {
+                    $scope.allCoupons = res.result;
+                } else {
+                    toastr.error(res.responseMessage)
+                }
+            })
             $("#showAllCoupons").modal('show');
         }
     }

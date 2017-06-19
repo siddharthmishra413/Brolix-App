@@ -122,6 +122,10 @@ var createNewPageSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    couponCreatedCount: {
+        type: Number,
+        default: 0
+    },
     winnersCount: {
         type: Number,
         default: 0
