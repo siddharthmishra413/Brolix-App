@@ -1514,7 +1514,7 @@ module.exports = {
                         var image = user.image;
                         for (var i = 0; i < senderId.length; i++) {
                             User.findOneAndUpdate({ _id: senderId[i] }, {
-                                $push: { "notification": { userId: req.body.senderId, type: "You are tagged on an ad", linkType:'profile', adId: req.body.adId, notificationType: 'tagOnAd', image: image } }
+                                $push: { "notification": { userId: req.body.senderId, type: "You are tagged on an ad", linkType: 'profile', adId: req.body.adId, notificationType: 'tagOnAd', image: image } }
                             }, { new: true }).exec(function(err, result1) {
                                 console.log("result1-->>", result1)
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct senderId" }); } else {
