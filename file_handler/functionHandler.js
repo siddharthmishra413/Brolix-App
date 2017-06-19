@@ -3,7 +3,7 @@
   var FCM = require('fcm').FCM;
   var config = require("../config.js")
   console.log("secreteKey-->>>", config.secreteKey)
-      // var apn = require('apn');
+      var apn = require('apn');
   module.exports = {
       "otp": function(mobile, msg_body) {
           var possible = "123456789";
