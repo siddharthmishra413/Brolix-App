@@ -10,7 +10,7 @@ app.controller('editCouponCtrl', function($scope, uploadimgServeice, $window, to
         $scope.user = {};
     }
     userService.viewCoupon($scope.coupon_id).then(function(success) {
-        //console.log("Coupon>>>>>>>>",success)
+        console.log("Coupon>>>>>>>>",success)
         $scope.couponData = success.data.result;
         $scope.user.pageName = $scope.couponData.pageName;
         $scope.user.photo = $scope.couponData.coverImage;

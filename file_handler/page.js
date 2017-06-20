@@ -3007,6 +3007,7 @@ module.exports = {
                             createPayPage.msg_lang = "English";
                             createPayPage.cms_with_version = "1.0.0";
                             paytabs.CreatePayPage(createPayPage, function(response) {
+                                console.log(response)
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
                                 else if (!(response.response_code == "4012")) { 
                                     res.send({ responseCode: 404, responseMessage: "User details are invalid." }); } 

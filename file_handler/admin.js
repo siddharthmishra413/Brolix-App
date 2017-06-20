@@ -4225,9 +4225,15 @@ module.exports = {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else {
                 var AdsType = result.filter(result => result.type == "USER");
                 var UserType = result.filter(result => result.type == "ADS");
+                var sortArray1 = AdsType.sort(function(obj1, obj2) {
+                    return obj2.createdAt - obj1.createdAt
+                })
+                var sortArray2 = UserType.sort(function(obj1, obj2) {
+                    return obj2.createdAt - obj1.createdAt
+                })
                 res.send({
-                    AdsType: AdsType,
-                    userType: UserType,
+                    AdsType: sortArray1,
+                    userType: sortArray2,
                     responseCode: 200,
                     responseMessage: "All report Shown successfully."
                 })

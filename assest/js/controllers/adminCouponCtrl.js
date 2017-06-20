@@ -39,6 +39,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
                     $timeout(function() {
                         spinnerService.hide('html5spinner');
                         $scope.user.photo = ObjS.data.result.url;
+                        console.log("$scope.user.photo",$scope.user.photo)
                     }, 250);
                 })
             } else {
