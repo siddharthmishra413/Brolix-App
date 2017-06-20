@@ -619,7 +619,7 @@ module.exports = {
                                     console.log("city-->>>", city)
                                     if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
                                         console.log("city- 111->>>", city)
-                                        if (city == null || city == undefined || city == '') { res.send({ responseCode: 200, responseMessage: 'You can watch this add' }) } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
+                                        if (city == null || city == undefined || city == '') { res.send({result:result, responseCode: 200, responseMessage: 'You can watch this add' }) } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
                                             res.send({ responseCode: 200, responseMessage: 'You can watch this add' })
                                         }
                                     }
@@ -634,7 +634,7 @@ module.exports = {
                                 if (result1.country != country) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
                                     console.log("city- 111->>>", city)
                                     if (city == null || city == undefined || city == '') { res.send({ responseCode: 200, responseMessage: 'You can watch this add' }) } else if (result1.city != city) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
-                                        res.send({ responseCode: 200, responseMessage: 'You can watch this add' })
+                                        res.send({result:result, responseCode: 200, responseMessage: 'You can watch this add' })
                                     }
                                 }
                             }

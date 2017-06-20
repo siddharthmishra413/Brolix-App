@@ -776,24 +776,7 @@ module.exports = {
                     req.body.otp = otp1;
                     req.body.status = "inActive";
                 } else {
-                    User.findOne({ _id: req.params.id }).exec(function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
-                            if (result.email == req.body.email || result.mobileNumber == req.body.mobileNumber) {
-                                User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result1) {
-                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                        res.send({
-                                            result: result,
-                                            responseCode: 200,
-                                            responseMessage: "Profile updated successfully."
-                                        });
-                                    }
-                                })
-                            } else {
-                                var email = req.body.email;
-                                var mobileNumber = req.body.mobileNumber;
-                                User.findOne({ $or: [{ email: req.body.email }, { mobileNumber: req.body.mobileNumber }], _id: { $ne: req.params.id } }).exec(function(err, result2) {
-                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) { res.send({ responseCode: 500, responseMessage: 'Email or mobile must be unique' }); } else {
-                                        User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result3) {
+                     User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result3) {
                                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
                                                 res.send({
                                                     result: result3,
@@ -802,11 +785,6 @@ module.exports = {
                                                 })
                                             }
                                         })
-                                    }
-                                })
-                            }
-                        }
-                    });
                 }
             }
         })
@@ -2083,33 +2061,6 @@ module.exports = {
         ])
     },
 
-
-    // "listOfFavouriteCoupon": function(req, res) {
-    //     var userId = req.body.userId
-    //     createNewAds.find({}).exec(function(err, result) {
-    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
-    //             var array = [];
-    //             for (var i = 0; i < result.length; i++) {
-    //                 for (var j = 0; j < result[i].favouriteCoupon.length; j++) {
-    //                     if (result[i].favouriteCoupon[j] == userId) {
-    //                         array.push(result[i]._id)
-    //                     }
-    //                 }
-    //             }
-    //             createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-    //                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon found in your favourites" }); } else {
-    //                     res.send({
-    //                         result: result,
-    //                         responseCode: 200,
-    //                         responseMessage: "successfully shown the result."
-    //                     })
-    //                 }
-    //             })
-    //         }
-    //     })
-    // },
-
-
     "addRemoveCouponFromFavourite": function(req, res) {
         var adId = req.body.adId;
         var userId = req.body.userId;
@@ -2187,10 +2138,9 @@ module.exports = {
                 if (!req.body.receiverCouponCode) { res.send({ responseCode: 400, responseMessage: "Receiver coupon code is required" }); } else if (!req.body.receiverId) { res.send({ responseCode: 400, responseMessage: "receiverId is required." }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: "senderCouponId is required." }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: "receiverCouponId is required." }) } else if (receiverId == senderId) { res.send({ responseCode: 400, responseMessage: "You can not send the exchange request to yourself." }) } else {
                     User.findOne({ _id: req.body.receiverId }).exec(function(err, userResult) {
                         console.log("***********************-->>>", userResult.privacy.exchangeCoupon)
-                        console.log("############################")
                         if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!userResult) { res.send({ responseCode: 400, responseMessage: "Please enter correct ReceiverId." }); } else if (userResult.privacy.exchangeCoupon == "off") { res.send({ responseCode: 400, responseMessage: "You cannot send coupon exchange request to this user due to privacy policies." }); } else {
                             createNewAds.findOne({ _id: adId }).exec(function(err, result) {
-                                if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (Boolean(result.couponExchangeReceived.find(couponExchangeReceived => couponExchangeReceived.senderCouponId == senderCouponId))) {
+                                if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (Boolean(result.couponExchangeReceived.find(couponExchangeReceived => couponExchangeReceived.senderCouponId == senderCouponId && couponExchangeReceived.couponExchangeStatus == "REQUESTED"))) {
                                     res.send({ responseCode: 302, responseMessage: "Already requested for this coupon" });
                                 } else {
                                     User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) } }, function(err, user1) {
@@ -2852,58 +2802,103 @@ module.exports = {
     },
 
     "couponExchangeOff": function(req, res) {
-        if (req.body.status == 'off') {
-            waterfall([
-                function(callback) {
-                    User.findOneAndUpdate({ _id: req.body.userId }, { $set: { 'privacy.exchangeCoupon': req.body.status } }, function(err, user) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            callback(null)
-                        }
-                    })
-                },
-                function(callback) {
-                    var receiverId = req.body.userId;
-                    createNewAds.update({ 'couponExchangeReceived.receiverId': receiverId }, { $set: { 'couponExchangeReceived.$.couponExchangeStatus': "CANCEL" } }, { multi: true }, function(err, user) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            callback(null)
-                        }
-                    })
-                },
-                function(callback) {
-                    var senderId = req.body.userId;
-                    createNewAds.update({ 'couponExchangeReceived.senderId': senderId }, { $set: { 'couponExchangeReceived.$.couponExchangeStatus': "CANCEL" } }, { multi: true }, function(err, user1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            callback(null)
-                        }
-                    })
-                },
-                function(callback) {
-                    var senderId = req.body.userId;
-                    createNewAds.update({ 'couponExchangeSent.senderId': senderId }, { $set: { 'couponExchangeSent.$.couponExchangeStatus': "CANCEL" } }, { multi: true }, function(err, user2) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            callback(null)
-                        }
-                    })
-                },
-            ], function(err, result) {
-                res.send({
-                    responseCode: 200,
-                    responseMessage: 'Privacy updated successfully'
-                })
-            })
-        } else {
-            User.findOneAndUpdate({ _id: req.body.userId }, { $set: { 'privacy.exchangeCoupon': req.body.status } }, function(err, user) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                    res.send({
-                        responseCode: 200,
-                        responseMessage: 'Privacy updated successfully'
-                    })
-                }
-            })
-        }
+     if (req.body.status == 'off') {
+         waterfall([
+             function(callback) {
+                 User.findOneAndUpdate({ _id: req.body.userId }, { $set: { 'privacy.exchangeCoupon': req.body.status } }, function(err, user) {
+                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                         callback(null)
+                     }
+                 })
+             },
+             function(callback) {
+                 var receiverId = req.body.userId;
+                 createNewAds.find({ 'couponExchangeReceived.receiverId': receiverId }, function(err, user) {
+                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                         var array1 = [];
+                         for (var i = 0; i < user.length; i++) {
+                             for (var j = 0; j < user[i].couponExchangeReceived.length; j++) {
+                                 if (user[i].couponExchangeReceived[j].receiverId == req.body.userId) {
+                                     array1.push(user[i].couponExchangeReceived[j]._id)
+                                 }
+                             }
+                         }
+                         for (var k = 0; k < array1.length; k++) {
+                             createNewAds.update({ 'couponExchangeReceived._id': array1[k] }, { $set: { 'couponExchangeReceived.$.couponExchangeStatus': "CANCEL" } }, { multi: true }, function(err, userResult) {
+                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                     console.log("in loop g*******")
+                                 }
+                             })
+                         }
+                         callback(null)
+                     }
+                 })
+             },
+             function(callback) {
+                 var senderId = req.body.userId;
+                 createNewAds.find({ 'couponExchangeReceived.senderId': senderId }, function(err, user1) {
+                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                         var array2 = [];
+                         for (var i = 0; i < user1.length; i++) {
+                             for (var j = 0; j < user1[i].couponExchangeReceived.length; j++) {
+                                 if (user1[i].couponExchangeReceived[j].senderId == req.body.userId) {
+                                     array2.push(user1[i].couponExchangeReceived[j]._id)
+                                 }
+                             }
+                         }
+                         for (var k = 0; k < array2.length; k++) {
+                             createNewAds.update({ 'couponExchangeReceived._id': array2[k] }, { $set: { 'couponExchangeReceived.$.couponExchangeStatus': "CANCEL" } }, { multi: true }, function(err, user1Result) {
+                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                     console.log("in loop g*******")
+                                 }
+                             })
+                         }
+                         callback(null)
+                     }
+                 })
+             },
+             function(callback) {
+                 var senderId = req.body.userId;
+                 createNewAds.find({ 'couponExchangeSent.senderId': senderId }, function(err, user2) {
+                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                         var array3 = [];
+                         for (var i = 0; i < user2.length; i++) {
+                             for (var j = 0; j < user2[i].couponExchangeSent.length; j++) {
+                                 if (user2[i].couponExchangeSent[j].senderId == req.body.userId) {
+                                     array3.push(user2[i].couponExchangeSent[j]._id)
+                                 }
+                             }
+                         }
+                         for (var k = 0; k < array3.length; k++) {
 
+                             createNewAds.update({ 'couponExchangeSent._id': array3[k] }, { $set: { 'couponExchangeSent.$.couponExchangeStatus': "CANCEL" } }, { multi: true }, function(err, user2Result) {
+                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                     console.log("in loop g*******")
+                                 }
+                             })
+                         }
+                         callback(null)
+                     }
+                 })
+             },
+         ], function(err, result) {
+             res.send({
+                 responseCode: 200,
+                 responseMessage: 'Privacy updated successfully'
+             })
+         })
+     } else {
+         User.findOneAndUpdate({ _id: req.body.userId }, { $set: { 'privacy.exchangeCoupon': req.body.status } }, function(err, user) {
+             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                 res.send({
+                     responseCode: 200,
+                     responseMessage: 'Privacy updated successfully'
+                 })
+             }
+         })
+     }
+ }
 
-    }
 
 
 
