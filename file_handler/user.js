@@ -722,15 +722,15 @@ module.exports = {
     //API for user Login
     "login": function(req, res) {
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-        User.findOne({ email: req.body.email, password: req.body.password, status: 'ACTIVE' }, avoid).exec(function(err, result) {
+        else{
+        User.findOne({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-            if (!result) {
-                return res.send({
-                    responseCode: 404,
-                    responseMessage: "Sorry your id or password is incorrect."
-                });
-            } else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
+            else if (!result) { res.send({ responseCode: 404,responseMessage: "Sorry your id or password is incorrect." }); } 
+            else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
             else {
+                
+             if(result.status!='ACTIVE'){ res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); }
+                else{
                 var token_data = {
                     _id:result._id,
                     status:result.status
@@ -753,7 +753,9 @@ module.exports = {
                     //console.log("what is in token-->>>" + token);
                 })
             }
+            }
         })
+        }
     },
 
     "editProfile": function(req, res) {
@@ -849,7 +851,6 @@ module.exports = {
                         userArray.push(result[i]._id)
                     }
                 }
-                console.log("dsdffs-->", userArray)
                 User.find({ _id: { $in: userArray } }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                         res.send({
@@ -1114,7 +1115,7 @@ module.exports = {
                                     result2.brolix -= req.body.brolix;
                                     result2.save();
 
-                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, type: 'I have send you Brolix', linkType: 'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result3) {
+                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, type: 'I have send you Brolix', linkType: 'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }).exec(function(err, result3) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                         else {
                                             result3.brolix += req.body.brolix;
@@ -1146,7 +1147,7 @@ module.exports = {
                                 var image = result4.image;
                                 result4.brolix -= req.body.brolix;
                                 result4.save();
-                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, type: 'I have send you Brolix', linkType: 'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }, function(err, result5) {
+                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } }, "notification": { userId: req.body.userId, type: 'I have send you Brolix', linkType: 'profile', notificationType: 'brolixReceivedType', image: image }, $inc: { brolix: +req.body.brolix } }, { new: true }).exec(function(err, result5) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result5) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
                                         callback(null, result4)
@@ -1207,7 +1208,7 @@ module.exports = {
                                     var image = result.image;
                                     result.cash -= req.body.cash;
                                     result.save();
-                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, type: 'I have send you Cash', linkType: 'profile', notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
+                                    User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, type: 'I have send you Cash', linkType: 'profile', notificationType: 'cashReceivedType', image: image } }, { new: true }).exec(function(err, user) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                         else {
                                             user.cash += req.body.cash;
@@ -1239,7 +1240,7 @@ module.exports = {
                                 var image = result.image;
                                 result.cash -= req.body.cash;
                                 result.save();
-                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, type: 'I have send you Cash', linkType: 'profile', notificationType: 'cashReceivedType', image: image } }, { new: true }, function(err, user) {
+                                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendCashListObject": { senderId: req.body.userId, cash: req.body.cash } }, "notification": { userId: senderId, type: 'I have send you Cash', linkType: 'profile', notificationType: 'cashReceivedType', image: image } }, { new: true }).exec(function(err, user) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!user) res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" });
                                     else {
                                         user.cash += req.body.cash;
@@ -2972,7 +2973,7 @@ cron.schedule('*/2 * * * *', function() {
             var h = new Date(new Date(startTime).setHours(00)).toUTCString();
             var m = new Date(new Date(h).setMinutes(00)).toUTCString();
             var currentTime = Date.now(m)
-            console.log("<<--currentTime-->>", currentTime)
+            console.log("<<--currentTime-->>", new Date(currentTime))
             for (var i = 0; i < result.length; i++) {
                 for (var j = 0; j < result[i].coupon.length; j++) {
                     if (currentTime >= new Date(result[i].coupon[j].expirationTime)) {
@@ -2983,7 +2984,6 @@ cron.schedule('*/2 * * * *', function() {
                     }
                 }
             }
-            console.log("<<--expirationTime- array->>", array)
             for (var i = 0; i < array.length; i++) {
                 User.update({ 'coupon._id': array[i] }, { $set: { 'coupon.$.couponStatus': "EXPIRED" } }, { multi: true }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {

@@ -18,7 +18,7 @@ module.exports.authUser = function(req, res, next) {
                     if (err) {
                         res.send({
                             responseCode: 500,
-                            responseMessage: 'Authentication error'
+                            responseMessage: 'Internal server error.'
                         })
                     } else if (result) {
                         next();
@@ -26,7 +26,7 @@ module.exports.authUser = function(req, res, next) {
                     } else if (!result) {
                         res.send({
                             responseCode: 401,
-                            responseMessage: 'Authentication error'
+                            responseMessage: 'Authentication error! you are removed by the admin.'
                         })
                     }
                 })

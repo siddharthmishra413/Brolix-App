@@ -750,7 +750,7 @@ module.exports = {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (Boolean(result.adAdmin.find(adAdmin => adAdmin.userId == req.body.userId))) { res.send({ responseCode: 400, responseMessage: "This user is already added as admin." }); } else {
                     createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: 1 } }, { new: true }).exec(function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { type: "Advertiser" } }).exec(function(err, result1) {
+                            User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 }, $set: { type: "Advertiser" } }).exec(function(err, result1) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                     res.send({
                                         result: result,
@@ -766,7 +766,7 @@ module.exports = {
         } else if (req.body.add == "remove") {
             createNewPage.findByIdAndUpdate(req.params.id, { $pop: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: -1 } }, { new: true }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { type: "USER" } }).exec(function(err, result1) {
+                    User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: -1 },$set: { type: "USER" } }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                             res.send({
                                 result: result,

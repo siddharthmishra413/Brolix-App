@@ -254,10 +254,31 @@ module.exports = {
     },
 
     //API for Show Search
-    "searchForCoupons": function(req, res) {
-        var re = new RegExp(req.body.pageName, 'i');
+    "searchForCoupons": function(req, res) {        
+        waterfall([
+            function(callback) {
+                brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
+                        var value = result1.value
+                            // var value= 2
+                        callback(null, value)
+                    }
+                })
+            },
+            function(noDataValue, callback) {
+                brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
+                        var value = result1.value
+                            //  var value= 4;
+                        callback(null, noDataValue, value)
+                    }
+                })
+            },
+            function(noDataValue, dataValue, callback) {
+                
+                   var re = new RegExp(req.body.pageName, 'i');
 
-        var data = {
+           var data = {
             'whoWillSeeYourAdd.country': req.body.country,
             'whoWillSeeYourAdd.state': req.body.state,
             'whoWillSeeYourAdd.city': req.body.city,
@@ -277,6 +298,13 @@ module.exports = {
         createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
+                 for (var i = 0; i < results.docs.length; i++) {
+                            if (results.docs[i].cash == 0) {
+                                results.docs[i].couponSellPrice = noDataValue
+                            } else {
+                                results.docs[i].couponSellPrice = dataValue
+                            }
+                        }
                 res.send({
                     result: results,
                     responseCode: 200,
@@ -284,6 +312,11 @@ module.exports = {
                 })
             }
         })
+                
+              
+            }
+        ])
+     
     },
 
     //API for Like And Unlike
@@ -534,7 +567,7 @@ module.exports = {
 
     "listOfAllAds": function(req, res) {
         if (req.params.type == 'all') {
-            createNewAds.paginate({ pageId: req.params.pageId }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ pageId: req.params.pageId, status:'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
                     res.send({
                         result: result,
@@ -545,7 +578,7 @@ module.exports = {
             })
         } else {
             type = req.params.type;
-            createNewAds.paginate({ pageId: req.params.pageId, adsType: type }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ pageId: req.params.pageId, adsType: type, status:'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
                     res.send({
                         result: result,
@@ -692,13 +725,16 @@ module.exports = {
                         if (has) { res.send({ responseCode: 302, responseMessage: "You have already join the raffle." }) }
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
+                            console.log("in else if")
                             //  raffleCount.push(userId);
                             User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value, brolixAds: value } }, { new: true }, function(err, result1) {
                                 console.log("raffleCount--->>>" + raffleCount.length);
                             })
-
+                                console.log("in raffleCount.length---->>>",raffleCount.length)
                             if (raffleCount.length == viewerLenght) {
+                                console.log("in if")
                                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId, NontargetedCount: req.body.userId } }, function(err, success) {
+                                    console.log("success--->>>",success)
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
                                         var winnerCount = success.numberOfWinners;
                                         var pageId = success.pageId;
@@ -1515,7 +1551,7 @@ module.exports = {
                         for (var i = 0; i < senderId.length; i++) {
                             User.findOneAndUpdate({ _id: senderId[i] }, {
                                 $push: { "notification": { userId: req.body.senderId, type: "You are tagged on an ad", linkType: 'profile', adId: req.body.adId, notificationType: 'tagOnAd', image: image } }
-                            }, { new: true }).exec(function(err, result1) {
+                            }, { multi: true },function(err, result1) {
                                 console.log("result1-->>", result1)
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct senderId" }); } else {
                                     console.log("res--1-->>", result1)

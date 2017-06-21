@@ -146,6 +146,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                     action: function(dialog) {
                         userService.approvalStatus(obj).success(function(res) {
                             if (res.responseCode == 200) {
+                                dialog.close();
                             toastr.success(res.responseMessage);
                             $state.reload();
                             } else {
@@ -170,6 +171,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                     action: function(dialog) {
                         userService.approvalStatus(obj).success(function(res) {
                             if (res.responseCode == 200) {
+                                dialog.close();
                             toastr.success(res.responseMessage);
                             $state.reload();
                             } else {
@@ -391,7 +393,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
                         toastr.success("Message Send Successfully to All Page Owner");
-                        toastr.success("Number of User ", array.length);
+                       // toastr.success("Number of User ", array.length);
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                     } else {

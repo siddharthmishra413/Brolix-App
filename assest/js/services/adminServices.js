@@ -441,6 +441,11 @@ app.service('userService', function($http) {
             return $http.post(baseurl + '/ads/homepageAds', data);
         },
 
+        createAds: function(data) {
+          // console.log("data",JSON.stringify(data))
+            return $http.post(baseurl + '/ads/createAds', data);
+        },
+
         totalAds: function() {
             return $http.get(baseurl + '/admin/totalAds');
         },
