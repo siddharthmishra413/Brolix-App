@@ -205,7 +205,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="cover-image" >
-                        <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495698528/b7xz5jrtzjebziepphn6.jpg'}}" id="output">
+                        <img class="profile-user-img img-responsive" src="{{myForm.userphoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495698528/b7xz5jrtzjebziepphn6.jpg'}}" id="output">
                         <label class="fileContainer">
                             Choose File
                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" accept="image/*">
@@ -213,7 +213,7 @@
                     </div>
 
                     <div class="page-image clearfix">
-                        <img class="profile-user-img img-responsive" src="{{myForm.userphoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495698634/tzwkriaczc73mqww7und.jpg'}}" id="output">
+                        <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495698634/tzwkriaczc73mqww7und.jpg'}}" id="output">
                         <label class="fileContainer">
                             Choose File
                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'userImage')" accept="image/*">

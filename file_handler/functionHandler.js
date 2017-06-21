@@ -63,7 +63,7 @@
       },
 
       "android_notification": function(deviceToken, message1) {
-          console.log("message1--->>>", message1)
+          console.log("message1--22222->>>", message1)
           var serverKey = 'AAAA0wDwq1I:APA91bHUyLivU-szb-z_23Ui532XPOxY0yqB07F27-HMme9Vu1psCS2TZI970av_HS1NswVHyKhX4qKoERYWmCChqY2fOVCVlZwTdudwXAk_rda5Z98z7fxK2r6kaf0o5x4cDSFzQqdc ';
           var fcm = new FCM(serverKey);
           var message = {
@@ -81,7 +81,7 @@
       },
 
       "iOS_notification": function(deviceToken, message) {
-          console.log("message--->>>", message)
+          console.log("message-11111-->>>", message)
           console.log("deviceToken--->>>", deviceToken)
           var options = {
               "cert": config.iOSPemFile,

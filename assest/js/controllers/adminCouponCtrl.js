@@ -14,6 +14,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
 
     userService.allCoupons($scope.currentAllCoupons).success(function(res) {
         if (res.responseCode == 200) {
+            console.log("sss",JSON.stringify(res))
             $scope.Detail = res.result;
         } else {
             //toastr.error(res.responseMessage);
@@ -67,6 +68,8 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
     }
 
     $scope.expDate = function(date) {
+        console.log(date)
+        $scope.couponExpiryInString = date;
         // var currentDate = new Date()
         // var year = currentDate.getFullYear();
         // var month = 1 + currentDate.getMonth();
@@ -78,7 +81,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
         console.log("date",date)
 
         switch (date) {
-            case '':
+            case 'NEVER':
                  $scope.couponExpiryDate = 'NEVER';
                 break;
 
@@ -133,7 +136,8 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
             "coverImage": $scope.user.photo,
             "couponExpiryDate": $scope.couponExpiryDate,
             "giftDescription": info.description,
-            "giftDescriptionImage":$scope.user.giftImage
+            "uploadGiftImage":$scope.user.giftImage,
+            "couponExpiryInString":$scope.couponExpiryInString
 
         }
         console.log("data",data)

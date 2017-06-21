@@ -5,8 +5,13 @@
                 <h3 class="panel-title">View Coupon</h3>
             </div>
             <div class="panel-body">
+                <div>Cover Image</div>
                 <div class="cover-image">
                     <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
+                </div>
+                <div>Gift Image</div>
+                <div class="cover-image">
+                    <img class="profile-user-img img-responsive" src="{{couponData.uploadGiftImage || '../dist/image/cover.jpg'}}" id="output">
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
@@ -16,7 +21,7 @@
                         </tr>
                         <tr>
                             <th>Expiry Date</th>
-                            <td>{{expDate | date:'MMMM dd, yyyy'}}</td>
+                            <td>{{couponData.couponExpiryInString}}</td>
                         </tr>
                         <tr>
                             <th>Gift Description</th>
@@ -24,6 +29,8 @@
                         </tr>
                     </table>
                 </div>
+                
+
             </div>
         </div>
     </div>

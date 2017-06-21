@@ -14,7 +14,7 @@
                 <tr dir-paginate="details in Detail | itemsPerPage:10">
                     <td>#{{$index + 1}}</td>
                     <td>{{details.pageName}}</td>
-                    <td>{{details.couponExpiryDate | date:'MMMM dd, yyyy'}}</td>
+                    <td>{{details.couponExpiryInString}}</td>
                     <td>{{details.giftDescription}}</td>
                     <td>{{details.couponSellPrice}} B</td>
                     <td>
@@ -102,10 +102,10 @@
 
 
                         <div class="form-group clearfix">
-                            <label class="col-sm-3 control-label">Expiry Date</label>
+                            <label class="col-sm-3 control-label">Expiry Time</label>
                             <div class="col-sm-9">
                                 <select ng-model="user.expDate" class="form-control" ng-change="expDate(user.expDate)">
-                                    <option value="">Never</option>
+                                    <option value="NEVER">Never</option>
                                     <option value="1 Week">1 Week </option>
                                     <option value="2 Weeks">2 Weeks</option>
                                     <option value="3 Weeks">3 Weeks</option>
@@ -121,8 +121,8 @@
                                 <!--  </span>
                                     </div>
                                 </datepicker> -->
-                                <span style="color:red;" ng-show="myForm.dob.$dirty && myForm.dob.$invalid">>Date of birth is required.</span>
-                                <span ng-show="myForm.dob.$error.required">Date of birth is required.</span>
+                               <!--  <span style="color:red;" ng-show="myForm.dob.$dirty && myForm.dob.$invalid">>Date of birth is required.</span>
+                                <span ng-show="myForm.dob.$error.required">Date of birth is required.</span> -->
                                 <!-- <input type="date" class="form-control" ng-model="user.expDate" name="myDate" required>
                         <span style="color:red" ng-show="myForm.myDate.$dirty && myForm.myDate.$invalid">
                         <span style="color:red" ng-show="myForm.myDate.$error.required">

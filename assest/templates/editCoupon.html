@@ -9,41 +9,71 @@
                 <fieldset>
                     <div class="form-group">
                         <div class="cover-image">
-                        <img class="profile-user-img img-responsive" src="{{user.photo || '../dist/image/cover.jpg'}}" id="output">
+                        <img class="profile-user-img img-responsive" src="{{user.photo || couponData.coverImage  || '../dist/image/cover.jpg'}}" id="output">
 
                         <label class="fileContainer">
                             Choose File
-                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this)" name="image" accept="image/*" required>
+                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" name="image" accept="image/*" required>
                          <span ng-show="myFrom.image.$error.required">Image is required.</span>
                         </label>
                         </div>
                     </div>
+
+
+                
+
+
+
                     <div class="form-group clearfix" style="margin-top:55px;">
                         <label class="col-sm-4 control-label">Page Name</label>
                         <div class="col-sm-8">
-                          <select class="form-control" ng-model="user.pageName" ng-change="isSelected(user.pageName)" required="">
-                            <option value="">Select</option>
-                            <option value="{{page.pageName}}" ng-repeat="page in pageDetail">{{page.pageName}}</option>
+                          <select name="pageName" ng-model="pageInfo" class="form-control" required>
+                          <option selected="">{{couponData.pageName}}</option>
+                          <option ng-repeat="page in pageDetail" value="{{page}}">{{page.pageName}}</option>
                           </select>
                         </div>
                       </div>
 
+                      <div class="form-group clearfix">
+                            <label class="col-sm-4 control-label">Expiry Time</label>
+                            <div class="col-sm-8">
+                                <select ng-model="user.expDate" class="form-control" ng-change="expDate(user.expDate)">
+                                  <option selected="">{{couponData.couponExpiryInString}}</option>
+                                    <option value="NEVER">Never</option>
+                                    <option value="1 Week">1 Week </option>
+                                    <option value="2 Weeks">2 Weeks</option>
+                                    <option value="3 Weeks">3 Weeks</option>
+                                    <option value="1 Month">1 Month</option>
+                                    <option value="2 Months">2 Months</option>
+                                    <option value="3 Months">3 Months</option>
+                                </select>
+                            </div>
+                        </div>
 
-                    <div class="form-group clearfix">
-                    <label class="col-sm-4 control-label">Expiry Date</label>
+
+
+
+                    <!-- <div class="form-group clearfix">
+                    <label class="col-sm-4 control-label">Expiry Time</label>
                       <div class="col-sm-8">
-                        <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
+
+                      <select name="category" class="form-control" ng-model="viewUserProfile.country" required>
+                                            <option selected="">{{viewUserProfile.country}}</option> -->
+                                                <!-- <option value="">Select Category</option> -->
+                                                <!-- <option ng-repeat="country in countriesList" value="{{country}}">{{country}}</option>
+                                             </select> -->
+                        <!-- <datepicker  date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}" date-set="{{minDate}}">
                              <div class="input-group">
                                  <input name="dob" class="form-control" style="cursor:pointer;" placeholder="Choose a date" ng-model="user.expDate" max="2017-04-05" />
                                  <span class="input-group-addon">
-                                 <!-- <i class="fa fa-lg fa-calendar"></i> -->
+                               
                                  </span>
                              </div>
                             </datepicker>
                             <span style="color:red;" ng-show="myForm.dob.$dirty && myForm.dob.$invalid">>Date of birth is required.</span>
-                              <span ng-show="myForm.dob.$error.required">Date of birth is required.</span> 
-                      </div>
-                  </div>
+                              <span ng-show="myForm.dob.$error.required">Date of birth is required.</span>  -->
+                      <!-- </div>
+                  </div> -->
                     <!-- <div class="form-group">
                         <label class="col-sm-4 control-label">Expiry Date</label>
                         <div class="col-sm-8">
@@ -58,7 +88,7 @@
                     <div class="form-group clearfix">
                         <label class="col-sm-4 control-label">Gift Description</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control" ng-model="user.description" name="des" required></textarea>
+                            <textarea class="form-control" ng-model="couponData.giftDescription" name="des" required></textarea>
                             <span style="color:red" ng-show="myForm.des.$dirty && myForm.des.$invalid">
                           <span style="color:red" ng-show="myForm.des.$error.required">
                            Description is Required</span>
@@ -66,14 +96,14 @@
                       </div>
 
                        <div class="form-group clearfix">
-                            <label class="col-sm-3 control-label">Gift Image</label>
-                            <div class="col-sm-9 text-left">
+                            <label class="col-sm-4 control-label">Gift Image</label>
+                            <div class="col-sm-8 text-left">
                             <div class="cover-image">
-                                <img class="profile-user-img img-responsive" src="{{user.giftImage || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495862745/f9xiu2xrlsktd5kakq5p.jpg'}}" id="output">
+                                <img class="profile-user-img img-responsive" src="{{user.giftImage || couponData.uploadGiftImage  || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495862745/f9xiu2xrlsktd5kakq5p.jpg'}}" id="output">
                             </div>
                             <label class="fileContainer">
                                 Choose File
-                                <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'giftDesImage')" name="image" accept="image/*">
+                                <input type="file" class="img-pro-file"onchange="angular.element(this,'giftDesImage').scope().changeImage(this,'giftDesImage')" name="image" accept="image/*">
                             </label>
                             </div>
 

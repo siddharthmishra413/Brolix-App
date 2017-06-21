@@ -731,13 +731,17 @@ module.exports = {
                 });
             } else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
             else {
+                var token_data = {
+                    _id:result._id,
+                    status:result.status
+                }
                 User.findOneAndUpdate({ email: req.body.email }, {
                     $set: {
                         deviceType: req.body.deviceType,
                         deviceToken: req.body.deviceToken
                     }
                 }, { new: true }).exec(function(err, user) {
-                    var token = jwt.sign(result, config.secreteKey);
+                    var token = jwt.sign(token_data, config.secreteKey);
                     res.header({
                         "appToken": token
                     }).send({
@@ -1426,7 +1430,7 @@ module.exports = {
         for (j = 0; j < req.body.upgradeCardArr.length; j++) {
             for (var i = 0; i < req.body.upgradeCardArr[j].numberOfCount; i++) {
                 var obj = { cash: 0, viewers: 0, type: 'PURCHASED' }
-                obj.viewers = req.body.upgradeCardArr[j].cash * 20;
+                obj.viewers = req.body.upgradeCardArr[j].viewers ;
                 obj.cash = req.body.upgradeCardArr[j].cash;
                 array.push(obj);
                 array1.push(parseFloat(req.body.upgradeCardArr[j].cash));
@@ -1435,6 +1439,7 @@ module.exports = {
         var sum = array1.reduce(function(a, b) {
             return a + b;
         });
+        console.log("sum-->>",sum)
         User.findOne({ _id: req.body.userId, }, function(err, result) {
             if (err) {
                 res.send({ responseCode: 500, responseMessage: 'Internal server error' });
@@ -1465,7 +1470,7 @@ module.exports = {
         for (j = 0; j < req.body.luckCardArr.length; j++) {
             for (var i = 0; i < req.body.luckCardArr[j].numberOfCount; i++) {
                 var obj = { brolix: 0, chances: 0, type: 'PURCHASED' }
-                obj.chances = req.body.luckCardArr[j].brolix / 50;
+                obj.chances = req.body.luckCardArr[j].chances;
                 obj.brolix = req.body.luckCardArr[j].brolix;
                 array.push(obj);
                 array1.push(parseFloat(req.body.luckCardArr[j].brolix));

@@ -18,13 +18,13 @@ var country = require('countryjs');
 var countries = require('country-list')();
 var allCountries = require('all-countries');
 var country = require('countryjs');
-var functionHandler = require('./functionHandler.js')
+//var functionHandler = require('./functionHandler.js')
 var multiparty = require('multiparty');
 var cloudinary = require('cloudinary');
 var gps = require('gps2zip');
 var _ = require('underscore-node');
 var voucher_codes = require('voucher-code-generator');
-
+var functions = require("./functionHandler");
 var waterfall = require('async-waterfall');
 
 const cities = require("cities-list");
@@ -44,12 +44,19 @@ module.exports = {
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
             User.findOne({ email: req.body.email, password: req.body.password, $or: [{ 'type': 'ADMIN' }, { 'type': 'SYSTEMADMIN' }], status: 'ACTIVE' }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); }
+                else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); }
+                else if (result.email != req.body.email) {
                     res.send({ responseCode: 404, responseMessage: "The email address that you've entered doesn't match any account." });
                 } else {
+                     var token_data = {
+                    _id:result._id,
+                    status:result.status
+                }
                     // sets a cookie with the user's info
                     req.session.user = result;
-                    var token = jwt.sign(result, config.secreteKey);
+                    var token = jwt.sign(token_data, config.secreteKey);
                     res.header({
                         "appToken": token
                     }).send({
@@ -1118,7 +1125,7 @@ module.exports = {
             var data = 'chances'
         }
         adminCards.find({ type: cardType, status: "ACTIVE" }).sort([
-            [data, 'descending']
+            [data, 'ascending']
         ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ data: result, responseCode: 200, responseMessage: 'Card shown successfully' });
@@ -1964,7 +1971,7 @@ module.exports = {
     },
 
     "showUserAllPages": function(req, res) {
-        createNewPage.find({ userId: req.params.id, status: "ACTIVE" }).exec(function(err, result) {
+        createNewPage.find({ userId: req.params.id }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
                 res.send({
                     result: result,
@@ -3202,12 +3209,15 @@ module.exports = {
                 coverImage: req.body.coverImage,
                 giftDescription: req.body.giftDescription,
                 couponExpiryDate: req.body.couponExpiryDate,
+                uploadGiftImage:req.body.uploadGiftImage,
                 adsType: "ADMINCOUPON",
                 couponBuyersLength: 0,
                 sellCoupon: false,
                 couponSellPrice: 0,
                 couponStatus: 'VALID',
-                couponCode: couponCode
+                couponCode: couponCode,
+                couponExpiryInString:req.body.couponExpiryInString
+
             };
 
             var coupon = createNewAds(obj)
@@ -3466,18 +3476,35 @@ module.exports = {
 
     "messageBroadcast": function(req, res) {
         var ids = req.body.userIds;
-        var message = req.body.message;
+        var message = req.body.Message;
         var IosDevice = [];
         var androidDevice = [];
-        User.find({}, 'deviceType deviceToken', function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Records not fond" })
+        User.find({}, function(err, result) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else if (!result) return res.status(404).send({ responseMessage: "Records not found" })
+            else{
+                 // result[i].deviceType == 'Android' ? androidDevice.push(result[i].deviceToken) : IosDevice.push(result[i].deviceToken)
             for (var i = 0; i < result.length; i++) {
-                result[i].deviceType == 'Android' ? androidDevice.push(result[i].deviceToken) : IosDevice.push(result[i].deviceToken)
+                if (result[i].deviceToken && result[i].deviceType && result[i].notification_status && result[i].status) {
+                     console.log("enter in if")
+                    if (result[i].deviceType == 'Android' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
+                        functions.android_notification(result[i].deviceToken, message);
+                        console.log("Android notification send!!!!")
+                    } else if (result[i].deviceType == 'iOS' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
+                        functions.iOS_notification(result[i].deviceToken, message);
+                    } else {
+                        console.log("Something wrong!!!!")
+                    }
+                }
+               
 
             }
-            functionHandler.android_notification(androidDevice, message);
-            // functionHandler.iOS_notification(IosDevice,message);
+                
+                
+//            functionHandler.android_notification(androidDevice, message);
+//            functionHandler.iOS_notification(IosDevice,message);
             res.send({ responseCode: 200, responseMessage: 'Message brodcast successfully' })
+            }
         })
     },
 

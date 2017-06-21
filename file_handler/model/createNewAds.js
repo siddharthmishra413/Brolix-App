@@ -219,6 +219,7 @@ var createNewAdsSchema = new Schema({
         default: 0
     },
     removedUser:[],
+    couponExpiryInString:{type:String},
     status: {
         type: String,
         default: 'ACTIVE',
