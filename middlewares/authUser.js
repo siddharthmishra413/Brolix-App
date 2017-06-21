@@ -13,33 +13,23 @@ module.exports.authUser = function(req, res, next) {
                 });
             } else {
 
-                req.decoded = decoded;        
-                User.findOne({_id:req.decoded._id,status : "ACTIVE"},function(err,result){
-                    if(err){
-                           res.send({
-                            responseCode:500,
-                        responseMessage: 'Authentication error'
+                req.decoded = decoded;
+                User.findOne({ _id: req.decoded._id, status: "ACTIVE" }, function(err, result) {
+                    if (err) {
+                        res.send({
+                            responseCode: 500,
+                            responseMessage: 'Authentication error'
                         })
-                    }
-                    else if(result){
+                    } else if (result) {
                         next();
 
+                    } else if (!result) {
+                        res.send({
+                            responseCode: 401,
+                            responseMessage: 'Authentication error'
+                        })
                     }
-
-                        else if(!result){
-                             res.send({
-                        responseCode:401,
-                        responseMessage: 'Authentication error'
-                    })
-
-                        }
-
-
                 })
-        
-
-                
-              //  next();
             }
         });
 

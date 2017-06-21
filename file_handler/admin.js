@@ -44,17 +44,14 @@ module.exports = {
         if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         else {
             User.findOne({ email: req.body.email, password: req.body.password, $or: [{ 'type': 'ADMIN' }, { 'type': 'SYSTEMADMIN' }], status: 'ACTIVE' }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); }
-                else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); }
-                else if (result.email != req.body.email) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
                     res.send({ responseCode: 404, responseMessage: "The email address that you've entered doesn't match any account." });
                 } else {
-                     var token_data = {
-                    _id:result._id,
-                    status:result.status
-                }
-                    // sets a cookie with the user's info
+                    var token_data = {
+                            _id: result._id,
+                            status: result.status
+                        }
+                        // sets a cookie with the user's info
                     req.session.user = result;
                     var token = jwt.sign(token_data, config.secreteKey);
                     res.header({
@@ -3209,14 +3206,14 @@ module.exports = {
                 coverImage: req.body.coverImage,
                 giftDescription: req.body.giftDescription,
                 couponExpiryDate: req.body.couponExpiryDate,
-                uploadGiftImage:req.body.uploadGiftImage,
+                uploadGiftImage: req.body.uploadGiftImage,
                 adsType: "ADMINCOUPON",
                 couponBuyersLength: 0,
                 sellCoupon: false,
                 couponSellPrice: 0,
                 couponStatus: 'VALID',
                 couponCode: couponCode,
-                couponExpiryInString:req.body.couponExpiryInString
+                couponExpiryInString: req.body.couponExpiryInString
 
             };
 
@@ -3309,12 +3306,12 @@ module.exports = {
                         password: req.body.password,
                         type: 'SYSTEMADMIN'
                     };
-                  var objuser = new User(obj);
-                  objuser.save(function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else {
-                        callback(null, result)
-                      }
-                            })
+                    var objuser = new User(obj);
+                    objuser.save(function(err, result) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else {
+                            callback(null, result)
+                        }
+                    })
                 }
             },
             function(result, callback) {
@@ -3480,30 +3477,25 @@ module.exports = {
         var IosDevice = [];
         var androidDevice = [];
         User.find({}, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else if (!result) return res.status(404).send({ responseMessage: "Records not found" })
-            else{
-                 // result[i].deviceType == 'Android' ? androidDevice.push(result[i].deviceToken) : IosDevice.push(result[i].deviceToken)
-            for (var i = 0; i < result.length; i++) {
-                if (result[i].deviceToken && result[i].deviceType && result[i].notification_status && result[i].status) {
-                     console.log("enter in if")
-                    if (result[i].deviceType == 'Android' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
-                        functions.android_notification(result[i].deviceToken, message);
-                        console.log("Android notification send!!!!")
-                    } else if (result[i].deviceType == 'iOS' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
-                        functions.iOS_notification(result[i].deviceToken, message);
-                    } else {
-                        console.log("Something wrong!!!!")
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Records not found" })
+            else {
+                // result[i].deviceType == 'Android' ? androidDevice.push(result[i].deviceToken) : IosDevice.push(result[i].deviceToken)
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].deviceToken && result[i].deviceType && result[i].notification_status && result[i].status) {
+                        console.log("enter in if")
+                        if (result[i].deviceType == 'Android' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
+                            functions.android_notification(result[i].deviceToken, message);
+                            console.log("Android notification send!!!!")
+                        } else if (result[i].deviceType == 'iOS' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
+                            functions.iOS_notification(result[i].deviceToken, message);
+                        } else {
+                            console.log("Something wrong!!!!")
+                        }
                     }
                 }
-               
-
-            }
-                
-                
-//            functionHandler.android_notification(androidDevice, message);
-//            functionHandler.iOS_notification(IosDevice,message);
-            res.send({ responseCode: 200, responseMessage: 'Message brodcast successfully' })
+                //            functionHandler.android_notification(androidDevice, message);
+                //            functionHandler.iOS_notification(IosDevice,message);
+                res.send({ responseCode: 200, responseMessage: 'Message brodcast successfully' })
             }
         })
     },
@@ -4394,8 +4386,8 @@ module.exports = {
             })
         }
     },
-    
-       "upgradeCardPriceList": function(req, res) { // "type": "luck_card",
+
+    "upgradeCardPriceList": function(req, res) { // "type": "luck_card",
         adminCards.find({ "type": "upgrade_card" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No report found" }); } else {
                 var priceArray = [];
