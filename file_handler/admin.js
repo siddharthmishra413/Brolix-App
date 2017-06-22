@@ -1358,8 +1358,8 @@ module.exports = {
     },
 
     "createPage": function(req, res) {
-        console.log("req--->>>>",JSON.stringify(req.body))
-        createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
+        console.log("request---->>>",req.body)
+        createNewPage.findOne({ pageName: req.body.pageName, status:'ACTIVE', status:'BLOCK' }).exec(function(err, result2) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
             } else {
@@ -1368,11 +1368,23 @@ module.exports = {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 } }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                console.log("result.adAdmin--->>>",result.adAdmin)
                                 var adminlength = result.adAdmin.length;
                                 var pageId = result._id;
                                 createNewPage.findOneAndUpdate({ _id: pageId }, { $inc: { adAdminCount: adminlength } }).exec(function(err, result2) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                        var adminArray = [];
+                                        for(var i =0; i<result2.adAdmin.length; i++){
+                                            adminArray.push(result2.adAdmin[i].userId)
+                                        }
+                                        console.log("admin Ayya---->>",adminArray)
+                                        for(var j =0; j<adminArray.length; j++){
+                                        User.update({ _id:adminArray[j]}, { $inc: { pageCount: 1 }, $set: { type: "Advertiser" } }).exec(function(err, result3) {
+                                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                                            else{
+                                                console.log("done")
+                                            }
+                                        })                                        
+                                    }
                                         res.send({
                                             result: result,
                                             responseCode: 200,
@@ -1936,15 +1948,51 @@ module.exports = {
     },
 
     "showUserAllPages": function(req, res) {
-        createNewPage.find({ userId: req.params.id }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found." }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "All pages show successfully."
+           waterfall([
+            function(callback) {
+                var userId = req.params.id;
+                createNewPage.find({ $or:[{status: "ACTIVE"},{status: "BLOCK"}] }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); }
+                    else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No page found' }); } else {
+                        var pageArray = [];
+                        for (var i = 0; i < result.length; i++) {
+                            for (var j = 0; j < result[i].adAdmin.length; j++) {
+                                if (result[i].adAdmin[j].userId == userId) {
+                                    pageArray.push(result[i]._id)
+                                }
+                            }
+                        }
+                        callback(null, pageArray)
+                    }
                 })
-            }
+            },
+            function(pageArray, callback) {
+                var userId = req.params.id;
+                createNewPage.find({ userId: req.params.id, $or:[{status: "ACTIVE"},{status: "BLOCK"}]}, function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        for (var k = 0; k < result1.length; k++) {
+                            pageArray.push(result1[k]._id)
+                        }
+                        callback(null, pageArray)
+                    }
+                })
+            },
+            function(pageArray, callback) {
+                createNewPage.find({ _id: { $in: pageArray } }).exec(function(err, result2) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                    else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+                        callback(null, result2)
+                    }
+                })
+            },
+        ], function(err, result2) {
+            res.send({
+                result: result2,
+                responseCode: 200,
+                responseMessage: "All pages show successfully."
+            })
         })
+        
     },
 
     "adsOnPage": function(req, res) {
@@ -3948,7 +3996,7 @@ module.exports = {
                             }
                         }
                         for(var j =0; j<pageArray.length; j++){
-                            createNewAds.update({_id:pageArray[j]},{$set: { 'status': "BLOCK"} },{multi:true},function(err, result2){
+                            createNewAds.update({_id:pageArray[j]},{$set: { 'status': 'BLOCK'} },{multi:true},function(err, result2){
                               if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }else{
                                   console.log("done")
                               }  
@@ -4345,61 +4393,90 @@ module.exports = {
     },
 
     "approvalStatus": function(req, res) {
-        if (req.body.status == 'ACCEPTED') {
-            //createNewPage.find({'adminRequest': 'REQUESTED'},function(err, result){
-            createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: { adminRequest: 'REMOVED', 'status': 'REMOVED' } }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'Data not found.' }); } else {
-                    var userId = result.userId;
-                    User.findByIdAndUpdate({ _id: userId }, { $inc: { pageCount: -1 } }, { new: true }).exec(function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                            
-                  createNewAds.find({pageId: req.body.pageId, status:'ACTIVE'},function(err, adResult){
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                       else if(adResult.length==0){  res.send({ result: result, responseCode: 200,responseMessage: "Page removed successfully."
-                            })}
-                    else{
-                        console.log("result---->>>>>",adResult)
+    if (req.body.status == 'ACCEPTED') {
+        //createNewPage.find({'adminRequest': 'REQUESTED'},function(err, result){
+        waterfall([
+            function(callback) {
+                createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: { adminRequest: 'REMOVED', 'status': 'REMOVED' } }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'Data not found.' }); } else {
+                        var userId = result.userId;
+                        User.findByIdAndUpdate({ _id: userId }, { $inc: { pageCount: -1 } }, { new: true }).exec(function(err, result1) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+
+                                callback(null, result)
+                            }
+                        })
+                    }
+                })
+            },
+            function(pageResult, callback) {
+                createNewPage.findOne({ _id: req.body.pageId }, function(err, result3) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result3) { res.send({ responseCode: 400, responseMessage: 'Please give page id' }); } else {
+                        if (result3.adAdmin.length != 0) {
+                            var pageArray1 = [];
+                            for (var i = 0; i < result3.length; i++) {
+                                pageArray1.push(result3.adAdmin[i].userId)
+
+                            }
+                            User.update({ _id: { $in: pageArray1 } }, { inc: { pageCount: -1 } }, { new: true }).exec(function(err, result2) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                    console.log("done")
+                                    callback(null, pageResult)
+                                }
+                            })
+                        }
+
+                    }
+                })
+
+            },
+            function(pageresult2, callback) {
+                createNewAds.find({ pageId: req.body.pageId, status: 'ACTIVE' }, function(err, adResult) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (adResult.length == 0) {
+                        res.send({
+                            result: finalResult,
+                            responseCode: 200,
+                            responseMessage: "Page removed successfully."
+                        })
+                    } else {
                         var pageArray = [];
-                        for(var i =0; i<adResult.length; i++){
-                            if(adResult[i].pageId ==  req.body.pageId ){
+                        for (var i = 0; i < adResult.length; i++) {
+                            if (adResult[i].pageId == req.body.pageId) {
                                 pageArray.push(adResult[i]._id)
                             }
                         }
-                        console.log("pageArray--->>>",pageArray)
-                        for(var j =0; j<pageArray.length; j++){
-                            createNewAds.update({_id:pageArray[j]},{$set: { 'status': "REMOVED"} },{multi:true},function(err, result2){
-                              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }else{
-                                  console.log("done")
-                              }  
-                            })
-                            
-                        }
-                          res.send({
-                                result: result,
-                                responseCode: 200,
-                                responseMessage: "Page removed successfully."
-                            })
+                        createNewAds.update({ _id: { $in: pageArray } }, { $set: { status: "REMOVED" } }, { new: true }).exec(function(err, result2) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                callback(null, pageresult2)
+                            }
+                        })
+
                     }
-                    }) 
-                          
-                        }
-                    })
-                }
+                })
+            },
+        ], function(err, finalResult) {
+            res.send({
+                result: finalResult,
+                responseCode: 200,
+                responseMessage: "Page removed successfully."
             })
 
-        } else {
-            console.log("else")
-            createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: { adminRequest: 'REMOVED', 'status': 'ACTIVE' } }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'Data not found.' }); } else {
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "Page removed successfully."
-                    })
-                }
-            })
-        }
-    },
+        })
+
+    } else {
+        console.log("else")
+        createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: { adminRequest: 'REMOVED', 'status': 'ACTIVE' } }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ result: result, responseCode: 400, responseMessage: 'Data not found.' }); } else {
+                res.send({
+                    result: result,
+                    responseCode: 200,
+                    responseMessage: "Page removed successfully qrewrqewrqwerqwer3412341234123."
+                })
+            }
+        })
+    }
+},
+
 
     "upgradeCardPriceList": function(req, res) { // "type": "luck_card",
         adminCards.find({ "type": "upgrade_card" }).exec(function(err, result) {

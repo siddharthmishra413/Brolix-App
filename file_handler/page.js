@@ -25,7 +25,7 @@ module.exports = {
 
     //API for create Page
     "createPage": function(req, res) {
-        createNewPage.findOne({ pageName: req.body.pageName }).exec(function(err, result2) {
+        createNewPage.findOne({ pageName: req.body.pageName, $or:[{status:'ACTIVE'},{ status:'BLOCK'}] }).exec(function(err, result2) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
             } else {
@@ -79,9 +79,6 @@ module.exports = {
                 })
             },
             function(result, pageResult, callback) {
-                console.log("pageFollowers--->>", result);
-                console.log("result.pageFollowers--->>");
-                console.log("result.pageFollowers--->>", result.pageFollowers);
                 var array = [];
                 var data = [];
                 if (result.pageFollowers.length != 0) {
@@ -148,7 +145,6 @@ module.exports = {
                                 }
                             }
                         }
-                        console.log("pages-->>", pageArray)
                         callback(null, pageArray)
                     }
                 })
@@ -160,7 +156,6 @@ module.exports = {
                         for (var k = 0; k < result1.length; k++) {
                             pageArray.push(result1[k]._id)
                         }
-                        console.log("pages-111->>", pageArray)
                         callback(null, pageArray)
                     }
                 })
@@ -236,8 +231,8 @@ module.exports = {
                     })
                 } else {
                     var pageName = req.body.pageName;
-                    createNewPage.findOne({ pageName: pageName, _id: { $ne: req.params.id } }).exec(function(err, result2) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) { res.send({ responseCode: 500, responseMessage: ' unique 11' }); } else {
+                    createNewPage.findOne({ pageName: pageName, $or:[{status:'ACTIVE'},{ status:'BLOCK'}], _id: { $ne: req.params.id } }).exec(function(err, result2) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) { res.send({ responseCode: 500, responseMessage: 'Page name must be unique' }); } else {
                             createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result3) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
                                     res.send({

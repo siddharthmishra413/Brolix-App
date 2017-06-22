@@ -18,7 +18,7 @@ $scope.$emit('headerStatus', 'Manage Pages');
  $scope.pageAdminss = [];
  $scope.pageId = [];
 
- $scope.SocialMedia = ['Gmail','Facebook','Twitter'];
+ $scope.SocialMedia = ['Facebook','Twitter','Instagram','Linkedin'];
  console.log("pageAdmin")
 
  userService.pageAdmin().success(function(res) {
@@ -92,7 +92,7 @@ $scope.checkBoxArray.push(checkBoxArray1[i]);
  	
  	var flag = false;
  	if(addSocialMedia == "" || addSocialMedia ==null || addSocialMedia == undefined || addSocialLink==""||addSocialLink==null || addSocialLink==undefined){
- 		toastr.error("Please select social media");
+ 		toastr.error("Please Type social media link");
  	}else{
  		console.log("000")
  		if($scope.array.length == 0||$scope.arrayLink.length == 0){
@@ -246,6 +246,11 @@ $scope.addNewPage = function(addNewPage){
     if(type=='Step1'){
         $scope.Step1=false;
         $scope.Step2=true;
+        $scope.Step3 = false;
+        $scope.Step4 = false;
+    }else if(type=='Back1'){
+        $scope.Step1=true;
+        $scope.Step2=false;
         $scope.Step3 = false;
         $scope.Step4 = false;
     }else if(type=='Step2'){

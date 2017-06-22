@@ -295,6 +295,8 @@ module.exports = {
                 }
             }
         }
+                var activeStatus = { status : 'ACTIVE'}
+                Object.assign(data, activeStatus)
         createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
@@ -406,7 +408,6 @@ module.exports = {
                 if (req.body.type == 'comment') {
                     createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $inc: { commentCount: -1 } }, { new: true }).exec(function(err, resul) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            console.log("HHHHHHh", resul)
                             res.send({
                                 result: results,
                                 responseCode: 200,
@@ -565,9 +566,9 @@ module.exports = {
         });
     },
 
-    "listOfAllAds": function(req, res) {
+    "listOfAllAds": function(req, res) {  
         if (req.params.type == 'all') {
-            createNewAds.paginate({ pageId: req.params.pageId, status:'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ pageId: req.params.pageId, $or:[{ status:'ACTIVE'}, {status:'EXPIRED'}] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
                     res.send({
                         result: result,
@@ -578,7 +579,7 @@ module.exports = {
             })
         } else {
             type = req.params.type;
-            createNewAds.paginate({ pageId: req.params.pageId, adsType: type, status:'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ pageId: req.params.pageId, adsType: type, $or:[{ status:'ACTIVE'}, {status:'EXPIRED'}]}, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
                     res.send({
                         result: result,
@@ -1016,7 +1017,7 @@ module.exports = {
                 })
             },
 
-            function(value, callback) {
+            function(value,callback) {
                 var userId = req.body.userId;
                 var adId = req.body.adId
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
@@ -1027,19 +1028,25 @@ module.exports = {
                         var raffleCount = result.raffleCount;
                         var viewerLenght = result.viewerLenght;
                         var numberOfWinners = result.numberOfWinners;
-
                         var mySet = new Set(raffleCount);
                         var has = mySet.has(userId)
+                         console.log("has----->>>",has)
+                         console.log("raffleCount----->>>",raffleCount)
                         if (has) { res.send({ responseCode: 302, responseMessage: "You have already win this raffle." }) }
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
+                            console.log("in else if")
+                              console.log("userId----->>>",userId)
                           raffleCount.push(userId);
+                            console.log("raffleCount---231341231-->>>",raffleCount)
                             User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value, brolixAds: value } }, { new: true }, function(err, result1) {
                                 console.log("raffleCount--11-->>>" + raffleCount.length);
                             })
 
                             if (raffleCount.length != viewerLenght) {
-                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: {  NontargetedCount: req.body.userId } }, function(err, success) {
+                                console.log("in raffle if")
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId },{ $push: {raffleCount:req.body.userId, NontargetedCount: req.body.userId } }, function(err, success) {
+                                   console.log("result------213456786543--->>>>",success)
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
                                         var pageId = success.pageId;
                                         createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +1 } }, { new: true }).exec(function(err, result2) {
@@ -1052,8 +1059,9 @@ module.exports = {
 
                                 callback(null, result.cashAdPrize, result.couponCode, result.hiddenGifts)
                             } else {
-
-                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId, NontargetedCount: req.body.userId }, $set: { 'status': "EXPIRED", adExpired: true } }, function(err, success) {
+                                  console.log("in raffle else")
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount:req.body.userId,  NontargetedCount: req.body.userId }, $set: { 'status': "EXPIRED", adExpired: true } }, function(err, success) {
+                                    console.log("result------00000000000--->>>>",success)
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22." }); } else {
                                         res.send({
                                             responseCode: 200,
@@ -1074,7 +1082,6 @@ module.exports = {
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: req.body.userId } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
                         var date = new Date();
-                        console.log("logs--111-->>")
                         createNewAds.findOne({ _id: req.body.adId }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
                                 console.log("result3-->>", result3)

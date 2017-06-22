@@ -226,6 +226,11 @@ $scope.removeSocialMedia = function(removeSocialMedia){
         $scope.Step2=false
         $scope.Step3 = true;
         $scope.Step4 = false;
+    }else if(type=='Back1'){
+        $scope.Step1 = true;
+        $scope.Step2 = false;
+        $scope.Step3 = false;
+        $scope.Step4 = false;
     }else if(type=='Step3'){
         $scope.Step1=false;
         $scope.Step2=false;

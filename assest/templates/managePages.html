@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="box-block  blk-browen">
+                <div class="box-block  blk-drkpink">
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Remove Page Request</div>
@@ -545,7 +545,7 @@
                                 <table id="manageUserTable" class="table table-bordered table-striped">
                                     <thead>
                                         <div class="cus-search-c">
-                                            <input type="text" ng-model="testing" placeholder="Search" class="form-control">
+                                            <input type="text" ng-model="adDate" placeholder="Search" class="form-control">
                                         </div>
                                         <tr>
                                             <th>Ad Date</th>
@@ -554,8 +554,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="x in allAddsOnPage | filter:testing">
-                                            <td class="skyblue-text">{{x.createdAt | date:'dd-MM-yyyy'}}</td>
+                                        <tr ng-repeat="x in allAddsOnPage | adFilter:adDate">
+                                            <td class="skyblue-text">{{x.createdAt | date:'yyyy-MM-dd'}}</td>
                                             <td class="skyblue-text">{{x.giftDescription}}</td>
                                             <td class="skyblue-text">{{x.status}}</td>
                                         </tr>
@@ -569,7 +569,7 @@
         </div>
     </div>
 
-    <div id="pageWinnerDetails" class="modal fade">
+    <!-- <div id="pageWinnerDetails" class="modal fade">
         <div class="modal-dialog cls_pop">
             <div class="modal-content">
                 <div class="modal-header">
@@ -593,7 +593,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="x in allshowUserPage | filter:testing">
+                                        <tr ng-repeat="x in allshowUserPage">
                                             <td class="skyblue-text">{{x.pageType}}</td>
                                             <td class="skyblue-text">{{x.pageName}}</td>
                                             <td class="skyblue-text">{{x.category}}</td>
@@ -610,7 +610,7 @@
             </div>
         </div>
     </div>
-
+ -->
 
     <div id="pageAdminDetails" class="modal fade">
         <div class="modal-dialog cls_pop">
@@ -626,7 +626,7 @@
                                 <table id="manageUserTable" class="table table-bordered table-striped">
                                     <thead>
                                         <div class="cus-search-c">
-                                            <input type="text" ng-model="testing" placeholder="Search" class="form-control">
+                                            <input type="text" ng-model="adminName" placeholder="Search" class="form-control">
                                         </div>
                                         <tr>
                                             <th>Admin Name</th>
@@ -638,7 +638,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="x in allAdminOnPages | filter:testing">
+                                        <tr ng-repeat="x in allAdminOnPages | adminFilterOne:adminName">
                                             <td class="skyblue-text">{{x.firstName}} {{x.lastName}}</td>
                                             <td class="skyblue-text">{{x.mobileNumber}}</td>
                                             <td class="skyblue-text">{{x.email}}</td>

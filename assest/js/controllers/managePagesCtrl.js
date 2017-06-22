@@ -640,7 +640,7 @@ app.filter("pagesFilter", function() {
             return retArray = items;
         }
         var retArray = [];
-        for (var i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
             console.log("item[i].pageName:      " + items[i].pageName);
             if (items[i].pageName == null || items[i].pageName == 'undefined' || items[i].pageName == null) {
                 console.log("no data ");
@@ -650,5 +650,48 @@ app.filter("pagesFilter", function() {
 
         }
         return retArray
+    }
+})
+
+
+app.filter("adminFilterOne", function() {
+    return function(items, nameValue) {
+        console.log("items:   "+JSON.stringify(items));
+        console.log("serach key:     "+nameValue);
+        if (!nameValue) {
+            return retArray = items;
+        }
+        var retArrayy = [];
+        for (let i = 0; i < items.length; i++) {
+            //console.log("item[i].pageName:      " + JSON.stringify(items[i]);
+            if (items[i].firstName == null || items[i].firstName == 'undefined' || items[i].firstName == null) {
+                console.log("no data ");
+            } else if ((items[i].firstName+' '+items[i].lastName).toString().substr(0, nameValue.length) == nameValue.toString() || (items[i].firstName+' '+items[i].lastName).toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
+                retArrayy.push(items[i]);
+            }
+
+        }
+        return retArrayy
+    }
+})
+
+app.filter("adFilter", function() {         //2017-06-21
+    return function(items, nameValue) {
+        console.log("items:   "+JSON.stringify(items));
+        console.log("serach key:     "+nameValue);
+        if (!nameValue) {
+            return retArraadd = items;
+        }
+         var retArraadd = [];
+        for (let i = 0; i < items.length; i++) {
+            //console.log("item[i].pageName:      " + JSON.stringify(items[i]);
+            if (items[i].createdAt == null || items[i].createdAt == 'undefined' || items[i].createdAt == null) {
+                console.log("no data ");
+            } else if (items[i].createdAt.toString().substr(0, nameValue.length) == nameValue.toString() || items[i].createdAt.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
+                retArraadd.push(items[i]);
+            }
+
+        }
+        return retArraadd
     }
 })

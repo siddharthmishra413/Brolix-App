@@ -85,7 +85,7 @@ $scope.changeImage = function(input,type) {
           }
         console.log("ccccccc",data);  
        userService.editAdminProfile(id,data).then(function(ObjS) {    
-       console.log("llllllllll",JSON.stringify(ObjS)) 
+       // console.log("llllllllll",JSON.stringify(ObjS)) 
         if(ObjS.data.responseCode==200){
           toastr.success(ObjS.data.responseMessage);
           $state.reload();  

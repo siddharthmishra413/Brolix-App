@@ -662,6 +662,7 @@ module.exports = {
                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                                             req.body.otp = functions.otp();
                                             req.body.referralCode = yeast();
+                                            req.body.brolix = amount;
                                             var user = User(req.body)
                                             user.save(function(err, result) {
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
@@ -686,8 +687,14 @@ module.exports = {
                     var user = User(req.body)
                     user.save(function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                        var token = jwt.sign(result, config.secreteKey);
+                        else{
+                            var token_data = {
+                            _id:result._id,
+                            status:result.status
+                        }
+                        var token = jwt.sign(token_data, config.secreteKey);
                         callback(null, token, result)
+                        }
                     })
                 }
             },
@@ -1600,6 +1607,7 @@ module.exports = {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                                                 req.body.otp = functions.otp();
                                                 req.body.referralCode = yeast();
+                                                req.body.brolix = amount;
                                                 var user = User(req.body)
                                                 user.save(function(err, result3) {
                                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
@@ -1630,7 +1638,13 @@ module.exports = {
                         req.body.referralCode = yeast();
                         var user = new User(req.body);
                         user.save(function(err, result1) {
-                            var token = jwt.sign(result1, config.secreteKey);
+                            if (err){ res.send({ responseCode:500, responseMessage:'Internal server error'})}
+                            else{
+                                var token_data = {
+                                    _id:result1._id,
+                                    status:result.status
+                                }
+                            var token = jwt.sign(token_data, config.secreteKey);
                             res.header({
                                 "appToken": token
                             }).send({
@@ -1639,6 +1653,7 @@ module.exports = {
                                 responseCode: 200,
                                 responseMessage: "Signup successfully."
                             });
+                            }
                         })
                     }
                 } else {
@@ -1906,6 +1921,7 @@ module.exports = {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                                                 req.body.otp = functions.otp();
                                                 req.body.referralCode = yeast();
+                                                req.body.brolix = amount;
                                                 var user = User(req.body)
                                                 user.save(function(err, result) {
                                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
@@ -1936,7 +1952,13 @@ module.exports = {
                         req.body.referralCode = yeast();
                         var user = new User(req.body);
                         user.save(function(err, result) {
-                            var token = jwt.sign(result, config.secreteKey);
+                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                                else{
+                                     var token_data = {
+                                    _id:result._id,
+                                    status:result.status
+                                }
+                            var token = jwt.sign(token_data, config.secreteKey);
                             res.header({
                                 "appToken": token
                             }).send({
@@ -1945,6 +1967,7 @@ module.exports = {
                                 responseCode: 200,
                                 responseMessage: "Signup successfully."
                             });
+                                }
                         })
                     }
                 } else {
