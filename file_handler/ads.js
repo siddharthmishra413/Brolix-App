@@ -722,18 +722,20 @@ module.exports = {
 
                         var mySet = new Set(raffleCount);
                         var has = mySet.has(userId)
+                        console.log("in raffleCount--1111-->>>",raffleCount)
                         if (has) { res.send({ responseCode: 302, responseMessage: "You have already join the raffle." }) }
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
                             console.log("in else if")
-                            //  raffleCount.push(userId);
+                              raffleCount.push(userId);
                             User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value, brolixAds: value } }, { new: true }, function(err, result1) {
                                 console.log("raffleCount--->>>" + raffleCount.length);
                             })
+                            console.log("in raffleCount---->>>",raffleCount)
                                 console.log("in raffleCount.length---->>>",raffleCount.length)
                             if (raffleCount.length == viewerLenght) {
                                 console.log("in if")
-                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId, NontargetedCount: req.body.userId } }, function(err, success) {
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { NontargetedCount: req.body.userId } }, function(err, success) {
                                     console.log("success--->>>",success)
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
                                         var winnerCount = success.numberOfWinners;
@@ -747,7 +749,7 @@ module.exports = {
                                         })
                                     }
                                 })
-                                console.log("raffleCount--111->>>" + raffleCount.length);
+                                console.log("raffleCount--111-5346346346>>>" + raffleCount.length);
                                 for (var n = 0; n < luckUsers.length; n++) {
                                     for (var m = 0; m < luckUsers[n].chances; m++) {
                                         raffleCount.push(luckUsers[n].userId)
@@ -1031,13 +1033,13 @@ module.exports = {
                         if (has) { res.send({ responseCode: 302, responseMessage: "You have already win this raffle." }) }
                         // else if (!has) raffleCount.push(userId);
                         else if (!has) {
-                            //  raffleCount.push(userId);
+                          raffleCount.push(userId);
                             User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { brolix: value, brolixAds: value } }, { new: true }, function(err, result1) {
                                 console.log("raffleCount--11-->>>" + raffleCount.length);
                             })
 
                             if (raffleCount.length != viewerLenght) {
-                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId, NontargetedCount: req.body.userId } }, function(err, success) {
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: {  NontargetedCount: req.body.userId } }, function(err, success) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
                                         var pageId = success.pageId;
                                         createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +1 } }, { new: true }).exec(function(err, result2) {

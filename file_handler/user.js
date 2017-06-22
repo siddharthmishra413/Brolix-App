@@ -665,8 +665,14 @@ module.exports = {
                                             var user = User(req.body)
                                             user.save(function(err, result) {
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                                var token = jwt.sign(result, config.secreteKey);
+                                                else{
+                                                    var token_data = {
+                                                    _id:result._id,
+                                                    status:result.status
+                                                }
+                                                var token = jwt.sign(token_data, config.secreteKey);
                                                 callback(null, token, result)
+                                                }
                                             })
                                         }
                                     })
@@ -1597,7 +1603,12 @@ module.exports = {
                                                 var user = User(req.body)
                                                 user.save(function(err, result3) {
                                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                                    var token = jwt.sign(result3, config.secreteKey);
+                                                    else{
+                                                        var token_data = {
+                                                        _id:result3._id,
+                                                        status:result.status
+                                                    }
+                                                    var token = jwt.sign(token_data, config.secreteKey);
                                                     res.header({
                                                         "appToken": token
                                                     }).send({
@@ -1606,6 +1617,7 @@ module.exports = {
                                                         responseCode: 200,
                                                         responseMessage: "You have been registered successfully."
                                                     });
+                                                    }
                                                 })
                                             }
                                         })
@@ -1897,7 +1909,12 @@ module.exports = {
                                                 var user = User(req.body)
                                                 user.save(function(err, result) {
                                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                                                    var token = jwt.sign(result, config.secreteKey);
+                                                    else{
+                                                         var token_data = {
+                                                        _id:result._id,
+                                                        status:result.status
+                                                    }
+                                                    var token = jwt.sign(token_data, config.secreteKey);
                                                     res.header({
                                                         "appToken": token
                                                     }).send({
@@ -1906,6 +1923,8 @@ module.exports = {
                                                         responseCode: 200,
                                                         responseMessage: "You have been registered successfully."
                                                     });
+                                                    }
+                                                    
                                                 })
                                             }
                                         })
