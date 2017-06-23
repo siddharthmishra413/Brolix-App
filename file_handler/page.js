@@ -3015,9 +3015,11 @@ module.exports = {
                                         paymentAmount: req.body.paymentAmount,
                                         brolixAmount: req.body.brolixAmount,
                                         Type: req.body.Type,
-                                        p_id: response.p_id
+                                        pid: response.p_id
                                     };
                                     myCache.set( "myKey", obj, 10000 );
+                                    var value = myCache.get( "myKey" );
+                                    console.log("value",value)
 
                                     res.send({
                                     responseCode: 200,
@@ -3041,7 +3043,7 @@ module.exports = {
                 var verfiyPaymentRequest = new Object();
                 verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
                 verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-                verfiyPaymentRequest.payment_reference = value.p_id;
+                verfiyPaymentRequest.payment_reference = value.pid;
                 paytabs.VerfiyPayment(verfiyPaymentRequest, function(response){
                     console.log("verify response",response)
                     callback(null, response)
@@ -3067,28 +3069,43 @@ module.exports = {
                 })
             },
             function(paymentResult, callback){
-                adminCards.findOne({
-                   type : "upgrade_card", price : value.amount
-                },function(err, cardRes){
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                    else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } 
-                    else {
-                        console.log("card res0",cardRes)
-                        callback(null, cardRes)
-                    }
-                })
+                if(value.Type == ''){
+                       adminCards.findOne({
+                           type : "upgrade_card", price : value.amount
+                        },function(err, cardRes){
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                            else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } 
+                            else {
+                                console.log("card res0",cardRes)
+                                callback(null, cardRes)
+                            }
+                        })
+                }
+                else{
+                   callback(null, "cardRes")
+                }
+               
             },
             function(cardRes, callback){
-                var card_viewers = cardRes.viewers;
-                var data = {
-                    cash: value.amount,
-                    viewers: card_viewers,
-                    type: "SENDBYADMIN"
-                }
-                console.log(data)
                 var cashAmount = value.userCashAmount - value.brolixAmount
+                if(value.Type == 'createPage'){
+                        var card_viewers = cardRes.viewers;
+                        var data = {
+                            cash: value.amount,
+                            viewers: card_viewers,
+                            type: "SENDBYADMIN"
+                        }
+                        var query = { $push: { upgradeCardObject: data } , $set: {cash: cashAmount}}
+                }
+                else{
+                    var query = {$set: {cash: cashAmount}}
+
+                }
+                
+                console.log(data)
+                
                 console.log("cashAmount",cashAmount)
-                User.findByIdAndUpdate({ _id: value.userId }, { $push: { upgradeCardObject: data } , $set: {cash: cashAmount}}, function(err, userRes) {
+                User.findByIdAndUpdate({ _id: value.userId }, query, function(err, userRes) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
                     else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
                     else {
@@ -3099,10 +3116,18 @@ module.exports = {
             }
         ],function(err, result){
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-            else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+            else if (!result) { 
+                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/'+404+'/'+"Failure"+'')
+            }
+                //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
             else {
-                res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
+                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/'+200+'/'+"Success"+'')
+                //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
             }
         })  
+    },
+
+    "redirectpage":function(req, res){
+
     }
 }

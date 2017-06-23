@@ -110,7 +110,15 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <label class="control-label col-md-3">Mobile No</label>
-                                        <div class="col-md-9">
+                                        <div class="col-md-2">
+                                            <input type="tel" class="form-control" name="countryCode" ng-model="myFrom.countryCode" placeholder="Code" minlength="2" maxlength="3" ng-pattern="phoneNumbrss" required>
+                                            <span style="color:red;" ng-show="userFrom.countryCode.$dirty && userFrom.countryCode.$invalid">
+                                                <span ng-show="userFrom.countryCode.$error.required">Country Code is required</span>
+                                            <span ng-show="userFrom.countryCode.$error.minlength">Must have atleast 2 digits.</span>
+                                            <span ng-show="userFrom.countryCode.$error.maxlength">Must have at most 3 digits.</span>
+                                            <span ng-show="userFrom.countryCode.$error.pattern">Please Enter Correct Country Code</span>
+                                        </div>
+                                        <div class="col-md-7">
                                             <input type="tel" class="form-control" name="mobileNumber" ng-model="myFrom.mobileNumber" placeholder="Mobile No" minlength="10" maxlength="15" ng-pattern="phoneNumbrss" required>
                                             <span style="color:red;" ng-show="userFrom.mobileNumber.$dirty && userFrom.mobileNumber.$invalid">
                                                 <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required</span>

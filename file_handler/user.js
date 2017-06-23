@@ -637,9 +637,11 @@ module.exports = {
                 }
             },
             function(callback) {
-                if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else {
+                if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); }
+                else if(!req.body.countryCode){ res.send({ responseCode:403, responseMessage:'Country code required'})}
+                else {
                     if (!validator.isNumeric((req.body.mobileNumber).toString())) { res.send({ responseCode: 403, responseMessage: "Mobile number must be numeric" }); } else if (!validator.isLength((req.body.mobileNumber).toString(), { min: 9, max: 12 })) { res.send({ responseCode: 403, responseMessage: "Mobile number length must be 9 to 12." }); } else {
-                        User.findOne({ mobileNumber: req.body.mobileNumber }, function(err, result1) {
+                        User.findOne({ mobileNumber: req.body.mobileNumber, countryCode :req.body.countryCode  }, function(err, result1) {
                             console.log("result1-->>", result1)
                             console.log("3")
                             if (err) { res.send({ responseCode: 403, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
@@ -806,11 +808,11 @@ module.exports = {
                     responseMessage: "Profile updated successfully."
                 });
             })
-        } else if (req.body.country && req.body.city && req.body.mobileNumber) {
+        } else if (req.body.country && req.body.city && req.body.mobileNumber && req.body.countryCode) {
             console.log("2")
             User.findOne({ _id: req.params.id }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
-                    if (result.mobileNumber == req.body.mobileNumber) {
+                    if (result.mobileNumber == req.body.mobileNumber && result.countryCode == req.body.countryCode) {
                         User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                 res.send({
@@ -1439,6 +1441,7 @@ module.exports = {
     },
 
     "purchaseUpgradeCard": function(req, res) { //request: date
+        console.log("request---->>>",req.body)
         var array = [];
         var array1 = [];
         for (j = 0; j < req.body.upgradeCardArr.length; j++) {
@@ -1614,7 +1617,7 @@ module.exports = {
                                                     else{
                                                         var token_data = {
                                                         _id:result3._id,
-                                                        status:result.status
+                                                        status:result3.status
                                                     }
                                                     var token = jwt.sign(token_data, config.secreteKey);
                                                     res.header({
@@ -1642,7 +1645,7 @@ module.exports = {
                             else{
                                 var token_data = {
                                     _id:result1._id,
-                                    status:result.status
+                                    status:result1.status
                                 }
                             var token = jwt.sign(token_data, config.secreteKey);
                             res.header({

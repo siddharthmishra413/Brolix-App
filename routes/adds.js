@@ -14,6 +14,8 @@ app.post('/continueAd', adsHandler.continueAd);
 app.get('/getMp3Files', adsHandler.getMp3Files);
 app.post('/uploadMp3Files', adsHandler.uploadMp3Files);
 
+app.post('/createAdPayment', adsHandler.createAdPayment);
+
 app.post('/createAds', adsHandler.createAds);
 app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
 app.get('/showAllAdsCouponType/:id/:pageNumber', adsHandler.showAllAdsCouponType);

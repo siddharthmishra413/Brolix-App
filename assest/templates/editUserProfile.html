@@ -102,7 +102,14 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <label class="control-label col-md-3">Mobile No</label>
-                                        <div class="col-md-9">
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" name="countryCode" ng-model="viewUserProfile.countryCode" placeholder="Code" ng-maxlength="3" ng-pattern="/^[0-9]{1,11}$/" required>
+                                            <span style="color:red;" ng-show="userFrom.countryCode.$dirty && userFrom.countryCode.$invalid">
+                                            <span ng-show="userFrom.countryCode.$error.required">Country Code required.</span>
+                                            <span ng-show="userFrom.countryCode.$error.maxlength">Country Code most 3 digits.</span>
+                                            <span ng-show="userFrom.countryCode.$error.pattern">Only number are allowed.</span>
+                                        </div>
+                                        <div class="col-md-7">
                                             <input type="text" class="form-control" name="mobileNumber" ng-model="viewUserProfile.mobileNumber" placeholder="Mobile No" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
                                             <span style="color:red;" ng-show="userFrom.mobileNumber.$dirty && userFrom.mobileNumber.$invalid">
                                             <span ng-show="userFrom.mobileNumber.$error.required">Mobile number is required.</span>

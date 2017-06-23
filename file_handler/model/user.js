@@ -72,12 +72,15 @@ var userSchema = new Schema({
         type: Number,
         default: 0
     },
+    countryCode:{
+        type:Number
+    },
     cashPrize: [{
         cash: { type: String },
         adId: { type: String, ref: 'createNewAds' },
         pageId: { type: String, ref: 'createNewPage' },
         status: { type: String, default: 'ACTIVE' },
-        cashStatus: { type: String, default: 'PENDING' },
+        cashStatus: { type: String, default: 'DELIVERED' },
         updateddAt: { type: Date, default: Date.now }
     }],
     couponPrize: [],

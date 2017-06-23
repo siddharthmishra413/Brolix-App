@@ -7,6 +7,7 @@ app.post('/createPagePayment', pageHandler.createPagePayment);
 app.post('/returnPage', pageHandler.returnPage);
 app.post('/deleteSocialMediaLink', pageHandler.deleteSocialMediaLink);
 app.post('/editSocialMediaLink', pageHandler.editSocialMediaLink);
+app.get('/redirectpage', pageHandler.redirectpage);
 
 
 app.post('/deleteCommentsOnPage', pageHandler.deleteCommentsOnPage);

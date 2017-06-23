@@ -14,11 +14,15 @@ var multiparty = require('multiparty');
 var Views = require("./model/views");
 var mongoose = require('mongoose');
 var brolixAndDollors = require("./model/brolixAndDollors");
+var Payment = require("./model/payment");
 
 var User = require("./model/user");
 var uploadFile = require("./model/savedFiles")
 var PageFollowers = require("./model/pageFollow");
 
+var paytabs = require('paytabs')
+var NodeCache = require( "node-cache" );
+var myCache = new NodeCache();
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
@@ -120,9 +124,11 @@ module.exports = {
         } else {
             User.findOne({ _id: req.body.userId }, function(err, result) {
                 console.log("result-->>", result)
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash < req.body.cashAdPrize) {
-                    res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
-                } else {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                // else if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash < req.body.cashAdPrize) {
+                //     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
+                // } 
+                else {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
                         req.body.viewerLenght = 2;
                         req.body.numberOfWinners = 2;
@@ -208,10 +214,12 @@ module.exports = {
                 createNewAds.paginate({ userId: { $ne: req.params.id }, removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         for (var i = 0; i < result.docs.length; i++) {
+                            if(result.docs[i].adsType=='coupon'){ 
                             if (result.docs[i].cash == 0) {
                                 result.docs[i].couponSellPrice = noDataValue
                             } else {
                                 result.docs[i].couponSellPrice = dataValue
+                            }
                             }
                         }
                         res.send({
@@ -568,7 +576,7 @@ module.exports = {
 
     "listOfAllAds": function(req, res) {  
         if (req.params.type == 'all') {
-            createNewAds.paginate({ pageId: req.params.pageId, $or:[{ status:'ACTIVE'}, {status:'EXPIRED'}] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({adsType: { $ne: 'ADMINCOUPON' }, pageId: req.params.pageId, $or:[{ status:'ACTIVE'}, {status:'EXPIRED'}] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
                     res.send({
                         result: result,
@@ -736,7 +744,7 @@ module.exports = {
                                 console.log("in raffleCount.length---->>>",raffleCount.length)
                             if (raffleCount.length == viewerLenght) {
                                 console.log("in if")
-                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { NontargetedCount: req.body.userId } }, function(err, success) {
+                                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: {raffleCount:req.body.userId, NontargetedCount: req.body.userId } }, function(err, success) {
                                     console.log("success--->>>",success)
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
                                         var winnerCount = success.numberOfWinners;
@@ -1816,11 +1824,13 @@ module.exports = {
                 createNewAds.paginate({ userId: { $ne: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         for (var i = 0; i < result.docs.length; i++) {
+                          if(result.docs[i].adsType=='coupon'){    
                             if (result.docs[i].cash == 0) {
                                 result.docs[i].couponSellPrice = noDataValue
                             } else {
                                 result.docs[i].couponSellPrice = dataValue
                             }
+                          }
                         }
                         res.send({
                             result: result,
@@ -3032,9 +3042,233 @@ module.exports = {
                 });
             }
         })
+    },
+
+    "createAdPayment": function(req, res){
+
+        User.findOne({ _id: req.body.userId }).exec(function(err, user) {
+           if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+           else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } 
+           else {
+            console.log("user",user)
+                if(req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet'){
+                    waterfall([
+                        function(callback){
+                            if(req.body.paymentMode == 'paypal'){
+                               var cashAmount  = user.cash - req.body.brolixAmount;
+                            }
+                            else  if(req.body.paymentMode == 'payWithWallet'){
+                                 var cashAmount  = user.cash - req.body.amount;
+                            }
+                                
+                            User.findOneAndUpdate({ _id: req.body.userId },{$set:{cash:cashAmount}},{new: true}).exec(function(err, result){
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                                else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+                                else {
+                                    callback(null, "null")
+                                }
+                            })
+                            
+                        },
+                        function(nullResult, callback){
+                            if(req.body.paymentMode == 'paypal'){
+                                var details = {
+                                    paymentMode: req.body.paymentMode,
+                                    userId: req.body.userId,
+                                    amount: req.body.amount,
+                                    paymentAmount: req.body.paymentAmount,
+                                    brolixAmount: req.body.brolixAmount,
+                                    transcationId: req.body.transcationId,
+                                    Type: req.body.Type
+                                }
+                            }
+                            else  if(req.body.paymentMode == 'payWithWallet'){
+                                var details = {
+                                    paymentMode: req.body.paymentMode,
+                                    userId: req.body.userId,
+                                    amount: req.body.amount,
+                                    transcationId: "brolixAccount",
+                                    Type: req.body.Type
+                                }
+                            }
+                           
+                            var payment = new Payment(details);
+                            payment.save(function(err, paymentResult){
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                            else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+                            else {
+                                callback(null, paymentResult)
+                            }
+                            })
+                        }
+                    ],function(err, result){
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                        else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+                        else {
+                            res.send({ responseCode: 200, responseMessage: "Ad created successfully." });
+                        }
+                    })
+                }
+                else{            
+                    waterfall([
+                        function(callback){
+                            paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
+                              console.log(response);
+                              if(response.result == 'valid'){
+                                callback(null, response)
+                              }
+                              else{
+                                res.send({
+                                    responseCode: 404,
+                                    responseMessage: "Internal server error."
+                                })
+                              }
+                            });
+                        },
+                        function(result, callback){
+                            if(user.country == 'United Arab Emirates'){
+                                var state = 'UAE'
+                                var country_shipping = "ARE"
+                            }
+                            else if(user.country == 'Jordan'){
+                                var state = 'Jordan'
+                                var country_shipping = "JOR"
+                            }
+                            else{
+                                res.send({
+                                    responseCode: 404,
+                                    responseMessage: "User can pay only for country UAE and Jordan."
+                                })
+                            }
+
+                            var createPayPage = new Object()
+                            createPayPage.merchant_email = 'sakshigadia@gmail.com';
+                            createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
+                            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+                            createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
+                            createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnPage";
+                            createPayPage.title = "Brolix";
+                            createPayPage.cc_first_name = user.firstName;
+                            createPayPage.cc_last_name = user.lastName;
+                            createPayPage.cc_phone_number = user.mobileNumber;
+                            createPayPage.phone_number = user.mobileNumber;
+                            createPayPage.email = user.email;
+                            createPayPage.products_per_title = "Payment";
+                            createPayPage.unit_price = req.body.paymentAmount;
+                            createPayPage.quantity = "1";
+                            createPayPage.other_charges = 0;
+                            createPayPage.amount = req.body.paymentAmount;
+                            createPayPage.discount = 0;
+                            createPayPage.currency = "USD"; //EUR JOD
+                            createPayPage.reference_no = "21873109128";
+                            createPayPage.ip_customer = "192.168.1.1";
+                            createPayPage.ip_merchant = "192.168.1.1";
+                            createPayPage.billing_address = "ydh";
+                            createPayPage.state = state;
+                            createPayPage.city = user.city;
+                            createPayPage.postal_code = '110020';
+                            createPayPage.country = country_shipping;
+                            createPayPage.shipping_first_name = user.firstName;
+                            createPayPage.shipping_last_name = user.lastName;
+                            createPayPage.address_shipping = "Flat";
+                            createPayPage.city_shipping = user.city;
+                            createPayPage.state_shipping = state;
+                            createPayPage.postal_code_shipping = '110020';
+                            createPayPage.country_shipping = country_shipping; //JOR ARE
+                            createPayPage.msg_lang = "English";
+                            createPayPage.cms_with_version = "1.0.0";
+                            paytabs.CreatePayPage(createPayPage, function(response) {
+                                console.log(response)
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                                else if (!(response.response_code == "4012")) { 
+                                    res.send({ responseCode: 404, responseMessage: "User details are invalid." }); } 
+                                else {
+                                    var obj = {
+                                        userId: req.body.userId,
+                                        paymentMode: req.body.paymentMode,
+                                        amount: req.body.amount,
+                                        userCashAmount: user.cash,
+                                        paymentAmount: req.body.paymentAmount,
+                                        brolixAmount: req.body.brolixAmount,
+                                        Type: req.body.Type,
+                                        pid: response.p_id
+                                    };
+                                    myCache.set( "myKey", obj, 10000 );
+
+                                    res.send({
+                                    responseCode: 200,
+                                    responseMessage: "Payment url.",
+                                    result: response
+                                })
+                                }
+                            });
+                        }
+                    ])
+                }
+           }
+        })
     }
 
+    // "returnAds": function(req, res){
+    //     var value = myCache.get( "myKey" );
+    //     console.log("value",value)
+    //     waterfall([
+    //         function(callback){
+    //             var verfiyPaymentRequest = new Object();
+    //             verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
+    //             verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+    //             verfiyPaymentRequest.payment_reference = value.p_id;
+    //             paytabs.VerfiyPayment(verfiyPaymentRequest, function(response){
+    //                 console.log("verify response",response)
+    //                 callback(null, response)
+    //             }); 
+    //         },
+    //         function(response, callback){
+    //             var details = {
+    //                 paymentMode:value.paymentMode,
+    //                 userId: value.userId,
+    //                 amount: value.amount,
+    //                 paymentAmount: value.paymentAmount,
+    //                 brolixAmount: value.brolixAmount,
+    //                 transcationId: response.transaction_id,
+    //                 Type: value.Type
+    //             }
+    //             var payment = new Payment(details);
+    //             payment.save(function(err, paymentResult){
+    //             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+    //             else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+    //             else {
+    //                 callback(null, paymentResult)
+    //             }
+    //             })
+    //         },
+    //         function(cardRes, callback){
+    //             console.log(data)
+    //             var cashAmount = value.userCashAmount - value.brolixAmount
+    //             console.log("cashAmount",cashAmount)
+    //             User.findByIdAndUpdate({ _id: value.userId }, $set: {cash: cashAmount}, function(err, userRes) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+    //                 else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+    //                 else {
+    //                     console.log("userRes========>",userRes)
+    //                     callback(null, userRes)
+    //                 }
+    //             })
+    //         }
+    //     ],function(err, result){
+    //         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+    //         else if (!result) { 
+    //             res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectad/'+404+'/'+"Failure"+'')
+    //         }
+    //             //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+    //         else {
+    //             res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectad/'+200+'/'+"Success"+'')
+    //             //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
+    //         }
+    //     })  
+    // },
 
+    // "redirectad":function(req, res){
 
-
+    // }
 }
