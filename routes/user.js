@@ -3,6 +3,7 @@ var app = express();
 var userHandler = require('../file_handler/user.js');
 var authUser = require('../middlewares/authUser');
 
+app.post('/getCash', userHandler.getCash);
 
 
 app.post('/massPay', userHandler.massPay);

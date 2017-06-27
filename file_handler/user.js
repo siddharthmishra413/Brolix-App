@@ -317,6 +317,178 @@ module.exports = {
         });
     },
 
+        "massPay": function(req, res) {
+
+        var mp = new MassPay({
+            pwd: "QN3GR5N6JAV6A22H",
+            user: "robinsuraj-facilitator_api1.gmail.com",
+            signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AUdr.q6iklhOMRLo-CjEkoGuwBUD",
+            emailsubject: "robinsuraj@gmail.com"
+        });
+
+        // var mp = new MassPay({
+        //     pwd: "X3NRSJQBL7FD5ZF9",
+        //     user: "sakshigadia1994-1_api1.gmail.com",
+        //     signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AhdXmittmmHtZ5I4YwBzIxOQHk3x",
+        //     emailsubject: "rinku.kumar@mobiloitte.in"
+        // });
+
+        var paymentRequests = [{
+            email: 'robinsuraj@gmail.com',
+            amount: '1',
+            uniqueId: '12345',
+            note: 'request for matt@gc'
+        }, {
+            email: 'rinku.kumar@mobiloitte.in',
+            amount: '1',
+            uniqueId: '123456',
+            note: 'request for tim@gc'
+        }];
+
+        var batch = new MassPay.PaymentBatch(paymentRequests);
+
+        mp.pay(batch, function(err, results) {
+            if (err) {
+                console.log("error", err)
+                res.send({
+                    err: err
+                })
+            }
+            console.log("results=>", results)
+                //assert.equal(results.ACK, 'Success')
+        });
+    },
+
+
+    "getCash": function(req, res) {
+
+        var mp = new MassPay({
+            pwd: "QN3GR5N6JAV6A22H",
+            user: "robinsuraj-facilitator_api1.gmail.com",
+            signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AUdr.q6iklhOMRLo-CjEkoGuwBUD",
+            emailsubject: "robinsuraj@gmail.com"
+        });
+
+        // var mp = new MassPay({
+        //     pwd: "X3NRSJQBL7FD5ZF9",
+        //     user: "sakshigadia1994-1_api1.gmail.com",
+        //     signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AhdXmittmmHtZ5I4YwBzIxOQHk3x",
+        //     emailsubject: "rinku.kumar@mobiloitte.in"
+        // });
+        
+         var unixname = "BROLIX" + Date.now();
+        var paymentRequests = [{
+            email: req.body.paypalEmail,
+            amount: req.body.amount,
+            uniqueId: unixname,
+            note: 'request for matt@gc'
+        }
+        // , {
+        //     email: 'rinku.kumar@mobiloitte.in',
+        //     amount: '1',
+        //     uniqueId: '123456',
+        //     note: 'request for tim@gc'
+        // }
+        ];
+
+        var batch = new MassPay.PaymentBatch(paymentRequests);
+
+        // mp.pay(batch, function(err, results) {
+        //     if (err) {
+        //         console.log("error", err)
+        //         res.send({
+        //             err: err
+        //         })
+        //     }
+        //     console.log("results=>", results)
+        //         //assert.equal(results.ACK, 'Success')
+        // });
+
+
+         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
+           if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+           else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } 
+           else {
+            console.log("user",user)
+                waterfall([
+                    function(callback){
+                        if(user.cash >= req.body.amount){
+                            mp.pay(batch, function(err, results) {
+                                if (err) {
+                                    console.log("error", err)
+                                    res.send({ responseCode: 404, responseMessage: "Insufficent balance on admin account."
+                                    })
+                                }
+                                else{
+                                    console.log("mass pay results=>", results)
+                                    callback(null, results)
+                                }
+                                    //assert.equal(results.ACK, 'Success')
+                            });
+                        }
+                        else{
+                            res.send({ responseCode: 404, responseMessage: "Please enter valid amount." });
+                        }
+                    },
+                    function(results, callback){
+                        var cashAmount  = user.cash - req.body.amount;
+                        User.findByIdAndUpdate({ _id: req.body.userId }, { $set: {cash: cashAmount} }, function(err, userRes) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                            else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+                            else {
+                              //  res.send({ responseCode: 200, responseMessage: "Success.", result:results });
+                                callback(null, userRes, results)
+                            }
+                        })
+                    },
+                    function(response, paymentResults, callback){
+                        var details = {
+                            paymentMode:"getCash",
+                            userId: req.body.userId,
+                            amount: req.body.amount,
+                            //  paymentAmount: value.paymentAmount,
+                            dates: req.body.date,
+                            // brolixAmount: value.brolixAmount,
+                             transcationId: paymentResults.CORRELATIONID,
+                            Type: "getCash"
+                        }
+                        var payment = new Payment(details);
+                        payment.save(function(err, paymentResult){
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                            else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+                            else {
+                                callback(null, paymentResult)
+                            }
+                        })
+                    },
+                ],function(err, result){
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                        else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+                        else {
+                            res.send({ responseCode: 200, responseMessage: "Successfully get cash amount." });
+                        }
+                    })
+            }
+        })
+
+        // waterfall([
+        //     function(callback){
+
+        //         User.findByIdAndUpdate({ _id: req.body.userId }, { $set: {cash: cashAmount} }, function(err, userRes) {
+        //             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+        //             else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+        //             else {
+        //                 callback(null, userRes)
+        //             }
+        //         })
+
+        //     },
+        //     function(callback){
+
+        //     }
+        // ])
+    },
+
     "validatorPaytabs": function(req, res) {
 
         var createPayPage = new Object()

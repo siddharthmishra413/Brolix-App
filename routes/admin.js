@@ -44,7 +44,7 @@ app.get('/blockUser/:userId', authUser.authUser, adminHandler.blockUser);
 app.get('/totalSoldUpgradeCard', adminHandler.totalSoldUpgradeCard);
 app.get('/totalSoldLuckCard', authUser.authUser, adminHandler.totalSoldLuckCard);
 app.get('/totalIncomeInBrolixFromLuckCard', authUser.authUser, adminHandler.totalIncomeInBrolixFromLuckCard);
-app.get('/totalIncomeInCashFromUpgradeCard', authUser.authUser, adminHandler.totalIncomeInCashFromUpgradeCard);
+app.get('/totalIncomeInCashFromUpgradeCard',  adminHandler.totalIncomeInCashFromUpgradeCard);
 app.get('/usedLuckCard', authUser.authUser, adminHandler.usedLuckCard);
 app.get('/unUsedLuckCard', authUser.authUser, adminHandler.unUsedLuckCard);
 app.get('/usedUpgradeCard', authUser.authUser, adminHandler.usedUpgradeCard);

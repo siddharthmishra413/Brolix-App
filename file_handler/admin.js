@@ -262,7 +262,7 @@ module.exports = {
     /*-------------------------Manage Ads API------------------------*/
 
     "totalAds": function(req, res) { // all ads cash and coupon type
-        createNewAds.find({ status: 'ACTIVE' }, function(err, result) {
+        createNewAds.find({ adsType: { $ne: "ADMINCOUPON" }}, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No ad found." }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
@@ -286,7 +286,7 @@ module.exports = {
     },
 
     "totalActiveAds": function(req, res) { // all ads cash and coupon type
-        createNewAds.find({ status: 'ACTIVE' }, function(err, result) {
+        createNewAds.find({adsType: { $ne: "ADMINCOUPON" }, status: 'ACTIVE' }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ count: 0, responseCode: 404, responseMessage: "No ad found." }) } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
@@ -315,7 +315,7 @@ module.exports = {
     },
 
     "totalExpiredAds": function(req, res) { // all ads cash and coupon type
-        createNewAds.find({ status: 'EXPIRED' }, function(err, result) {
+        createNewAds.find({adsType: { $ne: "ADMINCOUPON" }, status: 'EXPIRED' }, function(err, result) {
             if (err) {
                 res.send({
                     responseCode: 409,
@@ -510,6 +510,9 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
+//                 var sortArray = result1.sort(function(obj1, obj2) {
+//                             return obj2.luckCardObject.createdAt - obj1.luckCardObject.createdAt
+//                         })
                 res.send({
                     result: result,
                     count: count,
@@ -528,7 +531,7 @@ module.exports = {
         // var skips = limitData - 10;
         // var page = String(pageNumber);
 
-        User.aggregate({ $unwind: "$luckCardObject" }, { $match: { "type": "PURCHASED" } }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$luckCardObject" }, { $match: { "luckCardObject.type": "PURCHASED" } }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ result: result, responseCode: 403, responseMessage: "No matching result available." }); } else {
                 var arr = [];
                 var count = 0;
@@ -538,14 +541,17 @@ module.exports = {
                 }
                 //   var pages = Math.ceil(count / 10);
                 var sum = arr.reduce((a, b) => a + b, 0);
-                User.aggregate({ $unwind: "$luckCardObject" }, { $match: { "type": "PURCHASED" } }).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$luckCardObject" }, { $match: { "luckCardObject.type": "PURCHASED" } }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No card found' }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
                             limit++;
                         }
+                        var sortArray = result1.sort(function(obj1, obj2) {
+                             return obj2.luckCardObject.createdAt - obj1.luckCardObject.createdAt
+                         })
                         res.send({
-                            result: result1,
+                            result: sortArray,
                             totalIncome: sum,
                             total: count,
                             responseCode: 200,
@@ -579,8 +585,11 @@ module.exports = {
                         for (i = 0; i < result1.length; i++) {
                             limit++;
                         }
+                         var sortArray = result1.sort(function(obj1, obj2) {
+                             return obj2.upgradeCardObject.createdAt - obj1.upgradeCardObject.createdAt
+                         })
                         res.send({
-                            result: result1,
+                            result: sortArray,
                             totalIncome: sum,
                             total: count,
                             responseCode: 200,
@@ -979,7 +988,7 @@ module.exports = {
     },
 
     "videoAds": function(req, res) {
-        createNewAds.find({ adContentType: "video" }, function(err, result) {
+        createNewAds.find({ adContentType: "video",adsType: { $ne: "ADMINCOUPON" }, status: 'ACTIVE' }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
@@ -1009,7 +1018,7 @@ module.exports = {
     },
 
     "slideshowAds": function(req, res) {
-        createNewAds.find({ adContentType: "slideshow" }, function(err, result) {
+        createNewAds.find({ adContentType: "slideshow",adsType: { $ne: "ADMINCOUPON" }, status:'ACTIVE' }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "no ad found" }); } else {
                 var count = 0;
                 for (var i = 0; i < result.length; i++) {
