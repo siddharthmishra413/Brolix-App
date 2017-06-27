@@ -198,13 +198,21 @@ var userSchema = new Schema({
         brolix: { type: Number },
         chances: { type: Number },
         status: { type: String, default: 'ACTIVE' },
-        type: { type: String }
+        type: { type: String },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
     }],
     upgradeCardObject: [{
         cash: { type: Number },
         viewers: { type: Number },
         status: { type: String, default: 'ACTIVE' },
-        type: { type: String }
+        type: { type: String },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
     }],
     usedLuckCard: [],
     pageCount: {

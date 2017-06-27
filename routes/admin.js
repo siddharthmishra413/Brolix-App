@@ -67,7 +67,7 @@ app.get('/sendcardAndcoupan/:id', authUser.authUser, adminHandler.sendcardAndcou
 app.get('/findAllCities', authUser.authUser, adminHandler.findAllCities);
 app.get('/unPublishedPage', authUser.authUser, adminHandler.unPublishedPage);
 app.post('/createCards', authUser.authUser, adminHandler.createCards);
-app.get('/viewCards/:type', authUser.authUser, adminHandler.viewCards);
+app.get('/viewCards/:type',  adminHandler.viewCards);
 app.post('/editCards', authUser.authUser, adminHandler.editCards);
 app.get('/showCardDetails/:id', authUser.authUser, adminHandler.showCardDetails);
 app.get('/removeCard/:id', authUser.authUser, adminHandler.removeCard);

@@ -4193,6 +4193,7 @@ module.exports = {
     },
 
     "sendUpgradeCardTOUsers": function(req, res) {
+        console.log("sendUpgradeCardTOUsers--->>>",req.body)
         waterfall([
                 function(callback) {
                     var id = req.body.Id;

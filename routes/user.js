@@ -38,7 +38,7 @@ app.post('/logout', authUser.authUser, userHandler.logout);
 app.post('/purchaseUpgradeCard', userHandler.purchaseUpgradeCard);
 app.post('/purchaseLuckCard', authUser.authUser, userHandler.purchaseLuckCard);
 app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
-app.post('/showUpgradeCard', authUser.authUser, userHandler.showUpgradeCard);
+app.post('/showUpgradeCard',  userHandler.showUpgradeCard);
 app.post('/useLuckCard', authUser.authUser, userHandler.useLuckCard);
 app.post('/useUpgradeCard', authUser.authUser, userHandler.useUpgradeCard);
 app.post('/facebookLogin', userHandler.facebookLogin);
