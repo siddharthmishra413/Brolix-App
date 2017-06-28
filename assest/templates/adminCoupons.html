@@ -165,6 +165,7 @@
             </div>
         </div>
     </div>
+
     <div id="post" class="modal fade">
         <div class="modal-dialog cls_pop">
             <div class="modal-content">
@@ -178,16 +179,18 @@
                             <table class="table table-bordered table-striped">
                                 <tr>
                                     <th>Available Coupons</th>
-                                    <td><input type="number" price class="form-control" ng-model="availableCoupon" name="coupon" required>
+                                    <td><input type="tel" price class="form-control" ng-pattern="/^[1-9]{1,10}$/" ng-model="availableCoupon" name="coupon" required>
                                         <span style="color:red;" ng-show="userFrom1.coupon.$dirty && userFrom1.coupon.$invalid">
-                                              <span ng-show="userFrom1.coupon.$error.required">Enter coupons</span></td>
+                                        <span ng-show="userFrom1.coupon.$error.required">Enter coupons</span>
+                                        <span ng-show="userFrom1.coupon.$error.pattern">Only Numbers are allowed.</span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Coupon Price</th>
-                                    <td><input type="number" class="form-control" name="price" ng-pattern="/^[0-9]{1,10}$/" ng-model="couponPrice" required>
+                                    <td><input type="tel" class="form-control" name="price" ng-pattern="/^[1-9]{1,10}$/" ng-model="couponPrice" required>
                                         <span style="color:red;" ng-show="userFrom1.price.$dirty && userFrom1.price.$invalid">
-                                <span ng-show="userFrom1.price.$error.required">Enter Coupon Price</span>
-                                        <span ng-show="userFrom.phone.$error.pattern">Only Numbers are allowed.</span>
+                                        <span ng-show="userFrom1.price.$error.required">Enter Coupon Price</span>
+                                        <span ng-show="userFrom1.price.$error.pattern">Only Numbers are allowed.</span>
                                     </td>
                                 </tr>
 

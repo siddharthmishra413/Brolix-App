@@ -6,6 +6,7 @@
 
      //API Report Problem  
      "followUnfollow": function(req, res) {
+         console.log("request----->>>>",req.body)
          if (req.body.follow == "follow") {
              User.findOne({ _id: req.body.receiverId }, function(err, result) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -205,6 +206,7 @@
 
      //API for Accept Follower Request
      "acceptFollowerRequest": function(req, res) {
+         console.log("dasdjadh ---- ******-----",req.body)
          if (req.body.followerStatus == "accept") {
              console.log("in")
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {

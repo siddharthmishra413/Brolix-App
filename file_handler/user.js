@@ -888,10 +888,12 @@ module.exports = {
 
     //API for user Login
     "login": function(req, res) {
-        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-        else {
+//        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+//        else {
             User.findOne({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); } else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                else if (!result) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); } 
+                else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
                 else {
 
                     if (result.status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); } else {
@@ -919,7 +921,7 @@ module.exports = {
                     }
                 }
             })
-        }
+      //  }
     },
 
     "editProfile": function(req, res) {
@@ -1001,6 +1003,17 @@ module.exports = {
                     });
                 }
             })
+        }
+        else if(req.body.image && req.body.coverImage){
+             User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result4) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
+                    res.send({
+                        result: result4,
+                        responseCode: 200,
+                        responseMessage: "Profile updated successfully."
+                    });
+                }
+            }) 
         }
 
     },
@@ -1618,7 +1631,9 @@ module.exports = {
                 res.send({ responseCode: 500, responseMessage: 'Internal server error' });
             } else if (!result) {
                 return res.status(404).send({ responseMessage: "please enter userId" })
-            } else if (result.cash < sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } else {
+            }
+           //  else if (result.cash < sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } 
+             else {
                 for (i = 0; i < array.length; i++) {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -1626,8 +1641,8 @@ module.exports = {
                         }
                     });
                 }
-                result.cash -= sum;
-                result.save();
+                //result.cash -= sum;
+               // result.save();
                 res.send({
                     //result: result,
                     responseCode: 200,

@@ -10,6 +10,7 @@ app.post('/editSocialMediaLink', pageHandler.editSocialMediaLink);
 app.get('/redirectpage', pageHandler.redirectpage);
 
 
+app.post('/paymentFilterApi', pageHandler.paymentFilterApi);
 app.post('/deleteCommentsOnPage', pageHandler.deleteCommentsOnPage);
 app.post('/editCommentsonPage', pageHandler.editCommentsonPage);
 

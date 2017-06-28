@@ -28,7 +28,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
         if (res.responseCode == 200) {
             $scope.dashBordFilterViewer = res.result;
         } else {
-            toastr.error(res.responseMessage);
+            // toastr.error(res.responseMessage);
         }
     })
 
@@ -36,7 +36,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
         if (res.responseCode == 200) {
             $scope.dashBordFilterChances = res.result;
         } else {
-            toastr.error(res.responseMessage);
+            // toastr.error(res.responseMessage);
         }
     })
 
@@ -44,7 +44,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
         if (res.responseCode == 200) {
             $scope.couponStatus = res.result;
         } else {
-            toastr.error("something wents to roung")
+            // toastr.error("something wents to roung")
         }
     })
 
@@ -52,7 +52,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
         if (res.responseCode == 200) {
             $scope.cashStatus = res.result;
         } else {
-            toastr.error("something wents to roung")
+            // toastr.error("something wents to roung")
         }
     })
 
@@ -292,7 +292,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
                 $scope.totalDollarsPrice = 0;
             //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalSoldLuckCardcount));
         } else {
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
 
     })
@@ -302,7 +302,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
             $scope.totalBrolixPrice = res.data.totalBrolix;
             //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalSoldLuckCardcount));
         } else {
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
 
     })
@@ -462,7 +462,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
             $scope.totalSoldUpgradeCard = res.result;
             //console.log("totalSoldUpgradeCardtotalSoldUpgradeCard",JSON.stringify($scope.totalSoldUpgradeCard));
         } else {
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
 
     })
@@ -477,7 +477,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
             $scope.totalSoldLuckCardcount = res.count;
             //console.log("totalIncomeInCashFromUpgradeCard",JSON.stringify($scope.totalSoldLuckCardcount));
         } else {
-            toastr.error(res.responseMessage);
+            //toastr.error(res.responseMessage);
         }
 
     })

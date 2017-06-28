@@ -3,6 +3,7 @@ app.controller('forgotPasswordCtrl',function($scope, $state, $window, userServic
      $scope.myForm = {};
          
           $scope.cancel = function() {
+            $state.go('login');
            $scope.myFrom = '';
                  }
 

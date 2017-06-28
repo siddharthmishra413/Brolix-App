@@ -120,7 +120,7 @@ module.exports = {
                                     res.send({
                                         result: result,
                                         responseCode: 200,
-                                        responseMessage: "User create successfully."
+                                        responseMessage: "User created successfully."
                                     });
                                 }
                             })

@@ -168,6 +168,7 @@ module.exports = {
                 })
             },
         ], function(err, result2) {
+            console.log("myPages--->>>",result2)
             res.send({
                 result: result2,
                 responseCode: 200,
@@ -2877,7 +2878,8 @@ module.exports = {
                                     paymentAmount: req.body.paymentAmount,
                                     brolixAmount: req.body.brolixAmount,
                                     transcationId: req.body.transcationId,
-                                    Type: req.body.Type
+                                    Type: req.body.Type,
+                                    dates: req.body.date
                                 }
                             }
                             else  if(req.body.paymentMode == 'payWithWallet'){
@@ -2886,7 +2888,8 @@ module.exports = {
                                     userId: req.body.userId,
                                     amount: req.body.amount,
                                     transcationId: "brolixAccount",
-                                    Type: req.body.Type
+                                    Type: req.body.Type,
+                                    dates: req.body.date
                                 }
                             }
                            
@@ -3015,7 +3018,8 @@ module.exports = {
                                         paymentAmount: req.body.paymentAmount,
                                         brolixAmount: req.body.brolixAmount,
                                         Type: req.body.Type,
-                                        pid: response.p_id
+                                        pid: response.p_id,
+                                        dates: req.body.date
                                     };
                                     myCache.set( "myKey", obj, 10000 );
                                     var value = myCache.get( "myKey" );
@@ -3057,7 +3061,8 @@ module.exports = {
                     paymentAmount: value.paymentAmount,
                     brolixAmount: value.brolixAmount,
                     transcationId: response.transaction_id,
-                    Type: value.Type
+                    Type: value.Type,
+                    dates: value.dates
                 }
                 var payment = new Payment(details);
                 payment.save(function(err, paymentResult){
@@ -3129,5 +3134,21 @@ module.exports = {
 
     "redirectpage":function(req, res){
 
+    },
+
+    "paymentFilterApi": function(req, res){
+        var startTime = new Date(parseInt(req.body.startTime)).toUTCString();
+        var endTime = new Date(parseInt(req.body.endTime)).toUTCString();
+
+        Payment.find({userId: req.body.userId, createdAt: {$gte: startTime, $lte : endTime} }).exec(function(err, result){
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+            else if (result.length == 0) { 
+                res.send({ responseCode: 404, responseMessage: "Data not found." });
+            }
+            else {
+                res.send({ responseCode: 200, responseMessage: "Payment history shows successfully." , result:result});
+            }
+        })
     }
+
 }

@@ -3079,7 +3079,8 @@ module.exports = {
                                     paymentAmount: req.body.paymentAmount,
                                     brolixAmount: req.body.brolixAmount,
                                     transcationId: req.body.transcationId,
-                                    Type: req.body.Type
+                                    Type: req.body.Type,
+                                    dates: req.body.date
                                 }
                             }
                             else  if(req.body.paymentMode == 'payWithWallet'){
@@ -3088,7 +3089,8 @@ module.exports = {
                                     userId: req.body.userId,
                                     amount: req.body.amount,
                                     transcationId: "brolixAccount",
-                                    Type: req.body.Type
+                                    Type: req.body.Type,
+                                    dates: req.body.date
                                 }
                             }
                            
@@ -3191,7 +3193,8 @@ module.exports = {
                                         paymentAmount: req.body.paymentAmount,
                                         brolixAmount: req.body.brolixAmount,
                                         Type: req.body.Type,
-                                        pid: response.p_id
+                                        pid: response.p_id,
+                                        dates: req.body.date
                                     };
                                     myCache.set( "myKey", obj, 10000 );
 
