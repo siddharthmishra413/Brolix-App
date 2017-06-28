@@ -8,7 +8,10 @@
      "followUnfollow": function(req, res) {
          if (req.body.follow == "follow") {
              User.findOne({ _id: req.body.receiverId }, function(err, result) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.followMe == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot send follow request to this user due to privacy policies" }) } else {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                 else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
+                 else if (result.privacy.followMe == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot send follow request to this user due to privacy policies" }) }
+                 else {
                      followerList.findOne({ senderId: req.body.senderId, receiverId: req.body.receiverId }).exec(function(err, result1) {
                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                              if (!result1) {
@@ -19,20 +22,20 @@
                                              var image = results.image;
                                              User.findOneAndUpdate({ _id: req.body.receiverId }, {
                                                  $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", linkType: 'profile', notificationType: 'follow', image: image } }
-                                             }, { new: true }).exec(function(err, results) {
-                                                if(!(results.deviceToken == undefined && results.deviceToken == null)){
-                                                 if (results.deviceToken && results.deviceType && results.notification_status && results.status) {
+                                             }, { new: true }).exec(function(err, receiverResult) {
+                                              //  if(!(results.deviceToken == undefined && results.deviceToken == null)){
+                                                 if (receiverResult.deviceToken && receiverResult.deviceType && receiverResult.notification_status && receiverResult.status) {
                                                      var message = "You have one follow request";
-                                                     if (results.deviceType == 'Android' && results.notification_status == 'on' && results.status == 'ACTIVE') {
-                                                         functions.android_notification(results.deviceToken, message);
+                                                     if (receiverResult.deviceType == 'Android' && receiverResult.notification_status == 'on' && receiverResult.status == 'ACTIVE') {
+                                                         functions.android_notification(receiverResult.deviceToken, message);
                                                          console.log("Android notification send!!!!")
-                                                     } else if (results.deviceType == 'iOS' && results.notification_status == 'on' && results.status == 'ACTIVE') {
-                                                         functions.iOS_notification(results.deviceToken, message);
+                                                     } else if (receiverResult.deviceType == 'iOS' && receiverResult.notification_status == 'on' && receiverResult.status == 'ACTIVE') {
+                                                         functions.iOS_notification(receiverResult.deviceToken, message);
                                                      } else {
                                                          console.log("Something wrong!!!!")
                                                      }
                                                  }
-                                             }
+                                            
                                                  else{
                                                     console.log("no deviceToken")
                                                  }
@@ -47,7 +50,7 @@
                                      })
                                  })
                              } else {
-                                 if (result1.followerStatus == "reject" || result1.followerStatus == "unfollow" || result1.followerStatus == "unblock") {
+                                 if (result1.followerStatus == "reject" || result1.followerStatus == "unfollow" || result1.followerStatus == "unblock" || result1.followerStatus == "cancel") {
                                      followerList.findOneAndUpdate({ _id: result1._id }, { $set: { followerStatus: "Sent", receiverId: req.body.receiverId, senderId: req.body.senderId } }, { new: true }).exec(function(err, result2) {
                                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                          res.send({
@@ -89,6 +92,19 @@
                  }
              })
          }
+         else if (req.body.follow == "cancel") {
+             followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
+                 $set: { followerStatus: "cancel" }
+             }, { new: true }).exec(function(err, result) {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                   res.send({
+                                 result: result,
+                                 responseCode: 200,
+                                 responseMessage: "Request cancel successfully."
+                             });
+                 }
+             })
+         }
      },
 
      "followerRequestSend": function(req, res) {
@@ -115,7 +131,7 @@
      "followerRequestReceive": function(req, res) {
          var viewerId = req.body.viewerId;
          if (req.body.viewerId == req.body.receiverId) {
-             followerList.find({ receiverId: req.body.receiverId }).exec(function(err, result) {
+             followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' } }).exec(function(err, result) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                      var arr = [];
                      result.forEach(function(result) {
@@ -139,7 +155,7 @@
                      var flag = result1.userFollowers.indexOf(req.body.viewerId)
                      console.log("flag-->>", flag)
                      if (flag == -1) { res.send({ responseCode: 400, responseMessage: "You cannot see follower of this user due to privacy policies" }); } else {
-                         followerList.find({ receiverId: req.body.receiverId }).exec(function(err, result) {
+                         followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' }}).exec(function(err, result) {
                              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                  var arr = [];
                                  result.forEach(function(result) {
@@ -161,7 +177,7 @@
                      }
 
                  } else {
-                     followerList.find({ receiverId: req.body.receiverId }).exec(function(err, result) {
+                     followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' }}).exec(function(err, result) {
                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                              var arr = [];
                              result.forEach(function(result) {

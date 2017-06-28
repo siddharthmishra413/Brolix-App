@@ -129,7 +129,7 @@ module.exports = {
                 //     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
                 // } 
                 else {
-                    User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { cash: -req.body.cashAdPrize } }, { new: true }).exec(function(err, result) {
+                    User.findOne({ _id: req.body.userId }).exec(function(err, result) {
                         req.body.viewerLenght = 2;
                         req.body.numberOfWinners = 2;
                         req.body.cashStatus = 'PENDING';
