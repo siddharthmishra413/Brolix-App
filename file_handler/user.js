@@ -789,7 +789,7 @@ module.exports = {
     // },
 
     "signup": function(req, res) {
-        console.log("data--->>", req.body)
+        console.log("data--************->>", req.body)
         waterfall([
             function(callback) {
                 if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); } else if (!req.body.password) { res.send({ responseCode: 403, responseMessage: 'password required' }); } else if (!req.body.gender) { res.send({ responseCode: 403, responseMessage: 'gender required' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'dob required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
@@ -800,14 +800,15 @@ module.exports = {
                             if (req.body.haveReferralCode == true) {
                                 console.log("in if")
                                 User.findOne({ referralCode: req.body.referredCode }, function(err, user) {
-                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid reffralcode' }); } else {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid referralcode' }); } else {
                                         Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                                                 console.log("data-->>", data)
                                                 var amount = data[0].value;
-                                                console.log("amount-->>", amount)
-                                                User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                                User.findOne({ referralCode: req.body.referredCode }).exec(function(err, result2) {
                                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                                        result2.brolix = amount;
+                                                        result2.save();
                                                         req.body.brolix = amount;
                                                         callback(null)
                                                     }
@@ -1754,7 +1755,7 @@ module.exports = {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
                     if (req.body.haveReferralCode == true) {
                         User.findOne({ referralCode: req.body.referredCode }, function(err, user) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid reffralcode' }); } else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid referralcode' }); } else {
 
                                 Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -2067,7 +2068,7 @@ module.exports = {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
                     if (req.body.haveReferralCode == true) {
                         User.findOne({ referralCode: req.body.referredCode }, function(err, user) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid reffralcode' }); } else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid referralcode' }); } else {
                                 Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                                         console.log("data-->>", data)
