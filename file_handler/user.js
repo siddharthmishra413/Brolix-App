@@ -807,7 +807,7 @@ module.exports = {
                                                 var amount = data[0].value;
                                                 User.findOne({ referralCode: req.body.referredCode }).exec(function(err, result2) {
                                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                                        result2.brolix = amount;
+                                                        result2.brolix = +amount;
                                                         result2.save();
                                                         req.body.brolix = amount;
                                                         callback(null)
@@ -888,12 +888,10 @@ module.exports = {
 
     //API for user Login
     "login": function(req, res) {
-//        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-//        else {
-            User.findOne({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
-                else if (!result) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); } 
-                else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
+        //        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        //        else {
+        User.findOne({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); } else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
                 else {
 
                     if (result.status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); } else {
@@ -921,7 +919,7 @@ module.exports = {
                     }
                 }
             })
-      //  }
+            //  }
     },
 
     "editProfile": function(req, res) {
@@ -1003,9 +1001,8 @@ module.exports = {
                     });
                 }
             })
-        }
-        else if(req.body.image && req.body.coverImage){
-             User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result4) {
+        } else if (req.body.image && req.body.coverImage) {
+            User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result4) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
                     res.send({
                         result: result4,
@@ -1013,7 +1010,7 @@ module.exports = {
                         responseMessage: "Profile updated successfully."
                     });
                 }
-            }) 
+            })
         }
 
     },
@@ -1632,8 +1629,8 @@ module.exports = {
             } else if (!result) {
                 return res.status(404).send({ responseMessage: "please enter userId" })
             }
-           //  else if (result.cash < sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } 
-             else {
+            //  else if (result.cash < sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } 
+            else {
                 for (i = 0; i < array.length; i++) {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -1642,7 +1639,7 @@ module.exports = {
                     });
                 }
                 //result.cash -= sum;
-               // result.save();
+                // result.save();
                 res.send({
                     //result: result,
                     responseCode: 200,
@@ -2185,74 +2182,73 @@ module.exports = {
                             } else {
                                 var type = "storeCouponPriceForFreeAds";
                             }
-                              console.log("type-->>", type)
-                              Brolixanddollors.find({type:type},function(err, result) {
-                                  console.log("result---******++++--->>>",result)
+                            console.log("type-->>", type)
+                            Brolixanddollors.find({ type: type }, function(err, result) {
+                                console.log("result---******++++--->>>", result)
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                                     var value = result[0].value
-                                     callback(null, value)
+                                    callback(null, value)
                                 }
                             })
 
-                        }
-                        else if (result.adsType == 'ADMINCOUPON') {
+                        } else if (result.adsType == 'ADMINCOUPON') {
                             value = result.couponSellPrice;
-                             callback(null, value)
+                            callback(null, value)
 
                         }
-                            //else{
-//                        console.log("type-->>", type)
-//                         console.log("adstype--->>>",result.adsType)
-//                        console.log("adstype--/*/*/*/*/*/*/*/*/*/*/*/*+/9/+//+/+9/+9->>>",result)
-//                        if (result.adsType == 'coupon') {
-//                            Brolixanddollors.find({ type: type }).exec(function(err, result) {
-//                                console.log("result--******>>", result)
-//                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
-//                                    console.log("result--+++++++++>>", result)
-//                                    var value = result[0].value
-//                                    console.log("value--//////////////**************>>", value)
-//                                     callback(null, value)
-//                                }
-//                            })
-//                        }
-                        
-                       
+                        //else{
+                        //                        console.log("type-->>", type)
+                        //                         console.log("adstype--->>>",result.adsType)
+                        //                        console.log("adstype--/*/*/*/*/*/*/*/*/*/*/*/*+/9/+//+/+9/+9->>>",result)
+                        //                        if (result.adsType == 'coupon') {
+                        //                            Brolixanddollors.find({ type: type }).exec(function(err, result) {
+                        //                                console.log("result--******>>", result)
+                        //                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
+                        //                                    console.log("result--+++++++++>>", result)
+                        //                                    var value = result[0].value
+                        //                                    console.log("value--//////////////**************>>", value)
+                        //                                     callback(null, value)
+                        //                                }
+                        //                            })
+                        //                        }
+
+
                     }
 
                     // }
                 })
             },
             function(value, callback) {
-                 console.log("value-->>", value)
-             User.findOne({ _id: req.body.userId }).exec(function(err, userResult) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (userResult.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
+                console.log("value-->>", value)
+                User.findOne({ _id: req.body.userId }).exec(function(err, userResult) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (userResult.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of brolix in your account" }); } else {
 
-                     createNewAds.findOne({ _id: req.body.adId }, function(err, adResult) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!adResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId" }); } else {
-                             console.log("result ads ******------+++++++++++++++++++++")
-                             console.log("result ads ---->>>>", adResult)
-                             var flag = adResult.couponSold.indexOf(req.body.userId);
-                             console.log("flag------->>>", flag)
-                             if (flag != -1) { res.send({ responseCode: '400', responseMessage: 'You have already purchased this coupon' }); } else {
-                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { couponSold: req.body.userId }, $inc: { couponPurchased: 1 } }, { new: true }, function(err, result) {
-                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength == result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
-                                 callback(null, value, result.couponCode, result.couponExpiryDate, result.pageId)
-                             }
-                         })
-                             }
-                         }
-                         // callback(null, value, result.couponCode, result.couponExpiryDate, result.pageId)
+                        createNewAds.findOne({ _id: req.body.adId }, function(err, adResult) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!adResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId" }); } else {
+                                console.log("result ads ******------+++++++++++++++++++++")
+                                console.log("result ads ---->>>>", adResult)
+                                var flag = adResult.couponSold.indexOf(req.body.userId);
+                                console.log("flag------->>>", flag)
+                                if (flag != -1) { res.send({ responseCode: '400', responseMessage: 'You have already purchased this coupon' }); } else {
+                                    createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { couponSold: req.body.userId }, $inc: { couponPurchased: 1 } }, { new: true }, function(err, result) {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else if (result.couponBuyersLength == result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); } else {
+                                            callback(null, value, result.couponCode, result.couponExpiryDate, result.pageId)
+                                        }
+                                    })
+                                }
+                            }
+                            // callback(null, value, result.couponCode, result.couponExpiryDate, result.pageId)
 
-                     })
-                 }
-             })
+                        })
+                    }
+                })
 
             },
             function(value, couponCode1, couponExpiryDate1, pageId, callback) {
                 console.log("value-->>", value)
                 User.findOne({ _id: req.body.userId }).exec(function(err, result1) {
 
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); }  else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
 
                         var startTime = new Date().toUTCString();
                         var h = new Date(new Date(startTime).setHours(00)).toUTCString();
