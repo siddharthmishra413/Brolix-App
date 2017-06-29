@@ -2093,25 +2093,11 @@ module.exports = {
     },
 
     "userFavouratePages": function(req, res) {
-        User.findOne({
-            _id: req.body.userId
-        }, 'pageFollowers', function(err, result) {
+        User.findOne({ _id: req.body.userId }, 'pageFollowers', function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                res.send({
-                    responseCode: 404,
-                    responseMessage: "Data not found."
-                })
-            } else {
-                User.populate(result, {
-                    path: 'pageFollowers.pageId',
-                    model: 'createNewPage'
-                }, function(err, resultt) {
-
-                    res.send({
-                        result: resultt,
-                        responseCode: 200,
-                        responseMessage: "Data not found."
-                    })
+                res.send({ responseCode: 404, responseMessage: "Data not found." }) }
+                 else {  User.populate(result, { path: 'pageFollowers.pageId', model: 'createNewPage' }, function(err, resultt) {
+                    res.send({ result: resultt, responseCode: 200, responseMessage: "Data not found."  })
                 })
             }
         })

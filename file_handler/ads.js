@@ -559,7 +559,6 @@ module.exports = {
         })
     },
 
-
     "listOfAds": function(req, res) {
         createNewAds.find({ userId: req.body.userId }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
