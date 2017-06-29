@@ -1271,6 +1271,7 @@ module.exports = {
     },
 
     "createOfferOnCard": function(req, res) {
+        console.log("req body create offer==>>",JSON.stringify(req.body))
         var cardId = req.body.id;
         // adminCards.findOne({
         //     _id: cardId,

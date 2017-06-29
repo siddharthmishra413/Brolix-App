@@ -573,7 +573,7 @@
                                                         <option>Window Store Link</option>
                                                     </select> -->
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" name="appName"  ng-model="createAds.appName" placeholder="App Name" ng-pattern ="/^[a-zA-Z]*$/" maxlength="31" ng-maxlength="30" required>
+                                                        <input type="text" class="form-control" name="appName"  ng-model="createAds.appName" placeholder="App Name" ng-pattern ="/^[a-zA-Z\s]*$/" maxlength="31" ng-maxlength="30" required>
                                                         <span style="color:red;" ng-show="promoteApp.appName.$dirty && promoteApp.appName.$invalid">
                                                         <span ng-show="promoteApp.appName.$error.required">App name is required.</span>
                                                         <span ng-show="promoteApp.appName.$error.pattern">Only alphabets are required</span>
