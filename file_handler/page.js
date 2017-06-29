@@ -12,20 +12,20 @@ var waterfall = require('async-waterfall');
 var _ = require('underscore')
 var adminCards = require("./model/cardsAdmin");
 
-    //var mongoosePaginate = require('mongoose-paginate');
+//var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
 var moment = require('moment')
 
 var paytabs = require('paytabs')
-var NodeCache = require( "node-cache" );
+var NodeCache = require("node-cache");
 var myCache = new NodeCache();
 
 module.exports = {
 
     //API for create Page
     "createPage": function(req, res) {
-        createNewPage.findOne({ pageName: req.body.pageName, $or:[{status:'ACTIVE'},{ status:'BLOCK'}] }).exec(function(err, result2) {
+        createNewPage.findOne({ pageName: req.body.pageName, $or: [{ status: 'ACTIVE' }, { status: 'BLOCK' }] }).exec(function(err, result2) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
             } else {
@@ -96,7 +96,6 @@ module.exports = {
                             }
                         }
                     }
-
                 }
                 res.send({
                     result: pageResult,
@@ -168,7 +167,7 @@ module.exports = {
                 })
             },
         ], function(err, result2) {
-            console.log("myPages--->>>",result2)
+            console.log("myPages--->>>", result2)
             res.send({
                 result: result2,
                 responseCode: 200,
@@ -232,7 +231,7 @@ module.exports = {
                     })
                 } else {
                     var pageName = req.body.pageName;
-                    createNewPage.findOne({ pageName: pageName, $or:[{status:'ACTIVE'},{ status:'BLOCK'}], _id: { $ne: req.params.id } }).exec(function(err, result2) {
+                    createNewPage.findOne({ pageName: pageName, $or: [{ status: 'ACTIVE' }, { status: 'BLOCK' }], _id: { $ne: req.params.id } }).exec(function(err, result2) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) { res.send({ responseCode: 500, responseMessage: 'Page name must be unique' }); } else {
                             createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result3) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
@@ -261,20 +260,19 @@ module.exports = {
                 });
             } else {
                 createNewPage.findByIdAndUpdate(req.body.pageId, { $set: { status: 'DELETE' } }, { new: true }).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    else{
-                        console.log("page data---->>>",result)
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        console.log("page data---->>>", result)
                         var userId = result.userId;
-                        User.findByIdAndUpdate({_id:userId},{$inc:{pageCount:-1}}, {new:true}).exec(function(err, result1){
-                              console.log("user data---->>>",result1)
-                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }else{
-                                 res.send({
-                                result: result,
-                                responseCode: 200,
-                                responseMessage: "Pages delete successfully."
-                            })                                 
-                             }                            
-                        })                    
+                        User.findByIdAndUpdate({ _id: userId }, { $inc: { pageCount: -1 } }, { new: true }).exec(function(err, result1) {
+                            console.log("user data---->>>", result1)
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                res.send({
+                                    result: result,
+                                    responseCode: 200,
+                                    responseMessage: "Pages delete successfully."
+                                })
+                            }
+                        })
                     }
                 })
             }
@@ -508,14 +506,14 @@ module.exports = {
         createNewPage.findOne({ _id: req.body.pageId }, 'linkSocialListObject').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No page found." }))
             else {
-                 // for(var i=0; i<result.length; i++){
-                 //     var reply=result.docs[i].reply;
-                 //     var data=reply.filter(reply=>reply.status=='ACTIVE');
-                 //     console.log("data--->>"+data)
-                 //     result.docs[i].reply = data;
-                 //   }
-                var data=result.linkSocialListObject.filter(linkSocialListObject=>linkSocialListObject.status=='ACTIVE');
-                console.log("data--->>"+data)
+                // for(var i=0; i<result.length; i++){
+                //     var reply=result.docs[i].reply;
+                //     var data=reply.filter(reply=>reply.status=='ACTIVE');
+                //     console.log("data--->>"+data)
+                //     result.docs[i].reply = data;
+                //   }
+                var data = result.linkSocialListObject.filter(linkSocialListObject => linkSocialListObject.status == 'ACTIVE');
+                console.log("data--->>" + data)
                 result.linkSocialListObject = data;
                 res.send({
                     result: result,
@@ -526,8 +524,8 @@ module.exports = {
         })
     },
 
-    "deleteSocialMediaLink": function(req, res){
-         createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'linkSocialListObject._id': req.body.linkId}, {'linkSocialListObject.$.status': 'INACTIVE'},{new:true}).exec(function(err, result) {
+    "deleteSocialMediaLink": function(req, res) {
+        createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'linkSocialListObject._id': req.body.linkId }, { 'linkSocialListObject.$.status': 'INACTIVE' }, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No link found." }))
             else {
                 res.send({
@@ -539,8 +537,8 @@ module.exports = {
         })
     },
 
-    "editSocialMediaLink": function(req, res){
-        createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'linkSocialListObject._id': req.body.linkId}, {'linkSocialListObject.$.link': req.body.link},{new:true}).exec(function(err, result) {
+    "editSocialMediaLink": function(req, res) {
+        createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'linkSocialListObject._id': req.body.linkId }, { 'linkSocialListObject.$.link': req.body.link }, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No link found." }))
             else {
                 res.send({
@@ -762,7 +760,7 @@ module.exports = {
         } else if (req.body.add == "remove") {
             createNewPage.findByIdAndUpdate(req.params.id, { $pop: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: -1 } }, { new: true }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: -1 },$set: { type: "USER" } }).exec(function(err, result1) {
+                    User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: -1 }, $set: { type: "USER" } }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                             res.send({
                                 result: result,
@@ -1291,7 +1289,7 @@ module.exports = {
                         var winnersLength = 0;
                         callback(null, winnersLength)
                     } else {
-                        console.log("winner=====>",result)
+                        console.log("winner=====>", result)
                         var winnersLength = 0;
                         for (var i = 0; i < result.length; i++) {
                             winnersLength += result[i].winners.length;
@@ -2095,25 +2093,11 @@ module.exports = {
     },
 
     "userFavouratePages": function(req, res) {
-        User.findOne({
-            _id: req.body.userId
-        }, 'pageFollowers', function(err, result) {
+        User.findOne({ _id: req.body.userId }, 'pageFollowers', function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                res.send({
-                    responseCode: 404,
-                    responseMessage: "Data not found."
-                })
-            } else {
-                User.populate(result, {
-                    path: 'pageFollowers.pageId',
-                    model: 'createNewPage'
-                }, function(err, resultt) {
-
-                    res.send({
-                        result: resultt,
-                        responseCode: 200,
-                        responseMessage: "Data not found."
-                    })
+                res.send({ responseCode: 404, responseMessage: "Data not found." }) }
+                 else {  User.populate(result, { path: 'pageFollowers.pageId', model: 'createNewPage' }, function(err, resultt) {
+                    res.send({ result: resultt, responseCode: 200, responseMessage: "Data not found."  })
                 })
             }
         })
@@ -2153,31 +2137,30 @@ module.exports = {
                     if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city")) {
                         var cond = { $or: [] };
                         var tempCond = {};
-                            
+
 
                         if (key == "pageName") {
                             // for (data in req.body[key]) {
                             //     console.log("data",data)
                             //     cond.$or.push({ subCategory: req.body[key] })
                             // }
-                            console.log("ssSSSSS",req.body[key])
+                            console.log("ssSSSSS", req.body[key])
                             var re = new RegExp(req.body[key], 'i');
                             console.log(re)
                             var data = { pageName: { $regex: re } }
-                          //  condition.$and.push(data)({ subCategory: req.body[key] })
+                                //  condition.$and.push(data)({ subCategory: req.body[key] })
                             condition.$and.push(data)
                         }
                         // // else if(key == "pageName"){
-
                         else if (key == "subCategory") {
-                           for (data in req.body[key]) {
-                              cond.$or.push({ subCategory: req.body[key][data] })
+                            for (data in req.body[key]) {
+                                cond.$or.push({ subCategory: req.body[key][data] })
                             }
                             condition.$and.push(cond)
                         }
                         // // }
                         else {
-                           
+
                             tempCond[key] = req.body[key];
                             condition.$and.push(tempCond)
                         }
@@ -2227,15 +2210,12 @@ module.exports = {
 
                                 }
                                 query.$and.push(queryOrData)
-                            } 
-                            else if(key == "firstName") {
-                            
+                            } else if (key == "firstName") {
+
                                 var re = new RegExp(req.body[key], 'i');
                                 var data = { firstName: { $regex: re } }
                                 query.$and.push(data)
-                            }
-
-                            else {
+                            } else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
                                 query.$and.push(temporayCond)
@@ -2309,14 +2289,12 @@ module.exports = {
                                 }
                                 // console.log("queryOrData",queryOrData)
                                 queryData.$and.push(queryOrData)
-                            } 
-                            else if(key == "firstName") {
-                            
+                            } else if (key == "firstName") {
+
                                 var re = new RegExp(req.body[key], 'i');
                                 var data = { firstName: { $regex: re } }
                                 query.$and.push(data)
-                            }
-                            else {
+                            } else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
                                 queryData.$and.push(temporayCond)
@@ -2410,15 +2388,13 @@ module.exports = {
 
                                 }
                                 query.$and.push(queryOrData)
-                            }
-                            else if (key == "firstName") {
-                                console.log("ssSSSSS",req.body[key])
+                            } else if (key == "firstName") {
+                                console.log("ssSSSSS", req.body[key])
                                 var re = new RegExp(req.body[key], 'i');
                                 console.log(re)
                                 var data = { firstName: { $regex: re } }
                                 query.$and.push(data)
-                            }
-                            else {
+                            } else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
                                 query.$and.push(temporayCond)
@@ -2665,7 +2641,7 @@ module.exports = {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
                             res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
                         }
-                })
+                    })
             }
         })
     },
@@ -2717,14 +2693,14 @@ module.exports = {
     },
 
     "reviewCommentList": function(req, res) {
-        addsComments.paginate({ pageId: req.params.id, "status" : "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+        addsComments.paginate({ pageId: req.params.id, "status": "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                 for(var i=0; i<result.docs.length; i++){
-                     var reply=result.docs[i].reply;
-                     var data=reply.filter(reply=>reply.status=='ACTIVE');
-                     console.log("data--->>"+data)
-                     result.docs[i].reply = data;
-                   }
+                for (var i = 0; i < result.docs.length; i++) {
+                    var reply = result.docs[i].reply;
+                    var data = reply.filter(reply => reply.status == 'ACTIVE');
+                    console.log("data--->>" + data)
+                    result.docs[i].reply = data;
+                }
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -2734,23 +2710,20 @@ module.exports = {
         })
     },
 
-    "deleteCommentsOnPage": function(req, res){
-        if(req.body.type == 'comment'){
+    "deleteCommentsOnPage": function(req, res) {
+        if (req.body.type == 'comment') {
             var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId }
-            var setCondition = { status : 'INACTIVE'}
-        }
-        else{
-            var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId , 'reply._id': req.body.replyId}
-            var setCondition = { 'reply.$.status' : 'INACTIVE'}
+            var setCondition = { status: 'INACTIVE' }
+        } else {
+            var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId, 'reply._id': req.body.replyId }
+            var setCondition = { 'reply.$.status': 'INACTIVE' }
         }
 
         addsComments.findOneAndUpdate(pageQuery, setCondition, { new: true }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
-            else if(results == null || results == undefined){
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (results == null || results == undefined) {
                 res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
-            }
-            else {
-                if(req.body.type == 'comment'){
+            } else {
+                if (req.body.type == 'comment') {
                     createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { commentCount: -1 } }, { new: true }).exec(function(err, resul) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                             res.send({
@@ -2760,8 +2733,7 @@ module.exports = {
                             });
                         }
                     })
-                }
-                else{
+                } else {
                     res.send({
                         result: results,
                         responseCode: 200,
@@ -2772,22 +2744,19 @@ module.exports = {
         })
     },
 
-    "editCommentsonPage": function(req, res){
-        if(req.body.type == 'comment'){
+    "editCommentsonPage": function(req, res) {
+        if (req.body.type == 'comment') {
             var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId }
-            var setCondition = { comment : req.body.comment}
-        }
-        else{
-            var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId , 'reply._id': req.body.replyId}
-            var setCondition = { 'reply.$.replyComment' : req.body.replyComment}
+            var setCondition = { comment: req.body.comment }
+        } else {
+            var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId, 'reply._id': req.body.replyId }
+            var setCondition = { 'reply.$.replyComment': req.body.replyComment }
         }
 
         addsComments.findOneAndUpdate(pageQuery, setCondition, { new: true }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else if(results == null || results == undefined){
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (results == null || results == undefined) {
                 res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
-            }
-            else {
+            } else {
                 res.send({
                     result: results,
                     responseCode: 200,
@@ -2843,34 +2812,29 @@ module.exports = {
         }
     },
 
-     "createPagePayment": function(req, res){
+    "createPagePayment": function(req, res) {
 
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
-           if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-           else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } 
-           else {
-            console.log("user",user)
-                if(req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet'){
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } else {
+                console.log("user", user)
+                if (req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet') {
                     waterfall([
-                        function(callback){
-                            if(req.body.paymentMode == 'paypal'){
-                               var cashAmount  = user.cash - req.body.brolixAmount;
+                        function(callback) {
+                            if (req.body.paymentMode == 'paypal') {
+                                var cashAmount = user.cash - req.body.brolixAmount;
+                            } else if (req.body.paymentMode == 'payWithWallet') {
+                                var cashAmount = user.cash - req.body.amount;
                             }
-                            else  if(req.body.paymentMode == 'payWithWallet'){
-                                 var cashAmount  = user.cash - req.body.amount;
-                            }
-                                
-                            User.findOneAndUpdate({ _id: req.body.userId },{$set:{cash:cashAmount}},{new: true}).exec(function(err, result){
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                                else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
-                                else {
+
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $set: { cash: cashAmount } }, { new: true }).exec(function(err, result) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
                                     callback(null, "null")
                                 }
                             })
-                            
+
                         },
-                        function(nullResult, callback){
-                            if(req.body.paymentMode == 'paypal'){
+                        function(nullResult, callback) {
+                            if (req.body.paymentMode == 'paypal') {
                                 var details = {
                                     paymentMode: req.body.paymentMode,
                                     userId: req.body.userId,
@@ -2881,8 +2845,7 @@ module.exports = {
                                     Type: req.body.Type,
                                     dates: req.body.date
                                 }
-                            }
-                            else  if(req.body.paymentMode == 'payWithWallet'){
+                            } else if (req.body.paymentMode == 'payWithWallet') {
                                 var details = {
                                     paymentMode: req.body.paymentMode,
                                     userId: req.body.userId,
@@ -2892,28 +2855,25 @@ module.exports = {
                                     dates: req.body.date
                                 }
                             }
-                           
+
                             var payment = new Payment(details);
-                            payment.save(function(err, paymentResult){
-                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                            else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
-                            else {
-                                callback(null, paymentResult)
-                            }
+                            payment.save(function(err, paymentResult) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                                    callback(null, paymentResult)
+                                }
                             })
                         },
-                        function(paymentResult, callback){
+                        function(paymentResult, callback) {
                             adminCards.findOne({
-                               type : "upgrade_card", price : req.body.amount
-                            },function(err, cardRes){
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                                else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } 
-                                else {
+                                type: "upgrade_card",
+                                price: req.body.amount
+                            }, function(err, cardRes) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
                                     callback(null, cardRes)
                                 }
                             })
                         },
-                        function(cardRes, callback){
+                        function(cardRes, callback) {
                             var card_viewers = cardRes.viewers;
                             var data = {
                                 cash: req.body.amount,
@@ -2921,47 +2881,39 @@ module.exports = {
                                 type: "SENDBYADMIN"
                             }
                             User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { upgradeCardObject: data } }, function(err, userRes) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                                else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
-                                else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
                                     callback(null, userRes)
                                 }
                             })
                         }
-                    ],function(err, result){
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                        else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
-                        else {
+                    ], function(err, result) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
                             res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
                         }
                     })
-                }
-                else{            
+                } else {
                     waterfall([
-                        function(callback){
-                            paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
-                              console.log(response);
-                              if(response.result == 'valid'){
-                                callback(null, response)
-                              }
-                              else{
-                                res.send({
-                                    responseCode: 404,
-                                    responseMessage: "Internal server error."
-                                })
-                              }
+                        function(callback) {
+                            paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response) {
+                                console.log(response);
+                                if (response.result == 'valid') {
+                                    callback(null, response)
+                                } else {
+                                    res.send({
+                                        responseCode: 404,
+                                        responseMessage: "Internal server error."
+                                    })
+                                }
                             });
                         },
-                        function(result, callback){
-                            if(user.country == 'United Arab Emirates'){
+                        function(result, callback) {
+                            if (user.country == 'United Arab Emirates') {
                                 var state = 'UAE'
                                 var country_shipping = "ARE"
-                            }
-                            else if(user.country == 'Jordan'){
+                            } else if (user.country == 'Jordan') {
                                 var state = 'Jordan'
                                 var country_shipping = "JOR"
-                            }
-                            else{
+                            } else {
                                 res.send({
                                     responseCode: 404,
                                     responseMessage: "User can pay only for country UAE and Jordan."
@@ -3006,10 +2958,9 @@ module.exports = {
                             createPayPage.cms_with_version = "1.0.0";
                             paytabs.CreatePayPage(createPayPage, function(response) {
                                 console.log(response)
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                                else if (!(response.response_code == "4012")) { 
-                                    res.send({ responseCode: 404, responseMessage: "User details are invalid." }); } 
-                                else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!(response.response_code == "4012")) {
+                                    res.send({ responseCode: 404, responseMessage: "User details are invalid." });
+                                } else {
                                     var obj = {
                                         userId: req.body.userId,
                                         paymentMode: req.body.paymentMode,
@@ -3021,41 +2972,41 @@ module.exports = {
                                         pid: response.p_id,
                                         dates: req.body.date
                                     };
-                                    myCache.set( "myKey", obj, 10000 );
-                                    var value = myCache.get( "myKey" );
-                                    console.log("value",value)
+                                    myCache.set("myKey", obj, 10000);
+                                    var value = myCache.get("myKey");
+                                    console.log("value", value)
 
                                     res.send({
-                                    responseCode: 200,
-                                    responseMessage: "Payment url.",
-                                    result: response
-                                })
+                                        responseCode: 200,
+                                        responseMessage: "Payment url.",
+                                        result: response
+                                    })
                                 }
                             });
                         }
                     ])
                 }
-           }
+            }
         })
     },
 
-    "returnPage": function(req, res){
-        var value = myCache.get( "myKey" );
-        console.log("value",value)
+    "returnPage": function(req, res) {
+        var value = myCache.get("myKey");
+        console.log("value", value)
         waterfall([
-            function(callback){
+            function(callback) {
                 var verfiyPaymentRequest = new Object();
                 verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
                 verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
                 verfiyPaymentRequest.payment_reference = value.pid;
-                paytabs.VerfiyPayment(verfiyPaymentRequest, function(response){
-                    console.log("verify response",response)
+                paytabs.VerfiyPayment(verfiyPaymentRequest, function(response) {
+                    console.log("verify response", response)
                     callback(null, response)
-                }); 
+                });
             },
-            function(response, callback){
+            function(response, callback) {
                 var details = {
-                    paymentMode:value.paymentMode,
+                    paymentMode: value.paymentMode,
                     userId: value.userId,
                     amount: value.amount,
                     paymentAmount: value.paymentAmount,
@@ -3065,88 +3016,78 @@ module.exports = {
                     dates: value.dates
                 }
                 var payment = new Payment(details);
-                payment.save(function(err, paymentResult){
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
-                else {
-                    callback(null, paymentResult)
-                }
+                payment.save(function(err, paymentResult) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                        callback(null, paymentResult)
+                    }
                 })
             },
-            function(paymentResult, callback){
-                if(value.Type == ''){
-                       adminCards.findOne({
-                           type : "upgrade_card", price : value.amount
-                        },function(err, cardRes){
-                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                            else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } 
-                            else {
-                                console.log("card res0",cardRes)
-                                callback(null, cardRes)
-                            }
-                        })
-                }
-                else{
-                   callback(null, "cardRes")
-                }
-               
-            },
-            function(cardRes, callback){
-                var cashAmount = value.userCashAmount - value.brolixAmount
-                if(value.Type == 'createPage'){
-                        var card_viewers = cardRes.viewers;
-                        var data = {
-                            cash: value.amount,
-                            viewers: card_viewers,
-                            type: "SENDBYADMIN"
+            function(paymentResult, callback) {
+                if (value.Type == '') {
+                    adminCards.findOne({
+                        type: "upgrade_card",
+                        price: value.amount
+                    }, function(err, cardRes) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
+                            console.log("card res0", cardRes)
+                            callback(null, cardRes)
                         }
-                        var query = { $push: { upgradeCardObject: data } , $set: {cash: cashAmount}}
+                    })
+                } else {
+                    callback(null, "cardRes")
                 }
-                else{
-                    var query = {$set: {cash: cashAmount}}
+
+            },
+            function(cardRes, callback) {
+                var cashAmount = value.userCashAmount - value.brolixAmount
+                if (value.Type == 'createPage') {
+                    var card_viewers = cardRes.viewers;
+                    var data = {
+                        cash: value.amount,
+                        viewers: card_viewers,
+                        type: "SENDBYADMIN"
+                    }
+                    var query = { $push: { upgradeCardObject: data }, $set: { cash: cashAmount } }
+                } else {
+                    var query = { $set: { cash: cashAmount } }
 
                 }
-                
+
                 console.log(data)
-                
-                console.log("cashAmount",cashAmount)
+
+                console.log("cashAmount", cashAmount)
                 User.findByIdAndUpdate({ _id: value.userId }, query, function(err, userRes) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                    else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
-                    else {
-                        console.log("userRes========>",userRes)
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                        console.log("userRes========>", userRes)
                         callback(null, userRes)
                     }
                 })
             }
-        ],function(err, result){
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-            else if (!result) { 
-                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/'+404+'/'+"Failure"+'')
+        ], function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) {
+                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
             }
-                //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+            //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
             else {
-                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/'+200+'/'+"Success"+'')
-                //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
+                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
+                    //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
             }
-        })  
+        })
     },
 
-    "redirectpage":function(req, res){
+    "redirectpage": function(req, res) {
 
     },
 
-    "paymentFilterApi": function(req, res){
+    "paymentFilterApi": function(req, res) {
         var startTime = new Date(parseInt(req.body.startTime)).toUTCString();
         var endTime = new Date(parseInt(req.body.endTime)).toUTCString();
 
-        Payment.find({userId: req.body.userId, createdAt: {$gte: startTime, $lte : endTime} }).exec(function(err, result){
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-            else if (result.length == 0) { 
+        Payment.find({ userId: req.body.userId, createdAt: { $gte: startTime, $lte: endTime } }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: "Data not found." });
-            }
-            else {
-                res.send({ responseCode: 200, responseMessage: "Payment history shows successfully." , result:result});
+            } else {
+                res.send({ responseCode: 200, responseMessage: "Payment history shows successfully.", result: result });
             }
         })
     }

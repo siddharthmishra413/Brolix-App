@@ -6,13 +6,10 @@
 
      //API Report Problem  
      "followUnfollow": function(req, res) {
-         console.log("request----->>>>",req.body)
+         console.log("request----->>>>", req.body)
          if (req.body.follow == "follow") {
              User.findOne({ _id: req.body.receiverId }, function(err, result) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                 else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
-                 else if (result.privacy.followMe == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot send follow request to this user due to privacy policies" }) }
-                 else {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.followMe == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot send follow request to this user due to privacy policies" }) } else {
                      followerList.findOne({ senderId: req.body.senderId, receiverId: req.body.receiverId }).exec(function(err, result1) {
                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                              if (!result1) {
@@ -24,7 +21,6 @@
                                              User.findOneAndUpdate({ _id: req.body.receiverId }, {
                                                  $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", linkType: 'profile', notificationType: 'follow', image: image } }
                                              }, { new: true }).exec(function(err, receiverResult) {
-                                              //  if(!(results.deviceToken == undefined && results.deviceToken == null)){
                                                  if (receiverResult.deviceToken && receiverResult.deviceType && receiverResult.notification_status && receiverResult.status) {
                                                      var message = "You have one follow request";
                                                      if (receiverResult.deviceType == 'Android' && receiverResult.notification_status == 'on' && receiverResult.status == 'ACTIVE') {
@@ -35,10 +31,8 @@
                                                      } else {
                                                          console.log("Something wrong!!!!")
                                                      }
-                                                 }
-                                            
-                                                 else{
-                                                    console.log("no deviceToken")
+                                                 } else {
+                                                     console.log("no deviceToken")
                                                  }
                                                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                                  res.send({
@@ -92,17 +86,16 @@
                      })
                  }
              })
-         }
-         else if (req.body.follow == "cancel") {
+         } else if (req.body.follow == "cancel") {
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
                  $set: { followerStatus: "cancel" }
              }, { new: true }).exec(function(err, result) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                   res.send({
-                                 result: result,
-                                 responseCode: 200,
-                                 responseMessage: "Request cancel successfully."
-                             });
+                     res.send({
+                         result: result,
+                         responseCode: 200,
+                         responseMessage: "Request cancel successfully."
+                     });
                  }
              })
          }
@@ -156,7 +149,7 @@
                      var flag = result1.userFollowers.indexOf(req.body.viewerId)
                      console.log("flag-->>", flag)
                      if (flag == -1) { res.send({ responseCode: 400, responseMessage: "You cannot see follower of this user due to privacy policies" }); } else {
-                         followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' }}).exec(function(err, result) {
+                         followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' } }).exec(function(err, result) {
                              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                  var arr = [];
                                  result.forEach(function(result) {
@@ -178,7 +171,7 @@
                      }
 
                  } else {
-                     followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' }}).exec(function(err, result) {
+                     followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' } }).exec(function(err, result) {
                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                              var arr = [];
                              result.forEach(function(result) {
@@ -206,7 +199,7 @@
 
      //API for Accept Follower Request
      "acceptFollowerRequest": function(req, res) {
-         console.log("dasdjadh ---- ******-----",req.body)
+         console.log("dasdjadh ---- ******-----", req.body)
          if (req.body.followerStatus == "accept") {
              console.log("in")
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
