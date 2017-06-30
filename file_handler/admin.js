@@ -8,6 +8,7 @@ var Payment = require("./model/payment");
 var subCategory = require("./subcategory.json");
 var jwt = require('jsonwebtoken');
 var config = require('../config');
+var cron = require('node-cron');
 
 var countryList = require('countries-cities').getCountries(); // Returns an array of country names. 
 var citiess = require('countries-cities').getCities("India"); // Returns an array of city names of the particualr country. 
@@ -1307,7 +1308,8 @@ module.exports = {
         var cardId = req.body.id;
         adminCards.find({
             _id: cardId,
-            'offer.offerTime': { $gte : req.body.offerTime }
+            'offer.offerTime': { $gte : req.body.offerTime },
+            'offer.status': 'ACTIVE'
         },function(err, cardResult){
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
             else if(cardResult.length == 0){
@@ -1320,7 +1322,7 @@ module.exports = {
             else {
 
                   
-                res.send({ responseCode: 404, responseMessage: 'You cannot create this offer.'});
+                res.send({ responseCode: 404, responseMessage: 'You cannot create this offer.', ree: cardResult});
 
             }
         })
@@ -4734,5 +4736,57 @@ module.exports = {
         })
     },
 
+    "testing": function(req, res){
+         var utcDate = new Date(1498725307000)
+    adminCards.aggregate({ $unwind: '$offer' }, { $match: {'offer.offerTime': { $lte : utcDate }, 'offer.status':'ACTIVE' }}, function(err, result) {
+        console.log("cron resulkt==>",result)
+    // adminCards.unwi({
+    //     'offer.offerTime': { $lte : utcDate }
+    // },function(err, result){
+        if (err) { console.log("err in cron",err) }
+        else if(result.length == 0){console.log("null result in cron")}
+        else{
+            var arr = []
+            for (var i = 0; i < result.length; i++) {
+             arr.push(result[i].offer._id)
+            }
+            adminCards.findOneAndUpdate({ 'offer._id': { $in: arr } }, { $set: { 'offer.$.status': "EXPIRED" } 
+                }, function(err, results) {
+                    if (err) { console.log("update err in cron",err) }
+                    else if(!results){console.log("update null result in cron")}
+                    else{
+                        console.log("EXPIRED")
+                    }
+            })
+        }
+    })
+    }
+
 
 }
+
+cron.schedule('*/2 * * * *', function() {
+        var utcDate = new Date()
+    adminCards.aggregate({ $unwind: '$offer' }, { $match: {'offer.offerTime': { $lte : utcDate }, 'offer.status':'ACTIVE' }}, function(err, result) {
+        console.log("cron resulkt==>",result)
+    // adminCards.unwi({
+    //     'offer.offerTime': { $lte : utcDate }
+    // },function(err, result){
+        if (err) { console.log("err in cron",err) }
+        else if(result.length == 0){console.log("null result in cron")}
+        else{
+            var arr = []
+            for (var i = 0; i < result.length; i++) {
+             arr.push(result[i].offer._id)
+            }
+            adminCards.findOneAndUpdate({ 'offer._id': { $in: arr } }, { $set: { 'offer.$.status': "EXPIRED" } 
+                }, function(err, results) {
+                    if (err) { console.log("update err in cron",err) }
+                    else if(!results){console.log("update null result in cron")}
+                    else{
+                        console.log("EXPIRED")
+                    }
+            })
+        }
+    })
+})

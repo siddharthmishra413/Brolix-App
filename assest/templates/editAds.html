@@ -88,8 +88,9 @@
                                     <div class="text-center">
                                         <label class="coupon-date col-sm-12">Coupon Expiry Date</label>
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <select ng-model="createAds.couponExpiryDate" class="form-control" ng-change="expDate(createAds.couponExpiryDate)">
-                                                <option value="">Never</option>
+                                            <select ng-model="createAds.couponExpiryInString" class="form-control" ng-change="expDate(createAds.couponExpiryDate)">
+                                                <option selected="">{{createAds.couponExpiryInString}}</option>
+                                                <option value="Never">Never</option>
                                                 <option value="1 Week">1 Week </option>
                                                 <option value="2 Weeks">2 Weeks</option>
                                                 <option value="3 Weeks">3 Weeks</option>
@@ -352,7 +353,7 @@
                                 </ul>
                             </div>
                             <div class="btn2 text-center">
-                                <a  class="btn btn-lg btn-green" ng-click="submit(createAds)" >Agree & Publish</a>
+                                <a  class="btn btn-lg btn-green" ng-click="updateAdd()" >Agree & Publish</a>
                                 <a  class="btn btn-lg btn-green" ng-click="click('Back6')">Back</a>
                             </div>
                         </div>

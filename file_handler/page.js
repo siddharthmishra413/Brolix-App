@@ -2169,7 +2169,11 @@ module.exports = {
                 if (condition.$and.length == 0) {
                     delete condition.$and;
                 }
-                console.log("condition====>>" + JSON.stringify(condition))
+                
+                var activeStatus = { status: 'ACTIVE' }
+                Object.assign(condition, activeStatus)
+                console.log("condition===*******************=>>" + JSON.stringify(condition))
+                
                 createNewPage.find(condition, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
                         res.send({ responseCode: 404, responseMessage: 'Data not found.' });

@@ -1001,7 +1001,7 @@ module.exports = {
                     });
                 }
             })
-        } else if (req.body.image || req.body.coverImage) {
+        } else if (req.body.image && req.body.coverImage) {
             User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result4) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
                     res.send({
@@ -3236,7 +3236,7 @@ module.exports = {
                 Date:"sdsd",Amount:"fdf",Description:"dfdf"
                }]
                 var replacements = {
-                     ProductsArrays: arr
+                     ProductsArray: arr
 
                 };
                 var htmlToSend = template(replacements);

@@ -133,7 +133,7 @@ module.exports = {
                     User.findOne({ _id: req.body.userId }).exec(function(err, result) {
                         req.body.viewerLenght = 2;
                         req.body.numberOfWinners = 2;
-                        req.body.cashStatus = 'PENDING';
+                        req.body.cashStatus = 'DELIVERED';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -1375,7 +1375,7 @@ module.exports = {
         var skips = limitData - 8;
         var page = String(pageNumber);
 
-        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER' } }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER','coupon.status':'ACTIVE' } }).exec(function(err, result) {
             console.log("1")
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: "No coupon winner found" }); } else {
                 var count = 0;
@@ -1383,7 +1383,7 @@ module.exports = {
                     count++;
                 }
                 var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER' } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER','coupon.status':'ACTIVE'  } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     console.log("2")
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                         User.populate(result1, {
@@ -1548,7 +1548,7 @@ module.exports = {
         var skips = limitData - 8;
         var page = String(pageNumber);
 
-        User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status':'ACTIVE' } }).exec(function(err, result) {
             console.log("1")
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found." }); } else {
                 var count = 0;
@@ -1556,7 +1556,7 @@ module.exports = {
                     count++;
                 }
                 var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: "$cashPrize" }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status':'ACTIVE' } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     console.log("2")
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found." }); } else {
                         User.populate(result1, {

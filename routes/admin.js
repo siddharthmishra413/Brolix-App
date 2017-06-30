@@ -24,6 +24,8 @@ app.get('/totalPages', authUser.authUser, adminHandler.totalPages);
 app.get('/viewPage/:id', authUser.authUser, adminHandler.viewPage);
 
 app.post('/showOneOfferDetail', adminHandler.showOneOfferDetail);
+app.post('/testing', adminHandler.testing);
+
 
 /*----------------------Manage Users------------------------*/
 
