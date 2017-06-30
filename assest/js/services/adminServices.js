@@ -349,8 +349,12 @@ app.service('userService', function($http) {
         editUserProfile: function(id, data) {
             return $http.put(baseurl + '/admin/editUserProfile/' + id, data);
         },
-        editAds: function(userId, pageId, data) {
-            return $http.put(baseurl + '/ads/editAd/' + userId + '/' + pageId, data);
+        editAds: function(adId, userId, data) {
+            console.log("adId",adId);
+            console.log("userId",userId);
+            console.log("data",JSON.stringify(data));
+
+            return $http.put(baseurl + '/ads/editAd/' + adId + '/' + userId, data);
         },
         showAllCashWinners: function() {
             return $http.get(baseurl + '/admin/cashWinners');

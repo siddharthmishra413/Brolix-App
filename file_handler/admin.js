@@ -1526,7 +1526,7 @@ module.exports = {
     },
 
     "createPage": function(req, res) {
-        console.log("request---->>>",req.body)
+        console.log("request---->>>",JSON.stringify(req.body))
         createNewPage.findOne({ pageName: req.body.pageName, status:'ACTIVE', status:'BLOCK' }).exec(function(err, result2) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
@@ -3861,7 +3861,7 @@ module.exports = {
                         break;
 
                     default:
-                        var updateData = { type: "USER" };
+                        var updateData = { $or:[{ type: "USER", status: 'ACTIVE' }, { type: "Advertiser", status: 'ACTIVE' }]};
                         condition.$and.push(updateData)
                 }
                 console.log("condition before callback==>>" + JSON.stringify(condition))
@@ -3911,7 +3911,7 @@ module.exports = {
                 console.log("condition===>.." + JSON.stringify(condition))
                 User.find(condition, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        console.log("result;;;>" + result)
+                        //console.log("result;;;>" + result)
                         callback(null, result, condition)
                     }
 
@@ -4027,7 +4027,7 @@ module.exports = {
     },
 
     "adAdminUserList": function(req, res) {
-        User.find({}, 'firstName lastName email', function(err, result) {
+        User.find({type : {$ne: 'ADMIN'}}, 'firstName lastName email', function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No user found" }) } else { res.send({ result: result, responseCode: 200, responseMessage: 'List of all user' }); }
         })
     },
@@ -4295,6 +4295,7 @@ module.exports = {
                         console.log("userArray-->>>", arrayLenght)
                         adminCards.findOneAndUpdate({ _id: cardId }, { $inc: { sendCardToUser: arrayLenght } }, { new: true }).exec(function(err, result) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct cardId' }); } else {
+                                console.log("result.viewers-->>>", result.viewers)
                                 var cash = result.price;
                                 var viewers = result.viewers;
                                 var type = "SENDBYADMIN";
@@ -4313,7 +4314,7 @@ module.exports = {
                         viewers: viewers,
                         type: type
                     }
-                    console.log("data-->>", data)
+                    console.log("data--+++++++++++++>>", data)
                     for (var i = 0; i < userArray.length; i++) {
                         User.update({ _id: userArray[i] }, { $push: { upgradeCardObject: data } }, { multi: true }, function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
