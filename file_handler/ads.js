@@ -214,6 +214,7 @@ module.exports = {
 
                 createNewAds.paginate({ userId: { $ne: req.params.id }, removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
+
                         for (var i = 0; i < result.docs.length; i++) {
                             if (result.docs[i].adsType == 'coupon') {
                                 if (result.docs[i].cash == 0) {
@@ -223,11 +224,15 @@ module.exports = {
                                 }
                             }
                         }
-                        res.send({
-                            result: result,
-                            responseCode: 200,
-                            responseMessage: "Data Show successfully"
+                        var updatedResult = result.docs;
+                        createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName' }, function(err, finalResult) {
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "Data Show successfully"
+                            })
                         })
+
                     }
                 })
             }
@@ -238,12 +243,17 @@ module.exports = {
     "showAllAdsCashType": function(req, res) {
 
         createNewAds.paginate({ userId: { $ne: req.params.id }, removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: "Data Show successfully"
-            })
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                var updatedResult = result.docs;
+                createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName' }, function(err, finalResult) {
+                    res.send({
+                        result: result,
+                        responseCode: 200,
+                        responseMessage: "Data Show successfully"
+                    })
+                })
+
+            }
         })
     },
 
@@ -316,11 +326,15 @@ module.exports = {
                                 results.docs[i].couponSellPrice = dataValue
                             }
                         }
-                        res.send({
-                            result: results,
-                            responseCode: 200,
-                            responseMessage: "All Details Found"
+                        var updatedResult = results.docs;
+                        createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName' }, function(err, finalResult) {
+                            res.send({
+                                result: results,
+                                responseCode: 200,
+                                responseMessage: "All Details Found"
+                            })
                         })
+
                     }
                 })
 
@@ -578,22 +592,41 @@ module.exports = {
         if (req.params.type == 'all') {
             createNewAds.paginate({ adsType: { $ne: 'ADMINCOUPON' }, pageId: req.params.pageId, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "All ads shown cash type and coupon type."
-                    });
+
+                    var updatedResult = result.docs;
+                    createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName' }, function(err, finalResult) {
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "All ads shown cash type and coupon type."
+                            });
+                        })
+                        //                    res.send({
+                        //                        result: result,
+                        //                        responseCode: 200,
+                        //                        responseMessage: "All ads shown cash type and coupon type."
+                        //                    });
                 }
             })
         } else {
             type = req.params.type;
             createNewAds.paginate({ pageId: req.params.pageId, adsType: type, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "All ads shown cash type and coupon type."
-                    });
+
+                    var updatedResult1 = result.docs;
+                    createNewAds.populate(updatedResult1, { path: 'pageId', model: 'createNewPage', select: 'pageName' }, function(err, finalResult) {
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "All ads shown cash type and coupon type."
+                        });
+                    })
+
+                    //                    res.send({
+                    //                        result: result,
+                    //                        responseCode: 200,
+                    //                        responseMessage: "All ads shown cash type and coupon type."
+                    //                    });
                 }
             });
         }
@@ -1823,21 +1856,25 @@ module.exports = {
             function(noDataValue, dataValue, callback) {
                 createNewAds.paginate({ userId: { $ne: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
-                        for (var i = 0; i < result.docs.length; i++) {
-                            if (result.docs[i].adsType == 'coupon') {
-                                if (result.docs[i].cash == 0) {
-                                    result.docs[i].couponSellPrice = noDataValue
-                                } else {
-                                    result.docs[i].couponSellPrice = dataValue
+                        var updatedResult = result.docs;
+                        createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName' }, function(err, finalResult) {
+                            for (var i = 0; i < result.docs.length; i++) {
+                                if (result.docs[i].adsType == 'coupon') {
+                                    if (result.docs[i].cash == 0) {
+                                        result.docs[i].couponSellPrice = noDataValue
+                                    } else {
+                                        result.docs[i].couponSellPrice = dataValue
+                                    }
                                 }
                             }
-                        }
-                        res.send({
-                            result: result,
-                            responseCode: 200,
-                            responseMessage: "All coupon from store shown successfully."
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "All coupon from store shown successfully."
+                            })
                         })
                     }
+
                 })
             }
         ])
@@ -3181,7 +3218,15 @@ module.exports = {
                                         pid: response.p_id,
                                         dates: req.body.date
                                     };
+                                    // myCache.del( "myKey", function( err, count ){
+                                    //   if( !err ){
+                                    //     console.log( count );                              
+                                    //   }
+                                    // })
+
                                     myCache.set("myKey", obj, 10000);
+                                    var value = myCache.get("myKey");
+                                    console.log("value", value)
 
                                     res.send({
                                         responseCode: 200,

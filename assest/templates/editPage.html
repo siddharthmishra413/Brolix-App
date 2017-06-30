@@ -301,7 +301,8 @@
                                 <div class="btn2 text-center">
                                 <!-- ng-disabled="viewPageDetails.socialMedia.length == 0" -->
                                 <!-- ng-disabled="media.$invalid" -->
-                                    <button  class="btn btn-lg btn-green" ng-click="click('Step3')">Next</button>
+                                    <!-- <button  class="btn btn-lg btn-green" ng-click="click('Step3')">Next</button> -->
+                                    <button class="btn btn-lg btn-green" ng-click="submitt();">Update Page</button>
                                     <button class="btn btn-lg btn-green" ng-click="click('Step1')">Back</button>
                                     <a  class="btn btn-lg btn-green" ng-click="cancel('Step3')">Cancel</a>
                                 </div>
@@ -316,7 +317,7 @@
 
     <!-- pages Admin -->
 
-    <div class="container" ng-if="Step4">
+    <!-- <div class="container" ng-if="Step4">
             <div class="outer-block cus-addnew-page">
                 <div class="add-user panel panel-default cust-panel">
                     <div class="panel-heading">
@@ -354,7 +355,7 @@
                                                 <div class="row-table" ng-repeat="y in viewPageDetails.adAdmin">
                                                     <div class="col-cell">
                                                     <span class="form-control">{{y.userId.firstName}} {{y.userId.lastName}}</span>
-                                                        <!-- <input type="text" class="form-control"> -->
+                                                       
                                                     </div>
                                                     <div class="col-cell add-remove" >
                                                         <span class="fa fa-minus-circle" ng-click="removeNewPage(y)"></span>
@@ -364,8 +365,7 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Change this to a button or input when using this as a form -->
-                                    <!-- ng-disabled="viewPageDetails.adAdmin.length == 0"  -->
+                                    
                                     <div class="btn2 text-center">
                                         <button class="btn btn-lg btn-green" ng-click="submitt();">Update Pages</button>
                                         <button class="btn btn-lg btn-green" ng-click="click('Step2')">Back</button> 
@@ -378,6 +378,6 @@
                 </div>
             </div>
     </div>
-
+ -->
 
    

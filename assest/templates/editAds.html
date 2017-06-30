@@ -581,7 +581,7 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" name="googlePlayLink" placeholder="Google Play Link" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" maxlength="50" ng-model="createAds.googlePlayLink" ng-change="validation('googlePlayLink')"> 
+                                                        <input type="text" class="form-control" name="googlePlayLink" placeholder="Google Play Link" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" maxlength="50" ng-model="createAds.googleLink" ng-change="validation('googlePlayLink')"> 
                                                         <span style="color:red;" ng-show="promoteApp.googlePlayLink.$dirty && promoteApp.googlePlayLink.$invalid">
                                                         <span class="error"  ng-if="promoteApp.googlePlayLink.$error.pattern">Invalid Url</span>
                                                         <span ng-show="promoteApp.googlePlayLink.$error.manlength">Url length can't be greater than 50</span>
@@ -595,7 +595,7 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" name="windowStoreLink" placeholder="Window Store Link" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" maxlength="50" ng-model="createAds.windowStoreLink" ng-change="validation('windowStoreLink')" > 
+                                                        <input type="text" class="form-control" name="windowStoreLink" placeholder="Window Store Link" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/" maxlength="50" ng-model="createAds.windowsStoreLink" ng-change="validation('windowStoreLink')" > 
                                                         <span style="color:red;" ng-show="promoteApp.windowStoreLink.$dirty && promoteApp.windowStoreLink.$invalid">   
                                                         <span class="error"  ng-if="promoteApp.windowStoreLink.$error.pattern">Invalid Url</span>
                                                         <span ng-show="promoteApp.windowStoreLink.$error.manlength">Url length can't be greater than 50</span>
@@ -650,42 +650,42 @@
                                         </div>
                                         <div class="cus-upload-photos">
                                             <div class="page-image clearfix">
-                                              <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto1" src="{{createAds.appPhoto1 || './dist/image/user-image.jpeg'}}" id="output">
+                                              <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto1" src="{{createAds.slidePhoto1 || './dist/image/user-image.jpeg'}}" id="output">
                                                 <label class="fileContainer">
                                                   Choose File
                                                   <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this, 'appPhoto1')" accept="image/*">
                                                 </label>
                                             </div>
                                             <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto2"   src="{{createAds.appPhoto2 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto2"   src="{{createAds.slidePhoto2 || './dist/image/user-image.jpeg'}}" id="output">
                                                 <label class="fileContainer">
                                                   Choose File
                                                   <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto2')" accept="image/*">
                                                 </label>
                                             </div>
                                             <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto3"   src="{{createAds.appPhoto3 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto3"   src="{{createAds.slidePhoto3 || './dist/image/user-image.jpeg'}}" id="output">
                                                 <label class="fileContainer">
                                                   Choose File
                                                   <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'appPhoto3')" accept="image/*">
                                                 </label>
                                             </div>
                                             <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto4"   src="{{createAds.appPhoto4 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto4"   src="{{createAds.slidePhoto4 || './dist/image/user-image.jpeg'}}" id="output">
                                                 <label class="fileContainer">
                                                   Choose File
                                                   <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto4')" accept="image/*">
                                                 </label>
                                             </div>
                                             <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto5"   src="{{createAds.appPhoto5 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto5"   src="{{createAds.slidePhoto5 || './dist/image/user-image.jpeg'}}" id="output">
                                                 <label class="fileContainer">
                                                   Choose File
                                                   <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto5')" accept="image/*">
                                                 </label>
                                             </div>
                                             <div class="page-image clearfix">
-                                                <img class="profile-user-img img-responsive" ng-model="createAds.appPhoto6"   src="{{createAds.appPhoto6 || './dist/image/user-image.jpeg'}}" id="output">
+                                                <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto6"   src="{{createAds.slidePhoto6 || './dist/image/user-image.jpeg'}}" id="output">
                                                 <label class="fileContainer">
                                                   Choose File
                                                   <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this , 'appPhoto6')" accept="image/*">

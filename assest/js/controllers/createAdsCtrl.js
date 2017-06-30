@@ -632,6 +632,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
     }
 
     $scope.expDate = function(date) {
+        $scope.couponExpiryInString = date;
         var currentDate = new Date()
         var year = currentDate.getFullYear();
         var month = 1 + currentDate.getMonth();
@@ -723,6 +724,8 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     dawnloadPagePhoto: $scope.dawnloadPagePhoto,
                     promoteApp: $scope.promoteApp,
                     video: $scope.createAds.vedioUrl,
+                    couponExpiryInString:$scope.couponExpiryInString
+
                 }
 
                 console.log("modifyData",JSON.stringify(modifyData))
@@ -772,6 +775,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     dawnloadPagePhoto: $scope.dawnloadPagePhoto,
                     promoteApp: $scope.promoteApp,
                     musicFileName: $scope.createAds.audioUrl,
+                    couponExpiryInString:$scope.couponExpiryInString
                 }
 
                 console.log("modifyData",JSON.stringify(modifyData))
@@ -818,6 +822,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     video: $scope.createAds.vedioUrl,
                     brolixFees:$scope.createAds.brolixFees,
                     cashAdPrize: $scope.createAds.viewersOne,
+                    couponExpiryInString:$scope.couponExpiryInString
                 }
 
                 console.log("modifyData111",JSON.stringify(modifyData))
@@ -870,6 +875,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     musicFileName: $scope.createAds.audioUrl,
                     brolixFees:$scope.createAds.brolixFees,
                     cashAdPrize: $scope.createAds.viewersOne,
+                    couponExpiryInString:$scope.couponExpiryInString
                 }
 
                 console.log("modifyData",JSON.stringify(modifyData))

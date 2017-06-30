@@ -71,7 +71,7 @@ app.get('/viewCards/:type',  adminHandler.viewCards);
 app.post('/editCards', authUser.authUser, adminHandler.editCards);
 app.get('/showCardDetails/:id', authUser.authUser, adminHandler.showCardDetails);
 app.get('/removeCard/:id', authUser.authUser, adminHandler.removeCard);
-app.post('/createOfferOnCard', authUser.authUser, adminHandler.createOfferOnCard);
+app.post('/createOfferOnCard', adminHandler.createOfferOnCard);
 app.post('/createPage', authUser.authUser, adminHandler.createPage);
 app.post('/showOfferOnCards', adminHandler.showOfferOnCards);
 app.get('/showUserPage/:id', authUser.authUser, adminHandler.showUserPage);

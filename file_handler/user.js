@@ -1001,7 +1001,7 @@ module.exports = {
                     });
                 }
             })
-        } else if (req.body.image && req.body.coverImage) {
+        } else if (req.body.image || req.body.coverImage) {
             User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result4) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
                     res.send({
@@ -3191,7 +3191,88 @@ module.exports = {
                 }
             })
         }
+    },
+
+    "sendPaymentHistoryOnMailId": function(req, res, next) {
+        // User.findOne({ email: req.body.email }).exec(function(err, user) {
+        //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+        //     if (!user) { res.send({ responseCode: 404, responseMessage: 'Email id does not exists.' }); } else {
+
+           // var nodemailer = require('nodemailer');
+            var smtpTransport = require('nodemailer-smtp-transport');
+            var handlebars = require('handlebars');
+            var fs = require('fs');
+
+            var readHTMLFile = function(path, callback) {
+                fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
+                    if (err) {
+                        throw err;
+                        callback(err);
+                    }
+                    else {
+                        callback(null, html);
+                    }
+                });
+            };
+                var transporter = nodemailer.createTransport({
+                    // host: 'localhost',
+                    // port: 25
+                    service: 'Gmail',
+                    auth: {
+                        user: "test.avi201@gmail.com",
+                        pass: "Mobiloitte1"
+                    }
+                });
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                var link = "";
+                for (var i = 0; i < 8; i++) link += possible.charAt(Math.floor(Math.random() * possible.length));
+                var to = req.body.email
+
+                readHTMLFile(__dirname + '/demo.html', function(err, html) {
+               var template = handlebars.compile(html);
+               var arr = [{
+                Date:"sdsd",Amount:"fdf",Description:"dfdf"
+               },{
+                Date:"sdsd",Amount:"fdf",Description:"dfdf"
+               }]
+                var replacements = {
+                     ProductsArrays: arr
+
+                };
+                var htmlToSend = template(replacements);
+
+
+                var mailOption = {
+                    from: "test.avi201@gmail.com",
+                    to: req.body.email,
+                    subject: 'Brolix Change Password ',
+                    text: 'you have a new submission with following details',
+                    html: htmlToSend
+                }
+                console.log("data in req" + req.body.email);
+                console.log("Dta in mailOption : " + JSON.stringify(mailOption));
+                transporter.sendMail(mailOption, function(error, info) {
+                    if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } 
+                        else {
+                        // console.log("updated password is : " + link);
+                        // User.findOneAndUpdate({ email: req.body.email }, {
+                        //     $set: {
+                        //         password: link
+                        //     }
+                        // }, function(err, results) {
+                           // if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error.' }); }
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'successfully sent your mail id.'
+                            })
+                       // })
+                    }
+                })
+            })
+        //     }
+        // });
     }
+
 
 
 
