@@ -875,10 +875,10 @@ $scope.changeImage = function(input,type) {
             }else if($scope.createAds.adContentType == 'slideshow'){
                 modifyData = {
                     userId: adminIdss,
-                    pageId: pageDetails._id,
-                    pageName: pageDetails.pageName,
-                    category: pageDetails.category,
-                    subCategory: pageDetails.subCategory,
+                    pageId: $scope.createAds._id,
+                    pageName: $scope.createAds.pageName,
+                    category: $scope.createAds.category,
+                    subCategory: $scope.createAds.subCategory,
                     adsType: $scope.createAds.giftType,
                     slideShow:$scope.slideshowPhoto,
                     adContentType: $scope.createAds.adContentType,

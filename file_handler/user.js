@@ -1858,7 +1858,7 @@ module.exports = {
 
     "userCashGifts": function(req, res) { // userId in req 
         var userId = req.body.userId;
-        User.find({ _id: userId, 'cashPrize.status': "ACTIVE" }).populate('cashPrize.adId').populate('cashPrize.pageId', 'pageName').exec(function(err, result) {
+        User.find({ _id: userId, 'cashPrize.status': "ACTIVE" }).populate('cashPrize.adId').populate('cashPrize.pageId', 'pageName adAdmin').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
                 var obj = result[0].cashPrize;
                 var data = obj.filter(obj => obj.status == "ACTIVE");
@@ -1874,7 +1874,7 @@ module.exports = {
     "userCouponGifts": function(req, res) { // userId in req $or: SEND BY FOLLOWER SENDBYADMIN
         var userId = req.body.userId;
 
-        User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName').exec(function(err, result) {
+        User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
                 var obj = result[0].coupon;
                 var data = obj.filter(obj => obj.status == "ACTIVE");
@@ -2342,11 +2342,15 @@ module.exports = {
                                         result1.docs[i].couponSellPrice = dataValue
                                     }
                                 }
+                                
+                                 var updatedResult = result1.docs;
+                        createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                                 res.send({
                                     result: result1,
                                     responseCode: 200,
                                     responseMessage: "successfully shown the result."
                                 })
+                        })
                             }
                         })
                     }
@@ -2576,6 +2580,7 @@ module.exports = {
     },
     //   User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': senderCouponId } }, function(err, user) {
     "sendCouponToFollower": function(req, res) {
+        console.log("send coupon request=----->>>",JSON.stringify(req.body))
         waterfall([
             function(callback) {
                 var senderCouponId = req.body.senderCouponId;
@@ -2584,8 +2589,8 @@ module.exports = {
                 var adId = req.body.adId;
                 var couponId = req.body.couponId;
                 User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) } }, function(err, user) {
-                    console.log("user---->>>", user)
-                    console.log("coupon.couponStatus--->>>", JSON.stringify(user[0].coupon.couponStatus))
+                    console.log("user--*******-+++++++--*************->>>", user)
+                    console.log("coupon.couponStatus--++++++++++->>>", JSON.stringify(user[0].coupon.couponStatus))
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error11." }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct coupon Id." }) } else if ((user[0].coupon.couponStatus) != 'VALID') {
                         res.send({ responseCode: 403, responseMessage: "Please enter a valid coupon." });
                     } else {
@@ -2611,14 +2616,17 @@ module.exports = {
                     console.log("receiverId--->>>", result1)
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.exchangeCoupon == "onlyFollowers") {
                         console.log("2")
-                        var flag = result1.userFollowers.find(userFollowers => userFollowers == req.body.senderId)
-                        if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon to this user due to privacy policies" }); } else {
+                        var flag = result1.userFollowers.indexOf(req.body.senderId)
+                        console.log("flag--*+*+++**+*+*+*+*+*+-->>", flag)
+                       // var flag = result1.userFollowers.find(userFollowers => userFollowers == req.body.senderId)
+                        if (flag != -1) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon to this user due to privacy policies" }); }
+                        else {
                             console.log("2")
                             createNewAds.findOneAndUpdate({ _id: adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
 
                                     User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) }, { $set: { "coupon.$.status": "SEND" }, $pop: { 'gifts': -adId } }, { new: true }).exec(function(err, result3) {
-                                        console.log("senderCouponId--->>", result3)
+                                        console.log("senderCouponId--*+*+*+*+////*+*+*+*+///////->>", result3)
                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                                             for (i = 0; i < result3.coupon.length; i++) {
                                                 if (result3.coupon[i]._id == senderCouponId) {
@@ -3193,84 +3201,63 @@ module.exports = {
         }
     },
 
+    // req.body {
+    //     "myObj":[
+    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+    //         ],
+    //     "email":"sakshigadia@gmail.com"
+    // }
     "sendPaymentHistoryOnMailId": function(req, res, next) {
-        // User.findOne({ email: req.body.email }).exec(function(err, user) {
-        //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-        //     if (!user) { res.send({ responseCode: 404, responseMessage: 'Email id does not exists.' }); } else {
 
-           // var nodemailer = require('nodemailer');
-            var smtpTransport = require('nodemailer-smtp-transport');
-            var handlebars = require('handlebars');
-            var fs = require('fs');
+   
+            var myObj = [
+                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+            ];
+            var y='';
+            y = "<table><tr><th>Date</th><th>Amount</th><th>Description</th></tr>"
 
-            var readHTMLFile = function(path, callback) {
-                fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
-                    if (err) {
-                        throw err;
-                        callback(err);
-                    }
-                    else {
-                        callback(null, html);
-                    }
-                });
-            };
+            for (x in myObj) {
+                y+= "<tr><td>"+myObj[x].Date+"</td><td>"+myObj[x].Amount+"</td><td>"+myObj[x].Description+"</td></tr>";
+            }
+            y+="</table>"
+
                 var transporter = nodemailer.createTransport({
-                    // host: 'localhost',
-                    // port: 25
                     service: 'Gmail',
                     auth: {
                         user: "test.avi201@gmail.com",
                         pass: "Mobiloitte1"
                     }
                 });
-                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                var link = "";
-                for (var i = 0; i < 8; i++) link += possible.charAt(Math.floor(Math.random() * possible.length));
+
                 var to = req.body.email
-
-                readHTMLFile(__dirname + '/demo.html', function(err, html) {
-               var template = handlebars.compile(html);
-               var arr = [{
-                Date:"sdsd",Amount:"fdf",Description:"dfdf"
-               },{
-                Date:"sdsd",Amount:"fdf",Description:"dfdf"
-               }]
-                var replacements = {
-                     ProductsArray: arr
-
-                };
-                var htmlToSend = template(replacements);
-
 
                 var mailOption = {
                     from: "test.avi201@gmail.com",
                     to: req.body.email,
                     subject: 'Brolix Change Password ',
                     text: 'you have a new submission with following details',
-                    html: htmlToSend
+                    html: y
                 }
-                console.log("data in req" + req.body.email);
+                
                 console.log("Dta in mailOption : " + JSON.stringify(mailOption));
                 transporter.sendMail(mailOption, function(error, info) {
                     if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } 
-                        else {
-                        // console.log("updated password is : " + link);
-                        // User.findOneAndUpdate({ email: req.body.email }, {
-                        //     $set: {
-                        //         password: link
-                        //     }
-                        // }, function(err, results) {
-                           // if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error.' }); }
-                            res.send({
-                                responseCode: 200,
-                                responseMessage: 'successfully sent your mail id.'
-                            })
-                       // })
+                    else {
+                        res.send({
+                            responseCode: 200,
+                            responseMessage: 'successfully sent your mail id.'
+                        })
                     }
                 })
-            })
-        //     }
-        // });
+
     }
 
 
