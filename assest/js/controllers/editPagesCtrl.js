@@ -134,75 +134,98 @@ $scope.removeSocialMedia = function(removeSocialMedia){
  }
 
  $scope.addNewPage = function(addNewPage){
+  let addAdminObj ={};
   if(addNewPage){
-      console.log("ssssss",JSON.stringify(addNewPage));
-  var adminInfo=JSON.parse(addNewPage);
-  //console.log("id",adminInfo)
-  //console.log("al dta",JSON.stringify($scope.viewPageDetails.adAdmin));
-
-   var flag = false;
-   //console.log("firstName1",adminInfo.firstName)
-   
-
-  if(adminInfo.firstName == "" || adminInfo.firstName ==null || adminInfo.firstName == undefined){
-    toastr.error("Please select at least on admin");
-  }else{
-    console.log("LENTH:   ",JSON.stringify($scope.viewPageDetails.adAdmin))
-    if(!$scope.viewPageDetails.adAdmin.firstName){
-
-      //console.log("111",$scope.viewPageDetails.adAdmin.length);
-      var obj = {
-        userId:{
-          _id:adminInfo._id,
-          firstName:adminInfo.firstName,
-          lastName:adminInfo.lastName
-        }
-      };
-      $scope.viewPageDetails.adAdmin.push(obj);
-      //console.log("adAdmin",$scope.viewPageDetails.adAdmin)
-     
+    var adminInfo=JSON.parse(addNewPage);
+    var flag = false;
+    if(adminInfo.firstName == "" || adminInfo.firstName ==null || adminInfo.firstName == undefined){
+      toastr.error("Please select at least on admin");
     }else{
-     
-      for(var i=0; i<$scope.viewPageDetails.adAdmin.length; i++){
-        //console.log("admin FirstName",$scope.viewPageDetails.adAdmin[i].userId.firstName)
-        //console.log("adminInfo FirstName",adminInfo.firstName)
+      console.log("LENTH:   ",JSON.stringify($scope.viewPageDetails.adAdmin))
+      if(!$scope.viewPageDetails.adAdmin.firstName){
+        var obj = {
+          userId:{
+            _id:adminInfo._id,
+            firstName:adminInfo.firstName,
+            lastName:adminInfo.lastName
+          }
+        };
+        addAdminObj = {
+          userId:adminInfo._id,
+          type:"ADMIN",
+          add:"add"
+          } 
+        userService.addAdmin($scope.id,addAdminObj).success(function(res) {
+          console.log(JSON.stringify(res))
+            if (res.responseCode == 200){
+                $scope.viewPageDetails.adAdmin.push(obj);
+                toastr.success(res.responseMessage)
+            }else{
+              toastr.error(res.responseMessage)
+            } 
+          })
+        //console.log(push);
 
-        if($scope.viewPageDetails.adAdmin[i].userId.firstName == adminInfo.firstName){
-          flag = true;
-          break;
+      }else{
+        for(var i=0; i<$scope.viewPageDetails.adAdmin.length; i++){
+          if($scope.viewPageDetails.adAdmin[i].userId.firstName == adminInfo.firstName){
+            flag = true;
+            break;
+          }
+        }
+        if(flag){
+          toastr.error("You have already chosen this admin");
+        }else{
+          var obj = {
+          userId:{
+            _id:adminInfo._id,
+            firstName:adminInfo.firstName,
+            lastName:adminInfo.lastName
+          }};
+
+          addAdminObj = {
+          userId:adminInfo._id,
+          type:"ADMIN",
+          add:"add"
+          } 
+
+        userService.addAdmin($scope.id,addAdminObj).success(function(res) {
+          console.log(JSON.stringify(res))
+            if (res.responseCode == 200){
+                toastr.success(res.responseMessage)
+                $scope.viewPageDetails.adAdmin.push(obj);
+            }else{
+              toastr.error(res.responseMessage)
+            } 
+          })
         }
       }
-      if(flag){
-        toastr.error("You have already chosen this admin");
-      }else{
-        //console.log("jjjjj");
-        var obj = {
-        userId:{
-          _id:adminInfo._id,
-          firstName:adminInfo.firstName,
-          lastName:adminInfo.lastName
-        }};
 
-      $scope.viewPageDetails.adAdmin.push(obj);
-       // console.log("adAdmin",$scope.viewPageDetails.adAdmin)
-      }
     }
-
-  }
-  console.log("final arr",JSON.stringify($scope.viewPageDetails.adAdmin))
-  //console.log("final arr",$scope.pageId)
   }else{
     toastr.error("Please select admin")
  }
 }
 
  $scope.removeNewPage = function(RemoveNewPagess){
-  // console.log("removeSocialMedia",JSON.stringify(removeNewPage))
-    console.log("$scope.viewPageDetails.adAdmin[i].userId._id:     ",JSON.stringify($scope.viewPageDetails.adAdmin))
+  let addAdminObj ={};
   for(var i=0;i<$scope.viewPageDetails.adAdmin.length;i++){
     if($scope.viewPageDetails.adAdmin[i].userId._id == RemoveNewPagess.userId._id){
       console.log("dadadad",JSON.stringify($scope.viewPageDetails.adAdmin[i]))
       $scope.viewPageDetails.adAdmin.splice(i,1);
+      addAdminObj = {
+        userId:RemoveNewPagess.userId._id,
+        type:"ADMIN",
+        add:"remove"
+      } 
+      userService.removeAdmin($scope.id,addAdminObj).success(function(res) {
+        if (res.responseCode == 200){
+          
+          toastr.success(res.responseMessage)
+        }else{
+          toastr.error(res.responseMessage)
+        } 
+      })
     }
   }
  }
@@ -248,11 +271,11 @@ $scope.removeSocialMedia = function(removeSocialMedia){
             $scope.imageName = file.name;
             uploadimgServeice.user(file).then(function(ObjS) {
                 if(key=='pageImage'){
-                    $scope.myForm.pagephoto = ObjS.data.result.url;
-                    $scope.user.pagephoto = ObjS.data.result.url;
-                }else{
                     $scope.myForm.userphoto = ObjS.data.result.url;
                     $scope.user.userphoto = ObjS.data.result.url;
+                }else{
+                    $scope.myForm.pagephoto = ObjS.data.result.url;
+                    $scope.user.pagephoto = ObjS.data.result.url;
                 }  
         })
         }else{
@@ -411,8 +434,8 @@ $scope.subCategoryFinal = $scope.checkBoxArray;
              "country":$scope.myForm.country,
              "state":$scope.myForm.state,
              "city":$scope.myForm.city, 
-             "pageImage":$scope.myForm.userphoto,
-             "coverImage": $scope.myForm.pagephoto,
+             "pageImage":$scope.myForm.pagephoto,
+             "coverImage": $scope.myForm.userphoto,
              "socialMedia":$scope.viewPageDetails.socialMedia, 
              "adAdmin":cond   
       }

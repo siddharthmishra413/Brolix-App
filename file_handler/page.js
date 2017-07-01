@@ -2256,7 +2256,10 @@ module.exports = {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!results) {
                                     callback(null, "null")
                                 } else {
-                                    callback(null, results, arrayId, page, pages, limitData, count)
+                                    User.populate(results, { path: 'coupon.pageId', model: 'createNewPage', select:'pageName adAdmin' }, function(err, resultt) {
+                                         callback(null, results, arrayId, page, pages, limitData, count)
+                                    })
+                                   
                                 }
                             })
                         }
@@ -2297,7 +2300,7 @@ module.exports = {
 
                                 var re = new RegExp(req.body[key], 'i');
                                 var data = { firstName: { $regex: re } }
-                                query.$and.push(data)
+                                queryData.$and.push(data)
                             } else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
@@ -2334,7 +2337,10 @@ module.exports = {
                             ).exec(function(err, resu) {
                                 // console.log("resu====>>"+JSON.stringify(resu))
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                    callback(null, resu, pageCash, pagesCash, limitDataCash, countCash)
+                                     User.populate(resu, { path: 'cashPrize.pageId', model: 'createNewPage', select:'pageName adAdmin' }, function(err, resultt) {
+                                         callback(null, resu, pageCash, pagesCash, limitDataCash, countCash)
+                                    })
+                                    
                                 }
                             })
                         }

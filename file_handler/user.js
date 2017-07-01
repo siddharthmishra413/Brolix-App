@@ -2614,7 +2614,7 @@ module.exports = {
                 var currentTime = Date.now(m);
                 User.findOne({ _id: receiverId }, function(err, result1) {
                     console.log("receiverId--->>>", result1)
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.exchangeCoupon == "onlyFollowers") {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendCoupon == "onlyFollowers") {
                         console.log("2")
                         var flag = result1.userFollowers.indexOf(req.body.senderId)
                         console.log("flag--*+*+++**+*+*+*+*+*+-->>", flag)
@@ -3201,31 +3201,22 @@ module.exports = {
         }
     },
 
-    // req.body {
-    //     "myObj":[
-    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-    //             { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-    //         ],
-    //     "email":"sakshigadia@gmail.com"
-    // }
-    "sendPaymentHistoryOnMailId": function(req, res, next) {
 
+    "sendPaymentHistoryOnMailId": function(req, res, next) {
+            var myObj = req.body.paymentData;
    
-            var myObj = [
-                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-                { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
-            ];
+            // var myObj = [
+            //     { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+            //     { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+            //     { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+            //     { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+            //     { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
+            // ];
             var y='';
             y = "<table><tr><th>Date</th><th>Amount</th><th>Description</th></tr>"
 
             for (x in myObj) {
-                y+= "<tr><td>"+myObj[x].Date+"</td><td>"+myObj[x].Amount+"</td><td>"+myObj[x].Description+"</td></tr>";
+                y+= "<tr><td>"+new Date(myObj[x].Date).toISOString().slice(0,10)+"</td><td>"+myObj[x].Amount+"</td><td>"+myObj[x].Description+"</td></tr>";
             }
             y+="</table>"
 
@@ -3242,8 +3233,8 @@ module.exports = {
                 var mailOption = {
                     from: "test.avi201@gmail.com",
                     to: req.body.email,
-                    subject: 'Brolix Change Password ',
-                    text: 'you have a new submission with following details',
+                    subject: 'Payment History',
+                    text: 'Payment details',
                     html: y
                 }
                 
@@ -3253,7 +3244,7 @@ module.exports = {
                     else {
                         res.send({
                             responseCode: 200,
-                            responseMessage: 'successfully sent your mail id.'
+                            responseMessage: 'Successfully send payment history on your mail.'
                         })
                     }
                 })

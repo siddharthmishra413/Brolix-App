@@ -21,6 +21,7 @@
                                              User.findOneAndUpdate({ _id: req.body.receiverId }, {
                                                  $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", linkType: 'profile', notificationType: 'follow', image: image } }
                                              }, { new: true }).exec(function(err, receiverResult) {
+                                                 if(receiverResult.deviceToken != null && receiverResult.deviceType != undefined ){
                                                  if (receiverResult.deviceToken && receiverResult.deviceType && receiverResult.notification_status && receiverResult.status) {
                                                      var message = "You have one follow request";
                                                      if (receiverResult.deviceType == 'Android' && receiverResult.notification_status == 'on' && receiverResult.status == 'ACTIVE') {
@@ -31,7 +32,7 @@
                                                      } else {
                                                          console.log("Something wrong!!!!")
                                                      }
-                                                 } else {
+                                                 } }else {
                                                      console.log("no deviceToken")
                                                  }
                                                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -199,29 +200,47 @@
 
      //API for Accept Follower Request
      "acceptFollowerRequest": function(req, res) {
-         console.log("dasdjadh ---- ******-----", req.body)
-         if (req.body.followerStatus == "accept") {
-             console.log("in")
-             followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
-                 $set: {
-                     followerStatus: req.body.followerStatus,
-                     userId: req.body.userId
-                 }
-             }, { new: true }).exec(function(err, results) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
-                     User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }, { new: true }).exec(function(err, result) {
-                         console.log("result--->>>", result)
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-                             res.send({
-                                 result: results,
-                                 responseCode: 200,
-                                 responseMessage: "Accepted successfully."
-                             });
-                         }
-                     })
-                 }
-             })
-         } else if (req.body.followerStatus == "block") {
+        console.log("acceptFollowerRequest ---- ******-----", req.body)
+        if (req.body.followerStatus == "accept") {
+            console.log("in")
+            followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, {
+                $set: {
+                    followerStatus: req.body.followerStatus,
+                    userId: req.body.userId
+                }
+            }, { new: true }).exec(function(err, results) {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                    var obj = {
+                        receiverId: req.body.senderId,
+                        senderId: req.body.receiverId,
+                        followerStatus: "accept",
+                        userId: req.body.senderId
+                    }
+                    var follow = new followerList(obj);
+                    follow.save(function(err, receiverResult) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                            console.log("follow ---- ******-----", receiverResult)
+                            User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }, { new: true }).exec(function(err, result) {
+                                console.log("result--->>>", result)
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                    User.findOneAndUpdate({ _id: req.body.senderId }, { $push: { userFollowers: req.body.receiverId } }, { new: true }).exec(function(err, result) {
+                                        console.log("result--->>>", result1)
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                            res.send({
+                                                result: results,
+                                                responseCode: 200,
+                                                responseMessage: "Accepted successfully."
+                                            });
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+         else if (req.body.followerStatus == "block") {
              console.log("block req-->>", req.body)
              var blockUserId = req.body.blockUserId;
              User.findOne({ _id: req.body.receiverId }).exec(function(err, user) {

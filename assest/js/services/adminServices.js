@@ -530,6 +530,23 @@ app.service('userService', function($http) {
 
         /*------------------------Manage Pages---------------------*/
 
+        addAdmin: function(id,data) {
+            console.log("dataaabb", data)
+            console.log("id", id)
+            return $http.put(baseurl + '/page/adAdmin/'+ id, data);
+        },
+
+        removeAdmin: function(id,data) {
+            console.log("dataaabb", data)
+            console.log("id", id)
+            return $http.put(baseurl + '/page/adAdmin/'+ id, data);
+        },
+
+        // removeAdmin: function(data) {
+        //     console.log("dataaabb", data)
+        //     return $http.post(baseurl + '/page/adAdmin/', data);
+        // },
+
         totalPages: function() {
             return $http.get(baseurl + '/admin/totalPages');
         },
