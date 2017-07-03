@@ -21,7 +21,8 @@
                                              User.findOneAndUpdate({ _id: req.body.receiverId }, {
                                                  $push: { "notification": { userId: req.body.senderId, type: "You have one follow request", linkType: 'profile', notificationType: 'follow', image: image } }
                                              }, { new: true }).exec(function(err, receiverResult) {
-                                                 if(receiverResult.deviceToken != null && receiverResult.deviceType != undefined ){
+                                                 console.log("receiverResult-----*+*+*+*+*+>>>>>",receiverResult);
+                                                 if(receiverResult.deviceToken ){
                                                  if (receiverResult.deviceToken && receiverResult.deviceType && receiverResult.notification_status && receiverResult.status) {
                                                      var message = "You have one follow request";
                                                      if (receiverResult.deviceType == 'Android' && receiverResult.notification_status == 'on' && receiverResult.status == 'ACTIVE') {
@@ -223,9 +224,10 @@
                             User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }, { new: true }).exec(function(err, result) {
                                 console.log("result--->>>", result)
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
-                                    User.findOneAndUpdate({ _id: req.body.senderId }, { $push: { userFollowers: req.body.receiverId } }, { new: true }).exec(function(err, result) {
+                                    
+                                    User.findOneAndUpdate({ _id: req.body.senderId }, { $push: { userFollowers: req.body.receiverId } }, { new: true }).exec(function(err, result1) {
                                         console.log("result--->>>", result1)
-                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                                             res.send({
                                                 result: results,
                                                 responseCode: 200,

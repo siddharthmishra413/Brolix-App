@@ -21,6 +21,11 @@ var pageProductSchema = new Schema({
     media: [{
         image: { type: String, trim: true },
         description: { type: String, trim: true },
+        like: [],
+        tag: [{
+          userId: { type: String },
+          senderId: []
+        }]
     }],
     like: [],
     totalComments: [{

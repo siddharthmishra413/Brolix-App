@@ -1963,10 +1963,11 @@ module.exports = {
                 console.log("arrayId=========>...", arrayId)
                 createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, sellCoupon: true, status: 'ACTIVE' }] }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
-                        var updatedResult = result;
+                        var updatedResult = result.docs;
                 createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
+                    console.log("finalResult",finalResult)
                      res.send({ responseCode: 200, responseMessage: "Success.", result: result })
-                 })
+                })
                        
                     }
                 })
@@ -1981,7 +1982,7 @@ module.exports = {
                 var condition = { $and: [] };
                 var obj = req.body;
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-                    if (!(key == 'userId')) {
+                    if (!(key == 'userId' || obj[key] == "" || obj[key] == undefined)) {
                         var cond = { $or: [] };
                         if (key == "subCategory") {
                             for (data in obj[key]) {
@@ -2022,7 +2023,7 @@ module.exports = {
                 console.log("arrayId=========>...", arrayId)
                 createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
-                        createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
+                        createNewAds.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                      res.send({ responseCode: 200, responseMessage: "Success.", result: result })
                  })
                        

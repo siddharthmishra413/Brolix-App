@@ -2985,6 +2985,7 @@ module.exports = {
     },
 
     "createPagePayment": function(req, res) {
+        console.log("req body on create page===>>", JSON.stringify(req.body))
 
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } else {

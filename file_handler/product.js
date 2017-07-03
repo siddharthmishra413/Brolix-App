@@ -2,6 +2,9 @@ var pageProductList = require("./model/productList");
 var productComments = require("./model/productComments");
 var User = require("./model/user");
 var functions = require("./functionHandler");
+var mongoose = require('mongoose');
+var waterfall = require('async-waterfall');
+
 module.exports = {
 
     "createProduct": function(req, res) {
@@ -13,6 +16,7 @@ module.exports = {
     },
 
     "productList": function(req, res) {
+
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
         var skips = limitData - 8;
@@ -21,7 +25,7 @@ module.exports = {
         pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }).exec(function(err, result) {
             console.log("1")
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
-            else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Data not found." }); } else {
+            else if (result.length == 0) { res.senderId({ responseCode: 404, responseMessage: "Data not found." }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
@@ -71,10 +75,34 @@ module.exports = {
         })
     },
 
-    "productLikeAndUnlike": function(req, res) {
+    // "productLikeAndUnlike": function(req, res) {
+    //     if (req.body.flag == "like") {
+    //         pageProductList.findOneAndUpdate({ _id: req.body.productId }, { $push: { like: req.body.userId } }, { new: true }).exec(function(err, results) {
+    //             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+    //                 res.send({
+    //                     result: results,
+    //                     responseCode: 200,
+    //                     responseMessage: "Liked"
+    //                 });
+    //             }
+    //         })
+    //     } else {
+    //         pageProductList.findOneAndUpdate({ _id: req.body.productId }, { $pop: { like: req.body.userId } }, { new: true }).exec(function(err, results) {
+    //             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+    //                 res.send({
+    //                     result: results,
+    //                     responseCode: 200,
+    //                     responseMessage: "Unliked"
+    //                 });
+    //             }
+    //         })
+    //     }
+    // },
+
+     "productLikeAndUnlike": function(req, res) {
         if (req.body.flag == "like") {
-            pageProductList.findOneAndUpdate({ _id: req.body.productId }, { $push: { like: req.body.userId } }, { new: true }).exec(function(err, results) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+            pageProductList.findOneAndUpdate({ _id: req.body.productId , 'media._id': req.body.imageId}, { $push: { "media.$.like": req.body.userId} } , { new: true }).exec(function(err, results) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' , err: err}); } else {
                     res.send({
                         result: results,
                         responseCode: 200,
@@ -83,7 +111,7 @@ module.exports = {
                 }
             })
         } else {
-            pageProductList.findOneAndUpdate({ _id: req.body.productId }, { $pop: { like: req.body.userId } }, { new: true }).exec(function(err, results) {
+            pageProductList.findOneAndUpdate({ _id: req.body.productId , 'media._id': req.body.imageId}, { $pop:  { "media.$.like": req.body.userId}}, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
                         result: results,
@@ -188,8 +216,8 @@ module.exports = {
         waterfall([
             function(callback) {
                 var senderId = req.body.senderId;
-                pageProductList.findOneAndUpdate({ _id: req.body.productId }, {
-                    $push: { "tag": { userId: req.body.userId, senderId: req.body.senderId } }
+                pageProductList.findOneAndUpdate({ _id: req.body.productId , 'media._id': req.body.imageId}, {
+                    $push: { "media.$.tag": { userId: req.body.userId, senderId: req.body.senderId } }
                 }, { new: true }).exec(function(err, results) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         callback(null, results)

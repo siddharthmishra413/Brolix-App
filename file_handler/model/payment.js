@@ -27,6 +27,9 @@ var paypalPaymentSchema = new Schema({
         type:String,
         ref: 'createNewAds'
     },
+    dates:{
+        type:Date
+    },
     pageId:{
         type:String,
         ref: 'createNewPage'
