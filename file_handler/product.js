@@ -25,7 +25,7 @@ module.exports = {
         pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }).exec(function(err, result) {
             console.log("1")
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
-            else if (result.length == 0) { res.senderId({ responseCode: 404, responseMessage: "Data not found." }); } else {
+            else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Data not found." }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
@@ -103,21 +103,32 @@ module.exports = {
         if (req.body.flag == "like") {
             pageProductList.findOneAndUpdate({ _id: req.body.productId , 'media._id': req.body.imageId}, { $push: { "media.$.like": req.body.userId} } , { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' , err: err}); } else {
-                    res.send({
-                        result: results,
-                        responseCode: 200,
-                        responseMessage: "Liked"
-                    });
+                    pageProductList.aggregate({ $unwind: "$media" }, { $match: { _id: new mongoose.Types.ObjectId(req.body.productId) , 'media._id': new mongoose.Types.ObjectId(req.body.imageId) } }).exec(function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' , err: err}); } else {
+                           
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "Liked"
+                            });
+                        }
+                    })
+
                 }
             })
         } else {
             pageProductList.findOneAndUpdate({ _id: req.body.productId , 'media._id': req.body.imageId}, { $pop:  { "media.$.like": req.body.userId}}, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    res.send({
-                        result: results,
-                        responseCode: 200,
-                        responseMessage: "Unliked"
-                    });
+                       pageProductList.aggregate({ $unwind: "$media" }, { $match: { _id: new mongoose.Types.ObjectId(req.body.productId) , 'media._id': new mongoose.Types.ObjectId(req.body.imageId) } }).exec(function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' , err: err}); } else {
+                           
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "Unliked"
+                            });
+                        }
+                    })
                 }
             })
         }
@@ -136,7 +147,7 @@ module.exports = {
     },
 
     "productReplyOnComment": function(req, res) {
-        productComments.findOneAndUpdate({ productId: req.body.productId, _id: req.body.commentId }, {
+        productComments.findOneAndUpdate({ productId: req.body.productId, 'imageId':req.body.imageId, _id: req.body.commentId }, {
             $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
         }, { new: true }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -151,11 +162,11 @@ module.exports = {
 
     "deleteComments": function(req, res){
         if(req.body.type == 'comment'){
-            var productQuery = { productId: req.body.productId, _id: req.body.commentId }
+            var productQuery = { productId: req.body.productId, imageId: req.body.imageId,_id: req.body.commentId }
             var setCondition = { status : 'INACTIVE'}
         }
         else{
-            var productQuery = { productId: req.body.productId, _id: req.body.commentId , 'reply._id': req.body.replyId}
+            var productQuery = { productId: req.body.productId,imageId: req.body.imageId, _id: req.body.commentId , 'reply._id': req.body.replyId}
             var setCondition = { 'reply.$.status' : 'INACTIVE'}
         }
 
@@ -189,11 +200,11 @@ module.exports = {
 
     "editComments": function(req, res){
         if(req.body.type == 'comment'){
-            var productQuery = { productId: req.body.productId, _id: req.body.commentId }
+            var productQuery = { productId: req.body.productId,imageId: req.body.imageId, _id: req.body.commentId }
             var setCondition = { comment : req.body.comment}
         }
         else{
-            var productQuery = { productId: req.body.productId, _id: req.body.commentId , 'reply._id': req.body.replyId}
+            var productQuery = { productId: req.body.productId,imageId: req.body.imageId, _id: req.body.commentId , 'reply._id': req.body.replyId}
             var setCondition = { 'reply.$.replyComment' : req.body.replyComment}
         }
 
@@ -261,7 +272,7 @@ module.exports = {
     },
 
     "productCommentList": function(req, res) {
-        productComments.paginate({ productId: req.params.id , 'status':'ACTIVE'}, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+        productComments.paginate({ productId: req.params.id, imageId: req.params.imageId , 'status':'ACTIVE'}, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
                 for(var i=0; i<result.docs.length; i++){
                      var reply=result.docs[i].reply;

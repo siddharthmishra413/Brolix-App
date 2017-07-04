@@ -177,24 +177,74 @@ module.exports = {
     },
 
     "myPagesSearch": function(req, res) {
-        createNewPage.find({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
-                var myPagesArray = [];
-                for (var i = 0; i < result.length; i++) {
-                    console.log(typeof(result[i]._id))
-                    myPagesArray.push(String(result[i]._id))
-                }
-                // console.log(typeof(result[i]._id))
-                console.log("myPagesArray-->>", myPagesArray)
-                var re = new RegExp(req.body.search, 'i');
-                createNewPage.paginate({ $and: [{ _id: { $in: myPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
+
+        waterfall([
+            function(callback) {
+                var userId = req.params.id;
+                createNewPage.find({ pageType: 'Business', status: "ACTIVE" }).exec(function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No page found' }); } else {
+                        var pageArray = [];
+                        for (var i = 0; i < result.length; i++) {
+                            for (var j = 0; j < result[i].adAdmin.length; j++) {
+                                if (result[i].adAdmin[j].userId == userId) {
+                                    pageArray.push(result[i]._id)
+                                }
+                            }
+                        }
+                        callback(null, pageArray)
+                    }
+                })
+            },
+            function(pageArray, callback) {
+                var userId = req.params.id;
+                createNewPage.find({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        for (var k = 0; k < result1.length; k++) {
+                            pageArray.push(result1[k]._id)
+                        }
+                        callback(null, pageArray)
+                    }
+                })
+            },
+            function(pageArray, callback) {
+                    var re = new RegExp(req.body.search, 'i');
+                createNewPage.paginate({ $and: [{ _id: { $in: pageArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
                     function(err, result1) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
-                            res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                        else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); }
+                        else {
+                            callback(null, result1)
                         }
                     })
-            }
+            },
+        ], function(err, result2) {
+            console.log("myPages--->>>", result2)
+            res.send({
+                result: result2,
+                responseCode: 200,
+                responseMessage: "Show pages successfully."
+            })
         })
+
+
+        // createNewPage.find({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, function(err, result) {
+        //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+        //         var myPagesArray = [];
+        //         for (var i = 0; i < result.length; i++) {
+        //             console.log(typeof(result[i]._id))
+        //             myPagesArray.push(String(result[i]._id))
+        //         }
+        //         // console.log(typeof(result[i]._id))
+        //         console.log("myPagesArray-->>", myPagesArray)
+        //         var re = new RegExp(req.body.search, 'i');
+        //         createNewPage.paginate({ $and: [{ _id: { $in: myPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
+        //             function(err, result1) {
+        //                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
+        //                     res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
+        //                 }
+        //             })
+        //     }
+        // })
     },
 
     //API for Favourite Type
@@ -994,7 +1044,7 @@ module.exports = {
                 totalWebsiteClicks: { $sum: "$websiteClicks" },
                 totalShares: { $sum: "$shares" },
                 totalViewAds: { $sum: "$viewAds" },
-                totalRating: { $sum: "$totalReview" }
+                totalRating: { $sum: "$totalRating" }
             }
         }]).exec(function(err, result) {
 
@@ -2189,9 +2239,9 @@ module.exports = {
             function(arrayId, callback) {
                 if (req.body.type == 'coupon') {
                     if (!(arrayId.length == 0)) {
-                        var query = { $and: [{ 'coupon.pageId': { $in: arrayId } }] };
+                        var query = { $and: [{ 'coupon.pageId': { $in: arrayId },'coupon.type': 'WINNER','coupon.status':'ACTIVE'}] };
                     } else {
-                        var query = { $and: [] };
+                        var query = { $and: [{'coupon.type': 'WINNER','coupon.status':'ACTIVE'}] };
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
@@ -2274,9 +2324,9 @@ module.exports = {
                 //console.log("arrayId==>",arrayId)
                 if (req.body.type == 'cash') {
                     if (!(arrayId.length == 0)) {
-                        var queryData = { $and: [{ 'cashPrize.pageId': { $in: arrayId } }] };
+                        var queryData = { $and: [{ 'cashPrize.pageId': { $in: arrayId }, 'cashPrize.status':'ACTIVE' }] };
                     } else {
-                        var queryData = { $and: [] };
+                        var queryData = { $and: [{'cashPrize.status':'ACTIVE'}] };
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
@@ -3250,14 +3300,14 @@ module.exports = {
     },
 
     "redirectpage": function(req, res) {
-
+       
     },
 
     "paymentFilterApi": function(req, res) {
         var startTime = new Date(parseInt(req.body.startTime)).toUTCString();
         var endTime = new Date(parseInt(req.body.endTime)).toUTCString();
 
-        Payment.find({ userId: req.body.userId, createdAt: { $gte: startTime, $lte: endTime } }).exec(function(err, result) {
+        Payment.find({ userId: req.body.userId, dates: { $gte: startTime, $lte: endTime } }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: "Data not found." });
             } else {

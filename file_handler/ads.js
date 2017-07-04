@@ -1573,7 +1573,7 @@ module.exports = {
                         }, function(err, result2) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
                            User.populate(result1, {
-                            path: 'coupon.pageId',
+                            path: 'cashPrize.pageId',
                             model: 'createNewPage',
                             select: 'pageName adAdmin'
                         }, function(err, result3) {

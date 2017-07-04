@@ -10,10 +10,10 @@ app.post('/createProduct', authUser.authUser, productHandler.createProduct);
 app.get('/productList/:id/:pageNumber', productHandler.productList);
 app.get('/productDetail/:id', authUser.authUser, productHandler.productDetail);
 app.post('/productLikeAndUnlike', productHandler.productLikeAndUnlike);
-app.post('/commentOnProduct', authUser.authUser, productHandler.commentOnProduct);
-app.post('/productReplyOnComment', authUser.authUser, productHandler.productReplyOnComment);
+app.post('/commentOnProduct', productHandler.commentOnProduct);
+app.post('/productReplyOnComment',  productHandler.productReplyOnComment);
 app.post('/tagOnProduct', productHandler.tagOnProduct);
-app.get('/productCommentList/:id/:pageNumber', authUser.authUser, productHandler.productCommentList);
+app.get('/productCommentList/:id/:imageId/:pageNumber',  productHandler.productCommentList);
 app.get('/removeProduct/:id/:mediaId', productHandler.removeProduct);
 app.put('/editProduct/:id/:mediaId', productHandler.editProduct);
 

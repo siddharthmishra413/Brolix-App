@@ -18,6 +18,10 @@ var productCommentSchema = new Schema({
         type: String,
         trim: true
     },
+    imageId: {
+        type: String,
+        trim: true
+    },
     userId: { type: String, trim: true },
     userName: { type: String, trim: true },
     userImage: { type: String, trim: true },
