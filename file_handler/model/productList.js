@@ -25,9 +25,10 @@ var pageProductSchema = new Schema({
         tag: [{
           userId: { type: String },
           senderId: []
-        }]
+        }],
+        commentCount: { type: Number, default: 0 },
     }],
-    like: [],
+    //like: [],
     totalComments: [{
         userId: { type: String, trim: true },
         comment: { type: String, trim: true },
@@ -38,11 +39,11 @@ var pageProductSchema = new Schema({
             createdAt: { type: Date, default: Date.now }
         }]
     }],
-    tag: [{
-        userId: { type: String },
-        senderId: []
-    }],
-    commentCount: { type: Number, default: 0 },
+    // tag: [{
+    //     userId: { type: String },
+    //     senderId: []
+    // }],
+    // commentCount: { type: Number, default: 0 },
     createdAt: {
         type: Date,
         default: Date.now

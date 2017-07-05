@@ -1114,6 +1114,7 @@ module.exports = {
 
     //API for user Profile
     "userProfile": function(req, res) {
+        if (req.body.viewerId == req.body.userId){
         User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
                 res.send({
@@ -1123,6 +1124,33 @@ module.exports = {
                 });
             }
         })
+        }
+        else{
+            User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result1) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); } else {
+//                res.send({
+//                    result: result,
+//                    responseCode: 200,
+//                    responseMessage: "Profile data show successfully."
+//                });
+                var flag = result1.blockUser.indexOf(req.body.viewerId)
+                if(flag == -1){
+                    res.send({
+                    result: result1,
+                    responseCode: 200,
+                    responseMessage: "Profile data show successfully."
+                });
+                }
+                else{
+                    res.send({                   
+                    responseCode: 401,
+                    responseMessage:"You are not allowed to view profile."
+                }); 
+                }
+            }
+        })
+            
+        }
     },
 
     //API for user Details

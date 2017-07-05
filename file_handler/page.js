@@ -2963,7 +2963,7 @@ module.exports = {
                             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
                             createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
                             createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
-                            createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnPage";
+                            createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnAdsData";
                             createPayPage.title = "Brolix";
                             createPayPage.cc_first_name = user.firstName;
                             createPayPage.cc_last_name = user.lastName;
@@ -3016,8 +3016,8 @@ module.exports = {
                                     //   }
                                     // })
 
-                                    myCache.set("myKey", obj, 10000);
-                                    var value = myCache.get("myKey");
+                                    myCache.set("myKeys", obj, 10000);
+                                    var value = myCache.get("myKeys");
                                     console.log("value", value)
 
                                     res.send({
@@ -3216,6 +3216,10 @@ module.exports = {
     "returnPage": function(req, res) {
         //myCache.del( "myKey" );
         var value = myCache.get("myKey");
+        if(value == undefined || value == null ||value == ''){
+            res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+        }
+        else{
         console.log("value", value)
         waterfall([
             function(callback) {
@@ -3224,8 +3228,13 @@ module.exports = {
                 verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
                 verfiyPaymentRequest.payment_reference = value.pid;
                 paytabs.VerfiyPayment(verfiyPaymentRequest, function(response) {
-                    console.log("verify response", response)
-                    callback(null, response)
+                    if(response.response_code =='100'){
+                      console.log("verify response", response)
+                      callback(null, response)
+                    }
+                    else{
+                     res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+                    }
                 });
             },
             function(response, callback) {
@@ -3241,19 +3250,25 @@ module.exports = {
                 }
                 var payment = new Payment(details);
                 payment.save(function(err, paymentResult) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                    else if (!paymentResult) { 
+                        res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+                     } else {
+                        console.log("payment result==>.",paymentResult)
                         callback(null, paymentResult)
                     }
                 })
             },
             function(paymentResult, callback) {
-                if (value.Type == '') {
+                if (value.Type == 'createPage') {
                     adminCards.findOne({
                         type: "upgrade_card",
                         price: value.amount
                     }, function(err, cardRes) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
-                            console.log("card res0", cardRes)
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                        else if (!cardRes) { 
+                            res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
+                            //console.log("card res0", cardRes)
                             callback(null, cardRes)
                         }
                     })
@@ -3282,7 +3297,7 @@ module.exports = {
                 console.log("cashAmount", cashAmount)
                 User.findByIdAndUpdate({ _id: value.userId }, query, function(err, userRes) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                        console.log("userRes========>", userRes)
+                        //console.log("userRes========>", userRes)
                         callback(null, userRes)
                     }
                 })
@@ -3293,10 +3308,113 @@ module.exports = {
             }
             //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
             else {
+                //var values = myCache.del("myKey");
+                //console.log("values",values)
                 res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
                     //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
             }
         })
+      }
+    },
+
+
+    "returnAdsData": function(req, res) {
+        //myCache.del( "myKey" );
+        var value = myCache.get("myKeys");
+        if(value == undefined || value == null ||value == ''){
+            res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+        }
+        else{
+        console.log("value", value)
+        waterfall([
+            function(callback) {
+                var verfiyPaymentRequest = new Object();
+                verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
+                verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+                verfiyPaymentRequest.payment_reference = value.pid;
+                paytabs.VerfiyPayment(verfiyPaymentRequest, function(response) {
+                    if(response.response_code =='100'){
+                      console.log("verify response", response)
+                      callback(null, response)
+                    }
+                    else{
+                      res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+                    }
+                });
+            },
+            function(response, callback) {
+                var details = {
+                    paymentMode: value.paymentMode,
+                    userId: value.userId,
+                    amount: value.amount,
+                    paymentAmount: value.paymentAmount,
+                    brolixAmount: value.brolixAmount,
+                    transcationId: response.transaction_id,
+                    Type: value.Type,
+                    dates: value.dates
+                }
+                var payment = new Payment(details);
+                payment.save(function(err, paymentResult) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                        console.log("payment result==>.",paymentResult)
+                        callback(null, paymentResult)
+                    }
+                })
+            },
+            function(paymentResult, callback) {
+                if (value.Type == 'createPage') {
+                    adminCards.findOne({
+                        type: "upgrade_card",
+                        price: value.amount
+                    }, function(err, cardRes) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
+                            //console.log("card res0", cardRes)
+                            callback(null, cardRes)
+                        }
+                    })
+                } else {
+                    callback(null, "cardRes")
+                }
+
+            },
+            function(cardRes, callback) {
+                var cashAmount = value.userCashAmount - value.brolixAmount
+                if (value.Type == 'createPage') {
+                    var card_viewers = cardRes.viewers;
+                    var data = {
+                        cash: value.amount,
+                        viewers: card_viewers,
+                        type: "SENDBYADMIN"
+                    }
+                    var query = { $push: { upgradeCardObject: data }, $set: { cash: cashAmount } }
+                } else {
+                    var query = { $set: { cash: cashAmount } }
+
+                }
+
+                console.log(data)
+
+                console.log("cashAmount", cashAmount)
+                User.findByIdAndUpdate({ _id: value.userId }, query, function(err, userRes) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                       // console.log("userRes========>", userRes)
+                        callback(null, userRes)
+                    }
+                })
+            }
+        ], function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) {
+                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+            }
+            //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+            else {
+                //var values = myCache.del("myKey");
+                //console.log("values",values)
+                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
+                    //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
+            }
+        })
+      }
     },
 
     "redirectpage": function(req, res) {

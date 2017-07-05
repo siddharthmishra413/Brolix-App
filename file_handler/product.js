@@ -138,7 +138,7 @@ module.exports = {
         var product = new productComments(req.body);
         product.save(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            pageProductList.findOneAndUpdate({ _id: req.body.productId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
+            pageProductList.findOneAndUpdate({ _id: req.body.productId , 'media._id': req.body.imageId}, { $inc: { "media.$.commentCount": +1 } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({ result: result, responseCode: 200, responseMessage: "Comments save with concerned User details." });
                 }
