@@ -267,11 +267,13 @@ module.exports = {
     },
     //API for Edit Page
     "editPage": function(req, res) {
+        console.log("edit page--->>>>",JSON.stringify(req.body))
         createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
                 if (result.pageName == req.body.pageName) {
                     createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
+                             console.log("edit page--result1->>>>",JSON.stringify(result1))
                             res.send({
                                 result: result1,
                                 responseCode: 200,
@@ -285,6 +287,7 @@ module.exports = {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) { res.send({ responseCode: 500, responseMessage: 'Page name must be unique' }); } else {
                             createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result3) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
+                                    console.log("edit page--result3->>>>",JSON.stringify(result3))
                                     res.send({
                                         result: result3,
                                         responseCode: 200,

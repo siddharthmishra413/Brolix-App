@@ -7,6 +7,7 @@ module.exports = {
 
     "pageFollowUnfollow": function(req, res) {
         if (req.body.follow == "follow") {
+              console.log("saaa---*****+++++++--///////////-->>>>>>>>>>>>>>>",JSON.stringify(req.body))
             PageFollowers.findOne({ userId: req.body.userId, pageId: req.body.pageId }).exec(function(err, result1) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     if (!result1) {
@@ -49,12 +50,13 @@ module.exports = {
                 }
             })
         } else if (req.body.follow == "unfollow") { // { connections : { _id : connId } } 
-            console.log("saaa")
+            console.log("saaa---*****+++++++---->>>>>>>>>>>>>>>",JSON.stringify(req.body))
             var query = { $and: [{ 'coupon.pageId': req.body.pageId, 'coupon.type': 'WINNER' }] };
             PageFollowers.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { pageId: req.body.pageId }] }, { $set: { followStatus: req.body.follow } }, { new: true }).exec(function(err, result) {
                 console.log("result-->>", result)
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     User.findOneAndUpdate({ _id: req.body.userId }, { $pull: { pageFollowers: { pageId: req.body.pageId } } }, { new: true }).exec(function(err, result1) {
+                         console.log("result1-*+*+*+*+*+*+*+--->>", result1)
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                             console.log("enter in view")
                             Views.findOneAndUpdate({ $and : [{userId: req.body.userId},{pageId:req.body.pageId}]} ,{ $set:  { userId: '', followerNumber: 0 } },{ new: true }, function(err, ress){
