@@ -116,6 +116,7 @@ module.exports = {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error', err }); } else {
                         createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                               // console.log("data--+*+*+*+/*+//*+*->>>",result)
                                 res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
                             }
                         })
@@ -780,15 +781,15 @@ module.exports = {
                 createNewAds.findOne({ _id: req.body.adId }).exec(function(err, adResult) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!adResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (adResult.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
 
-                        if (adResult.adsType == 'cash') {
+                        if (adResult.adsType == 'cash') { // brolixPerUpgradedCashAds
                             if (adResult.cash > 0) {
-                                var type = "freeViewersPerCashAds";
+                                var type = "brolixPerUpgradedCashAds";
                             } else {
                                 var type = "brolixPerFreeCashAds";
                             }
                         } else if (adResult.adsType == 'coupon') {
                             if (adResult.cash > 0) {
-                                var type = "freeViewersPerCashAds";
+                                var type = "brolixPerUpgradedCashAds";
                             } else {
                                 var type = "brolixPerFreeCouponAds";
                             }
@@ -804,6 +805,7 @@ module.exports = {
                 })
             },
             function(value, callback) {
+                console.log("value--->>>",value)
                 var userId = req.body.userId;
                 var adId = req.body.adId;
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
@@ -1088,19 +1090,20 @@ module.exports = {
                 })
             },
             function(adResult, callback) {
-                if (adResult.adsType == 'cash') {
-                    if (adResult.cash > 0) {
-                        var type = "freeViewersPerCashAds";
-                    } else {
-                        var type = "brolixPerFreeCashAds";
-                    }
-                } else if (adResult.adsType == 'coupon') {
-                    if (adResult.cash > 0) {
-                        var type = "freeViewersPerCashAds";
-                    } else {
-                        var type = "brolixPerFreeCouponAds";
-                    }
-                }
+                
+                  if (adResult.adsType == 'cash') { // brolixPerUpgradedCashAds
+                            if (adResult.cash > 0) {
+                                var type = "brolixPerUpgradedCashAds";
+                            } else {
+                                var type = "brolixPerFreeCashAds";
+                            }
+                        } else if (adResult.adsType == 'coupon') {
+                            if (adResult.cash > 0) {
+                                var type = "brolixPerUpgradedCashAds";
+                            } else {
+                                var type = "brolixPerFreeCouponAds";
+                            }
+                        }
                 console.log("type-->>", type)
                 brolixAndDollors.findOne({
                     type: type
@@ -1702,15 +1705,17 @@ module.exports = {
     },
 
     "editAd": function(req, res) {
-        createNewAds.update({ _id: req.params.id, $or: [{ userId: req.params.userId }, { 'adAdmin.userId': req.params.userId }] }, req.body, {
-            new: true
-        }).exec(function(err, result) {
+        //console.log("edit ad-----*+*+/*+///+*///--->>>",JSON.stringify(req.body))
+        createNewAds.update({ _id: req.params.id, $or: [{ userId: req.params.userId }, { 'adAdmin.userId': req.params.userId }] }, req.body, {new: true}).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({
+            else{
+              console.log("result edit ad ---->>>",result)
+            res.send({                
                 result: result,
                 responseCode: 200,
                 responseMessage: "Ad edit successfully."
             });
+            }
         });
     },
 
