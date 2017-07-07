@@ -255,6 +255,11 @@ var userSchema = new Schema({
         type: String,
         default: 'ACTIVE',
         trim: true
+    },
+    isVerified:{
+        type:String,
+        default:'FALSE',
+        trim:true
     }
 
 });

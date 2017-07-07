@@ -11,6 +11,7 @@ var User = require("./model/user");
 var waterfall = require('async-waterfall');
 var _ = require('underscore')
 var adminCards = require("./model/cardsAdmin");
+var functions = require("./functionHandler");
 
 //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
@@ -2844,6 +2845,9 @@ module.exports = {
 
                             User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } else {
+                                  //  console.log("datata----->>>>",user)
+                                    var mobileNumber = user.mobileNumber;
+                                   
                                     for (var i = 0; i < user.hiddenGifts.length; i++) {
                                         if (user.hiddenGifts[i].adId == adId) {
                                             var code = user.hiddenGifts[i].hiddenCode;
@@ -2851,11 +2855,14 @@ module.exports = {
                                     }
                                     User.update({ 'hiddenGifts.adId': adId }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result2) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                                            console.log("result2--->>", result2)
-                                            console.log("code--->>", code)
+                                             console.log("mobile---->>>>",mobileNumber)
+                                           // console.log("result2--->>", result2)
+                                        //    console.log("code--->>", code)
                                             var message = 'Your hidden gift is:' + code
                                             if (result2.nModified == 1) {
+                                                 if(mobileNumber){
                                                 functions.otp(req.body.mobileNumber, message)
+                                                 }
                                                 res.send({
                                                     responseCode: 200,
                                                     responseMessage: "The hidden gift code has been sent to your mailbox successfully."

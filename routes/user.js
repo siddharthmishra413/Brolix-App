@@ -11,6 +11,7 @@ app.post('/massPay', userHandler.massPay);
 app.post('/paynow', userHandler.paynow);
 
 app.get('/validatorPaytabs', userHandler.validatorPaytabs);
+app.post('/sendOtp', userHandler.sendOtp);
 
 app.post('/createToken', userHandler.createToken);
 

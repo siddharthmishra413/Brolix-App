@@ -163,9 +163,9 @@ module.exports = {
 
         //   paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function (err, response) {
         //     if (err) {
-        //         // You can see the error 
+        //         // You can see the error
         //         console.log(err);
-        //         //And the original Paypal API response too 
+        //         //And the original Paypal API response too
         //         console.log(response);
         //     } else {
         //         // Successful response :
@@ -210,9 +210,9 @@ module.exports = {
         //     if (err) {
         //         console.log(err);
         //     } else {
-        //         // Response will have the original Paypal API response 
+        //         // Response will have the original Paypal API response
         //         console.log(response);
-        //         // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily 
+        //         // But also a paymentApprovalUrl, so you can redirect the sender to checkout easily
         //         console.log('Redirect to %s', response.paymentApprovalUrl);
         //     }
         // });
@@ -258,9 +258,9 @@ module.exports = {
 
                     paypalSdk.callApi('AdaptivePayments/PaymentDetails', requestData, function(err, response) {
                         if (err) {
-                            // You can see the error 
+                            // You can see the error
                             console.log(err);
-                            //And the original Paypal API response too 
+                            //And the original Paypal API response too
                             console.log(response);
                         } else {
                             // Successful response :
@@ -467,8 +467,8 @@ module.exports = {
         //     function(callback){
 
         //         User.findByIdAndUpdate({ _id: req.body.userId }, { $set: {cash: cashAmount} }, function(err, userRes) {
-        //             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-        //             else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+        //             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+        //             else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); }
         //             else {
         //                 callback(null, userRes)
         //             }
@@ -639,7 +639,7 @@ module.exports = {
             console.log("res" + res);
 
             res.setEncoding('utf8');
-            res.on('data', function(chunk) { // data will be available in callback 
+            res.on('data', function(chunk) { // data will be available in callback
                 console.log("body: " + chunk);
             });
         });
@@ -651,8 +651,8 @@ module.exports = {
     },
 
     "paydU": function(request, response) {
-        //     var querystring = require('querystring'); 
-        // var http = require('https'); 
+        //     var querystring = require('querystring');
+        // var http = require('https');
 
         var data = querystring.stringify({
             merchantKey: "BBF7oOWI",
@@ -673,7 +673,7 @@ module.exports = {
 
         var req = https.request(options, function(res) {
             res.setEncoding('utf8');
-            res.on('data', function(chunk) { // data will be available in callback 
+            res.on('data', function(chunk) { // data will be available in callback
                 console.log("body: " + chunk);
             });
         });
@@ -864,6 +864,94 @@ module.exports = {
         })
     },
 
+    "sendOtp": function(req, res){
+        var otpTy = functions.otp();
+
+        waterfall([
+            function(callback){
+                    var twilio=require("twilio");
+                    var accountSid = 'AC533eb1474ed6ffa9435ed696bba90640';
+                    var authToken = '83635a75374932b24b16db7609825480';
+                    var client = new twilio(accountSid, authToken);
+
+
+                    client.messages.create({
+                        body: otpTy,
+                        to: "+918853735932",
+                        from: '+18306269536'
+                      }).then((message) =>
+                      callback(null)
+
+                      );
+            },
+            function(callback){
+                console.log("null")
+                        var transporter = nodemailer.createTransport({
+                            service: 'Gmail',
+                            auth: {
+                                user: "test.avi201@gmail.com",
+                                pass: "Mobiloitte1"
+                            }
+                        });
+
+                        var to = req.body.email
+                        var mailOption = {
+                            from: "test.avi201@gmail.com",
+                            to: req.body.email,
+                            subject: 'Otp ',
+                            text: 'Please verfiy using this otp',
+                            html: "Your verification code is :" + otpTy
+                        }
+                        console.log("data in req" + req.body.email);
+
+                        transporter.sendMail(mailOption, function(error, info) {
+                            if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else {
+                               // console.log("updated password is : " + link);
+                                User.findOneAndUpdate({ _id: req.body.id }, {
+                                    $set: {
+                                        otp: otpTy
+                                    }
+                                }, function(err, results) {
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error.' }); }
+                                    else{
+                                        callback(null)
+
+                                    }
+                                })
+                            }
+                        });
+                    },
+                    function(callback){
+                        User.findOneAndUpdate({ _id: req.body.userId }, {
+                            $set: {
+                                otp: otpTy
+                            }
+                        }, { new: true }).exec(function(err, user) {
+                                res.send({
+                                    responseCode: 200,
+                                    responseMessage: 'Otp send successfully.',
+                                })
+                        })
+                    }
+
+        ])
+
+        // User.findOneAndUpdate({ _id: req.body.userId }, {
+        //     $set: {
+        //         otp: req.body.otpTy
+        //     }
+        // }, { new: true }).exec(function(err, user) {
+
+        // })
+
+
+        // res.send({
+        //     responseCode: 200,
+        //     responseMessage: 'Otp get successfully.',
+        //     result: otp
+        // })
+    },
+
     //API for verify Otp
     "verifyOtp": function(req, res, next) {
         User.findOne({ _id: req.body.userId, otp: req.body.otp }).exec(function(err, results) {
@@ -875,7 +963,7 @@ module.exports = {
             } else {
                 User.findByIdAndUpdate(req.body.userId, {
                     $set: {
-                        status: "ACTIVE"
+                        isVerified: "TRUE"
                     }
                 }, { new: true }).exec(function(err, user) {
                     res.send({
@@ -896,7 +984,9 @@ module.exports = {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); } else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
                 else {
 
-                    if (result.status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); } else {
+                    if (result.status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); }
+
+                     else if (result.isVerified != 'TRUE') { res.send({ responseCode: 401, responseMessage: 'Please verify your mobile number.' }); } else {
                         var token_data = {
                             _id: result._id,
                             status: result.status
@@ -1144,14 +1234,14 @@ module.exports = {
                 });
                 }
                 else{
-                    res.send({                   
+                    res.send({
                     responseCode: 401,
                     responseMessage:"You are not allowed to view profile."
-                }); 
+                });
                 }
             }
         })
-            
+
         }
     },
 
@@ -1659,7 +1749,7 @@ module.exports = {
             } else if (!result) {
                 return res.status(404).send({ responseMessage: "please enter userId" })
             }
-            //  else if (result.cash < sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); } 
+            //  else if (result.cash < sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); }
             else {
                 for (i = 0; i < array.length; i++) {
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
@@ -1887,7 +1977,7 @@ module.exports = {
         }
     },
 
-    "userCashGifts": function(req, res) { // userId in req 
+    "userCashGifts": function(req, res) { // userId in req
         var userId = req.body.userId;
         User.find({ _id: userId, 'cashPrize.status': "ACTIVE" }).populate('cashPrize.adId').populate('cashPrize.pageId', 'pageName adAdmin').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
@@ -2263,11 +2353,11 @@ module.exports = {
                                 if (flag != -1) { res.send({ responseCode: '400', responseMessage: 'You have already purchased this coupon' }); } else {
                                     createNewAds.findOne({ _id: req.body.adId },function(err, result) {
                                         console.log("ad result buy coupon --->>",result)
-                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } 
+                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); }
                                         else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found" }); }
                                         else if (result.couponBuyersLength == result.couponPurchased) { res.send({ responseCode: 201, responseMessage: " All coupon sold out" }); }
                                         else {
-                                            
+
                                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { couponSold: req.body.userId }, $inc: { couponPurchased: 1 } }, { new: true }, function(err, result1) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); }  else {
                                             callback(null, value, result1.couponCode, result1.couponExpiryDate, result1.pageId)
@@ -2382,7 +2472,7 @@ module.exports = {
                                         result1.docs[i].couponSellPrice = dataValue
                                     }
                                 }
-                                
+
                                  var updatedResult = result1.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                                 res.send({
@@ -3244,7 +3334,7 @@ module.exports = {
 
     "sendPaymentHistoryOnMailId": function(req, res, next) {
             var myObj = req.body.paymentData;
-   
+
             // var myObj = [
             //     { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
             //     { "Date":"20/10/2017", "Amount":24, "Description":"createPage" },
@@ -3277,10 +3367,10 @@ module.exports = {
                     text: 'Payment details',
                     html: y
                 }
-                
+
                 console.log("Dta in mailOption : " + JSON.stringify(mailOption));
                 transporter.sendMail(mailOption, function(error, info) {
-                    if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } 
+                    if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) }
                     else {
                         res.send({
                             responseCode: 200,
