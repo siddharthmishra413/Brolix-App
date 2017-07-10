@@ -1356,22 +1356,27 @@ module.exports = {
 
     //API for Follow and unfollow
     "adFollowUnfollow": function(req, res) {
+        console.log("rewdqkwdw---->>>", JSON.stringify(req.body))
         if (req.body.follow == "follow") {
             createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                    console.log(" result--adFollowUnfollow-->>>", result)
                     var pageId = result.pageId;
                     var pageName = result.pageName;
                     console.log(" pageId---->>>", pageId)
                     var adFollowers = result.adFollowers;
+                    console.log(" adFollowers---->>>", adFollowers)
                     var mySet = new Set(adFollowers);
                     var has = mySet.has(req.body.userId)
                     if (has) { res.send({ responseCode: 400, responseMessage: 'You are already following this ad' }); } else {
+                        console.log("in else ad follow")
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "adFollowers": req.body.userId } }, { new: true }).exec(function(err, adResults) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                 console.log("result---->>>> ads---->>>", adResults)
                                 PageFollowers.findOne({ userId: req.body.userId, pageId: pageId }).exec(function(err, result1) {
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                         if (!result1) {
+                                            console.log("in if")
                                             var obj = {
                                                 pageId: pageId,
                                                 pageName: pageName,
@@ -1383,6 +1388,7 @@ module.exports = {
                                             follow.save(function(err, result) {
                                                 User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: pageId, pageName: pageName } } }, { new: true }).exec(function(err, results) {
                                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                                        console.log("dattata---*+*+*+--0-0-0--->>>", result)
                                                         createNewPage.findOneAndUpdate({ _id: pageId }, { $push: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
                                                             res.send({
                                                                 result: adResults,
@@ -1394,14 +1400,36 @@ module.exports = {
                                                 })
                                             })
                                         } else {
-                                            if (result1.followStatus == "unfollow" || result1.followStatus == "unblock") {
+                                            console.log("in else")
+                                            console.log("result1.followStatus--->>", result1.followStatus)
+                                            if (result1.followStatus == "Unfollowed" || result1.followStatus == "unblock") {
                                                 PageFollowers.findOneAndUpdate({ _id: result1._id }, { $set: { followStatus: "follow", userId: req.body.userId, pageId: pageId } }, { new: true }).exec(function(err, result2) {
                                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                                        res.send({
-                                                            result: adResults,
-                                                            responseCode: 200,
-                                                            responseMessage: "Followed."
-                                                        });
+                                                        createNewAds.findOne({ _id: req.body.adId }).exec(function(err, adResult) {
+                                                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!adResult) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                                                                    console.log(" result--adFollowUnfollow-->>>", adResult)
+                                                                    var pageId = adResult.pageId;
+                                                                    var pageName = adResult.pageName;
+
+                                                                    User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: pageId, pageName: pageName } } }, { new: true }).exec(function(err, results) {
+                                                                        console.log("pageFollowUnfollow 1---------0000000000---->>>", results)
+                                                                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                                                            createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
+                                                                                res.send({
+                                                                                    result: result2,
+                                                                                    responseCode: 200,
+                                                                                    responseMessage: "Followed."
+                                                                                });
+                                                                            })
+                                                                        }
+                                                                    })
+                                                                }
+                                                            })
+                                                            //                                                        res.send({
+                                                            //                                                            result: adResults,
+                                                            //                                                            responseCode: 200,
+                                                            //                                                            responseMessage: "Followed."
+                                                            //                                                        });
                                                     }
                                                 })
                                             } else if (result1.followStatus == "block") {
@@ -1436,7 +1464,7 @@ module.exports = {
                     if (!has) { res.send({ responseCode: 400, responseMessage: 'You have already Unfollow this ad' }); } else {
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { "adFollowers": -req.body.userId } }, { new: true }).exec(function(err, adResults) {
                             console.log("result- 11111111->>", adResults)
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!adResults) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!adResults) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
                                 PageFollowers.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { pageId: pageId }] }, { $set: { followStatus: "Unfollowed" } }, { new: true }).exec(function(err, result) {
                                     console.log("result- 11111111->>", result)
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
