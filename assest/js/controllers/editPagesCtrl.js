@@ -421,7 +421,7 @@ $scope.subCategoryFinal = $scope.checkBoxArray;
     //console.log("allllllll data",JSON.stringify($scope.myForm));
       var data={
              "type": "ADMIN",
-             "userId":userIdEdit,
+             // "userId":userIdEdit,
              "pageType": "Business",
              "pageName": $scope.viewPageDetails.pageName,
              "category": $scope.viewPageDetails.category,

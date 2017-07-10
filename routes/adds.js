@@ -15,6 +15,9 @@ app.get('/getMp3Files', adsHandler.getMp3Files);
 app.post('/uploadMp3Files', adsHandler.uploadMp3Files);
 
 app.post('/createAdPayment', adsHandler.createAdPayment);
+app.post('/readFile', adsHandler.readFile);
+app.post('/uploadXlFile', adsHandler.uploadXlFile);
+
 
 app.post('/createAds', adsHandler.createAds);
 app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
@@ -34,7 +37,7 @@ app.post('/listOfAds',  adsHandler.listOfAds);
 app.get('/listOfAllAds/:pageId/:type/:pageNumber',  adsHandler.listOfAllAds);
 app.post('/uploads', adsHandler.uploads);
 app.post('/viewAd', adsHandler.viewAd);
-app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);
+app.post('/adFollowUnfollow', adsHandler.adFollowUnfollow);
 app.get('/couponWinners/:pageNumber', adsHandler.couponWinners);
 app.get('/cashWinners/:pageNumber',  adsHandler.cashWinners);
 app.get('/adsCommentList/:id/:pageNumber', adsHandler.adsCommentList);

@@ -5,8 +5,35 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
     $scope.couponDeatil = true;
     $scope.addNewCoupon = false;
     $scope.user = {};
+    $scope.mydata = {};
     $scope.minDate = new Date().toDateString();
-
+    
+   //  $scope.flag = true;
+   // $scope.valid = function(data,key) {
+   //     var x,y;
+       
+   //     if(key == 'availableCoupon'){
+   //         x=data;
+   //         if (isNaN(x) || x < 1 ) {
+   //          $scope.flag = true;
+            
+   //      toastr.error("Input not valid");
+   //      } else {
+   //          $scope.flag = false;
+   //      }
+   //     }else if (key == 'couponPrice'){
+   //         y=data;
+   //         if (isNaN(y) || y < 1 ) {
+   //          $scope.flag = true;
+            
+   //      toastr.error("Input not valid");
+   //      } else {
+   //          $scope.flag = false;
+   //      }
+   //     }
+        
+   //  }
+    
     $scope.addCouponFun = function() {
         $scope.couponDeatil = false;
         $scope.addNewCoupon = true;
@@ -198,8 +225,8 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
         $("#post").modal('show');
         $scope.submit = function() {
             var data = {
-                "couponSellPrice": $scope.couponPrice,
-                "couponBuyersLength": $scope.availableCoupon
+                "couponSellPrice": $scope.mydata.couponPrice,
+                "couponBuyersLength": $scope.mydata.availableCoupon
             }
             userService.postCoupon(post_id, data).then(function(success) {
                 //console.log("success",JSON.stringify(success))

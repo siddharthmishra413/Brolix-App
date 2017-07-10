@@ -800,7 +800,7 @@ module.exports = {
             if (req.body.haveReferralCode == true) {
                 console.log("in if")
                 User.findOne({ referralCode: req.body.referredCode }, function(err, user) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid referralcode' }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid referral code' }); } else {
                         Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                           //    console.log("user-->>", user)
@@ -2466,11 +2466,13 @@ module.exports = {
                         createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.docs.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon found in your favourites" }); } else {
                                 for (var i = 0; i < result1.docs.length; i++) {
+                                   if (result1.docs[i].adsType == 'coupon') {
                                     if (result1.docs[i].cash == 0) {
                                         result1.docs[i].couponSellPrice = noDataValue
                                     } else {
                                         result1.docs[i].couponSellPrice = dataValue
                                     }
+                                }
                                 }
 
                                  var updatedResult = result1.docs;

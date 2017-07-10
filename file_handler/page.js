@@ -2635,16 +2635,17 @@ module.exports = {
     },
 
     "viewCouponCode": function(req, res) {
-        User.find({ 'hiddenGifts.adId': req.body.adId }, 'hiddenGifts').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No gift found' }) } else {
-                var code;
-                for (var i = 0; i < result[0].hiddenGifts.length; i++) {
-                    console.log("result->>", result[0].hiddenGifts.length, i)
-                    if (result[0].hiddenGifts[i].adId == req.body.adId) {
-                        code = result[0].hiddenGifts[i].hiddenCode
-                    }
-                }
-                console.log("code-->>", code)
+        console.log("view coupon code request--->>>",req.body)
+        var adId = req.body.adId;
+        var userId = req.body.userId;
+        console.log("adId--->>>",adId)
+         console.log("userId--->>>",userId)  // new mongoose.Types.ObjectId(userId)        
+       User.aggregate({ $unwind: "$hiddenGifts" }, { $match: {'hiddenGifts.adId':adId, _id:new mongoose.Types.ObjectId(userId)} }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }  else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No gift found' }) } else {
+             //    console.log("view coupon code --->>>",JSON.stringify(result))
+                var code = result[0].hiddenGifts.hiddenCode;
+                console.log("viewCouponCode-0-0-0-0-0--->>>",code)
+             //   console.log("code-->>", code)
                 res.send({
                     result: code,
                     responseCode: 200,
@@ -2835,25 +2836,33 @@ module.exports = {
     },
 
     "sendCouponToAdvertiser": function(req, res) {
+        console.log("sendCouponToAdvertiser--->>>",req.body)
         var couponId = req.body.couponId;
         var adId = req.body.adId;
         if (!couponId) { res.send({ responseCode: 400, responseMessage: "Please enter the couponId" }); } else if (!adId) { res.send({ responseCode: 400, responseMessage: 'Please enter the adId' }); } else {
             User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: "Please enter a valid coupon to use." }); } else {
-                    User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
+                   // console.log("sendCouponToAdvertiser----user---->>",user)
+                      console.log("sendCoupon----user---->>",user[0]._id)
+                      var id = user[0]._id;
+                     console.log("id----user---->>",id)
+                    User.update({ 'coupon._id': new mongoose.Types.ObjectId(couponId) }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-
-                            User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
+                            
+                       User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.adId':adId, _id:new mongoose.Types.ObjectId(id) } }).exec(function(err, user) {
+                          //  User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } else {
-                                  //  console.log("datata----->>>>",user)
-                                    var mobileNumber = user.mobileNumber;
-                                   
-                                    for (var i = 0; i < user.hiddenGifts.length; i++) {
-                                        if (user.hiddenGifts[i].adId == adId) {
-                                            var code = user.hiddenGifts[i].hiddenCode;
-                                        }
-                                    }
-                                    User.update({ 'hiddenGifts.adId': adId }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result2) {
+                                 console.log("$hiddenGifts----->>>>",JSON.stringify(user))
+                                  var mobileNumber = user[0].mobileNumber;
+                                    var code = user[0].hiddenGifts.hiddenCode;
+                                     console.log("mobileNumber----->>>>",mobileNumber)
+                                       console.log("code----->>>>",code)
+//                                    for (var i = 0; i < user.hiddenGifts.length; i++) {
+//                                        if (user.hiddenGifts[i].adId == adId) {
+//                                            
+//                                        }
+//                                    }
+                                    User.update({ 'hiddenGifts.hiddenCode': code }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result2) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
                                              console.log("mobile---->>>>",mobileNumber)
                                            // console.log("result2--->>", result2)
