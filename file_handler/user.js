@@ -1150,7 +1150,7 @@ module.exports = {
                 userArray.push(userResult._id)
          console.log("array---->>>>",userArray)
         
-        User.find({ _id: { $nin: userArray }, $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
+        User.find({ _id: { $ne: req.params.id }, $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var userArray = [];
                 for (var i = 0; i < result.length; i++) {

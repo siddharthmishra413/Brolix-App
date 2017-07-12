@@ -20,6 +20,7 @@ var path = require('path');
 var User = require("./model/user");
 var uploadFile = require("./model/savedFiles")
 var PageFollowers = require("./model/pageFollow");
+var _ = require('underscore');
 
 var paytabs = require('paytabs')
 var NodeCache = require("node-cache");
@@ -163,7 +164,7 @@ module.exports = {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
-                req.body.viewerLenght = 5;
+                req.body.viewerLenght = 2;
                 req.body.numberOfWinners = 2;
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
@@ -914,15 +915,16 @@ module.exports = {
                                         raffleCount.push(luckUsers[n].userId)
                                     }
                                 }
-                                for (var i = 0; i < numberOfWinners; i++) {
-                                    var index = Math.floor(Math.random() * raffleCount.length);
-                                    console.log("index--->>>", index)
-                                    if (randomIndex.filter(data => data != raffleCount[index])) {
-                                        randomIndex.push(raffleCount[index])
-                                    }
-                                     console.log("randomIndex----->>>",randomIndex)
-                                 //   console.log("winnersArray----->>>", winnersArray)
-                                }
+                                 randomIndex = _.sample(raffleCount,numberOfWinners);
+//                                for (var i = 0; i < numberOfWinners; i++) {
+//                                    var index = Math.floor(Math.random() * raffleCount.length);
+//                                    console.log("index--->>>", index)
+//                                    if (randomIndex.filter(data => data != raffleCount[index])) {
+//                                        randomIndex.push(raffleCount[index])
+//                                    }
+                                   console.log("randomIndex----->>>",randomIndex)
+//                                 //   console.log("winnersArray----->>>", winnersArray)
+//                                }
                                 callback(null, randomIndex, result.cashAdPrize, result.couponCode, result.hiddenGifts)
                             } else {
 
@@ -942,7 +944,8 @@ module.exports = {
             function(winners, cashPrize, couponCode, hiddenGifts, callback) {
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
-
+                        console.log("*************************")
+                        console.log("result---->>>>*******************",result)
                         var date = new Date();
 
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired: true } }, function(err, result3) {
@@ -3588,7 +3591,7 @@ module.exports = {
                    //     return callback(new Error('Only images are allowed'))
                    //    // callback(null, false)
                    // }
-            callback(null, true)
+            callback(null, "true")
             },
             limits: {
                 fields: 1,
