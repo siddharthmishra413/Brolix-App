@@ -2721,12 +2721,12 @@ module.exports = {
             function(callback) {
                 var senderCouponId = req.body.senderCouponId;
                 var receiverId = req.body.receiverId;
-                var senderId = req.body.userId;
+                var senderId = req.body.senderId;
                 var adId = req.body.adId;
                 var couponId = req.body.couponId;
-                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) } }, function(err, user) {
+                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(req.body.senderCouponId), _id: new mongoose.Types.ObjectId(req.body.senderId)} }, function(err, user) {
                     console.log("user--*******-+++++++--*************->>>", user)
-                    console.log("coupon.couponStatus--++++++++++->>>", JSON.stringify(user[0].coupon.couponStatus))
+                   // console.log("coupon.couponStatus--++++++++++->>>", JSON.stringify(user[0].coupon.couponStatus))
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error11." }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct coupon Id." }) } else if ((user[0].coupon.couponStatus) != 'VALID') {
                         res.send({ responseCode: 403, responseMessage: "Please enter a valid coupon." });
                     } else {
@@ -2781,7 +2781,7 @@ module.exports = {
                                                 type: type,
                                                 couponExpire: couponExpire
                                             }
-
+                                             console.log("coupon to follower-- friends-->>>",coupon)
                                             User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, type: "I have sent you a coupon", linkType: 'coupon', notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                                 console.log("receiverId--->>>", result4)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
@@ -2817,7 +2817,7 @@ module.exports = {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 55' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
 
                                 User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) }, { $set: { "coupon.$.status": "SEND" }, $pop: { 'gifts': -adId } }, { new: true }, function(err, result3) {
-                                    console.log("senderCouponId-111-->>", result3)
+                                    console.log("senderCouponId-111-->>", JSON.stringify(result3))
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 66' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                                         for (i = 0; i < result3.coupon.length; i++) {
                                             if (result3.coupon[i]._id == senderCouponId) {
@@ -2837,6 +2837,7 @@ module.exports = {
                                             type: type,
                                             couponExpire: couponExpire
                                         }
+                                        console.log("coupon send public--->>>",coupon)
                                         User.findByIdAndUpdate({ _id: receiverId }, { $push: { 'coupon': coupon, gifts: couponAdId }, 'notification': { userId: req.body.senderId, type: "I have sent you a coupon", linkType: 'coupon', notificationType: 'couponReceived' } }, { new: true }, function(err, result4) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 77' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { callback(null, result4) }
                                             if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {

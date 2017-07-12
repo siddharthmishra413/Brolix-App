@@ -4407,7 +4407,7 @@ module.exports = {
     },
 
     "liveUser": function(req, res) {
-        User.find({ $or: [{ type: "USER", status: 'ACTIVE' }, { type: "Advertiser", status: 'ACTIVE' }] }, function(err, result) {
+        User.find({ $or: [{ type: "USER", status: 'ACTIVE' , isVerified:'TRUE'}, { type: "Advertiser", status: 'ACTIVE', isVerified:'TRUE' }] }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,

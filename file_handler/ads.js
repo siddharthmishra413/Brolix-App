@@ -163,7 +163,7 @@ module.exports = {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
-                req.body.viewerLenght = 2;
+                req.body.viewerLenght = 5;
                 req.body.numberOfWinners = 2;
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
@@ -780,7 +780,7 @@ module.exports = {
         var adId = req.body.adId;
         createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
-                console.log("city-- 222>>>", result)
+            //    console.log("city-- 222>>>", result)
                 User.findOne({ _id: userId }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                         var age = result1.dob;
@@ -837,7 +837,11 @@ module.exports = {
                 var adId = req.body.adId;
                 createNewAds.findOne({ _id: req.body.adId }).exec(function(err, adResult) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!adResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (adResult.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
-
+                          console.log("*************************")
+                          console.log("++++++++++++++++++++++++++")
+                        //  console.log("result--->>>",adResult)
+                           console.log("*************************")
+                          console.log("++++++++++++++++++++++++++")
                         if (adResult.adsType == 'cash') { // brolixPerUpgradedCashAds
                             if (adResult.cash > 0) {
                                 var type = "brolixPerUpgradedCashAds";
@@ -855,19 +859,21 @@ module.exports = {
                         brolixAndDollors.findOne({
                             type: type
                         }, function(err, result) {
+                            console.log("result---->>>",result)
                             var value = result.value
                             callback(null, value)
                         })
                     }
                 })
             },
-            function(callback) {
+            function(value, callback) {
                 console.log("value--->>>", value)
                 var userId = req.body.userId;
                 var adId = req.body.adId;
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                         var randomIndex = [];
+                       // var winnersArray = [];
                         var raffleCount = result.raffleCount;
                         var viewerLenght = result.viewerLenght;
                         var luckUsers = result.luckCardListObject;
@@ -912,10 +918,10 @@ module.exports = {
                                     var index = Math.floor(Math.random() * raffleCount.length);
                                     console.log("index--->>>", index)
                                     if (randomIndex.filter(data => data != raffleCount[index])) {
-                                        winnersArray.push(raffleCount[index])
+                                        randomIndex.push(raffleCount[index])
                                     }
-                                    //    console.log("randomIndex----->>>",randomIndex)
-                                    console.log("winnersArray----->>>", winnersArray)
+                                     console.log("randomIndex----->>>",randomIndex)
+                                 //   console.log("winnersArray----->>>", winnersArray)
                                 }
                                 callback(null, randomIndex, result.cashAdPrize, result.couponCode, result.hiddenGifts)
                             } else {
@@ -952,6 +958,11 @@ module.exports = {
                                     }
                                     User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
+                                            console.log("*************************")
+                                            console.log("++++++++++++++++++++++++++")
+                                            console.log("result--->>>",result)
+                                            console.log("*************************")
+                                            console.log("++++++++++++++++++++++++++")
                                             if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
                                                 var message = "You have successfully won this Raffle.";
                                                 if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
@@ -1046,6 +1057,11 @@ module.exports = {
                                         User.update({ _id: { $in: winners } }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                console.log("*************************")
+                                            console.log("++++++++++++++++++++++++++")
+                                            console.log("result--->>>",result)
+                                            console.log("*************************")
+                                            console.log("++++++++++++++++++++++++++")
                                                 if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
                                                     var message = "You have successfully won this Raffle.";
                                                     if (result.deviceToken && result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
@@ -1355,12 +1371,13 @@ module.exports = {
                                                     } else {
                                                         console.log("Something wrong!!!!")
                                                     }
-                                                }
+                                                }else{
                                                 res.send({
                                                     responseCode: 200,
                                                     responseMessage: "Raffle is over winner decided."
                                                         //result: result
                                                 })
+                                                }
                                             }
                                         })
                                     }
@@ -3490,130 +3507,48 @@ module.exports = {
     },
 
     "readFile": function(req, res) {
-
-                function copyData(savPath, srcPath) {
-                        fs.readFile(srcPath, 'utf8', function (err, data) {
-                            console.log("Fffff")
-                            if (err) throw err;
-                            //Do your processing, MD5, send a satellite to the moon, etc.
-                            fs.writeFile (savPath, data, function(err) {
-                                if (err) throw err;
-                                console.log('complete');
-                            });
-                        });
-                }
-
-        var request = require('request');
-        var savPath = __dirname+"/testing.xls"
-        request('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pipe(fs.createWriteStream(savPath,function(err, result){
-            if(err)throw err;
-            else{
-                console.log("FFFFFFF",result)
+        var path=require("path");
+        var fs=require("fs")
+        var newPath = path.normalize(__dirname+"/ISOCurrencyCodes081507.xls");
+        console.log("New Path is ",newPath);
+        var converter = require("xls-to-json");  
+        var res = {};  
+            converter({  
+              input: newPath, 
+              output: null
+            }, function(err, result) {
+            if(err) {
+              console.error(err);
+             } else {
+              console.log("result is :-",result)
             }
-        }))
-
-        // request.get('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls', function (error, response, body) {
-        //     if (!error && response.statusCode == 200) {
-
-        //            var srcPath =JSON.stringify(body);
-        //            var savPath = __dirname+"/testing.xls"
-        //            //console.log("response===========>>>",response)
-        //        //   copyData(savPath,srcPath)
-
-        //          fs.writeFile(savPath, "ddddd", function(err, result) {
-        //                         if (err) throw err;
-        //                         console.log('complete');
-        //                         res.send({
-        //                             result:result
-        //                         })
-        //                     });
-               
-
-        //         // var csv = body;
-        //         // var buf = new Buffer(csv, "utf-8");
-
-        //         //  var data = JSON.stringify(csv)
-
-        //         //         // var path=require("path");
-        //         //         // var fs=require("fs")
-        //         //         // console.log("Current Dir Path ",__dirname);
-        //         //         // console.log("Current File Path",__filename)
-        //         //         // var newPath = path.normalize(__dirname+"./testing.xls");
-        //         //         // console.log("New Path is ",newPath);
-
-        //         //         var converter = require("xls-to-json");
-        //         //       //  var res = {};
-        //         //         converter({
-        //         //             input: data,
-        //         //             output: null
-        //         //         }, function(err, result) {
-        //         //             if (err) {
-        //         //                 console.log("errrrrrr")
-        //         //                 //console.error(err);
-        //         //             } else {
-        //         //                 console.log("result is :-")
-        //         //                 res.send({
-        //         //                         responseCode: 200,
-        //         //                         responseMessage: "Read file data.",
-        //         //                         result: result
-        //         //                     })
-        //         //                     /*for (var key = 1; key >= result.length; key++) {
-        //         //         res[result[key]["Symbol"]] = result[key]["Currency"]; */
-        //         //             };
-
-        //         //             /*for(var i in res) {
-        //         //               if(res.hasOwnProperty(i)) {
-        //         //                 console.log("<option value=\"" + i + "\">" + res[i] + "</option>");
-        //         //               }
-        //         //             }*/
-
-        //         //         });
+        })
 
 
-        //         // Continue with your processing here.
-        //     }
-       // });
+
+        // function copyData(savPath, srcPath) {
+        //         fs.readFile(srcPath, 'utf8', function (err, data) {
+        //             console.log("Fffff")
+        //             if (err) throw err;
+        //             //Do your processing, MD5, send a satellite to the moon, etc.
+        //             fs.writeFile (savPath, data, function(err) {
+        //                 if (err) throw err;
+        //                 console.log('complete');
+        //             });
+        //         });
+        // }
+
         // var request = require('request');
-        //    console.log(__dirname+'/testing.xls')
+        // var savPath = __dirname+"/testing.xls"
+        // request('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pipe(fs.createWriteStream(savPath,function(err, result){
+        //     if(err)throw err;
+        //     else{
+        //         console.log("FFFFFFF",result)
+        //     }
+        // }))
 
-        // request('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pipe(fs.createWriteStream(__dirname+'/testing.xls'))
 
-//         function copyData(savPath, srcPath) {
-//         fs.readFile(srcPath, 'utf8', function (err, data) {
-//             console.log("Fffff")
-//             if (err) throw err;
-//             //Do your processing, MD5, send a satellite to the moon, etc.
-//             fs.writeFile (savPath, data, function(err) {
-//                 if (err) throw err;
-//                 console.log('complete');
-//             });
-//         });
-// }
-//          copyData("./uploads", "http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls")
-        // var path = require("path");
-        // var fs = require("fs")
 
-        // // var normalizeUrl = require('normalize-url');
-        // // var nn = normalizeUrl('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls');
-        // var URL = require('url-parse');
-        // var nn = new URL('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pathname;
-
-        
-   
-
-        // console.log("New Path ", nn);
-        // // console.log("Current File Path",__filename)
-        // // var newPath = path.normalize("http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls");
-        // // var url = require("url");
-        // //  var dd = url.parse('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pathname  
-        // //         var url = require("url");
-        // // //var path = require("path");
-        // // var parsed = url.parse("http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls");
-        // // console.log(path.basename(parsed.pathname));  
-        // // var dd = path.basename(parsed.pathname)
-
-        // //    console.log("New Path is ",dd);
-  
 
     },
 
@@ -3640,9 +3575,9 @@ module.exports = {
 
  "uploadXlFile": function(req, res){
 
-        console.log("upload req",req);
-        console.log("upload req.file",req.file);
-        console.log("upload req.files",req.files)
+        // console.log("upload req",req);
+        // console.log("upload req.file",req.file);
+        // console.log("upload req.files",req.files)
         var upload = multer({
             storage: storage,
             fileFilter: function (req, file, callback) {
@@ -3667,8 +3602,8 @@ module.exports = {
              console.log("error",JSON.stringify(err))
              res.end('uploading error')
            }else{
-             console.log("result-->>>")
-           res.end('File is uploaded')
+             console.log("result-->>>",result)
+             res.end('File is uploaded')
            }
            
         })

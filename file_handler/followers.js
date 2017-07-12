@@ -151,10 +151,12 @@
      },
 
      "followerRequestReceive": function(req, res) {
+         console.log("followerRequestReceive request--->>>",req.body)
          var viewerId = req.body.viewerId;
          if (req.body.viewerId == req.body.receiverId) {
              followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' } }).exec(function(err, result) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                     console.log("followerRequestReceive result--->>>",result)
                      var arr = [];
                      result.forEach(function(result) {
                          arr.push(result.senderId)
@@ -172,6 +174,7 @@
                  }
              })
          } else {
+             console.log(" in else followerRequestReceive")
              User.findOne({ _id: req.body.receiverId }, function(err, result1) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.ViewFollower == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot see follower of this user due to privacy policies" }) } else if (result1.privacy.ViewFollower == "onlyFollowers") {
                      var flag = result1.userFollowers.indexOf(req.body.viewerId)
