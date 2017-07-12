@@ -16,7 +16,7 @@ var mongoose = require('mongoose');
 var brolixAndDollors = require("./model/brolixAndDollors");
 var Payment = require("./model/payment");
 var multer = require('multer');
-
+var path = require('path');
 var User = require("./model/user");
 var uploadFile = require("./model/savedFiles")
 var PageFollowers = require("./model/pageFollow");
@@ -47,36 +47,56 @@ var avoid = {
 
 
 var storage = multer.diskStorage({
-    destination: function(req, file, callback) {
-        //  console.log("filereq",file);
+ destination: function(req, file, callback) {
+  // console.log("file--->>",file);
+   callback(null, './uploads')
+ },
+ filename: function(req, file, callback) {
+   //console.log("file---->>>>",file)
+  //callback(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+   callback(null, file.fieldname + '-' + Date.now());
+ }
+})
 
-        var unixname = file.fieldname + Date.now();
-        console.log("fieldname", unixname);
-        var details = file;
-        console.log("details" + details);
-        //       var user = new Upload();  
-        //     //  console.log("user", user); 
-        //       user.unixname = unixname;
-        //       user.fieldname = details.fieldname;
-        //       console.log("user"+user.fieldname); 
-        //       user.originalname = details.originalname;
-        //       user.encoding = details.encoding;
-        //       user.mimetype = details.mimetype;
-        //       var demo = user.save(function (err) {
-        //   if (err) throw err;
-        // })
-        //  var home;
 
-        //  callback(null, 'user.UserID')
-        callback(null, './uploads');
-    },
-    filename: function(req, file, callback) {
-        callback(null, file.fieldname + '-' + Date.now());
-        //callback(null, file.fieldname);
-    }
-});
 
-var uploadData = multer({ storage: storage }, { limits: { fieldNameSize: 10 } }).single('userPhoto');
+
+// var storage = multer.diskStorage({
+//     destination: function(req, file, callback) {
+//         //  console.log("filereq",file);
+
+//         var unixname = file.fieldname + Date.now();
+//         console.log("fieldname", unixname);
+//         var details = file;
+//         console.log("details" + details);
+//         callback(null, './uploads');
+//     },
+//     filename: function(req, file, callback) {
+//         callback(null, file.fieldname + '-' + Date.now());
+//         //callback(null, file.fieldname);
+//     }
+// });
+
+//  var uploadData = multer({ storage: storage }, { limits: { fieldNameSize: 10 } }).single('userPhoto');
+
+// var uploadData = multer({
+//                        storage: storage,
+//                       fileFilter: function (req, file, callback) {
+//                     var ext = path.extname(file.originalname);
+//                     console.log("ext-->>>",ext)
+//                     // if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+//                     //   console.log("Only images are allowed")
+//                     //     return callback(new Error('Only images are allowed'))
+//                     //    // callback(null, false)
+//                     // }
+//                     callback(null, true)
+//                 },
+//               limits: {
+//                  fields: 1,
+//                  files: 1,
+//                  fileSize: 512000
+//               }}).single('userFile')
+
 //    var uploadData = multer({ storage : storage}).single('userPhoto');
 
 // var xlsx = require('node-xlsx');
@@ -1402,7 +1422,7 @@ module.exports = {
                                         } else {
                                             console.log("in else")
                                             console.log("result1.followStatus--->>", result1.followStatus)
-                                            if (result1.followStatus == "Unfollowed" || result1.followStatus == "unblock") {
+                                            if (result1.followStatus == "unfollow" || result1.followStatus == "unblock") {
                                                 PageFollowers.findOneAndUpdate({ _id: result1._id }, { $set: { followStatus: "follow", userId: req.body.userId, pageId: pageId } }, { new: true }).exec(function(err, result2) {
                                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                                         createNewAds.findOne({ _id: req.body.adId }).exec(function(err, adResult) {
@@ -1465,7 +1485,7 @@ module.exports = {
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { "adFollowers": -req.body.userId } }, { new: true }).exec(function(err, adResults) {
                             console.log("result- 11111111->>", adResults)
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!adResults) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
-                                PageFollowers.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { pageId: pageId }] }, { $set: { followStatus: "Unfollowed" } }, { new: true }).exec(function(err, result) {
+                                PageFollowers.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { pageId: pageId }] }, { $set: { followStatus: "unfollow" } }, { new: true }).exec(function(err, result) {
                                     console.log("result- 11111111->>", result)
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                         User.findOneAndUpdate({ _id: req.body.userId }, { $pull: { pageFollowers: { pageId: pageId } } }, { new: true }).exec(function(err, result1) {
@@ -3471,54 +3491,133 @@ module.exports = {
 
     "readFile": function(req, res) {
 
-        var path = require("path");
-        var fs = require("fs")
+                function copyData(savPath, srcPath) {
+                        fs.readFile(srcPath, 'utf8', function (err, data) {
+                            console.log("Fffff")
+                            if (err) throw err;
+                            //Do your processing, MD5, send a satellite to the moon, etc.
+                            fs.writeFile (savPath, data, function(err) {
+                                if (err) throw err;
+                                console.log('complete');
+                            });
+                        });
+                }
 
-        var normalizeUrl = require('normalize-url');
-        var nn = normalizeUrl('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls');
+        var request = require('request');
+        var savPath = __dirname+"/testing.xls"
+        request('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pipe(fs.createWriteStream(savPath,function(err, result){
+            if(err)throw err;
+            else{
+                console.log("FFFFFFF",result)
+            }
+        }))
 
-        console.log("New Path ", nn);
-        // console.log("Current File Path",__filename)
-        // var newPath = path.normalize("http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls");
-        // var url = require("url");
-        //  var dd = url.parse('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pathname  
-        //         var url = require("url");
-        // //var path = require("path");
-        // var parsed = url.parse("http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls");
-        // console.log(path.basename(parsed.pathname));  
-        // var dd = path.basename(parsed.pathname)
+        // request.get('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls', function (error, response, body) {
+        //     if (!error && response.statusCode == 200) {
 
-        //    console.log("New Path is ",dd);
-        var converter = require("xls-to-json");
-        var res = {};
-        converter({
-            input: nn,
-            output: null
-        }, function(err, result) {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log("result is :-", result)
-                res.send({
-                        responseCode: 200,
-                        responseMessage: "Read file data.",
-                        result: result
-                    })
-                    /*for (var key = 1; key >= result.length; key++) {
-        res[result[key]["Symbol"]] = result[key]["Currency"]; */
-            };
+        //            var srcPath =JSON.stringify(body);
+        //            var savPath = __dirname+"/testing.xls"
+        //            //console.log("response===========>>>",response)
+        //        //   copyData(savPath,srcPath)
 
-            /*for(var i in res) {
-              if(res.hasOwnProperty(i)) {
-                console.log("<option value=\"" + i + "\">" + res[i] + "</option>");
-              }
-            }*/
+        //          fs.writeFile(savPath, "ddddd", function(err, result) {
+        //                         if (err) throw err;
+        //                         console.log('complete');
+        //                         res.send({
+        //                             result:result
+        //                         })
+        //                     });
+               
 
-        });
+        //         // var csv = body;
+        //         // var buf = new Buffer(csv, "utf-8");
+
+        //         //  var data = JSON.stringify(csv)
+
+        //         //         // var path=require("path");
+        //         //         // var fs=require("fs")
+        //         //         // console.log("Current Dir Path ",__dirname);
+        //         //         // console.log("Current File Path",__filename)
+        //         //         // var newPath = path.normalize(__dirname+"./testing.xls");
+        //         //         // console.log("New Path is ",newPath);
+
+        //         //         var converter = require("xls-to-json");
+        //         //       //  var res = {};
+        //         //         converter({
+        //         //             input: data,
+        //         //             output: null
+        //         //         }, function(err, result) {
+        //         //             if (err) {
+        //         //                 console.log("errrrrrr")
+        //         //                 //console.error(err);
+        //         //             } else {
+        //         //                 console.log("result is :-")
+        //         //                 res.send({
+        //         //                         responseCode: 200,
+        //         //                         responseMessage: "Read file data.",
+        //         //                         result: result
+        //         //                     })
+        //         //                     /*for (var key = 1; key >= result.length; key++) {
+        //         //         res[result[key]["Symbol"]] = result[key]["Currency"]; */
+        //         //             };
+
+        //         //             /*for(var i in res) {
+        //         //               if(res.hasOwnProperty(i)) {
+        //         //                 console.log("<option value=\"" + i + "\">" + res[i] + "</option>");
+        //         //               }
+        //         //             }*/
+
+        //         //         });
+
+
+        //         // Continue with your processing here.
+        //     }
+       // });
+        // var request = require('request');
+        //    console.log(__dirname+'/testing.xls')
+
+        // request('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pipe(fs.createWriteStream(__dirname+'/testing.xls'))
+
+//         function copyData(savPath, srcPath) {
+//         fs.readFile(srcPath, 'utf8', function (err, data) {
+//             console.log("Fffff")
+//             if (err) throw err;
+//             //Do your processing, MD5, send a satellite to the moon, etc.
+//             fs.writeFile (savPath, data, function(err) {
+//                 if (err) throw err;
+//                 console.log('complete');
+//             });
+//         });
+// }
+//          copyData("./uploads", "http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls")
+        // var path = require("path");
+        // var fs = require("fs")
+
+        // // var normalizeUrl = require('normalize-url');
+        // // var nn = normalizeUrl('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls');
+        // var URL = require('url-parse');
+        // var nn = new URL('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pathname;
+
+        
+   
+
+        // console.log("New Path ", nn);
+        // // console.log("Current File Path",__filename)
+        // // var newPath = path.normalize("http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls");
+        // // var url = require("url");
+        // //  var dd = url.parse('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pathname  
+        // //         var url = require("url");
+        // // //var path = require("path");
+        // // var parsed = url.parse("http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls");
+        // // console.log(path.basename(parsed.pathname));  
+        // // var dd = path.basename(parsed.pathname)
+
+        // //    console.log("New Path is ",dd);
+  
 
     },
 
-    "uploadXlFile": function(req, res) {
+    "test": function(req, res) {
 
 
 
@@ -3537,7 +3636,48 @@ module.exports = {
         //   }
 
 
+    },
+
+ "uploadXlFile": function(req, res){
+
+        console.log("upload req",req);
+        console.log("upload req.file",req.file);
+        console.log("upload req.files",req.files)
+        var upload = multer({
+            storage: storage,
+            fileFilter: function (req, file, callback) {
+            // var ext = path.extname(file.originalname);
+            // console.log("ext-->>>",ext)
+                   // if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+                   //   console.log("Only images are allowed")
+                   //     return callback(new Error('Only images are allowed'))
+                   //    // callback(null, false)
+                   // }
+            callback(null, true)
+            },
+            limits: {
+                fields: 1,
+                files: 1,
+                fileSize: 512000
+            }}).single('userFile')
+          //var upload = multer({ storage: storage }).array('userFile')
+        upload(req, res, function(err,result) {
+
+           if (err) {
+             console.log("error",JSON.stringify(err))
+             res.end('uploading error')
+           }else{
+             console.log("result-->>>")
+           res.end('File is uploaded')
+           }
+           
+        })
+
+
     }
+
+
+
 
     // "returnAds": function(req, res){
     //     var value = myCache.get( "myKey" );

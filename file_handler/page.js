@@ -799,11 +799,16 @@ module.exports = {
         console.log("request---->>>",JSON.stringify(req.body))
         if (req.body.add == "add") {
             createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (Boolean(result.adAdmin.find(adAdmin => adAdmin.userId == req.body.userId))) { res.send({ responseCode: 400, responseMessage: "This user is already added as admin." }); } else {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                else if (Boolean(result.adAdmin.find(adAdmin => adAdmin.userId == req.body.userId))) { res.send({ responseCode: 400, responseMessage: "This user is already added as admin." }); }
+                else {
                     createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: 1 } }, { new: true }).exec(function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 }, $set: { type: "Advertiser" } }).exec(function(err, result1) {
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 }, $set: { type: "Advertiser" }},{new:true}).exec(function(err, result1) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                console.log("result---->>>>",result)
+                                 console.log("*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+")
+                                 console.log("result1---->>>>",result1)
                                     res.send({
                                         result: result,
                                         responseCode: 200,

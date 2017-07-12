@@ -6,6 +6,7 @@ var Views = require("./model/views");
 module.exports = {
 
     "pageFollowUnfollow": function(req, res) {
+        console.log("pageFollowUnfollow----->>>",req.body)
         if (req.body.follow == "follow") {
             console.log("8989898989---*****+++++++--///////////-->>>>>>>>>>>>>>>", JSON.stringify(req.body))
             PageFollowers.findOne({ userId: req.body.userId, pageId: req.body.pageId }).exec(function(err, result1) {

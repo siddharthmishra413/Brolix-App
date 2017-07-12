@@ -134,7 +134,7 @@ module.exports = {
 
     "showAllUser": function(req, res) {
         User.find({
-            $or: [{ type: "USER", status: 'ACTIVE' }, { type: "Advertiser", status: 'ACTIVE' }]
+            $or: [{ type: "USER", status: 'ACTIVE', isVerified:'TRUE' }, { type: "Advertiser", status: 'ACTIVE', isVerified:'TRUE' }]
         }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                 res.send({
@@ -147,7 +147,7 @@ module.exports = {
     },
 
     "showAllPersonalUser": function(req, res) {
-        User.find({ type: "USER", status: 'ACTIVE' }, function(err, result) {
+        User.find({ type: "USER", status: 'ACTIVE', isVerified:'TRUE' }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                 res.send({
                     result: result,
@@ -160,7 +160,7 @@ module.exports = {
 
 
     "showAllBusinessUser": function(req, res) {
-        User.find({ type: "Advertiser", status: 'ACTIVE' }, function(err, result) {
+        User.find({ type: "Advertiser", status: 'ACTIVE', isVerified:'TRUE' }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                 res.send({
                     result: result,
@@ -1526,8 +1526,8 @@ module.exports = {
     },
 
     "createPage": function(req, res) {
-        console.log("request---->>>",JSON.stringify(req.body))
-        createNewPage.findOne({ pageName: req.body.pageName, status:'ACTIVE', status:'BLOCK' }).exec(function(err, result2) {
+        console.log("admin createPage request---->>>",JSON.stringify(req.body))
+        createNewPage.findOne({ pageName: req.body.pageName, $or: [{ status: 'ACTIVE' }, { status: 'BLOCK' }] }).exec(function(err, result2) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
             } else {

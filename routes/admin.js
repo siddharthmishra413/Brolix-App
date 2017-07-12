@@ -20,7 +20,7 @@ app.get('/countrys', authUser.authUser, adminHandler.countrys);
 app.get('/getAllStates/:name/:code', authUser.authUser, adminHandler.getAllStates);
 app.get('/viewProfile/:id', authUser.authUser, adminHandler.viewProfile);
 app.put('/editUserProfile/:id', authUser.authUser, adminHandler.editUserProfile);
-app.get('/totalPages', authUser.authUser, adminHandler.totalPages);
+app.get('/totalPages',  adminHandler.totalPages);
 app.get('/viewPage/:id', authUser.authUser, adminHandler.viewPage);
 
 app.post('/showOneOfferDetail', adminHandler.showOneOfferDetail);

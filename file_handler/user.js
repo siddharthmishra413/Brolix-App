@@ -789,29 +789,15 @@ module.exports = {
     // },
 
     "signup": function(req, res) {
-        console.log("req======",JSON.stringify(req.body))
         waterfall([
             function(callback) {
                 if (!req.body.email) { res.send({ responseCode: 403, responseMessage: 'Email required' }); } else if (!req.body.password) { res.send({ responseCode: 403, responseMessage: 'password required' }); } else if (!req.body.gender) { res.send({ responseCode: 403, responseMessage: 'gender required' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'dob required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
-                    User.findOne({ email: req.body.email, isVerified:'TRUE' }, function(err, result) {
+                    User.findOne({ email: req.body.email, isVerified: 'TRUE' }, function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 401, responseMessage: "Email id must be unique." }); } else {
                             if (req.body.haveReferralCode == true) {
-                                console.log("in if")
                                 User.findOne({ referralCode: req.body.referredCode }, function(err, user) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!user) { res.send({ responseCode: 400, responseMessage: 'Please enter valid referralcode' }); } else {
-                                         console.log("in if------>>>>",user)
-                                        Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
-                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                                var amount = data[0].value;
-                                                User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }, { new: true }).exec(function(err, result2) {
-                                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                                         console.log("in result2------>>>>",result2)
-                                                        req.body.brolix = amount;
-                                                        callback(null)
-                                                    }
-                                                })
-                                            }
-                                        })
+                                        callback(null)
                                     }
                                 })
                             } else {
@@ -827,7 +813,22 @@ module.exports = {
                         User.findOne({ mobileNumber: req.body.mobileNumber, countryCode: req.body.countryCode }, function(err, result1) {
                             console.log("3")
                             if (err) { res.send({ responseCode: 403, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
-                                callback(null)
+                                if (req.body.haveReferralCode == true) {
+                                    Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                            var amount = data[0].value;
+                                            User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }, { new: true }).exec(function(err, result2) {
+                                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                                    req.body.brolix = amount;
+                                                    callback(null)
+                                                }
+                                            })
+                                        }
+                                    })
+
+                                } else {
+                                    callback(null)
+                                }
                             }
                         })
                     }
@@ -836,7 +837,6 @@ module.exports = {
             function(callback) {
                 req.body.otp = functions.otp();
                 req.body.referralCode = yeast();
-                console.log("request----->>>>",req.body)
                 var user = User(req.body)
                 user.save(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -893,7 +893,7 @@ module.exports = {
                 var mailOption = {
                     from: "test.avi201@gmail.com",
                     to: req.body.email,
-                    subject: 'Otp ',
+                    subject: 'Brolix verification code.',
                     text: 'Please verfiy using this otp',
                     html: "Your verification code is :" + otpTy
                 }
@@ -973,27 +973,24 @@ module.exports = {
     //API for user Login
 
 
-     "login": function(req, res) {
+    "login": function(req, res) {
         //        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         //        else {
         User.find({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
-            else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); } 
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); }
             // else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
             else {
-                var data = result.filter(result=>result.isVerified=='TRUE'); 
-                if(data.length == 0){
+                var data = result.filter(result => result.isVerified == 'TRUE');
+                if (data.length == 0) {
                     res.send({ responseCode: 404, responseMessage: "Please verify your mobile number." });
-                }
-                else if (data[0].status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); }
+                } else if (data[0].status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); }
                 // if (result.status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); }
-                 else if (data[0].isVerified != 'TRUE') { res.send({ responseCode: 401, responseMessage: 'Please verify your mobile number.' }); } 
-                 else {
+                else if (data[0].isVerified != 'TRUE') { res.send({ responseCode: 401, responseMessage: 'Please verify your mobile number.' }); } else {
                     var token_data = {
                         _id: data[0]._id,
                         status: data[0].status
                     }
-                    User.findOneAndUpdate({_id:data[0]._id, email: req.body.email }, {
+                    User.findOneAndUpdate({ _id: data[0]._id, email: req.body.email }, {
                         $set: {
                             deviceType: req.body.deviceType,
                             deviceToken: req.body.deviceToken
@@ -1144,7 +1141,16 @@ module.exports = {
 
     //API for user Details  userId: { $ne: req.params.id }
     "allUserDetails": function(req, res) {
-        User.find({ userId: { $ne: req.params.id }, $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
+        User.findOne({_id:req.params.id}).exec(function(err, userResult){
+           if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else if(!userResult) { res.send({ responseCode: 404, responseMessage: 'Please enter correct userId' }); }
+            else{
+                 console.log("array---->>>>",JSON.stringify(userResult.blockUser))
+              var userArray = userResult.blockUser;
+                userArray.push(userResult._id)
+         console.log("array---->>>>",userArray)
+        
+        User.find({ _id: { $nin: userArray }, $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var userArray = [];
                 for (var i = 0; i < result.length; i++) {
@@ -1162,6 +1168,8 @@ module.exports = {
                     }
                 })
             }
+        })
+           }
         })
     },
 
