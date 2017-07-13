@@ -158,12 +158,17 @@
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                      console.log("followerRequestReceive result--->>>", result)
                      var arr = [];
+                      var status_obj = {};
                      result.forEach(function(result) {
-                         arr.push(result.senderId)
+                          arr.unshift(result.senderId);
+                       //  arr.push(result.senderId)
+                          status_obj[result.senderId] = result.followerStatus;
                      })
+                     console.log("status_obj[result.senderId]---->>>",status_obj)
                      User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                          for (var i = 0; i < newResult.length; i++) {
-                             newResult[i].followerStatus = result[i].followerStatus;
+                              var sender_Id = newResult[i]._id;
+                             newResult[i].followerStatus = status_obj[sender_Id];;
                          }
                          res.send({
                              result: newResult,
@@ -183,12 +188,16 @@
                          followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' } }).exec(function(err, result) {
                              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                  var arr = [];
+                                 var status_obj = {};
                                  result.forEach(function(result) {
-                                     arr.push(result.senderId)
+                                      arr.unshift(result.senderId);
+                                    status_obj[result.senderId] = result.followerStatus;
                                  })
                                  User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                                      for (var i = 0; i < newResult.length; i++) {
-                                         newResult[i].followerStatus = result[i].followerStatus;
+                                        // newResult[i].followerStatus = result[i].followerStatus;
+                                          var sender_Id = newResult[i]._id;
+                                        newResult[i].followerStatus = status_obj[sender_Id];
                                      }
                                      res.send({
                                          result: newResult,
@@ -205,12 +214,16 @@
                      followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' } }).exec(function(err, result) {
                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                              var arr = [];
+                              var status_obj = {};
                              result.forEach(function(result) {
-                                 arr.push(result.senderId)
+                                  arr.unshift(result.senderId);
+                                    status_obj[result.senderId] = result.followerStatus;
                              })
                              User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                                  for (var i = 0; i < newResult.length; i++) {
-                                     newResult[i].followerStatus = result[i].followerStatus;
+                                   //  newResult[i].followerStatus = result[i].followerStatus;
+                                      var sender_Id = newResult[i]._id;
+                                        newResult[i].followerStatus = status_obj[sender_Id];;
                                  }
                                  res.send({
                                      result: newResult,
