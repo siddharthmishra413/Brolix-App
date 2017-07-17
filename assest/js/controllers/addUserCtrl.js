@@ -20,6 +20,7 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
     }
 
     $scope.addUser = function() {
+        $scope.myFrom.isVerified = "TRUE";
         $scope.myFrom.type = "USER";
         console.log("$scope.myFrom",$scope.myFrom)
         userService.addUser($scope.myFrom).success(function(res) {
