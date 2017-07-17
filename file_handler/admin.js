@@ -210,15 +210,36 @@ module.exports = {
     },
 
     "sendBrolix": function(req, res) {
-        User.findOne({
-            _id: req.body.userId
-        }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } } }, { new: true }, function(err, results) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!results) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
+        User.findOne({_id: req.body.userId}, function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+            else { 
+                console.log("*+*+*++*+**+++++++++++")
+                 console.log("*++ sendBrolix---->>>",result)
+               var data1 = {
+                        userId: req.body.userId,
+			                "notificationType" : "brolixReceivedType",
+		                	"linkType" : "profile",
+		                	"type" : "I have send you Brolix",
+                    }
+                User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { notification:data1, "sendBrolixListObject": { senderId: req.body.userId, brolix: req.body.brolix } } }, { new: true }, function(err, results) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                    else if (!results) res.send({ responseCode: 404, responseMessage: "Please enter correct userId" });
                     else {
                         results.brolix += req.body.brolix;
                         results.save();
+                        
+                          if (results.deviceToken && results.deviceType && results.notification_status && results.status) {
+                               var message = "I have send you brolix";
+                        console.log("enter in if")
+                        if (results.deviceType == 'Android' && results.notification_status == 'on' && results.status == 'ACTIVE') {
+                            functions.android_notification(results.deviceToken, message);
+                            console.log("Android notification send!!!!")
+                        } else if (results.deviceType == 'iOS' && results.notification_status == 'on' && results.status == 'ACTIVE') {
+                            functions.iOS_notification(results.deviceToken, message);
+                        } else {
+                            console.log("Something wrong!!!!")
+                        }
+                    }
                         res.send({ responseCode: 200, responseMessage: "Brolix Transferred.", result: results });
                     }
                 });
@@ -1554,6 +1575,7 @@ module.exports = {
                                             }
                                         })                                        
                                     }
+                                        console.log("admin createPage result---->>>",JSON.stringify(result))
                                         res.send({
                                             result: result,
                                             responseCode: 200,
@@ -3642,13 +3664,17 @@ module.exports = {
     },
 
     "sendCashBrolix": function(req, res) {
+        console.log("request--->>>",req.body)
         var ids = req.body.Id;
         console.log("ids", ids)
         var option = req.body.Cash ? { $inc: { cash: req.body.Cash } } : { $inc: { brolix: req.body.Brolix } }
         console.log(option)
         User.update({ _id: { $in: ids } }, option, { multi: true }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Records not fond" })
+            console.log("result---->>>",JSON.stringify(result))
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Records not fond" }) }
+            else{
             res.send({ result: result, responseCode: 200, responseMessage: 'Successfully updated' });
+            }
         })
     },
 
@@ -4119,7 +4145,7 @@ module.exports = {
                     console.log("data-->>", data)
                     console.log("data-->>", data1)
                         //   for (var i = 0; i < userArray.length; i++) {
-                    User.update({ _id: { $in: userArray } }, { $push: { coupon: data, gifts: couponAdId }, "notification": data1 }, { multi: true },
+                    User.update({ _id: { $in: userArray } }, { $push: { coupon: data, notification: data1, gifts: couponAdId }}, { multi: true },
                             function(err, result1) {
                                 console.log("result1-->>", result1)
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11', err }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {

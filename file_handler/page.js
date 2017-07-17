@@ -2912,7 +2912,7 @@ module.exports = {
                             if (req.body.paymentMode == 'paypal') {
                                 var cashAmount = user.cash - req.body.brolixAmount;
                             } else if (req.body.paymentMode == 'payWithWallet') {
-                                var cashAmount = user.cash - req.body.amount;
+                                 var cashAmount = user.cash - req.body.amount;
                             }
 
                             User.findOneAndUpdate({ _id: req.body.userId }, { $set: { cash: cashAmount } }, { new: true }).exec(function(err, result) {
@@ -2920,7 +2920,6 @@ module.exports = {
                                     callback(null, "null")
                                 }
                             })
-
                         },
                         function(nullResult, callback) {
                             if (req.body.paymentMode == 'paypal') {
@@ -2991,7 +2990,7 @@ module.exports = {
                             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
                             createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
                             createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
-                            createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnAdsData";
+                            createPayPage.return_url = 'http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '';
                             createPayPage.title = "Brolix";
                             createPayPage.cc_first_name = user.firstName;
                             createPayPage.cc_last_name = user.lastName;
@@ -3047,12 +3046,30 @@ module.exports = {
                                     myCache.set("myKeys", obj, 10000);
                                     var value = myCache.get("myKeys");
                                     console.log("value", value)
+                                        var objData = {
+                                        userId: req.body.userId,
+                                        paymentMode: req.body.paymentMode,
+                                        amount: req.body.amount,
+                                        userCashAmount: user.cash,
+                                        paymentAmount: req.body.paymentAmount,
+                                        brolixAmount: req.body.brolixAmount,
+                                        Type: req.body.Type,
+                                        pid: response.p_id,
+                                        dates: req.body.date,
+                                        payment_url: response.payment_url
+                                    };
 
                                     res.send({
                                         responseCode: 200,
                                         responseMessage: "Payment url.",
-                                        result: response
+                                        result: objData
                                     })
+ 
+                                    // res.send({
+                                    //     responseCode: 200,
+                                    //     responseMessage: "Payment url.",
+                                    //     result: response
+                                    // })
                                 }
                             });
                         }
@@ -3062,7 +3079,7 @@ module.exports = {
         })
     },
 
-    "createPagePayment": function(req, res) {
+     "createPagePayment": function(req, res) {
         console.log("req body on create page===>>", JSON.stringify(req.body))
 
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
@@ -3139,7 +3156,7 @@ module.exports = {
                         }
                     ], function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                            res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
+                            res.send({ responseCode: 200, responseMessage: "Payment done successfully." });
                         }
                     })
                 } else {
@@ -3176,7 +3193,7 @@ module.exports = {
                             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
                             createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
                             createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
-                            createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnPage";
+                            createPayPage.return_url = 'http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '';
                             createPayPage.title = "Brolix";
                             createPayPage.cc_first_name = user.firstName;
                             createPayPage.cc_last_name = user.lastName;
@@ -3227,10 +3244,23 @@ module.exports = {
                                     var value = myCache.get("myKey");
                                     console.log("value", value)
 
+                                    var objData = {
+                                        userId: req.body.userId,
+                                        paymentMode: req.body.paymentMode,
+                                        amount: req.body.amount,
+                                        userCashAmount: user.cash,
+                                        paymentAmount: req.body.paymentAmount,
+                                        brolixAmount: req.body.brolixAmount,
+                                        Type: req.body.Type,
+                                        pid: response.p_id,
+                                        dates: req.body.date,
+                                        payment_url: response.payment_url
+                                    };
+
                                     res.send({
                                         responseCode: 200,
                                         responseMessage: "Payment url.",
-                                        result: response
+                                        result: objData
                                     })
                                 }
                             });
@@ -3241,13 +3271,196 @@ module.exports = {
         })
     },
 
-    "returnPage": function(req, res) {
+    "redirectpage": function(req, res) {
+       res.json({result:"Page created successfully."})
+    },
+
+
+    // "createPagePayment": function(req, res) {
+    //     console.log("req body on create page===>>", JSON.stringify(req.body))
+
+    //     User.findOne({ _id: req.body.userId }).exec(function(err, user) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } else {
+    //             console.log("user", user)
+    //             if (req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet') {
+    //                 waterfall([
+    //                     function(callback) {
+    //                         if (req.body.paymentMode == 'paypal') {
+    //                             var cashAmount = user.cash - req.body.brolixAmount;
+    //                         } else if (req.body.paymentMode == 'payWithWallet') {
+    //                             var cashAmount = user.cash - req.body.amount;
+    //                         }
+
+    //                         User.findOneAndUpdate({ _id: req.body.userId }, { $set: { cash: cashAmount } }, { new: true }).exec(function(err, result) {
+    //                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+    //                                 callback(null, "null")
+    //                             }
+    //                         })
+
+    //                     },
+    //                     function(nullResult, callback) {
+    //                         if (req.body.paymentMode == 'paypal') {
+    //                             var details = {
+    //                                 paymentMode: req.body.paymentMode,
+    //                                 userId: req.body.userId,
+    //                                 amount: req.body.amount,
+    //                                 paymentAmount: req.body.paymentAmount,
+    //                                 brolixAmount: req.body.brolixAmount,
+    //                                 transcationId: req.body.transcationId,
+    //                                 Type: req.body.Type,
+    //                                 dates: req.body.date
+    //                             }
+    //                         } else if (req.body.paymentMode == 'payWithWallet') {
+    //                             var details = {
+    //                                 paymentMode: req.body.paymentMode,
+    //                                 userId: req.body.userId,
+    //                                 amount: req.body.amount,
+    //                                 transcationId: "brolixAccount",
+    //                                 Type: req.body.Type,
+    //                                 dates: req.body.date
+    //                             }
+    //                         }
+
+    //                         var payment = new Payment(details);
+    //                         payment.save(function(err, paymentResult) {
+    //                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+    //                                 callback(null, paymentResult)
+    //                             }
+    //                         })
+    //                     },
+    //                     function(paymentResult, callback) {
+    //                         adminCards.findOne({
+    //                             type: "upgrade_card",
+    //                             price: req.body.amount
+    //                         }, function(err, cardRes) {
+    //                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
+    //                                 callback(null, cardRes)
+    //                             }
+    //                         })
+    //                     },
+    //                     function(cardRes, callback) {
+    //                         var card_viewers = cardRes.viewers;
+    //                         var data = {
+    //                             cash: req.body.amount,
+    //                             viewers: card_viewers,
+    //                             type: "SENDBYADMIN"
+    //                         }
+    //                         User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { upgradeCardObject: data } }, function(err, userRes) {
+    //                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+    //                                 callback(null, userRes)
+    //                             }
+    //                         })
+    //                     }
+    //                 ], function(err, result) {
+    //                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+    //                         res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
+    //                     }
+    //                 })
+    //             } else {
+    //                 waterfall([
+    //                     function(callback) {
+    //                         paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response) {
+    //                             console.log(response);
+    //                             if (response.result == 'valid') {
+    //                                 callback(null, response)
+    //                             } else {
+    //                                 res.send({
+    //                                     responseCode: 404,
+    //                                     responseMessage: "Internal server error."
+    //                                 })
+    //                             }
+    //                         });
+    //                     },
+    //                     function(result, callback) {
+    //                         if (user.country == 'United Arab Emirates') {
+    //                             var state = 'UAE'
+    //                             var country_shipping = "ARE"
+    //                         } else if (user.country == 'Jordan') {
+    //                             var state = 'Jordan'
+    //                             var country_shipping = "JOR"
+    //                         } else {
+    //                             res.send({
+    //                                 responseCode: 404,
+    //                                 responseMessage: "User can pay only for country UAE and Jordan."
+    //                             })
+    //                         }
+
+    //                         var createPayPage = new Object()
+    //                         createPayPage.merchant_email = 'sakshigadia@gmail.com';
+    //                         createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
+    //                         createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+    //                         createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
+    //                         createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnPage";
+    //                         createPayPage.title = "Brolix";
+    //                         createPayPage.cc_first_name = user.firstName;
+    //                         createPayPage.cc_last_name = user.lastName;
+    //                         createPayPage.cc_phone_number = user.mobileNumber;
+    //                         createPayPage.phone_number = user.mobileNumber;
+    //                         createPayPage.email = user.email;
+    //                         createPayPage.products_per_title = "Payment";
+    //                         createPayPage.unit_price = req.body.paymentAmount;
+    //                         createPayPage.quantity = "1";
+    //                         createPayPage.other_charges = 0;
+    //                         createPayPage.amount = req.body.paymentAmount;
+    //                         createPayPage.discount = 0;
+    //                         createPayPage.currency = "USD"; //EUR JOD
+    //                         createPayPage.reference_no = "21873109128";
+    //                         createPayPage.ip_customer = "192.168.1.1";
+    //                         createPayPage.ip_merchant = "192.168.1.1";
+    //                         createPayPage.billing_address = "ydh";
+    //                         createPayPage.state = state;
+    //                         createPayPage.city = user.city;
+    //                         createPayPage.postal_code = '110020';
+    //                         createPayPage.country = country_shipping;
+    //                         createPayPage.shipping_first_name = user.firstName;
+    //                         createPayPage.shipping_last_name = user.lastName;
+    //                         createPayPage.address_shipping = "Flat";
+    //                         createPayPage.city_shipping = user.city;
+    //                         createPayPage.state_shipping = state;
+    //                         createPayPage.postal_code_shipping = '110020';
+    //                         createPayPage.country_shipping = country_shipping; //JOR ARE
+    //                         createPayPage.msg_lang = "English";
+    //                         createPayPage.cms_with_version = "1.0.0";
+    //                         paytabs.CreatePayPage(createPayPage, function(response) {
+    //                             console.log(response)
+    //                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!(response.response_code == "4012")) {
+    //                                 res.send({ responseCode: 404, responseMessage: "User details are invalid." });
+    //                             } else {
+    //                                 var obj = {
+    //                                     userId: req.body.userId,
+    //                                     paymentMode: req.body.paymentMode,
+    //                                     amount: req.body.amount,
+    //                                     userCashAmount: user.cash,
+    //                                     paymentAmount: req.body.paymentAmount,
+    //                                     brolixAmount: req.body.brolixAmount,
+    //                                     Type: req.body.Type,
+    //                                     pid: response.p_id,
+    //                                     dates: req.body.date
+    //                                 };
+    //                                 myCache.set("myKey", obj, 10000);
+    //                                 var value = myCache.get("myKey");
+    //                                 console.log("value", value)
+
+    //                                 res.send({
+    //                                     responseCode: 200,
+    //                                     responseMessage: "Payment url.",
+    //                                     result: response
+    //                                 })
+    //                             }
+    //                         });
+    //                     }
+    //                 ])
+    //             }
+    //         }
+    //     })
+    // },
+        "returnPage": function(req, res) {
         //myCache.del( "myKey" );
-        var value = myCache.get("myKey");
-        if(value == undefined || value == null ||value == ''){
-            res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
-        }
-        else{
+        var value = req.body;
+        // if(value == undefined || value == null ||value == ''){
+        //     res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+        // }
+        // else{
         console.log("value", value)
         waterfall([
             function(callback) {
@@ -3261,9 +3474,9 @@ module.exports = {
                       callback(null, response)
                     }
                     else{
-                     res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+                  
                     }
-                });
+                 });
             },
             function(response, callback) {
                 var details = {
@@ -3278,10 +3491,7 @@ module.exports = {
                 }
                 var payment = new Payment(details);
                 payment.save(function(err, paymentResult) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                    else if (!paymentResult) { 
-                        res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
-                     } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
                         console.log("payment result==>.",paymentResult)
                         callback(null, paymentResult)
                     }
@@ -3294,9 +3504,8 @@ module.exports = {
                         price: value.amount
                     }, function(err, cardRes) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                        else if (!cardRes) { 
-                            res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
-                            //console.log("card res0", cardRes)
+                        else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
+                           // console.log("card res0", cardRes)
                             callback(null, cardRes)
                         }
                     })
@@ -3320,12 +3529,12 @@ module.exports = {
 
                 }
 
-                console.log(data)
+               // console.log(data)
 
-                console.log("cashAmount", cashAmount)
+                //console.log("cashAmount", cashAmount)
                 User.findByIdAndUpdate({ _id: value.userId }, query, function(err, userRes) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                        //console.log("userRes========>", userRes)
+                      //  console.log("userRes========>", userRes)
                         callback(null, userRes)
                     }
                 })
@@ -3336,14 +3545,118 @@ module.exports = {
             }
             //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
             else {
-                //var values = myCache.del("myKey");
-                //console.log("values",values)
-                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
-                    //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
+                // var values = myCache.del("myKey");
+                // console.log("values",values)
+                //res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
+                    res.send({ responseCode: 200, responseMessage: "Payment done successfully." });
             }
         })
-      }
+   //   }
     },
+
+    // "returnPage": function(req, res) {
+    //     //myCache.del( "myKey" );
+    //     var value = myCache.get("myKey");
+    //     if(value == undefined || value == null ||value == ''){
+    //         res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+    //     }
+    //     else{
+    //     console.log("value", value)
+    //     waterfall([
+    //         function(callback) {
+    //             var verfiyPaymentRequest = new Object();
+    //             verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
+    //             verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+    //             verfiyPaymentRequest.payment_reference = value.pid;
+    //             paytabs.VerfiyPayment(verfiyPaymentRequest, function(response) {
+    //                 if(response.response_code =='100'){
+    //                   console.log("verify response", response)
+    //                   callback(null, response)
+    //                 }
+    //                 else{
+    //                  res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+    //                 }
+    //             });
+    //         },
+    //         function(response, callback) {
+    //             var details = {
+    //                 paymentMode: value.paymentMode,
+    //                 userId: value.userId,
+    //                 amount: value.amount,
+    //                 paymentAmount: value.paymentAmount,
+    //                 brolixAmount: value.brolixAmount,
+    //                 transcationId: response.transaction_id,
+    //                 Type: value.Type,
+    //                 dates: value.dates
+    //             }
+    //             var payment = new Payment(details);
+    //             payment.save(function(err, paymentResult) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+    //                 else if (!paymentResult) { 
+    //                     res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+    //                  } else {
+    //                     console.log("payment result==>.",paymentResult)
+    //                     callback(null, paymentResult)
+    //                 }
+    //             })
+    //         },
+    //         function(paymentResult, callback) {
+    //             if (value.Type == 'createPage') {
+    //                 adminCards.findOne({
+    //                     type: "upgrade_card",
+    //                     price: value.amount
+    //                 }, function(err, cardRes) {
+    //                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+    //                     else if (!cardRes) { 
+    //                         res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
+    //                         //console.log("card res0", cardRes)
+    //                         callback(null, cardRes)
+    //                     }
+    //                 })
+    //             } else {
+    //                 callback(null, "cardRes")
+    //             }
+
+    //         },
+    //         function(cardRes, callback) {
+    //             var cashAmount = value.userCashAmount - value.brolixAmount
+    //             if (value.Type == 'createPage') {
+    //                 var card_viewers = cardRes.viewers;
+    //                 var data = {
+    //                     cash: value.amount,
+    //                     viewers: card_viewers,
+    //                     type: "SENDBYADMIN"
+    //                 }
+    //                 var query = { $push: { upgradeCardObject: data }, $set: { cash: cashAmount } }
+    //             } else {
+    //                 var query = { $set: { cash: cashAmount } }
+
+    //             }
+
+    //             console.log(data)
+
+    //             console.log("cashAmount", cashAmount)
+    //             User.findByIdAndUpdate({ _id: value.userId }, query, function(err, userRes) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+    //                     //console.log("userRes========>", userRes)
+    //                     callback(null, userRes)
+    //                 }
+    //             })
+    //         }
+    //     ], function(err, result) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) {
+    //             res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+    //         }
+    //         //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+    //         else {
+    //             //var values = myCache.del("myKey");
+    //             //console.log("values",values)
+    //             res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
+    //                 //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
+    //         }
+    //     })
+    //   }
+    // },
 
 
     "returnAdsData": function(req, res) {
@@ -3445,9 +3758,9 @@ module.exports = {
       }
     },
 
-    "redirectpage": function(req, res) {
+    // "redirectpage": function(req, res) {
        
-    },
+    // },
 
     "paymentFilterApi": function(req, res) {
         var startTime = new Date(parseInt(req.body.startTime)).toUTCString();

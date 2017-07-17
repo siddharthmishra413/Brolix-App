@@ -49,12 +49,14 @@ var avoid = {
 
 var storage = multer.diskStorage({
  destination: function(req, file, callback) {
+      console.log(file.fieldname + '-' + Date.now())
   // console.log("file--->>",file);
    callback(null, './uploads')
  },
  filename: function(req, file, callback) {
    //console.log("file---->>>>",file)
   //callback(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+  console.log(file.fieldname + '-' + Date.now())
    callback(null, file.fieldname + '-' + Date.now());
  }
 })
@@ -959,7 +961,13 @@ module.exports = {
                                         adId: req.body.adId,
                                         pageId: pageId
                                     }
-                                    User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
+                                    var notificationData = {
+                                        adId: req.body.adId,
+                                        type: 'You have successfully won this raffle',
+                                        linkType: 'profile',
+                                        notificationType: 'WinnerType'
+                                    }
+                                    User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, notification: notificationData, gifts: req.body.adId }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                             console.log("*************************")
                                             console.log("++++++++++++++++++++++++++")
@@ -1029,7 +1037,13 @@ module.exports = {
                                                 adId: req.body.adId,
                                                 pageId: pageId
                                             }
-                                            User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                            var notifyData =  {
+                                                adId: req.body.adId,
+                                                type: 'You have successfully won this raffle',
+                                                linkType: 'profile',
+                                                notificationType: 'WinnerType'
+                                            } 
+                                            User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, notification: notifyData , hiddenGifts: data1, gifts: req.body.adId }}, { multi: true }, function(err, result) {
                                                 console.log("4")
                                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                     count += i;
@@ -1057,7 +1071,13 @@ module.exports = {
 
                                     } else {
                                         console.log("else")
-                                        User.update({ _id: { $in: winners } }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                        var notifyData =  {
+                                                adId: req.body.adId,
+                                                type: 'You have successfully won this raffle',
+                                                linkType: 'profile',
+                                                notificationType: 'WinnerType'
+                                            } 
+                                        User.update({ _id: { $in: winners } }, { $push: { coupon: data, notification:notifyData, gifts: req.body.adId } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                 console.log("*************************")
@@ -1337,7 +1357,7 @@ module.exports = {
                                             pageId: pageId
                                         }
 
-                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, notification: { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                 if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
@@ -1361,7 +1381,13 @@ module.exports = {
                                         })
                                     } else {
                                         console.log("else")
-                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                          var notifyData =  {
+                                                adId: req.body.adId,
+                                                type: 'You have successfully won this raffle',
+                                                linkType: 'profile',
+                                                notificationType: 'WinnerType'
+                                            } 
+                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, notification:notifyData, gifts: req.body.adId } }, { multi: true }, function(err, result) {
                                             console.log("4")
                                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                 if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
@@ -1783,7 +1809,7 @@ module.exports = {
                         var image = user.image;
                         for (var i = 0; i < senderId.length; i++) {
                             User.findOneAndUpdate({ _id: senderId[i] }, {
-                                $push: { "notification": { userId: req.body.senderId, type: "You are tagged on an ad", linkType: 'profile', adId: req.body.adId, notificationType: 'tagOnAd', image: image } }
+                                $push: { notification: { userId: req.body.senderId, type: "You are tagged on an ad", linkType: 'profile', adId: req.body.adId, notificationType: 'tagOnAd', image: image } }
                             }, { multi: true }, function(err, result1) {
                                 console.log("result1-->>", result1)
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct senderId" }); } else {
@@ -3512,10 +3538,10 @@ module.exports = {
     "readFile": function(req, res) {
         var path=require("path");
         var fs=require("fs")
-        var newPath = path.normalize(__dirname+"/ISOCurrencyCodes081507.xls");
+        var newPath = path.normalize(__dirname+"/testing.xls");
         console.log("New Path is ",newPath);
         var converter = require("xls-to-json");  
-        var res = {};  
+        //var res = {};  
             converter({  
               input: newPath, 
               output: null
@@ -3524,6 +3550,7 @@ module.exports = {
               console.error(err);
              } else {
               console.log("result is :-",result)
+              res.send({result: result})
             }
         })
 
@@ -3577,21 +3604,10 @@ module.exports = {
     },
 
  "uploadXlFile": function(req, res){
-
-        // console.log("upload req",req);
-        // console.log("upload req.file",req.file);
-        // console.log("upload req.files",req.files)
         var upload = multer({
             storage: storage,
-            fileFilter: function (req, file, callback) {
-            // var ext = path.extname(file.originalname);
-            // console.log("ext-->>>",ext)
-                   // if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
-                   //   console.log("Only images are allowed")
-                   //     return callback(new Error('Only images are allowed'))
-                   //    // callback(null, false)
-                   // }
-            callback(null, "true")
+            fileFilter: function (req, file,callback) {
+            callback(null, file)
             },
             limits: {
                 fields: 1,
@@ -3599,16 +3615,16 @@ module.exports = {
                 fileSize: 512000
             }}).single('userFile')
           //var upload = multer({ storage: storage }).array('userFile')
-        upload(req, res, function(err,result) {
 
-           if (err) {
-             console.log("error",JSON.stringify(err))
-             res.end('uploading error')
-           }else{
-             console.log("result-->>>",result)
-             res.end('File is uploaded')
-           }
-           
+        upload(req, res, function(err,result) {
+            if (err) {
+               console.log("error",JSON.stringify(err))
+               res.end('uploading error')
+            }else{
+              //console.log(file.fieldname + '-' + Date.now())
+               console.log("result-->>>",result)
+               res.end('File is uploaded')
+            }
         })
 
 
