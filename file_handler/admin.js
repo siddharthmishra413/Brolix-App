@@ -42,8 +42,8 @@ cloudinary.config({
 
 module.exports = {
     "login": function(req, res) {
-        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-        else {
+        // if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
+        // else {
             User.findOne({ email: req.body.email, password: req.body.password, $or: [{ 'type': 'ADMIN' }, { 'type': 'SYSTEMADMIN' }], status: 'ACTIVE' }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
                     res.send({ responseCode: 404, responseMessage: "The email address that you've entered doesn't match any account." });
@@ -70,7 +70,7 @@ module.exports = {
                     // });
                 }
             })
-        }
+       // }
     },
 
     "adminProfile": function(req, res) {
