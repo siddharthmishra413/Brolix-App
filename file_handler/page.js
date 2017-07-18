@@ -259,7 +259,7 @@ module.exports = {
                 results[0].pageFollowers.forEach(function(result) {
                     arr.push(result.pageId)
                 })
-                createNewPage.paginate({ _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8 }, function(err, newResult) {
+                createNewPage.paginate({ _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, newResult) {
                     res.send({
                         result: newResult,
                         responseCode: 200,
@@ -500,7 +500,7 @@ module.exports = {
     },
 
     "showBlockedPage": function(req, res) { // pageId in request
-        createNewPage.paginate({ status: "BLOCK" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        createNewPage.paginate({ status: "BLOCK" }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
             else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No blocked page found" }) } else {
                 res.send({
@@ -2710,7 +2710,7 @@ module.exports = {
                 }
                 console.log("blockPagesArray-->>", blockPagesArray)
                 var re = new RegExp(req.body.search, 'i');
-                createNewPage.paginate({ $and: [{ _id: { $in: blockPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
+                createNewPage.paginate({ $and: [{ _id: { $in: blockPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } },
                     function(err, result1) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
                             res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
@@ -2730,7 +2730,7 @@ module.exports = {
                 }
                 console.log("FavouitePages-->>", FavouitePages)
                 var re = new RegExp(req.body.search, 'i');
-                createNewPage.paginate({ $and: [{ _id: { $in: FavouitePages } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                createNewPage.paginate({ $and: [{ _id: { $in: FavouitePages } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
                         res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
                     }

@@ -719,7 +719,7 @@ module.exports = {
                 },
                 function(noDataValue, dataValue, callback) {
                     type = req.params.type;
-                    createNewAds.paginate({ pageId: req.params.pageId, adsType: type, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                    createNewAds.paginate({ pageId: req.params.pageId, adsType: type, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
 
                             var updatedResult1 = result.docs;
@@ -1884,7 +1884,7 @@ module.exports = {
             console.log("startDate", tempCond)
             console.log("endDate", tempEndDate)
             console.log("dta===>>", data)
-            createNewAds.paginate({ pageId: req.params.id, 'createdAt': data, adsType: type, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            createNewAds.paginate({ pageId: req.params.id, 'createdAt': data, adsType: type, status: 'ACTIVE' }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }) } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No ad found" }) } else {
                     var count = 0;
                     for (var i = 0; i < result.length; i++) {
@@ -1910,7 +1910,7 @@ module.exports = {
                     adsArray.push(result[i]._id)
                 }
                 console.log("ads-->>", adsArray)
-                createNewAds.paginate({ _id: { $in: adsArray }, status: { $in: status } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                createNewAds.paginate({ _id: { $in: adsArray }, status: { $in: status } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 }  }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "Please enter correct adId." }); } else {
                         res.send({
                             result: result1,
@@ -1932,7 +1932,7 @@ module.exports = {
                     adsArray.push(result[i]._id)
                 }
                 console.log("ads-->>", adsArray)
-                createNewAds.paginate({ _id: { $in: adsArray }, status: { $in: status } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                createNewAds.paginate({ _id: { $in: adsArray }, status: { $in: status } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "Please enter correct adId." }); } else {
                         res.send({
                             result: result1,
@@ -3550,36 +3550,37 @@ module.exports = {
               console.error(err);
              } else {
               console.log("result is :-",result)
-              res.send({result: result})
+              var arrayData = []
+                result.forEach(function(item){
+                  arrayData.push(item.Hiddengift)
+                })
+
+
+              
+                // createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { hiddenGifts: req.body.userId } }, { new: true }).exec(function(err, results) {
+                //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                //             res.send({
+                //                 result: results,
+                //                 responseCode: 200,
+                //                 responseMessage: "Ad removed successfully."
+                //             });
+
+                //         }
+                //     })
+              res.send({result: arrayData})
             }
         })
 
-
-
-        // function copyData(savPath, srcPath) {
-        //         fs.readFile(srcPath, 'utf8', function (err, data) {
-        //             console.log("Fffff")
-        //             if (err) throw err;
-        //             //Do your processing, MD5, send a satellite to the moon, etc.
-        //             fs.writeFile (savPath, data, function(err) {
-        //                 if (err) throw err;
-        //                 console.log('complete');
-        //             });
-        //         });
-        // }
-
-        // var request = require('request');
-        // var savPath = __dirname+"/testing.xls"
-        // request('http://res.cloudinary.com/dfrspfd4g/raw/upload/v1499412673/wapjgz37e3ok68yvmbsp.xls').pipe(fs.createWriteStream(savPath,function(err, result){
-        //     if(err)throw err;
-        //     else{
-        //         console.log("FFFFFFF",result)
-        //     }
-        // }))
-
-
-
-
+        // var excelJson = require('excel2json');
+ 
+       
+        // excelJson('./testing.xls', {
+        //     'convert_all_sheet': false,
+        //     'return_type': 'File',
+        //     'sheetName': 'survey'
+        // }, function(err, output) {
+        //   console.log("output",output)
+        // });
     },
 
     "test": function(req, res) {
@@ -3621,7 +3622,6 @@ module.exports = {
                console.log("error",JSON.stringify(err))
                res.end('uploading error')
             }else{
-              //console.log(file.fieldname + '-' + Date.now())
                console.log("result-->>>",result)
                res.end('File is uploaded')
             }

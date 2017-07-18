@@ -126,10 +126,7 @@ var createNewPageSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    winnersCount: {
-        type: Number,
-        default: 0
-    },
+    winnersCount: [],
     socialMedia: [],
     blockedUser: [],
     countryCode:{ type:String},

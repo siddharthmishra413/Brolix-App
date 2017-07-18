@@ -20,6 +20,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
 
     userService.totalPages().success(function(res) {
         if (res.responseCode == 200) {
+            console.log("res",JSON.stringify(res));
             $scope.totalPages = res.result;
             $scope.totalPagesCount = res.result.length;
         } else {

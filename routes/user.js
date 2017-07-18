@@ -60,7 +60,7 @@ app.post('/listOfFavouriteCoupon/:pageNumber', authUser.authUser, userHandler.li
 app.post('/couponExchangeOnOff', authUser.authUser, userHandler.couponExchangeOnOff);
 app.post('/sendCouponExchangeRequest', authUser.authUser, userHandler.sendCouponExchangeRequest);
 app.post('/sendCouponToFollower', authUser.authUser, userHandler.sendCouponToFollower);
-app.post('/registerWithRefferalCode/:pageNumber', authUser.authUser, userHandler.registerWithRefferalCode);
+app.post('/registerWithRefferalCode/:pageNumber',  userHandler.registerWithRefferalCode);
 app.post('/seeExchangeRequest', userHandler.seeExchangeRequest);
 app.post('/couponRequestsSearch', authUser.authUser, userHandler.couponRequestsSearch);
 app.post('/acceptDeclineCouponRequest', authUser.authUser, userHandler.acceptDeclineCouponRequest);

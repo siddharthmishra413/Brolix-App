@@ -2044,7 +2044,8 @@ module.exports = {
         User.find({ _id: userId, 'cashPrize.status': "ACTIVE" }).populate('cashPrize.adId').populate('cashPrize.pageId', 'pageName adAdmin').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
                 var obj = result[0].cashPrize;
-                var data = obj.filter(obj => obj.status == "ACTIVE");
+                var data = obj.filter(obj => obj.status == "ACTIVE");                
+                  console.log("userCashGifts---0-0-0-0-->>>",JSON.stringify(data))
                 res.send({
                     result: data,
                     responseCode: 200,
@@ -2055,14 +2056,18 @@ module.exports = {
     },
 
     "userCouponGifts": function(req, res) { // userId in req $or: SEND BY FOLLOWER SENDBYADMIN
+        console.log("userCouponGifts request--->>",req.body)
         var userId = req.body.userId;
 
         User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
                 var obj = result[0].coupon;
                 var data = obj.filter(obj => obj.status == "ACTIVE");
+                 var sortArray = data.sort(function(obj1, obj2) {
+                             return obj2.updateddAt - obj1.updateddAt
+                         })
                 res.send({
-                    result: data,
+                    result: sortArray,
                     responseCode: 200,
                     responseMessage: "Coupon gifts show successfully."
                 })
@@ -3102,8 +3107,12 @@ module.exports = {
     },
 
     "registerWithRefferalCode": function(req, res) {
-        User.paginate({ referredCode: req.body.referralCode }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+        User.paginate({ referredCode: req.body.referralCode }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                console.log("result---0-0-0--->>",result)
+                 var sortArray = result.docs.sort(function(obj1, obj2) {
+                             return obj2.createdAt - obj1.createdAt
+                         })
                 res.send({
                     result: result,
                     responseCode: 200,

@@ -30,6 +30,10 @@ var followerListSchema = new Schema({
         trim: true,
         default: "Sent"
     },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    },    
     createdAt: {
         type: Date,
         default: Date.now
