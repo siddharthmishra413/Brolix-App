@@ -166,8 +166,8 @@ module.exports = {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
-                req.body.viewerLenght = 2;
-                req.body.numberOfWinners = 2;
+//                req.body.viewerLenght = 100;
+//                req.body.numberOfWinners = 100;
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
@@ -190,8 +190,8 @@ module.exports = {
                 // } 
                 else {
                     User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-                        req.body.viewerLenght = 2;
-                        req.body.numberOfWinners = 2;
+//                        req.body.viewerLenght = 100;
+//                        req.body.numberOfWinners = 100;
                         req.body.cashStatus = 'DELIVERED';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
@@ -902,13 +902,14 @@ module.exports = {
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
                                         var winnerCount = success.numberOfWinners;
                                         var pageId = success.pageId;
+                                        console.log("in else")
                                         //   console.log("winnerCount-->>", winnerCount)
-                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +winnerCount } }, { new: true }).exec(function(err, result2) {
-                                            //    console.log("result2-->", result2)
-                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
-                                                console.log("in else")
-                                            }
-                                        })
+//                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +winnerCount } }, { new: true }).exec(function(err, result2) {
+//                                            //    console.log("result2-->", result2)
+//                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+//                                                console.log("in else")
+//                                            }
+//                                        })
                                     }
                                 })
                                 console.log("raffleCount--111-5346346346>>>" + raffleCount.length);
@@ -952,6 +953,12 @@ module.exports = {
 
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired: true } }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
+                                var pageId = result3.pageId;
+                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $push: { winnersCount: {$each: winners} } }, { new: true }).exec(function(err, result2) {
+                            //    console.log("result2-->", result2)
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+                                console.log("in else")
+                            
 
                                 if (result3.adsType == "cash") {
                                     var pageId = result3.pageId;
@@ -1106,6 +1113,8 @@ module.exports = {
                                     }
                                 }
                             }
+                        })
+                            }
                         });
                     }
                 })
@@ -1244,11 +1253,12 @@ module.exports = {
                                     console.log("result------213456786543--->>>>", success)
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
                                         var pageId = success.pageId;
-                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +1 } }, { new: true }).exec(function(err, result2) {
-                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
-                                                console.log("in else")
-                                            }
-                                        })
+                                         console.log("in else")
+//                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +1 } }, { new: true }).exec(function(err, result2) {
+//                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+//                                                console.log("in else")
+//                                            }
+//                                        })
                                     }
                                 })
 
@@ -1279,6 +1289,12 @@ module.exports = {
                         var date = new Date();
                         createNewAds.findOne({ _id: req.body.adId }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
+                                var pageId = result3.pageId;
+                                console.log("all winners pageId-->>",pageId)
+                                 createNewPage.findByIdAndUpdate({ _id: pageId }, { $push: { winnersCount: req.body.userId } }, { new: true }).exec(function(err, result2) {
+                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); }
+                                               else{
+                                     
                                 console.log("result3-->>", result3)
                                 var winner = result3.winners.length;
                                 if (result3.adsType == "cash") {
@@ -1412,7 +1428,8 @@ module.exports = {
                                     }
                                 }
                             }
-                        });
+                        })
+                            } })
                     }
                 })
             }
@@ -1569,15 +1586,13 @@ module.exports = {
         var page = String(pageNumber);
 
         User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE' } }).exec(function(err, result) {
-            console.log("1")
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: "No coupon winner found" }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
                 var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE' } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
-                    console.log("2")
+                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE' } },{ $limit: limitData }, { $skip: skips }, {$sort:{'coupon.updateddAt':-1}}).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                         User.populate(result1, {
                             path: 'coupon.adId',
@@ -1590,6 +1605,7 @@ module.exports = {
                                     select: 'pageName adAdmin'
                                 }, function(err, result3) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
+                                      
                                         res.send({
                                             docs: result2,
                                             count: count,
@@ -1649,7 +1665,7 @@ module.exports = {
                         count++;
                     }
                     var pages = Math.ceil(count / 8);
-                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }, { $limit: limitData }, { $skip: skips },{$sort:{'coupon.updateddAt':-1}}).exec(function(err, result1) {
                         console.log("2")
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                             User.populate(result1, {
@@ -1716,7 +1732,7 @@ module.exports = {
                         count++;
                     }
                     var pages = Math.ceil(count / 8);
-                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data } }, { $limit: limitData }, { $skip: skips },{$sort:{'cashPrize.updateddAt':-1}}).exec(function(err, result1) {
                         console.log("2")
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
                             User.populate(result1, {
@@ -1757,7 +1773,7 @@ module.exports = {
                     count++;
                 }
                 var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status': 'ACTIVE' } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status': 'ACTIVE' } }, { $limit: limitData }, { $skip: skips }, {$sort:{'cashPrize.updateddAt':-1}}).exec(function(err, result1) {
                     console.log("2")
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found." }); } else {
                         User.populate(result1, {
@@ -1993,7 +2009,7 @@ module.exports = {
                         userArray.push(result[i]._id)
                     }
                 }
-                User.aggregate({ $unwind: "$coupon" }, { $match: { $and: [{ _id: { $in: userArray }, 'coupon.couponStatus': { $in: status }, 'coupon.status': 'ACTIVE' }] } }, function(err, result1) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { $and: [{ _id: { $in: userArray }, 'coupon.couponStatus': { $in: status }, 'coupon.status': 'ACTIVE' }] } },{ $sort: { createdAt: -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         User.populate(result1, {
                             path: 'coupon.pageId',
@@ -2030,7 +2046,7 @@ module.exports = {
                         }
                     }
                 }
-                createNewAds.find({ _id: { $in: array }, cashStatus: { $in: status } }, function(err, result1) {
+                createNewAds.find({ _id: { $in: array }, cashStatus: { $in: status } },{ $sort: { createdAt: -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
 
                         var updatedResult = result1.docs;

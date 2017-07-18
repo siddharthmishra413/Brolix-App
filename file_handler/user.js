@@ -988,10 +988,10 @@ module.exports = {
             else {
                 var data = result.filter(result => result.isVerified == 'TRUE');
                 if (data.length == 0) {
-                    res.send({ responseCode: 404, responseMessage: "Please verify your mobile number." });
+                    res.send({ responseCode: 404, responseMessage: "You are not verified user. Please signup again." });
                 } else if (data[0].status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); }
                 // if (result.status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); }
-                else if (data[0].isVerified != 'TRUE') { res.send({ responseCode: 401, responseMessage: 'Please verify your mobile number.' }); } else {
+                else if (data[0].isVerified != 'TRUE') { res.send({ responseCode: 401, responseMessage: 'You are not verified user. Please signup again.' }); } else {
                     var token_data = {
                         _id: data[0]._id,
                         status: data[0].status
@@ -1182,7 +1182,7 @@ module.exports = {
 
     //API for Forgot Password
     "forgotPassword": function(req, res, next) {
-        User.findOne({ email: req.body.email }).exec(function(err, user) {
+        User.findOne({ email: req.body.email,isVerified : 'TRUE',status:'ACTIVE' }).exec(function(err, user) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             if (!user) { res.send({ responseCode: 404, responseMessage: 'Email id does not exists.' }); } else {
                 var transporter = nodemailer.createTransport({

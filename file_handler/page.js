@@ -620,7 +620,7 @@ module.exports = {
                     count++;
                 }
                 var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER' } }, { $limit: limitData }, { $skip: skips }, function(err, result1) {
+                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER' } }, { $limit: limitData }, { $skip: skips },{$sort:{'coupon.updateddAt':-1}}, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
@@ -654,7 +654,7 @@ module.exports = {
                     count++;
                 }
                 var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: '$cashPrize' }, { $match: { 'cashPrize.pageId': pageId } }, { $limit: limitData }, { $skip: skips }, function(err, result1) {
+                User.aggregate({ $unwind: '$cashPrize' }, { $match: { 'cashPrize.pageId': pageId } }, { $limit: limitData }, { $skip: skips },{$sort:{'cashPrize.updateddAt':-1}}, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
@@ -2498,7 +2498,8 @@ module.exports = {
                                 [
                                     { $unwind: '$coupon' },
                                     { $match: query },
-                                    { $limit: limitData }, { $skip: skips }
+                                    { $limit: limitData }, { $skip: skips },
+                                    {$sort:{'coupon.updatedAt': -1} }
                                 ]
                             ).exec(function(err, results) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!results) {
@@ -2573,7 +2574,8 @@ module.exports = {
                                 [
                                     { $unwind: '$cashPrize' },
                                     { $match: queryData },
-                                    { $limit: limitDataCash }, { $skip: skips }
+                                    { $limit: limitDataCash }, { $skip: skips },
+                                     {$sort:{'cashPrize.updatedAt':-1}}
                                 ]
                             ).exec(function(err, resu) {
                                 // console.log("resu====>>"+JSON.stringify(resu))
