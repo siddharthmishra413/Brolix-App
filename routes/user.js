@@ -74,6 +74,7 @@ app.post('/blockUserSearch', authUser.authUser, userHandler.blockUserSearch);
 app.post('/userNotification', userHandler.userNotification);
 app.post('/couponExchangeOff', userHandler.couponExchangeOff);
 app.post('/sendPaymentHistoryOnMailId', userHandler.sendPaymentHistoryOnMailId);
+app.post('/updateLive', userHandler.updateLive);
 
 
 app.post('/payU', userHandler.payU)

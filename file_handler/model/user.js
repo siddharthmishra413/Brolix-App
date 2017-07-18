@@ -261,7 +261,13 @@ var userSchema = new Schema({
         type:String,
         default:'FALSE',
         trim:true
+    },
+        isLive:{
+        type:String,
+        default:'False',
+        trim:true
     }
+
 
 });
 userSchema.plugin(mongoosePaginate);

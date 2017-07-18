@@ -73,7 +73,7 @@ module.exports = {
                 })
             },
             function(result, callback) {
-                createNewPage.paginate({ userId: { $ne: req.params.id }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                createNewPage.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
                     if (err) { res.semd({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                      // console.log("pageResult-*******33333333333**************----->>>>",pageResult)
                         callback(null, result, pageResult);
