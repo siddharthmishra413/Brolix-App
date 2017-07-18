@@ -48,17 +48,17 @@ var avoid = {
 
 
 var storage = multer.diskStorage({
- destination: function(req, file, callback) {
-      console.log(file.fieldname + '-' + Date.now())
-  // console.log("file--->>",file);
-   callback(null, './uploads')
- },
- filename: function(req, file, callback) {
-   //console.log("file---->>>>",file)
-  //callback(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
-  console.log(file.fieldname + '-' + Date.now())
-   callback(null, file.fieldname + '-' + Date.now());
- }
+    destination: function(req, file, callback) {
+        console.log(file.fieldname + '-' + Date.now())
+        // console.log("file--->>",file);
+        callback(null, './uploads')
+    },
+    filename: function(req, file, callback) {
+        //console.log("file---->>>>",file)
+        //callback(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+        console.log(file.fieldname + '-' + Date.now())
+        callback(null, file.fieldname + '-' + Date.now());
+    }
 })
 
 
@@ -166,8 +166,8 @@ module.exports = {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
                 req.body.couponCode = couponCode;
-//                req.body.viewerLenght = 100;
-//                req.body.numberOfWinners = 100;
+                //                req.body.viewerLenght = 100;
+                //                req.body.numberOfWinners = 100;
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
@@ -190,8 +190,8 @@ module.exports = {
                 // } 
                 else {
                     User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-//                        req.body.viewerLenght = 100;
-//                        req.body.numberOfWinners = 100;
+                        //                        req.body.viewerLenght = 100;
+                        //                        req.body.numberOfWinners = 100;
                         req.body.cashStatus = 'DELIVERED';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
@@ -255,7 +255,7 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            // var value= 2
+                        // var value= 2
                         callback(null, value)
                     }
                 })
@@ -264,25 +264,54 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            //  var value= 4;
+                        //  var value= 4;
                         callback(null, noDataValue, value)
                     }
                 })
             },
             function(noDataValue, dataValue, callback) {
 
-                createNewAds.paginate({ userId: { $ne: req.params.id }, removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
+                User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
+                        var userCountry = userResult.country;
+                        console.log("showAllAdsCouponType---->>>", JSON.stringify(userCountry))
+                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
 
-                        for (var i = 0; i < result.docs.length; i++) {
-                            if (result.docs[i].adsType == 'coupon') {
-                                if (result.docs[i].cash == 0) {
-                                    result.docs[i].couponSellPrice = noDataValue
-                                } else {
-                                    result.docs[i].couponSellPrice = dataValue
+                                for (var i = 0; i < result.docs.length; i++) {
+                                    if (result.docs[i].adsType == 'coupon') {
+                                        if (result.docs[i].cash == 0) {
+                                            result.docs[i].couponSellPrice = noDataValue
+                                        } else {
+                                            result.docs[i].couponSellPrice = dataValue
+                                        }
+                                    }
                                 }
+                                var updatedResult = result.docs;
+                                createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
+                                    res.send({
+                                        result: result,
+                                        responseCode: 200,
+                                        responseMessage: "Data Show successfully"
+                                    })
+                                })
                             }
-                        }
+                        })
+
+                    }
+                })
+            }
+        ])
+    },
+
+    // show all ads
+    "showAllAdsCashType": function(req, res) {
+        User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
+                var userCountry = userResult.country;
+                console.log("showAllAdsCashType---->>>", JSON.stringify(userCountry))
+                createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                             res.send({
@@ -294,24 +323,6 @@ module.exports = {
 
                     }
                 })
-            }
-        ])
-    },
-
-    // show all ads
-    "showAllAdsCashType": function(req, res) {
-
-        createNewAds.paginate({ userId: { $ne: req.params.id }, removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                var updatedResult = result.docs;
-                createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "Data Show successfully"
-                    })
-                })
-
             }
         })
     },
@@ -338,7 +349,7 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            // var value= 2
+                        // var value= 2
                         callback(null, value)
                     }
                 })
@@ -347,7 +358,7 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            //  var value= 4;
+                        //  var value= 4;
                         callback(null, noDataValue, value)
                     }
                 })
@@ -654,7 +665,7 @@ module.exports = {
                     brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                             var value = result1.value
-                                // var value= 2
+                            // var value= 2
                             callback(null, value)
                         }
                     })
@@ -663,7 +674,7 @@ module.exports = {
                     brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                             var value = result1.value
-                                //  var value= 4;
+                            //  var value= 4;
                             callback(null, noDataValue, value)
                         }
                     })
@@ -703,7 +714,7 @@ module.exports = {
                     brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                             var value = result1.value
-                                // var value= 2
+                            // var value= 2
                             callback(null, value)
                         }
                     })
@@ -712,7 +723,7 @@ module.exports = {
                     brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                             var value = result1.value
-                                //  var value= 4;
+                            //  var value= 4;
                             callback(null, noDataValue, value)
                         }
                     })
@@ -783,7 +794,7 @@ module.exports = {
         var adId = req.body.adId;
         createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (result.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
-            //    console.log("city-- 222>>>", result)
+                //    console.log("city-- 222>>>", result)
                 User.findOne({ _id: userId }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                         var age = result1.dob;
@@ -797,8 +808,7 @@ module.exports = {
                         console.log("myAge-->", myAge)
 
                         if (result.gender != 'Both') {
-                            if (result.gender != result1.gender) {
-                                { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); }
+                            if (result.gender != result1.gender) { { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); }
                             } else {
                                 if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad.' }); } else {
                                     var country = result.whoWillSeeYourAdd.country;
@@ -840,11 +850,11 @@ module.exports = {
                 var adId = req.body.adId;
                 createNewAds.findOne({ _id: req.body.adId }).exec(function(err, adResult) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!adResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else if (adResult.winners.length != 0) { res.send({ responseCode: 406, responseMessage: "Winner allready decided" }); } else {
-                          console.log("*************************")
-                          console.log("++++++++++++++++++++++++++")
+                        console.log("*************************")
+                        console.log("++++++++++++++++++++++++++")
                         //  console.log("result--->>>",adResult)
-                           console.log("*************************")
-                          console.log("++++++++++++++++++++++++++")
+                        console.log("*************************")
+                        console.log("++++++++++++++++++++++++++")
                         if (adResult.adsType == 'cash') { // brolixPerUpgradedCashAds
                             if (adResult.cash > 0) {
                                 var type = "brolixPerUpgradedCashAds";
@@ -862,7 +872,7 @@ module.exports = {
                         brolixAndDollors.findOne({
                             type: type
                         }, function(err, result) {
-                            console.log("result---->>>",result)
+                            console.log("result---->>>", result)
                             var value = result.value
                             callback(null, value)
                         })
@@ -876,7 +886,7 @@ module.exports = {
                 createNewAds.findOne({ _id: req.body.adId }, function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct adId." }); } else {
                         var randomIndex = [];
-                       // var winnersArray = [];
+                        // var winnersArray = [];
                         var raffleCount = result.raffleCount;
                         var viewerLenght = result.viewerLenght;
                         var luckUsers = result.luckCardListObject;
@@ -904,12 +914,12 @@ module.exports = {
                                         var pageId = success.pageId;
                                         console.log("in else")
                                         //   console.log("winnerCount-->>", winnerCount)
-//                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +winnerCount } }, { new: true }).exec(function(err, result2) {
-//                                            //    console.log("result2-->", result2)
-//                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
-//                                                console.log("in else")
-//                                            }
-//                                        })
+                                        //                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +winnerCount } }, { new: true }).exec(function(err, result2) {
+                                        //                                            //    console.log("result2-->", result2)
+                                        //                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+                                        //                                                console.log("in else")
+                                        //                                            }
+                                        //                                        })
                                     }
                                 })
                                 console.log("raffleCount--111-5346346346>>>" + raffleCount.length);
@@ -918,16 +928,16 @@ module.exports = {
                                         raffleCount.push(luckUsers[n].userId)
                                     }
                                 }
-                                 randomIndex = _.sample(raffleCount,numberOfWinners);
-//                                for (var i = 0; i < numberOfWinners; i++) {
-//                                    var index = Math.floor(Math.random() * raffleCount.length);
-//                                    console.log("index--->>>", index)
-//                                    if (randomIndex.filter(data => data != raffleCount[index])) {
-//                                        randomIndex.push(raffleCount[index])
-//                                    }
-                                   console.log("randomIndex----->>>",randomIndex)
-//                                 //   console.log("winnersArray----->>>", winnersArray)
-//                                }
+                                randomIndex = _.sample(raffleCount, numberOfWinners);
+                                //                                for (var i = 0; i < numberOfWinners; i++) {
+                                //                                    var index = Math.floor(Math.random() * raffleCount.length);
+                                //                                    console.log("index--->>>", index)
+                                //                                    if (randomIndex.filter(data => data != raffleCount[index])) {
+                                //                                        randomIndex.push(raffleCount[index])
+                                //                                    }
+                                console.log("randomIndex----->>>", randomIndex)
+                                //                                 //   console.log("winnersArray----->>>", winnersArray)
+                                //                                }
                                 callback(null, randomIndex, result.cashAdPrize, result.couponCode, result.hiddenGifts)
                             } else {
 
@@ -948,116 +958,153 @@ module.exports = {
                 createNewAds.update({ _id: req.body.adId }, { $push: { winners: { $each: winners } } }).lean().exec(function(err, result) {
                     if (err) { res.send({ responseCode: 302, responseMessage: "Something went wrongsssssss." }); } else {
                         console.log("*************************")
-                        console.log("result---->>>>*******************",result)
+                        console.log("result---->>>>*******************", result)
                         var date = new Date();
 
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired: true } }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
                                 var pageId = result3.pageId;
-                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $push: { winnersCount: {$each: winners} } }, { new: true }).exec(function(err, result2) {
-                            //    console.log("result2-->", result2)
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
-                                console.log("in else")
-                            
+                                createNewPage.findByIdAndUpdate({ _id: pageId }, { $push: { winnersCount: { $each: winners } } }, { new: true }).exec(function(err, result2) {
+                                    //    console.log("result2-->", result2)
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+                                        console.log("in else")
 
-                                if (result3.adsType == "cash") {
-                                    var pageId = result3.pageId;
 
-                                    var data = {
-                                        cash: cashPrize,
-                                        adId: req.body.adId,
-                                        pageId: pageId
-                                    }
-                                    var notificationData = {
-                                        adId: req.body.adId,
-                                        type: 'You have successfully won this raffle',
-                                        linkType: 'profile',
-                                        notificationType: 'WinnerType'
-                                    }
-                                    User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, notification: notificationData, gifts: req.body.adId }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
-                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
-                                            console.log("*************************")
-                                            console.log("++++++++++++++++++++++++++")
-                                            console.log("result--->>>",result)
-                                            console.log("*************************")
-                                            console.log("++++++++++++++++++++++++++")
-                                            if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                var message = "You have successfully won this Raffle.";
-                                                if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    functions.android_notification(result.deviceToken, message);
-                                                    console.log("Android notification send!!!!")
-                                                } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    functions.iOS_notification(result.deviceToken, message);
-                                                } else {
-                                                    console.log("Something wrong!!!!")
-                                                }
-                                            }
-                                            res.send({
-                                                responseCode: 200,
-                                                responseMessage: "Raffle is over winner decided."
-                                                    //result: result 
-                                            })
-                                        }
-                                    })
+                                        if (result3.adsType == "cash") {
+                                            var pageId = result3.pageId;
 
-                                } else {
-                                    var startTime = new Date().toUTCString();
-                                    var h = new Date(new Date(startTime).setHours(00)).toUTCString();
-                                    var m = new Date(new Date(h).setMinutes(00)).toUTCString();
-                                    var s = Date.now(m)
-                                    var pageId = result3.pageId;
-                                    var coupanAge = result3.couponExpiryDate;
-                                    var actualTime = parseInt(s) + parseInt(coupanAge);
-                                    console.log("coupanAge--->>", coupanAge)
-                                    var neverExpireTime = parseInt(s) + parseInt(2125651954361);
-                                    console.log("coupanAge--->>", coupanAge)
-                                    console.log("neverExpireTime--->>", neverExpireTime)
-                                    if (coupanAge == 'NEVER') {
-                                        console.log("if")
-                                        var data = {
-                                            couponCode: couponCode,
-                                            adId: req.body.adId,
-                                            pageId: pageId,
-                                            type: "WINNER",
-                                            couponExpire: "NEVER",
-                                            expirationTime: neverExpireTime
-                                        }
-                                    } else {
-                                        console.log("else")
-                                        var data = {
-                                            couponCode: couponCode,
-                                            expirationTime: actualTime,
-                                            adId: req.body.adId,
-                                            pageId: pageId,
-                                            type: "WINNER",
-                                            couponExpire: "YES"
-                                        }
-                                    }
-                                    console.log("data---->>>>", data)
-                                    if (hiddenGifts.length != 0) {
-                                        console.log("if")
-                                        var hiddenCode = hiddenGifts;
-                                        var count = 0;
-                                        for (var i = 0; i < hiddenCode.length; i++) {
-                                            var data1 = {
-                                                hiddenCode: hiddenCode[i],
+                                            var data = {
+                                                cash: cashPrize,
                                                 adId: req.body.adId,
                                                 pageId: pageId
                                             }
-                                            var notifyData =  {
+                                            var notificationData = {
                                                 adId: req.body.adId,
                                                 type: 'You have successfully won this raffle',
                                                 linkType: 'profile',
                                                 notificationType: 'WinnerType'
-                                            } 
-                                            User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, notification: notifyData , hiddenGifts: data1, gifts: req.body.adId }}, { multi: true }, function(err, result) {
-                                                console.log("4")
-                                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                                    count += i;
-                                                    if ((i * i) == count) {
+                                            }
+                                            User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, notification: notificationData, gifts: req.body.adId }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
+                                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
+                                                    console.log("*************************")
+                                                    console.log("++++++++++++++++++++++++++")
+                                                    console.log("result--->>>", result)
+                                                    console.log("*************************")
+                                                    console.log("++++++++++++++++++++++++++")
+                                                    if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
+                                                        var message = "You have successfully won this Raffle.";
+                                                        if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                            functions.android_notification(result.deviceToken, message);
+                                                            console.log("Android notification send!!!!")
+                                                        } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                            functions.iOS_notification(result.deviceToken, message);
+                                                        } else {
+                                                            console.log("Something wrong!!!!")
+                                                        }
+                                                    }
+                                                    res.send({
+                                                        responseCode: 200,
+                                                        responseMessage: "Raffle is over winner decided."
+                                                        //result: result 
+                                                    })
+                                                }
+                                            })
+
+                                        } else {
+                                            var startTime = new Date().toUTCString();
+                                            var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+                                            var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+                                            var s = Date.now(m)
+                                            var pageId = result3.pageId;
+                                            var coupanAge = result3.couponExpiryDate;
+                                            var actualTime = parseInt(s) + parseInt(coupanAge);
+                                            console.log("coupanAge--->>", coupanAge)
+                                            var neverExpireTime = parseInt(s) + parseInt(2125651954361);
+                                            console.log("coupanAge--->>", coupanAge)
+                                            console.log("neverExpireTime--->>", neverExpireTime)
+                                            if (coupanAge == 'NEVER') {
+                                                console.log("if")
+                                                var data = {
+                                                    couponCode: couponCode,
+                                                    adId: req.body.adId,
+                                                    pageId: pageId,
+                                                    type: "WINNER",
+                                                    couponExpire: "NEVER",
+                                                    expirationTime: neverExpireTime
+                                                }
+                                            } else {
+                                                console.log("else")
+                                                var data = {
+                                                    couponCode: couponCode,
+                                                    expirationTime: actualTime,
+                                                    adId: req.body.adId,
+                                                    pageId: pageId,
+                                                    type: "WINNER",
+                                                    couponExpire: "YES"
+                                                }
+                                            }
+                                            console.log("data---->>>>", data)
+                                            if (hiddenGifts.length != 0) {
+                                                console.log("if")
+                                                var hiddenCode = hiddenGifts;
+                                                var count = 0;
+                                                for (var i = 0; i < hiddenCode.length; i++) {
+                                                    var data1 = {
+                                                        hiddenCode: hiddenCode[i],
+                                                        adId: req.body.adId,
+                                                        pageId: pageId
+                                                    }
+                                                    var notifyData = {
+                                                        adId: req.body.adId,
+                                                        type: 'You have successfully won this raffle',
+                                                        linkType: 'profile',
+                                                        notificationType: 'WinnerType'
+                                                    }
+                                                    User.update({ _id: { $in: winners[i] } }, { $push: { coupon: data, notification: notifyData, hiddenGifts: data1, gifts: req.body.adId } }, { multi: true }, function(err, result) {
+                                                        console.log("4")
+                                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                            count += i;
+                                                            if ((i * i) == count) {
+                                                                if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
+                                                                    var message = "You have successfully won this Raffle.";
+                                                                    if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                                        functions.android_notification(result.deviceToken, message);
+                                                                        console.log("Android notification send!!!!")
+                                                                    } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                                        functions.iOS_notification(result.deviceToken, message);
+                                                                    } else {
+                                                                        console.log("Something wrong!!!!")
+                                                                    }
+                                                                }
+                                                                res.send({
+                                                                    responseCode: 200,
+                                                                    responseMessage: "Raffle is over winner decided."
+                                                                    //result: result
+                                                                })
+                                                            }
+                                                        }
+                                                    })
+                                                }
+
+                                            } else {
+                                                console.log("else")
+                                                var notifyData = {
+                                                    adId: req.body.adId,
+                                                    type: 'You have successfully won this raffle',
+                                                    linkType: 'profile',
+                                                    notificationType: 'WinnerType'
+                                                }
+                                                User.update({ _id: { $in: winners } }, { $push: { coupon: data, notification: notifyData, gifts: req.body.adId } }, { multi: true }, function(err, result) {
+                                                    console.log("4")
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                        console.log("*************************")
+                                                        console.log("++++++++++++++++++++++++++")
+                                                        console.log("result--->>>", result)
+                                                        console.log("*************************")
+                                                        console.log("++++++++++++++++++++++++++")
                                                         if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
                                                             var message = "You have successfully won this Raffle.";
-                                                            if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                            if (result.deviceToken && result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                                 functions.android_notification(result.deviceToken, message);
                                                                 console.log("Android notification send!!!!")
                                                             } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
@@ -1069,51 +1116,14 @@ module.exports = {
                                                         res.send({
                                                             responseCode: 200,
                                                             responseMessage: "Raffle is over winner decided."
-                                                                //result: result
+                                                            //result: result
                                                         })
                                                     }
-                                                }
-                                            })
-                                        }
-
-                                    } else {
-                                        console.log("else")
-                                        var notifyData =  {
-                                                adId: req.body.adId,
-                                                type: 'You have successfully won this raffle',
-                                                linkType: 'profile',
-                                                notificationType: 'WinnerType'
-                                            } 
-                                        User.update({ _id: { $in: winners } }, { $push: { coupon: data, notification:notifyData, gifts: req.body.adId } }, { multi: true }, function(err, result) {
-                                            console.log("4")
-                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                                console.log("*************************")
-                                            console.log("++++++++++++++++++++++++++")
-                                            console.log("result--->>>",result)
-                                            console.log("*************************")
-                                            console.log("++++++++++++++++++++++++++")
-                                                if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                    var message = "You have successfully won this Raffle.";
-                                                    if (result.deviceToken && result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                        functions.android_notification(result.deviceToken, message);
-                                                        console.log("Android notification send!!!!")
-                                                    } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                        functions.iOS_notification(result.deviceToken, message);
-                                                    } else {
-                                                        console.log("Something wrong!!!!")
-                                                    }
-                                                }
-                                                res.send({
-                                                    responseCode: 200,
-                                                    responseMessage: "Raffle is over winner decided."
-                                                        //result: result
                                                 })
                                             }
-                                        })
+                                        }
                                     }
-                                }
-                            }
-                        })
+                                })
                             }
                         });
                     }
@@ -1162,8 +1172,7 @@ module.exports = {
                                 console.log("myAge-->", myAge)
 
                                 if (result.gender != 'Both') {
-                                    if (result.gender != result1.gender) {
-                                        { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t watch this ad.' }); }
+                                    if (result.gender != result1.gender) { { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t watch this ad.' }); }
                                     } else {
                                         if (myAge < result.ageFrom) { res.send({ responseCode: 400, responseMessage: 'YSorry, you are not from the targeted users which have been set by the advertiser.' }); } else if (myAge > result.ageTo) { res.send({ responseCode: 400, responseMessage: 'Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t watch this ad.' }); } else {
                                             var country = result.whoWillSeeYourAdd.country;
@@ -1253,12 +1262,12 @@ module.exports = {
                                     console.log("result------213456786543--->>>>", success)
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
                                         var pageId = success.pageId;
-                                         console.log("in else")
-//                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +1 } }, { new: true }).exec(function(err, result2) {
-//                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
-//                                                console.log("in else")
-//                                            }
-//                                        })
+                                        console.log("in else")
+                                        //                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +1 } }, { new: true }).exec(function(err, result2) {
+                                        //                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+                                        //                                                console.log("in else")
+                                        //                                            }
+                                        //                                        })
                                     }
                                 })
 
@@ -1290,146 +1299,146 @@ module.exports = {
                         createNewAds.findOne({ _id: req.body.adId }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
                                 var pageId = result3.pageId;
-                                console.log("all winners pageId-->>",pageId)
-                                 createNewPage.findByIdAndUpdate({ _id: pageId }, { $push: { winnersCount: req.body.userId } }, { new: true }).exec(function(err, result2) {
-                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); }
-                                               else{
-                                     
-                                console.log("result3-->>", result3)
-                                var winner = result3.winners.length;
-                                if (result3.adsType == "cash") {
-                                    var pageId = result3.pageId;
-                                    var data = {
-                                        cash: cashPrize,
-                                        adId: req.body.adId,
-                                        pageId: pageId
-                                    }
-                                    console.log("cash---data--->>>", data)
-                                    User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
-                                        console.log("result-->>", result)
-                                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
-                                            if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                var message = "You have successfully won this Raffle.";
-                                                if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    functions.android_notification(result.deviceToken, message);
-                                                    console.log("Android notification send!!!!")
-                                                } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                    functions.iOS_notification(result.deviceToken, message);
-                                                } else {
-                                                    console.log("Something wrong!!!!")
+                                console.log("all winners pageId-->>", pageId)
+                                createNewPage.findByIdAndUpdate({ _id: pageId }, { $push: { winnersCount: req.body.userId } }, { new: true }).exec(function(err, result2) {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
+
+                                        console.log("result3-->>", result3)
+                                        var winner = result3.winners.length;
+                                        if (result3.adsType == "cash") {
+                                            var pageId = result3.pageId;
+                                            var data = {
+                                                cash: cashPrize,
+                                                adId: req.body.adId,
+                                                pageId: pageId
+                                            }
+                                            console.log("cash---data--->>>", data)
+                                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
+                                                console.log("result-->>", result)
+                                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
+                                                    if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
+                                                        var message = "You have successfully won this Raffle.";
+                                                        if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                            functions.android_notification(result.deviceToken, message);
+                                                            console.log("Android notification send!!!!")
+                                                        } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                            functions.iOS_notification(result.deviceToken, message);
+                                                        } else {
+                                                            console.log("Something wrong!!!!")
+                                                        }
+                                                    } else {
+                                                        res.send({
+                                                            responseCode: 200,
+                                                            responseMessage: "Raffle is over"
+                                                            //result: result 
+
+                                                        })
+                                                    }
+                                                }
+                                            })
+
+                                        } else {
+                                            var startTime = new Date().toUTCString();
+                                            var h = new Date(new Date(startTime).setHours(00)).toUTCString();
+                                            var m = new Date(new Date(h).setMinutes(00)).toUTCString();
+                                            var s = Date.now(m)
+                                            var pageId = result3.pageId;
+                                            var coupanAge = result3.couponExpiryDate;
+                                            var actualTime = parseInt(s) + parseInt(coupanAge);
+                                            console.log("coupanAge--->>", coupanAge)
+                                            var neverExpireTime = parseInt(s) + parseInt(2125651954361);
+                                            console.log("coupanAge--->>", coupanAge)
+                                            console.log("neverExpireTime--->>", neverExpireTime)
+                                            if (coupanAge == 'NEVER') {
+                                                console.log("if")
+                                                var data = {
+                                                    couponCode: couponCode,
+                                                    adId: req.body.adId,
+                                                    pageId: pageId,
+                                                    type: "WINNER",
+                                                    couponExpire: "NEVER",
+                                                    expirationTime: neverExpireTime
                                                 }
                                             } else {
-                                                res.send({
-                                                    responseCode: 200,
-                                                    responseMessage: "Raffle is over"
-                                                        //result: result 
+                                                console.log("else")
+                                                var data = {
+                                                    couponCode: couponCode,
+                                                    expirationTime: actualTime,
+                                                    adId: req.body.adId,
+                                                    pageId: pageId,
+                                                    type: "WINNER",
+                                                    couponExpire: "YES"
+                                                }
+                                            }
+                                            console.log("data---->>>>", data)
+                                            if (hiddenGifts.length != 0) {
+                                                console.log("if")
+                                                var hiddenCode = hiddenGifts;
+                                                var count = 0;
+                                                var data1 = {
+                                                    hiddenCode: hiddenCode[winner - 1],
+                                                    adId: req.body.adId,
+                                                    pageId: pageId
+                                                }
 
+                                                User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, notification: { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                                    console.log("4")
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                        if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
+                                                            var message = "You have successfully won this Raffle.";
+                                                            if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                                functions.android_notification(result.deviceToken, message);
+                                                                console.log("Android notification send!!!!")
+                                                            } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                                functions.iOS_notification(result.deviceToken, message);
+                                                            } else {
+                                                                console.log("Something wrong!!!!")
+                                                            }
+                                                        } else {
+                                                            res.send({
+                                                                responseCode: 200,
+                                                                responseMessage: "Raffle is over."
+                                                                //result: result
+                                                            })
+                                                        }
+                                                    }
+                                                })
+                                            } else {
+                                                console.log("else")
+                                                var notifyData = {
+                                                    adId: req.body.adId,
+                                                    type: 'You have successfully won this raffle',
+                                                    linkType: 'profile',
+                                                    notificationType: 'WinnerType'
+                                                }
+                                                User.update({ _id: req.body.userId }, { $push: { coupon: data, notification: notifyData, gifts: req.body.adId } }, { multi: true }, function(err, result) {
+                                                    console.log("4")
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
+                                                        if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
+                                                            var message = "You have successfully won this Raffle.";
+                                                            if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                                functions.android_notification(result.deviceToken, message);
+                                                                console.log("Android notification send!!!!")
+                                                            } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
+                                                                functions.iOS_notification(result.deviceToken, message);
+                                                            } else {
+                                                                console.log("Something wrong!!!!")
+                                                            }
+                                                        } else {
+                                                            res.send({
+                                                                responseCode: 200,
+                                                                responseMessage: "Raffle is over winner decided."
+                                                                //result: result
+                                                            })
+                                                        }
+                                                    }
                                                 })
                                             }
                                         }
-                                    })
-
-                                } else {
-                                    var startTime = new Date().toUTCString();
-                                    var h = new Date(new Date(startTime).setHours(00)).toUTCString();
-                                    var m = new Date(new Date(h).setMinutes(00)).toUTCString();
-                                    var s = Date.now(m)
-                                    var pageId = result3.pageId;
-                                    var coupanAge = result3.couponExpiryDate;
-                                    var actualTime = parseInt(s) + parseInt(coupanAge);
-                                    console.log("coupanAge--->>", coupanAge)
-                                    var neverExpireTime = parseInt(s) + parseInt(2125651954361);
-                                    console.log("coupanAge--->>", coupanAge)
-                                    console.log("neverExpireTime--->>", neverExpireTime)
-                                    if (coupanAge == 'NEVER') {
-                                        console.log("if")
-                                        var data = {
-                                            couponCode: couponCode,
-                                            adId: req.body.adId,
-                                            pageId: pageId,
-                                            type: "WINNER",
-                                            couponExpire: "NEVER",
-                                            expirationTime: neverExpireTime
-                                        }
-                                    } else {
-                                        console.log("else")
-                                        var data = {
-                                            couponCode: couponCode,
-                                            expirationTime: actualTime,
-                                            adId: req.body.adId,
-                                            pageId: pageId,
-                                            type: "WINNER",
-                                            couponExpire: "YES"
-                                        }
                                     }
-                                    console.log("data---->>>>", data)
-                                    if (hiddenGifts.length != 0) {
-                                        console.log("if")
-                                        var hiddenCode = hiddenGifts;
-                                        var count = 0;
-                                        var data1 = {
-                                            hiddenCode: hiddenCode[winner - 1],
-                                            adId: req.body.adId,
-                                            pageId: pageId
-                                        }
-
-                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, notification: { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
-                                            console.log("4")
-                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                                if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                    var message = "You have successfully won this Raffle.";
-                                                    if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                        functions.android_notification(result.deviceToken, message);
-                                                        console.log("Android notification send!!!!")
-                                                    } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                        functions.iOS_notification(result.deviceToken, message);
-                                                    } else {
-                                                        console.log("Something wrong!!!!")
-                                                    }
-                                                } else {
-                                                    res.send({
-                                                        responseCode: 200,
-                                                        responseMessage: "Raffle is over."
-                                                            //result: result
-                                                    })
-                                                }
-                                            }
-                                        })
-                                    } else {
-                                        console.log("else")
-                                          var notifyData =  {
-                                                adId: req.body.adId,
-                                                type: 'You have successfully won this raffle',
-                                                linkType: 'profile',
-                                                notificationType: 'WinnerType'
-                                            } 
-                                        User.update({ _id: req.body.userId }, { $push: { coupon: data, notification:notifyData, gifts: req.body.adId } }, { multi: true }, function(err, result) {
-                                            console.log("4")
-                                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
-                                                if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                    var message = "You have successfully won this Raffle.";
-                                                    if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                        functions.android_notification(result.deviceToken, message);
-                                                        console.log("Android notification send!!!!")
-                                                    } else if (result.deviceType == 'iOS' && result.notification_status == 'on' && result.status == 'ACTIVE') {
-                                                        functions.iOS_notification(result.deviceToken, message);
-                                                    } else {
-                                                        console.log("Something wrong!!!!")
-                                                    }
-                                                }else{
-                                                res.send({
-                                                    responseCode: 200,
-                                                    responseMessage: "Raffle is over winner decided."
-                                                        //result: result
-                                                })
-                                                }
-                                            }
-                                        })
-                                    }
-                                }
+                                })
                             }
                         })
-                            } })
                     }
                 })
             }
@@ -1489,30 +1498,30 @@ module.exports = {
                                                 PageFollowers.findOneAndUpdate({ _id: result1._id }, { $set: { followStatus: "follow", userId: req.body.userId, pageId: pageId } }, { new: true }).exec(function(err, result2) {
                                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                                         createNewAds.findOne({ _id: req.body.adId }).exec(function(err, adResult) {
-                                                                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!adResult) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
-                                                                    console.log(" result--adFollowUnfollow-->>>", adResult)
-                                                                    var pageId = adResult.pageId;
-                                                                    var pageName = adResult.pageName;
+                                                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!adResult) { res.semd({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
+                                                                console.log(" result--adFollowUnfollow-->>>", adResult)
+                                                                var pageId = adResult.pageId;
+                                                                var pageName = adResult.pageName;
 
-                                                                    User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: pageId, pageName: pageName } } }, { new: true }).exec(function(err, results) {
-                                                                        console.log("pageFollowUnfollow 1---------0000000000---->>>", results)
-                                                                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                                                            createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
-                                                                                res.send({
-                                                                                    result: result2,
-                                                                                    responseCode: 200,
-                                                                                    responseMessage: "Followed."
-                                                                                });
-                                                                            })
-                                                                        }
-                                                                    })
-                                                                }
-                                                            })
-                                                            //                                                        res.send({
-                                                            //                                                            result: adResults,
-                                                            //                                                            responseCode: 200,
-                                                            //                                                            responseMessage: "Followed."
-                                                            //                                                        });
+                                                                User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: pageId, pageName: pageName } } }, { new: true }).exec(function(err, results) {
+                                                                    console.log("pageFollowUnfollow 1---------0000000000---->>>", results)
+                                                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                                                        createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $push: { "pageFollowersUser": { userId: req.body.userId } } }, { new: true }).exec(function(err, result1) {
+                                                                            res.send({
+                                                                                result: result2,
+                                                                                responseCode: 200,
+                                                                                responseMessage: "Followed."
+                                                                            });
+                                                                        })
+                                                                    }
+                                                                })
+                                                            }
+                                                        })
+                                                        //                                                        res.send({
+                                                        //                                                            result: adResults,
+                                                        //                                                            responseCode: 200,
+                                                        //                                                            responseMessage: "Followed."
+                                                        //                                                        });
                                                     }
                                                 })
                                             } else if (result1.followStatus == "block") {
@@ -1592,7 +1601,7 @@ module.exports = {
                     count++;
                 }
                 var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE' } },{ $limit: limitData }, { $skip: skips }, {$sort:{'coupon.updateddAt':-1}}).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE' } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'coupon.updateddAt': -1 } }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                         User.populate(result1, {
                             path: 'coupon.adId',
@@ -1605,7 +1614,7 @@ module.exports = {
                                     select: 'pageName adAdmin'
                                 }, function(err, result3) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
-                                      
+
                                         res.send({
                                             docs: result2,
                                             count: count,
@@ -1665,7 +1674,7 @@ module.exports = {
                         count++;
                     }
                     var pages = Math.ceil(count / 8);
-                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }, { $limit: limitData }, { $skip: skips },{$sort:{'coupon.updateddAt':-1}}).exec(function(err, result1) {
+                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'coupon.updateddAt': -1 } }).exec(function(err, result1) {
                         console.log("2")
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                             User.populate(result1, {
@@ -1732,7 +1741,7 @@ module.exports = {
                         count++;
                     }
                     var pages = Math.ceil(count / 8);
-                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data } }, { $limit: limitData }, { $skip: skips },{$sort:{'cashPrize.updateddAt':-1}}).exec(function(err, result1) {
+                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'cashPrize.updateddAt': -1 } }).exec(function(err, result1) {
                         console.log("2")
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
                             User.populate(result1, {
@@ -1773,7 +1782,7 @@ module.exports = {
                     count++;
                 }
                 var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status': 'ACTIVE' } }, { $limit: limitData }, { $skip: skips }, {$sort:{'cashPrize.updateddAt':-1}}).exec(function(err, result1) {
+                User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status': 'ACTIVE' } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'cashPrize.updateddAt': -1 } }).exec(function(err, result1) {
                     console.log("2")
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found." }); } else {
                         User.populate(result1, {
@@ -1926,7 +1935,7 @@ module.exports = {
                     adsArray.push(result[i]._id)
                 }
                 console.log("ads-->>", adsArray)
-                createNewAds.paginate({ _id: { $in: adsArray }, status: { $in: status } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 }  }, function(err, result1) {
+                createNewAds.paginate({ _id: { $in: adsArray }, status: { $in: status } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "Please enter correct adId." }); } else {
                         res.send({
                             result: result1,
@@ -2009,7 +2018,7 @@ module.exports = {
                         userArray.push(result[i]._id)
                     }
                 }
-                User.aggregate({ $unwind: "$coupon" }, { $match: { $and: [{ _id: { $in: userArray }, 'coupon.couponStatus': { $in: status }, 'coupon.status': 'ACTIVE' }] } },{ $sort: { createdAt: -1 } }, function(err, result1) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { $and: [{ _id: { $in: userArray }, 'coupon.couponStatus': { $in: status }, 'coupon.status': 'ACTIVE' }] } }, { $sort: { createdAt: -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         User.populate(result1, {
                             path: 'coupon.pageId',
@@ -2046,7 +2055,7 @@ module.exports = {
                         }
                     }
                 }
-                createNewAds.find({ _id: { $in: array }, cashStatus: { $in: status } },{ $sort: { createdAt: -1 } }, function(err, result1) {
+                createNewAds.find({ _id: { $in: array }, cashStatus: { $in: status } }, { $sort: { createdAt: -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
 
                         var updatedResult = result1.docs;
@@ -2069,7 +2078,7 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            // var value= 2
+                        // var value= 2
                         callback(null, value)
                     }
                 })
@@ -2078,7 +2087,7 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            //  var value= 4;
+                        //  var value= 4;
                         callback(null, noDataValue, value)
                     }
                 })
@@ -2132,7 +2141,7 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            // var value= 2
+                        // var value= 2
                         callback(null, value)
                     }
                 })
@@ -2141,7 +2150,7 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            //  var value= 4;
+                        //  var value= 4;
                         callback(null, noDataValue, value)
                     }
                 })
@@ -2219,7 +2228,7 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            // var value= 2
+                        // var value= 2
                         callback(null, value)
                     }
                 })
@@ -2228,7 +2237,7 @@ module.exports = {
                 brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
                         var value = result1.value
-                            //  var value= 4;
+                        //  var value= 4;
                         callback(null, noDataValue, value)
                     }
                 })
@@ -2983,11 +2992,11 @@ module.exports = {
                                 }
                             }
                             callback(null, array)
-                                // res.send({
-                                //     result: array,
-                                //     responseCode: 200,
-                                //     responseMessage: "Success."
-                                // })
+                            // res.send({
+                            //     result: array,
+                            //     responseCode: 200,
+                            //     responseMessage: "Success."
+                            // })
                         });
                 } else {
                     callback(null, result)
@@ -3247,7 +3256,7 @@ module.exports = {
                         // console.log("asgdhasd--------->>")
                         var number = req.body.number;
                         console.log("length--------->>", data.docs.length)
-                            // console.log("asghdhasgdhasgdkagsdkasdjkasdks------------->>>>>",data.docs[0]._id)
+                        // console.log("asghdhasgdhasgdkagsdkasdjkasdks------------->>>>>",data.docs[0]._id)
                         for (var i = 0; i < data.docs.length; i++) {
                             if (data.docs[i]._id == req.body.adsId) {
                                 console.log("asgdhasdsadasdasd--------->>", i)
@@ -3552,27 +3561,27 @@ module.exports = {
     },
 
     "readFile": function(req, res) {
-        var path=require("path");
-        var fs=require("fs")
-        var newPath = path.normalize(__dirname+"/testing.xls");
-        console.log("New Path is ",newPath);
-        var converter = require("xls-to-json");  
+        var path = require("path");
+        var fs = require("fs")
+        var newPath = path.normalize(__dirname + "/testing.xls");
+        console.log("New Path is ", newPath);
+        var converter = require("xls-to-json");
         //var res = {};  
-            converter({  
-              input: newPath, 
-              output: null
-            }, function(err, result) {
-            if(err) {
-              console.error(err);
-             } else {
-              console.log("result is :-",result)
-              var arrayData = []
-                result.forEach(function(item){
-                  arrayData.push(item.Hiddengift)
+        converter({
+            input: newPath,
+            output: null
+        }, function(err, result) {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("result is :-", result)
+                var arrayData = []
+                result.forEach(function(item) {
+                    arrayData.push(item.Hiddengift)
                 })
 
 
-              
+
                 // createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { hiddenGifts: req.body.userId } }, { new: true }).exec(function(err, results) {
                 //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 //             res.send({
@@ -3583,13 +3592,13 @@ module.exports = {
 
                 //         }
                 //     })
-              res.send({result: arrayData})
+                res.send({ result: arrayData })
             }
         })
 
         // var excelJson = require('excel2json');
- 
-       
+
+
         // excelJson('./testing.xls', {
         //     'convert_all_sheet': false,
         //     'return_type': 'File',
@@ -3620,26 +3629,27 @@ module.exports = {
 
     },
 
- "uploadXlFile": function(req, res){
+    "uploadXlFile": function(req, res) {
         var upload = multer({
             storage: storage,
-            fileFilter: function (req, file,callback) {
-            callback(null, file)
+            fileFilter: function(req, file, callback) {
+                callback(null, file)
             },
             limits: {
                 fields: 1,
                 files: 1,
                 fileSize: 512000
-            }}).single('userFile')
-          //var upload = multer({ storage: storage }).array('userFile')
+            }
+        }).single('userFile')
+        //var upload = multer({ storage: storage }).array('userFile')
 
-        upload(req, res, function(err,result) {
+        upload(req, res, function(err, result) {
             if (err) {
-               console.log("error",JSON.stringify(err))
-               res.end('uploading error')
-            }else{
-               console.log("result-->>>",result)
-               res.end('File is uploaded')
+                console.log("error", JSON.stringify(err))
+                res.end('uploading error')
+            } else {
+                console.log("result-->>>", result)
+                res.end('File is uploaded')
             }
         })
 
