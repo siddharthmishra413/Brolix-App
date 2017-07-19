@@ -162,6 +162,9 @@ module.exports = {
     },
 
     "createAds": function(req, res) {
+          console.log("*****************************************")
+          console.log("++++++++++++++++++++++++++++++++++++++++++")
+        console.log("request--->>>",req.body)
         if (req.body.adsType == "coupon") {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
@@ -171,9 +174,11 @@ module.exports = {
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error', err }); } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 66', err }); } else {
+                        console.log("req.body.pageId-->>",req.body.pageId)
                         createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                            console.log("result1--createAds-->>>>", result1)
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22',err }); } else {
                                 // console.log("data--+*+*+*+/*+//*+*->>>",result)
                                 res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
                             }
@@ -182,30 +187,28 @@ module.exports = {
                 })
             }
         } else {
-            User.findOne({ _id: req.body.userId }, function(err, result) {
-                console.log("result-->>", result)
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                // else if (result.cash == null || result.cash == 0 || result.cash === undefined || result.cash < req.body.cashAdPrize) {
-                //     res.send({ responseCode: 201, responseMessage: "Insufficient cash" });
-                // } 
-                else {
-                    User.findOne({ _id: req.body.userId }).exec(function(err, result) {
-                        //                        req.body.viewerLenght = 100;
-                        //                        req.body.numberOfWinners = 100;
+               User.findOne({ _id: req.body.userId }).exec(function(err, result) {
+                      if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 44',err }); }
+                   else if(!result){ res.send({ responseCode:404, responseMessage:'Please enter correct userId'})}
+                   else{
+                        // req.body.viewerLenght = 100;
+                        // req.body.numberOfWinners = 100;
                         req.body.cashStatus = 'DELIVERED';
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
-                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 44',err }); } else {
+                                console.log("req.body.pageId-->>",req.body.pageId)
+                                createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
+                                      console.log("result1--createAds-->>>>", result1)
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 33',err }); } else {
                                         res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
                                     }
                                 })
                             }
                         })
-                    })
-                }
-            })
+                    }
+               })
+                
         }
     },
 

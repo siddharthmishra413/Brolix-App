@@ -894,7 +894,8 @@ module.exports = {
     },
 
     "totalPages": function(req, res) {
-        createNewPage.find({ status: "ACTIVE", adsCount: { $gt: 0 } }, function(err, result) {
+       // createNewPage.find({ status: "ACTIVE", adsCount: { $gt: 0 } }, function(err, result) {
+             createNewPage.find({ status: "ACTIVE" }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No page found' }); } else {
                 createNewPage.populate(result, {
                     path: 'userId',
@@ -1137,9 +1138,8 @@ module.exports = {
             },
             function(pageresult2, callback) {
                 createNewAds.find({ pageId: req.params.id}, function(err, adResult) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (adResult.length == 0) {
-                        res.send({
-                          //  result: pageresult2,
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (adResult.length == 0) { res.send({
+                            result: pageresult2,
                             responseCode: 200,
                             responseMessage: "Page removed successfully."
                         })
@@ -1547,13 +1547,14 @@ module.exports = {
     },
 
     "createPage": function(req, res) {
-        console.log("admin createPage request---->>>",JSON.stringify(req.body))
+      //  console.log("admin createPage request---->>>",JSON.stringify(req.body))
         createNewPage.findOne({ pageName: req.body.pageName, $or: [{ status: 'ACTIVE' }, { status: 'BLOCK' }] }).exec(function(err, result2) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Something went worng' }); } else if (result2) {
                 res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
             } else {
                 var page = new createNewPage(req.body);
                 page.save(function(err, result) {
+                  //  console.log("create page admin--->>>",result)
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 } }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {

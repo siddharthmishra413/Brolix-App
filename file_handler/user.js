@@ -922,6 +922,7 @@ module.exports = {
                     }
                 }, { new: true }).exec(function(err, user) {
                     res.send({
+                        result:otpTy,
                         responseCode: 200,
                         responseMessage: 'Otp send successfully.',
                     })
@@ -1157,7 +1158,7 @@ module.exports = {
                 userArray.push(userResult._id)
          console.log("array---->>>>",userArray)
         
-        User.find({ _id: { $ne: req.params.id }, $or: [{ type: "USER" }, { type: "Advertiser" }, { "isVerified" : "TRUE" },] }).exec(function(err, result) {
+        User.find({ _id: { $ne: req.params.id }, "isVerified" : "TRUE" , $or: [{ type: "USER" }, { type: "Advertiser" }] }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var userArray = [];
                 for (var i = 0; i < result.length; i++) {
