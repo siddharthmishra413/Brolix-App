@@ -810,7 +810,7 @@ module.exports = {
             function(callback) {
                 if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!req.body.countryCode) { res.send({ responseCode: 403, responseMessage: 'Country code required' }) } else {
                     if (!validator.isNumeric((req.body.mobileNumber).toString())) { res.send({ responseCode: 403, responseMessage: "Mobile number must be numeric" }); } else if (!validator.isLength((req.body.mobileNumber).toString(), { min: 9, max: 12 })) { res.send({ responseCode: 403, responseMessage: "Mobile number length must be 9 to 12." }); } else {
-                        User.findOne({ mobileNumber: req.body.mobileNumber, countryCode: req.body.countryCode }, function(err, result1) {
+                        User.findOne({ mobileNumber: req.body.mobileNumber, countryCode: req.body.countryCode,isVerified: 'TRUE'}, function(err, result1) {
                             console.log("3")
                             if (err) { res.send({ responseCode: 403, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number must be unique." }) } else {
                                 if (req.body.haveReferralCode == true) {
@@ -2173,15 +2173,15 @@ module.exports = {
                 }
             }]
         ).exec(function(err, result) {
-            console.log("result-0-0-0-0-0-0->>", result)
+          //  console.log("result-0-0-0-0-0-0->>", result)
             if (err) res.send({ responseCode: 500, responseMessage: err });
             else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
             else {
-                result.sort(function(a, b) {
-                    if (a.timestamp < b.timestamp) return -1;
-                    if (a.timestamp > b.timestamp) return 1;
-                    return 0;
-                });
+//                result.sort(function(a, b) {
+//                    if (a.timestamp < b.timestamp) return -1;
+//                    if (a.timestamp > b.timestamp) return 1;
+//                    return 0;
+//                });
                 var obj = [],
                     j;
                 console.log("result--->" + JSON.stringify(result));
@@ -2220,6 +2220,7 @@ module.exports = {
                     result.splice(j, 1);
                     console.log("length---->" + result.length);
                 }
+              console.log("json0-0-0-0-0-0-0->>",JSON.stringify(obj))
                 res.send({
                     result: obj,
                     responseCode: 200,

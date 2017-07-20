@@ -47,7 +47,7 @@ app.post('/facebookLogin', userHandler.facebookLogin);
 app.get('/countrys', userHandler.countrys);
 app.get('/getAllStates/:name/:code', userHandler.getAllStates);
 app.post('/chatHistory/:pageNumber', authUser.authUser, userHandler.chatHistory);
-app.post('/onlineUserList', authUser.authUser, userHandler.onlineUserList);
+app.post('/onlineUserList', userHandler.onlineUserList);
 app.get('/paymentClientToken', userHandler.paymentClientToken);
 app.post('/paymentIntegration', userHandler.paymentIntegration);
 app.post('/userCouponGifts', userHandler.userCouponGifts);

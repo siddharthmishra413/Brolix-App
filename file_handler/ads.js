@@ -162,9 +162,7 @@ module.exports = {
     },
 
     "createAds": function(req, res) {
-          console.log("*****************************************")
-          console.log("++++++++++++++++++++++++++++++++++++++++++")
-        console.log("request--->>>",req.body)
+       // console.log("request--->>>",req.body)
         if (req.body.adsType == "coupon") {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: 'Please enter coupon expiry date' }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: 'Number of winners can not be greater than number of viewers.' }); } else {
                 var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
@@ -176,7 +174,7 @@ module.exports = {
                 Ads.save(function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 66', err }); } else {      var pageId = result.pageId;
                         createNewPage.findOneAndUpdate({ _id: pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
-                            console.log("result1--createAds-->>>>", result1)
+                         //   console.log("result1--createAds-->>>>", result1)
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22',err }); } else {
                                 // console.log("data--+*+*+*+/*+//*+*->>>",result)
                                 res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
@@ -198,7 +196,7 @@ module.exports = {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 44',err }); } else {
                                 var pageId = result.pageId;
                                 createNewPage.findOneAndUpdate({ _id: pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
-                                      console.log("result1--createAds-->>>>", result1)
+                                   //   console.log("result1--createAds-->>>>", result1)
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 33',err }); } else {
                                         res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
                                     }
@@ -276,7 +274,7 @@ module.exports = {
                 User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
-                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort:{ viewerLenght: -1 } }, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
 
                                 for (var i = 0; i < result.docs.length; i++) {
@@ -310,7 +308,7 @@ module.exports = {
         User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                 var userCountry = userResult.country;
-                createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort:{ viewerLenght: -1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {

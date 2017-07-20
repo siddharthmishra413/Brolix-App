@@ -1,6 +1,7 @@
 var chat = require("./model/chatModel")
 var user = require('./model/user');
 var waterfall = require('async-waterfall');
+var functions = require("./functionHandler");
 
 module.exports = {
     // initChat:function(connection,obj){
@@ -9,7 +10,7 @@ module.exports = {
     // },
     textOneOnOne: function(senderConn, recieverConn, data) {
         console.log("textOneOnOne-------");
-        console.log(JSON.stringify(data));
+        console.log("xtOneOnOne-->>>*+*+*+*",JSON.stringify(data));
         console.log("recieverConn-------");
         console.log(recieverConn);
         var roomId;
@@ -60,13 +61,13 @@ module.exports = {
                                     recieverConn.send(respObj);
                                 } else {
 
-                                    if (receiverData.deviceType == "ios" && receiverData.notification_status == "on") {
+                                    if (receiverData.deviceType == "iOS" && receiverData.notification_status == "on") {
                                         if (receiverData.deviceToken == '' || receiverData.deviceToken == undefined) {
                                         } else {
                                             pushNotification.iosPush(receiverData.deviceToken, data.message, data.senderId, data.senderName)
                                         }
                                         //                                    
-                                    } else if (receiverData.deviceType == "android" && receiverData.notification_status == "on") {
+                                    } else if (receiverData.deviceType == "Android" && receiverData.notification_status == "on") {
                                         if (receiverData.deviceToken == '' || receiverData.deviceToken == undefined) {
                                         } else {
                                             pushNotification.androidPush(data.message, receiverData.deviceToken,  data.senderId, data.senderName)
@@ -127,6 +128,7 @@ module.exports = {
         }
     },
     readCount: function(data) {
+        console.log("data--->>>>",JSON.stringify(data))
         chat.update({ roomId: data.roomId, timestamp: { $lte: data.timestamp } }, { $set: { is_read: 1 } }, { multi: true }, function(err, readResult) {
             if (err) return err;
         })
