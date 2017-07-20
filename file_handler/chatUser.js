@@ -120,6 +120,7 @@ module.exports = {
                 j++;
             }
         }
+        console.log("onlineFriends--->>>",onlineFriends)
         if (senderConn == undefined) {
         } else {
             senderConn.send(onlineFriends);

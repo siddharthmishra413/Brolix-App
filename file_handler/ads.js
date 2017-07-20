@@ -174,9 +174,8 @@ module.exports = {
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 66', err }); } else {
-                        console.log("req.body.pageId-->>",req.body.pageId)
-                        createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 66', err }); } else {      var pageId = result.pageId;
+                        createNewPage.findOneAndUpdate({ _id: pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
                             console.log("result1--createAds-->>>>", result1)
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22',err }); } else {
                                 // console.log("data--+*+*+*+/*+//*+*->>>",result)
@@ -197,8 +196,8 @@ module.exports = {
                         var Ads = new createNewAds(req.body);
                         Ads.save(function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 44',err }); } else {
-                                console.log("req.body.pageId-->>",req.body.pageId)
-                                createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
+                                var pageId = result.pageId;
+                                createNewPage.findOneAndUpdate({ _id: pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
                                       console.log("result1--createAds-->>>>", result1)
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 33',err }); } else {
                                         res.send({ result: result, responseCode: 200, responseMessage: "Ad created successfully" });
@@ -277,7 +276,6 @@ module.exports = {
                 User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
-                        console.log("showAllAdsCouponType---->>>", JSON.stringify(userCountry))
                         createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
 
@@ -312,7 +310,6 @@ module.exports = {
         User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                 var userCountry = userResult.country;
-                console.log("showAllAdsCashType---->>>", JSON.stringify(userCountry))
                 createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         var updatedResult = result.docs;
@@ -410,8 +407,6 @@ module.exports = {
 
                     }
                 })
-
-
             }
         ])
 

@@ -2142,10 +2142,12 @@ module.exports = {
     },
 
     "onlineUserList": function(req, res) {
+        console.log("request----->>>",req.body)
         var condition;
         if (req.body.pageId) {
             console.log("in if")
             condition = { $or: [{ senderId: req.body.userId, pageId: req.body.pageId }, { receiverId: req.body.userId, pageId: req.body.pageId }] }
+//            condition = { $or: [{ $or:[{ senderId: req.body.userId},{ pageId: req.body.pageId }], $or:[{ receiverId: req.body.userId},{ pageId: req.body.pageId }]}] }
         } else {
             console.log("in else")
             condition = { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
@@ -2171,7 +2173,7 @@ module.exports = {
                 }
             }]
         ).exec(function(err, result) {
-            console.log("result-->>", result)
+            console.log("result-0-0-0-0-0-0->>", result)
             if (err) res.send({ responseCode: 500, responseMessage: err });
             else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
             else {
