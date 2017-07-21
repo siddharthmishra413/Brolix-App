@@ -71,6 +71,7 @@
               'data.message': message1,
               'data.type': 'testing'
           };
+          console.log("message 0-0-0-0-0--->>>",message)
           fcm.send(message, function(err, response) {
               if (err) {
                   console.log("Android !! Something has gone wrong!", err);
@@ -104,6 +105,7 @@
               //note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
           note.badge = 1;
           note.alert = message;
+          note.sound = 'default';
           note.payload = { title: title, message: message };
           try {
               apnConnection.pushNotification(note, myDevice);

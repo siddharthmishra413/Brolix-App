@@ -26,10 +26,10 @@ var chat = function() {
                 connection.ID = obj.senderId;
             }
             console.log("connectedClients ---connectedClients ---connectedClients ---connectedClients --- ")
-            console.log("0-0-0-0-0-0-0->>>>",obj)
-            console.log("*********************",obj.receiverId)
-            console.log("connectedClients---->>>>",connectedClients)
-            console.log("*+*+*+*+*+*+*+*+*+*+*+",connection.ID);
+//            console.log("0-0-0-0-0-0-0->>>>",obj)
+//            console.log("*********************",obj.receiverId)
+//            console.log("connectedClients---->>>>",connectedClients)
+//            console.log("*+*+*+*+*+*+*+*+*+*+*+",connection.ID);
             //console.log("connectedClients --- ", JSON.stringify(connectedClients));
             /* if(!connectedClients[obj.senderId]){
                  connection.send('closed');

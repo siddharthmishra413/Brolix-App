@@ -2769,7 +2769,7 @@ module.exports = {
                 for (var i = 0; i < result.docs.length; i++) {
                     var reply = result.docs[i].reply;
                     var data = reply.filter(reply => reply.status == 'ACTIVE');
-                    console.log("data--->>" + data)
+                //    console.log("data--->>" + data)
                     result.docs[i].reply = data;
                 }
                 res.send({

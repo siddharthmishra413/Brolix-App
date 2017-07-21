@@ -49,14 +49,14 @@ var avoid = {
 
 var storage = multer.diskStorage({
     destination: function(req, file, callback) {
-        console.log(file.fieldname + '-' + Date.now())
+        console.log("des res",file.fieldname + '-' + Date.now())
         // console.log("file--->>",file);
         callback(null, './uploads')
     },
     filename: function(req, file, callback) {
         //console.log("file---->>>>",file)
         //callback(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
-        console.log(file.fieldname + '-' + Date.now())
+        console.log("dfdf fdf",file.fieldname + '-' + Date.now())
         callback(null, file.fieldname + '-' + Date.now());
     }
 })
@@ -3644,12 +3644,55 @@ module.exports = {
                 console.log("error", JSON.stringify(err))
                 res.end('uploading error')
             } else {
-                console.log("result-->>>", result)
-                res.end('File is uploaded')
+                console.log("upload res",req.file.filename)
+
+                    var path = require("path");
+                    var fs = require("fs")
+                    var newPath = path.normalize(__dirname + "/../uploads/"+req.file.filename+"");
+                    console.log("New Path is ", newPath);
+                    var converter = require("xls-to-json");
+                    converter({
+                        input: newPath,
+                        output: null
+                    }, function(err, result) {
+                        if (err) {
+                            res.send({
+                                responseCode: 404,
+                                responseMessage: "Something went wrong.",
+                                result: data
+                            })
+                        } else {
+                            console.log("result is :-", result)
+                            var arrayData = []
+                            result.forEach(function(item) {
+                                if(item.Hiddengift != undefined){
+                                    arrayData.push(item.Hiddengift)
+                                }
+                                
+                            })
+                            console.log("arrayData",arrayData)
+                            if(arrayData == undefined || arrayData == null || arrayData == '' || arrayData.length == 0){
+                                res.send({
+                                    responseCode: 404,
+                                    responseMessage: "Please upload file with correct format."
+                                })
+                            }
+                            else{
+                                var data ={
+                                    pathUrl: req.file.filename,
+                                    hiddenGifts: arrayData
+                                }
+                                res.send({
+                                    responseCode: 200,
+                                    responseMessage: "Successfully uploaded.",
+                                    result: data
+                                })
+                            }
+                          
+                        }
+                    })
             }
         })
-
-
     }
 
 

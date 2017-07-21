@@ -2142,7 +2142,7 @@ module.exports = {
     },
 
     "onlineUserList": function(req, res) {
-        console.log("request----->>>",req.body)
+    //    console.log("request----->>>",req.body)
         var condition;
         if (req.body.pageId) {
             console.log("in if")
@@ -2154,9 +2154,9 @@ module.exports = {
         }
         chat.aggregate(
             [{
-                //$match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
+                //$match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] } { $sort: { timestamp: -1 } },
                 $match: condition
-            }, { $sort: { timestamp: -1 } }, {
+            }, {
                 $group: {
                     _id: { senderId: "$senderId", receiverId: "$receiverId" },
                     unread: {
@@ -2173,7 +2173,7 @@ module.exports = {
                 }
             }]
         ).exec(function(err, result) {
-          //  console.log("result-0-0-0-0-0-0->>", result)
+      //    console.log("result-0-0-0-0-0-0->>", result)
             if (err) res.send({ responseCode: 500, responseMessage: err });
             else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
             else {
@@ -2184,7 +2184,7 @@ module.exports = {
 //                });
                 var obj = [],
                     j;
-                console.log("result--->" + JSON.stringify(result));
+         //      console.log("result--->" + JSON.stringify(result));
                 for (var i = 0; i < result.length; i++) {
                     result.length - 1 == i ? j = i : j = i + 1;
 
@@ -2192,19 +2192,19 @@ module.exports = {
                     //while ((result[j]._id.senderId)) {
                     /*if (j < result.length)
                     {*/
-                    console.log("j--->" + j);
-                    console.log("result.length" + result.length);
+          //          console.log("j--->" + j);
+          //          console.log("result.length" + result.length);
 
                     while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
-                        console.log("inside whil;e")
-                        console.log("result[i]._id.senderId");
-                        console.log(result[i]._id.senderId);
-                        console.log("result[j]._id.receiverId");
-                        console.log(result[j]._id.receiverId);
-                        console.log("result[j]._id.senderId");
-                        console.log(result[j]._id.senderId);
-                        console.log("result[i]._id.receiverId");
-                        console.log(result[i]._id.receiverId);
+//                        console.log("inside whil;e")
+//                        console.log("result[i]._id.senderId");
+//                        console.log(result[i]._id.senderId);
+//                        console.log("result[j]._id.receiverId");
+//                        console.log(result[j]._id.receiverId);
+//                        console.log("result[j]._id.senderId");
+//                        console.log(result[j]._id.senderId);
+//                        console.log("result[i]._id.receiverId");
+//                        console.log(result[i]._id.receiverId);
                         if (result[j + 1] != undefined)
                             j += 1;
                         else
@@ -2218,9 +2218,9 @@ module.exports = {
                     }
                     obj.push(result[i]);
                     result.splice(j, 1);
-                    console.log("length---->" + result.length);
+         //           console.log("length---->" + result.length);
                 }
-              console.log("json0-0-0-0-0-0-0->>",JSON.stringify(obj))
+        //      console.log("json0-0-0-0-0-0-0->>",JSON.stringify(obj))
                 res.send({
                     result: obj,
                     responseCode: 200,
