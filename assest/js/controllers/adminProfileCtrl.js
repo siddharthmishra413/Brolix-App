@@ -62,7 +62,7 @@ $scope.changeImage = function(input,type) {
       }
         console.log(data);  
        userService.changePass(data).then(function(ObjS){    
-       console.log(JSON.stringify(ObjS)) 
+       //console.log(JSON.stringify(ObjS)) 
         if(ObjS.data.responseCode==200){
           $state.go('login');
           toastr.success(ObjS.data.responseMessage);  

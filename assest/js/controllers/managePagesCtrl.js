@@ -120,7 +120,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
         }
         userService.sendBrolixAndCashAllUser(data).success(function(res) {
             if (res.responseCode == 200) {
-                toastr.success("Cash Send successfully to All User");
+                toastr.success("Cash send successfully to all user");
                 $scope.sendCash = '';
                 $("#sendcashModelAllUser").modal('hide');
             } else {
@@ -132,7 +132,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
     $scope.pageRequest = function(pageId,status){
         let obj = {};
         if(pageId == null || pageId == undefined || pageId == ""){
-            toastr.error("Page Id Not get")
+            toastr.error("Page id not get")
         }else{
             obj = {
             pageId:pageId,
@@ -347,7 +347,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                 break;
 
             default:
-                toastr.error("somthing wents to wroung");
+                toastr.error("Somthing wents to wroung");
         }
 
     }
@@ -393,7 +393,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to All Page Owner");
+                        toastr.success("Message send successfully to all page owner");
                        // toastr.success("Number of User ", array.length);
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
@@ -414,7 +414,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to All UnPublished Page Owner");
+                        toastr.success("Message send successfully to all unpublished page owner");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                         toastr.success("Number of User ", array.length);
@@ -454,7 +454,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                 console.log("singleClick", data)
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to User");
+                        toastr.success("Message send successfully to user");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                         toastr.success("Number of User ", array.length);

@@ -7,8 +7,8 @@ app.controller('createCardCtrl', function($scope, $state, $window, userService, 
     $scope.myForm = {};
     $scope.active_upgrade_card=true;
 
-$scope.createCard.image='http://res.cloudinary.com/dfrspfd4g/image/upload/v1495112144/ryjlmee1opxdpjysfzm3.png';
-$scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1495112458/p9aocm8vey8wouj1lief.png';
+$scope.createCard.image='http://res.cloudinary.com/dfrspfd4g/image/upload/v1500640275/t2lzgz0tmoriwjd5ymcv.png';
+$scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1500640526/wnsk2mrt3kwitnzgaqiw.png';
 
     $scope.active_tab=function(active_card){
         if(active_card=='upgrade_card'){
@@ -24,12 +24,12 @@ $scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1495
         if(type=='upgrade'){
             $scope.createCard.viewers = "";
             $scope.createCard.price = "";
-            $scope.createCard.image = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495112144/ryjlmee1opxdpjysfzm3.png';
+            $scope.createCard.image = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1500640275/t2lzgz0tmoriwjd5ymcv.png';
         }
         else{
             $scope.createCard.chance = "";
             $scope.createCard.brolix = "";
-            $scope.createCard.image2 = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495112144/ryjlmee1opxdpjysfzm3.png';
+            $scope.createCard.image2 = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1500640526/wnsk2mrt3kwitnzgaqiw.png';
 
         }
 
@@ -48,6 +48,7 @@ $scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1495
                 case 'image': 
 
                 uploadimgServeice.user(file).then(function(ObjS) {
+                  console.log("image1",ObjS.data.result.url)  
                     $timeout(function () {      
                 spinnerService.hide('html5spinner');     
                     $scope.createCard.image = ObjS.data.result.url;
@@ -60,12 +61,13 @@ $scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1495
                 case 'image2': 
 
                 uploadimgServeice.user(file).then(function(ObjS) {
+                    console.log("image2",ObjS.data.result.url)
                       $timeout(function () {      
                 spinnerService.hide('html5spinner'); 
                     $scope.createCard.image2 = ObjS.data.result.url;
                       }, 250); 
                     // $scope.user.photo2 = ObjS.data.result.url;
-                    console.log("image2",$scope.createCard.image2)
+                    console.log("image2",ObjS.data.result.url)
                 })  
                 break;
 

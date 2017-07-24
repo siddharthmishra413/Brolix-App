@@ -981,9 +981,11 @@ module.exports = {
 
 
     "login": function(req, res) {
+    //    console.log("request---->>>",JSON.stringify(req.body))
         //        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         //        else {
         User.find({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
+       //     console.log("daatatatata--->>>",result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); }
             // else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
             else {
@@ -1003,6 +1005,7 @@ module.exports = {
                             deviceToken: req.body.deviceToken
                         }
                     }, { new: true }).exec(function(err, user) {
+                      //  console.log("fsdfnsdfaksfa user---->>>",JSON.stringify(user))
                         var token = jwt.sign(token_data, config.secreteKey);
                         res.header({
                             "appToken": token
@@ -1731,8 +1734,10 @@ module.exports = {
     },
 
     "logout": function(req, res) {
+        console.log("logout req----",req.body)
         User.findOneAndUpdate({ _id: req.body.userId }, { $set: { deviceType: '', deviceToken: '' } }, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                 console.log("logout result----",result)
                 res.send({
                     // result:result,
                     responseCode: 200,
@@ -2120,11 +2125,13 @@ module.exports = {
         console.log('everything-----chatHistorychatHistorychatHistorys-------' + JSON.stringify(req.body));
         var condition;
         if (req.body.pageId) {
+            console.log("in if")
             condition = { $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId, pageId: req.body.pageId }, { senderId: req.body.receiverId, receiverId: req.body.senderId, pageId: req.body.pageId }] }
         } else {
-            condition = { $or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }] }
+            condition = {$and:[{$or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }]},{pageId:{$exists:false}}] }
         }
         chat.paginate(condition, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
+         //   console.log("results---->>>",JSON.stringify(results))
             if (!results.docs.length) {
                 res.send({
                     result: results,
@@ -2147,14 +2154,14 @@ module.exports = {
         if (req.body.pageId) {
             console.log("in if")
             condition = { $or: [{ senderId: req.body.userId, pageId: req.body.pageId }, { receiverId: req.body.userId, pageId: req.body.pageId }] }
-//            condition = { $or: [{ $or:[{ senderId: req.body.userId},{ pageId: req.body.pageId }], $or:[{ receiverId: req.body.userId},{ pageId: req.body.pageId }]}] }
         } else {
             console.log("in else")
             condition = { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
         }
         chat.aggregate(
             [{
-                //$match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] } { $sort: { timestamp: -1 } },
+                //$match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
+                // { $sort: { timestamp: -1 } },
                 $match: condition
             }, {
                 $group: {
@@ -2173,7 +2180,7 @@ module.exports = {
                 }
             }]
         ).exec(function(err, result) {
-      //    console.log("result-0-0-0-0-0-0->>", result)
+          console.log("result-0-0-0-0-0-0->>", result)
             if (err) res.send({ responseCode: 500, responseMessage: err });
             else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
             else {
@@ -3232,10 +3239,12 @@ module.exports = {
     },
 
     "seeExchangeSentRequest": function(req, res) {
+        console.log("requhsuwdhajqwdkaqkaqdqdqw---->>>",req.body)
         var senderId = req.body.userId;
         console.log("receiverId-->>", senderId)
         createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); } else {
+              
 
                 createNewAds.populate(result, {
                     path: 'couponExchangeSent.receiverId',
@@ -3385,6 +3394,30 @@ module.exports = {
                         }
                     })
                 },
+//                  function(callback) {
+//                    var receiverId = req.body.userId;
+//                    createNewAds.find({ 'couponExchangeSent.receiverId': receiverId }, function(err, user2) {
+//                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+//                            var array3 = [];
+//                            for (var i = 0; i < user2.length; i++) {
+//                                for (var j = 0; j < user2[i].couponExchangeSent.length; j++) {
+//                                    if (user2[i].couponExchangeSent[j].senderId == req.body.userId) {
+//                                        array3.push(user2[i].couponExchangeSent[j]._id)
+//                                    }
+//                                }
+//                            }
+//                            for (var k = 0; k < array3.length; k++) {
+//
+//                                createNewAds.update({ 'couponExchangeSent._id': array3[k] }, { $set: { 'couponExchangeSent.$.couponExchangeStatus': "CANCEL" } }, { multi: true }, function(err, user2Result) {
+//                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+//                                        console.log("in loop g*******")
+//                                    }
+//                                })
+//                            }
+//                            callback(null)
+//                        }
+//                    })
+//                },
             ], function(err, result) {
                 res.send({
                     responseCode: 200,
@@ -3478,6 +3511,44 @@ module.exports = {
         })
                
             }
+    },
+    
+    "cancelExchangeCouponRequest":function(req, res){
+        var senderId = req.body.userId;
+        createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" } }, function(err, result) {
+            console.log("result0--90-90887880---->>>",result)
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length==0) { res.send({ reponseCode: 404, responseMessage: "No request found." }); } else {
+                
+                var requestId =  result[0].couponExchangeSent._id;
+                var receiverAdId = result[0].couponExchangeSent.exchangedWithAdId;
+                console.log("requestId--->>>",requestId)
+                createNewAds.update({'couponExchangeSent._id':new mongoose.Types.ObjectId(requestId)},{$set:{'couponExchangeSent.$.couponExchangeStatus':'Cancel'}},{new:true}).exec(function(err, updatedResult){
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                    else{
+                        console.log("updatedResult--->>>",updatedResult)
+                        
+                    createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { _id: new mongoose.Types.ObjectId(receiverAdId), 'couponExchangeReceived.senderId': senderId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" } }, function(err, result2) {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                    else{
+                         var requestId1 =  result2[0].couponExchangeReceived._id;
+                        console.log("requestId1--->>>",requestId1)
+                        
+                        createNewAds.update({'couponExchangeReceived._id':new mongoose.Types.ObjectId(requestId1)},{$set:{'couponExchangeReceived.$.couponExchangeStatus':'Cancel'}},{new:true}).exec(function(err, updatedResult1){
+                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+                    else{
+                        res.send({
+                       // result: result1,  
+                        responseCode: 200,
+                        responseMessage: "Request cancel successfully"
+                    })
+                    }
+                        })
+                    }
+                        })
+                    }
+                })                
+            }
+        })        
     }
 
 

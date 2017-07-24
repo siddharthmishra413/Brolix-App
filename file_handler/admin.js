@@ -97,7 +97,7 @@ module.exports = {
         } else {
             res.send({
                 responseCode: 404,
-                responseMessage: "session has been expried"
+                responseMessage: "Session has been expired."
             });
             //res.redirect('/login');
         }
@@ -4435,7 +4435,7 @@ module.exports = {
 
     "liveUser": function(req, res) {
         User.find({ $or: [{ type: "USER", status: 'ACTIVE' , isVerified:'TRUE', isLive :'True'}, { type: "Advertiser", status: 'ACTIVE', isVerified:'TRUE', isLive :'True' }] }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'Internal server error' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error',err }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,

@@ -205,7 +205,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 break;
 
             default:
-                toastr.error("somthing wents to wroung");
+                toastr.error("Somthing wents to wroung");
         }
 
 
@@ -255,7 +255,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to All User");
+                        toastr.success("Message send successfully to all user");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                     } else {
@@ -273,7 +273,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to All Personal User");
+                        toastr.success("Message send successfully to all personal user");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                     } else {
@@ -291,7 +291,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to All Business User");
+                        toastr.success("Message send successfully to all business user");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                     } else {
@@ -309,7 +309,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to All Live User");
+                        toastr.success("Message send Successfully to all live user");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                     } else {
@@ -327,7 +327,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to All Winners User");
+                        toastr.success("Message send successfully to all winners user");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                     } else {
@@ -345,7 +345,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to All CashWinners User");
+                        toastr.success("Message send successfully to all cashWinners user");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                     } else {
@@ -363,7 +363,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to All CouponWinners User");
+                        toastr.success("Message send successfully to all couponWinners user");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                     } else {
@@ -397,7 +397,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendMassageAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Message Send Successfully to User");
+                        toastr.success("Message send successfully to user");
                         $scope.sendMessage = '';
                         $("#sendMessageModelAllUser").modal('hide');
                     } else {
@@ -434,7 +434,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 console.log("totalUser",JSON.stringify(data))
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Brolix Send successfully to All User");
+                        toastr.success("Brolix send successfully to all user");
                         $scope.sendBrolix = '';
                         $("#sendbrolixModelAllUser").modal('hide');
                     } else {
@@ -453,7 +453,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 console.log("totalUser",JSON.stringify(data))
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Brolix Send successfully all Personal User");
+                        toastr.success("Brolix send successfully all personal user");
                         $scope.sendBrolix = '';
                         $("#sendbrolixModelAllUser").modal('hide');
                     } else {
@@ -472,7 +472,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 console.log("totalUser",JSON.stringify(data))
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Brolix Send successfully to all Business User");
+                        toastr.success("Brolix send successfully to all business user");
                         $("#sendbrolixModelAllUser").modal('hide');
                         $scope.sendBrolix = '';
                     } else {
@@ -491,7 +491,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 console.log("totalUser",JSON.stringify(data))
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Brolix Send successfully to all Live User");
+                        toastr.success("Brolix send successfully to all live user");
                         $("#sendbrolixModelAllUser").modal('hide');
                         $scope.sendBrolix = '';
                     } else {
@@ -509,7 +509,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Brolix Send successfully to all Winners User");
+                        toastr.success("Brolix send successfully to all winners user");
                         $("#sendbrolixModelAllUser").modal('hide');
                         $scope.sendBrolix = '';
                     } else {
@@ -527,7 +527,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Brolix Send successfully to all CashWinners User");
+                        toastr.success("Brolix send successfully to all cashWinners user");
                         $("#sendbrolixModelAllUser").modal('hide');
                         $scope.sendBrolix = '';
                     } else {
@@ -545,7 +545,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Brolix Send successfully to all CouponWinners User");
+                        toastr.success("Brolix send successfully to all couponWinners user");
                         $("#sendbrolixModelAllUser").modal('hide');
                         $scope.sendBrolix = '';
                     } else {
@@ -563,7 +563,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Brolix Send successfully to all Blocked User");
+                        toastr.success("Brolix send successfully to all blocked user");
                         $("#sendbrolixModelAllUser").modal('hide');
                         $scope.sendBrolix = '';
                     } else {
@@ -579,7 +579,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Brolix Send successfully to User");
+                        toastr.success("Brolix send successfully to user");
                         $("#sendbrolixModelAllUser").modal('hide');
                         $scope.sendBrolix = '';
                     } else {
@@ -613,7 +613,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Cash Send successfully to All User");
+                        toastr.success("Cash send successfully to all user");
                         $scope.sendCash = '';
                         $("#sendcashModelAllUser").modal('hide');
                     } else {
@@ -631,7 +631,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Cash Send successfully to All Personal User");
+                        toastr.success("Cash send successfully to all personal user");
                         $scope.sendCash = '';
                         $("#sendcashModelAllUser").modal('hide');
                     } else {
@@ -649,7 +649,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Cash Send successfully to All Business User");
+                        toastr.success("Cash send successfully to all business user");
                         $scope.sendCash = '';
                         $("#sendcashModelAllUser").modal('hide');
                     } else {
@@ -667,7 +667,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Cash Send successfully to All Live User");
+                        toastr.success("Cash send successfully to all live user");
                         $scope.sendCash = '';
                         $("#sendcashModelAllUser").modal('hide');
                     } else {
@@ -685,7 +685,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Cash Send successfully to All Winners User");
+                        toastr.success("Cash send successfully to all winners user");
                         $scope.sendCash = '';
                         $("#sendcashModelAllUser").modal('hide');
                     } else {
@@ -703,7 +703,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Cash Send successfully to All CashWinners User");
+                        toastr.success("Cash send successfully to all cashWinners user");
                         $scope.sendCash = '';
                         $("#sendcashModelAllUser").modal('hide');
                     } else {
@@ -721,7 +721,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Cash Send successfully to All CouponWinners User");
+                        toastr.success("Cash send successfully to all couponWinners user");
                         $scope.sendCash = '';
                         $("#sendcashModelAllUser").modal('hide');
                     } else {
@@ -739,7 +739,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Cash Send successfully to All Blocked User");
+                        toastr.success("Cash send successfully to all blocked user");
                         $scope.sendCash = '';
                         $("#sendcashModelAllUser").modal('hide');
                     } else {
@@ -755,7 +755,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 }
                 userService.sendBrolixAndCashAllUser(data).success(function(res) {
                     if (res.responseCode == 200) {
-                        toastr.success("Cash Send successfully to User");
+                        toastr.success("Cash send successfully to user");
                         $scope.sendCash = '';
                         $("#sendcashModelAllUser").modal('hide');
                     } else {
@@ -772,8 +772,8 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             $state.go('header.manageUsers')
         } else {
             BootstrapDialog.show({
-                title: 'Block User',
-                message: 'Are you sure want to block this User',
+                title: 'Block user',
+                message: 'Are you sure want to block this user',
                 buttons: [{
                     label: 'Yes',
                     action: function(dialog) {
@@ -812,7 +812,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                         userService.UnBlockUser(userId).success(function(res) {
                             if (res.responseCode == 200) {
                                 dialog.close();
-                                toastr.success("User UnBlocked");
+                                toastr.success("User unblocked");
                                 $state.reload();
                             } else {
                                 toastr.error(res.responseMessage);
@@ -871,7 +871,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendUpgradeCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("UpgradeCard Send Successfully to All User");
+                                        toastr.success("Upgrade card send successfully to all user");
                                         $scope.sendMessage = '';
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
@@ -904,7 +904,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendUpgradeCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("UpgradeCard Send Successfully to All Personal User");
+                                        toastr.success("Upgrade card send successfully to all personal user");
                                         $scope.sendMessage = '';
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
@@ -937,7 +937,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendUpgradeCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("UpgradeCard Send Successfully to All Business User");
+                                        toastr.success("Upgrade card send successfully to all business user");
                                         $scope.sendMessage = '';
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
@@ -971,7 +971,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendUpgradeCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("UpgradeCard Send Successfully to All Live User");
+                                        toastr.success("Upgrade card send successfully to all live user");
                                         $scope.sendMessage = '';
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
@@ -1004,7 +1004,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                                 //$("#showAllCoupons").modal('hide');
                                 userService.sendUpgradeCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("UpgradeCard Send Successfully to User");
+                                        toastr.success("Upgrade card send successfully to user");
                                         $scope.sendMessage = '';
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
@@ -1041,7 +1041,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("LuckCard Send Successfully to All User");
+                                        toastr.success("LuckCard send successfully to all user");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
                                     } else {
@@ -1073,7 +1073,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("LuckCard Send Successfully to All Personal User");
+                                        toastr.success("LuckCard send successfully to all personal user");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
                                     } else {
@@ -1105,7 +1105,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("LuckCard Send Successfully to All Business User");
+                                        toastr.success("LuckCard send successfully to all business user");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
                                     } else {
@@ -1137,7 +1137,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("LuckCard Send Successfully to All Live User");
+                                        toastr.success("LuckCard send successfully to all live user");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
                                     } else {
@@ -1163,7 +1163,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                     }
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200) {
-                            toastr.success("LuckCard Send Successfully to All Winners User");
+                            toastr.success("LuckCard send successfully to all winners user");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -1181,7 +1181,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                     }
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200) {
-                            toastr.success("LuckCard Send Successfully to All CashWinners User");
+                            toastr.success("LuckCard send successfully to all cashWinners user");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -1199,7 +1199,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                     }
                     userService.sendLuckCardTOUsers(data).success(function(res) {
                         if (res.responseCode == 200) {
-                            toastr.success("LuckCard Send Successfully to All CouponWinners User");
+                            toastr.success("LuckCard send successfully to all couponWinners user");
                             $scope.sendMessage = '';
                             $("#sendMessageModelAllUser").modal('hide');
                         } else {
@@ -1223,7 +1223,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("LuckCard Send Successfully to All Blocked User");
+                                        toastr.success("LuckCard send successfully to all blocked user");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
                                     } else {
@@ -1253,7 +1253,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                             action: function(dialog) {
                                 userService.sendLuckCardTOUsers(data).success(function(res) {
                                     if (res.responseCode == 200) {
-                                        toastr.success("LuckCard Send Successfully to User");
+                                        toastr.success("LuckCard send successfully to user");
                                         $("#showAllCard").modal('hide');
                                         dialog.close();
                                     } else {
@@ -1354,6 +1354,7 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
             userService.showListOFCouponWithoutPagination().success(function(res) {
                 if (res.responseCode == 200) {
                     $scope.allCoupons = res.result;
+                    console.log("$scope.allCoupons",JSON.stringify($scope.allCoupons))
                 } else {
                     toastr.error(res.responseMessage)
                 }

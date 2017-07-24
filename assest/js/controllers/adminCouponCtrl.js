@@ -82,6 +82,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
                     $timeout(function() {
                         spinnerService.hide('html5spinner');
                         $scope.user.giftImage = ObjS.data.result.url;
+                        console.log("$scope.user.photo",$scope.user.giftImage)
                     }, 250);
                 })
             } else {
@@ -89,7 +90,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
             }
 
         } else {
-            toastr.error("something wents to wroung");
+            toastr.error("Something wents to wroung");
         }
 
     }
@@ -142,7 +143,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
                 break;
 
             default:
-                toastr.error("Something Wents to wrong")
+                toastr.error("Something wents to wrong")
 
         }
     }
@@ -194,7 +195,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
                     }
                     userService.removeCoupon(data).then(function(success) {
                         //console.log(JSON.stringify(success))
-                        toastr.success('Deleted Successfully')
+                        toastr.success('Deleted successfully')
                         $state.reload();
                     }, function(err) {
                         //console.log(err);

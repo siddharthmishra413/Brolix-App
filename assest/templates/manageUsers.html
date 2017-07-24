@@ -1008,7 +1008,7 @@
             <div class="modal-body">
                 <form name="sendBrolix" name="sendMessage">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
+                        <input type="text" class="form-control" name="brolixsend" ng-model="sendBrolix.brolix" placeholder="Enter Brolix" maxlength="11" ng-maxlength="10" ng-pattern="/^[1-9]+[0-9]*$/" required>
                         <span style="color:red;" ng-show="sendBrolix.brolixsend.$dirty && sendBrolix.brolixsend.$invalid">
                     <span ng-show="sendBrolix.brolixsend.$error.required">Brolix is required.</span>
                         <span ng-show="sendBrolix.brolixsend.$error.maxlength">Brolix have at most 10 digits.</span>
@@ -1034,7 +1034,7 @@
             <div class="modal-body">
                 <form name="sendCash">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[0-9]{1,11}$/" required>
+                        <input type="text" class="form-control" name="cashsend" ng-model="sendCash.Cash" placeholder="Enter Cash" maxlength="11" ng-maxlength="10" ng-pattern="/^[1-9]+[0-9]*$/" required>
                         <span style="color:red;" ng-show="sendCash.cashsend.$dirty && sendCash.cashsend.$invalid">
                     <span ng-show="sendCash.cashsend.$error.required">Cash is required.</span>
                         <span ng-show="sendCash.cashsend.$error.maxlength">Cash have at most 10 digits.</span>
@@ -1272,7 +1272,7 @@
                         <div class="cover-image-txt">
                             <div class="left-img-txt">
                                 <div class="b-layer-txt text-center">{{data.pageName}}</div>
-                                <div class="g-layer-txt text-center">{{data.couponExpiryDate | date:'dd-MM-yyyy'}}</div>
+                                <div class="g-layer-txt text-center">{{data.couponExpiryInString | date:'dd-MM-yyyy'}}</div>
                             </div>
                             <div class="gift-input c_gift-heading">
                                 <h3>Gift Description</h3>

@@ -135,7 +135,7 @@ module.exports = {
     readCount: function(data) {
    //     console.log("data--->>>>",JSON.stringify(data))
         chat.update({ roomId: data.roomId, timestamp: { $lte: data.timestamp } }, { $set: { is_read: 1 } }, { multi: true }, function(err, readResult) {
-        //    console.log("read count result-->>>",readResult)
+            console.log("read count result-->>>",readResult)
             if (err) return err;
         })
     }

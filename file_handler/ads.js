@@ -49,6 +49,7 @@ var avoid = {
 
 var storage = multer.diskStorage({
     destination: function(req, file, callback) {
+        console.log("req", file)
         console.log("des res",file.fieldname + '-' + Date.now())
         // console.log("file--->>",file);
         callback(null, './uploads')
@@ -274,7 +275,7 @@ module.exports = {
                 User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
-                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort:{ viewerLenght: -1 } }, function(err, result) {
+                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort:{ priorityNumber: 1 ,viewerLenght: -1 } }, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
 
                                 for (var i = 0; i < result.docs.length; i++) {
@@ -302,6 +303,51 @@ module.exports = {
             }
         ])
     },
+    
+     "testingPriority": function(req, res) {
+        waterfall([
+            function(callback) {
+                brolixAndDollors.findOne({ type: 'storeCouponPriceForFreeAds' }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
+                        var value = result1.value
+                        // var value= 2
+                        callback(null, value)
+                    }
+                })
+            },
+            function(noDataValue, callback) {
+                brolixAndDollors.findOne({ type: 'storeCouponPriceForUpgradedAds' }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
+                        var value = result1.value
+                        //  var value= 4;
+                        callback(null, noDataValue, value)
+                    }
+                })
+            },
+            function(noDataValue, dataValue, callback) {
+
+                User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 22' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
+                        var userCountry = userResult.country;
+                        console.log("userCountry-0-0-0---->>>", userCountry)
+                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry, priorityNumber: { $gt: 1 } },{ page: req.params.pageNumber, limit: 8, sort:{ priorityNumber: 1 ,viewerLenght: -1 } },function(err, result) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
+                                 var updatedResult = result.docs;
+                            createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
+                                res.send({
+                                    result: result,
+                                    responseCode: 200,
+                                    responseMessage: "Data Show successfully"
+                                })
+                            })
+                            }
+                        })
+
+                    }
+                })
+            }
+        ])
+     },
 
     // show all ads
     "showAllAdsCashType": function(req, res) {
@@ -3328,7 +3374,7 @@ module.exports = {
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: 'success.'
+                responseMessage: 'Ad position set successfully.'
             });
         })
     },
@@ -3626,6 +3672,7 @@ module.exports = {
     },
 
     "uploadXlFile": function(req, res) {
+        console.log("req", req)
         var upload = multer({
             storage: storage,
             fileFilter: function(req, file, callback) {

@@ -46,7 +46,7 @@ app.post('/useUpgradeCard', authUser.authUser, userHandler.useUpgradeCard);
 app.post('/facebookLogin', userHandler.facebookLogin);
 app.get('/countrys', userHandler.countrys);
 app.get('/getAllStates/:name/:code', userHandler.getAllStates);
-app.post('/chatHistory/:pageNumber', authUser.authUser, userHandler.chatHistory);
+app.post('/chatHistory/:pageNumber',  userHandler.chatHistory);
 app.post('/onlineUserList', userHandler.onlineUserList);
 app.get('/paymentClientToken', userHandler.paymentClientToken);
 app.post('/paymentIntegration', userHandler.paymentIntegration);
@@ -67,7 +67,7 @@ app.post('/acceptDeclineCouponRequest', authUser.authUser, userHandler.acceptDec
 app.post('/useCouponWithoutCode', userHandler.useCouponWithoutCode);
 app.post('/winnersFilterCodeBasis', userHandler.winnersFilterCodeBasis)
 app.post('/useCouponWithCode', authUser.authUser, userHandler.useCouponWithCode);
-app.post('/seeExchangeSentRequest', authUser.authUser, userHandler.seeExchangeSentRequest);
+app.post('/seeExchangeSentRequest',  userHandler.seeExchangeSentRequest);
 app.post('/savePaymentRequest', userHandler.savePaymentRequest);
 app.post('/userCashGifts', authUser.authUser, userHandler.userCashGifts);
 app.post('/blockUserSearch', authUser.authUser, userHandler.blockUserSearch);
@@ -75,6 +75,8 @@ app.post('/userNotification', userHandler.userNotification);
 app.post('/couponExchangeOff', userHandler.couponExchangeOff);
 app.post('/sendPaymentHistoryOnMailId', userHandler.sendPaymentHistoryOnMailId);
 app.post('/updateLive', userHandler.updateLive);
+app.post('/cancelExchangeCouponRequest', userHandler.cancelExchangeCouponRequest);
+
 
 
 app.post('/payU', userHandler.payU)

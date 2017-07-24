@@ -271,7 +271,7 @@ switch ($scope.modelData)
       }
       userService.sendMassageAllUser(data).success(function(res) {        
         if (res.responseCode == 200){
-          toastr.success("Message Send Successfully to All Buyers");
+          toastr.success("Message send successfully to all buyers");
           $scope.sendMessage = '';
           $("#sendMessageModelAllUser").modal('hide');
           toastr.success("No of User ",array) 
@@ -291,7 +291,7 @@ switch ($scope.modelData)
           }
           userService.sendMassageAllUser(data).success(function(res) {        
               if (res.responseCode == 200){
-                  toastr.success("Message Send Successfully to All Buyers");
+                  toastr.success("Message send successfully to all buyers");
                   $scope.sendMessage = '';
                   $("#sendMessageModelAllUser").modal('hide');
                   toastr.success("No of User ",array)  
@@ -311,7 +311,7 @@ switch ($scope.modelData)
           }
           userService.sendMassageAllUser(data).success(function(res) {        
               if (res.responseCode == 200){
-                  toastr.success("Message Send Successfully to All Winners");
+                  toastr.success("Message send successfully to all winners");
                   $scope.sendMessage = '';
                   $("#sendMessageModelAllUser").modal('hide');
                   toastr.success("No of User ",array)  
@@ -331,7 +331,7 @@ switch ($scope.modelData)
           }
           userService.sendMassageAllUser(data).success(function(res) {        
               if (res.responseCode == 200){
-                  toastr.success("Message Send Successfully to All Buyers");
+                  toastr.success("Message send successfully to all buyers");
                   $scope.sendMessage = '';
                   $("#sendMessageModelAllUser").modal('hide'); 
                   toastr.success("No of User ",array) 
@@ -349,7 +349,7 @@ switch ($scope.modelData)
           }
           userService.sendMassageAllUser(data).success(function(res) {        
               if (res.responseCode == 200){
-                  toastr.success("Message Send Successfully to User");
+                  toastr.success("Message send successfully to user");
                   $scope.sendMessage = '';
                   $("#sendMessageModelAllUser").modal('hide');
                   toastr.success("No of User ",array)  
