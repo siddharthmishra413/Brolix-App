@@ -330,8 +330,18 @@ module.exports = {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 22' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
                         console.log("userCountry-0-0-0---->>>", userCountry)
-                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry, priorityNumber: { $gt: 1 } },{ page: req.params.pageNumber, limit: 8, sort:{ priorityNumber: 1 ,viewerLenght: -1 } },function(err, result) {
+                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry },{ page: req.params.pageNumber, limit: 8, sort:{ priorityNumber: 1 ,viewerLenght: -1 } },function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
+                                for (var i = 0; i < result.docs.length; i++) {
+                                    if (result.docs[i].adsType == 'coupon') {
+                                        if (result.docs[i].cash == 0) {
+                                            result.docs[i].couponSellPrice = noDataValue
+                                        } else {
+                                            result.docs[i].couponSellPrice = dataValue
+                                        }
+                                    }
+                                }
+                                
                                  var updatedResult = result.docs;
                             createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                                 res.send({
@@ -955,13 +965,13 @@ module.exports = {
                                         var winnerCount = success.numberOfWinners;
                                         var pageId = success.pageId;
                                         console.log("in else")
-                                        //   console.log("winnerCount-->>", winnerCount)
-                                        //                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +winnerCount } }, { new: true }).exec(function(err, result2) {
-                                        //                                            //    console.log("result2-->", result2)
-                                        //                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
-                                        //                                                console.log("in else")
-                                        //                                            }
-                                        //                                        })
+                //   console.log("winnerCount-->>", winnerCount)
+                //                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +winnerCount } }, { new: true }).exec(function(err, result2) {
+                //                                            //    console.log("result2-->", result2)
+                //                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
+                //                                                console.log("in else")
+                //                                            }
+                //                                        })
                                     }
                                 })
                                 console.log("raffleCount--111-5346346346>>>" + raffleCount.length);
@@ -970,17 +980,40 @@ module.exports = {
                                         raffleCount.push(luckUsers[n].userId)
                                     }
                                 }
-                                randomIndex = _.sample(raffleCount, numberOfWinners);
-                                //                                for (var i = 0; i < numberOfWinners; i++) {
-                                //                                    var index = Math.floor(Math.random() * raffleCount.length);
-                                //                                    console.log("index--->>>", index)
-                                //                                    if (randomIndex.filter(data => data != raffleCount[index])) {
-                                //                                        randomIndex.push(raffleCount[index])
-                                //                                    }
-                                console.log("randomIndex----->>>", randomIndex)
+                                console.log("luckUsers 0-0-0-0---++*+*+*+*+*+",raffleCount)
+                                var finalValue = [];
+                                if(finalValue.length != numberOfWinners){
+                                    var  i =finalValue.length;
+                                    while(i<numberOfWinners){
+                                        console.log(" = i = ",i)
+                                    console.log("finalValue.length  0-0-0-0---++*+*+*+*+*+",finalValue.length )
+                                    console.log("numberOfWinners -++*+*+*+*+*+",numberOfWinners)
+//                                randomIndex = _.sample(raffleCount, numberOfWinners);
+//                                 finalValue = _.uniq(randomIndex);
+                                    var index = Math.floor(Math.random() * raffleCount.length);
+                                        console.log("index--->>>", index)
+                                         console.log("raffleCount[index]--->>>", raffleCount[index])
+                                       var flag = finalValue.indexOf(raffleCount[index]) 
+                                       console.log("flag 09090909090--->>>",flag)
+                                       if(flag == -1){
+                                           finalValue.push(raffleCount[index])
+                                           i++;
+                                       }
+                                        console.log("randomIndex---111-->>>", finalValue)
+                                       }
+                                }
+                                    
+    //                                for (var i = 0; i < numberOfWinners; i++) {
+    //                                    var index = Math.floor(Math.random() * raffleCount.length);
+    //                                    console.log("index--->>>", index)
+    //                                    if (randomIndex.filter(data => data != raffleCount[index])) {
+    //                                        randomIndex.push(raffleCount[index])
+    //                                    }
+                            //    }
+                                console.log("randomIndex----->>>", finalValue)
                                 //                                 //   console.log("winnersArray----->>>", winnersArray)
                                 //                                }
-                                callback(null, randomIndex, result.cashAdPrize, result.couponCode, result.hiddenGifts)
+                                callback(null, finalValue, result.cashAdPrize, result.couponCode, result.hiddenGifts)
                             } else {
 
                                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { raffleCount: req.body.userId, NontargetedCount: req.body.userId } }, function(err, success) {
@@ -2135,7 +2168,7 @@ module.exports = {
                 })
             },
             function(noDataValue, dataValue, callback) {
-                createNewAds.paginate({ userId: { $ne: req.params.id }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                createNewAds.paginate({  sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -3230,11 +3263,9 @@ module.exports = {
     },
 
     "sortAds": function(req, res) {
-        if (!req.body.adsType == 'coupon') {
-            return res.json({ responseCode: 404, responseMessage: "Ads not Found." })
-        } else {
+       
             var array2 = [];
-            createNewAds.paginate({ adsType: req.body.adsType }, { sort: { viewers: -1 } }).then(function(data) {
+            createNewAds.paginate({ adsType: 'coupon' }, { sort: { viewerLenght: -1 } }).then(function(data) {
                 var currentTime = (new Date).getTime();
                 // console.log('currentTime',data)
                 for (var i = 0; i <= data.docs.length - 1; i++) {
@@ -3261,13 +3292,13 @@ module.exports = {
                 }
                 return res.json({ responseCode: 200, responseMessage: "Success", data: data })
             })
-        }
+        
     },
 
     "priority": function(req, res) {
-        async.waterfall([
+        waterfall([
             function(callback) {
-                createNewAds.paginate({ adsType: req.body.adsType }, { sort: { viewers: -1 } }, function(err, data) {
+                createNewAds.paginate({ adsType: 'coupon' }, { sort: { viewerLenght: -1 } }, function(err, data) {
                     if (err) {
                         return res.json({ responseCode: 404, responseMessage: "Internal server error ." })
                     } else {

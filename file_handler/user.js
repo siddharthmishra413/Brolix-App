@@ -2180,7 +2180,7 @@ module.exports = {
                 }
             }]
         ).exec(function(err, result) {
-          console.log("result-0-0-0-0-0-0->>", result)
+        //  console.log("result-0-0-0-0-0-0->>", result)
             if (err) res.send({ responseCode: 500, responseMessage: err });
             else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
             else {
@@ -3241,10 +3241,9 @@ module.exports = {
     "seeExchangeSentRequest": function(req, res) {
         console.log("requhsuwdhajqwdkaqkaqdqdqw---->>>",req.body)
         var senderId = req.body.userId;
-        console.log("receiverId-->>", senderId)
         createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); } else {
-              
+              console.log("seeExchangeSentRequest--->>>",JSON.stringify(result))
 
                 createNewAds.populate(result, {
                     path: 'couponExchangeSent.receiverId',
@@ -3521,16 +3520,19 @@ module.exports = {
                 
                 var requestId =  result[0].couponExchangeSent._id;
                 var receiverAdId = result[0].couponExchangeSent.exchangedWithAdId;
+                var senderCouponId = result[0].couponExchangeSent.senderCouponId;
                 console.log("requestId--->>>",requestId)
                 createNewAds.update({'couponExchangeSent._id':new mongoose.Types.ObjectId(requestId)},{$set:{'couponExchangeSent.$.couponExchangeStatus':'Cancel'}},{new:true}).exec(function(err, updatedResult){
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
                     else{
                         console.log("updatedResult--->>>",updatedResult)
                         
-                    createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { _id: new mongoose.Types.ObjectId(receiverAdId), 'couponExchangeReceived.senderId': senderId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" } }, function(err, result2) {
+                    createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { _id: new mongoose.Types.ObjectId(receiverAdId), 'couponExchangeReceived.senderId': senderId,'couponExchangeReceived.senderCouponId': senderCouponId, 'couponExchangeReceived.couponExchangeStatus': "REQUESTED" } }, function(err, result2) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
                     else{
+                        console.log("result2---->>>",JSON.stringify(result2))
                          var requestId1 =  result2[0].couponExchangeReceived._id;
+                        
                         console.log("requestId1--->>>",requestId1)
                         
                         createNewAds.update({'couponExchangeReceived._id':new mongoose.Types.ObjectId(requestId1)},{$set:{'couponExchangeReceived.$.couponExchangeStatus':'Cancel'}},{new:true}).exec(function(err, updatedResult1){

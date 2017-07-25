@@ -3407,6 +3407,7 @@ module.exports = {
             var obj = {
                 pageId: req.body.pageId,
                 pageName: req.body.pageName,
+                userId:req.body.userId,
                 coverImage: req.body.coverImage,
                 giftDescription: req.body.giftDescription,
                 couponExpiryDate: req.body.couponExpiryDate,
