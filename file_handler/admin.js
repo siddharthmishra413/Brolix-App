@@ -3454,7 +3454,7 @@ module.exports = {
 
     "removeCoupon": function(req, res) {
         createNewAds.findOneAndUpdate({ _id: req.body.CouponId }, { $set: { 'status': "REMOVED" } }, { new: true }, function(err, result) {
-            console.log("result--->>", result)
+      //      console.log("result--->>", result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 res.send({ responseCode: 200, responseMessage: "Coupon removed successfully." })
             }

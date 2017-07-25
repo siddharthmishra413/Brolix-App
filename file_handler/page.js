@@ -2684,7 +2684,7 @@ module.exports = {
             console.log("startDate", tempCond)
             console.log("endDate", tempEndDate)
             console.log("dta===>>", data)
-            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }).exec(function(err, result) {
+            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.couponStatus': 'USED', 'coupon.updateddAt': data } }).exec(function(err, result) {
                 console.log("2")
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                     res.send({

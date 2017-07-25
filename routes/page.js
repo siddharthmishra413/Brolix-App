@@ -51,7 +51,7 @@ app.post('/myPagesSearch/:id/:pageNumber', pageHandler.myPagesSearch);
 app.post('/PageCashWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCashWinnersFilter);
 app.post('/PageCouponWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCouponWinnersFilter);
 app.get('/pageFollowersList/:id', authUser.authUser, pageHandler.pageFollowersList);
-app.get('/CouponInboxWinners/:id', authUser.authUser, pageHandler.CouponInboxWinners);
+app.get('/CouponInboxWinners/:id', pageHandler.CouponInboxWinners);
 app.post('/viewCouponCode', authUser.authUser, pageHandler.viewCouponCode);
 app.post('/couponInboxDateFilter', authUser.authUser, pageHandler.couponInboxDateFilter);
 app.post('/blockedPagesSearch/:pageNumber', pageHandler.blockedPagesSearch);

@@ -7,6 +7,19 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
     $scope.user = {};
     $scope.mydata = {};
     $scope.minDate = new Date().toDateString();
+
+
+    userService.adminProfile().success(function(res) {
+        if (res.responseCode == 200) {
+            console.log("sss",JSON.stringify(res))
+            localStorage.setItem('userId', res.result._id);
+            
+        } else {
+            //toastr.error(res.responseMessage);
+        }
+    })
+
+
     
    //  $scope.flag = true;
    // $scope.valid = function(data,key) {
@@ -155,10 +168,13 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
         var couponData = JSON.parse(info.pageName);
         // console.log("info",JSON.stringify(couponData))
         $scope.expDate = new Date(info.expDate).getTime()
+        var userId = localStorage.getItem('userId');
 
-        console.log("info",$scope.expDate)
+        
+
 
         var data = {
+            "userId": userId,
             "pageId": couponData._id,
             "pageName": couponData.pageName,
             "coverImage": $scope.user.photo,
