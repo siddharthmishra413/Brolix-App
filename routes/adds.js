@@ -66,9 +66,6 @@ app.get('/storeCouponPrice/:id', adsHandler.storeCouponPrice);
 app.put('/updateCash/:id', adsHandler.updateCash);
 app.post('/allAreWinners', adsHandler.allAreWinners);
 app.post('/targetedOrNottargeted', adsHandler.targetedOrNottargeted);
-app.get('/sortAdsOnPriorityBasis',adsHandler.sortAdsOnPriorityBasis)
 app.get('/testingPriority/:id/:pageNumber', adsHandler.testingPriority);
-app.get('/sortAds',adsHandler.sortAds);
-app.post('/priority', adsHandler.priority)
 
 module.exports = app;

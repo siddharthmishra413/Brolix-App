@@ -375,9 +375,9 @@ module.exports = {
                 })
             },
             function(result, pageResult, callback) {
-                console.log("pageFollowers--->>", result);
-                console.log("result.pageFollowers--->>");
-                console.log("result.pageFollowers--->>", result.pageFollowers);
+//                console.log("pageFollowers--->>", result);
+//                console.log("result.pageFollowers--->>");
+//                console.log("result.pageFollowers--->>", result.pageFollowers);
                 var array = [];
                 var data = [];
                 if (result.pageFollowers.length != 0) {

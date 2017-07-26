@@ -272,7 +272,8 @@ module.exports = {
                 User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
-                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort:{ priorityNumber: 1 ,viewerLenght: -1 } }, function(err, result) {
+                        
+                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort:{ viewerLenght: -1 } }, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
 
                                 for (var i = 0; i < result.docs.length; i++) {
@@ -282,6 +283,32 @@ module.exports = {
                                         } else {
                                             result.docs[i].couponSellPrice = dataValue
                                         }
+                                    }
+                                }
+                                
+                                 var currentTime = (new Date).getTime();
+                                 for (var i = 0; i <= result.docs.length - 1; i++) {
+                                    var array = [];
+                                    var array2 = [];
+                                    console.log("haanananna", i)
+                                    if (result.docs[i].expiryOfPriority != null && result.docs[i].expiryOfPriority - currentTime > 0) {
+                                         console.log(" +*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+* ")
+                                     //   console.log("with priority ", result.docs[i]._id)
+                                   //     console.log("and prority", result.docs[i].priorityNumber)
+                                        var sigma = function() {
+                                            var array = result.docs;
+                                            if (array[i].priorityNumber >= array.length) {
+                                                var k = array[i].priorityNumber - result.length;
+                                                while ((k--) + 1) {
+                                                    array.push(undefined);
+                                                }
+                                            }
+                                            array.splice(array[i].priorityNumber, 0, array.splice(i, 1)[0]);
+                                            return array;
+                                        }();
+                                    } else {
+                                        console.log("sayng something ", i)
+                                        array2.push(result.docs[i]);
                                     }
                                 }
                                 var updatedResult = result.docs;
@@ -327,7 +354,7 @@ module.exports = {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 22' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
                         console.log("userCountry-0-0-0---->>>", userCountry)
-                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry },{ page: req.params.pageNumber, limit: 8, sort:{ priorityNumber: 1 ,viewerLenght: -1 } },function(err, result) {
+                        createNewAds.paginate({ removedUser: { $ne: req.params.id }, status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry },{ page: req.params.pageNumber, limit: 8, sort:{ viewerLenght: -1 } },function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
                                 for (var i = 0; i < result.docs.length; i++) {
                                     if (result.docs[i].adsType == 'coupon') {
@@ -336,6 +363,33 @@ module.exports = {
                                         } else {
                                             result.docs[i].couponSellPrice = dataValue
                                         }
+                                    }
+                                }
+                                
+                                   var currentTime = (new Date).getTime();
+                                // console.log('currentTime',data)
+                                for (var i = 0; i <= result.docs.length - 1; i++) {
+                                    var array = [];
+                                    var array2 = [];
+                                    console.log("haanananna", i)
+                                    if (result.docs[i].expiryOfPriority != null && result.docs[i].expiryOfPriority - currentTime > 0) {
+                                         console.log(" +*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+* ")
+                                        console.log("with priority ", result.docs[i]._id)
+                                        console.log("and prority", result.docs[i].priorityNumber)
+                                        var sigma = function() {
+                                            var array = result.docs;
+                                            if (array[i].priorityNumber >= array.length) {
+                                                var k = array[i].priorityNumber - result.length;
+                                                while ((k--) + 1) {
+                                                    array.push(undefined);
+                                                }
+                                            }
+                                            array.splice(array[i].priorityNumber, 0, array.splice(i, 1)[0]);
+                                            return array;
+                                        }();
+                                    } else {
+                                        console.log("sayng something ", i)
+                                        array2.push(result.docs[i]);
                                     }
                                 }
                                 
@@ -363,6 +417,34 @@ module.exports = {
                 var userCountry = userResult.country;
                 createNewAds.paginate({ removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort:{ viewerLenght: -1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        
+                          var currentTime = (new Date).getTime();
+                                // console.log('currentTime',data)
+                                for (var i = 0; i <= result.docs.length - 1; i++) {
+                                    var array = [];
+                                    var array2 = [];
+                                    console.log("haanananna", i)
+                                    if (result.docs[i].expiryOfPriority != null && result.docs[i].expiryOfPriority - currentTime > 0) {
+                                         console.log(" +*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+* ")
+                                 //       console.log("with priority ", result.docs[i]._id)
+                                   //     console.log("and prority", result.docs[i].priorityNumber)
+                                        var sigma = function() {
+                                            var array = result.docs;
+                                            if (array[i].priorityNumber >= array.length) {
+                                                var k = array[i].priorityNumber - result.length;
+                                                while ((k--) + 1) {
+                                                    array.push(undefined);
+                                                }
+                                            }
+                                            array.splice(array[i].priorityNumber, 0, array.splice(i, 1)[0]);
+                                            return array;
+                                        }();
+                                    } else {
+                                        console.log("sayng something ", i)
+                                        array2.push(result.docs[i]);
+                                    }
+                                }
+                        
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                             res.send({
@@ -951,14 +1033,6 @@ module.exports = {
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  11." }); } else {
                                         var winnerCount = success.numberOfWinners;
                                         var pageId = success.pageId;
-                                        console.log("in else")
-                //   console.log("winnerCount-->>", winnerCount)
-                //                                        createNewPage.findByIdAndUpdate({ _id: pageId }, { $inc: { winnersCount: +winnerCount } }, { new: true }).exec(function(err, result2) {
-                //                                            //    console.log("result2-->", result2)
-                //                                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
-                //                                                console.log("in else")
-                //                                            }
-                //                                        })
                                     }
                                 })
                                 console.log("raffleCount--111-5346346346>>>" + raffleCount.length);
@@ -972,16 +1046,8 @@ module.exports = {
                                 if(finalValue.length != numberOfWinners){
                                     var  i =finalValue.length;
                                     while(i<numberOfWinners){
-                                        console.log(" = i = ",i)
-                                    console.log("finalValue.length  0-0-0-0---++*+*+*+*+*+",finalValue.length )
-                                    console.log("numberOfWinners -++*+*+*+*+*+",numberOfWinners)
-//                                randomIndex = _.sample(raffleCount, numberOfWinners);
-//                                 finalValue = _.uniq(randomIndex);
                                     var index = Math.floor(Math.random() * raffleCount.length);
-                                        console.log("index--->>>", index)
-                                         console.log("raffleCount[index]--->>>", raffleCount[index])
                                        var flag = finalValue.indexOf(raffleCount[index]) 
-                                       console.log("flag 09090909090--->>>",flag)
                                        if(flag == -1){
                                            finalValue.push(raffleCount[index])
                                            i++;
@@ -989,17 +1055,6 @@ module.exports = {
                                         console.log("randomIndex---111-->>>", finalValue)
                                        }
                                 }
-                                    
-    //                                for (var i = 0; i < numberOfWinners; i++) {
-    //                                    var index = Math.floor(Math.random() * raffleCount.length);
-    //                                    console.log("index--->>>", index)
-    //                                    if (randomIndex.filter(data => data != raffleCount[index])) {
-    //                                        randomIndex.push(raffleCount[index])
-    //                                    }
-                            //    }
-                                console.log("randomIndex----->>>", finalValue)
-                                //                                 //   console.log("winnersArray----->>>", winnersArray)
-                                //                                }
                                 callback(null, finalValue, result.cashAdPrize, result.couponCode, result.hiddenGifts)
                             } else {
 
@@ -3213,45 +3268,13 @@ module.exports = {
         })
     },
 
-    "sortAds": function(req, res) {
-       
-            var array2 = [];
-            createNewAds.paginate({ adsType: 'coupon' }, { sort: { viewerLenght: -1 } }).then(function(data) {
-                var currentTime = (new Date).getTime();
-                // console.log('currentTime',data)
-                for (var i = 0; i <= data.docs.length - 1; i++) {
-                    var array = [];
-                    console.log("haanananna", i)
-                    if (data.docs[i].expiryOfPriority != null && data.docs[i].expiryOfPriority - currentTime > 0) {
-                        console.log("with priority ", data.docs[i]._id)
-                        console.log("and prority", data.docs[i].priorityNumber)
-                        var sigma = function() {
-                            var array = data.docs;
-                            if (array[i].priorityNumber >= array.length) {
-                                var k = array[i].priorityNumber - data.length;
-                                while ((k--) + 1) {
-                                    array.push(undefined);
-                                }
-                            }
-                            array.splice(array[i].priorityNumber, 0, array.splice(i, 1)[0]);
-                            return array;
-                        }();
-                    } else {
-                        console.log("sayng something ", i)
-                        array2.push(data.docs[i]);
-                    }
-                }
-                return res.json({ responseCode: 200, responseMessage: "Success", data: data })
-            })
-        
-    },
-
-    "priority": function(req, res) {
+    "homepageAds": function(req, res) {
+        console.log("home page req-->>",req.body)
         waterfall([
             function(callback) {
-                createNewAds.paginate({ adsType: 'coupon' }, { sort: { viewerLenght: -1 } }, function(err, data) {
+                createNewAds.paginate({ }, { sort: { viewerLenght: -1 } }, function(err, data) {
                     if (err) {
-                        return res.json({ responseCode: 404, responseMessage: "Internal server error ." })
+                        return res.json({ responseCode: 404, responseMessage: "Internal server error.", err})
                     } else {
                         callback(null, data);
                     }
@@ -3260,8 +3283,10 @@ module.exports = {
             function(data, callback) {
                 var currentTime = (new Date).getTime();
                 for (var i = 0; i <= data.docs.length - 1; i++) {
-                    if (data.docs[i].priorityNumber == req.body.number) {
+                    if (data.docs[i].priorityNumber == req.body.priorityNumber) {
+                        console.log("data.docs[i].priorityNumber--->>>",data.docs[i].priorityNumber, i)
                         if (data.docs[i].expiryOfPriority - currentTime >= 0) {
+                            console.log("data.docs[i].expiryOfPriority--->>>",data.docs[i].expiryOfPriority, i)
                             return res.json({ responseCode: 400, responseMessage: "At this place already a ads exist.", timeleft: currentTime - data.docs[i].expiryOfPriority, docs: data.docs[i], currentTime: currentTime })
                         }
                     } else {
@@ -3272,23 +3297,23 @@ module.exports = {
             },
             function(data, callback) {
 
-                createNewAds.findOneAndUpdate({ _id: req.body.adsId }, { $set: { expiryOfPriority: req.body.time, priorityNumber: req.body.number } }, { new: true }, function(err, result) {
+                createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { expiryOfPriority: req.body.expiryOfPriority, priorityNumber: req.body.priorityNumber } }, { new: true }, function(err, result) {
                     if (err) {
-                        return res.json({ responseCode: 404, responseMessage: "Internal server error." })
+                        return res.json({ responseCode: 404, responseMessage: "Internal server error." ,err})
                     } else {
                         // console.log("asgdhasd--------->>")
-                        var number = req.body.number;
+                        var priorityNumber = req.body.priorityNumber;
                         // console.log("asghdhasgdhasgdkagsdkasdjkasdks------------->>>>>",data.docs[0]._id)
                         for (var i = 0; i < data.docs.length; i++) {
-                            if (data.docs[i]._id == req.body.adsId) {
-                                if (number >= data.docs.length) {
-                                    var k = number - data.docs.length;
+                            if (data.docs[i]._id == req.body.adId) {
+                                if (priorityNumber >= data.docs.length) {
+                                    var k = priorityNumber - data.docs.length;
                                     while ((k--) + 1) {
                                         data.docs.push(undefined);
                                     }
                                 }
                                 // console.log("above data",data)
-                                data.docs.splice(number, 0, data.docs.splice(i, 1)[0]);
+                                data.docs.splice(priorityNumber, 0, data.docs.splice(i, 1)[0]);
 
                                 // return data.docs;
                             }
@@ -3300,74 +3325,12 @@ module.exports = {
             }
         ], function(err, data) {
             if (err) {
-                return res.json({ responseCode: 404, responseMessage: "Internal server error." })
+                return res.json({ responseCode: 404, responseMessage: "Internal server error.", err })
             } else {
-                return res.json({ responseCode: 200, responseMessage: "Success", result: data })
+                return res.json({ responseCode: 200, responseMessage: "Ad position set successfully", result: data })
             }
         })
 
-    },
-
-    "homepageAds": function(req, res) {
-        waterfall([
-            function(callback) {
-                var priorityNumber = req.body.priorityNumber;
-                createNewAds.find({}).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
-                        var flag = false;
-                        for (var i = 0; i < result.length; i++) {
-                            if (result[i].priorityNumber == req.body.priorityNumber) {
-                                var flag = true;
-                            }
-                        }
-                        if (flag == false) {
-                            callback(null);
-                        } else {
-                            res.send({ responseCode: 400, responseMessage: 'Already an ad exists at this place.' });
-                        }
-                    }
-                })
-            },
-            function(callback) {
-                var priorityNumber = req.body.priorityNumber;
-                var expiryOfPriority = req.body.expiryOfPriority;
-                var startTime = new Date().toUTCString();
-                var h = new Date(new Date(startTime).setHours(00)).toUTCString();
-                var m = new Date(new Date(h).setMinutes(00)).toUTCString();
-                var s = Date.now(m)
-                var coupanAge = priorityNumber;
-                var actualTime = parseInt(s) + parseInt(coupanAge);
-                console.log("homepageAds---priorityTime---*+*+>>", coupanAge)
-                createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
-                        createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { priorityNumber: priorityNumber, expiryOfPriority: actualTime } }, { new: true }).exec(function(err, result2) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
-                                callback(null, result2)
-                            }
-                        })
-                    }
-                })
-            },
-        ], function(err, result) {
-            res.send({
-                result: result,
-                responseCode: 200,
-                responseMessage: 'Ad position set successfully.'
-            });
-        })
-    },
-
-
-    "sortAdsOnPriorityBasis": function(req, res) {
-        createNewAds.find({}).sort({ viewerLenght: -1 }).exec(function(err, result1) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 11" }); } else {
-                res.send({
-                    result: result1,
-                    responseCode: 200,
-                    responseMessage: 'Success'
-                })
-            }
-        })
     },
 
 

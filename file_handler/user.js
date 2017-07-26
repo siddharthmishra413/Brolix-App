@@ -2149,14 +2149,16 @@ module.exports = {
     },
 
     "onlineUserList": function(req, res) {
-    //    console.log("request----->>>",req.body)
+        console.log("request----->>>",req.body)
         var condition;
         if (req.body.pageId) {
             console.log("in if")
             condition = { $or: [{ senderId: req.body.userId, pageId: req.body.pageId }, { receiverId: req.body.userId, pageId: req.body.pageId }] }
         } else {
             console.log("in else")
-            condition = { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
+            condition = { $and:[{$or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }]},{pageId:{$exists:false}}] }
+            
+        //            condition = {$and:[{$or: [{ senderId: req.body.senderId, receiverId: req.body.receiverId }, { senderId: req.body.receiverId, receiverId: req.body.senderId }]},{pageId:{$exists:false}}] }
         }
         chat.aggregate(
             [{
@@ -2180,7 +2182,7 @@ module.exports = {
                 }
             }]
         ).exec(function(err, result) {
-        //  console.log("result-0-0-0-0-0-0->>", result)
+         console.log("result-0-0-0-0-0-0->>", result)
             if (err) res.send({ responseCode: 500, responseMessage: err });
             else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
             else {
@@ -2191,7 +2193,7 @@ module.exports = {
 //                });
                 var obj = [],
                     j;
-         //      console.log("result--->" + JSON.stringify(result));
+             console.log("result--->" + JSON.stringify(result));
                 for (var i = 0; i < result.length; i++) {
                     result.length - 1 == i ? j = i : j = i + 1;
 
@@ -2227,7 +2229,7 @@ module.exports = {
                     result.splice(j, 1);
          //           console.log("length---->" + result.length);
                 }
-        //      console.log("json0-0-0-0-0-0-0->>",JSON.stringify(obj))
+              console.log("jsonqqq0-0-0-0-0-0-0->>",JSON.stringify(obj))
                 res.send({
                     result: obj,
                     responseCode: 200,
@@ -3552,6 +3554,36 @@ module.exports = {
                 })                
             }
         })        
+    },
+    
+    "sendMessage":function(req, res){
+       console.log("sendMessage--->>>", req.body)
+        User.findOne({ _id: req.body.receiverId }, function(err, result2) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error. 33' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                var flag = result2.blockUser.indexOf(req.body.senderId)
+                console.log("sendMessage flag-->>", flag)
+                if (flag != -1) { res.send({ responseCode: 401, responseMessage: 'You can not send message to this user' }) } else {
+                    console.log("result2.privacy.sendMessage", result2.privacy.sendMessage)
+                    if (result2.privacy.sendMessage == "onlyMe") { res.send({ responseCode: 409, responseMessage: "You cannot send message to this user due to privacy policies" }) } else if (result2.privacy.sendMessage == "followers") {
+
+                        var flag1 = result2.userFollowers.indexOf(req.body.senderId)
+                        if (flag1 != -1) { res.send({ responseCode: 400, responseMessage: "You cannot send message to this user due to privacy policies" }); }
+                        else {
+                            res.send({
+                                responseCode: 200,
+                                responseMessage: 'You can send message'
+                            })
+                        }
+                    } else {
+                        res.send({
+                            responseCode: 200,
+                            responseMessage: 'You can send message'
+                        })
+                    }
+                }
+
+            }
+        })
     }
 
 
