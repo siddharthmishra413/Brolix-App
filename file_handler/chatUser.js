@@ -52,7 +52,6 @@ module.exports = {
                     else {
 
                         user.findOne({ _id: data.receiverId }, function(err1, receiverData) {
-                            console.log("receiverData---0--0-0---->>>",JSON.stringify(receiverData))
                             if (receiverData) {
                                 if (recieverConn != undefined) {
                                     var respObj = JSON.stringify(data);
@@ -60,14 +59,8 @@ module.exports = {
                                     respObj.roomId = roomId;
                                     respObj = JSON.stringify(respObj);
                                     recieverConn.send(respObj);
-                                } else {
-                                     console.log("in else *++**+**")
-                                      console.log("in data.message *++**+**",data.message)
-                                       console.log("in data.senderId *++**+**",data.senderId)
-                                        console.log("in data.senderName *++**+**",data.senderName)
-                                         console.log("in else *++**+**")
-                                       
-                                        if (receiverData.deviceToken && receiverData.deviceType && receiverData.notification_status && receiverData.status) {
+                                } else {                                       
+                                if (receiverData.deviceToken && receiverData.deviceType && receiverData.notification_status && receiverData.status) {
                                 var message = "You have coupon Exchange request";
                                 if (receiverData.deviceType == 'iOS' && receiverData.notification_status == "on") {
                                  functions.iOS_notification(receiverData.deviceToken, data.message, data.senderId, data.senderName) 
