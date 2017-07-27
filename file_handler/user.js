@@ -21,6 +21,7 @@ var paypalPayment = require("./model/payment");
 var Brolixanddollors = require("./model/brolixAndDollors");
 var mongoose = require('mongoose');
 var Twocheckout = require('2checkout-node');
+var app = require('../server');
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -969,6 +970,9 @@ module.exports = {
         //        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         //        else {
         User.find({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
+       // app.set('lang', req.body.lang);
+          //  console.log('======>>>>>>>>>>>>>>>>>>>>>>>>>>',app.get('lang'));
+
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); }
             else {
                 var data = result.filter(result => result.isVerified == 'TRUE');

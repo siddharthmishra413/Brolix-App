@@ -91,7 +91,7 @@ app.use('/tool', tool)
 app.use('/pageFollow', pageFollow)
 
 
-
+exports.module = app;
 // start the server 
 
 app.listen(port, '0.0.0.0');

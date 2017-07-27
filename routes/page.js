@@ -17,7 +17,7 @@ app.post('/deleteCommentsOnPage', pageHandler.deleteCommentsOnPage);
 app.post('/editCommentsonPage', pageHandler.editCommentsonPage);
 
 app.post('/createPage', pageHandler.createPage);
-app.get('/showAllPages/:pageNumber', authUser.authUser, pageHandler.showAllPages);
+app.get('/showAllPages/:pageNumber',  pageHandler.showAllPages);
 app.get('/showAllOtherUserPages/:id/:pageNumber',  pageHandler.showAllOtherUserPages);
 app.post('/showPageDetails', pageHandler.showPageDetails);
 app.get('/myPages/:id/:pageNumber', pageHandler.myPages);

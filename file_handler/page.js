@@ -12,7 +12,14 @@ var waterfall = require('async-waterfall');
 var _ = require('underscore')
 var adminCards = require("./model/cardsAdmin");
 var functions = require("./functionHandler");
-
+//<------------------------------------------------language conversn----------------------->
+var configs = {
+  "lang": "ar",
+  "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
+}
+var i18n_module = require('i18n-nodejs');
+var i18n = new i18n_module(configs.lang, configs.langFile);
+console.log("===========================================",i18n.__('Welcome'));
 //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
@@ -53,12 +60,14 @@ module.exports = {
     },
     //API for Show All Pages
     "showAllPages": function(req, res) {
+        console.log('======>>>>>>>>>>>>>>>>>>>>>>>>>>2222222222222222',app.get('lang'));
+        var i18n = new i18n_module(configs.lang, configs.langFile);
         createNewPage.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: "All pages show successfully."
+                responseMessage: i18n.__("All pages show successfully.")
             })
         })
     },
@@ -66,14 +75,37 @@ module.exports = {
     //API for Show All Pages
     "showAllOtherUserPages": function(req, res) {
         waterfall([
-            function(callback) {
+            function(callback){
+              var userId = req.params.id;
+                User.find({	"type" : "Advertiser", "type" : "USER","status" : "ACTIVE", "isVerified" : "TRUE"}).exec(function(err, userResult1){
+                    if(err){ res.send({ responseCode:409, responseMessage:'Internal server error'});}
+                    else{
+                        var blockedArray = [];
+                        for(var i =0; i<userResult1.length; i++){
+                            console.log("flag------->>>>",userResult1[i].blockUser.indexOf(req.params.id),i)   
+                            var flag = userResult1[i].blockUser.indexOf(req.params.id)
+                             console.log("flag---656---->>>>",flag)
+                            if(flag != -1){
+                               blockedArray.push(userResult1[i]._id)                                 
+                            }
+                            else{
+                              console.log("flag------->>>>")   
+                            }
+                        }
+                        callback(null,blockedArray)
+                       console.log("flag------->>>>",JSON.stringify(blockedArray))
+                       
+                    }
+                })
+            },
+            function(blockedArray, callback) {
                 User.findOne({ _id: req.params.id }).exec(function(err, result) {
-                    callback(null, result);
+                    callback(null, result, blockedArray);
                   //  console.log("resulrt-0-0-0-0-0-0-0-0-0-0----->>>>",result)
                 })
             },
-            function(result, callback) {
-                createNewPage.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+            function(result,blockedArray, callback) {
+                createNewPage.paginate({ userId :{ $nin: blockedArray }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
                     if (err) { res.semd({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                      // console.log("pageResult-*******33333333333**************----->>>>",pageResult)
                         callback(null, result, pageResult);
@@ -253,13 +285,32 @@ module.exports = {
 
     //API for Favourite Type
     "showPageFavouriteType": function(req, res) {
+                   var userId = req.params.id;
+                User.find({	"type" : "Advertiser", "type" : "USER","status" : "ACTIVE", "isVerified" : "TRUE"}).exec(function(err, userResult1){
+                    if(err){ res.send({ responseCode:409, responseMessage:'Internal server error'});}
+                    else{
+                        var blockedArray = [];
+                        blockedArray.push(req.params.id);
+                        for(var i =0; i<userResult1.length; i++){
+                            console.log("flag------->>>>",userResult1[i].blockUser.indexOf(req.params.id),i)   
+                            var flag = userResult1[i].blockUser.indexOf(req.params.id)
+                             console.log("flag---656---->>>>",flag)
+                            if(flag != -1){
+                               blockedArray.push(userResult1[i]._id)                                 
+                            }
+                            else{
+                              console.log("flag------->>>>")   
+                            }
+                        }
+                      
+                       console.log("flag------->>>>",JSON.stringify(blockedArray))
         User.find({ _id: req.params.id }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var arr = [];
                 results[0].pageFollowers.forEach(function(result) {
                     arr.push(result.pageId)
                 })
-                createNewPage.paginate({ _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, newResult) {
+                createNewPage.paginate({ userId :{ $nin: blockedArray }, _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, newResult) {
                     res.send({
                         result: newResult,
                         responseCode: 200,
@@ -268,6 +319,8 @@ module.exports = {
                 })
             }
         })
+                    }
+                })
     },
     //API for Edit Page
     "editPage": function(req, res) {
@@ -361,14 +414,38 @@ module.exports = {
     "allPagesSearch": function(req, res) {
         console.log("request-->>", req.body)
         waterfall([
-            function(callback) {
-                User.findOne({ _id: req.params.id }).exec(function(err, result) {
-                    callback(null, result);
+              function(callback){
+              var userId = req.params.id;
+                User.find({	"type" : "Advertiser", "type" : "USER","status" : "ACTIVE", "isVerified" : "TRUE"}).exec(function(err, userResult1){
+                    if(err){ res.send({ responseCode:409, responseMessage:'Internal server error'});}
+                    else{
+                        var blockedArray = [];
+                        for(var i =0; i<userResult1.length; i++){
+                            console.log("flag------->>>>",userResult1[i].blockUser.indexOf(req.params.id),i)   
+                            var flag = userResult1[i].blockUser.indexOf(req.params.id)
+                             console.log("flag---656---->>>>",flag)
+                            if(flag != -1){
+                               blockedArray.push(userResult1[i]._id)                                 
+                            }
+                            else{
+                              console.log("flag------->>>>")   
+                            }
+                        }
+                        callback(null,blockedArray)
+                       console.log("flag------->>>>",JSON.stringify(blockedArray))
+                       
+                    }
                 })
             },
-            function(result, callback) {
+            function(blockedArray, callback) {
+                User.findOne({ _id: req.params.id }).exec(function(err, result) {
+                    blockedArray.push( req.params.id);
+                    callback(null, result, blockedArray);
+                })
+            },
+            function(result, blockedArray, callback) {
                 var re = new RegExp(req.body.search, 'i');
-                createNewPage.paginate({ userId: { $ne: req.params.id }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                createNewPage.paginate({ userId :{ $nin: blockedArray }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                         callback(null, result, pageResult);
                     }
@@ -446,7 +523,28 @@ module.exports = {
                 }
             }
         }
-        createNewPage.paginate({ userId: { $ne: req.params.id }, $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
+             var userId = req.params.id;
+                User.find({	"type" : "Advertiser", "type" : "USER","status" : "ACTIVE", "isVerified" : "TRUE"}).exec(function(err, userResult1){
+                    if(err){ res.send({ responseCode:409, responseMessage:'Internal server error'});}
+                    else{
+                        var blockedArray = [];
+                        blockedArray.push(req.params.id);
+                        for(var i =0; i<userResult1.length; i++){
+                            console.log("flag------->>>>",userResult1[i].blockUser.indexOf(req.params.id),i)   
+                            var flag = userResult1[i].blockUser.indexOf(req.params.id)
+                             console.log("flag---656---->>>>",flag)
+                            if(flag != -1){
+                               blockedArray.push(userResult1[i]._id)                                 
+                            }
+                            else{
+                              console.log("flag------->>>>")   
+                            }
+                        }
+                       
+                       console.log("flag------->>>>",JSON.stringify(blockedArray))
+                       
+                    
+        createNewPage.paginate({ userId :{ $nin: blockedArray }, $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: results,
@@ -455,6 +553,8 @@ module.exports = {
                 })
             }
         })
+        }
+                })
     },
 
     "pageRating": function(req, res) {

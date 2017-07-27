@@ -313,7 +313,7 @@
                  }
              })
          } else if (req.body.followerStatus == "block") {
-              console.log("block request----->>", req.body)
+          //    console.log("block request----->>", req.body)
               var date = new Date();
              waterfall([
                  function(callabck) {
@@ -376,7 +376,7 @@
                  });
              })
          } else if (req.body.followerStatus == "reject") {
-             console.log("req-->>", req.body)
+        //     console.log("req-->>", req.body)
               var date = new Date();
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $set: { followerStatus: req.body.followerStatus, updatedAt: date } }, { new: true }).exec(function(err, results) {
                  //  console.log("results-->>", results)
@@ -470,7 +470,7 @@
                      for (var i = 0; i < newResult.length; i++) {
                          newResult[i].followerStatus = result[i].followerStatus;
                      }
-                     console.log("blockUserList-0-0-0-0-->>",JSON.stringify(newResult))
+                //     console.log("blockUserList-0-0-0-0-->>",JSON.stringify(newResult))
                      res.send({
                          result: newResult,
                          responseCode: 200,
