@@ -4789,7 +4789,38 @@ module.exports = {
             })
         }
     })
-    }
+    },
+    
+    "showAllAdsCashType": function(req, res) {
+         createNewAds.paginate({ adsType: "cash", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1 } }, function(err, result) {
+             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                 var updatedResult = result.docs;
+                 createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
+                     res.send({
+                         result: result,
+                         responseCode: 200,
+                         responseMessage: "Data Show successfully"
+                     })
+                 })
+             }
+         })
+
+     },
+    
+      "showAllAdsCouponType": function(req, res) {
+         createNewAds.paginate({  adsType: "coupon", status: "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1 } }, function(err, result) {
+             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
+                 var updatedResult = result.docs;
+                 createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
+                     res.send({
+                         result: result,
+                         responseCode: 200,
+                         responseMessage: "Data Show successfully"
+                     })
+                 })
+             }
+         })
+     },
 
 
 }

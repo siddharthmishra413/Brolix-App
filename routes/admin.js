@@ -164,6 +164,8 @@ app.get('/luckCardViewersList', authUser.authUser, adminHandler.luckCardViewersL
 app.get('/userCouponStatus', authUser.authUser, adminHandler.userCouponStatus);
 app.get('/userCashStatus', authUser.authUser, adminHandler.userCashStatus);
 app.get('/upgradeCardPriceList', authUser.authUser, adminHandler.upgradeCardPriceList);
+app.get('/showAllAdsCouponType/:pageNumber', adminHandler.showAllAdsCouponType);
+app.get('/showAllAdsCashType/:pageNumber', adminHandler.showAllAdsCashType);
 
 
 module.exports = app;

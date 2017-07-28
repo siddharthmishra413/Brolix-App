@@ -93,16 +93,22 @@
                  }
              })
          } else if (req.body.follow == "unfollow") {
+             console.log("unfollow req --->>>",req.body)
               var date = new Date();
              console.log("data----->>>>",req.body)
              followerList.findOne({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }).exec(function(err, userResult) {
                   console.log("userResult--0-0-0-0-0-0-->>>", userResult)
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (userResult.followerStatus == "block") { res.send({ responseCode: 201, responseMessage: 'You can not unfollow this user as you have blocked this user' }) } else {
-                     followerList.update({ $or: [{ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }] }, {
-                         $set: { followerStatus: "unfollow",  updatedAt: date }
-                     }, { multi: true }).exec(function(err, result) {
+                     followerList.update({ $or: [{ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }] }, { $set: { followerStatus: "unfollow",  updatedAt: date } }, { multi: true }).exec(function(err, result) {
                          //     console.log("result 8888 ****** ++++++   ------>>>>", result)
-                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                         else {
+                             
+                              followerList.update({ $or: [{ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }] }, { $set: { followerStatus: "unfollow",  updatedAt: date } }, { multi: true }).exec(function(err, result2) {
+                         //     console.log("result 8888 ****** ++++++   ------>>>>", result)
+                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                         else {
+                             
                              User.findOneAndUpdate({ _id: req.body.receiverId }, { $pop: { userFollowers: -req.body.senderId } }, { new: true }).exec(function(err, receiverResult) {
                                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!receiverResult) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
 
@@ -118,6 +124,8 @@
                                      })
                                  }
                              })
+                         }
+                              })
                          }
                      })
                  }

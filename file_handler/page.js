@@ -14,12 +14,12 @@ var adminCards = require("./model/cardsAdmin");
 var functions = require("./functionHandler");
 //<------------------------------------------------language conversn----------------------->
 var configs = {
-  "lang": "ar",
-  "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
+    "lang": "ar",
+    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
 }
 var i18n_module = require('i18n-nodejs');
 var i18n = new i18n_module(configs.lang, configs.langFile);
-console.log("===========================================",i18n.__('Welcome'));
+console.log("===========================================", i18n.__('Welcome'));
 //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
@@ -60,7 +60,7 @@ module.exports = {
     },
     //API for Show All Pages
     "showAllPages": function(req, res) {
-        console.log('======>>>>>>>>>>>>>>>>>>>>>>>>>>2222222222222222',app.get('lang'));
+        console.log('======>>>>>>>>>>>>>>>>>>>>>>>>>>2222222222222222', app.get('lang'));
         var i18n = new i18n_module(configs.lang, configs.langFile);
         createNewPage.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -75,57 +75,54 @@ module.exports = {
     //API for Show All Pages
     "showAllOtherUserPages": function(req, res) {
         waterfall([
-            function(callback){
-              var userId = req.params.id;
-                User.find({	"type" : "Advertiser", "type" : "USER","status" : "ACTIVE", "isVerified" : "TRUE"}).exec(function(err, userResult1){
-                    if(err){ res.send({ responseCode:409, responseMessage:'Internal server error'});}
-                    else{
+            function(callback) {
+                var userId = req.params.id;
+                User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         var blockedArray = [];
-                        for(var i =0; i<userResult1.length; i++){
-                            console.log("flag------->>>>",userResult1[i].blockUser.indexOf(req.params.id),i)   
-                            var flag = userResult1[i].blockUser.indexOf(req.params.id)
-                             console.log("flag---656---->>>>",flag)
-                            if(flag != -1){
-                               blockedArray.push(userResult1[i]._id)                                 
-                            }
-                            else{
-                              console.log("flag------->>>>")   
+                        for (var i = 0; i < userResult1.length; i++) {
+                            for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                                if (userResult1[i].blockUser[j].toString() == userId) {
+                                    blockedArray.push(userResult1[i]._id)
+                                } else {
+                                    console.log("flag------->>>>")
+                                }
                             }
                         }
-                        callback(null,blockedArray)
-                       console.log("flag------->>>>",JSON.stringify(blockedArray))
-                       
+                        callback(null, blockedArray)
+                        console.log("flag------->>>>", JSON.stringify(blockedArray))
+
                     }
                 })
             },
             function(blockedArray, callback) {
                 User.findOne({ _id: req.params.id }).exec(function(err, result) {
                     callback(null, result, blockedArray);
-                  //  console.log("resulrt-0-0-0-0-0-0-0-0-0-0----->>>>",result)
+                    //  console.log("resulrt-0-0-0-0-0-0-0-0-0-0----->>>>",result)
                 })
             },
-            function(result,blockedArray, callback) {
-                createNewPage.paginate({ userId :{ $nin: blockedArray }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+            function(result, blockedArray, callback) {
+                createNewPage.paginate({ userId: { $nin: blockedArray }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
                     if (err) { res.semd({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                     // console.log("pageResult-*******33333333333**************----->>>>",pageResult)
+                        // console.log("pageResult-*******33333333333**************----->>>>",pageResult)
                         callback(null, result, pageResult);
                     }
                 })
             },
             function(result, pageResult, callback) {
                 // console.log("result-*********************----->>>>",result)
-                 // console.log("pageResult-+++++++++++++++----->>>>",pageResult)
+                // console.log("pageResult-+++++++++++++++----->>>>",pageResult)
                 var array = [];
                 var data = [];
                 if (result.pageFollowers.length != 0) {
                     for (var i = 0; i < result.pageFollowers.length; i++) {
                         array.push(result.pageFollowers[i].pageId)
                     }
-                  //  console.log("followed pages------->>>>>", array);
+                    //  console.log("followed pages------->>>>>", array);
                     for (var j = 0; j < array.length; j++) {
                         console.log("jjjjj", j);
                         for (k = 0; k < pageResult.docs.length; k++) {
-                            console.log("kkkkkk", pageResult.docs[k]._id,k);
+                            console.log("kkkkkk", pageResult.docs[k]._id, k);
                             if (pageResult.docs[k]._id == array[j]) {
                                 pageResult.docs[k].pageFollowersStatus = true
                             }
@@ -203,7 +200,7 @@ module.exports = {
                 })
             },
         ], function(err, result2) {
-           // console.log("myPages--->>>", result2)
+            // console.log("myPages--->>>", result2)
             res.send({
                 result: result2,
                 responseCode: 200,
@@ -243,12 +240,10 @@ module.exports = {
                 })
             },
             function(pageArray, callback) {
-                    var re = new RegExp(req.body.search, 'i');
+                var re = new RegExp(req.body.search, 'i');
                 createNewPage.paginate({ $and: [{ _id: { $in: pageArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
                     function(err, result1) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
-                        else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); }
-                        else {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
                             callback(null, result1)
                         }
                     })
@@ -285,42 +280,37 @@ module.exports = {
 
     //API for Favourite Type
     "showPageFavouriteType": function(req, res) {
-                   var userId = req.params.id;
-                User.find({	"type" : "Advertiser", "type" : "USER","status" : "ACTIVE", "isVerified" : "TRUE"}).exec(function(err, userResult1){
-                    if(err){ res.send({ responseCode:409, responseMessage:'Internal server error'});}
-                    else{
-                        var blockedArray = [];
-                        blockedArray.push(req.params.id);
-                        for(var i =0; i<userResult1.length; i++){
-                            console.log("flag------->>>>",userResult1[i].blockUser.indexOf(req.params.id),i)   
-                            var flag = userResult1[i].blockUser.indexOf(req.params.id)
-                             console.log("flag---656---->>>>",flag)
-                            if(flag != -1){
-                               blockedArray.push(userResult1[i]._id)                                 
-                            }
-                            else{
-                              console.log("flag------->>>>")   
-                            }
-                        }
-                      
-                       console.log("flag------->>>>",JSON.stringify(blockedArray))
-        User.find({ _id: req.params.id }).exec(function(err, results) {
+        var userId = req.params.id;
+        User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                var arr = [];
-                results[0].pageFollowers.forEach(function(result) {
-                    arr.push(result.pageId)
-                })
-                createNewPage.paginate({ userId :{ $nin: blockedArray }, _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, newResult) {
-                    res.send({
-                        result: newResult,
-                        responseCode: 200,
-                        responseMessage: "List of all pages shown successfully."
-                    });
+                var blockedArray = [];
+                for (var i = 0; i < userResult1.length; i++) {
+                    for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                        if (userResult1[i].blockUser[j].toString() == userId) {
+                            blockedArray.push(userResult1[i]._id)
+                        } else {
+                            console.log("flag------->>>>")
+                        }
+                    }
+                }
+                console.log("flag------->>>>", JSON.stringify(blockedArray))
+                User.find({ _id: req.params.id }).exec(function(err, results) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        var arr = [];
+                        results[0].pageFollowers.forEach(function(result) {
+                            arr.push(result.pageId)
+                        })
+                        createNewPage.paginate({ userId: { $nin: blockedArray }, _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, newResult) {
+                            res.send({
+                                result: newResult,
+                                responseCode: 200,
+                                responseMessage: "List of all pages shown successfully."
+                            });
+                        })
+                    }
                 })
             }
         })
-                    }
-                })
     },
     //API for Edit Page
     "editPage": function(req, res) {
@@ -414,47 +404,44 @@ module.exports = {
     "allPagesSearch": function(req, res) {
         console.log("request-->>", req.body)
         waterfall([
-              function(callback){
-              var userId = req.params.id;
-                User.find({	"type" : "Advertiser", "type" : "USER","status" : "ACTIVE", "isVerified" : "TRUE"}).exec(function(err, userResult1){
-                    if(err){ res.send({ responseCode:409, responseMessage:'Internal server error'});}
-                    else{
+            function(callback) {
+                var userId = req.params.id;
+                User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         var blockedArray = [];
-                        for(var i =0; i<userResult1.length; i++){
-                            console.log("flag------->>>>",userResult1[i].blockUser.indexOf(req.params.id),i)   
-                            var flag = userResult1[i].blockUser.indexOf(req.params.id)
-                             console.log("flag---656---->>>>",flag)
-                            if(flag != -1){
-                               blockedArray.push(userResult1[i]._id)                                 
-                            }
-                            else{
-                              console.log("flag------->>>>")   
+                        for (var i = 0; i < userResult1.length; i++) {
+                            for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                                if (userResult1[i].blockUser[j].toString() == userId) {
+                                    blockedArray.push(userResult1[i]._id)
+                                } else {
+                                    console.log("flag------->>>>")
+                                }
                             }
                         }
-                        callback(null,blockedArray)
-                       console.log("flag------->>>>",JSON.stringify(blockedArray))
-                       
+                        callback(null, blockedArray)
+                        console.log("flag------->>>>", JSON.stringify(blockedArray))
+
                     }
                 })
             },
             function(blockedArray, callback) {
                 User.findOne({ _id: req.params.id }).exec(function(err, result) {
-                    blockedArray.push( req.params.id);
+                    blockedArray.push(req.params.id);
                     callback(null, result, blockedArray);
                 })
             },
             function(result, blockedArray, callback) {
                 var re = new RegExp(req.body.search, 'i');
-                createNewPage.paginate({ userId :{ $nin: blockedArray }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                createNewPage.paginate({ userId: { $nin: blockedArray }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                         callback(null, result, pageResult);
                     }
                 })
             },
             function(result, pageResult, callback) {
-//                console.log("pageFollowers--->>", result);
-//                console.log("result.pageFollowers--->>");
-//                console.log("result.pageFollowers--->>", result.pageFollowers);
+                //                console.log("pageFollowers--->>", result);
+                //                console.log("result.pageFollowers--->>");
+                //                console.log("result.pageFollowers--->>", result.pageFollowers);
                 var array = [];
                 var data = [];
                 if (result.pageFollowers.length != 0) {
@@ -523,38 +510,34 @@ module.exports = {
                 }
             }
         }
-             var userId = req.params.id;
-                User.find({	"type" : "Advertiser", "type" : "USER","status" : "ACTIVE", "isVerified" : "TRUE"}).exec(function(err, userResult1){
-                    if(err){ res.send({ responseCode:409, responseMessage:'Internal server error'});}
-                    else{
-                        var blockedArray = [];
-                        blockedArray.push(req.params.id);
-                        for(var i =0; i<userResult1.length; i++){
-                            console.log("flag------->>>>",userResult1[i].blockUser.indexOf(req.params.id),i)   
-                            var flag = userResult1[i].blockUser.indexOf(req.params.id)
-                             console.log("flag---656---->>>>",flag)
-                            if(flag != -1){
-                               blockedArray.push(userResult1[i]._id)                                 
-                            }
-                            else{
-                              console.log("flag------->>>>")   
-                            }
+        var userId = req.params.id;
+        User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                var blockedArray = [];
+                for (var i = 0; i < userResult1.length; i++) {
+                    for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                        if (userResult1[i].blockUser[j].toString() == userId) {
+                            blockedArray.push(userResult1[i]._id)
+                        } else {
+                            console.log("flag------->>>>")
                         }
-                       
-                       console.log("flag------->>>>",JSON.stringify(blockedArray))
-                       
-                    
-        createNewPage.paginate({ userId :{ $nin: blockedArray }, $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: "Result show successfully"
+                    }
+                }
+
+                console.log("flag------->>>>", JSON.stringify(blockedArray))
+
+
+                createNewPage.paginate({ userId: { $nin: blockedArray }, $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                        res.send({
+                            result: results,
+                            responseCode: 200,
+                            responseMessage: "Result show successfully"
+                        })
+                    }
                 })
             }
         })
-        }
-                })
     },
 
     "pageRating": function(req, res) {
@@ -708,28 +691,46 @@ module.exports = {
         var limitData = pageNumber * 8;
         var skips = limitData - 8;
         var page = String(pageNumber);
-        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER' } }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    count++;
-                }
-                var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER' } }, { $limit: limitData }, { $skip: skips },{$sort:{'coupon.updateddAt':-1}}, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
-                        var limit = 0;
-                        for (i = 0; i < result1.length; i++) {
-                            limit++;
+
+        var userId = req.params.id;
+        User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                var blockedArray = [];
+                for (var i = 0; i < userResult1.length; i++) {
+                    for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                        if (userResult1[i].blockUser[j].toString() == userId) {
+                            blockedArray.push(userResult1[i]._id)
+                        } else {
+                            console.log("flag------->>>>")
                         }
-                        res.send({
-                            docs: result1,
-                            total: count,
-                            limit: limit,
-                            page: page,
-                            pages: pages,
-                            responseCode: 200,
-                            responseMessage: "Successfully shown result."
-                        });
+                    }
+                }
+
+
+                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', _id: { $nin: blockedArray } } }, function(err, result) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
+                        var count = 0;
+                        for (i = 0; i < result.length; i++) {
+                            count++;
+                        }
+                        var pages = Math.ceil(count / 8);
+                        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', _id: { $nin: blockedArray } } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'coupon.updateddAt': -1 } }, function(err, result1) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
+                                var limit = 0;
+                                for (i = 0; i < result1.length; i++) {
+                                    limit++;
+                                }
+                                res.send({
+                                    docs: result1,
+                                    total: count,
+                                    limit: limit,
+                                    page: page,
+                                    pages: pages,
+                                    responseCode: 200,
+                                    responseMessage: "Successfully shown result."
+                                });
+                            }
+                        })
                     }
                 })
             }
@@ -749,7 +750,7 @@ module.exports = {
                     count++;
                 }
                 var pages = Math.ceil(count / 8);
-                User.aggregate({ $unwind: '$cashPrize' }, { $match: { 'cashPrize.pageId': pageId } }, { $limit: limitData }, { $skip: skips },{$sort:{'cashPrize.updateddAt':-1}}, function(err, result1) {
+                User.aggregate({ $unwind: '$cashPrize' }, { $match: { 'cashPrize.pageId': pageId } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'cashPrize.updateddAt': -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found.' }); } else {
                         var limit = 0;
                         for (i = 0; i < result1.length; i++) {
@@ -803,25 +804,43 @@ module.exports = {
             console.log("startDate", tempCond)
             console.log("endDate", tempEndDate)
             console.log("data===>>", data)
-            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }).exec(function(err, result) {
-                console.log("1")
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon winner found" }); } else {
-                    var count = 0;
-                    for (i = 0; i < result.length; i++) {
-                        count++;
+
+            var userId = req.body.id;
+            User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    var blockedArray = [];
+                    for (var i = 0; i < userResult1.length; i++) {
+                        for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                            if (userResult1[i].blockUser[j].toString() == userId) {
+                                blockedArray.push(userResult1[i]._id)
+                            } else {
+                                console.log("flag------->>>>")
+                            }
+                        }
                     }
-                    var pages = Math.ceil(count / 8);
-                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', 'coupon.updateddAt': data } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
-                        console.log("2")
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
-                            res.send({
-                                docs: result1,
-                                count: count,
-                                limit: limitData,
-                                page: page,
-                                pages: pages,
-                                responseCode: 200,
-                                responseMessage: "All coupon winner shown successfully."
+
+
+                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', 'coupon.updateddAt': data, _id: { $nin: blockedArray } } }).exec(function(err, result) {
+                        console.log("1")
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon winner found" }); } else {
+                            var count = 0;
+                            for (i = 0; i < result.length; i++) {
+                                count++;
+                            }
+                            var pages = Math.ceil(count / 8);
+                            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.type': 'WINNER', 'coupon.updateddAt': data, _id: { $nin: blockedArray } } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                                console.log("2")
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
+                                    res.send({
+                                        docs: result1,
+                                        count: count,
+                                        limit: limitData,
+                                        page: page,
+                                        pages: pages,
+                                        responseCode: 200,
+                                        responseMessage: "All coupon winner shown successfully."
+                                    })
+                                }
                             })
                         }
                     })
@@ -863,47 +882,63 @@ module.exports = {
             console.log("startDate", tempCond)
             console.log("endDate", tempEndDate)
             console.log("data===>>", data)
-            User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.pageId': pageId, 'cashPrize.updateddAt': data } }).exec(function(err, result) {
-                console.log("1")
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No cash winner found" }); } else {
-                    var count = 0;
-                    for (i = 0; i < result.length; i++) {
-                        count++;
+
+            var userId = req.body.id;
+            User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    var blockedArray = [];
+                    for (var i = 0; i < userResult1.length; i++) {
+                        for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                            if (userResult1[i].blockUser[j].toString() == userId) {
+                                blockedArray.push(userResult1[i]._id)
+                            } else {
+                                console.log("flag------->>>>")
+                            }
+                        }
                     }
-                    var pages = Math.ceil(count / 8);
-                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.pageId': pageId, 'cashPrize.updateddAt': data } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
-                        console.log("2")
-                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
-                            res.send({
-                                docs: result1,
-                                count: count,
-                                limit: limitData,
-                                page: page,
-                                pages: pages,
-                                responseCode: 200,
-                                responseMessage: "All cash winner shown successfully."
+
+                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.pageId': pageId, 'cashPrize.updateddAt': data }, _id: { $nin: blockedArray } }).exec(function(err, result) {
+                        console.log("1")
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No cash winner found" }); } else {
+                            var count = 0;
+                            for (i = 0; i < result.length; i++) {
+                                count++;
+                            }
+                            var pages = Math.ceil(count / 8);
+                            User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.pageId': pageId, 'cashPrize.updateddAt': data }, _id: { $nin: blockedArray } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                                console.log("2")
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
+                                    res.send({
+                                        docs: result1,
+                                        count: count,
+                                        limit: limitData,
+                                        page: page,
+                                        pages: pages,
+                                        responseCode: 200,
+                                        responseMessage: "All cash winner shown successfully."
+                                    })
+                                }
                             })
                         }
                     })
+
                 }
             })
         }
     },
 
     "adAdmin": function(req, res) {
-        console.log("request---->>>",JSON.stringify(req.body))
+        console.log("request---->>>", JSON.stringify(req.body))
         if (req.body.add == "add") {
             createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                else if (Boolean(result.adAdmin.find(adAdmin => adAdmin.userId == req.body.userId))) { res.send({ responseCode: 400, responseMessage: "This user is already added as admin." }); }
-                else {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (Boolean(result.adAdmin.find(adAdmin => adAdmin.userId == req.body.userId))) { res.send({ responseCode: 400, responseMessage: "This user is already added as admin." }); } else {
                     createNewPage.findByIdAndUpdate(req.params.id, { $push: { "adAdmin": { userId: req.body.userId, type: req.body.type } }, $inc: { adAdminCount: 1 } }, { new: true }).exec(function(err, result) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 }, $set: { type: "Advertiser" }},{new:true}).exec(function(err, result1) {
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 }, $set: { type: "Advertiser" } }, { new: true }).exec(function(err, result1) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                                console.log("result---->>>>",result)
-                                 console.log("*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+")
-                                 console.log("result1---->>>>",result1)
+                                    console.log("result---->>>>", result)
+                                    console.log("*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+")
+                                    console.log("result1---->>>>", result1)
                                     res.send({
                                         result: result,
                                         responseCode: 200,
@@ -1186,32 +1221,32 @@ module.exports = {
             } else {
                 console.log("aggregate result===>.", result)
                 createNewPage.aggregate(
-                        [
-                            //  { $match: {_id:req.body.pageId} },
-                            { $unwind: "$totalRating" },
-                            { $match: { "totalRating.date": { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, _id: new mongoose.Types.ObjectId(req.body.pageId) } }
-                        ],
-                        function(err, pages) {
+                    [
+                        //  { $match: {_id:req.body.pageId} },
+                        { $unwind: "$totalRating" },
+                        { $match: { "totalRating.date": { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, _id: new mongoose.Types.ObjectId(req.body.pageId) } }
+                    ],
+                    function(err, pages) {
 
-                            var totalRating = pages.length;
-                            console.log("totalRating====>>" + totalRating)
-                                //result[0].totalRating = totalRating;
-                            res.send({
-                                result: result,
-                                responseCode: 200,
-                                responseMessage: "Success."
-                            });
-                        })
-                    // createNewPage.findOne({_id:req.body.pageId,'totalRating.date': {"$gte":  new Date(startTime), "$lte": new Date(endTime)}}).exec(function(err, ress){
-                    //     var totalRating = ress.totalRating.length;
-                    //     console.log("totalRating====>>"+totalRating)
-                    //     result[0].totalRating = totalRating;
-                    //       res.send({
-                    //         result: result,
-                    //         responseCode: 200,
-                    //         responseMessage: "Success."
-                    //       });
-                    // })
+                        var totalRating = pages.length;
+                        console.log("totalRating====>>" + totalRating)
+                        //result[0].totalRating = totalRating;
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "Success."
+                        });
+                    })
+                // createNewPage.findOne({_id:req.body.pageId,'totalRating.date': {"$gte":  new Date(startTime), "$lte": new Date(endTime)}}).exec(function(err, ress){
+                //     var totalRating = ress.totalRating.length;
+                //     console.log("totalRating====>>"+totalRating)
+                //     result[0].totalRating = totalRating;
+                //       res.send({
+                //         result: result,
+                //         responseCode: 200,
+                //         responseMessage: "Success."
+                //       });
+                // })
 
             }
 
@@ -2253,9 +2288,10 @@ module.exports = {
     "userFavouratePages": function(req, res) {
         User.findOne({ _id: req.body.userId }, 'pageFollowers', function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
-                res.send({ responseCode: 404, responseMessage: "Data not found." }) }
-                 else {  User.populate(result, { path: 'pageFollowers.pageId', model: 'createNewPage' }, function(err, resultt) {
-                    res.send({ result: resultt, responseCode: 200, responseMessage: "Data not found."  })
+                res.send({ responseCode: 404, responseMessage: "Data not found." })
+            } else {
+                User.populate(result, { path: 'pageFollowers.pageId', model: 'createNewPage' }, function(err, resultt) {
+                    res.send({ result: resultt, responseCode: 200, responseMessage: "Data not found." })
                 })
             }
         })
@@ -2290,6 +2326,28 @@ module.exports = {
         var arrayId = [];
         waterfall([
             function(callback) {
+                var userId = req.params.id;
+                console.log("userId--->>>",userId)
+                User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        var blockedArray = [];
+                        for (var i = 0; i < userResult1.length; i++) {
+                            for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                                if (userResult1[i].blockUser[j].toString() == userId) {
+                                    blockedArray.push(userResult1[i]._id)
+                                } else {
+                                    console.log("flag------->>>>")
+                                }
+                            }
+                        }
+                        callback(null, blockedArray)
+                        console.log("flag------->>>>", JSON.stringify(blockedArray))
+
+                    }
+                })
+            },
+
+            function(blockedArray, callback) {
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
 
                     if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city")) {
@@ -2306,7 +2364,7 @@ module.exports = {
                             var re = new RegExp(req.body[key], 'i');
                             console.log(re)
                             var data = { pageName: { $regex: re } }
-                                //  condition.$and.push(data)({ subCategory: req.body[key] })
+                            //  condition.$and.push(data)({ subCategory: req.body[key] })
                             condition.$and.push(data)
                         }
                         // // else if(key == "pageName"){
@@ -2327,12 +2385,13 @@ module.exports = {
                 if (condition.$and.length == 0) {
                     delete condition.$and;
                 }
-                
-                var activeStatus = { status: 'ACTIVE' }
+
+                var activeStatus = { userId: { $nin: blockedArray }, status: 'ACTIVE' }
                 Object.assign(condition, activeStatus)
                 console.log("condition===*******************=>>" + JSON.stringify(condition))
-                
+
                 createNewPage.find(condition, function(err, result) {
+                 //   console.log("page result---->>>",JSON.stringify(result))
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
                         res.send({ responseCode: 404, responseMessage: 'Data not found.' });
                     } else {
@@ -2340,16 +2399,16 @@ module.exports = {
                             arrayId.push(String(key._id))
                         })
                         console.log("arrayId===>>", arrayId)
-                        callback(null, arrayId)
+                        callback(null, arrayId, blockedArray)
                     }
                 })
             },
-            function(arrayId, callback) {
+            function(arrayId, blockedArray, callback) {
                 if (req.body.type == 'coupon') {
                     if (!(arrayId.length == 0)) {
-                        var query = { $and: [{ 'coupon.pageId': { $in: arrayId },'coupon.type': 'WINNER','coupon.status':'ACTIVE'}] };
+                        var query = { $and: [{ 'coupon.pageId': { $in: arrayId }, 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE',  _id:{$nin:blockedArray} }] };
                     } else {
-                        var query = { $and: [{'coupon.type': 'WINNER','coupon.status':'ACTIVE'}] };
+                        var query = { $and: [{ 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE',  _id:{$nin:blockedArray} }] };
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
@@ -2407,34 +2466,34 @@ module.exports = {
                             User.aggregate(
                                 [
                                     { $unwind: '$coupon' },
-                                    { $match: query },
+                                    { $match: query  },
                                     { $limit: limitData }, { $skip: skips }
                                 ]
                             ).exec(function(err, results) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!results) {
                                     callback(null, "null")
                                 } else {
-                                    User.populate(results, { path: 'coupon.pageId', model: 'createNewPage', select:'pageName adAdmin' }, function(err, resultt) {
-                                         callback(null, results, arrayId, page, pages, limitData, count)
+                                    User.populate(results, { path: 'coupon.pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, resultt) {
+                                        callback(null, results, arrayId, page, pages, limitData, count, blockedArray)
                                     })
-                                   
+
                                 }
                             })
                         }
                     })
                 } else {
-                    callback(null, [], arrayId, "null", "null", "null", "null")
+                    callback(null, [], arrayId, "null", "null", "null", "null", blockedArray)
                 }
 
             },
-            function(couponResults, arrayId, page, pages, limitData, count, callback) {
+            function(couponResults, arrayId, page, pages, limitData, count, blockedArray, callback) {
                 // console.log("results==>",couponResults)
                 //console.log("arrayId==>",arrayId)
                 if (req.body.type == 'cash') {
                     if (!(arrayId.length == 0)) {
-                        var queryData = { $and: [{ 'cashPrize.pageId': { $in: arrayId }, 'cashPrize.status':'ACTIVE' }] };
+                        var queryData = { $and: [{ 'cashPrize.pageId': { $in: arrayId }, 'cashPrize.status': 'ACTIVE',  _id:{$nin:blockedArray} }] };
                     } else {
-                        var queryData = { $and: [{'cashPrize.status':'ACTIVE'}] };
+                        var queryData = { $and: [{ 'cashPrize.status': 'ACTIVE',  _id:{$nin:blockedArray} }] };
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
@@ -2495,10 +2554,10 @@ module.exports = {
                             ).exec(function(err, resu) {
                                 // console.log("resu====>>"+JSON.stringify(resu))
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                     User.populate(resu, { path: 'cashPrize.pageId', model: 'createNewPage', select:'pageName adAdmin' }, function(err, resultt) {
-                                         callback(null, resu, pageCash, pagesCash, limitDataCash, countCash)
+                                    User.populate(resu, { path: 'cashPrize.pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, resultt) {
+                                        callback(null, resu, pageCash, pagesCash, limitDataCash, countCash)
                                     })
-                                    
+
                                 }
                             })
                         }
@@ -2533,6 +2592,27 @@ module.exports = {
         var arrayId = [];
         waterfall([
             function(callback) {
+                var userId = req.params.id;
+                User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        var blockedArray = [];
+                        for (var i = 0; i < userResult1.length; i++) {
+                            for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                                if (userResult1[i].blockUser[j].toString() == userId) {
+                                    blockedArray.push(userResult1[i]._id)
+                                } else {
+                                    console.log("flag------->>>>")
+                                }
+                            }
+                        }
+                        callback(null, blockedArray)
+                        console.log("flag------->>>>", JSON.stringify(blockedArray))
+
+                    }
+                })
+            },
+
+            function(blockedArray, callback) {
                 if (req.body.type == 'coupon') {
                     var query = { $and: [{ 'coupon.pageId': req.body.pageId, 'coupon.type': 'WINNER' }] };
 
@@ -2577,7 +2657,7 @@ module.exports = {
                     User.aggregate(
                         [
                             { $unwind: '$coupon' },
-                            { $match: query }
+                            { $match: query, _id: { $nin: blockedArray } }
 
                         ]
                     ).exec(function(err, Couponresults) {
@@ -2594,23 +2674,23 @@ module.exports = {
                                     { $unwind: '$coupon' },
                                     { $match: query },
                                     { $limit: limitData }, { $skip: skips },
-                                    {$sort:{'coupon.updatedAt': -1} }
+                                    { $sort: { 'coupon.updatedAt': -1 } }
                                 ]
                             ).exec(function(err, results) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!results) {
                                     callback(null, "null")
                                 } else {
-                                    callback(null, results, arrayId, page, pages, limitData, count)
+                                    callback(null, results, arrayId, page, pages, limitData, count, blockedArray)
                                 }
                             })
                         }
                     })
                 } else {
-                    callback(null, [], arrayId, "null", "null", "null", "null")
+                    callback(null, [], arrayId, "null", "null", "null", "null", blockedArray)
                 }
 
             },
-            function(couponResults, arrayId, page, pages, limitData, count, callback) {
+            function(couponResults, arrayId, page, pages, limitData, count, blockedArray, callback) {
                 // console.log("results==>",couponResults)
                 //console.log("arrayId==>",arrayId)
 
@@ -2654,7 +2734,7 @@ module.exports = {
                     User.aggregate(
                         [
                             { $unwind: '$cashPrize' },
-                            { $match: queryData }
+                            { $match: queryData, _id: { $nin: blockedArray } }
                         ]
                     ).exec(function(err, Cashresults) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -2670,7 +2750,7 @@ module.exports = {
                                     { $unwind: '$cashPrize' },
                                     { $match: queryData },
                                     { $limit: limitDataCash }, { $skip: skips },
-                                     {$sort:{'cashPrize.updatedAt':-1}}
+                                    { $sort: { 'cashPrize.updatedAt': -1 } }
                                 ]
                             ).exec(function(err, resu) {
                                 // console.log("resu====>>"+JSON.stringify(resu))
@@ -2725,29 +2805,46 @@ module.exports = {
 
     "CouponInboxWinners": function(req, res) {
         var pageId = req.params.id;
-        User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.couponStatus': 'USED' } }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
-                res.send({
-                    result: result,
-                    responseCode: 200,
-                    responseMessage: "All request show successfully"
+        var userId = req.body.userId;
+        User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                var blockedArray = [];
+                for (var i = 0; i < userResult1.length; i++) {
+                    for (var j = 0; j < userResult1[i].blockUser.length; j++) {                      
+                        if (userResult1[i].blockUser[j].toString() == userId) {
+                            blockedArray.push(userResult1[i]._id)
+                        } else {
+                            console.log("flag------->>>>")
+                        }
+                    }
+                }
+
+                User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.couponStatus': 'USED', _id: { $nin: blockedArray } } }, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: "All request show successfully"
+                        })
+                    }
                 })
             }
         })
+
     },
 
     "viewCouponCode": function(req, res) {
-        console.log("view coupon code request--->>>",req.body)
+        console.log("view coupon code request--->>>", req.body)
         var adId = req.body.adId;
         var userId = req.body.userId;
-        console.log("adId--->>>",adId)
-         console.log("userId--->>>",userId)  // new mongoose.Types.ObjectId(userId)        
-       User.aggregate({ $unwind: "$hiddenGifts" }, { $match: {'hiddenGifts.adId':adId, _id:new mongoose.Types.ObjectId(userId)} }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }  else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No gift found' }) } else {
-             //    console.log("view coupon code --->>>",JSON.stringify(result))
+        console.log("adId--->>>", adId)
+        console.log("userId--->>>", userId) // new mongoose.Types.ObjectId(userId)        
+        User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.adId': adId, _id: new mongoose.Types.ObjectId(userId) } }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No gift found' }) } else {
+                //    console.log("view coupon code --->>>",JSON.stringify(result))
                 var code = result[0].hiddenGifts.hiddenCode;
-                console.log("viewCouponCode-0-0-0-0-0--->>>",code)
-             //   console.log("code-->>", code)
+                console.log("viewCouponCode-0-0-0-0-0--->>>", code)
+                //   console.log("code-->>", code)
                 res.send({
                     result: code,
                     responseCode: 200,
@@ -2784,14 +2881,32 @@ module.exports = {
             console.log("startDate", tempCond)
             console.log("endDate", tempEndDate)
             console.log("dta===>>", data)
-            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.couponStatus': 'USED', 'coupon.updateddAt': data } }).exec(function(err, result) {
-                console.log("2")
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: "All coupon winner shown successfully."
+            var userId = req.params.id;
+            User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    var blockedArray = [];
+                    for (var i = 0; i < userResult1.length; i++) {
+                        for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                            if (userResult1[i].blockUser[j].toString() == userId) {
+                                blockedArray.push(userResult1[i]._id)
+                            } else {
+                                console.log("flag------->>>>")
+                            }
+                        }
+                    }
+
+                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.pageId': pageId, 'coupon.couponStatus': 'USED', 'coupon.updateddAt': data, _id: { $nin: blockedArray } } }).exec(function(err, result) {
+                        console.log("2")
+                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId" }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: "All coupon winner shown successfully."
+                            })
+                        }
                     })
+
+
                 }
             })
         }
@@ -2869,7 +2984,7 @@ module.exports = {
                 for (var i = 0; i < result.docs.length; i++) {
                     var reply = result.docs[i].reply;
                     var data = reply.filter(reply => reply.status == 'ACTIVE');
-                //    console.log("data--->>" + data)
+                    //    console.log("data--->>" + data)
                     result.docs[i].reply = data;
                 }
                 res.send({
@@ -2938,42 +3053,42 @@ module.exports = {
     },
 
     "sendCouponToAdvertiser": function(req, res) {
-        console.log("sendCouponToAdvertiser--->>>",req.body)
+        console.log("sendCouponToAdvertiser--->>>", req.body)
         var couponId = req.body.couponId;
         var adId = req.body.adId;
         if (!couponId) { res.send({ responseCode: 400, responseMessage: "Please enter the couponId" }); } else if (!adId) { res.send({ responseCode: 400, responseMessage: 'Please enter the adId' }); } else {
             User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: "Please enter a valid coupon to use." }); } else {
-                   // console.log("sendCouponToAdvertiser----user---->>",user)
-                      console.log("sendCoupon----user---->>",user[0]._id)
-                      var id = user[0]._id;
-                     console.log("id----user---->>",id)
+                    // console.log("sendCouponToAdvertiser----user---->>",user)
+                    console.log("sendCoupon----user---->>", user[0]._id)
+                    var id = user[0]._id;
+                    console.log("id----user---->>", id)
                     User.update({ 'coupon._id': new mongoose.Types.ObjectId(couponId) }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                            
-                       User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.adId':adId, _id:new mongoose.Types.ObjectId(id) } }).exec(function(err, user) {
-                          //  User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
+
+                            User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.adId': adId, _id: new mongoose.Types.ObjectId(id) } }).exec(function(err, user) {
+                                //  User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } else {
-                                 console.log("$hiddenGifts----->>>>",JSON.stringify(user))
-                                  var mobileNumber = user[0].mobileNumber;
+                                    console.log("$hiddenGifts----->>>>", JSON.stringify(user))
+                                    var mobileNumber = user[0].mobileNumber;
                                     var code = user[0].hiddenGifts.hiddenCode;
-                                     console.log("mobileNumber----->>>>",mobileNumber)
-                                       console.log("code----->>>>",code)
-//                                    for (var i = 0; i < user.hiddenGifts.length; i++) {
-//                                        if (user.hiddenGifts[i].adId == adId) {
-//                                            
-//                                        }
-//                                    }
+                                    console.log("mobileNumber----->>>>", mobileNumber)
+                                    console.log("code----->>>>", code)
+                                    //                                    for (var i = 0; i < user.hiddenGifts.length; i++) {
+                                    //                                        if (user.hiddenGifts[i].adId == adId) {
+                                    //                                            
+                                    //                                        }
+                                    //                                    }
                                     User.update({ 'hiddenGifts.hiddenCode': code }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result2) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
-                                             console.log("mobile---->>>>",mobileNumber)
-                                           // console.log("result2--->>", result2)
-                                        //    console.log("code--->>", code)
+                                            console.log("mobile---->>>>", mobileNumber)
+                                            // console.log("result2--->>", result2)
+                                            //    console.log("code--->>", code)
                                             var message = 'Your hidden gift is:' + code
                                             if (result2.nModified == 1) {
-                                                 if(mobileNumber){
-                                                functions.otp(req.body.mobileNumber, message)
-                                                 }
+                                                if (mobileNumber) {
+                                                    functions.otp(req.body.mobileNumber, message)
+                                                }
                                                 res.send({
                                                     responseCode: 200,
                                                     responseMessage: "The hidden gift code has been sent to your mailbox successfully."
@@ -3009,7 +3124,7 @@ module.exports = {
                             if (req.body.paymentMode == 'paypal') {
                                 var cashAmount = user.cash - req.body.brolixAmount;
                             } else if (req.body.paymentMode == 'payWithWallet') {
-                                 var cashAmount = user.cash - req.body.amount;
+                                var cashAmount = user.cash - req.body.amount;
                             }
 
                             User.findOneAndUpdate({ _id: req.body.userId }, { $set: { cash: cashAmount } }, { new: true }).exec(function(err, result) {
@@ -3143,7 +3258,7 @@ module.exports = {
                                     myCache.set("myKeys", obj, 10000);
                                     var value = myCache.get("myKeys");
                                     console.log("value", value)
-                                        var objData = {
+                                    var objData = {
                                         userId: req.body.userId,
                                         paymentMode: req.body.paymentMode,
                                         amount: req.body.amount,
@@ -3161,7 +3276,7 @@ module.exports = {
                                         responseMessage: "Payment url.",
                                         result: objData
                                     })
- 
+
                                     // res.send({
                                     //     responseCode: 200,
                                     //     responseMessage: "Payment url.",
@@ -3176,7 +3291,7 @@ module.exports = {
         })
     },
 
-     "createPagePayment": function(req, res) {
+    "createPagePayment": function(req, res) {
         console.log("req body on create page===>>", JSON.stringify(req.body))
 
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
@@ -3369,7 +3484,7 @@ module.exports = {
     },
 
     "redirectpage": function(req, res) {
-       res.json({result:"Page created successfully."})
+        res.json({ result: "Page created successfully." })
     },
 
 
@@ -3551,7 +3666,7 @@ module.exports = {
     //         }
     //     })
     // },
-        "returnPage": function(req, res) {
+    "returnPage": function(req, res) {
         //myCache.del( "myKey" );
         var value = req.body;
         // if(value == undefined || value == null ||value == ''){
@@ -3566,14 +3681,13 @@ module.exports = {
                 verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
                 verfiyPaymentRequest.payment_reference = value.pid;
                 paytabs.VerfiyPayment(verfiyPaymentRequest, function(response) {
-                    if(response.response_code =='100'){
-                      console.log("verify response", response)
-                      callback(null, response)
+                    if (response.response_code == '100') {
+                        console.log("verify response", response)
+                        callback(null, response)
+                    } else {
+
                     }
-                    else{
-                  
-                    }
-                 });
+                });
             },
             function(response, callback) {
                 var details = {
@@ -3589,7 +3703,7 @@ module.exports = {
                 var payment = new Payment(details);
                 payment.save(function(err, paymentResult) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                        console.log("payment result==>.",paymentResult)
+                        console.log("payment result==>.", paymentResult)
                         callback(null, paymentResult)
                     }
                 })
@@ -3600,9 +3714,8 @@ module.exports = {
                         type: "upgrade_card",
                         price: value.amount
                     }, function(err, cardRes) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                        else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
-                           // console.log("card res0", cardRes)
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
+                            // console.log("card res0", cardRes)
                             callback(null, cardRes)
                         }
                     })
@@ -3626,12 +3739,12 @@ module.exports = {
 
                 }
 
-               // console.log(data)
+                // console.log(data)
 
                 //console.log("cashAmount", cashAmount)
                 User.findByIdAndUpdate({ _id: value.userId }, query, function(err, userRes) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                      //  console.log("userRes========>", userRes)
+                        //  console.log("userRes========>", userRes)
                         callback(null, userRes)
                     }
                 })
@@ -3645,10 +3758,10 @@ module.exports = {
                 // var values = myCache.del("myKey");
                 // console.log("values",values)
                 //res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
-                    res.send({ responseCode: 200, responseMessage: "Payment done successfully." });
+                res.send({ responseCode: 200, responseMessage: "Payment done successfully." });
             }
         })
-   //   }
+        //   }
     },
 
     // "returnPage": function(req, res) {
@@ -3759,104 +3872,102 @@ module.exports = {
     "returnAdsData": function(req, res) {
         //myCache.del( "myKey" );
         var value = myCache.get("myKeys");
-        if(value == undefined || value == null ||value == ''){
+        if (value == undefined || value == null || value == '') {
             res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
-        }
-        else{
-        console.log("value", value)
-        waterfall([
-            function(callback) {
-                var verfiyPaymentRequest = new Object();
-                verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
-                verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-                verfiyPaymentRequest.payment_reference = value.pid;
-                paytabs.VerfiyPayment(verfiyPaymentRequest, function(response) {
-                    if(response.response_code =='100'){
-                      console.log("verify response", response)
-                      callback(null, response)
+        } else {
+            console.log("value", value)
+            waterfall([
+                function(callback) {
+                    var verfiyPaymentRequest = new Object();
+                    verfiyPaymentRequest.merchant_email = "sakshigadia@gmail.com";
+                    verfiyPaymentRequest.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+                    verfiyPaymentRequest.payment_reference = value.pid;
+                    paytabs.VerfiyPayment(verfiyPaymentRequest, function(response) {
+                        if (response.response_code == '100') {
+                            console.log("verify response", response)
+                            callback(null, response)
+                        } else {
+                            res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+                        }
+                    });
+                },
+                function(response, callback) {
+                    var details = {
+                        paymentMode: value.paymentMode,
+                        userId: value.userId,
+                        amount: value.amount,
+                        paymentAmount: value.paymentAmount,
+                        brolixAmount: value.brolixAmount,
+                        transcationId: response.transaction_id,
+                        Type: value.Type,
+                        dates: value.dates
                     }
-                    else{
-                      res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
-                    }
-                });
-            },
-            function(response, callback) {
-                var details = {
-                    paymentMode: value.paymentMode,
-                    userId: value.userId,
-                    amount: value.amount,
-                    paymentAmount: value.paymentAmount,
-                    brolixAmount: value.brolixAmount,
-                    transcationId: response.transaction_id,
-                    Type: value.Type,
-                    dates: value.dates
-                }
-                var payment = new Payment(details);
-                payment.save(function(err, paymentResult) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                        console.log("payment result==>.",paymentResult)
-                        callback(null, paymentResult)
-                    }
-                })
-            },
-            function(paymentResult, callback) {
-                if (value.Type == 'createPage') {
-                    adminCards.findOne({
-                        type: "upgrade_card",
-                        price: value.amount
-                    }, function(err, cardRes) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
-                            //console.log("card res0", cardRes)
-                            callback(null, cardRes)
+                    var payment = new Payment(details);
+                    payment.save(function(err, paymentResult) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                            console.log("payment result==>.", paymentResult)
+                            callback(null, paymentResult)
                         }
                     })
-                } else {
-                    callback(null, "cardRes")
-                }
-
-            },
-            function(cardRes, callback) {
-                var cashAmount = value.userCashAmount - value.brolixAmount
-                if (value.Type == 'createPage') {
-                    var card_viewers = cardRes.viewers;
-                    var data = {
-                        cash: value.amount,
-                        viewers: card_viewers,
-                        type: "SENDBYADMIN"
+                },
+                function(paymentResult, callback) {
+                    if (value.Type == 'createPage') {
+                        adminCards.findOne({
+                            type: "upgrade_card",
+                            price: value.amount
+                        }, function(err, cardRes) {
+                            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!cardRes) { res.send({ responseCode: 404, responseMessage: "No cards available." }); } else {
+                                //console.log("card res0", cardRes)
+                                callback(null, cardRes)
+                            }
+                        })
+                    } else {
+                        callback(null, "cardRes")
                     }
-                    var query = { $push: { upgradeCardObject: data }, $set: { cash: cashAmount } }
-                } else {
-                    var query = { $set: { cash: cashAmount } }
 
-                }
+                },
+                function(cardRes, callback) {
+                    var cashAmount = value.userCashAmount - value.brolixAmount
+                    if (value.Type == 'createPage') {
+                        var card_viewers = cardRes.viewers;
+                        var data = {
+                            cash: value.amount,
+                            viewers: card_viewers,
+                            type: "SENDBYADMIN"
+                        }
+                        var query = { $push: { upgradeCardObject: data }, $set: { cash: cashAmount } }
+                    } else {
+                        var query = { $set: { cash: cashAmount } }
 
-                console.log(data)
-
-                console.log("cashAmount", cashAmount)
-                User.findByIdAndUpdate({ _id: value.userId }, query, function(err, userRes) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                       // console.log("userRes========>", userRes)
-                        callback(null, userRes)
                     }
-                })
-            }
-        ], function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) {
-                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
-            }
-            //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
-            else {
-                //var values = myCache.del("myKey");
-                //console.log("values",values)
-                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
+
+                    console.log(data)
+
+                    console.log("cashAmount", cashAmount)
+                    User.findByIdAndUpdate({ _id: value.userId }, query, function(err, userRes) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                            // console.log("userRes========>", userRes)
+                            callback(null, userRes)
+                        }
+                    })
+                }
+            ], function(err, result) {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) {
+                    res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+                }
+                //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+                else {
+                    //var values = myCache.del("myKey");
+                    //console.log("values",values)
+                    res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
                     //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
-            }
-        })
-      }
+                }
+            })
+        }
     },
 
     // "redirectpage": function(req, res) {
-       
+
     // },
 
     "paymentFilterApi": function(req, res) {
