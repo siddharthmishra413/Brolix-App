@@ -418,12 +418,12 @@
                                                          followerList.findOneAndUpdate({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }, { $set: { followerStatus: "accept", updatedAt: date  } }, { new: true }).exec(function(err, senderResult2) {
                                                              if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
                                                                  //         console.log("senderResult2--->>>", senderResult2)
-                                                                 callback(null, followerResult)
+                                                                 callback(null, result)
 
                                                              }
                                                          })
                                                      } else {
-                                                         callback(null, followerResult)
+                                                         callback(null, result)
                                                      }
 
                                                  })

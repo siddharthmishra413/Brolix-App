@@ -1,1 +1,778 @@
-{}
+{
+  "Welcome": {
+    "ar": "مرحبا",
+    "en": "Welcome"
+  },
+   "Login successfully.": {
+    "ar": "تسجيل الدخول بنجاح.",
+    "en": "Login successfully."
+  },
+  "All pages show successfully.": {
+    "en": "All pages show successfully.",
+    "ar": "بنجاح الصفحات جميع عرض تم"
+  },
+  "Internal server error": {
+    "ar": "خطأ في الخادم الداخلي",
+    "en": "Internal server error"
+  },
+  "Category and Sub category are required": {
+    "ar": "يجب اختيار الفئة و الفئة الفرعية",
+    "en": "Category and Sub category are required"
+  },
+  "Page created": {
+    "en": "Page created",
+    "ar": "تم انشاء الصفحة"
+  },
+  "All pages shown successfully": {
+    "en": "All pages shown successfully",
+    "ar": "تم عرض جميع الصفحات بنجاح"
+  },
+  "User rating updated": {
+    "en": "User rating updated",
+    "ar": "تم تحديث تقييم المستخدم"
+  },
+  "No event found": {
+    "en": "No event found",
+    "ar": "لا يوجد مناسبات"
+  },
+  "Pages details shown successfully": {
+    "en": "Pages details shown successfully",
+    "ar": "تم عرض تفاصيل الصفحات بنجاح"
+  },
+  "Show pages successfully!": {
+    "en": "Show pages successfully!",
+    "ar": "تم عرض الصفحات بنجاح"
+  },
+  "List of all pages shown successfully": {
+    "en": "List of all pages shown successfully",
+    "ar": "تم عرض قائمة بجميع الصفحات بنجاح"
+  },
+  "Please enter correct page Id": {
+    "en": "Please enter correct page Id",
+    "ar": "الرجاء ادخال معرف الصفحة الصحيح"
+  },
+  "Pages details updated successfully": {
+    "en": "Pages details updated successfully",
+    "ar": "تم تحديث تفاصيل الصفحة بنجاح"
+  },
+  "Pages details updated successfully": {
+    "en": "Pages details updated successfully",
+    "ar": "تم تحديث تفاصيل الصفحة بنجاح"
+  },
+  "Pages deleted successfully": {
+    "en": "Pages deleted successfully",
+    "ar": "تم حذف الصفحة بنجاح"
+  },
+  "Followed": {
+    "en": "Followed",
+    "ar": "متابع"
+  },
+  "Result shown successfully": {
+    "en": "Result shown successfully",
+    "ar": "تم عرض النتيجة بنجاح"
+  },
+  "No blocked page found": {
+    "en": "No blocked page found",
+    "ar": "لا يوجد صفحات محظورة"
+  },
+  "Blocked page shown successfully": {
+    "en": "Blocked page shown successfully",
+    "ar": "تم عرض الصفحات المحظورة بنجاح"
+  },
+  "Page removed successfully": {
+    "en": "Page removed successfully",
+    "ar": "تم حذف الصفحة بنجاح"
+  },
+  "Removed page shown successfully": {
+    "en": "Removed page shown successfully",
+    "ar": "تم عرض الصفحات المحذوفة بنجاح"
+  },
+  "Please enter user Id": {
+    "en": "Please enter user Id",
+    "ar": "الرجاء ادخال اسم المستخدم"
+  },
+  "Please enter media Type": {
+    "en": "Please enter media Type",
+    "ar": "الرجاء ادخال نوع الوسائط"
+  },
+  "Please enter link": {
+    "en": "Please enter link",
+    "ar": "الرجاء ادخال الرابط"
+  },
+  "Post saved successfully": {
+    "en": "Post saved successfully",
+    "ar": "تم حفظ المنشور بنجاح"
+  },
+  "No winner found": {
+    "en": "No winner found",
+    "ar": "لم يتم العثور على رابحين"
+  },
+  "No coupon winner found": {
+    "en": "No coupon winner found",
+    "ar": "لم يتم العثور على رابحين للكوبونات"
+  },
+  "All coupon winners shown successfully": {
+    "en": "All coupon winners shown successfully",
+    "ar": "تم عرض جميع الرابحين للكوبونات بنجاح"
+  },
+  "Please enter at-least start date or end date": {
+    "en": "Please enter at-least start date or end date",
+    "ar": "الرجاء ادخال تاريخ البدء او تاريخ الانتهاء على الاقل"
+  },
+  "All cash winners shown successfully": {
+    "en": "All cash winners shown successfully",
+    "ar": "تم عرض جميع الرابحين للكاش بنجاح"
+  },
+  "This user is already added as admin": {
+    "en": "This user is already added as admin",
+    "ar": "تمت اضافة هذا المستخدم كمدير للصفحة من قبل"
+  },
+  "Admin added successfully": {
+    "en": "Admin added successfully",
+    "ar": "تم اضافة مدير الصفحة بنجاح"
+  },
+  "Admin removed successfully": {
+    "en": "Admin removed successfully",
+    "ar": "تم حذف مدير الصفحة بنجاح"
+  },
+  "Successfully updated clicks": {
+    "en": "Successfully updated clicks",
+    "ar": "تم تحديث النقرات بنجاح"
+  },
+  "List of all categories shown successfully": {
+    "en": "List of all categories shown successfully",
+    "ar": "تم عرض قائمة بجميع الفئات بنجاح"
+  },
+  "Subcategory list shown successfully": {
+    "en": "Subcategory list shown successfully",
+    "ar": "تم عرض قائمة الفئات الفرعية بنجاح"
+  },
+  "All requests shown successfully": {
+    "en": "All requests shown successfully",
+    "ar": "تم عرض جميع الطلبات بنجاح"
+  },
+  "Coupon code shown successfully": {
+    "en": "Coupon code shown successfully",
+    "ar": "تم عرض كود الكوبون بنجاح"
+  },
+  "Please enter page Id": {
+    "en": "Please enter page Id",
+    "ar": "الرجاء ادخال معرف الصفحة"
+  },
+  "All coupon winners shown successfully": {
+    "en": "All coupon winners shown successfully",
+    "ar": "تم عرض جميع الرابحين للكوبونات بنجاح"
+  },
+  "Review save with concerned user details!": {
+    "en": "Review save with concerned user details!",
+    "ar": "تم حفظ التقييم مع تفاصيل المستخدم المعني"
+  },
+  "Review saved successfully": {
+    "en": "Review saved successfully",
+    "ar": "تم حفظ التقييم بنجاح"
+  },
+  "Review list shown successfully": {
+    "en": "Review list shown successfully",
+    "ar": "تم عرض قائمة التقييمات بنجاح"
+  },
+  "Coupon successfully sent to advertiser page": {
+    "en": "Coupon successfully sent to advertiser page",
+    "ar": "تم ارسال الكوبون الى صفحة المعلن بنجاح"
+  },
+  "Please enter a valid coupon to use": {
+    "en": "Please enter a valid coupon to use",
+    "ar": "الرجاء ادخال كوبون متاح للاستخدام"
+  },
+  "*Please enter the couponed": {
+    "en": "*Please enter the couponed",
+    "ar": "الرجاء ادخال معرف الكوبون"
+  },
+  "Please enter the adId": {
+    "en": "Please enter the adId",
+    "ar": "الرجاء ادخال معرف الاعلان"
+  },
+  "The hidden gift code has been sent to your mailbox successfully": {
+    "en": "The hidden gift code has been sent to your mailbox successfully",
+    "ar": "تم ارسال كود الهدية المخفية الى البريد الخاص بك بنجاح"
+  },
+  "Email required": {
+    "en": "Email required",
+    "ar": "الرجاء ادخال البريد الالكتروني"
+  },
+  "Dob required": {
+    "en": "Dob required",
+    "ar": "الرجاء ادخال تاريخ الميلاد"
+  },
+  "country required": {
+    "en": "country required",
+    "ar": "الرجاء ادخال البلد"
+  },
+  "city required": {
+    "en": "city required",
+    "ar": "الرجاء ادخال المدينة"
+  },
+  "Mobile Number required": {
+    "en": "Mobile Number required",
+    "ar": "الرجاء ادخال رقم الهاتف المحمول"
+  },
+  "Please enter the correct email id": {
+    "en": "Please enter the correct email id",
+    "ar": "الرجاء ادخال بريد الكتروني فعال"
+  },
+  "Email id must be unique": {
+    "en": "Email id must be unique",
+    "ar": "يجب ان يكون البريد الالكتروني مميزا"
+  },
+  "Mobile number must be numeric": {
+    "en": "Mobile number must be numeric",
+    "ar": "يجب استخدام الارقام فقط عند ادخال رقم الهاتف المحمول"
+  },
+  "Mobile number length must be 9 to 12": {
+    "en": "Mobile number length must be 9 to 12",
+    "ar": "رقم الهاتف المحمول يجب ان يكون من 9 الى 12 رقم"
+  },
+  "Mobile number must be unique": {
+    "en": "Mobile number must be unique",
+    "ar": "رقم الهاتف المحمول يجب ان يكون مميزا"
+  },
+  "You have been registered successfully": {
+    "en": "You have been registered successfully",
+    "ar": "تم تسجيل الدخول بنجاح"
+  },
+  "Sorry your id or password is incorrect": {
+    "en": "Sorry your id or password is incorrect",
+    "ar": "عذرا, اسم المستخدم او كلمة المرور غير صحيحة"
+  },
+  "User registered with facebook": {
+    "en": "User registered with facebook",
+    "ar": "تم التسجيل باستخدام الفيسبوك"
+  },
+  "Login successfully": {
+    "en": "Login successfully",
+    "ar": "تم تسجيل الدخول بنجاح"
+  },
+  "This email is already register": {
+    "en": "This email is already register",
+    "ar": "تم التسجيل مسبقا باستخدام هذا البريد الالكتروني"
+  },
+  "This mobile number is already register": {
+    "en": "This mobile number is already register",
+    "ar": "تم التسجيل مسبقا باستخدام هذا الرقم"
+  },
+  "Profile updated successfully": {
+    "en": "Profile updated successfully",
+    "ar": "تم تحديث الحساب الشخصي بنجاح"
+  },
+  "Data shown successfully": {
+    "en": "Data shown successfully",
+    "ar": "تم عرض المعلومات بنجاح"
+  },
+  "Password has been successfully sent to your mail id": {
+    "en": "Password has been successfully sent to your mail id",
+    "ar": "تم ارسال كلمة المرور الى البريد الخاص بك بنجاح"
+  },
+  "Old password doesn't match": {
+    "en": "Old password doesn't match",
+    "ar": "كلمة المرور القديمة لا تتطابق"
+  },
+  "Password changed successfully": {
+    "en": "Password changed successfully",
+    "ar": "تم تغيير كلمة المرور بنجاح"
+  },
+  "Profile data shown successfully": {
+    "en": "Profile data shown successfully",
+    "ar": "تم عرض معلومات الحساب الشخصي بنجاح"
+  },
+  "Insufficient amount of brolix in your account": {
+    "en": "Insufficient amount of brolix in your account",
+    "ar": "مقدار البرولكس في الحساب الخاص بك غير كافي"
+  },
+  "Winner already decided": {
+    "en": "Winner already decided",
+    "ar": "تم تحديد الرابح"
+  },
+  "Please enter correct ad Id": {
+    "en": "Please enter correct ad Id",
+    "ar": "الرجاء ادخال رمز اعلان صحيح"
+  },
+  "Successfully used the luck card": {
+    "en": "Successfully used the luck card",
+    "ar": "تم استخدام بطاقة الحظ بنجاح"
+  },
+  "Please enter correct receiver Id": {
+    "en": "Please enter correct receiver Id",
+    "ar": "الرجاء ادخال رمز مستقبل صحيح"
+  },
+  "Insufficient amount of cash in your account": {
+    "en": "Insufficient amount of cash in your account",
+    "ar": "مقدار الكاش في الحساب الخاص بك غير كافي"
+  },
+  "Show list of all followers": {
+    "en": "Show list of all followers",
+    "ar": "قائمة بجميع المتابعين"
+  },
+  "Privacy updated successfully": {
+    "en": "Privacy updated successfully",
+    "ar": "تم تحديث الخصوصية بنجاح"
+  },
+  "Privacy details shown successfully": {
+    "en": "Privacy details shown successfully",
+    "ar": "تم عرض تفاصيل الخصوصية بنجاح"
+  },
+  "User blocked successfully": {
+    "en": "User blocked successfully",
+    "ar": "تم حظر المستخدم بنجاح"
+  },
+  "No blocked user found": {
+    "en": "No blocked user found",
+    "ar": "لم يتم العثور على مستخدمين محظورين"
+  },
+  "List of all blocked users shown successfully": {
+    "en": "List of all blocked users shown successfully",
+    "ar": "تم عرض قائمة بجميع المستخدمين المحظورين بنجاح"
+  },
+  "Logout successfully": {
+    "en": "Logout successfully",
+    "ar": "تم تسجيل الخروج بنجاح"
+  },
+  "No card found": {
+    "en": "No card found",
+    "ar": "لم يتم العثور على بطاقات"
+  },
+  "List of all upgrade Cards shown successfully": {
+    "en": "List of all upgrade Cards shown successfully",
+    "ar": "تم عرض قائمة بجميع بطاقات التمييز بنجاح"
+  },
+  "All luck Cards shown successfully": {
+    "en": "All luck Cards shown successfully",
+    "ar": "تم عرض بطاقات الحظ بنجاح"
+  },
+  "Successfully purchased the upgrade card": {
+    "en": "Successfully purchased the upgrade card",
+    "ar": "تم شراء بطاقة التمييز بنجاح"
+  },
+  "Successfully purchased the upgrade card": {
+    "en": "Successfully purchased the upgrade card",
+    "ar": "تم شراء بطاقة التمييز بنجاح"
+  },
+  "Successfully used the luck card": {
+    "en": "Successfully used the luck card",
+    "ar": "تم استخدام بطاقة الحظ بنجاح"
+  },
+  "Already used luck Card": {
+    "en": "Already used luck Card",
+    "ar": "قمت باستخدام بطاقة الحظ مسبقا"
+  },
+  "Please enter luck Id": {
+    "en": "Please enter luck Id",
+    "ar": "الرجاء ادخال رمز الحظ"
+  },
+  "Please enter upgrade Id": {
+    "en": "Please enter upgrade Id",
+    "ar": "الرجاء ادخال رمز التمييز"
+  },
+  "Successfully used the upgrade card": {
+    "en": "Successfully used the upgrade card",
+    "ar": "تم استخدام بطاقة التمييز بنجاح"
+  },
+  "Signup successfully": {
+    "en": "Signup successfully",
+    "ar": "تم التسجيل بنجاح"
+  },
+  "You are already register with app": {
+    "en": "You are already register with app",
+    "ar": "انت مسجل بالتطبيق مسبقا"
+  },
+   "You have been register successfully.": {
+    "en": "You have been register successfully.",
+    "ar": "لقد تم التسجيل بنجاح."
+  },
+  "Cash gifts shown successfully": {
+    "en": "Cash gifts shown successfully",
+    "ar": "تم عرض هدايا الكاش بنجاح"
+  },
+  "Coupon gifts shown successfully": {
+    "en": "Coupon gifts shown successfully",
+    "ar": "تم عرض هدايا الكوبون بنجاح"
+  },
+  "You have successfully purchased the coupon": {
+    "en": "You have successfully purchased the coupon",
+    "ar": "تم شراء الكوبون بنجاح"
+  },
+  "No coupon found in your favourites": {
+    "en": "No coupon found in your favourites",
+    "ar": "لم يتم العثور على كوبونات في صفحة الكوبونات المفضلة"
+  },
+  "Already added to favourites": {
+    "en": "Already added to favourites",
+    "ar": "تمت الاضافة مسبقا الى الكوبونات المفضلة"
+  },
+  "Successfully added to favourites": {
+    "en": "Successfully added to favourites",
+    "ar": "تمت الاضافة الى الكوبونات المفضلة بنجاح"
+  },
+  "Already removed from favourites": {
+    "en": "Already removed from favourites",
+    "ar": "تمت الازالة مسبقا من الكوبونات المفضلة"
+  },
+  "Coupon removed from favourites successfully": {
+    "en": "Coupon removed from favourites successfully",
+    "ar": "تم ازالة الكوبون من الكوبونات المفضلة بنجاح"
+  },
+  "Coupon status changed successfully": {
+    "en": "Coupon status changed successfully",
+    "ar": "تم تغيير حالة الكوبون بنجاح"
+  },
+  "You can not send the exchange request to yourself": {
+    "en": "You can not send the exchange request to yourself",
+    "ar": "لا يمكنك ارسال طلب تبادل  الى حسابك الشخصي"
+  },
+  "Already requested for this coupon": {
+    "en": "Already requested for this coupon",
+    "ar": "لقد قمت بعمل طلب لهذا الكوبون مسبقا"
+  },
+  "Please request for a valid coupon": {
+    "en": "Please request for a valid coupon",
+    "ar": "الرجاء قم بالطلب لكوبون فعال"
+  },
+  "Exchange request not allowed": {
+    "en": "Exchange request not allowed",
+    "ar": "لا يمكنك ارسال طلب تبادل"
+  },
+  "Coupon exchange request send successfully": {
+    "en": "Coupon exchange request send successfully",
+    "ar": "تم ارسال طلب تبادل الكوبون بنجاح"
+  },
+  "All requests shown successfully": {
+    "en": "All requests shown successfully",
+    "ar": "تم عرض جميع الطلبات بنجاح"
+  },
+  "User shown successfully": {
+    "en": "User shown successfully",
+    "ar": "تم عرض المستخدم بنجاح"
+  },
+  "the Coupon has been sent to follower successfully": {
+    "en": "the Coupon has been sent to follower successfully",
+    "ar": "تم ارسال الكوبون بنجاح"
+  },
+  "You have declined this request before": {
+    "en": "You have declined this request before",
+    "ar": "لقد قمت برفض هذا الطلب من قبل"
+  },
+  "Coupon exchanged successfully": {
+    "en": "Coupon exchanged successfully",
+    "ar": " تم تبادل الكوبون بنجاح"
+  },
+  "User declined your request": {
+    "en": "User declined your request",
+    "ar": "قام المستخدم برفض طلبك"
+  },
+  "All requests shown successfully": {
+    "en": "All requests shown successfully",
+    "ar": "تم عرض جميع الطلبات بنجاح"
+  },
+  "Show list all block users": {
+    "en": "Show list all block users",
+    "ar": "عرض قائمة بجميع المستخدمين المحظورين"
+  },
+  "All details shown successfully": {
+    "en": "All details shown successfully",
+    "ar": "تم عرض جميع التفاصيل بنجاح"
+  },
+  "Mp3 files shown successfully": {
+    "en": "Mp3 files shown successfully",
+    "ar": "تم عرض ملفات (mp3) بنجاح"
+  },
+  "Ad created successfully": {
+    "en": "Ad created successfully",
+    "ar": "تم انشاء الاعلان بنجاح"
+  },
+  "Liked": {
+    "en": "Liked",
+    "ar": "اعجاب"
+  },
+  "Unliked": {
+    "en": "Unliked",
+    "ar": "الغاء الاعجاب"
+  },
+  "Comments save successfully": {
+    "en": "Comments save successfully",
+    "ar": "تم حفظ التعليق بنجاح"
+  },
+  "Comments List": {
+    "en": "Comments List",
+    "ar": "قائمة التعليقات"
+  },
+  "List of ads shown successfully": {
+    "en": "List of ads shown successfully",
+    "ar": "تم عرض قائمة الاعلانات بنجاح"
+  },
+  "All ads shown cash type and coupon type": {
+    "en": "All ads shown cash type and coupon type",
+    "ar": "تم عرض جميع اعلانات الكاش و الكوبون "
+  },
+  "File uploaded successfully": {
+    "en": "File uploaded successfully",
+    "ar": "تم تحميل الملف بنجاح"
+  },
+  "Winner already decided": {
+    "en": "Winner already decided",
+    "ar": "تم تحديد الرابح"
+  },
+  "Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad": {
+    "en": "Sorry, you are not from the targeted users which have been set by the advertiser, so you can’t join the raffle of this ad",
+    "ar": "عذرا, لست من ضمن فئة المشاهدات التي قام المعلن بتحديدها مسبقا و لهذا لا يمكنك المشاركة في السحب"
+  },
+  "You have already joined the raffle": {
+    "en": "You have already joined the raffle",
+    "ar": "لقد قمت بالمشاركة في السحب من قبل"
+  },
+  "You have successfully joined the raffle": {
+    "en": "You have successfully joined the raffle",
+    "ar": "لقد تمت عملية المشاركة في السحب بنجاح"
+  },
+  "Raffle is over winner decided": {
+    "en": "Raffle is over winner decided",
+    "ar": "ينتهي السحب عند تحديد اسم الرابح"
+  },
+  "You have successfully won this raffle": {
+    "en": "You have successfully won this raffle",
+    "ar": "لقد ربحت في هذا السحب"
+  },
+  "Followed": {
+    "en": "Followed",
+    "ar": "متابع"
+  },
+  "Unfollowed": {
+    "en": "Unfollowed",
+    "ar": "الغاء المتابعة"
+  },
+  "No coupon winner found": {
+    "en": "No coupon winner found",
+    "ar": "لم يتم العثور على رابحين للكوبونات"
+  },
+  "All coupon winners shown successfully": {
+    "en": "All coupon winners shown successfully",
+    "ar": "تم عرض جميع الرابحين للكوبونات بنجاح"
+  },
+  "Please enter at least start date or end date": {
+    "en": "Please enter at least start date or end date",
+    "ar": "الرجاء ادخال تاريخ البدء او الانتهاء على الاقل"
+  },
+  "All coupon winners shown successfully": {
+    "en": "All coupon winners shown successfully",
+    "ar": "تم عرض جميع الرابحين للكوبونات بنجاح"
+  },
+  "No coupon winner found": {
+    "en": "No coupon winner found",
+    "ar": "لم يتم العثور على رابحين للكوبونات"
+  },
+  "No cash winner found": {
+    "en": "No cash winner found",
+    "ar": "لم يتم العثور على رابحين للكاش"
+  },
+  "All cash winner shown successfully": {
+    "en": "All cash winner shown successfully",
+    "ar": "تم عرض جميع الرابحين للكاش بنجاح"
+  },
+  "Tag save with concerned User details": {
+    "en": "Tag save with concerned User details",
+    "ar": "تم حفظ الاشارة مع تفاصيل المستخدم المعني"
+  },
+  "Ad edit successfully": {
+    "en": "Ad edit successfully",
+    "ar": "تم تعديل الاعلان بنجاح"
+  },
+  "All coupons from store shown successfully": {
+    "en": "All coupons from store shown successfully",
+    "ar": "تم عرض جميع الكوبونات في المتجر بنجاح"
+  },
+  "Clicks updated successfully": {
+    "en": "Clicks updated successfully",
+    "ar": "تم تحديث النقرات بنجاح"
+  },
+  "Already an ad exists at this place": {
+    "en": "Already an ad exists at this place",
+    "ar": "في هذا المكان يوجد اعلان من قبل"
+  },
+  "Successfully show price for coupon": {
+    "en": "Successfully show price for coupon",
+    "ar": "تم عرض سعر الكوبون بنجاح"
+  },
+  "Cash updated successfully": {
+    "en": "Cash updated successfully",
+    "ar": "تم تحديث الكاش بنجاح"
+  },
+  "The email address that you've entered doesn't match any account": {
+    "en": "The email address that you've entered doesn't match any account",
+    "ar": "البريد الالكتروني الذي قمت بادخاله لا يتطابق مع اي حساب"
+  },
+  "Session has been expired": {
+    "en": "Session has been expired",
+    "ar": "انتهت صلاحية الدخول"
+  },
+  "Email should be unique": {
+    "en": "Email should be unique",
+    "ar": "يجب ان يكون البريد الالكتروني مميزا"
+  },
+  "User created successfully": {
+    "en": "User created successfully",
+    "ar": "تم انشاء المستخدم بنجاح"
+  },
+  "Winners details shown successfully": {
+    "en": "Winners details shown successfully",
+    "ar": "تم عرض تفاصيل الرابحين بنجاح"
+  },
+  "Brolix transferred successfully": {
+    "en": "Brolix transferred successfully",
+    "ar": "تم تحويل نقود البرولكس بنجاح"
+  },
+  "User Blocked successfully": {
+    "en": "User Blocked successfully",
+    "ar": "تم حظر المستخدم بنجاح"
+  },
+  "All blocked users shown successfully": {
+    "en": "All blocked users shown successfully",
+    "ar": "تم عرض جميع المستخدمين المحظورين بنجاح"
+  },
+  "All ads shown successfully": {
+    "en": "All ads shown successfully",
+    "ar": "تم عرض جميع الاعلانات بنجاح"
+  },
+  "List of ads shown successfully": {
+    "en": "List of ads shown successfully",
+    "ar": "تم عرض قائمة الاعلانات بنجاح"
+  },
+  "List of all ads shown successfully": {
+    "en": "List of all ads shown successfully",
+    "ar": "تم عرض قائمة بجميع الاعلانات بنجاح"
+  },
+  "Successfully shown list of upgrade card": {
+    "en": "Successfully shown list of upgrade card",
+    "ar": "تم عرض قائمة بطاقات التمييز بنجاح"
+  },
+  "Successfully shown list of luck card": {
+    "en": "Successfully shown list of luck card",
+    "ar": "تم عرض قائمة بطاقات الحظ بنجاح"
+  },
+  "Total income in brolix Shown successfully": {
+    "en": "Total income in brolix Shown successfully",
+    "ar": "تم عرض الدخل الاجمالي بالبرولكس بنجاح"
+  },
+  "You have already send request": {
+    "en": "You have already send request",
+    "ar": "لقد قمت بارسال الطلب من قبل"
+  },
+  "You have already blocked this user": {
+    "en": "You have already blocked this user",
+    "ar": "لقد قمت بحظر هذا المستخدم من قبل"
+  },
+  "Shown list all followers": {
+    "en": "Shown list all followers",
+    "ar": "تم عرض قائمة بجميع المتابعين"
+  },
+  "Shown list all followers request.": {
+    "en": "Shown list all followers request.",
+    "ar": "تم عرض قائمة بجميع طلبات المتابعة"
+  },
+  "Accepted successfully": {
+    "en": "Accepted successfully",
+    "ar": "تم القبول بنجاح"
+  },
+  "Successfully blocked this user": {
+    "en": "You have already blocked this user",
+    "ar": "لقد قمت بحظر هذا المستخدم من قبل"
+  },
+  "Successfully blocked this user": {
+    "en": "Successfully blocked this user",
+    "ar": "تم حظر المستخدم بنجاح"
+  },
+  "You have rejected this user": {
+    "en": "You have rejected this user",
+    "ar": "لقد قمت برفض هذا المستخدم"
+  },
+  "Successfully unblock this user": {
+    "en": "Successfully unblock this user",
+    "ar": "تم الغاء الحظر عن المستخدم بنجاح"
+  },
+  "Shown list all block users": {
+    "en": "Shown list all block users",
+    "ar": "تم عرض قائمة بجميع المستخدمين المحظورين"
+  },
+  "You have already blocked this page": {
+    "en": "You have already blocked this page",
+    "ar": "لقد قمت بحظر هذه الصفحة من قبل"
+  },
+  "You are already following this page": {
+    "en": "You are already following this page",
+    "ar": "لقد قمت بمتابعة هذه الصفحة من قبل"
+  },
+  "Product Created": {
+    "en": "Product Created",
+    "ar": "تم انشاء السلعة"
+  },
+  "Product List": {
+    "en": "Product List",
+    "ar": "قائمة السلع"
+  },
+  "Product Details": {
+    "en": "Product Details",
+    "ar": "تفاصيل السلعة"
+  },
+  "Comments saved successfully": {
+    "en": "Comments saved successfully",
+    "ar": "تم حفظ التعليقات بنجاح"
+  },
+  "Comments List": {
+    "en": "Comments List",
+    "ar": "قائمة التعليقات"
+  },
+  "Product removed successfully": {
+    "en": "Product removed successfully",
+    "ar": "تم الازالة من المعرض بنجاح"
+  },
+  "Product updated successfully": {
+    "en": "Product updated successfully",
+    "ar": "تم تحديث المعرض بنجاح"
+  },
+  "Event created successfully": {
+    "en": "Event created successfully",
+    "ar": "تم انشاء المناسبة بنجاح"
+  },
+  "All events shown successfully": {
+    "en": "All events shown successfully",
+    "ar": "تمعرضجميعالمناسباتبنجاح"
+  },
+  "Event saved successfully": {
+    "en": "Event saved successfully",
+    "ar": "تم حفظ المناسبة بنجاح"
+  },
+  "Event deleted successfully": {
+    "en": "Event deleted successfully",
+    "ar": "تم حذف المناسبة بنجاح"
+  },
+  "Event details shown successfully": {
+    "en": "Event details shown successfully",
+    "ar": "تم عرض تفاصيل المناسبة بنجاح"
+  },
+  "Terms Condition created successfully": {
+    "en": "Terms Condition created successfully",
+    "ar": "تم انشاء الشروط و الاحكام بنجاح"
+  },
+  "Terms and conditions shown successfully": {
+    "en": "Terms and conditions shown successfully",
+    "ar": "تم عرض الشروط و الاحكام بنجاح"
+  },
+  "Terms and conditions updated successfully": {
+    "en": "Terms and conditions updated successfully",
+    "ar": "تم تحديث الشروط و الاحكام بنجاح"
+  },
+  "Terms and conditions shown successfully": {
+    "en": "Terms and conditions shown successfully",
+    "ar": "تم عرض الشروط و الاحكام بنجاح"
+  },
+  "Report submitted successfully": {
+    "en": "Report submitted successfully",
+    "ar": "تم ارسال التقرير بنجاج"
+  }
+}

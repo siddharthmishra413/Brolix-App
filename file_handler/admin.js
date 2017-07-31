@@ -3398,7 +3398,7 @@ module.exports = {
         })
     },
 
-    /************************************ Admin tool sections *****************************************************************/
+    /************************************ Admin tool sections *****************************************************/
 
     "addNewCoupon": function(req, res) {
         console.log("---addNewCoupon---",req.body)
@@ -3675,7 +3675,32 @@ module.exports = {
             console.log("result---->>>",JSON.stringify(result))
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Records not fond" }) }
             else{
+                
+                User.find({ _id: { $in: ids } }, function(err, result2) {
+            console.log("result---->>>",JSON.stringify(result2))
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else{
+                for (var i = 0; i < result2.length; i++) {
+                    if (result2[i].deviceToken && result2[i].deviceType && result2[i].notification_status && result2[i].status) {
+                        if(req.body.Brolix){
+                         var message = "Hello !! i have sent you a Brolix";
+                        }
+                        else{
+                          var message = "Hello !! i have sent you a Cash";  
+                        }
+                        if (result2[i].deviceType == 'Android' && result2[i].notification_status == 'on' && result2[i].status == 'ACTIVE') {
+                            functions.android_notification(result2[i].deviceToken, message);
+                            console.log("Android notification send!!!!")
+                        } else if (result2[i].deviceType == 'iOS' && result2[i].notification_status == 'on' && result2[i].status == 'ACTIVE') {
+                            functions.iOS_notification(result2[i].deviceToken, message);
+                        } else {
+                            console.log("Something wrong!!!!")
+                        }
+                    }
+                }
             res.send({ result: result, responseCode: 200, responseMessage: 'Successfully updated' });
+            }
+                })
             }
         })
     },
@@ -4101,6 +4126,7 @@ module.exports = {
 
 
     "sendCouponTOUSers": function(req, res) {
+        console.log("sendCouponTOUSers----- request--->>>",req.body)
         waterfall([
                 function(callback) {
                     if (req.body.Id.length == 0) { res.send({ responseCode: 404, responseMessage: 'please enter atleast one user.' }); } else {
@@ -4110,6 +4136,7 @@ module.exports = {
                         var arrayLenght = userArray.length;
                         console.log("userArray-->>>", arrayLenght)
                         createNewAds.findOneAndUpdate({ _id: adId }, { $inc: { sendCouponToUser: arrayLenght } }, { new: true }).exec(function(err, result) {
+                            console.log("result-0--0--->>",result)
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct adId' }); } else {
                                 var couponCode = result.couponCode;
                                 var couponAdId = result._id;
@@ -4122,6 +4149,7 @@ module.exports = {
                     }
                 },
                 function(couponCode, couponAdId, expirationTime, pageId, type, callback) {
+                    console.log("expirationTime--->>>",expirationTime)
                     var adId = req.body.couponId;
                     var userArray = req.body.Id;
                     console.log("lenght-->>>", userArray)
@@ -4132,39 +4160,69 @@ module.exports = {
                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
                     var s = Date.now(m)
                     var actualTime = parseInt(s) + parseInt(expirationTime);
-                    var data = {
-                        couponCode: couponCode,
-                        expirationTime: actualTime,
-                        adId: req.body.couponId,
-                        pageId: pageId,
-                        type: type
-                    }
+                    var neverExpireTime = parseInt(s) + parseInt(2125651954361);
+                 //   console.log("neverExpireTime--->>", neverExpireTime)
+                    
+                       if (expirationTime == 'NEVER') {
+                            console.log("if")
+                            var data = {
+                                couponCode: couponCode,
+                                adId: req.body.couponId,
+                                pageId: pageId,
+                                type: type,
+                                couponExpire: "NEVER",
+                                expirationTime: neverExpireTime
+                            }
+                        } else {
+                            console.log("else")
+                            var data = {
+                                couponCode: couponCode,
+                                expirationTime: actualTime,
+                                adId: req.body.couponId,
+                                pageId: pageId,
+                                type: type,
+                                couponExpire: "YES"
+                            }
+                        }
                     data1 = {
                         adId: req.body.couponId,
                         type: "I have sent you a coupon",
+                        linkType: 'profile',
                         notificationType: 'couponReceivedFromAdmin'
                     }
-                    console.log("data-->>", data)
-                    console.log("data-->>", data1)
+                  //  console.log("data-->>", data)
+                  //  console.log("data-->>", data1)
+                  //    console.log("couponAdId-->>", couponAdId)
+                        console.log("userArray-->>", userArray)
                         //   for (var i = 0; i < userArray.length; i++) {
-                    User.update({ _id: { $in: userArray } }, { $push: { coupon: data, notification: data1, gifts: couponAdId }}, { multi: true },
-                            function(err, result1) {
+                    User.update({ _id: { $in: userArray } }, { $push: { coupon: data, notification: data1, gifts: couponAdId }}, { multi: true }, function(err, result1) {
                                 console.log("result1-->>", result1)
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11', err }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "please enter correct userId" }) } else {
-                                    callback(null)
-                                }
-                                if (result1.deviceToken && result1.deviceType && result1.notification_status && result1.status) {
+                                    
+                                     User.find({ _id: { $in: userArray } },function(err, result2) {
+                                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11', err }); }
+                                         else{
+                                             console.log("result --->>>",JSON.stringify(result2))
+                                              callback(null)  
+                                   }
+                                  for(var i = 0; i<result2.length; i++){       
+                                if (result2[i].deviceToken && result2[i].deviceType && result2[i].notification_status && result2[i].status) {
                                     var message = "Hello !! i have sent you a coupon";
-                                    if (result1.deviceType == 'Android' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
-                                        functions.android_notification(result1.deviceToken, message);
+                                    if (result2[i].deviceType == 'Android' && result2[i].notification_status == 'on' && result2[i].status == 'ACTIVE') {
+                                        functions.android_notification(result2[i].deviceToken, message);
                                         console.log("Android notification send!!!!")
-                                    } else if (result1.deviceType == 'iOS' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
-                                        functions.iOS_notification(result1.deviceToken, message);
+                                    } else if (result2[i].deviceType == 'iOS' && result2[i].notification_status == 'on' && result2[i].status == 'ACTIVE') {
+                                        functions.iOS_notification(result2[i].deviceToken, message);
                                     } else {
                                         console.log("Something wrong!!!!")
                                     }
                                 }
+                                  }
+                                         
                             })
+                                     }
+                                         
+                                     })
                         // }
                         // callback(null)
                 },
