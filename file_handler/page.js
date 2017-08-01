@@ -495,13 +495,14 @@ module.exports = {
         } else {
             page = ""
         }
+         var re2 = new RegExp(req.body.subCategory, 'i')
         var data = {
             'country': req.body.country,
             'state': req.body.state,
             'city': req.body.city,
             'pageName': page,
             'category': req.body.category,
-            'subCategory': req.body.subCategory
+            'subCategory': { $regex: re2 }
         }
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
@@ -2368,11 +2369,18 @@ module.exports = {
                             condition.$and.push(data)
                         }
                         // // else if(key == "pageName"){
-                        else if (key == "subCategory") {
-                            for (data in req.body[key]) {
-                                cond.$or.push({ subCategory: req.body[key][data] })
-                            }
-                            condition.$and.push(cond)
+//                        else if (key == "subCategory") {
+//                            for (data in req.body[key]) {
+//                                cond.$or.push({ subCategory: req.body[key][data] })
+//                            }
+//                            condition.$and.push(cond)
+//                        }
+                         else if (key == "subCategory") {
+                            var re = new RegExp(req.body[key], 'i');
+                            console.log(re)
+                            var data = { subCategory: { $regex: re } }
+                            //  condition.$and.push(data)({ subCategory: req.body[key] })
+                            condition.$and.push(data)
                         }
                         // // }
                         else {
@@ -2987,11 +2995,16 @@ module.exports = {
                     //    console.log("data--->>" + data)
                     result.docs[i].reply = data;
                 }
-                res.send({
+             //     console.log("adsCommentList---->>>",JSON.stringify(result))
+                addsComments.populate(result.docs, { path: 'userId', model: 'brolixUser', select: 'image' }, function(err, finalResult) {
+               //    console.log("adsCommentList--22-->>>",JSON.stringify(finalResult))
+                    res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Review List."
                 })
+                                })
+                
             }
         })
     },

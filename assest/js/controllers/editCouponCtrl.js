@@ -59,6 +59,7 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
     userService.viewCoupon($scope.coupon_id).then(function(success) {
         console.log("Coupon>>>>>>>>",success)
         $scope.couponData = success.data.result;
+        console.log("pageName",$scope.couponData.pageName)
         // $scope.user.pageName = $scope.couponData.pageName;
         // $scope.user.photo = $scope.couponData.coverImage;
         // var updateDate = new Date($scope.couponData.couponExpiryDate);

@@ -280,11 +280,17 @@ module.exports = {
                      console.log("data--->>"+data)
                      result.docs[i].reply = data;
                 }
-                res.send({
+                        console.log("productCommentList--->>>",result)
+
+                    productComments.populate(result.docs, { path: 'userId', model: 'brolixUser', select: 'image' }, function(err, finalResult) {
+                      console.log("adsCommentList---->>>",JSON.stringify(finalResult))
+                    res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Comments List."
                 })
+                                })
+              
             }
         })
     },

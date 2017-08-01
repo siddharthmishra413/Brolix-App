@@ -96,7 +96,7 @@ app.get('/adUpgradedByDollor', authUser.authUser, adminHandler.adUpgradedByDollo
 app.get('/adUpgradedByBrolix', authUser.authUser, adminHandler.adUpgradedByBrolix);
 app.get('/soldCoupon', authUser.authUser, adminHandler.soldCoupon);
 app.get('/totalCashGifts', authUser.authUser, adminHandler.totalCashGifts);
-app.get('/totalHiddenGifts', authUser.authUser, adminHandler.totalHiddenGifts);
+app.get('/totalHiddenGifts',  adminHandler.totalHiddenGifts);
 app.get('/totalExchangedCoupon', authUser.authUser, adminHandler.totalExchangedCoupon);
 app.get('/totalSentCoupon', adminHandler.totalSentCoupon);
 app.get('/totalSentCash', authUser.authUser, adminHandler.totalSentCash);

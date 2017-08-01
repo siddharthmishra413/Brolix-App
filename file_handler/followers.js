@@ -34,7 +34,7 @@
                                                      type: 'I have one follow request',
                                                      linkType: 'profile',
                                                      notificationType: 'follow',
-                                                     image: "image"
+                                                     image: ""
                                                  }
                                              }
                                              //     console.log("data---->>>", data)

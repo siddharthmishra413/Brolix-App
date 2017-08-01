@@ -582,6 +582,7 @@ module.exports = {
             function(noDataValue, dataValue, blockedArray, callback) {
 
                 var re = new RegExp(req.body.pageName, 'i');
+                var re2 = new RegExp(req.body.subCategory, 'i')
 
                 var data = {
                     'whoWillSeeYourAdd.country': req.body.country,
@@ -590,7 +591,7 @@ module.exports = {
                     'pageName': { $regex: re },
                     'adsType': req.body.type,
                     'category': req.body.category,
-                    'subCategory': req.body.subCategory
+                    'subCategory':  { $regex: re2 }
                 }
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
@@ -653,6 +654,7 @@ module.exports = {
     },
 
     "commentOnAds": function(req, res) {
+        console.log("commentOnAds----0--->>>",req.body)
         var adds = new addsComments(req.body);
         adds.save(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -681,6 +683,7 @@ module.exports = {
     },
 
     "adsCommentList": function(req, res) {
+      //  console.log("adsCommentList-0-0---->>>>",req.body)
         addsComments.paginate({ addId: req.params.id, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 for (var i = 0; i < result.docs.length; i++) {
@@ -689,11 +692,15 @@ module.exports = {
                     //   console.log("data--->>" + data)
                     result.docs[i].reply = data;
                 }
-                res.send({
+                  addsComments.populate(result.docs, { path: 'userId', model: 'brolixUser', select: 'image' }, function(err, finalResult) {
+              //        console.log("adsCommentList---->>>",JSON.stringify(finalResult))
+                    res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: "Comments List."
                 })
+                                })
+                
             }
         })
     },
@@ -2440,12 +2447,20 @@ module.exports = {
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
                     if (!(obj[key] == "" || obj[key] == undefined)) {
                         var cond = { $or: [] };
+//                        if (key == "subCategory") {
+//                            for (data in obj[key]) {
+//                                cond.$or.push({ subCategory: obj[key][data] })
+//                            }
+//                            condition.$and.push(cond)
+//                        }
                         if (key == "subCategory") {
-                            for (data in obj[key]) {
-                                cond.$or.push({ subCategory: obj[key][data] })
-                            }
-                            condition.$and.push(cond)
-                        } else if (key == "pageName") {
+                            console.log("ssSSSSS", obj[key])
+                            var re = new RegExp(obj[key], 'i');
+                            console.log(re)
+                            var data = { subCategory: { $regex: re } }
+                            condition.$and.push(data)
+                        }
+                        else if (key == "pageName") {
                             console.log("ssSSSSS", obj[key])
                             var re = new RegExp(obj[key], 'i');
                             console.log(re)
@@ -2548,12 +2563,20 @@ module.exports = {
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
                     if (!(key == 'userId' || obj[key] == "" || obj[key] == undefined)) {
                         var cond = { $or: [] };
-                        if (key == "subCategory") {
-                            for (data in obj[key]) {
-                                cond.$or.push({ subCategory: obj[key][data] })
-                            }
+//                        if (key == "subCategory") {
+//                            for (data in obj[key]) {
+//                                cond.$or.push({ subCategory: obj[key][data] })
+//                            }
+//                            condition.$and.push(cond)
+//                        } 
+                         if (key == "subCategory") {
+                           console.log("ssSSSSS", obj[key])
+                            var re = new RegExp(obj[key], 'i');
+                            console.log(re)
+                            var data = { subCategory: { $regex: re } }
                             condition.$and.push(cond)
-                        } else if (key == "pageName") {
+                        }
+                        else if (key == "pageName") {
                             console.log("ssSSSSS", obj[key])
                             var re = new RegExp(obj[key], 'i');
                             console.log(re)

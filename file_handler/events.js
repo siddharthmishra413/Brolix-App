@@ -9,7 +9,7 @@ module.exports = {
                 responseMessage: 'Please enter pageId'
             });
         } else {
-            console.log("request-->>>", JSON.stringify(req.body))
+         //   console.log("request-->>>", JSON.stringify(req.body))
             var event = new createEvents(req.body);
             event.save(function(err, result) {
                 if (err) {
@@ -118,25 +118,18 @@ module.exports = {
         var h = new Date(new Date(startTime).setHours(00)).toUTCString();
         var m = new Date(new Date(h).setMinutes(00)).toUTCString();
         var s = Date.now(m)
-        console.log("current -->>", s)
             // var actualTime = parseInt(s);
         createEvents.find({ pageId: req.body.pageId, "status" : "ACTIVE"}).exec(function(err, result) {
-            console.log("result -->>", result)
-            if (err) {
-                res.send({
-                    responseCode: 409,
-                    responseMessage: 'Internal server error'
-                });
-            } else {
+          //  console.log("result -->>", result)
+            if (err) { res.send({ responseCode: 409,responseMessage: 'Internal server error' }); } 
+            else {
                 var eventArray = [];
+                var currentTime = new Date().getTime();
                 for (var i = 0; i < result.length; i++) {
-                    console.log("res-->>", new Date(result[i].eventStartDate), i)
-                    if (s < new Date(result[i].eventStartDate)) {
-                        console.log("dta->", result[i].eventStartDate)
+                        if (s < result[i].eventStartTime) {
                         eventArray.push(result[i]._id)
                     }
                 }
-                console.log("array-->>", eventArray)
                 createEvents.find({
                     _id: {
                         $in: eventArray
@@ -150,7 +143,7 @@ module.exports = {
                     } else if (result1.length == 0) {
                         res.send({
                             responseCode: 400,
-                            responseMessage: 'No event found'
+                            responseMessage: 'No event found.'
                         })
                     } else {
                         res.send({

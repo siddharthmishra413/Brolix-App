@@ -22,7 +22,7 @@ var productCommentSchema = new Schema({
         type: String,
         trim: true
     },
-    userId: { type: String, trim: true },
+    userId: { type: String, trim: true, ref: 'brolixUser' },
     userName: { type: String, trim: true },
     userImage: { type: String, trim: true },
     comment: { type: String, trim: true },

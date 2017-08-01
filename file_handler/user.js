@@ -2206,7 +2206,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     _id: { senderId: "$senderId", receiverId: "$receiverId" },
                     unread: {
                         $sum: {
-                            $cond: { if: { $eq: ["$is_read", 0] }, then: 1, else: 0 }
+                            $cond: { if: { $and:[{$eq: ["$is_read", 0]},{$eq: ["$receiverId", req.body.userId]}] }, then: 1, else: 0 }
                         }
                     },
                     lastMsg: { $last: "$message" },
@@ -2218,7 +2218,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 }
             }]
         ).exec(function(err, result) {
-            //  console.log("result-0-0-0-0-0-0->>", result)
+              console.log("result-0-0-0-0-0-0->>", result)
             if (err) res.send({ responseCode: 500, responseMessage: err });
             else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
             else {
@@ -2232,7 +2232,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 //                });
                 var obj = [],
                     j;
-                //    console.log("result-23232-->" + JSON.stringify(result));
+                    console.log("result-23232-->" + JSON.stringify(result));
                 for (var i = 0; i < result.length; i++) {
                     result.length - 1 == i ? j = i : j = i + 1;
 

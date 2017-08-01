@@ -214,6 +214,7 @@ $scope.showCouponGift= function(id,key) {
   userService.couponGiftAd(id).success(function(res) {        
     if (res.responseCode == 200){
       $scope.couponGiftAd=res.result;
+      console.log("dddddd",JSON.stringify($scope.couponGiftAd))
     } else {
         toastr.error(res.responseMessage);
     }
