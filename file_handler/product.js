@@ -18,8 +18,8 @@ module.exports = {
     "productList": function(req, res) {
 
         var pageNumber = Number(req.params.pageNumber)
-        var limitData = pageNumber * 8;
-        var skips = limitData - 8;
+        var limitData = pageNumber * 9;
+        var skips = limitData - 9;
         var page = String(pageNumber);
 
         pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }).exec(function(err, result) {
@@ -30,7 +30,7 @@ module.exports = {
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
-                var pages = Math.ceil(count / 8);
+                var pages = Math.ceil(count / 9);
                 pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                     console.log("2")
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 

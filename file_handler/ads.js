@@ -2570,11 +2570,11 @@ module.exports = {
 //                            condition.$and.push(cond)
 //                        } 
                          if (key == "subCategory") {
-                           console.log("ssSSSSS", obj[key])
-                            var re = new RegExp(obj[key], 'i');
-                            console.log(re)
-                            var data = { subCategory: { $regex: re } }
-                            condition.$and.push(cond)
+                           console.log("subCategory​-->>", obj[key])
+                            var re2 = new RegExp(obj[key], 'i');
+                            console.log("sasdasd--->>>",re2)
+                            var data = { subCategory: { $regex: re2 } }
+                            condition.$and.push(data)
                         }
                         else if (key == "pageName") {
                             console.log("ssSSSSS", obj[key])
@@ -2592,10 +2592,10 @@ module.exports = {
                 if (condition.$and.length == 0) {
                     delete condition.$and;
                 }
-                //     console.log("condition==>" + JSON.stringify(condition))
+                    console.log("condition==>" + JSON.stringify(condition))
                 createNewPage.find(condition).exec(function(err, result) {
                     // console. 0000000("result--->>",result)
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error',err }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         //         console.log("array result", result)
                         var array = [];
                         for (var i = 0; i < result.length; i++) {
