@@ -21,6 +21,9 @@ var chat = function() {
         });
 
         connection.on('message', function(message) {
+            console.log("*******************************************")
+            console.log("chat chat chat chat chat chat chat chat chat chat chat")
+            console.log("message0-0-0-0-0---->>>",message)
             var obj = JSON.parse(message.utf8Data);
             if (obj.msgTyp == "init") {
                 connection.ID = obj.senderId;

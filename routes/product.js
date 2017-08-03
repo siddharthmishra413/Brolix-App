@@ -7,7 +7,7 @@ app.post('/deleteComments', productHandler.deleteComments);
 app.post('/editComments', productHandler.editComments);
 
 app.post('/createProduct', authUser.authUser, productHandler.createProduct);
-app.get('/productList/:id/:pageNumber', productHandler.productList);
+app.get('/productList/:id', productHandler.productList);
 app.get('/productDetail/:id', authUser.authUser, productHandler.productDetail);
 app.post('/productLikeAndUnlike', productHandler.productLikeAndUnlike);
 app.post('/commentOnProduct', productHandler.commentOnProduct);

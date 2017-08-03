@@ -17,37 +17,37 @@ module.exports = {
 
     "productList": function(req, res) {
 
-        var pageNumber = Number(req.params.pageNumber)
-        var limitData = pageNumber * 9;
-        var skips = limitData - 9;
-        var page = String(pageNumber);
+        // var pageNumber = Number(req.params.pageNumber)
+        // var limitData = pageNumber * 9;
+        // var skips = limitData - 9;
+        // var page = String(pageNumber);
 
-        pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }).exec(function(err, result) {
-            console.log("1")
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
-            else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Data not found." }); } else {
-                var count = 0;
-                for (i = 0; i < result.length; i++) {
-                    count++;
-                }
-                var pages = Math.ceil(count / 9);
-                pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+        // pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }).exec(function(err, result) {
+        //     console.log("1")
+        //     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
+        //     else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Data not found." }); } else {
+        //         var count = 0;
+        //         for (i = 0; i < result.length; i++) {
+        //             count++;
+        //         }
+        //         var pages = Math.ceil(count / 9);
+                pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }).exec(function(err, result1) {
                     console.log("2")
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "Data not found." }); } 
                     else {
-                      res.send({
+                            res.send({
                             docs: result1,
-                            total: count,
-                            limit: limitData,
-                            page: page,
-                            pages: pages,
+                            // total: count,
+                            // limit: limitData,
+                            // page: page,
+                            // pages: pages,
                             responseCode: 200,
                             responseMessage: "Product List."
                         })
                     }
-                })
-            }
+            //     })
+            // }
         })
 
 
