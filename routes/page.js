@@ -24,7 +24,7 @@ app.get('/myPages/:id/:pageNumber', pageHandler.myPages);
 app.get('/showPageFavouriteType/:id/:pageNumber', authUser.authUser, pageHandler.showPageFavouriteType);
 app.put('/editPage/:id',  pageHandler.editPage);
 app.post('/deletePage', authUser.authUser, pageHandler.deletePage);
-app.post('/allPagesSearch/:id/:pageNumber', authUser.authUser, pageHandler.allPagesSearch); //Not Update in Docs
+app.post('/allPagesSearch/:id/:pageNumber',  pageHandler.allPagesSearch); //Not Update in Docs
 app.post('/pageFollowUnfollow', pageHandler.pageFollowUnfollow); //Not Update in Docs
 app.post('/searchForPages/:id/:pageNumber', pageHandler.searchForPages); //Not Upadte in Docs
 

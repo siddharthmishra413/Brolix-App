@@ -18,6 +18,9 @@ var addsCommentSchema = new Schema({
         type: String,
         trim: true
     },
+    type:{
+        type:String
+    },
     userId: { type: String, trim: true, ref: 'brolixUser' },
     userName: { type: String, trim: true },
     userImage: { type: String, trim: true },

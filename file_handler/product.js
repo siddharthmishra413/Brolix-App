@@ -297,18 +297,18 @@ module.exports = {
 
     "removeProduct": function(req, res) {
         pageProductList.update({ _id: req.params.id , 'media._id': req.params.mediaId}, { $pull: { "media" : { _id: req.params.mediaId } } }, function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No product found." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No item found." }); } else {
                 pageProductList.findOne({_id: req.params.id},function(err, result1){
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No product found." }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No item found." }); } else {
                         if(result1.media.length == 0){
                             console.log("meadia lenght==0")
 
                             pageProductList.findOneAndUpdate({ _id: req.params.id }, { $set: { 'status': 'REMOVED' } }, function(err, result2) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No product found." }); } else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No item found." }); } else {
                                     res.send({
                                         result: result,
                                         responseCode: 200,
-                                        responseMessage: "Product removed successfully."
+                                        responseMessage: "Item removed successfully."
                                     })
                                 }
                             })
@@ -319,7 +319,7 @@ module.exports = {
                             res.send({
                                 result: result,
                                 responseCode: 200,
-                                responseMessage: "Product removed successfully."
+                                responseMessage: "Item removed successfully."
                             })
 
                         }
@@ -346,8 +346,8 @@ module.exports = {
     "editProduct": function(req, res) {
         console.log("req. body", JSON.stringify(req.body))
         pageProductList.findOneAndUpdate({ _id: req.params.id , 'media._id': req.params.mediaId}, { $set: { 'media.$.description': req.body.description } }, { new: true }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct product id' }); } else {
-                res.send({ result: result, responseCode: 200, responseMessage: "Product updated successfully." })
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct item id' }); } else {
+                res.send({ result: result, responseCode: 200, responseMessage: "Item updated successfully." })
             }
         })
 

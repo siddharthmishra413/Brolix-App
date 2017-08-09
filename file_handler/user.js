@@ -2105,8 +2105,10 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
 
         User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
+             //   console.log("result--->>>",JSON.stringify(result))
                 var obj = result[0].coupon;
                 var data = obj.filter(obj => obj.status == "ACTIVE");
+            //     console.log("data--->>>",data)
                 var sortArray = data.sort(function(obj1, obj2) {
                     return obj2.updateddAt - obj1.updateddAt
                 })
@@ -2897,13 +2899,13 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                          console.log("flag--*+*typeOf+*+*+*+-->>", typeof(result1.userFollowers))
                         var flag = result1.userFollowers.indexOf(req.body.senderId)
                         console.log("flag--*+*+++**+sendCouponToFollower+*+*+*+-->>", flag)
-                        if (flag != -1) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon to this user due to privacy policies" }); } else {
+                        if (flag == -1) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon to this user due to privacy policies" }); } else {
                             console.log("2")
                             createNewAds.findOneAndUpdate({ _id: adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found 1." }); } else {
 
                                     User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) }, { $set: { "coupon.$.status": "SEND" }, $pop: { 'gifts': -adId } }, { new: true }).exec(function(err, result3) {
-                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found 2." }); } else {
                                             for (i = 0; i < result3.coupon.length; i++) {
                                                 if (result3.coupon[i]._id == senderCouponId) {
                                                     var couponCode = result3.coupon[i].couponCode;
@@ -2963,11 +2965,11 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         var m = new Date(new Date(h).setMinutes(00)).toUTCString();
                         var currentTime = Date.now(m);
                         createNewAds.findOneAndUpdate({ _id: adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 55' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 55' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No ad found 3." }); } else {
 
                                 User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) }, { $set: { "coupon.$.status": "SEND" }, $pop: { 'gifts': -adId } }, { new: true }, function(err, result3) {
                               //      console.log("senderCouponId-111-->>", JSON.stringify(result3))
-                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 66' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 66' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No ad found 4." }); } else {
                                         for (i = 0; i < result3.coupon.length; i++) {
                                             if (result3.coupon[i]._id == senderCouponId) {
                                                 var couponCode = result3.coupon[i].couponCode;

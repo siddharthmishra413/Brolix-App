@@ -654,16 +654,24 @@ module.exports = {
     },
 
     "commentOnAds": function(req, res) {
-        console.log("commentOnAds----0--->>>",req.body)
+        console.log("commentOnAds----request--->>>",req.body)
         var adds = new addsComments(req.body);
         adds.save(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+             console.log("commentOnAds----result--->>>",result)
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else { 
+                if(result.type == 'onAds'){                    
+                    console.log("in if")
                 createNewAds.findOneAndUpdate({ _id: req.body.addId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        res.send({ result: result, responseCode: 200, responseMessage: "Comments save with concerned User details." });
-                    }
-                })
-
+                //     console.log("commentOnAds----1--->>>",results)
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                    else { res.send({ result: result, responseCode: 200, responseMessage: "Comments save with concerned User details." }); }  })  }
+                else{
+                       console.log("in else")  // commentCountOnGifts
+                   createNewAds.findByIdAndUpdate({ _id: new mongoose.Types.ObjectId(req.body.addId )},{ $inc: { commentCountOnGifts: 1 } }, { new: true },function(err, result1) {
+                        console.log("commentOnAds---2---->>>",result1)
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                    else { res.send({ result: result, responseCode: 200, responseMessage: "Comments save with concerned User details." }); }  })  
+                }
             }
         })
     },
@@ -683,8 +691,11 @@ module.exports = {
     },
 
     "adsCommentList": function(req, res) {
-      //  console.log("adsCommentList-0-0---->>>>",req.body)
-        addsComments.paginate({ addId: req.params.id, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+        var type = req.params.type;
+        var userId = req.params.userId;
+      console.log("adsCommentList-0-0-type--->>>>",type)
+        addsComments.paginate({ addId: req.params.id, type:type, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+         //    console.log("adsCommentList-0-0-result--->>>>",JSON.stringify(result))
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 for (var i = 0; i < result.docs.length; i++) {
                     var reply = result.docs[i].reply;
@@ -1794,7 +1805,7 @@ module.exports = {
                 }
 
 
-                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE', _id: { $nin: blockedArray } } }).exec(function(err, result) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE', _id: { $nin: blockedArray } } },{ $sort: { 'coupon.updateddAt': -1 } }).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: "No coupon winner found" }); } else {
                         var count = 0;
                         for (i = 0; i < result.length; i++) {
@@ -1814,7 +1825,7 @@ module.exports = {
                                             select: 'pageName adAdmin'
                                         }, function(err, result3) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
-
+                                    //     console.log("couponWinners------->>>>",JSON.stringify(result2))
                                                 res.send({
                                                     docs: result2,
                                                     count: count,
@@ -2264,7 +2275,7 @@ module.exports = {
                         userArray.push(result[i]._id)
                     }
                 }
-                User.aggregate({ $unwind: "$coupon" }, { $match: { $and: [{ _id: { $in: userArray }, 'coupon.couponStatus': { $in: status }, 'coupon.status': 'ACTIVE' }] } }, { $sort: { createdAt: -1 } }, function(err, result1) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { $and: [{ _id: { $in: userArray }, 'coupon.couponStatus': { $in: status }, 'coupon.status': 'ACTIVE' }] } }, { $sort: { 'coupon.createddAt': -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         User.populate(result1, {
                             path: 'coupon.pageId',

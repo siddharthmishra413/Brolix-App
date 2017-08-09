@@ -125,7 +125,7 @@ module.exports = {
                 })
             },
             function(result, blockedArray, pageArray, callback) {
-                createNewPage.paginate({ _id: {$nin: pageArray}, userId: { $nin: blockedArray }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                createNewPage.paginate({  userId: { $nin: blockedArray }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
                     if (err) { res.semd({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                         // console.log("pageResult-*******33333333333**************----->>>>",pageResult)
                         callback(null, result, pageResult);
@@ -152,7 +152,7 @@ module.exports = {
                         }
                     }
                 }
-            //    console.log("pageResult--->>>",JSON.stringify(pageResult))
+          //  console.log("pageResult--->>>",JSON.stringify(pageResult))
                 res.send({
                     result: pageResult,
                     responseCode: 200,
@@ -477,10 +477,30 @@ module.exports = {
 
     "allPagesSearch": function(req, res) {
         console.log("request-->>", req.body)
-        waterfall([
-            function(callback) {
+        waterfall([         
+            function( callback) {
                 var userId = req.params.id;
-                createNewPage.find({"status" : "ACTIVE"}).exec(function(err, pageResult){
+                User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        var blockedArray = [];
+                        for (var i = 0; i < userResult1.length; i++) {
+                            for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                                if (userResult1[i].blockUser[j].toString() == userId) {
+                                    blockedArray.push(userResult1[i]._id)
+                                } else {
+                                    console.log("flag------->>>>")
+                                }
+                            }
+                        }
+                        callback(null, blockedArray)
+                        console.log("flag------->>>>", JSON.stringify(blockedArray))
+
+                    }
+                })
+            },
+               function(blockedArray, callback) {
+                var userId = req.params.id;
+                createNewPage.find({ userId:{$nin:blockedArray}, "status" : "ACTIVE"}).exec(function(err, pageResult){
                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                     else{
                       //  console.log("pageResult--->>>",JSON.stringify(pageResult));
@@ -497,27 +517,7 @@ module.exports = {
                         }
                         }
                         console.log("pageArray------->>>>",pageArray)  
-                        callback(null,pageArray)
-                    }
-                })
-            },
-            function(pageArray, callback) {
-                var userId = req.params.id;
-                User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        var blockedArray = [];
-                        for (var i = 0; i < userResult1.length; i++) {
-                            for (var j = 0; j < userResult1[i].blockUser.length; j++) {
-                                if (userResult1[i].blockUser[j].toString() == userId) {
-                                    blockedArray.push(userResult1[i]._id)
-                                } else {
-                                    console.log("flag------->>>>")
-                                }
-                            }
-                        }
-                        callback(null, blockedArray, pageArray)
-                        console.log("flag------->>>>", JSON.stringify(blockedArray))
-
+                        callback(null,blockedArray, pageArray)
                     }
                 })
             },
@@ -529,7 +529,7 @@ module.exports = {
             },
             function(result, blockedArray, pageArray, callback) {
                 var re = new RegExp(req.body.search, 'i');
-                createNewPage.paginate({ _id:{$nin:pageArray}, userId: { $nin: blockedArray }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                createNewPage.paginate({ _id: { $nin: pageArray }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                         callback(null, result, pageResult);
                     }
@@ -624,11 +624,62 @@ module.exports = {
 
                 createNewPage.paginate({ userId: { $nin: blockedArray }, $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                         console.log("results--->>>",results)      
+                        
+                        User.findOne({_id:req.params.id}).exec(function(err, userResult){
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                            else{
+                         console.log("userResult--->>>",userResult)      
+                        var array = [];
+                        var data = [];
+                        if (userResult.pageFollowers.length != 0) {
+                            for (var i = 0; i < userResult.pageFollowers.length; i++) {
+                                array.push(userResult.pageFollowers[i].pageId)
+                            }
+                            //  console.log("followed pages------->>>>>", array);
+                            for (var j = 0; j < array.length; j++) {
+                            //    console.log("jjjjj", j);
+                                for (k = 0; k < results.docs.length; k++) {
+                             //       console.log("kkkkkk", pageResult.docs[k]._id, k);
+                                    if (results.docs[k]._id == array[j]) {
+                                        results.docs[k].pageFollowersStatus = true
+                                    }
+                                }
+                            }
+                        }
+                                
                         res.send({
                             result: results,
                             responseCode: 200,
                             responseMessage: "Result show successfully"
                         })
+                                
+                            }
+                        })
+//                        res.send({
+//                            result: results,
+//                            responseCode: 200,
+//                            responseMessage: "Result show successfully"
+//                        })
+                    
+                    
+//                var array = [];
+//                var data = [];
+//                if (result.pageFollowers.length != 0) {
+//                    for (var i = 0; i < result.pageFollowers.length; i++) {
+//                        array.push(result.pageFollowers[i].pageId)
+//                    }
+//                    //  console.log("followed pages------->>>>>", array);
+//                    for (var j = 0; j < array.length; j++) {
+//                    //    console.log("jjjjj", j);
+//                        for (k = 0; k < pageResult.docs.length; k++) {
+//                     //       console.log("kkkkkk", pageResult.docs[k]._id, k);
+//                            if (pageResult.docs[k]._id == array[j]) {
+//                                pageResult.docs[k].pageFollowersStatus = true
+//                            }
+//                        }
+//                    }
+//                }
                     }
                 })
             }
@@ -2671,13 +2722,20 @@ module.exports = {
 
             }
         ], function(err, result, page, pages, limitData, count) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: 'Data not found.' });
-            } else {
+            }
+            else {
+              //  console.log("winners filter--->>",JSON.stringify(result))
+                
+                 var sortArray = result.sort(function(obj1, obj2) {
+                             return obj2.coupon.updateddAt - obj1.coupon.updateddAt
+                         })
                 res.send({
                     responseCode: 200,
                     responseMessage: 'success.',
-                    docs: result,
+                    docs: sortArray,
                     total: count,
                     limit: limitData,
                     page: page,
@@ -2872,10 +2930,14 @@ module.exports = {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: 'Data not found.' });
             } else {
+                  var sortArray = result.sort(function(obj1, obj2) {
+                             return obj2.coupon.updateddAt - obj1.coupon.updateddAt
+                         })
+                
                 res.send({
                     responseCode: 200,
                     responseMessage: 'success.',
-                    docs: result,
+                    docs: sortArray,
                     total: count,
                     limit: limitData,
                     page: page,
