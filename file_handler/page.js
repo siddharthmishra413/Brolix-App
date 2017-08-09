@@ -501,6 +501,7 @@ module.exports = {
                function(blockedArray, callback) {
                 var userId = req.params.id;
                 createNewPage.find({ userId:{$nin:blockedArray}, "status" : "ACTIVE"}).exec(function(err, pageResult){
+                    console.log("pageArray------->>>>",pageResult)  
                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                     else{
                       //  console.log("pageResult--->>>",JSON.stringify(pageResult));
@@ -529,7 +530,9 @@ module.exports = {
             },
             function(result, blockedArray, pageArray, callback) {
                 var re = new RegExp(req.body.search, 'i');
-                createNewPage.paginate({ _id: { $nin: pageArray }, 'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                 console.log("pageArray------->>>>",pageArray)
+                createNewPage.paginate({ $and:[{_id: { $nin: pageArray }, userId:{$nin:blockedArray},'pageName': { $regex: re }}], status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                     console.log("pageResult------->>>>",pageResult)  
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                         callback(null, result, pageResult);
                     }

@@ -692,9 +692,20 @@ module.exports = {
 
     "adsCommentList": function(req, res) {
         var type = req.params.type;
+          var id = req.params.id;
         var userId = req.params.userId;
       console.log("adsCommentList-0-0-type--->>>>",type)
-        addsComments.paginate({ addId: req.params.id, type:type, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+       console.log("adsCommentList-0-0-id--->>>>",id)
+       console.log("adsCommentList-0-0-userId--->>>>",userId)
+        var condition;
+        if (type=='onGifts') {
+            console.log("in if")
+            condition = { $and: [{ addId: id }, { userId: userId }, {type:type}], status: "ACTIVE" }
+        } else {
+            console.log("in else")
+            condition = { addId: id , type:type, status: "ACTIVE" }
+        }
+        addsComments.paginate(condition, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
          //    console.log("adsCommentList-0-0-result--->>>>",JSON.stringify(result))
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 for (var i = 0; i < result.docs.length; i++) {
@@ -704,7 +715,7 @@ module.exports = {
                     result.docs[i].reply = data;
                 }
                   addsComments.populate(result.docs, { path: 'userId', model: 'brolixUser', select: 'image' }, function(err, finalResult) {
-              //        console.log("adsCommentList---->>>",JSON.stringify(finalResult))
+                     console.log("adsCommentList---->>>",JSON.stringify(finalResult))
                     res.send({
                     result: result,
                     responseCode: 200,
@@ -1530,14 +1541,13 @@ module.exports = {
                                                         } else {
                                                             console.log("Something wrong!!!!")
                                                         }
-                                                    } else {
-                                                        res.send({
+                                                    } 
+                                                   res.send({
                                                             responseCode: 200,
                                                             responseMessage: "Raffle is over"
                                                             //result: result 
 
                                                         })
-                                                    }
                                                 }
                                             })
 
@@ -1598,13 +1608,12 @@ module.exports = {
                                                             } else {
                                                                 console.log("Something wrong!!!!")
                                                             }
-                                                        } else {
-                                                            res.send({
+                                                        }
+                                                        res.send({
                                                                 responseCode: 200,
                                                                 responseMessage: "Raffle is over."
                                                                 //result: result
                                                             })
-                                                        }
                                                     }
                                                 })
                                             } else {
@@ -1628,13 +1637,12 @@ module.exports = {
                                                             } else {
                                                                 console.log("Something wrong!!!!")
                                                             }
-                                                        } else {
+                                                        } 
                                                             res.send({
                                                                 responseCode: 200,
                                                                 responseMessage: "Raffle is over winner decided."
                                                                 //result: result
                                                             })
-                                                        }
                                                     }
                                                 })
                                             }

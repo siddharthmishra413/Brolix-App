@@ -40,7 +40,7 @@ app.post('/viewAd', adsHandler.viewAd);
 app.post('/adFollowUnfollow', adsHandler.adFollowUnfollow);
 app.get('/couponWinners/:id/:pageNumber', adsHandler.couponWinners);
 app.get('/cashWinners/:id/:pageNumber',  adsHandler.cashWinners);
-app.get('/adsCommentList/:id/:type/:pageNumber', adsHandler.adsCommentList);
+app.get('/adsCommentList/:id/:type/:userId/:pageNumber', adsHandler.adsCommentList);
 app.post('/tagOnads', authUser.authUser, adsHandler.tagOnads);
 app.put('/editAd/:id/:userId', adsHandler.editAd);
 app.post('/adsDateFilter/:id/:pageNumber', authUser.authUser, adsHandler.adsDateFilter);
