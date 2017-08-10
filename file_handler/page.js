@@ -493,55 +493,50 @@ module.exports = {
                             }
                         }
                         callback(null, blockedArray)
-                        console.log("flag------->>>>", JSON.stringify(blockedArray))
+                      //  console.log("flag------->>>>", JSON.stringify(blockedArray))
 
                     }
                 })
             },
                function(blockedArray, callback) {
                 var userId = req.params.id;
-                createNewPage.find({ userId:{$nin:blockedArray}, "status" : "ACTIVE"}).exec(function(err, pageResult){
-                    console.log("pageArray------->>>>",pageResult)  
+                createNewPage.find({"status" : "ACTIVE"}).exec(function(err, pageResult){
                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                     else{
-                      //  console.log("pageResult--->>>",JSON.stringify(pageResult));
+                      console.log("pageResult--->>>",JSON.stringify(pageResult));
                         var pageArray = [];                        
                         for(var i =0 ; i<pageResult.length; i++){
-                             for (var j = 0; j < pageResult[i].blockedUser.length; j++) {                                 
-                          console.log("page rsult --->>>",pageResult[i].blockedUser[j].toString() == userId)
+                             for (var j = 0; j < pageResult[i].blockedUser.length; j++) { 
                             if(pageResult[i].blockedUser[j].toString() == userId){
-                              pageArray.push(pageResult[i]._id)  
+                                 console.log("in if loop") 
+                              pageArray.push(pageResult[i]._id) 
+                               console.log("pageArray-----0000-->>>>",pageArray)
                             }
                             else{
                               console.log("flag------->>>>")  
                             }
                         }
                         }
-                        console.log("pageArray------->>>>",pageArray)  
+                        console.log("pageArray----22--->>>>",pageArray)  
                         callback(null,blockedArray, pageArray)
                     }
                 })
             },
             function(blockedArray, pageArray, callback) {
                 User.findOne({ _id: req.params.id }).exec(function(err, result) {
-                    blockedArray.push(req.params.id);
+                   // blockedArray.push(req.params.id);
                     callback(null, result, blockedArray, pageArray);
                 })
             },
             function(result, blockedArray, pageArray, callback) {
                 var re = new RegExp(req.body.search, 'i');
-                 console.log("pageArray------->>>>",pageArray)
-                createNewPage.paginate({ $and:[{_id: { $nin: pageArray }, userId:{$nin:blockedArray},'pageName': { $regex: re }}], status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
-                     console.log("pageResult------->>>>",pageResult)  
+                createNewPage.paginate({ $and:[{_id: { $nin: pageArray }, userId:{$nin:blockedArray}}],'pageName': { $regex: re }, status: 'ACTIVE' }, { pageNumber: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                         callback(null, result, pageResult);
                     }
                 })
             },
             function(result, pageResult, callback) {
-                //                console.log("pageFollowers--->>", result);
-                //                console.log("result.pageFollowers--->>");
-                //                console.log("result.pageFollowers--->>", result.pageFollowers);
                 var array = [];
                 var data = [];
                 if (result.pageFollowers.length != 0) {

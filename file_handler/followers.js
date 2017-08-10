@@ -150,13 +150,24 @@
          followerList.find({ senderId: req.body.senderId }).sort({ updatedAt: -1 }).exec(function(err, result) {
              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                  var arr = [];
-                 result.forEach(function(result) {
-                     arr.push(result.receiverId)
-                 })
+                 var status_obj = {};
+//                 result.forEach(function(result) {
+//                     arr.push(result.receiverId)
+//                 })
+                  result.forEach(function(result) {
+                             arr.unshift(result.receiverId);
+                             //  arr.push(result.senderId)
+                             status_obj[result.receiverId] = result.followerStatus;
+                         })
+                 
                  User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
-                     for (var i = 0; i < newResult.length; i++) {
-                         newResult[i].followerStatus = result[i].followerStatus;
-                     }
+//                     for (var i = 0; i < newResult.length; i++) {
+//                         newResult[i].followerStatus = result[i].followerStatus;
+//                     }
+                      for (var i = 0; i < newResult.length; i++) {
+                             var receiverId_Id = newResult[i]._id;
+                             newResult[i].followerStatus = status_obj[receiverId_Id];;
+                         }
                      res.send({
                          result: newResult,
                          responseCode: 200,

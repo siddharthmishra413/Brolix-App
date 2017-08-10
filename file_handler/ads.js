@@ -348,7 +348,6 @@ module.exports = {
     },
 
     "testingPriority": function(req, res) {
-
         var userId = req.params.id;
         console.log("priority userId req --->>", userId)
         waterfall([

@@ -19,8 +19,10 @@ var yeast = require('yeast');
 var followerList = require("./model/followersList");
 var paypalPayment = require("./model/payment");
 var Brolixanddollors = require("./model/brolixAndDollors");
+var addsComments = require("./model/addsComments");
 var mongoose = require('mongoose');
 var Twocheckout = require('2checkout-node');
+var async = require('async');
 
 cloudinary.config({
     cloud_name: 'mobiloitte-in',
@@ -2098,28 +2100,36 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             }
         })
     },
-
-    "userCouponGifts": function(req, res) { // userId in req $or: SEND BY FOLLOWER SENDBYADMIN
-        //   console.log("userCouponGifts request--->>",req.body)
-        var userId = req.body.userId;
-
-        User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
-             //   console.log("result--->>>",JSON.stringify(result))
-                var obj = result[0].coupon;
-                var data = obj.filter(obj => obj.status == "ACTIVE");
-            //     console.log("data--->>>",data)
-                var sortArray = data.sort(function(obj1, obj2) {
-                    return obj2.updateddAt - obj1.updateddAt
-                })
-                res.send({
-                    result: sortArray,
-                    responseCode: 200,
-                    responseMessage: "Coupon gifts show successfully."
-                })
-            }
-        })
-    },
+    
+     "userCouponGifts": function(req, res) { // userId in req $or: SEND BY FOLLOWER SENDBYADMIN
+         var userId = req.body.userId;
+         User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
+             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }) } else {
+                 var obj = result[0].coupon;
+                 var data = obj.filter(obj => obj.status == "ACTIVE");
+                 var sortArray = data.sort(function(obj1, obj2) {
+                     return obj2.updateddAt - obj1.updateddAt
+                 })
+                 var type = 'onGifts';
+                 var new_Data = [];
+                 async.forEachOfLimit(sortArray, 1, function(value, key, callback) {
+                     var id = value.adId._id;
+                     addsComments.find({ $and: [{ addId: id }, { userId: userId }, { type: type }], status: "ACTIVE" }, function(err, commentResult) {
+                         length = commentResult.length;
+                         value.adId.commentCountOnGifts = length;
+                         new_Data.push(value)
+                         callback();
+                     })
+                 }, function(err) {
+                     res.send({
+                         result: sortArray,
+                         responseCode: 200,
+                         responseMessage: "Coupon gifts show successfully."
+                     })
+                 })
+             }
+         })
+     },
 
     "countrys": function(req, res) {
         var countrys = country.all();
