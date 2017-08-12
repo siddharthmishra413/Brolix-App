@@ -3,7 +3,7 @@ var app = express();
 var followerHandler = require('../file_handler/followers.js');
 var authUser = require('../middlewares/authUser');
 
-app.post('/followUnfollow',  followerHandler.followUnfollow);
+app.post('/followUnfollow', authUser.authUser, followerHandler.followUnfollow);
 app.post('/followerRequestSend', authUser.authUser, followerHandler.followerRequestSend);
 app.post('/followerRequestReceive',  followerHandler.followerRequestReceive);
 app.post('/acceptFollowerRequest', authUser.authUser, followerHandler.acceptFollowerRequest);

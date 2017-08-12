@@ -1,8 +1,21 @@
 var createEvents = require("./model/createEvents");
 
+//<--------------------------------------------I18n------------------------------------------------->
+var configs = {
+    "lang": "ar",
+    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
+}
+i18n_module = require('i18n-nodejs');
+//<------------------------------------------------------------------------------------------------>
+
+
+i18n = new i18n_module(configs.lang, configs.langFile);
+console.log("===========================================", i18n.__('Welcome'));
+
 module.exports = {
 
     "createEvent": function(req, res) {
+            i18n = new i18n_module(req.body.lang, configs.langFile);
         if (!req.body.pageId) {
             res.send({
                 responseCode: 400,
@@ -21,7 +34,7 @@ module.exports = {
                     res.send({
                         result: result,
                         responseCode: 200,
-                        responseMessage: "Event created successfully."
+                        responseMessage: i18n.__("Event created successfully")
                     });
                 }
             })
@@ -30,6 +43,7 @@ module.exports = {
 
     //API for create Page
     "showAllEvents": function(req, res) {
+            i18n = new i18n_module(req.params.lang, configs.langFile);
         createEvents.find({
             pageId: req.params.id,
             status: "ACTIVE"
@@ -43,7 +57,7 @@ module.exports = {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "All event shown successfully."
+                    responseMessage: i18n.__("All event shown successfully")
                 })
             }
         })
@@ -52,6 +66,7 @@ module.exports = {
 
     //API for Edit Event
     "editEvent": function(req, res) {
+            i18n = new i18n_module(req.params.lang, configs.langFile);
         createEvents.findByIdAndUpdate(req.params.id, req.body).exec(function(err, results) {
             if (err) {
                 res.send({
@@ -62,7 +77,7 @@ module.exports = {
                 res.send({
                     result: results,
                     responseCode: 200,
-                    responseMessage: "Event saved successfully."
+                    responseMessage: i18n.__("Event saved successfully")
                 })
             }
         })
@@ -70,6 +85,7 @@ module.exports = {
 
     //API for Edit Event
     "deleteEvent": function(req, res) {
+            i18n = new i18n_module(req.params.lang, configs.langFile);
         createEvents.findByIdAndUpdate({
             _id: req.body.eventId
         }, {
@@ -87,7 +103,7 @@ module.exports = {
             } else {
                 res.send({
                     responseCode: 200,
-                    responseMessage: "Event deleted successfully."
+                    responseMessage: i18n.__("Event deleted successfully")
                 })
             }
         })
@@ -95,6 +111,7 @@ module.exports = {
 
     // Show all events details
     "showEventDetails": function(req, res) {
+            i18n = new i18n_module(req.params.lang, configs.langFile);
         createEvents.findOne({
             _id: req.params.id
         }).exec(function(err, result) {
@@ -107,13 +124,14 @@ module.exports = {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Event details shown successfully."
+                    responseMessage: i18n.__("Event details shown successfully")
                 })
             }
         })
     },
 
     "upCommingEvents": function(req, res) {
+            i18n = new i18n_module(req.body.lang, configs.langFile);
         var startTime = new Date().toUTCString();
         var h = new Date(new Date(startTime).setHours(00)).toUTCString();
         var m = new Date(new Date(h).setMinutes(00)).toUTCString();
@@ -149,7 +167,7 @@ module.exports = {
                         res.send({
                             result: result1,
                             responseCode: 200,
-                            responseMessage: "Event details shown successfully."
+                            responseMessage: i18n.__("Event details shown successfully")
                         })
                     }
                 })

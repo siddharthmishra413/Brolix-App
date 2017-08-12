@@ -18,6 +18,7 @@ var configs = {
     "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
 }
 var i18n_module = require('i18n-nodejs');
+
 var i18n = new i18n_module(configs.lang, configs.langFile);
 console.log("===========================================", i18n.__('Welcome'));
 //var mongoosePaginate = require('mongoose-paginate');
@@ -33,12 +34,13 @@ module.exports = {
 
     //API for create Page
     "createPage": function(req, res) {
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.findOne({ pageName: req.body.pageName, $or: [{ status: 'ACTIVE' }, { status: 'BLOCK' }] }).exec(function(err, result2) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2) {
-                res.send({ responseCode: 401, responseMessage: "Page name should be unique." });
+                res.send({ responseCode: 401, responseMessage: i18n.__("Page name should be unique.") });
             } else {
                 if (!req.body.category || !req.body.subCategory) {
-                    res.send({ responseCode: 403, responseMessage: 'Category and Sub category required' });
+                    res.send({ responseCode: 403, responseMessage: i18n.__('Category and Sub category required' )});
                 } else {
                     var page = new createNewPage(req.body);
                     page.save(function(err, result) {
@@ -48,7 +50,7 @@ module.exports = {
                                     res.send({
                                         result: result,
                                         responseCode: 200,
-                                        responseMessage: "Page create successfully."
+                                        responseMessage: i18n.__("Page create successfully.")
                                     });
                                 }
                             })
@@ -60,8 +62,8 @@ module.exports = {
     },
     //API for Show All Pages
     "showAllPages": function(req, res) {
-        console.log('======>>>>>>>>>>>>>>>>>>>>>>>>>>2222222222222222', app.get('lang'));
-        var i18n = new i18n_module(configs.lang, configs.langFile);
+       // console.log('======>>>>>>>>>>>>>>>>>>>>>>>>>>2222222222222222', app.get('lang'));
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             res.send({
@@ -74,6 +76,7 @@ module.exports = {
 
     //API for Show All Pages
     "showAllOtherUserPages": function(req, res) {
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
                function(callback) {
                 var userId = req.params.id;
@@ -156,7 +159,7 @@ module.exports = {
                 res.send({
                     result: pageResult,
                     responseCode: 200,
-                    responseMessage: "All pages show successfully."
+                    responseMessage: i18n.__("All pages show successfully.")
                 })
                 callback(null, "done");
             },
@@ -169,6 +172,7 @@ module.exports = {
     //API for Show Page Details
     "showPageDetails": function(req, res) {
         var date = new Date().toUTCString()
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.findOne({ _id: req.body.pageId, status: "ACTIVE" }).populate({ path: 'pageFollowersUser.userId', select: ('firstName lastName image country state city') }).populate({ path: 'adAdmin.userId', select: ('firstName lastName image country state city') }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
                 createEvents.find({ pageId: req.body.pageId, status: "ACTIVE", createdAt: { $gte: date } }).exec(function(err, result1) {
@@ -178,7 +182,7 @@ module.exports = {
                             result: result,
                             eventList: result1,
                             responseCode: 200,
-                            responseMessage: "Pages details show successfully."
+                            responseMessage: i18n.__("Pages details show successfully.")
                         })
                     }
                 })
@@ -188,6 +192,7 @@ module.exports = {
     //API for Business Type
 
     "myPages": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
             function(callback) {
                 var userId = req.params.id;
@@ -228,13 +233,13 @@ module.exports = {
             res.send({
                 result: result2,
                 responseCode: 200,
-                responseMessage: "Pages details show successfully."
+                responseMessage: i18n.__("Pages details show successfully.")
             })
         })
     },
 
     "myPagesSearch": function(req, res) {
-
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
             function(callback) {
                 var userId = req.params.id;
@@ -294,7 +299,7 @@ module.exports = {
             res.send({
                 result: result2,
                 responseCode: 200,
-                responseMessage: "Show pages successfully."
+                responseMessage: i18n.__("Show pages successfully.")
             })
         })
 
@@ -321,6 +326,7 @@ module.exports = {
 
     //API for Favourite Type
     "showPageFavouriteType": function(req, res) {
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         var userId = req.params.id;        
 //           createNewPage.find({ pageType: 'Business', status: "ACTIVE" }).exec(function(err, result) {
 //                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No page found' }); } else {
@@ -375,7 +381,7 @@ module.exports = {
                             res.send({
                                 result: newResult,
                                 responseCode: 200,
-                                responseMessage: "List of all pages shown successfully."
+                                responseMessage: i18n.__("List of all pages shown successfully.")
                             });
                         })
                     }
@@ -388,15 +394,16 @@ module.exports = {
     },
     //API for Edit Page
     "editPage": function(req, res) {
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__('Please enter correct pageId') }); } else {
                 if (result.pageName == req.body.pageName) {
                     createNewPage.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result1) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: 'Please enter correct pageId' }); } else {
                             res.send({
                                 result: result1,
                                 responseCode: 200,
-                                responseMessage: "Pages details updated successfully."
+                                responseMessage: i18n.__("Pages details updated successfully.")
                             })
                         }
                     })
@@ -409,7 +416,7 @@ module.exports = {
                                     res.send({
                                         result: result3,
                                         responseCode: 200,
-                                        responseMessage: "Pages details updated successfully."
+                                        responseMessage: i18n.__("Pages details updated successfully.")
                                     })
                                 }
                             })
@@ -422,6 +429,7 @@ module.exports = {
 
     //API for Delete Page
     "deletePage": function(req, res) {
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.findOne({ _id: req.body.pageId }).exec(function(err, result) {
             if (err) throw err;
             else if (!result) {
@@ -438,7 +446,7 @@ module.exports = {
                                 res.send({
                                     result: result,
                                     responseCode: 200,
-                                    responseMessage: "Pages delete successfully."
+                                    responseMessage: i18n.__("Pages delete successfully.")
                                 })
                             }
                         })
@@ -449,6 +457,7 @@ module.exports = {
     },
     //API for Follow and unfollow
     "pageFollowUnfollow": function(req, res) {
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.follow == "follow") {
             User.findOneAndUpdate({ _id: req.body.userId }, { $push: { "pageFollowers": { pageId: req.body.pageId, pageName: req.body.pageName } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -456,7 +465,7 @@ module.exports = {
                     res.send({
                         result: results,
                         responseCode: 200,
-                        responseMessage: "Followed"
+                        responseMessage: i18n.__("Followed")
                     });
                 })
             })
@@ -467,7 +476,7 @@ module.exports = {
                         res.send({
                             result: results,
                             responseCode: 200,
-                            responseMessage: "Followed"
+                            responseMessage: i18n.__("Followed")
                         });
                     })
                 }
@@ -477,6 +486,7 @@ module.exports = {
 
     "allPagesSearch": function(req, res) {
         console.log("request-->>", req.body)
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([         
             function( callback) {
                 var userId = req.params.id;
@@ -559,7 +569,7 @@ module.exports = {
                 res.send({
                     result: pageResult,
                     responseCode: 200,
-                    responseMessage: "Show pages successfully."
+                    responseMessage: i18n.__("Show pages successfully.")
                 })
                 callback(null, "done");
             },
@@ -584,6 +594,7 @@ module.exports = {
 
     //API for Show Search
     "searchForPages": function(req, res) {
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.pageName) {
             var re = new RegExp("^" + req.body.pageName, "i");
             var page = { $regex: re, $options: "i" }
@@ -649,7 +660,7 @@ module.exports = {
                         res.send({
                             result: results,
                             responseCode: 200,
-                            responseMessage: "Result show successfully"
+                            responseMessage: i18n.__("Result show successfully")
                         })
                                 
                             }
@@ -685,6 +696,7 @@ module.exports = {
     },
 
     "pageRating": function(req, res) {
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         var avrg = 0;
         createNewPage.findOne({ _id: req.body.pageId, totalRating: { $elemMatch: { userId: req.body.userId } } }).exec(function(err, result) {
             if (!result) {
@@ -698,7 +710,7 @@ module.exports = {
                         res.send({
                             result: results2,
                             responseCode: 200,
-                            responseMessage: "Result show successfully"
+                            responseMessage: i18n.__("Result show successfully")
                         })
                     })
                 })
@@ -713,7 +725,7 @@ module.exports = {
                         res.send({
                             result: results2,
                             responseCode: 200,
-                            responseMessage: "Result show successfully"
+                            responseMessage: i18n.__("Result show successfully")
                         })
                     })
                 })
@@ -723,12 +735,13 @@ module.exports = {
 
     "showBlockedPage": function(req, res) { // pageId in request
         createNewPage.paginate({ status: "BLOCK" }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
+             i18n = new i18n_module(req.body.lang, configs.langFile);
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
             else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No blocked page found" }) } else {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Blocked page shown successfully."
+                    responseMessage: i18n.__("Blocked page shown successfully.")
                 });
             }
         });
@@ -736,12 +749,13 @@ module.exports = {
 
     "removePage": function(req, res) { // pageId in request
         createNewPage.findByIdAndUpdate({ _id: req.body.pageId }, { $set: { 'adminRequest': 'REQUESTED' } }, { new: true }, function(err, result) {
+             i18n = new i18n_module(req.body.lang, configs.langFile);
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
             else {
                 res.send({
                     // result: result,
                     responseCode: 200,
-                    responseMessage: "Page remove request send successfully."
+                    responseMessage: i18n.__("Page remove request send successfully.")
                 });
             }
         });
@@ -749,6 +763,7 @@ module.exports = {
 
     "showAllRemovedPage": function(req, res) {
         createNewPage.paginate({ status: "REMOVED" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+            i18n = new i18n_module(req.body.lang, configs.langFile);
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
             else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No removed page found" }) } else {
                 var count = 0;
@@ -759,7 +774,7 @@ module.exports = {
                     result: result,
                     count: count,
                     responseCode: 200,
-                    responseMessage: "Removed page shown successfully."
+                    responseMessage: i18n.__("Removed page shown successfully.")
                 });
             }
         });
@@ -767,6 +782,7 @@ module.exports = {
 
 
     "linkSocialMedia": function(req, res) {
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         var userId = req.body.userId;
         var mediaType = req.body.mediaType;
         var link = req.body.link;
@@ -775,13 +791,14 @@ module.exports = {
                 res.send({
                     //  result: result,
                     responseCode: 200,
-                    responseMessage: "Post saved successfully"
+                    responseMessage: i18n.__("Post saved successfully")
                 })
             }
         })
     },
 
     "getSocialMediaLink": function(req, res) {
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.findOne({ _id: req.body.pageId }, 'linkSocialListObject').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No page found." }))
             else {
@@ -797,39 +814,42 @@ module.exports = {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Post saved successfully"
+                    responseMessage: i18n.__("Post saved successfully")
                 })
             }
         })
     },
 
     "deleteSocialMediaLink": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'linkSocialListObject._id': req.body.linkId }, { 'linkSocialListObject.$.status': 'INACTIVE' }, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No link found." }))
             else {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Link deleted successfully."
+                    responseMessage: i18n.__("Link deleted successfully.")
                 })
             }
         })
     },
 
     "editSocialMediaLink": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.findOneAndUpdate({ _id: req.body.pageId, 'linkSocialListObject._id': req.body.linkId }, { 'linkSocialListObject.$.link': req.body.link }, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result)(res.send({ responseCode: 404, responseMessage: "No link found." }))
             else {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Link edited successfully."
+                    responseMessage: i18n.__("Link edited successfully.")
                 })
             }
         })
     },
 
     "particularPageCouponWinners": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var pageId = req.body.pageId;
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
@@ -871,7 +891,7 @@ module.exports = {
                                     page: page,
                                     pages: pages,
                                     responseCode: 200,
-                                    responseMessage: "Successfully shown result."
+                                    responseMessage: i18n.__("Successfully shown result.")
                                 });
                             }
                         })
@@ -882,6 +902,7 @@ module.exports = {
     },
 
     "particularPageCashWinners": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var pageId = req.body.pageId;
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
@@ -907,7 +928,7 @@ module.exports = {
                             page: page,
                             pages: pages,
                             responseCode: 200,
-                            responseMessage: "Successfully shown result."
+                            responseMessage: i18n.__("Successfully shown result.")
                         });
                     }
                 })
@@ -916,6 +937,7 @@ module.exports = {
     },
 
     "PageCouponWinnersFilter": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: 'Please enter atleast start date or end date' }); } else {
             var pageId = req.params.id;
             var pageNumber = Number(req.params.pageNumber)
@@ -982,7 +1004,7 @@ module.exports = {
                                         page: page,
                                         pages: pages,
                                         responseCode: 200,
-                                        responseMessage: "All coupon winner shown successfully."
+                                        responseMessage: i18n.__("All coupon winner shown successfully.")
                                     })
                                 }
                             })
@@ -994,7 +1016,8 @@ module.exports = {
     },
 
     "PageCashWinnersFilter": function(req, res) {
-        if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: 'Please enter atleast start date or end date' }); } else {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
+        if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: i18n.__('Please enter atleast start date or end date') }); } else {
             var pageId = req.params.id;
             var pageNumber = Number(req.params.pageNumber)
             var limitData = pageNumber * 8;
@@ -1059,7 +1082,7 @@ module.exports = {
                                         page: page,
                                         pages: pages,
                                         responseCode: 200,
-                                        responseMessage: "All cash winner shown successfully."
+                                        responseMessage: i18n.__("All cash winner shown successfully.")
                                     })
                                 }
                             })
@@ -1072,6 +1095,7 @@ module.exports = {
     },
 
     "adAdmin": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("request---->>>", JSON.stringify(req.body))
         if (req.body.add == "add") {
             createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
@@ -1086,7 +1110,7 @@ module.exports = {
                                     res.send({
                                         result: result,
                                         responseCode: 200,
-                                        responseMessage: "Admin added successfully"
+                                        responseMessage: i18n.__("Admin added successfully")
                                     });
                                 }
                             })
@@ -1102,7 +1126,7 @@ module.exports = {
                             res.send({
                                 result: result,
                                 responseCode: 200,
-                                responseMessage: "Admin removed successfully"
+                                responseMessage: i18n.__("Admin removed successfully")
                             });
                         }
                     })
@@ -1112,7 +1136,7 @@ module.exports = {
     },
 
     "pageViewClick": function(req, res) {
-
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var startTime = new Date(req.body.date).toUTCString();
         var endTimeHour = req.body.date + 60000;
         var endTime = new Date(endTimeHour).toUTCString();
@@ -1181,14 +1205,14 @@ module.exports = {
                     res.send({
                         result: pageRes,
                         responseCode: 200,
-                        responseMessage: "Successfully update clicks."
+                        responseMessage: i18n.__("Successfully update clicks.")
                     });
                 })
             } else {
                 res.send({
                     result: pageRes,
                     responseCode: 200,
-                    responseMessage: "Successfully update clicks."
+                    responseMessage: i18n.__("Successfully update clicks.")
                 });
             }
         })
@@ -1308,7 +1332,7 @@ module.exports = {
         //  { $match: {date: {"$gte":  new Date(startTime), "$lte": new Date(endTime)},pageId:"58aaa1b3fdc4ed1553754d2f"}},
         // // { $group: { _id: null, count: { $sum: "$productView" } } }
         //  ]).exec(function(err,result){
-
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         var queryCondition = { $match: { date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) }, pageId: req.body.pageId } }
 
         console.log("queryCondition" + JSON.stringify(queryCondition))
@@ -1398,6 +1422,7 @@ module.exports = {
     },
 
     "pageStatisticsFilterClick": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var newDate = new Date(req.body.date).getDate();
@@ -1481,7 +1506,7 @@ module.exports = {
                     res.send({
                         result: array,
                         responseCode: 200,
-                        responseMessage: "Success."
+                        responseMessage: i18n.__("Success.")
                     })
                 }
                 if (req.body.dateFilter == 'monthly') {
@@ -1512,13 +1537,13 @@ module.exports = {
                         res.send({
                             result: datas,
                             responseCode: 200,
-                            responseMessage: "Success."
+                            responseMessage: i18n.__("Success.")
                         })
                     } else {
                         res.send({
                             result: results,
                             responseCode: 200,
-                            responseMessage: "Success."
+                            responseMessage: i18n.__("Success.")
                         })
                     }
 
@@ -1552,13 +1577,13 @@ module.exports = {
                         res.send({
                             result: datas,
                             responseCode: 200,
-                            responseMessage: "Success."
+                            responseMessage: i18n.__("Success.")
                         })
                     } else {
                         res.send({
                             result: results,
                             responseCode: 200,
-                            responseMessage: "Success."
+                            responseMessage: i18n.__("Success.")
                         })
                     }
                 }
@@ -1594,13 +1619,13 @@ module.exports = {
                         res.send({
                             result: datas,
                             responseCode: 200,
-                            responseMessage: "Success."
+                            responseMessage: i18n.__("Success.")
                         })
                     } else {
                         res.send({
                             result: results,
                             responseCode: 200,
-                            responseMessage: "Success."
+                            responseMessage: i18n.__("Success.")
                         })
                     }
                 }
@@ -1608,6 +1633,7 @@ module.exports = {
     },
 
     "giftStatistics": function(req, res) {
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         var startTime = new Date(req.body.startDate);
         var endTime = new Date(req.body.endDate);
 
@@ -1800,7 +1826,7 @@ module.exports = {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }) } else {
                 res.send({
                     responseCode: 200,
-                    responseMessage: 'Successfully.',
+                    responseMessage: i18n.__('Successfully.'),
                     result: result
                 });
             }
@@ -1808,6 +1834,7 @@ module.exports = {
     },
 
     "giftStatisticsFilterClick": function(req, res) {
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         var newYear = new Date(req.body.date).getFullYear();
         var newMonth = new Date(req.body.date).getMonth();
         var newDate = new Date(req.body.date).getDate();
@@ -1893,7 +1920,7 @@ module.exports = {
                             }
                             res.send({
                                 responseCode: 200,
-                                responseMessage: 'Successfully.',
+                                responseMessage: i18n.__('Successfully.'),
                                 result: array
                             });
                         }
@@ -1925,13 +1952,13 @@ module.exports = {
                                 res.send({
                                     result: datas,
                                     responseCode: 200,
-                                    responseMessage: "Success."
+                                    responseMessage: i18n.__("Success.")
                                 })
                             } else {
                                 res.send({
                                     result: results,
                                     responseCode: 200,
-                                    responseMessage: "Success."
+                                    responseMessage: i18n.__("Success.")
                                 })
                             }
                         }
@@ -2013,13 +2040,13 @@ module.exports = {
                                     res.send({
                                         result: datas,
                                         responseCode: 200,
-                                        responseMessage: "Success."
+                                        responseMessage: i18n.__("Success.")
                                     })
                                 } else {
                                     res.send({
                                         result: results,
                                         responseCode: 200,
-                                        responseMessage: "Success."
+                                        responseMessage: i18n.__("Success.")
                                     })
                                 }
                             }
@@ -2083,7 +2110,7 @@ module.exports = {
                             }
                             res.send({
                                 responseCode: 200,
-                                responseMessage: 'Successfully.',
+                                responseMessage: i18n.__('Successfully.'),
                                 result: array
                             });
                         }
@@ -2115,13 +2142,13 @@ module.exports = {
                                 res.send({
                                     result: datas,
                                     responseCode: 200,
-                                    responseMessage: "Success."
+                                    responseMessage: i18n.__("Success.")
                                 })
                             } else {
                                 res.send({
                                     result: results,
                                     responseCode: 200,
-                                    responseMessage: "Success."
+                                    responseMessage: i18n.__("Success.")
                                 })
                             }
                         }
@@ -2173,7 +2200,7 @@ module.exports = {
                             }
                             res.send({
                                 responseCode: 200,
-                                responseMessage: 'Successfully.',
+                                responseMessage: i18n.__('Successfully.'),
                                 result: array
                             });
                         }
@@ -2205,13 +2232,13 @@ module.exports = {
                                 res.send({
                                     result: datas,
                                     responseCode: 200,
-                                    responseMessage: "Success."
+                                    responseMessage: i18n.__("Success.")
                                 })
                             } else {
                                 res.send({
                                     result: results,
                                     responseCode: 200,
-                                    responseMessage: "Success."
+                                    responseMessage: i18n.__("Success.")
                                 })
                             }
                         }
@@ -2264,7 +2291,7 @@ module.exports = {
                             }
                             res.send({
                                 responseCode: 200,
-                                responseMessage: 'Successfully.',
+                                responseMessage: i18n.__('Successfully.'),
                                 result: array
                             });
                         }
@@ -2296,13 +2323,13 @@ module.exports = {
                                 res.send({
                                     result: datas,
                                     responseCode: 200,
-                                    responseMessage: "Success."
+                                    responseMessage: i18n.__("Success.")
                                 })
                             } else {
                                 res.send({
                                     result: results,
                                     responseCode: 200,
-                                    responseMessage: "Success."
+                                    responseMessage: i18n.__("Success.")
                                 })
                             }
                         }
@@ -2315,6 +2342,7 @@ module.exports = {
     },
 
     "giftStatisticsFilterClickPurchased": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         Views.aggregate({ $match: { pageId: req.body.pageId } }, {
                 $group: {
                     _id: updateData,
@@ -2355,7 +2383,7 @@ module.exports = {
                     }
                     res.send({
                         responseCode: 200,
-                        responseMessage: 'Successfully.',
+                        responseMessage: i18n.__('Successfully.'),
                         result: array
                     });
                 }
@@ -2366,7 +2394,7 @@ module.exports = {
                     results = data;
                     res.send({
                         responseCode: 200,
-                        responseMessage: 'Successfully.',
+                        responseMessage: i18n.__('Successfully.'),
                         result: results
                     });
                 }
@@ -2377,7 +2405,7 @@ module.exports = {
                     results = data;
                     res.send({
                         responseCode: 200,
-                        responseMessage: 'Successfully.',
+                        responseMessage: i18n.__('Successfully.'),
                         result: results
                     });
                 }
@@ -2386,13 +2414,14 @@ module.exports = {
 
 
     "notificationList": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         notificationList.findOne({
             userId: req.body.userId
         }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     responseCode: 200,
-                    responseMessage: 'Successfully.',
+                    responseMessage: i18n.__('Successfully.'),
                     result: result
                 });
             }
@@ -2401,6 +2430,7 @@ module.exports = {
     },
 
     "pageFilter": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var condition = { $or: [] };
         var obj = req.body;
         Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
@@ -2423,25 +2453,27 @@ module.exports = {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Result shown successfully."
+                    responseMessage: i18n.__("Result shown successfully.")
                 })
             }
         })
     },
 
     "userFavouratePages": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         User.findOne({ _id: req.body.userId }, 'pageFollowers', function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) {
                 res.send({ responseCode: 404, responseMessage: "Data not found." })
             } else {
                 User.populate(result, { path: 'pageFollowers.pageId', model: 'createNewPage' }, function(err, resultt) {
-                    res.send({ result: resultt, responseCode: 200, responseMessage: "Data not found." })
+                    res.send({ result: resultt, responseCode: 200, responseMessage: i18n.__("Data found.") })
                 })
             }
         })
     },
 
     "listOfCategory": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var categoryList = ["Restaurant and Coffee Shop", "Fashion (Men-Women-Kids-Babies)", "Beauty & Health Care", "Fitness and Sports",
             "Traveling Agencies", "Cinemas", "Furniture", "Home", "Mobile and Computer Apps", "ToysforkidsandBabies", "Electronics and Technology",
             "Hotels and Apartments", "Medical", "Education", "Motors", "Hypermarkets", "Events", "Jewelry", "Arts and Design", "Pets", "Insurance",
@@ -2450,20 +2482,22 @@ module.exports = {
         res.send({
             result: categoryList,
             responseCode: 200,
-            responseMessage: "List of all category shown successfully."
+            responseMessage: i18n.__("List of all category shown successfully.")
         })
     },
 
     "subCategoryData": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var matchData = req.body.subCat;
         res.send({
             responseCode: 200,
-            responseMessage: "Subcategory list.",
+            responseMessage: i18n.__("Subcategory list."),
             result: subCategory[matchData]
         })
     },
 
     "winnerFilter": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req body===>" + JSON.stringify(req.body))
         var arrayResults = [];
         var condition = { $and: [] };
@@ -2732,7 +2766,7 @@ module.exports = {
                          })
                 res.send({
                     responseCode: 200,
-                    responseMessage: 'success.',
+                    responseMessage: i18n.__('success.'),
                     docs: sortArray,
                     total: count,
                     limit: limitData,
@@ -2744,6 +2778,7 @@ module.exports = {
     },
 
     "winnerSearchFilter": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req body===>" + JSON.stringify(req.body))
         var arrayResults = [];
         var condition = { $and: [] };
@@ -2764,7 +2799,7 @@ module.exports = {
                             }
                         }
                         callback(null, blockedArray)
-                        console.log("flag------->>>>", JSON.stringify(blockedArray))
+                        console.log("blockedArray------->>>>", JSON.stringify(blockedArray))
 
                     }
                 })
@@ -2811,14 +2846,8 @@ module.exports = {
                     if (query.$and.length == 0) {
                         delete query.$and;
                     }
-
-                    User.aggregate(
-                        [
-                            { $unwind: '$coupon' },
-                            { $match: query, _id: { $nin: blockedArray } }
-
-                        ]
-                    ).exec(function(err, Couponresults) {
+                    // , _id: { $nin: blockedArray }
+              User.aggregate([{ $unwind: '$coupon' },{ $match: query }]).exec(function(err, Couponresults) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                             var count = Couponresults.length;
                             console.log("query====>>" + JSON.stringify(query))
@@ -2827,14 +2856,7 @@ module.exports = {
                             var skips = limitData - 10;
                             var page = String(pageNumber);
                             var pages = Math.ceil(count / 10);
-                            User.aggregate(
-                                [
-                                    { $unwind: '$coupon' },
-                                    { $match: query },
-                                    { $limit: limitData }, { $skip: skips },
-                                    { $sort: { 'coupon.updatedAt': -1 } }
-                                ]
-                            ).exec(function(err, results) {
+               User.aggregate([{ $unwind: '$coupon' }, { $match: query}, { $limit: limitData }, { $skip: skips },{ $sort: { 'coupon.updatedAt': -1 } }] ).exec(function(err, results) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!results) {
                                     callback(null, "null")
                                 } else {
@@ -2892,7 +2914,7 @@ module.exports = {
                     User.aggregate(
                         [
                             { $unwind: '$cashPrize' },
-                            { $match: queryData, _id: { $nin: blockedArray } }
+                            { $match: queryData }
                         ]
                     ).exec(function(err, Cashresults) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -2906,7 +2928,7 @@ module.exports = {
                             User.aggregate(
                                 [
                                     { $unwind: '$cashPrize' },
-                                    { $match: queryData },
+                                    { $match: queryData},
                                     { $limit: limitDataCash }, { $skip: skips },
                                     { $sort: { 'cashPrize.updatedAt': -1 } }
                                 ]
@@ -2934,7 +2956,7 @@ module.exports = {
                 
                 res.send({
                     responseCode: 200,
-                    responseMessage: 'success.',
+                    responseMessage: i18n.__('success.'),
                     docs: sortArray,
                     total: count,
                     limit: limitData,
@@ -2946,6 +2968,7 @@ module.exports = {
     },
 
     "pageFollowersList": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.find({ _id: req.params.id }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' }); } else {
                 var userArray = [];
@@ -2957,7 +2980,7 @@ module.exports = {
                         res.send({
                             result: result1,
                             responseCode: 200,
-                            responseMessage: "successfully shown the result."
+                            responseMessage: i18n.__("successfully shown the result.")
                         })
                     }
                 })
@@ -2966,6 +2989,7 @@ module.exports = {
     },
 
     "CouponInboxWinners": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var pageId = req.params.id;
         var userId = req.body.userId;
         User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
@@ -2986,7 +3010,7 @@ module.exports = {
                         res.send({
                             result: result,
                             responseCode: 200,
-                            responseMessage: "All request show successfully"
+                            responseMessage: i18n.__("All request show successfully")
                         })
                     }
                 })
@@ -2996,6 +3020,7 @@ module.exports = {
     },
 
     "viewCouponCode": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("view coupon code request--->>>", req.body)
         var adId = req.body.adId;
         var userId = req.body.userId;
@@ -3010,13 +3035,14 @@ module.exports = {
                 res.send({
                     result: code,
                     responseCode: 200,
-                    responseMessage: 'Coupon code shown successfully'
+                    responseMessage: i18n.__('Coupon code shown successfully')
                 })
             }
         })
     },
 
     "couponInboxDateFilter": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: "Please enter atleast startDate or endDate" }); } else if (!req.body.pageId) { res.send({ responseCode: 400, responseMessage: "Please enter pageId" }); } else {
             var pageId = req.body.pageId;
             var startDateKey = '';
@@ -3063,7 +3089,7 @@ module.exports = {
                             res.send({
                                 result: result,
                                 responseCode: 200,
-                                responseMessage: "All coupon winner shown successfully."
+                                responseMessage: i18n.__("All coupon winner shown successfully.")
                             })
                         }
                     })
@@ -3075,6 +3101,7 @@ module.exports = {
     },
 
     "blockedPagesSearch": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.find({ status: 'BLOCK' }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
                 var blockPagesArray = [];
@@ -3087,7 +3114,7 @@ module.exports = {
                 createNewPage.paginate({ $and: [{ _id: { $in: blockPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } },
                     function(err, result1) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
-                            res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
+                            res.send({ result: result1, responseCode: 200, responseMessage: i18n.__("Show pages successfully.") });
                         }
                     })
             }
@@ -3095,6 +3122,7 @@ module.exports = {
     },
 
     "searchFavouitePages": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         User.find({ _id: req.params.id }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct user id" }); } else {
                 var FavouitePages = [];
@@ -3106,7 +3134,7 @@ module.exports = {
                 var re = new RegExp(req.body.search, 'i');
                 createNewPage.paginate({ $and: [{ _id: { $in: FavouitePages } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
-                        res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
+                        res.send({ result: result1, responseCode: 200, responseMessage: i18n.__("Show pages successfully.") });
                     }
                 })
             }
@@ -3114,12 +3142,13 @@ module.exports = {
     },
 
     "reviewOnPage": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var adds = new addsComments(req.body);
         adds.save(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        res.send({ result: result, responseCode: 200, responseMessage: "Review save with concerned User details." });
+                        res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Review save with concerned User details.") });
                     }
                 })
             }
@@ -3127,6 +3156,7 @@ module.exports = {
     },
     //API Comment on Ads
     "replyOnReview": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         addsComments.findOneAndUpdate({ pageId: req.body.pageId, _id: req.body.commentId }, {
             $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
         }, { new: true }).exec(function(err, results) {
@@ -3134,13 +3164,14 @@ module.exports = {
                 res.send({
                     result: results,
                     responseCode: 200,
-                    responseMessage: "Review save successfully."
+                    responseMessage: i18n.__("Review save successfully.")
                 });
             }
         })
     },
 
     "reviewCommentList": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         addsComments.paginate({ pageId: req.params.id, "status": "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 for (var i = 0; i < result.docs.length; i++) {
@@ -3155,7 +3186,7 @@ module.exports = {
                     res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Review List."
+                    responseMessage: i18n.__("Review List.")
                 })
                                 })
                 
@@ -3164,6 +3195,7 @@ module.exports = {
     },
 
     "deleteCommentsOnPage": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.type == 'comment') {
             var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId }
             var setCondition = { status: 'INACTIVE' }
@@ -3173,6 +3205,7 @@ module.exports = {
         }
 
         addsComments.findOneAndUpdate(pageQuery, setCondition, { new: true }).exec(function(err, results) {
+              i18n = new i18n_module(req.body.lang, configs.langFile);
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (results == null || results == undefined) {
                 res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
             } else {
@@ -3182,7 +3215,7 @@ module.exports = {
                             res.send({
                                 result: results,
                                 responseCode: 200,
-                                responseMessage: "Comment deleted successfully."
+                                responseMessage: i18n.__("Comment deleted successfully.")
                             });
                         }
                     })
@@ -3190,7 +3223,7 @@ module.exports = {
                     res.send({
                         result: results,
                         responseCode: 200,
-                        responseMessage: "Comment deleted successfully."
+                        responseMessage: i18n.__("Comment deleted successfully.")
                     });
                 }
             }
@@ -3198,6 +3231,7 @@ module.exports = {
     },
 
     "editCommentsonPage": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.type == 'comment') {
             var pageQuery = { pageId: req.body.pageId, _id: req.body.commentId }
             var setCondition = { comment: req.body.comment }
@@ -3207,25 +3241,27 @@ module.exports = {
         }
 
         addsComments.findOneAndUpdate(pageQuery, setCondition, { new: true }).exec(function(err, results) {
+              i18n = new i18n_module(req.body.lang, configs.langFile);
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (results == null || results == undefined) {
                 res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
             } else {
                 res.send({
                     result: results,
                     responseCode: 200,
-                    responseMessage: "Comment edited successfully."
+                    responseMessage: i18n.__("Comment edited successfully.")
                 });
             }
         })
     },
 
     "sendCouponToAdvertiser": function(req, res) {
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("sendCouponToAdvertiser--->>>", req.body)
         var couponId = req.body.couponId;
         var adId = req.body.adId;
         if (!couponId) { res.send({ responseCode: 400, responseMessage: "Please enter the couponId" }); } else if (!adId) { res.send({ responseCode: 400, responseMessage: 'Please enter the adId' }); } else {
             User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: "Please enter a valid coupon to use." }); } else {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); } else {
                     // console.log("sendCouponToAdvertiser----user---->>",user)
                     console.log("sendCoupon----user---->>", user[0]._id)
                     var id = user[0]._id;
@@ -3235,7 +3271,7 @@ module.exports = {
 
                             User.aggregate({ $unwind: "$hiddenGifts" }, { $match: { 'hiddenGifts.adId': adId, _id: new mongoose.Types.ObjectId(id) } }).exec(function(err, user) {
                                 //  User.findOne({ 'hiddenGifts.adId': adId }, function(err, user) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 200, responseMessage: "Coupon successfully sent to advertiser page." }); } else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (user.length==0) { res.send({ responseCode: 200, responseMessage: i18n.__("Coupon successfully sent to advertiser page.") }); } else {
                                     console.log("$hiddenGifts----->>>>", JSON.stringify(user))
                                     var mobileNumber = user[0].mobileNumber;
                                     var code = user[0].hiddenGifts.hiddenCode;
@@ -3258,13 +3294,13 @@ module.exports = {
                                                 }
                                                 res.send({
                                                     responseCode: 200,
-                                                    responseMessage: "The hidden gift code has been sent to your mailbox successfully."
+                                                    responseMessage: i18n.__("The hidden gift code has been sent to your mailbox successfully.")
                                                 })
 
                                             } else {
                                                 res.send({
                                                     responseCode: 200,
-                                                    responseMessage: "Coupon successfully sent to advertiser page."
+                                                    responseMessage: i18n.__("Coupon successfully sent to advertiser page.")
                                                 })
 
                                             }
@@ -3281,7 +3317,7 @@ module.exports = {
 
 
     "createAdPayment": function(req, res) {
-
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } else {
                 console.log("user", user)
@@ -3360,7 +3396,7 @@ module.exports = {
                             } else {
                                 res.send({
                                     responseCode: 404,
-                                    responseMessage: "User can pay only for country UAE and Jordan."
+                                    responseMessage: i18n.__("User can pay only for country UAE and Jordan.")
                                 })
                             }
 
@@ -3459,6 +3495,7 @@ module.exports = {
     },
 
     "createPagePayment": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req body on create page===>>", JSON.stringify(req.body))
 
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
@@ -3535,7 +3572,7 @@ module.exports = {
                         }
                     ], function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                            res.send({ responseCode: 200, responseMessage: "Payment done successfully." });
+                            res.send({ responseCode: 200, responseMessage: i18n.__("Payment done successfully.") });
                         }
                     })
                 } else {
@@ -3563,7 +3600,7 @@ module.exports = {
                             } else {
                                 res.send({
                                     responseCode: 404,
-                                    responseMessage: "User can pay only for country UAE and Jordan."
+                                    responseMessage: i18n.__("User can pay only for country UAE and Jordan.")
                                 })
                             }
 
@@ -3651,7 +3688,8 @@ module.exports = {
     },
 
     "redirectpage": function(req, res) {
-        res.json({ result: "Page created successfully." })
+          i18n = new i18n_module(req.body.lang, configs.langFile);
+        res.json({ result: i18n.__("Page created successfully." )})
     },
 
 
@@ -3834,6 +3872,7 @@ module.exports = {
     //     })
     // },
     "returnPage": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         //myCache.del( "myKey" );
         var value = req.body;
         // if(value == undefined || value == null ||value == ''){
@@ -3925,7 +3964,7 @@ module.exports = {
                 // var values = myCache.del("myKey");
                 // console.log("values",values)
                 //res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
-                res.send({ responseCode: 200, responseMessage: "Payment done successfully." });
+                res.send({ responseCode: 200, responseMessage: i18n.__("Payment done successfully.") });
             }
         })
         //   }
@@ -4037,6 +4076,7 @@ module.exports = {
 
 
     "returnAdsData": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         //myCache.del( "myKey" );
         var value = myCache.get("myKeys");
         if (value == undefined || value == null || value == '') {
@@ -4138,6 +4178,7 @@ module.exports = {
     // },
 
     "paymentFilterApi": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         var startTime = new Date(parseInt(req.body.startTime)).toUTCString();
         var endTime = new Date(parseInt(req.body.endTime)).toUTCString();
 
@@ -4145,7 +4186,7 @@ module.exports = {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: "Data not found." });
             } else {
-                res.send({ responseCode: 200, responseMessage: "Payment history shows successfully.", result: result });
+                res.send({ responseCode: 200, responseMessage: i18n.__("Payment history shows successfully."), result: result });
             }
         })
     }

@@ -2,14 +2,25 @@
  var User = require("./model/user");
  var functions = require("./functionHandler");
  var waterfall = require('async-waterfall');
+
+//<--------------------------------------------I18n------------------------------------------------->
+var configs = {
+    "lang": "ar",
+    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
+}
+i18n_module = require('i18n-nodejs');
+//<------------------------------------------------------------------------------------------------>
+i18n = new i18n_module(configs.lang, configs.langFile);
+
  module.exports = {
 
      //API Report Problem  
      "followUnfollow": function(req, res) {
+            i18n = new i18n_module(req.body.lang, configs.langFile);
          //    console.log("request----->>>>", req.body)
          if (req.body.follow == "follow") {
              User.findOne({ _id: req.body.receiverId }, function(err, result) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.followMe == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot send follow request to this user due to privacy policies" }) } else {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.followMe == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send follow request to this user due to privacy policies") }) } else {
                      followerList.findOne({ senderId: req.body.senderId, receiverId: req.body.receiverId }).exec(function(err, result1) {
                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                              if (!result1) {
@@ -59,7 +70,7 @@
                                                  res.send({
                                                      result: result,
                                                      responseCode: 200,
-                                                     responseMessage: "Followed."
+                                                     responseMessage: i18n.__("Followed.")
                                                  });
                                              })
                                          }
@@ -79,12 +90,12 @@
                                  } else if (result1.followerStatus == "block") {
                                      res.send({
                                          responseCode: 201,
-                                         responseMessage: "You have already block this user."
+                                         responseMessage: i18n.__("You have already block this user.")
                                      });
                                  } else {
                                      res.send({
                                          responseCode: 202,
-                                         responseMessage: "You have already send request."
+                                         responseMessage: i18n.__("You have already send request.")
                                      });
                                  }
                              }
@@ -98,7 +109,7 @@
              console.log("data----->>>>",req.body)
              followerList.findOne({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }).exec(function(err, userResult) {
                   console.log("userResult--0-0-0-0-0-0-->>>", userResult)
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (userResult.followerStatus == "block") { res.send({ responseCode: 201, responseMessage: 'You can not unfollow this user as you have blocked this user' }) } else {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (userResult.followerStatus == "block") { res.send({ responseCode: 201, responseMessage: i18n.__('You can not unfollow this user as you have blocked this user') }) } else {
                      followerList.update({ $or: [{ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }] }, { $set: { followerStatus: "unfollow",  updatedAt: date } }, { multi: true }).exec(function(err, result) {
                          //     console.log("result 8888 ****** ++++++   ------>>>>", result)
                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -113,12 +124,11 @@
                                  if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!receiverResult) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
 
                                      User.findOneAndUpdate({ _id: req.body.senderId }, { $pop: { userFollowers: -req.body.receiverId } }, { new: true }).exec(function(err, senderResult) {
-                                         console.log("dshdajdds")
                                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!senderResult) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                                              res.send({
                                                  result: receiverResult,
                                                  responseCode: 200,
-                                                 responseMessage: "Unfollowed."
+                                                 responseMessage: i18n.__("Unfollowed.")
                                              });
                                          }
                                      })
@@ -139,7 +149,7 @@
                      res.send({
                          result: result,
                          responseCode: 200,
-                         responseMessage: "Request cancel successfully."
+                         responseMessage: i18n.__("Request cancel successfully.")
                      });
                  }
              })
@@ -147,7 +157,9 @@
      },
 
      "followerRequestSend": function(req, res) {
-         followerList.find({ senderId: req.body.senderId }).sort({ updatedAt: -1 }).exec(function(err, result) {
+         console.log("followerRequestSend--->>>",req.body)
+         followerList.find({ senderId: req.body.senderId }).sort({ updatedAt: -1 }).exec(function(err, result) {             
+          i18n = new i18n_module(req.body.lang, configs.langFile);
              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                  var arr = [];
                  var status_obj = {};
@@ -171,7 +183,7 @@
                      res.send({
                          result: newResult,
                          responseCode: 200,
-                         responseMessage: "Show list all followers."
+                         responseMessage: i18n.__("Shown list all followers.")
                      });
                  })
              }
@@ -179,6 +191,7 @@
      },
 
      "followerRequestReceive": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
          //    console.log("followerRequestReceive request--->>>", req.body)
          var viewerId = req.body.viewerId;
          if (req.body.viewerId == req.body.receiverId) {
@@ -201,7 +214,7 @@
                          res.send({
                              result: newResult,
                              responseCode: 200,
-                             responseMessage: "Show list all followers request."
+                             responseMessage: i18n.__("Shown list all followers request.")
                          });
                      })
                  }
@@ -209,10 +222,10 @@
          } else {
              console.log(" in else followerRequestReceive")
              User.findOne({ _id: req.body.receiverId }, function(err, result1) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.ViewFollower == "nobody") { res.send({ responseCode: 409, responseMessage: "You cannot see follower of this user due to privacy policies" }) } else if (result1.privacy.ViewFollower == "onlyFollowers") {
+                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error12' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.ViewFollower == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot see follower of this user due to privacy policies") }) } else if (result1.privacy.ViewFollower == "onlyFollowers") {
                      var flag = result1.userFollowers.indexOf(req.body.viewerId)
                      console.log("flag-->>", flag)
-                     if (flag == -1) { res.send({ responseCode: 400, responseMessage: "You cannot see follower of this user due to privacy policies" }); } else {
+                     if (flag == -1) { res.send({ responseCode: 400, responseMessage: i18n.__("You cannot see follower of this user due to privacy policies") }); } else {
                          followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' } }).exec(function(err, result) {
                              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                  var arr = [];
@@ -230,7 +243,7 @@
                                      res.send({
                                          result: newResult,
                                          responseCode: 200,
-                                         responseMessage: "Show list all followers request."
+                                         responseMessage: i18n.__("Shown list all followers request.")
                                      });
                                  })
                              }
@@ -256,7 +269,7 @@
                                  res.send({
                                      result: newResult,
                                      responseCode: 200,
-                                     responseMessage: "Show list all followers request."
+                                     responseMessage: i18n.__("Shown list all followers request.")
                                  });
                              })
                          }
@@ -271,6 +284,7 @@
 
      //API for Accept Follower Request
      "acceptFollowerRequest": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
           var date = new Date();
          if (req.body.followerStatus == "accept") {
              console.log("in")
@@ -297,7 +311,7 @@
                                                      res.send({
                                                          result: results,
                                                          responseCode: 200,
-                                                         responseMessage: "Accepted successfully."
+                                                         responseMessage: i18n.__("Accepted successfully.")
                                                      });
                                                  }
                                              })
@@ -318,7 +332,7 @@
                                                      res.send({
                                                          result: results,
                                                          responseCode: 200,
-                                                         responseMessage: "Accepted successfully."
+                                                         responseMessage: i18n.__("Accepted successfully.")
                                                      });
                                                  }
                                              })
@@ -342,7 +356,7 @@
                      User.findOne({ _id: req.body.receiverId }).exec(function(err, user) {
                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" }); } else {
                              var flag = user.blockUser.indexOf(req.body.blockUserId);
-                             if (flag != -1) { res.send({ responseCode: 401, responseMessage: "You have already blocked this user" }); } else {
+                             if (flag != -1) { res.send({ responseCode: 401, responseMessage: i18n.__("You have already blocked this user") }); } else {
                                  callabck(null)
                              }
                          }
@@ -391,7 +405,7 @@
                  res.send({
                      result: result,
                      responseCode: 200,
-                     responseMessage: "Successfully blocked this user."
+                     responseMessage: i18n.__("Successfully blocked this user.")
                  });
              })
          } else if (req.body.followerStatus == "reject") {
@@ -403,7 +417,7 @@
                      res.send({
                          result: results,
                          responseCode: 200,
-                         responseMessage: "You have reject this user."
+                         responseMessage: i18n.__("You have reject this user.")
                      });
                  }
              })
@@ -472,13 +486,14 @@
                  res.send({
                      result: result,
                      responseCode: 200,
-                     responseMessage: "Successfully unblock this user."
+                     responseMessage: i18n.__("Successfully unblock this user.")
                  });
              })
          }
      },
 
      "blockUserList": function(req, res) {
+          i18n = new i18n_module(req.body.lang, configs.langFile);
          followerList.find({ userId: req.body.userId, followerStatus: "block" }).sort({ updatedAt: -1 }).exec(function(err, result) {
              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                  var arr = [];
@@ -493,7 +508,7 @@
                      res.send({
                          result: newResult,
                          responseCode: 200,
-                         responseMessage: "Show list all block users."
+                         responseMessage: i18n.__("Show list all block users.")
                      });
                  })
              }
@@ -501,6 +516,7 @@
      },
 
      "blockLeader": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
          waterfall([
              function(callback) {
                   var date = new Date();
@@ -509,7 +525,7 @@
                      if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                          var flag = user.blockUser.indexOf(req.body.blockUserId)
                          console.log(" block follower flag --->>>", flag)
-                         if (flag != -1) { res.send({ responseCode: 400, responseMessage: "You have already block this user." }); } else {
+                         if (flag != -1) { res.send({ responseCode: 400, responseMessage: i18n.__("You have already block this user.") }); } else {
                              callback(null)
                          }
                      }
@@ -553,7 +569,7 @@
              res.send({
                  result: result,
                  responseCode: 200,
-                 responseMessage: "You have blocked this user."
+                 responseMessage: i18n.__("You have blocked this user.")
              });
          })
 

@@ -5,18 +5,29 @@ var functions = require("./functionHandler");
 var mongoose = require('mongoose');
 var waterfall = require('async-waterfall');
 
+//<------------------------------------------------language conversn----------------------->
+var configs = {
+    "lang": "ar",
+    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
+}
+var i18n_module = require('i18n-nodejs');
+
+var i18n = new i18n_module(configs.lang, configs.langFile);
+console.log("===========================================", i18n.__('Welcome'));
+
 module.exports = {
 
     "createProduct": function(req, res) {
+         i18n = new i18n_module(req.body.lang, configs.langFile);
         var product = new pageProductList(req.body);
         product.save(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            res.send({ result: result, responseCode: 200, responseMessage: "Product Created." });
+            res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Product Created") });
         })
     },
 
     "productList": function(req, res) {
-
+        i18n = new i18n_module(req.params.lang, configs.langFile);
         // var pageNumber = Number(req.params.pageNumber)
         // var limitData = pageNumber * 9;
         // var skips = limitData - 9;
@@ -43,7 +54,7 @@ module.exports = {
                             // page: page,
                             // pages: pages,
                             responseCode: 200,
-                            responseMessage: "Product List."
+                            responseMessage: i18n.__("Product List")
                         })
                     }
             //     })
@@ -64,12 +75,13 @@ module.exports = {
     },
 
     "productDetail": function(req, res) {
+           i18n = new i18n_module(req.params.lang, configs.langFile);
         pageProductList.findOne({ _id: req.params.id }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Product Details."
+                    responseMessage: i18n.__("Product Details")
                 })
             }
         })
@@ -100,6 +112,7 @@ module.exports = {
     // },
 
      "productLikeAndUnlike": function(req, res) {
+            i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.flag == "like") {
             pageProductList.findOneAndUpdate({ _id: req.body.productId , 'media._id': req.body.imageId}, { $push: { "media.$.like": req.body.userId} } , { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' , err: err}); } else {
@@ -109,7 +122,7 @@ module.exports = {
                             res.send({
                                 result: result,
                                 responseCode: 200,
-                                responseMessage: "Liked"
+                                responseMessage: i18n.__("Liked")
                             });
                         }
                     })
@@ -125,7 +138,7 @@ module.exports = {
                             res.send({
                                 result: result,
                                 responseCode: 200,
-                                responseMessage: "Unliked"
+                                responseMessage: i18n.__("Unliked")
                             });
                         }
                     })
@@ -135,18 +148,20 @@ module.exports = {
     },
 
     "commentOnProduct": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         var product = new productComments(req.body);
         product.save(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             pageProductList.findOneAndUpdate({ _id: req.body.productId , 'media._id': req.body.imageId}, { $inc: { "media.$.commentCount": +1 } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    res.send({ result: result, responseCode: 200, responseMessage: "Comments save with concerned User details." });
+                    res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Comments save with concerned User details") });
                 }
             })
         })
     },
 
     "productReplyOnComment": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         productComments.findOneAndUpdate({ productId: req.body.productId, 'imageId':req.body.imageId, _id: req.body.commentId }, {
             $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
         }, { new: true }).exec(function(err, results) {
@@ -154,13 +169,14 @@ module.exports = {
                 res.send({
                     result: results,
                     responseCode: 200,
-                    responseMessage: "Comments saved successfully."
+                    responseMessage: i18n.__("Comments saved successfully")
                 });
             }
         })
     },
 
     "deleteComments": function(req, res){
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         if(req.body.type == 'comment'){
             var productQuery = { productId: req.body.productId, imageId: req.body.imageId,_id: req.body.commentId }
             var setCondition = { status : 'INACTIVE'}
@@ -182,7 +198,7 @@ module.exports = {
                             res.send({
                                 result: results,
                                 responseCode: 200,
-                                responseMessage: "Comment deleted successfully."
+                                responseMessage: i18n.__("Comment deleted successfully")
                             });
                         }
                     })
@@ -191,7 +207,7 @@ module.exports = {
                     res.send({
                         result: results,
                         responseCode: 200,
-                        responseMessage: "Comment deleted successfully."
+                        responseMessage: i18n.__("Comment deleted successfully")
                     });
                 }
             }
@@ -199,6 +215,7 @@ module.exports = {
     },
 
     "editComments": function(req, res){
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         if(req.body.type == 'comment'){
             var productQuery = { productId: req.body.productId,imageId: req.body.imageId, _id: req.body.commentId }
             var setCondition = { comment : req.body.comment}
@@ -217,13 +234,14 @@ module.exports = {
                 res.send({
                     result: results,
                     responseCode: 200,
-                    responseMessage: "Comment edited successfully."
+                    responseMessage: i18n.__("Comment edited successfully")
                 });
             }
         })
     },
 
     "tagOnProduct": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
             function(callback) {
                 var senderId = req.body.senderId;
@@ -266,12 +284,13 @@ module.exports = {
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: "Tag save with concerned User details."
+                responseMessage: i18n.__("Tag save with concerned User details")
             })
         })
     },
 
     "productCommentList": function(req, res) {
+           i18n = new i18n_module(req.params.lang, configs.langFile);
         productComments.paginate({ productId: req.params.id, imageId: req.params.imageId , 'status':'ACTIVE'}, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
                 for(var i=0; i<result.docs.length; i++){
@@ -287,7 +306,7 @@ module.exports = {
                     res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Comments List."
+                    responseMessage: i18n.__("Comments List")
                 })
                                 })
               
@@ -296,6 +315,7 @@ module.exports = {
     },
 
     "removeProduct": function(req, res) {
+           i18n = new i18n_module(req.params.lang, configs.langFile);
         pageProductList.update({ _id: req.params.id , 'media._id': req.params.mediaId}, { $pull: { "media" : { _id: req.params.mediaId } } }, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No item found." }); } else {
                 pageProductList.findOne({_id: req.params.id},function(err, result1){
@@ -308,7 +328,7 @@ module.exports = {
                                     res.send({
                                         result: result,
                                         responseCode: 200,
-                                        responseMessage: "Item removed successfully."
+                                        responseMessage: i18n.__("Item removed successfully")
                                     })
                                 }
                             })
@@ -319,7 +339,7 @@ module.exports = {
                             res.send({
                                 result: result,
                                 responseCode: 200,
-                                responseMessage: "Item removed successfully."
+                                responseMessage: i18n.__("Item removed successfully")
                             })
 
                         }
@@ -344,10 +364,11 @@ module.exports = {
     },
 
     "editProduct": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req. body", JSON.stringify(req.body))
         pageProductList.findOneAndUpdate({ _id: req.params.id , 'media._id': req.params.mediaId}, { $set: { 'media.$.description': req.body.description } }, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct item id' }); } else {
-                res.send({ result: result, responseCode: 200, responseMessage: "Item updated successfully." })
+                res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Item updated successfully") })
             }
         })
 

@@ -3,12 +3,12 @@
     "ar": "مرحبا",
     "en": "Welcome"
   },
-   "Login successfully.": {
-    "ar": "تسجيل الدخول بنجاح.",
-    "en": "Login successfully."
+   "Login successfully": {
+    "ar": "تسجيل الدخول بنجاح",
+    "en": "Login successfully"
   },
-  "All pages show successfully.": {
-    "en": "All pages show successfully.",
+  "All pages show successfully": {
+    "en": "All pages show successfully",
     "ar": "بنجاح الصفحات جميع عرض تم"
   },
   "Internal server error": {
@@ -383,9 +383,9 @@
     "en": "You are already register with app",
     "ar": "انت مسجل بالتطبيق مسبقا"
   },
-   "You have been register successfully.": {
-    "en": "You have been register successfully.",
-    "ar": "لقد تم التسجيل بنجاح."
+   "You have been register successfully": {
+    "en": "You have been register successfully",
+    "ar": "لقد تم التسجيل بنجاح"
   },
   "Cash gifts shown successfully": {
     "en": "Cash gifts shown successfully",
@@ -671,8 +671,8 @@
     "en": "Shown list all followers",
     "ar": "تم عرض قائمة بجميع المتابعين"
   },
-  "Shown list all followers request.": {
-    "en": "Shown list all followers request.",
+  "Shown list all followers request": {
+    "en": "Shown list all followers request",
     "ar": "تم عرض قائمة بجميع طلبات المتابعة"
   },
   "Accepted successfully": {

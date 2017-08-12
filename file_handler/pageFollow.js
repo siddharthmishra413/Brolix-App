@@ -2,10 +2,19 @@ var PageFollowers = require("./model/pageFollow");
 var User = require("./model/user");
 var createNewPage = require("./model/createNewPage");
 var Views = require("./model/views");
+var configs = {
+    "lang": "ar",
+    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
+}
+var i18n_module = require('i18n-nodejs');
+
+var i18n = new i18n_module(configs.lang, configs.langFile);
+console.log("===========================================", i18n.__('Welcome'));
 
 module.exports = {
 
     "pageFollowUnfollow": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("pageFollowUnfollow----->>>",req.body)
         if (req.body.follow == "follow") {
             console.log("8989898989---*****+++++++--///////////-->>>>>>>>>>>>>>>", JSON.stringify(req.body))
@@ -22,7 +31,7 @@ module.exports = {
                                         res.send({
                                             result: result,
                                             responseCode: 200,
-                                            responseMessage: "Followed"
+                                            responseMessage: i18n.__("Followed")
                                         });
                                     })
                                 }
@@ -41,7 +50,7 @@ module.exports = {
                                                 res.send({
                                                     result: result2,
                                                     responseCode: 200,
-                                                    responseMessage: "Followed."
+                                                    responseMessage: i18n.__("Followed")
                                                 });
                                             })
                                         }
@@ -51,12 +60,12 @@ module.exports = {
                         } else if (result1.followStatus == "block") {
                             res.send({
                                 responseCode: 201,
-                                responseMessage: "You have already block this page."
+                                responseMessage: i18n.__("You have already block this page")
                             });
                         } else {
                             res.send({
                                 responseCode: 202,
-                                responseMessage: "You are already following this page."
+                                responseMessage: i18n.__("You are already following this page")
                             });
                         }
                     }
@@ -79,7 +88,7 @@ module.exports = {
                                 res.send({
                                     // result: result,
                                     responseCode: 200,
-                                    responseMessage: "Unfollowed."
+                                    responseMessage: i18n.__("Unfollowed")
                                 });
                             })
 
@@ -91,20 +100,26 @@ module.exports = {
     },
 
     "pageFollowRequestSend": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         PageFollowers.find({ userId: req.body.userId }).sort({ updatedAt: -1 }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var arr = [];
+                var status_obj = {};
                 result.forEach(function(result) {
-                    arr.push(result.pageId)
+                     arr.unshift(result.pageId);
+                     status_obj[result.pageId] = result.followStatus;
+                    //arr.push(result.pageId)
                 })
                 createNewPage.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                     for (var i = 0; i < newResult.length; i++) {
-                        newResult[i].followStatus = result[i].followStatus;
+                        var page_id = newResult[i]._id;
+                            newResult[i].followStatus = status_obj[page_id];
+                        // newResult[i].followStatus = result[i].followStatus;
                     }
                     res.send({
                         result: newResult,
                         responseCode: 200,
-                        responseMessage: "Show list all followers."
+                        responseMessage: i18n.__("Show list all followers")
                     });
                 })
             }
@@ -112,8 +127,9 @@ module.exports = {
     },
 
     "pageFollowerList": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         PageFollowers.find({ pageId: req.body.pageId }).sort({ updatedAt: -1 }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No follower found' }); } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__('No follower found') }); } else {
                 var arr = [];
                 var status_obj = {};
                 result.forEach(function(result) {
@@ -131,7 +147,7 @@ module.exports = {
                         res.send({
                             result: newResult,
                             responseCode: 200,
-                            responseMessage: "Show list all followers request."
+                            responseMessage: i18n.__("Show list all followers request")
                         });
                     }
                 })
@@ -141,11 +157,12 @@ module.exports = {
     },
 
     "blockPageFollower": function(req, res) {
+           i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.followStatus == "block") {
             var date = new Date();
             var blockUserId = req.body.userId;
             createNewPage.findOne({ _id: req.body.pageId }).exec(function(err, user) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId." }); } else if (Boolean(user.blockedUser.find(blockedUser => blockedUser == blockUserId))) { res.send({ responseCode: 400, responseMessage: "You have already block this user." }); } else {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId." }); } else if (Boolean(user.blockedUser.find(blockedUser => blockedUser == blockUserId))) { res.send({ responseCode: 400, responseMessage: i18n.__("You have already block this user") }); } else {
                     PageFollowers.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { pageId: req.body.pageId }] }, { $set: { followStatus: req.body.followStatus, blockUserId: req.body.userId, updatedAt: date } }, { new: true }).exec(function(err, results) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
                    //         console.log("followStatus--->>>", results)
@@ -160,7 +177,7 @@ module.exports = {
                                         res.send({
                                             result: results,
                                             responseCode: 200,
-                                            responseMessage: "You have already blocked this user."
+                                            responseMessage: i18n.__("You have already blocked this user")
                                         });
                                     } else {
                                         console.log("<<in elseif-->>")
@@ -180,7 +197,7 @@ module.exports = {
                                                         res.send({
                                                             result: results,
                                                             responseCode: 200,
-                                                            responseMessage: "You have blocked this user."
+                                                            responseMessage: i18n.__("You have blocked this user")
                                                         });
                                                     }
                                                 })
@@ -218,7 +235,7 @@ module.exports = {
                                         res.send({
                                 result: results,
                                 responseCode: 200,
-                                responseMessage: "You have unblock this user."
+                                responseMessage: i18n.__("You have unblock this user")
                             });
                                     })
                                 }
