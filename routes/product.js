@@ -7,14 +7,14 @@ app.post('/deleteComments', productHandler.deleteComments);
 app.post('/editComments', productHandler.editComments);
 
 app.post('/createProduct', authUser.authUser, productHandler.createProduct);
-app.get('/productList/:id', productHandler.productList);
-app.get('/productDetail/:id', authUser.authUser, productHandler.productDetail);
-app.post('/productLikeAndUnlike', productHandler.productLikeAndUnlike);
-app.post('/commentOnProduct', productHandler.commentOnProduct);
-app.post('/productReplyOnComment',  productHandler.productReplyOnComment);
-app.post('/tagOnProduct', productHandler.tagOnProduct);
-app.get('/productCommentList/:id/:imageId/:pageNumber',  productHandler.productCommentList);
-app.get('/removeProduct/:id/:mediaId', productHandler.removeProduct);
-app.put('/editProduct/:id/:mediaId', productHandler.editProduct);
+app.get('/productList/:id/:lang', authUser.authUser, productHandler.productList);
+app.get('/productDetail/:id/:lang', authUser.authUser, productHandler.productDetail);
+app.post('/productLikeAndUnlike', authUser.authUser, productHandler.productLikeAndUnlike);
+app.post('/commentOnProduct', authUser.authUser, productHandler.commentOnProduct);
+app.post('/productReplyOnComment', authUser.authUser, productHandler.productReplyOnComment);
+app.post('/tagOnProduct', authUser.authUser, productHandler.tagOnProduct);
+app.get('/productCommentList/:id/:imageId/:pageNumber/:lang', authUser.authUser, productHandler.productCommentList);
+app.get('/removeProduct/:id/:mediaId/:lang', authUser.authUser, productHandler.removeProduct);
+app.put('/editProduct/:id/:mediaId', authUser.authUser, productHandler.editProduct);
 
 module.exports = app;

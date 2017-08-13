@@ -7,7 +7,7 @@ app.post('/createPagePayment', pageHandler.createPagePayment);
 app.post('/returnPage', pageHandler.returnPage);
 app.post('/deleteSocialMediaLink', pageHandler.deleteSocialMediaLink);
 app.post('/editSocialMediaLink', pageHandler.editSocialMediaLink);
-app.get('/redirectpage/:id/:status', pageHandler.redirectpage);
+app.get('/redirectpage/:id/:status/:lang', pageHandler.redirectpage);
 
 app.post('/createAdPayment', pageHandler.createAdPayment);
 app.post('/returnAdsData', pageHandler.returnAdsData);
@@ -17,11 +17,11 @@ app.post('/deleteCommentsOnPage', pageHandler.deleteCommentsOnPage);
 app.post('/editCommentsonPage', pageHandler.editCommentsonPage);
 
 app.post('/createPage', pageHandler.createPage);
-app.get('/showAllPages/:pageNumber',  pageHandler.showAllPages);
-app.get('/showAllOtherUserPages/:id/:pageNumber',  pageHandler.showAllOtherUserPages);
+app.get('/showAllPages/:pageNumber/:lang',  pageHandler.showAllPages);
+app.get('/showAllOtherUserPages/:id/:pageNumber/:lang',  pageHandler.showAllOtherUserPages);
 app.post('/showPageDetails', pageHandler.showPageDetails);
-app.get('/myPages/:id/:pageNumber', pageHandler.myPages);
-app.get('/showPageFavouriteType/:id/:pageNumber', authUser.authUser, pageHandler.showPageFavouriteType);
+app.get('/myPages/:id/:pageNumber/:lang', pageHandler.myPages);
+app.get('/showPageFavouriteType/:id/:pageNumber/:lang', authUser.authUser, pageHandler.showPageFavouriteType);
 app.put('/editPage/:id',  pageHandler.editPage);
 app.post('/deletePage', authUser.authUser, pageHandler.deletePage);
 app.post('/allPagesSearch/:id/:pageNumber',  pageHandler.allPagesSearch); //Not Update in Docs
@@ -29,9 +29,9 @@ app.post('/pageFollowUnfollow', pageHandler.pageFollowUnfollow); //Not Update in
 app.post('/searchForPages/:id/:pageNumber', pageHandler.searchForPages); //Not Upadte in Docs
 
 app.post('/pageRating', authUser.authUser, pageHandler.pageRating);
-app.get('/showBlockedPage/:pageNumber', authUser.authUser, pageHandler.showBlockedPage);
+app.get('/showBlockedPage/:pageNumber/:lang', authUser.authUser, pageHandler.showBlockedPage);
 app.post('/removePage', authUser.authUser, pageHandler.removePage);
-app.get('/showAllRemovedPage/:pageNumber', authUser.authUser, pageHandler.showAllRemovedPage);
+app.get('/showAllRemovedPage/:pageNumber/:lang', authUser.authUser, pageHandler.showAllRemovedPage);
 app.post('/linkSocialMedia', authUser.authUser, pageHandler.linkSocialMedia);
 app.post('/getSocialMediaLink', pageHandler.getSocialMediaLink);
 app.post('/particularPageCouponWinners/:id/:pageNumber', pageHandler.particularPageCouponWinners);
@@ -44,13 +44,13 @@ app.post('/giftStatistics', pageHandler.giftStatistics);
 app.post('/giftStatisticsFilterClick', pageHandler.giftStatisticsFilterClick);
 app.post('/pageFilter', authUser.authUser, pageHandler.pageFilter);
 app.post('/userFavouratePages', pageHandler.userFavouratePages);
-app.get('/listOfCategory', authUser.authUser, pageHandler.listOfCategory);
+app.get('/listOfCategory/:lang', authUser.authUser, pageHandler.listOfCategory);
 app.post('/subCategoryData', pageHandler.subCategoryData);
 app.post('/winnerFilter/:id/:pageNumber', pageHandler.winnerFilter);
 app.post('/myPagesSearch/:id/:pageNumber', pageHandler.myPagesSearch);
 app.post('/PageCashWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCashWinnersFilter);
 app.post('/PageCouponWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCouponWinnersFilter);
-app.get('/pageFollowersList/:id', authUser.authUser, pageHandler.pageFollowersList);
+app.get('/pageFollowersList/:id/:lang', authUser.authUser, pageHandler.pageFollowersList);
 app.post('/CouponInboxWinners/:id', pageHandler.CouponInboxWinners);
 app.post('/viewCouponCode', authUser.authUser, pageHandler.viewCouponCode);
 app.post('/couponInboxDateFilter/:id', authUser.authUser, pageHandler.couponInboxDateFilter);
@@ -58,7 +58,7 @@ app.post('/blockedPagesSearch/:pageNumber', pageHandler.blockedPagesSearch);
 app.post('/searchFavouitePages/:id/:pageNumber', pageHandler.searchFavouitePages);
 app.post('/reviewOnPage', authUser.authUser, pageHandler.reviewOnPage);
 app.post('/replyOnReview', authUser.authUser, pageHandler.replyOnReview);
-app.get('/reviewCommentList/:id/:pageNumber', authUser.authUser, pageHandler.reviewCommentList);
+app.get('/reviewCommentList/:id/:pageNumber/:lang', authUser.authUser, pageHandler.reviewCommentList);
 app.post('/winnerSearchFilter/:id/:pageNumber', pageHandler.winnerSearchFilter);
 app.post('/sendCouponToAdvertiser', pageHandler.sendCouponToAdvertiser);
 

@@ -70,7 +70,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                                                  res.send({
                                                      result: result,
                                                      responseCode: 200,
-                                                     responseMessage: i18n.__("Followed.")
+                                                     responseMessage: i18n.__("Followed")
                                                  });
                                              })
                                          }
@@ -90,12 +90,12 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                                  } else if (result1.followerStatus == "block") {
                                      res.send({
                                          responseCode: 201,
-                                         responseMessage: i18n.__("You have already block this user.")
+                                         responseMessage: i18n.__("You have already blocked this user")
                                      });
                                  } else {
                                      res.send({
                                          responseCode: 202,
-                                         responseMessage: i18n.__("You have already send request.")
+                                         responseMessage: i18n.__("You have already send request")
                                      });
                                  }
                              }
@@ -128,7 +128,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                                              res.send({
                                                  result: receiverResult,
                                                  responseCode: 200,
-                                                 responseMessage: i18n.__("Unfollowed.")
+                                                 responseMessage: i18n.__("Unfollowed")
                                              });
                                          }
                                      })
@@ -149,7 +149,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                      res.send({
                          result: result,
                          responseCode: 200,
-                         responseMessage: i18n.__("Request cancel successfully.")
+                         responseMessage: i18n.__("Request cancel successfully")
                      });
                  }
              })
@@ -183,7 +183,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                      res.send({
                          result: newResult,
                          responseCode: 200,
-                         responseMessage: i18n.__("Shown list all followers.")
+                         responseMessage: i18n.__("Shown list all followers")
                      });
                  })
              }
@@ -214,7 +214,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                          res.send({
                              result: newResult,
                              responseCode: 200,
-                             responseMessage: i18n.__("Shown list all followers request.")
+                             responseMessage: i18n.__("Shown list all followers request")
                          });
                      })
                  }
@@ -243,7 +243,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                                      res.send({
                                          result: newResult,
                                          responseCode: 200,
-                                         responseMessage: i18n.__("Shown list all followers request.")
+                                         responseMessage: i18n.__("Shown list all followers request")
                                      });
                                  })
                              }
@@ -269,7 +269,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                                  res.send({
                                      result: newResult,
                                      responseCode: 200,
-                                     responseMessage: i18n.__("Shown list all followers request.")
+                                     responseMessage: i18n.__("Shown list all followers request")
                                  });
                              })
                          }
@@ -289,10 +289,10 @@ i18n = new i18n_module(configs.lang, configs.langFile);
          if (req.body.followerStatus == "accept") {
              console.log("in")
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $set: { followerStatus: req.body.followerStatus, userId: req.body.userId, updatedAt: date } }, { new: true }).exec(function(err, results) {
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
 
                      followerList.findOne({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }, function(err, followerResult) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) }
+                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) }
                          if (!followerResult) {
                              var obj = {
                                  receiverId: req.body.senderId,
@@ -302,16 +302,16 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                              }
                              var follow = new followerList(obj);
                              follow.save(function(err, receiverResult) {
-                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
                                      User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }, { new: true }).exec(function(err, result) {
-                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
 
                                              User.findOneAndUpdate({ _id: req.body.senderId }, { $push: { userFollowers: req.body.receiverId } }, { new: true }).exec(function(err, result1) {
-                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                                                      res.send({
                                                          result: results,
                                                          responseCode: 200,
-                                                         responseMessage: i18n.__("Accepted successfully.")
+                                                         responseMessage: i18n.__("Accepted successfully")
                                                      });
                                                  }
                                              })
@@ -322,17 +322,17 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                          } else {
 
                              followerList.findOneAndUpdate({ _id: followerResult._id }, { $set: { followerStatus: "accept", receiverId: req.body.senderId, senderId: req.body.receiverId, updatedAt: date } }, { new: true }).exec(function(err, userResult) {
-                                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                                 if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
 
                                      User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { userFollowers: req.body.senderId } }, { new: true }).exec(function(err, result) {
                                          if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
 
                                              User.findOneAndUpdate({ _id: req.body.senderId }, { $push: { userFollowers: req.body.receiverId } }, { new: true }).exec(function(err, result1) {
-                                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                                                      res.send({
                                                          result: results,
                                                          responseCode: 200,
-                                                         responseMessage: i18n.__("Accepted successfully.")
+                                                         responseMessage: i18n.__("Accepted successfully")
                                                      });
                                                  }
                                              })
@@ -354,7 +354,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                      var blockUserId = req.body.blockUserId;
                      var flag;
                      User.findOne({ _id: req.body.receiverId }).exec(function(err, user) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" }); } else {
+                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct receiverId" }); } else {
                              var flag = user.blockUser.indexOf(req.body.blockUserId);
                              if (flag != -1) { res.send({ responseCode: 401, responseMessage: i18n.__("You have already blocked this user") }); } else {
                                  callabck(null)
@@ -368,7 +368,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                      var flag;
                       var date = new Date();
                      followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $set: { followerStatus: req.body.followerStatus, userId: req.body.userId, blockUserId: req.body.blockUserId, updatedAt: date } }, { new: true }).exec(function(err, results) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
                              callback(null)
                          }
                      })
@@ -378,9 +378,9 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                      followerList.findOne({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }, function(err, senderResult) {
                          //      console.log("*+*+*+*+*+*+*****+*+*+*+*++*+*+*--->>>")
                          //     console.log("senderResult--->>>", senderResult)
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (senderResult) {
+                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (senderResult) {
                              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }, { $set: { followerStatus: "cancel", updatedAt: date } }, { new: true }).exec(function(err, senderResult2) {
-                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
                                      callback(null)
                                  }
                              })
@@ -395,7 +395,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                  function(callback) {
                      console.log("<<in third-->>")
                      User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId } }, { new: true }, function(err, result1) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                              callback(null, result1)
                          }
                      })
@@ -405,7 +405,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                  res.send({
                      result: result,
                      responseCode: 200,
-                     responseMessage: i18n.__("Successfully blocked this user.")
+                     responseMessage: i18n.__("Successfully blocked this user")
                  });
              })
          } else if (req.body.followerStatus == "reject") {
@@ -413,11 +413,11 @@ i18n = new i18n_module(configs.lang, configs.langFile);
               var date = new Date();
              followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $set: { followerStatus: req.body.followerStatus, updatedAt: date } }, { new: true }).exec(function(err, results) {
                  //  console.log("results-->>", results)
-                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
                      res.send({
                          result: results,
                          responseCode: 200,
-                         responseMessage: i18n.__("You have reject this user.")
+                         responseMessage: i18n.__("You have rejected this user")
                      });
                  }
              })
@@ -426,22 +426,22 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                  function(callback) {
                       var date = new Date();
                      User.findOne({ _id: req.body.receiverId }).exec(function(err, receiverResult) {
-                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!receiverResult) { res.send({ responseCode: 404, responseMessage: 'Please enter correct receiverId' }) } else {
+                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (!receiverResult) { res.send({ responseCode: 404, responseMessage: 'Please enter correct receiverId' }) } else {
                              var flag = receiverResult.userFollowers.indexOf(req.body.blockUserId);
                              console.log("flag---->>>>", flag)
                              if (flag != -1) {
                                  followerList.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { blockUserId: req.body.blockUserId }] }, {
                                      $set: { followerStatus: "accept", updatedAt: date  }
                                  }, { new: true }).exec(function(err, followerResult) {
-                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
                                          //          console.log("followerResult---->>>>", followerResult)
                                          User.findOneAndUpdate({ _id: req.body.receiverId }, { $pop: { blockUser: -req.body.blockUserId } }, { new: true }).exec(function(err, result) {
-                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
 
                                                  followerList.findOne({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }, function(err, senderResult) {
                                                      if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (senderResult) {
                                                          followerList.findOneAndUpdate({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }, { $set: { followerStatus: "accept", updatedAt: date  } }, { new: true }).exec(function(err, senderResult2) {
-                                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                                                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
                                                                  //         console.log("senderResult2--->>>", senderResult2)
                                                                  callback(null, result)
 
@@ -465,10 +465,10 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                                  followerList.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { blockUserId: req.body.blockUserId }] }, {
                                      $set: { followerStatus: req.body.followerStatus, updatedAt: date }
                                  }, { new: true }).exec(function(err, results) {
-                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
 
                                          User.findOneAndUpdate({ _id: req.body.receiverId }, { $pop: { blockUser: -req.body.blockUserId } }, { new: true }).exec(function(err, result) {
-                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                                                  callback(null, results)
                                              }
                                          })
@@ -486,7 +486,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                  res.send({
                      result: result,
                      responseCode: 200,
-                     responseMessage: i18n.__("Successfully unblock this user.")
+                     responseMessage: i18n.__("Successfully unblock this user")
                  });
              })
          }
@@ -495,7 +495,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
      "blockUserList": function(req, res) {
           i18n = new i18n_module(req.body.lang, configs.langFile);
          followerList.find({ userId: req.body.userId, followerStatus: "block" }).sort({ updatedAt: -1 }).exec(function(err, result) {
-             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
                  var arr = [];
                  result.forEach(function(result) {
                      arr.push(result.blockUserId)
@@ -508,7 +508,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                      res.send({
                          result: newResult,
                          responseCode: 200,
-                         responseMessage: i18n.__("Show list all block users.")
+                         responseMessage: i18n.__("Shown list all block users")
                      });
                  })
              }
@@ -522,10 +522,10 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                   var date = new Date();
                  var blockUserId = req.body.blockUserId;
                  User.findOne({ _id: req.body.receiverId }).exec(function(err, user) {
-                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
+                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                          var flag = user.blockUser.indexOf(req.body.blockUserId)
                          console.log(" block follower flag --->>>", flag)
-                         if (flag != -1) { res.send({ responseCode: 400, responseMessage: i18n.__("You have already block this user.") }); } else {
+                         if (flag != -1) { res.send({ responseCode: 400, responseMessage: i18n.__("You have already blocked this user.") }); } else {
                              callback(null)
                          }
                      }
@@ -535,7 +535,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                  var blockUserId = req.body.blockUserId;
                   var date = new Date();
                  followerList.findOneAndUpdate({ $and: [{ senderId: req.body.senderId }, { receiverId: req.body.receiverId }] }, { $set: { followerStatus: req.body.followerStatus, userId: req.body.userId, blockUserId: req.body.blockUserId, updatedAt: date } }, { new: true }).exec(function(err, results) {
-                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
                          callabck(null)
                      }
                  })
@@ -546,9 +546,9 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                  followerList.findOne({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }, function(err, senderResult) {
                      console.log("*+*+*+*+*+*+*****+*+*+*+*++*+*+*--->>>")
                          //     console.log("senderResult--->>>", senderResult)
-                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (senderResult) {
+                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else if (senderResult) {
                          followerList.findOneAndUpdate({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }, { $set: { followerStatus: "cancel",  updatedAt: date } }, { new: true }).exec(function(err, senderResult2) {
-                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
+                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
                                  callback(null)
                              }
                          })
@@ -559,7 +559,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
              },
              function(callback) {
                  User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { blockUser: req.body.blockUserId } }, { new: true }, function(err, result1) {
-                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
+                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                          callback(null, result1)
 
                      }
@@ -569,7 +569,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
              res.send({
                  result: result,
                  responseCode: 200,
-                 responseMessage: i18n.__("You have blocked this user.")
+                 responseMessage: i18n.__("Successfully blocked this user")
              });
          })
 

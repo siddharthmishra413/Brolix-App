@@ -164,7 +164,7 @@ module.exports = {
 
 
     "getMp3Files": function(req, res) {
-         i18n = new i18n_module(req.body.lang, configs.langFile);
+         i18n = new i18n_module(req.params.lang, configs.langFile);
         uploadFile.find({}, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Mp3 files show successfully") });
@@ -263,7 +263,7 @@ module.exports = {
 
     // show all ads
     "showAllAdsCouponType": function(req, res) {
-         i18n = new i18n_module(req.body.lang, configs.langFile);
+         i18n = new i18n_module(req.params.lang, configs.langFile);
         waterfall([
             function(callback) {
                 var userId = req.params.id;
@@ -351,9 +351,9 @@ module.exports = {
                                 var updatedResult = result.docs;
                                 createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                                     res.send({
-                                        result: result,
                                         responseCode: 200,
-                                        responseMessage: i18n.__("Data Show successfully")
+                                        responseMessage: i18n.__("Data Shown successfully"),
+                                        result: result
                                     })
                                 })
                             }
@@ -458,7 +458,7 @@ module.exports = {
                                     res.send({
                                         result: result,
                                         responseCode: 200,
-                                        responseMessage: "Data Show successfully"
+                                        responseMessage: "Data Shown successfully"
                                     })
                                 })
                             }
@@ -472,7 +472,7 @@ module.exports = {
 
     // show all ads
     "showAllAdsCashType": function(req, res) {
-         i18n = new i18n_module(req.body.lang, configs.langFile);
+         i18n = new i18n_module(req.params.lang, configs.langFile);
         var userId = req.params.id;
         User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -529,7 +529,7 @@ module.exports = {
                                     res.send({
                                         result: result,
                                         responseCode: 200,
-                                        responseMessage: i18n.__("Data Show successfully")
+                                        responseMessage: i18n.__("Data Shown successfully")
                                     })
                                 })
 
@@ -713,7 +713,7 @@ module.exports = {
     },
 
     "adsCommentList": function(req, res) {
-         i18n = new i18n_module(req.body.lang, configs.langFile);
+         i18n = new i18n_module(req.params.lang, configs.langFile);
         var type = req.params.type;
           var id = req.params.id;
         var userId = req.params.userId;
@@ -888,7 +888,7 @@ module.exports = {
     },
 
     "winners": function(req, res) {
-          i18n = new i18n_module(req.body.lang, configs.langFile);
+          i18n = new i18n_module(req.params.lang, configs.langFile);
         createNewAds.find({ status: "EXPIRED" }).exec(function(err, result) {
             var array = [];
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -931,7 +931,7 @@ module.exports = {
     },
 
     "listOfAllAds": function(req, res) {
-          i18n = new i18n_module(req.body.lang, configs.langFile);
+          i18n = new i18n_module(req.params.lang, configs.langFile);
         if (req.params.type == 'all') {
             waterfall([
                 function(callback) {
@@ -1833,7 +1833,7 @@ module.exports = {
     },
 
     "couponWinners": function(req, res) {
-        i18n = new i18n_module(req.body.lang, configs.langFile);
+        i18n = new i18n_module(req.params.lang, configs.langFile);
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
         var skips = limitData - 8;
@@ -1879,7 +1879,7 @@ module.exports = {
                                                     page: page,
                                                     pages: pages,
                                                     responseCode: 200,
-                                                    responseMessage: i18n.__("All coupon winner shown successfully")
+                                                    responseMessage: i18n.__("Each coupon winner has successfully shown")
                                                 })
                                             }
                                         })
@@ -1965,7 +1965,7 @@ module.exports = {
                                                 page: page,
                                                 pages: pages,
                                                 responseCode: 200,
-                                                responseMessage: i18n.__("All coupon winner shown successfully")
+                                                responseMessage: i18n.__("Each coupon winner has successfully shown")
                                             })
                                         }
                                     })
@@ -1979,7 +1979,7 @@ module.exports = {
     },
 
     "cashWinnersDateFilter": function(req, res) {
-          i18n = new i18n_module(req.body.lang, configs.langFile);
+          i18n = new i18n_module(req.params.lang, configs.langFile);
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: i18n.__('Please enter atleast start date or end date') }); } else {
             var pageNumber = Number(req.params.pageNumber)
             var limitData = pageNumber * 8;
@@ -2386,7 +2386,7 @@ module.exports = {
     },
 
     "storeCouponList": function(req, res) {
-         i18n = new i18n_module(req.body.lang, configs.langFile);
+         i18n = new i18n_module(req.params.lang, configs.langFile);
         waterfall([
             function(callback) {
                 var userId = req.params.id;
@@ -2442,7 +2442,7 @@ module.exports = {
                             res.send({
                                 result: result,
                                 responseCode: 200,
-                                responseMessage: i18n.__("All coupon from store shown successfully")
+                                responseMessage: i18n.__("Each coupon from the store showed successfully")
                             })
                         })
                     }
@@ -2462,7 +2462,7 @@ module.exports = {
                     res.send({
                         result: result,
                         responseCode: 200,
-                        responseMessage: i18n.__("Result show successfully")
+                        responseMessage: i18n.__("Result shown successfully")
                     })
                 })
             }

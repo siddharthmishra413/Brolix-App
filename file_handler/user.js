@@ -422,7 +422,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
         // });
 
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
-            if (err) { res.send({ responseCode: 500, responseMessage:  i18n.__("Internal server error")}); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage:  i18n.__("Internal server error")}); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found" }); } else {
                 console.log("user", user)
                 waterfall([
                     function(callback) {
@@ -432,7 +432,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                     console.log("error", err)
                                     res.send({
                                         responseCode: 404,
-                                        responseMessage: i18n.__("Insufficent balance on admin account.")
+                                        responseMessage: i18n.__("Insufficent balance on admin account")
                                     })
                                 } else {
                                     console.log("mass pay results=>", results)
@@ -441,13 +441,13 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                 //assert.equal(results.ACK, 'Success')
                             });
                         } else {
-                            res.send({ responseCode: 404, responseMessage: i18n.__("Please enter valid amount.") });
+                            res.send({ responseCode: 404, responseMessage: i18n.__("Please enter valid amount") });
                         }
                     },
                     function(results, callback) {
                         var cashAmount = user.cash - req.body.amount;
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { cash: cashAmount } }, function(err, userRes) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage:i18n.__("Something went wrong.")}); } else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!userRes) { res.send({ responseCode: 404, responseMessage:i18n.__("Something went wrong")}); } else {
                                 //  res.send({ responseCode: 200, responseMessage: "Success.", result:results });
                                 callback(null, userRes, results)
                             }
@@ -466,14 +466,14 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         }
                         var payment = new Payment(details);
                         payment.save(function(err, paymentResult) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: i18n.__("Something went wrong.") }); } else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: i18n.__("Something went wrong") }); } else {
                                 callback(null, paymentResult)
                             }
                         })
                     },
                 ], function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Something went wrong.") }); } else {
-                        res.send({ responseCode: 200, responseMessage: i18n.__("Successfully get cash amount.") });
+                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Something went wrong") }); } else {
+                        res.send({ responseCode: 200, responseMessage: i18n.__("Successfully get cash amount") });
                     }
                 })
             }
@@ -703,6 +703,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
     ////////////////////////////////////////////////////////////////////
 
     "paymentClientToken": function(req, res) {
+         i18n = new i18n_module(req.params.lang, configs.langFile);
         gateway.clientToken.generate({}, function(err, response) {
             console.log(response)
             responseHandler.apiResponder(req, res, 200, "success", response.clientToken)
@@ -829,7 +830,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     if (!validator.isNumeric((req.body.mobileNumber).toString())) { res.send({ responseCode: 403, responseMessage: i18n.__("Mobile number must be numeric") }); } else if (!validator.isLength((req.body.mobileNumber).toString(), { min: 9, max: 12 })) { res.send({ responseCode: 403, responseMessage:i18n.__("Mobile number length must be 9 to 12.")  }); } else {
                         User.findOne({ mobileNumber: req.body.mobileNumber, countryCode: req.body.countryCode, isVerified: 'TRUE' }, function(err, result1) {
                             console.log("3")
-                            if (err) { res.send({ responseCode: 403, responseMessage:i18n.__('Internal server error')  }); } else if (result1) { res.send({ responseCode: 401, responseMessage:i18n.__("Mobile number must be unique.")  }) } else {
+                            if (err) { res.send({ responseCode: 403, responseMessage:i18n.__('Internal server error')  }); } else if (result1) { res.send({ responseCode: 401, responseMessage:i18n.__("Mobile number must be unique")  }) } else {
                                 if (req.body.haveReferralCode == true) {
                                     Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error')  }); } else {
@@ -871,7 +872,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 token: token,
                 result: result,
                 responseCode: 200,
-                responseMessage: i18n.__("You have been register successfully.") 
+                responseMessage: i18n.__("You have been register successfully") 
             })
         })
     },
@@ -919,14 +920,14 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 console.log("data in req" + req.body.email);
 
                 transporter.sendMail(mailOption, function(error, info) {
-                    if (error) { res.send({ responseCode: 400, responseMessage:i18n.__("Internal server error.")  }) } else {
+                    if (error) { res.send({ responseCode: 400, responseMessage:i18n.__("Internal server error")  }) } else {
                         // console.log("updated password is : " + link);
                         User.findOneAndUpdate({ _id: req.body.id }, {
                             $set: {
                                 otp: otpTy
                             }
                         }, function(err, results) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: i18n.__("Internal server error.") }); } else {
+                            if (err) { res.send({ responseCode: 409, responseMessage: i18n.__("Internal server error") }); } else {
                                 callback(null)
 
                             }
@@ -943,7 +944,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     res.send({
                         result: otpTy,
                         responseCode: 200,
-                        responseMessage: i18n.__("Otp send successfully."),
+                        responseMessage: i18n.__("Otp send successfully"),
                     })
                 })
             }
@@ -962,7 +963,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             if (!results) {
                 res.send({
                     responseCode: 406,
-                    responseMessage: i18n.__('Please enter correct otp.')
+                    responseMessage: i18n.__('Please enter correct otp')
                 });
             } else {
                 User.findByIdAndUpdate(req.body.userId, {
@@ -972,7 +973,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 }, { new: true }).exec(function(err, user) {
                     res.send({
                         responseCode: 200,
-                        responseMessage: i18n.__('Otp verified successfully.'),
+                        responseMessage: i18n.__('Otp verified successfully'),
                         result: user
                     });
                 });
@@ -987,13 +988,13 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
         User.find({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
 
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect" }); } else {
                 var data = result.filter(result => result.isVerified == 'TRUE');
                 if (data.length == 0) {
-                    res.send({ responseCode: 404, responseMessage: "You are not verified user. Please signup again." });
+                    res.send({ responseCode: 404, responseMessage: "You are not verified user. Please signup again" });
                 } else if (data[0].status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); }
                 // if (result.status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); }
-                else if (data[0].isVerified != 'TRUE') { res.send({ responseCode: 401, responseMessage: 'You are not verified user. Please signup again.' }); } else {
+                else if (data[0].isVerified != 'TRUE') { res.send({ responseCode: 401, responseMessage: 'You are not verified user. Please signup again' }); } else {
                     var token_data = {
                         _id: data[0]._id,
                         status: data[0].status
@@ -1011,7 +1012,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                             result: user,
                             token: token,
                             responseCode: 200,
-                            responseMessage: i18n.__("Login successfully.")
+                            responseMessage: i18n.__("Login successfully")
                         });
                     })
                 }
@@ -1086,7 +1087,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage:i18n.__("Profile updated successfully.")
+                    responseMessage:i18n.__("Profile updated successfully")
                 });
             })
         } else if (req.body.country && req.body.city && req.body.mobileNumber && req.body.countryCode) {
@@ -1099,7 +1100,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                 res.send({
                                     result: result1,
                                     responseCode: 200,
-                                    responseMessage: i18n.__("Profile updated successfully.")
+                                    responseMessage: i18n.__("Profile updated successfully")
                                 });
                             }
                         })
@@ -1113,7 +1114,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                         res.send({
                                             result: result3,
                                             responseCode: 200,
-                                            responseMessage: i18n.__("Profile updated successfully.") 
+                                            responseMessage: i18n.__("Profile updated successfully") 
                                         });
                                     }
                                 })
@@ -1129,7 +1130,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     res.send({
                         result: result3,
                         responseCode: 200,
-                        responseMessage:i18n.__("Profile updated successfully.") 
+                        responseMessage:i18n.__("Profile updated successfully") 
                     });
                 }
             })
@@ -1139,7 +1140,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     res.send({
                         result: result4,
                         responseCode: 200,
-                        responseMessage:i18n.__("Profile updated successfully.") 
+                        responseMessage:i18n.__("Profile updated successfully") 
                     });
                 }
             })
@@ -1148,10 +1149,10 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
     },
 
     //API for user Details  userId: { $ne: req.params.id }
-    "allUserDetails": function(req, res) {        
+    "allUserDetails": function(req, res) {
+           i18n = new i18n_module(req.params.lang, configs.langFile);
            var userId = req.params.id;
-                User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
-                       i18n = new i18n_module(req.params.lang, configs.langFile);
+                User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {                    
                     if (err) { res.send({ responseCode: 409, responseMessage:i18n.__('Internal server error') }); } else {
                         var blockedArray = [];
                         blockedArray.push(req.params.id )
@@ -1181,9 +1182,9 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         User.find({ _id: { $in: userArray } }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 409, responseMessage:i18n.__('Internal server error') }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
                                 res.send({
-                                    result: result1,
                                     responseCode: 200,
-                                    responseMessage: i18n.__("Show data successfully.")
+                                    responseMessage: i18n.__("Result shown successfully"),
+                                    result: result1
                                 });
                             }
                         })
@@ -1200,7 +1201,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             i18n = new i18n_module(req.body.lang, configs.langFile);
         User.findOne({ email: req.body.email, isVerified: 'TRUE', status: 'ACTIVE' }).exec(function(err, user) {
             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error')  }); }
-            if (!user) { res.send({ responseCode: 404, responseMessage: i18n.__('Email id does not exists.')  }); } else {
+            if (!user) { res.send({ responseCode: 404, responseMessage: i18n.__('Email id does not exists')  }); } else {
                 var transporter = nodemailer.createTransport({
                     // host: 'localhost',
                     // port: 25
@@ -1234,7 +1235,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); }
                             res.send({
                                 responseCode: 200,
-                                responseMessage: i18n.__('Password successfully sent your mail id.')
+                                responseMessage: i18n.__('Password successfully sent your mail id')
                             })
                         })
                     }
@@ -1252,7 +1253,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (result.password != oldpassword) {
                     res.send({
                         responseCode: 401,
-                        responseCode: i18n.__("Old password doesn't match.") 
+                        responseCode: i18n.__("Old password doesn't match") 
                     });
                 } else {
                     var password = req.body.newpass;
@@ -1260,7 +1261,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
                             res.send({
                                 responseCode: 200,
-                                responseMessage: i18n.__("Password changed.")
+                                responseMessage: i18n.__("Password changed")
                             });
                         }
 
@@ -1297,7 +1298,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     } else {
                         res.send({
                             responseCode: 401,
-                            responseMessage: i18n.__("You are not allowed to view profile.")
+                            responseMessage: i18n.__("You are not allowed to view profile")
                         });
                     }
                 }
@@ -1313,7 +1314,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Show data successfully."
+                    responseMessage: "Show data successfully"
                 });
             }
         })
@@ -1326,7 +1327,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: "Profile data show successfully."
+                    responseMessage: "Profile data show successfully"
                 });
             }
         })
@@ -1362,7 +1363,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             if (err) { res.send({ responseCode: 409, responseMessage: err }); } else {
                 res.send({
                     responseCode: 200,
-                    responseMessage: i18n.__("Show Followers successfully.") ,
+                    responseMessage: i18n.__("Show Followers successfully") ,
                     result: filterData
                 });
             }
@@ -1385,7 +1386,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         res.send({
                             result: results2,
                             responseCode: 200,
-                            responseMessage: i18n.__("result show successfully.")
+                            responseMessage: i18n.__("result show successfully")
                         })
                     })
                 })
@@ -1400,7 +1401,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         res.send({
                             result: results2,
                             responseCode: 200,
-                            responseMessage: i18n.__("result show successfully.")
+                            responseMessage: i18n.__("result show successfully")
                         })
                     })
                 })
@@ -1461,14 +1462,14 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 var receiverId = req.body.receiverId;
                 var userId = req.body.userId;
                 User.findOne({ _id: req.body.receiverId }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 11') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendBrolix == "onlyFollowers") {
+                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 11') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (result1.privacy.sendBrolix == "onlyFollowers") {
                         var flag = result1.userFollowers.indexOf(req.body.userId)
                         if (flag == -1) { res.send({ responseCode: 400, responseMessage: i18n.__("You cannot send brolix to this user due to privacy policies") }); } else {
                             console.log("flag-->>", flag)
                             User.findOne({ _id: req.body.userId }, function(err, result2) {
                                 console.log("dfdfgdf-->>", result2.brolix)
                                 if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error')  }); } else if (!result2) res.send({ responseCode: 404, responseMessage: i18n.__("please enter correct senderId") });
-                                else if (result2.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of brolix in your account." )}); } else {
+                                else if (result2.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of brolix in your account" )}); } else {
                                     var image = result2.image;
                                     result2.brolix -= req.body.brolix;
                                     result2.save();
@@ -1508,7 +1509,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         var userId = req.body.userId;
                         User.findOne({ _id: req.body.userId }, function(err, result4) {
                             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error')  }); } else if (!result4) res.send({ responseCode: 404, responseMessage: i18n.__("please enter correct senderId") });
-                            else if (result4.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of brolix in your account.") }); } else {
+                            else if (result4.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of brolix in your account") }); } else {
                                 var image = result4.image;
                                 result4.brolix -= req.body.brolix;
                                 result4.save();
@@ -1547,7 +1548,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: i18n.__("You have successfully transferred your brolix.")
+                responseMessage: i18n.__("You have successfully transferred your brolix")
             })
         })
 
@@ -1580,7 +1581,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                             var receiverId = req.body.receiverId;
                             User.findOne({ _id: req.body.userId }, function(err, result) {
                                 if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) res.send({ responseCode: 404, responseMessage: i18n.__("please enter correct userId") });
-                                else if (result.cash < req.body.cash) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of cash in your account." )}); } else {
+                                else if (result.cash < req.body.cash) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of cash in your account" )}); } else {
                                     var image = result.image;
                                     result.cash -= req.body.cash;
                                     result.save();
@@ -1620,7 +1621,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         var receiverId = req.body.receiverId;
                         User.findOne({ _id: req.body.userId }, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) res.send({ responseCode: 404, responseMessage: i18n.__("please enter correct userId") });
-                            else if (result.cash < req.body.cash) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of cash in your account.") }); } else {
+                            else if (result.cash < req.body.cash) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of cash in your account") }); } else {
                                 var image = result.image;
                                 result.cash -= req.body.cash;
                                 result.save();
@@ -1664,7 +1665,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: i18n.__("You have successfully transferred your cash.")
+                responseMessage: i18n.__("You have successfully transferred your cash")
             });
         })
     },
@@ -1689,7 +1690,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         res.send({
                             result: newResult,
                             responseCode: 200,
-                            responseMessage: i18n.__("Show list of all followers.")
+                            responseMessage: i18n.__("Show list of all followers")
                         });
                     }
                 })
@@ -1704,7 +1705,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: i18n.__("Privacy updated successfully.")
+                    responseMessage: i18n.__("Privacy updated successfully")
                 });
             }
         })
@@ -1717,7 +1718,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: i18n.__("Privacy details show successfully.")
+                    responseMessage: i18n.__("Privacy details show successfully")
                 })
             }
         })
@@ -1732,7 +1733,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     // result: result,
                     responseCode: 200,
-                    responseMessage: i18n.__("User blocked successfully.")
+                    responseMessage: i18n.__("User blocked successfully")
                 });
             }
 
@@ -1756,7 +1757,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     res.send({
                         result: newResult,
                         responseCode: 200,
-                        responseMessage: i18n.__("List of all blocked users shown successfully.")
+                        responseMessage: i18n.__("List of all blocked users shown successfully")
                     })
                 })
             }
@@ -1772,7 +1773,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     // result:result,
                     responseCode: 200,
-                    responseMessage: i18n.__("Logout successfully.")
+                    responseMessage: i18n.__("Logout successfully")
                 });
             }
         });
@@ -1798,7 +1799,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     result: data,
                     count: count,
                     responseCode: 200,
-                    responseMessage: i18n.__("List of all upgrade Card show successfully.")
+                    responseMessage: i18n.__("List of all upgrade Card show successfully")
                 });
             }
         })
@@ -1822,7 +1823,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     result: data,
                     count: count,
                     responseCode: 200,
-                    responseMessage: i18n.__("All luck Card show successfully.")
+                    responseMessage: i18n.__("All luck Card show successfully")
                 });
             }
         })
@@ -1917,7 +1918,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
                  i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!data) return res.status(404).send({ responseMessage: i18n.__("please enter correct adId" )})
-                else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: i18n.__("You can not use luck card as winner is already decided.") });
+                else if (data.winners.length != 0) return res.status(406).send({ responseCode: 406, responseMessage: i18n.__("You can not use luck card as winner is already decided") });
                 else if (Boolean(data.luckCardListObject.find(luckCardListObject => luckCardListObject.userId == req.body.userId))) {
                     return res.status(403).send({ responseMessage: i18n.__("Already used luckCard") })
                 } else {
@@ -1931,7 +1932,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                     res.send({
                                         // result: user,
                                         responseCode: 200,
-                                        responseMessage: i18n.__("Successfully used the luck card.")
+                                        responseMessage: i18n.__("Successfully used the luck card")
                                     })
                                 }
 
@@ -1983,7 +1984,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: i18n.__("Successfully used the upgrade card.")
+                responseMessage: i18n.__("Successfully used the upgrade card")
             })
         })
     },
@@ -2032,7 +2033,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                                             result: result3,
                                                             token: token,
                                                             responseCode: 200,
-                                                            responseMessage: i18n.__("You have been registered successfully.")
+                                                            responseMessage: i18n.__("You have been registered successfully")
                                                         });
                                                     }
                                                 })
@@ -2062,7 +2063,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                     result: result1,
                                     token: token,
                                     responseCode: 200,
-                                    responseMessage: i18n.__("Signup successfully.")
+                                    responseMessage: i18n.__("Signup successfully")
                                 });
                             }
                         })
@@ -2071,7 +2072,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     if (result.facebookID == undefined) {
                         res.send({
                             responseCode: 201,
-                            responseMessage: i18n.__("You are already register with app."),
+                            responseMessage: i18n.__("You are already register with app"),
                             user: result
                         });
                     } else {
@@ -2089,7 +2090,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                 result: user,
                                 token: token,
                                 responseCode: 200,
-                                responseMessage: i18n.__("Login successfully.")
+                                responseMessage: i18n.__("Login successfully")
                             });
                             //console.log("what is in token-->>>" + token);
                         })
@@ -2126,7 +2127,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                      res.send({
                          result: sortArray,
                          responseCode: 200,
-                         responseMessage: i18n.__("Coupon gifts show successfully.")
+                         responseMessage: i18n.__("Coupon gifts show successfully")
                      })
                  })
 //                res.send({
@@ -2162,7 +2163,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                      res.send({
                          result: sortArray,
                          responseCode: 200,
-                         responseMessage: i18n.__("Coupon gifts show successfully.")
+                         responseMessage: i18n.__("Coupon gifts show successfully")
                      })
                  })
              }
@@ -2227,13 +2228,13 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: results,
                     responseCode: 403,
-                    responseMessage: i18n.__("No record found.")
+                    responseMessage: i18n.__("No record found")
                 });
             } else {
                 res.send({
                     result: results,
                     responseCode: 200,
-                    responseMessage: i18n.__("Record found successfully.")
+                    responseMessage: i18n.__("Record found successfully")
                 });
             }
         });
@@ -2326,7 +2327,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: obj,
                     responseCode: 200,
-                    responseMessage: i18n.__("Record found successfully.")
+                    responseMessage: i18n.__("Record found successfully")
                 });
             }
 
@@ -2363,7 +2364,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: i18n.__("Result shown successfully.")
+                    responseMessage: i18n.__("Result shown successfully")
                 })
             }
         })
@@ -2400,7 +2401,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                                             result: result,
                                                             token: token,
                                                             responseCode: 200,
-                                                            responseMessage: "You have been registered successfully."
+                                                            responseMessage: "You have been registered successfully"
                                                         });
                                                     }
 
@@ -2427,14 +2428,14 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                     result: result,
                                     token: token,
                                     responseCode: 200,
-                                    responseMessage: "Signup successfully."
+                                    responseMessage: "Signup successfully"
                                 });
                             }
                         })
                     }
                 } else {
                     if (result.googleID == undefined) {
-                        res.send({ responseCode: 201, responseMessage: "You are already register with app.", user: result });
+                        res.send({ responseCode: 201, responseMessage: "You are already register with app", user: result });
                     } else {
                         User.findOneAndUpdate({ email: req.body.email }, {
                             $set: {
@@ -2449,7 +2450,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                 result: user,
                                 token: token,
                                 responseCode: 200,
-                                responseMessage: "Login successfully."
+                                responseMessage: "Login successfully"
                             });
                             //console.log("what is in token-->>>" + token);
                         })
@@ -2578,7 +2579,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: i18n.__("You have successfully purchased the coupon.")
+                responseMessage: i18n.__("You have successfully purchased the coupon")
             })
         })
     },
@@ -2630,7 +2631,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 var userId = req.body.userId
                 createNewAds.find({ userId: { $nin: blockedArray } }).exec(function(err, result) {
                      i18n = new i18n_module(req.params.lang, configs.langFile);
-                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error.') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found.") }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error.') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found") }); } else {
                         var array = [];
                         for (var i = 0; i < result.length; i++) {
                             for (var j = 0; j < result[i].favouriteCoupon.length; j++) {
@@ -2656,7 +2657,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                     res.send({
                                         result: result1,
                                         responseCode: 200,
-                                        responseMessage: i18n.__("successfully shown the result.")
+                                        responseMessage: i18n.__("successfully shown the result")
                                     })
                                 })
                             }
@@ -2673,7 +2674,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.type == "favourite") {
             createNewAds.findOne({ _id: adId }).exec(function(err, result) {
                  i18n = new i18n_module(req.body.lang, configs.langFile);
-                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error.') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found.") }); }
+                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found") }); }
                 var favouriteCoupon = result.favouriteCoupon;
 
                 var mySet = new Set(favouriteCoupon);
@@ -2684,7 +2685,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                             res.send({
                                 // result: result1,
                                 responseCode: 200,
-                                responseMessage: i18n.__("Successfully added to favourites.")
+                                responseMessage: i18n.__("Successfully added to favourites")
                             })
                         }
                     })
@@ -2692,17 +2693,17 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             })
         } else {
             createNewAds.findOne({ _id: adId }).exec(function(err, result) {
-                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error.') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found.") }); }
+                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found.") }); }
                 var favouriteCoupon = result.favouriteCoupon;
                 var mySet = new Set(favouriteCoupon);
                 var has = mySet.has(userId)
-                if (!has) { res.send({ responseCode: 302, responseMessage: i18n.__("Already removed from favourites.") }) } else if (has) {
+                if (!has) { res.send({ responseCode: 302, responseMessage: i18n.__("Already removed from favourites") }) } else if (has) {
                     createNewAds.findOneAndUpdate({ _id: adId }, { $pop: { favouriteCoupon: -userId } }, { new: true }, function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error.') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found.") }); } else {
                             res.send({
                                 //   result: result1,
                                 responseCode: 200,
-                                responseMessage: i18n.__("Coupon removed from favourites successfully.")
+                                responseMessage: i18n.__("Coupon removed from favourites successfully")
                             })
                         }
                     })
@@ -2724,7 +2725,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                             res.send({
                                 //result: result1,
                                 responseCode: 200,
-                                responseMessage: i18n.__("Coupon status changed successfully.")
+                                responseMessage: i18n.__("Coupon status changed successfully")
                             })
                         }
                     })
@@ -2744,29 +2745,29 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 var senderCouponId = req.body.senderCouponId;
                 var receiverCouponId = req.body.receiverCouponId;
                 var adId = req.body.receiverAdId;
-                if (!req.body.receiverCouponCode) { res.send({ responseCode: 400, responseMessage: i18n.__("Receiver coupon code is required") }); } else if (!req.body.receiverId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverId is required.") }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponId is required.") }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverCouponId is required.") }) } else if (receiverId == senderId) { res.send({ responseCode: 400, responseMessage: i18n.__("You can not send the exchange request to yourself.") }) } else {
+                if (!req.body.receiverCouponCode) { res.send({ responseCode: 400, responseMessage: i18n.__("Receiver coupon code is required") }); } else if (!req.body.receiverId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverId is required") }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponId is required") }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverCouponId is required") }) } else if (receiverId == senderId) { res.send({ responseCode: 400, responseMessage: i18n.__("You can not send the exchange request to yourself") }) } else {
                     User.findOne({ _id: req.body.receiverId }).exec(function(err, userResult) {
                         //     console.log("***********************-->>>", userResult.privacy.exchangeCoupon)
                          i18n = new i18n_module(req.body.lang, configs.langFile);
-                        if (err) { res.send({ responseCode: 302, responseMessage: i18n.__("Internal server error.") }); } else if (!userResult) { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter correct ReceiverId.") }); } else if (userResult.privacy.exchangeCoupon == "off") { res.send({ responseCode: 400, responseMessage: i18n.__("You cannot send coupon exchange request to this user due to privacy policies.") }); } else {
+                        if (err) { res.send({ responseCode: 302, responseMessage: i18n.__("Internal server error.") }); } else if (!userResult) { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter correct ReceiverId.") }); } else if (userResult.privacy.exchangeCoupon == "off") { res.send({ responseCode: 400, responseMessage: i18n.__("You cannot send coupon exchange request to this user due to privacy policies") }); } else {
                             createNewAds.findOne({ _id: adId }).exec(function(err, result) {
-                                if (err) { res.send({ responseCode: 302, responseMessage: i18n.__("Internal server error.") }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Please enter correct adId.") }); } else if (Boolean(result.couponExchangeReceived.find(couponExchangeReceived => couponExchangeReceived.senderCouponId == senderCouponId && couponExchangeReceived.couponExchangeStatus == "REQUESTED"))) {
+                                if (err) { res.send({ responseCode: 302, responseMessage: i18n.__("Internal server error.") }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Please enter correct adId") }); } else if (Boolean(result.couponExchangeReceived.find(couponExchangeReceived => couponExchangeReceived.senderCouponId == senderCouponId && couponExchangeReceived.couponExchangeStatus == "REQUESTED"))) {
                                     res.send({ responseCode: 302, responseMessage: i18n.__("Already requested for this coupon") });
                                 } else {
                                     User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(senderCouponId) } }, function(err, user1) {
                                         console.log("coupon.couponStatus--->>>", JSON.stringify(user1[0].coupon.couponStatus))
                                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error11.") }) } else if (!user1) { res.send({ responseCode: 404, responseMessage: i18n.__("Please enter correct coupon Id." )}) } else if ((user1[0].coupon.couponStatus) != 'VALID') {
-                                            res.send({ responseCode: 403, responseMessage: i18n.__("Please request for a valid coupon.") })
+                                            res.send({ responseCode: 403, responseMessage: i18n.__("Please request for a valid coupon") })
                                         } else if ((user1[0].coupon.status) != 'ACTIVE') {
-                                            res.send({ responseCode: 403, responseMessage: i18n.__("Please request for a valid coupon.") })
+                                            res.send({ responseCode: 403, responseMessage: i18n.__("Please request for a valid coupon") })
                                         } else {
                                             User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(receiverCouponId) } }, function(err, user) {
                                                 console.log("coupon.exchangeStatus--->>>", JSON.stringify(user[0].coupon.exchangeStatus))
                                                 console.log("coupon.couponStatus--->>>", JSON.stringify(user[0].coupon.couponStatus))
-                                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error11.") }) } else if (!user) { res.send({ responseCode: 404, responseMessage: i18n.__("Please enter correct coupon Id.") }) } else if ((user[0].coupon.couponStatus) != 'VALID') {
-                                                    res.send({ responseCode: 403, responseMessage: i18n.__("Please request for a valid coupon.") })
+                                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error11") }) } else if (!user) { res.send({ responseCode: 404, responseMessage: i18n.__("Please enter correct coupon Id") }) } else if ((user[0].coupon.couponStatus) != 'VALID') {
+                                                    res.send({ responseCode: 403, responseMessage: i18n.__("Please request for a valid coupon") })
                                                 } else if ((user[0].coupon.exchangeStatus) == 'OFF') {
-                                                    res.send({ responseCode: 403, responseMessage: i18n.__("Exchange request not allowed.") })
+                                                    res.send({ responseCode: 403, responseMessage: i18n.__("Exchange request not allowed") })
                                                 } else {
                                                     callback(null)
                                                 }
@@ -2793,7 +2794,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error. 33') }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: i18n.__("you are not allowed to send exchange request") }) } else if (result2.privacy.exchangeCoupon == "followers") {
 
                             var flag = result2.userFollowers.find(userFollowers => userFollowers == senderId)
-                            if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "you are not friend" }); } else {
+                            if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon exchange request to this user due to privacy policies" }); } else {
 
                                 createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId } } }, { new: true }).exec(function(err, result3) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 44') }) } else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
@@ -2852,7 +2853,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: i18n.__("Coupon exchange request send successfully.")
+                responseMessage: i18n.__("Coupon exchange request send successfully")
             });
         })
     },
@@ -2971,7 +2972,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
         var re = new RegExp(req.body.firstName, 'i');
         User.find({ status: 'ACTIVE' }).or([{ 'firstName': { $regex: re } }]).exec(function(err, result) {
              i18n = new i18n_module(req.body.lang, configs.langFile);
-            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found") }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -2994,7 +2995,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                  i18n = new i18n_module(req.body.lang, configs.langFile);
                 User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(req.body.senderCouponId), _id: new mongoose.Types.ObjectId(req.body.senderId) } }, function(err, user) {
                     console.log("user----->>>",user[0].coupon.couponStatus)
-                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error11.") }) }
+                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error11") }) }
                     else if (!user) { res.send({ responseCode: 404, responseMessage: i18n.__("Please enter correct coupon Id.") }) }
                     else if ((user[0].coupon.couponStatus) != 'VALID') {
                         res.send({ responseCode: 403, responseMessage: i18n.__("Please enter a valid coupon.") });
@@ -3325,7 +3326,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No ad found." }); } else {
                         res.send({
                             responseCode: 400,
-                            responseMessage: i18n.__("User declined your request.")
+                            responseMessage: i18n.__("User declined your request")
                         })
                     }
                 })
@@ -3359,7 +3360,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         res.send({
                             result: result,
                             responseCode: 200,
-                            responseMessage: i18n.__("All user shows successfully.")
+                            responseMessage: i18n.__("All user shows successfully")
                         });
                     }
                 })
@@ -3398,7 +3399,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                                             } else {
                                                 res.send({
                                                     responseCode: 200,
-                                                    responseMessage: i18n.__("Coupon used successfully.")
+                                                    responseMessage: i18n.__("Coupon used successfully")
                                                 })
 
                                             }
@@ -3430,7 +3431,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     res.send({
                         result: result1,
                         responseCode: 200,
-                        responseMessage: i18n.__("User show successfully.")
+                        responseMessage: i18n.__("User show successfully")
                     })
                 }
             })
@@ -3448,7 +3449,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     res.send({
                         result: result2,
                         responseCode: 200,
-                        responseMessage: i18n.__("User show successfully.")
+                        responseMessage: i18n.__("User show successfully")
                     })
                 }
             })
@@ -3465,7 +3466,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         res.send({
                             // result: result2,
                             responseCode: 200,
-                            responseMessage: i18n.__("Coupon used successfully.")
+                            responseMessage: i18n.__("Coupon used successfully")
                         })
                     }
                 })
@@ -3490,10 +3491,8 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         }
                     }
                 }
-               console.log("seeExchangeSentRequest---blockedArray---->>>>",blockedArray)
                 createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED", 'couponExchangeSent.receiverId': { $nin: blockedArray } } }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ reponseCode: 404, responseMessage: "Please enter correct adId." }); } else {
-                        console.log("seeExchangeSentRequest--->>>", JSON.stringify(result))
 
                         createNewAds.populate(result, {
                             path: 'couponExchangeSent.receiverId',
@@ -3521,7 +3520,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: i18n.__("Data saved successfully.")
+                responseMessage: i18n.__("Data saved successfully")
             });
         })
     },
@@ -3543,7 +3542,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     res.send({
                         result: newResult,
                         responseCode: 200,
-                        responseMessage: i18n.__("Show list all block users.")
+                        responseMessage: i18n.__("Show list all block users")
                     });
                 })
             }
@@ -3561,7 +3560,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: sortArray,
                     responseCode: 200,
-                    responseMessage: i18n.__("All details show successfully.")
+                    responseMessage: i18n.__("All details show successfully")
                 });
             }
         })
@@ -3733,7 +3732,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else {
                 res.send({
                     responseCode: 200,
-                    responseMessage: i18n.__('Successfully send payment history on your mail.')
+                    responseMessage: i18n.__('Successfully send payment history on your mail')
                 })
             }
         })
@@ -3747,7 +3746,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         responseCode: 200,
-                        responseMessage: i18n.__('Successfully updated.')
+                        responseMessage: i18n.__('Successfully updated')
                     })
                 }
             })
@@ -3757,7 +3756,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                     res.send({
                         responseCode: 200,
-                        responseMessage: i18n.__('Successfully updated.')
+                        responseMessage: i18n.__('Successfully updated')
                     })
                 }
             })

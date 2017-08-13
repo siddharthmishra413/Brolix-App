@@ -66,7 +66,7 @@ module.exports = {
 
     //API for Edit Event
     "editEvent": function(req, res) {
-            i18n = new i18n_module(req.params.lang, configs.langFile);
+            i18n = new i18n_module(req.body.lang, configs.langFile);
         createEvents.findByIdAndUpdate(req.params.id, req.body).exec(function(err, results) {
             if (err) {
                 res.send({
@@ -85,7 +85,7 @@ module.exports = {
 
     //API for Edit Event
     "deleteEvent": function(req, res) {
-            i18n = new i18n_module(req.params.lang, configs.langFile);
+            i18n = new i18n_module(req.body.lang, configs.langFile);
         createEvents.findByIdAndUpdate({
             _id: req.body.eventId
         }, {

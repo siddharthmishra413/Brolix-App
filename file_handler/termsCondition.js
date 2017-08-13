@@ -49,7 +49,7 @@ module.exports = {
     },
 
     "editTermsCondition": function(req, res) {
-        i18n = new i18n_module(req.params.lang, configs.langFile);
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         var conditionType = req.params.type;
         TermsCondition.findOneAndUpdate({ type: conditionType }, { $set:  req.body }, { new: true }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__('No terms and contions found') }); } else {
@@ -59,7 +59,7 @@ module.exports = {
     },
 
     "viewAllTerms": function(req, res) {
-        i18n = new i18n_module(req.body.lang, configs.langFile);
+        i18n = new i18n_module(req.params.lang, configs.langFile);
         TermsCondition.find({}).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: i18n.__('No terms and contions found') }); } else {
                 res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Terms and conditions shown successfully") });

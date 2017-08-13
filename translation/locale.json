@@ -43,6 +43,10 @@
     "en": "Show pages successfully!",
     "ar": "تم عرض الصفحات بنجاح"
   },
+  "Each coupon from the store showed successfully": {
+    "en": "Each coupon from the store showed successfully",
+    "ar": "كل قسيمة من المتجر أظهرت بنجاح"
+  },
   "List of all pages shown successfully": {
     "en": "List of all pages shown successfully",
     "ar": "تم عرض قائمة بجميع الصفحات بنجاح"
@@ -74,6 +78,10 @@
   "No blocked page found": {
     "en": "No blocked page found",
     "ar": "لا يوجد صفحات محظورة"
+  },
+  "You cannot send follow request to this user due to privacy policies": {
+    "en": "You cannot send follow request to this user due to privacy policies",
+    "ar": "لا يمكنك إرسال طلب متابعة لهذا المستخدم بسبب سياسات الخصوصية"
   },
   "Blocked page shown successfully": {
     "en": "Blocked page shown successfully",
@@ -263,9 +271,9 @@
     "en": "Profile updated successfully",
     "ar": "تم تحديث الحساب الشخصي بنجاح"
   },
-  "Data shown successfully": {
-    "en": "Data shown successfully",
-    "ar": "تم عرض المعلومات بنجاح"
+  "Result shown successfully": {
+    "en": "Result shown successfully",
+    "ar": "تم عرض النتيجة بنجاح"
   },
   "Password has been successfully sent to your mail id": {
     "en": "Password has been successfully sent to your mail id",
@@ -283,6 +291,10 @@
     "en": "Profile data shown successfully",
     "ar": "تم عرض معلومات الحساب الشخصي بنجاح"
   },
+   "Data Shown successfully": {
+    "en": "Data Shown successfully",
+    "ar": "تظهر البيانات بنجاح"
+  },
   "Insufficient amount of brolix in your account": {
     "en": "Insufficient amount of brolix in your account",
     "ar": "مقدار البرولكس في الحساب الخاص بك غير كافي"
@@ -294,6 +306,10 @@
   "Please enter correct ad Id": {
     "en": "Please enter correct ad Id",
     "ar": "الرجاء ادخال رمز اعلان صحيح"
+  },
+  "Each coupon winner has successfully shown": {
+    "en": "Each coupon winner has successfully shown",
+    "ar": "تم عرض كل فائز قسيمة بنجاح"
   },
   "Successfully used the luck card": {
     "en": "Successfully used the luck card",
@@ -671,6 +687,10 @@
     "en": "Shown list all followers",
     "ar": "تم عرض قائمة بجميع المتابعين"
   },
+   "No follower found": {
+    "en": "No follower found",
+    "ar": "لم يتم العثور على أي متابع"
+  },
   "Shown list all followers request": {
     "en": "Shown list all followers request",
     "ar": "تم عرض قائمة بجميع طلبات المتابعة"
@@ -679,7 +699,7 @@
     "en": "Accepted successfully",
     "ar": "تم القبول بنجاح"
   },
-  "Successfully blocked this user": {
+  "You have already blocked this user": {
     "en": "You have already blocked this user",
     "ar": "لقد قمت بحظر هذا المستخدم من قبل"
   },
@@ -774,5 +794,9 @@
   "Report submitted successfully": {
     "en": "Report submitted successfully",
     "ar": "تم ارسال التقرير بنجاج"
+  },
+  "Request cancel successfully": {
+    "en": "Request cancel successfully",
+    "ar": "تم إلغاء الطلب بنجاح"
   }
 }

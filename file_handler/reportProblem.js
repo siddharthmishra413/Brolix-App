@@ -20,7 +20,7 @@ module.exports = {
          i18n = new i18n_module(req.body.lang, configs.langFile);
         var report = new createNewReport(req.body);
         report.save(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -34,12 +34,12 @@ module.exports = {
          i18n = new i18n_module(req.body.lang, configs.langFile);
         var report = new createNewReport(req.body);
         report.save(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
                 var adId = req.body.adId;
                 console.log("adId--->>", adId)
                 createNewAds.findByIdAndUpdate({ _id: adId }, { $inc: { reportOnAd: 1 } }, { new: true }).exec(function(err, result1) {
                     console.log("result1--->>", result1)
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result1) { ressend({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!result1) { ressend({ responseCode: 404, responseMessage: ("No ad found") }); } else {
                         res.send({
                             result: result,
                             responseCode: 200,
@@ -58,9 +58,9 @@ module.exports = {
 
 
     "showReport": function(req, res) {
-         i18n = new i18n_module(req.body.lang, configs.langFile);
+         i18n = new i18n_module(req.params.lang, configs.langFile);
         createNewReport.find({}).populate('userId').populate('adId').exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
                 res.send({
                     result: result,
                     responseCode: 200,

@@ -60,7 +60,7 @@ module.exports = {
                         } else if (result1.followStatus == "block") {
                             res.send({
                                 responseCode: 201,
-                                responseMessage: i18n.__("You have already block this page")
+                                responseMessage: i18n.__("You have already blocked this page")
                             });
                         } else {
                             res.send({
@@ -119,7 +119,7 @@ module.exports = {
                     res.send({
                         result: newResult,
                         responseCode: 200,
-                        responseMessage: i18n.__("Show list all followers")
+                        responseMessage: i18n.__("Shown list all followers")
                     });
                 })
             }
@@ -147,7 +147,7 @@ module.exports = {
                         res.send({
                             result: newResult,
                             responseCode: 200,
-                            responseMessage: i18n.__("Show list all followers request")
+                            responseMessage: i18n.__("Shown list all followers request")
                         });
                     }
                 })
@@ -162,7 +162,7 @@ module.exports = {
             var date = new Date();
             var blockUserId = req.body.userId;
             createNewPage.findOne({ _id: req.body.pageId }).exec(function(err, user) {
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId." }); } else if (Boolean(user.blockedUser.find(blockedUser => blockedUser == blockUserId))) { res.send({ responseCode: 400, responseMessage: i18n.__("You have already block this user") }); } else {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct pageId." }); } else if (Boolean(user.blockedUser.find(blockedUser => blockedUser == blockUserId))) { res.send({ responseCode: 400, responseMessage: i18n.__("You have already blocked this user") }); } else {
                     PageFollowers.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { pageId: req.body.pageId }] }, { $set: { followStatus: req.body.followStatus, blockUserId: req.body.userId, updatedAt: date } }, { new: true }).exec(function(err, results) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }) } else {
                    //         console.log("followStatus--->>>", results)
@@ -197,7 +197,7 @@ module.exports = {
                                                         res.send({
                                                             result: results,
                                                             responseCode: 200,
-                                                            responseMessage: i18n.__("You have blocked this user")
+                                                            responseMessage: i18n.__("Successfully blocked this user")
                                                         });
                                                     }
                                                 })
@@ -235,7 +235,7 @@ module.exports = {
                                         res.send({
                                 result: results,
                                 responseCode: 200,
-                                responseMessage: i18n.__("You have unblock this user")
+                                responseMessage: i18n.__("Successfully unblock this user")
                             });
                                     })
                                 }
