@@ -21,7 +21,7 @@ app.get('/showAllPages/:pageNumber/:lang',  pageHandler.showAllPages);
 app.get('/showAllOtherUserPages/:id/:pageNumber/:lang',  pageHandler.showAllOtherUserPages);
 app.post('/showPageDetails', pageHandler.showPageDetails);
 app.get('/myPages/:id/:pageNumber/:lang', pageHandler.myPages);
-app.get('/showPageFavouriteType/:id/:pageNumber/:lang', authUser.authUser, pageHandler.showPageFavouriteType);
+app.get('/showPageFavouriteType/:id/:pageNumber/:lang', pageHandler.showPageFavouriteType);
 app.put('/editPage/:id',  pageHandler.editPage);
 app.post('/deletePage', authUser.authUser, pageHandler.deletePage);
 app.post('/allPagesSearch/:id/:pageNumber',  pageHandler.allPagesSearch); //Not Update in Docs

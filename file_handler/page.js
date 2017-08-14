@@ -20,7 +20,7 @@ var configs = {
 var i18n_module = require('i18n-nodejs');
 
 var i18n = new i18n_module(configs.lang, configs.langFile);
-console.log("===========================================", i18n.__('Welcome'));
+//console.log("===========================================", i18n.__('Welcome'));
 //var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
@@ -192,7 +192,7 @@ module.exports = {
     //API for Business Type
 
     "myPages": function(req, res) {
-          i18n = new i18n_module(req.body.lang, configs.langFile);
+          i18n = new i18n_module(req.params.lang, configs.langFile);
         waterfall([
             function(callback) {
                 var userId = req.params.id;
@@ -302,26 +302,6 @@ module.exports = {
                 responseMessage: i18n.__("Show pages successfully")
             })
         })
-
-
-        // createNewPage.find({ userId: req.params.id, pageType: 'Business', status: "ACTIVE" }, function(err, result) {
-        //     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
-        //         var myPagesArray = [];
-        //         for (var i = 0; i < result.length; i++) {
-        //             console.log(typeof(result[i]._id))
-        //             myPagesArray.push(String(result[i]._id))
-        //         }
-        //         // console.log(typeof(result[i]._id))
-        //         console.log("myPagesArray-->>", myPagesArray)
-        //         var re = new RegExp(req.body.search, 'i');
-        //         createNewPage.paginate({ $and: [{ _id: { $in: myPagesArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
-        //             function(err, result1) {
-        //                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found.' }); } else {
-        //                     res.send({ result: result1, responseCode: 200, responseMessage: "Show pages successfully." });
-        //                 }
-        //             })
-        //     }
-        // })
     },
 
     //API for Favourite Type
@@ -350,6 +330,7 @@ module.exports = {
                         }
                     }
                 }
+                console.log("blockedArray->>>",blockedArray)
         
             createNewPage.find({ userId: { $nin: blockedArray },"status" : "ACTIVE"}).exec(function(err, pageResult){
                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -377,7 +358,7 @@ module.exports = {
                             arr.push(result.pageId)
                         })
                         console.log("showPageFavouriteType--arr-->>>",arr)
-                        createNewPage.paginate({ _id: { $nin: pageArray},  _id: { $in: arr } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, newResult) {
+                          createNewPage.paginate({ _id: { $in: arr }, $and: [{_id: { $nin: pageArray}, userId: { $nin: blockedArray }}]}, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, newResult) {
                             res.send({
                                 result: newResult,
                                 responseCode: 200,
@@ -2497,6 +2478,7 @@ module.exports = {
     },
 
     "winnerFilter": function(req, res) {
+        console.log("winnerFilter-- request ->>>",JSON.stringify(req.body))
           i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req body===>" + JSON.stringify(req.body))
         var arrayResults = [];
@@ -2591,9 +2573,9 @@ module.exports = {
             function(arrayId, blockedArray, callback) {
                 if (req.body.type == 'coupon') {
                     if (!(arrayId.length == 0)) {
-                        var query = { $and: [{ 'coupon.pageId': { $in: arrayId }, 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE',  _id:{$nin:blockedArray} }] };
+                        var query = { $and: [{ 'coupon.pageId': { $in: arrayId }, 'coupon.type': 'WINNER', _id:{$nin:blockedArray} }] };
                     } else {
-                        var query = { $and: [{ 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE',  _id:{$nin:blockedArray} }] };
+                        var query = { $and: [{ 'coupon.type': 'WINNER',  _id:{$nin:blockedArray} }] };
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
@@ -2778,7 +2760,7 @@ module.exports = {
     },
 
     "winnerSearchFilter": function(req, res) {
-          i18n = new i18n_module(req.body.lang, configs.langFile);
+      //    i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req body===>" + JSON.stringify(req.body))
         var arrayResults = [];
         var condition = { $and: [] };
@@ -2846,8 +2828,12 @@ module.exports = {
                     if (query.$and.length == 0) {
                         delete query.$and;
                     }
+                  var activeStatus = { _id: { $nin: blockedArray }, status: 'ACTIVE' }
+                  Object.assign(query, activeStatus)
+                    console.log("query-->>>",query)
                     // , _id: { $nin: blockedArray }
               User.aggregate([{ $unwind: '$coupon' },{ $match: query }]).exec(function(err, Couponresults) {
+                  console.log("Couponresults-->>>",Couponresults)
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                             var count = Couponresults.length;
                             console.log("query====>>" + JSON.stringify(query))
@@ -2908,7 +2894,9 @@ module.exports = {
                     if (queryData.$and.length == 0) {
                         delete queryData.$and;
                     }
-
+                      var activeStatus = { _id: { $nin: blockedArray }, status: 'ACTIVE' }
+                  Object.assign(queryData, activeStatus)
+                 // console.log("queryData-->>>",queryData)
                     console.log("queryData====>>" + JSON.stringify(queryData))
 
                     User.aggregate(
@@ -3147,8 +3135,18 @@ module.exports = {
         adds.save(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 createNewPage.findOneAndUpdate({ _id: req.body.pageId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                        res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Review save with concerned User details") });
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                    else {
+                        
+                 addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+                      res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Review save with concerned User details")
+                        });
+               })
+                        
+                        
                     }
                 })
             }
@@ -3181,7 +3179,7 @@ module.exports = {
                     result.docs[i].reply = data;
                 }
              //     console.log("adsCommentList---->>>",JSON.stringify(result))
-                addsComments.populate(result.docs, { path: 'userId', model: 'brolixUser', select: 'image' }, function(err, finalResult) {
+                addsComments.populate(result.docs, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
                //    console.log("adsCommentList--22-->>>",JSON.stringify(finalResult))
                     res.send({
                     result: result,

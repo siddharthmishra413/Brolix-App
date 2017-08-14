@@ -36,7 +36,7 @@ i18n_module = require('i18n-nodejs');
 
 
 i18n = new i18n_module(configs.lang, configs.langFile);
-console.log("===========================================", i18n.__('Welcome'));
+//console.log("===========================================", i18n.__('Welcome'));
 
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
@@ -674,28 +674,51 @@ module.exports = {
     },
 
     "commentOnAds": function(req, res) {
+        console.log("comments on ads request -->>>",JSON.stringify(req.body))
          i18n = new i18n_module(req.body.lang, configs.langFile);
-        console.log("commentOnAds----request--->>>",req.body)
         var adds = new addsComments(req.body);
         adds.save(function(err, result) {
-             console.log("commentOnAds----result--->>>",result)
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else { 
                 if(result.type == 'onAds'){                    
                     console.log("in if")
                 createNewAds.findOneAndUpdate({ _id: req.body.addId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
-                //     console.log("commentOnAds----1--->>>",results)
+                   console.log("commentOnAds----1--->>>",result)
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    else { res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Comments save with concerned User details" )}); }  })  }
+                    else {
+             addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+               //      console.log("adsCommentList---->>>",JSON.stringify(finalResult))
+                         res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Comments save with concerned User details" )
+                        }); 
+                                })
+                    } 
+                }) 
+              }
                 else{
                        console.log("in else")  // commentCountOnGifts
                    createNewAds.findByIdAndUpdate({ _id: new mongoose.Types.ObjectId(req.body.addId )},{ $inc: { commentCountOnGifts: 1 } }, { new: true },function(err, result1) {
-                        console.log("commentOnAds---2---->>>",result1)
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-                    else { res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Comments save with concerned User details") }); }  })  
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }                       
+                    else {
+                        
+                        addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+               //      console.log("adsCommentList---->>>",JSON.stringify(finalResult))
+                          res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Comments save with concerned User details")
+                        });  
+                                })
+                        
+                       
+                    } 
+                   })  
                 }
             }
         })
-    },
+    },    
+    
     //API Comment on Ads
     "replyOnComment": function(req, res) {
          i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -716,20 +739,20 @@ module.exports = {
          i18n = new i18n_module(req.params.lang, configs.langFile);
         var type = req.params.type;
           var id = req.params.id;
-        var userId = req.params.userId;
+        var userId = req.params.winnerId;
       console.log("adsCommentList-0-0-type--->>>>",type)
        console.log("adsCommentList-0-0-id--->>>>",id)
        console.log("adsCommentList-0-0-userId--->>>>",userId)
         var condition;
         if (type=='onGifts') {
             console.log("in if")
-            condition = { $and: [{ addId: id }, { userId: userId }, {type:type}], status: "ACTIVE" }
+            condition = { $and: [{ addId: id }, { winnerId: userId }, {type:type}], status: "ACTIVE" }
         } else {
             console.log("in else")
             condition = { addId: id , type:type, status: "ACTIVE" }
         }
         addsComments.paginate(condition, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
-         //    console.log("adsCommentList-0-0-result--->>>>",JSON.stringify(result))
+         //   console.log("adsCommentList-0-0-result--->>>>",JSON.stringify(result))
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 for (var i = 0; i < result.docs.length; i++) {
                     var reply = result.docs[i].reply;
@@ -737,14 +760,14 @@ module.exports = {
                     //   console.log("data--->>" + data)
                     result.docs[i].reply = data;
                 }
-                  addsComments.populate(result.docs, { path: 'userId', model: 'brolixUser', select: 'image' }, function(err, finalResult) {
-                     console.log("adsCommentList---->>>",JSON.stringify(finalResult))
-                    res.send({
+                  addsComments.populate(result.docs, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+                  console.log("finalResult---->>>",JSON.stringify(finalResult))
+                  res.send({
                     result: result,
                     responseCode: 200,
                     responseMessage: i18n.__("Comments List")
                 })
-                                })
+           })
                 
             }
         })
@@ -788,22 +811,51 @@ module.exports = {
     "editComments": function(req, res) {
          i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.type == 'comment') {
-            var adQuery = { addId: req.body.adId, _id: req.body.commentId }
+            var adQuery = { addId: req.body.adId, _id: req.body.commentId, type:req.body.commentType }
             var setCondition = { comment: req.body.comment }
         } else {
             var adQuery = { addId: req.body.adId, _id: req.body.commentId, 'reply._id': req.body.replyId }
             var setCondition = { 'reply.$.replyComment': req.body.replyComment }
         }
-
         addsComments.findOneAndUpdate(adQuery, setCondition, { new: true }).exec(function(err, results) {
+            console.log("results--->>>",JSON.stringify(results))
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (results == null || results == undefined) {
                 res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
             } else {
-                res.send({
+                  console.log("adsCommentList---->>>",JSON.stringify(results))
+                 addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+                      res.send({
                     result: results,
                     responseCode: 200,
                     responseMessage: i18n.__("Comment edited successfully")
                 });
+               })              
+            }
+        })
+    },
+    
+     "editCommentsOnPage": function(req, res) {
+         i18n = new i18n_module(req.body.lang, configs.langFile);
+        if (req.body.type == 'comment') {
+            var adQuery = { addId: req.body.adId, _id: req.body.commentId}
+            var setCondition = { comment: req.body.comment }
+        } else {
+            var adQuery = { addId: req.body.adId, _id: req.body.commentId, 'reply._id': req.body.replyId }
+            var setCondition = { 'reply.$.replyComment': req.body.replyComment }
+        }
+        addsComments.findOneAndUpdate(adQuery, setCondition, { new: true }).exec(function(err, results) {
+            console.log("results--->>>",JSON.stringify(results))
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (results == null || results == undefined) {
+                res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
+            } else {
+                  console.log("adsCommentList---->>>",JSON.stringify(results))
+                 addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+                      res.send({
+                    result: results,
+                    responseCode: 200,
+                    responseMessage: i18n.__("Comment edited successfully")
+                });
+               })              
             }
         })
     },
@@ -1851,14 +1903,14 @@ module.exports = {
                         }
                     }
                 }
-                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE', _id: { $nin: blockedArray } } },{ $sort: { 'coupon.updateddAt': -1 } }).exec(function(err, result) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER',  _id: { $nin: blockedArray } } },{ $sort: { 'coupon.updateddAt': -1 } }).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: "No coupon winner found" }); } else {
                         var count = 0;
                         for (i = 0; i < result.length; i++) {
                             count++;
                         }
                         var pages = Math.ceil(count / 8);
-                        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.status': 'ACTIVE', _id: { $nin: blockedArray } } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'coupon.updateddAt': -1 } }).exec(function(err, result1) {
+                        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER',  _id: { $nin: blockedArray } } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'coupon.updateddAt': -1 } }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                                 User.populate(result1, {
                                     path: 'coupon.adId',

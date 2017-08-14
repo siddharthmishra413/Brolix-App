@@ -5,7 +5,7 @@ var authUser = require('../middlewares/authUser');
 
 
 app.post('/createBrolixAndDollors', brolixHandler.createBrolixAndDollors);
-app.get('/viewBrolixAndDollors/:type', brolixHandler.viewBrolixAndDollors);
+app.get('/viewBrolixAndDollors/:type/:lang', brolixHandler.viewBrolixAndDollors);
 app.put('/editBrolixAndDollors/:type', brolixHandler.editBrolixAndDollors);
 app.get('/viewAllBrolixAndDollors', brolixHandler.viewAllBrolixAndDollors);
 

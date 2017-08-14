@@ -6,6 +6,7 @@ var authUser = require('../middlewares/authUser');
 
 app.post('/deleteComments', adsHandler.deleteComments);
 app.post('/editComments', adsHandler.editComments);
+app.post('/editCommentsOnPage', adsHandler.editCommentsOnPage);
 
 app.post('/removeAds', adsHandler.removeAds);
 
@@ -26,7 +27,7 @@ app.get('/showAllAdsCashType/:id/:pageNumber/:lang', adsHandler.showAllAdsCashTy
 app.post('/couponsSearch', authUser.authUser, adsHandler.couponsSearch); //Not in docs
 app.post('/searchForCoupons/:id/:pageNumber', adsHandler.searchForCoupons);
 app.post('/likeAndUnlike', authUser.authUser, adsHandler.likeAndUnlike);
-app.post('/commentOnAds', authUser.authUser, adsHandler.commentOnAds);
+app.post('/commentOnAds', adsHandler.commentOnAds);
 app.post('/replyOnComment', authUser.authUser, adsHandler.replyOnComment);
 app.post('/sendCoupon', authUser.authUser, adsHandler.sendCoupon);
 app.post('/exchangeCoupon', authUser.authUser, adsHandler.exchangeCoupon);

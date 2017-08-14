@@ -44,7 +44,7 @@ i18n_module = require('i18n-nodejs');
 
 
 i18n = new i18n_module(configs.lang, configs.langFile);
-console.log("===========================================", i18n.__('Welcome'));
+//console.log("===========================================", i18n.__('Welcome'));
 
 
 
@@ -2140,6 +2140,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
     },
     
      "userCouponGifts": function(req, res) { // userId in req $or: SEND BY FOLLOWER SENDBYADMIN
+      //   console.log("userCOuponGift-->>>",req.body)
          var userId = req.body.userId;
          User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
               i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -2151,15 +2152,22 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                  })
                  var type = 'onGifts';
                  var new_Data = [];
+              //   console.log("sortarray--->>>",sortArray)
                  async.forEachOfLimit(sortArray, 1, function(value, key, callback) {
+                 //     console.log("value--->>>",value)
                      var id = value.adId._id;
-                     addsComments.find({ $and: [{ addId: id }, { userId: userId }, { type: type }], status: "ACTIVE" }, function(err, commentResult) {
+                      console.log("id--->>>",id)
+                     addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type }], status: "ACTIVE" }, function(err, commentResult) {
+                 //          console.log("commentResult--->>>",commentResult)
                          length = commentResult.length;
+                    //      console.log("length--->>>",length)
                          value.adId.commentCountOnGifts = length;
+                    //      console.log("value--->>>",value)
                          new_Data.push(value)
                          callback();
                      })
                  }, function(err) {
+                  //    console.log("sortArray-final-->>>",JSON.stringify(sortArray))
                      res.send({
                          result: sortArray,
                          responseCode: 200,

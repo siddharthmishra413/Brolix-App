@@ -28,37 +28,23 @@ module.exports = {
 
     "productList": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
-        // var pageNumber = Number(req.params.pageNumber)
-        // var limitData = pageNumber * 9;
-        // var skips = limitData - 9;
-        // var page = String(pageNumber);
-
-        // pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }).exec(function(err, result) {
-        //     console.log("1")
-        //     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
-        //     else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "Data not found." }); } else {
-        //         var count = 0;
-        //         for (i = 0; i < result.length; i++) {
-        //             count++;
-        //         }
-        //         var pages = Math.ceil(count / 9);
                 pageProductList.aggregate({ $unwind: "$media" }, { $match: { pageId: req.params.id ,status: 'ACTIVE'} }).exec(function(err, result1) {
                     console.log("2")
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
                     else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "Data not found." }); } 
                     else {
+                        
+                         var sortArray = result1.sort(function(obj1, obj2) {
+                     return obj2.createdAt - obj1.createdAt
+                 })
+                        
+                    //    console.log("product result--->>>",JSON.stringify(result1))
                             res.send({
-                            docs: result1,
-                            // total: count,
-                            // limit: limitData,
-                            // page: page,
-                            // pages: pages,
+                            docs: sortArray,
                             responseCode: 200,
                             responseMessage: i18n.__("Product List")
                         })
                     }
-            //     })
-            // }
         })
 
 
@@ -153,8 +139,18 @@ module.exports = {
         product.save(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             pageProductList.findOneAndUpdate({ _id: req.body.productId , 'media._id': req.body.imageId}, { $inc: { "media.$.commentCount": +1 } }, { new: true }).exec(function(err, results) {
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                    res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Comments save with concerned User details") });
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                else {   
+                    
+               productComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+              res.send({ 
+                result: result,
+                responseCode: 200, 
+                responseMessage: i18n.__("Comments save with concerned User details")
+            });
+               })
+                    
+                    
                 }
             })
         })
@@ -301,7 +297,7 @@ module.exports = {
                 }
                         console.log("productCommentList--->>>",result)
 
-                    productComments.populate(result.docs, { path: 'userId', model: 'brolixUser', select: 'image' }, function(err, finalResult) {
+                    productComments.populate(result.docs, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
                       console.log("adsCommentList---->>>",JSON.stringify(finalResult))
                     res.send({
                     result: result,
@@ -367,17 +363,17 @@ module.exports = {
            i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req. body", JSON.stringify(req.body))
         pageProductList.findOneAndUpdate({ _id: req.params.id , 'media._id': req.params.mediaId}, { $set: { 'media.$.description': req.body.description } }, { new: true }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct item id' }); } else {
-                res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Item updated successfully") })
+            
+            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+            else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct item id' }); } 
+            else {                
+              productComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+               res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Item updated successfully") })
+               })
+                
+                // res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Item updated successfully") })
             }
         })
-
-
-        // pageProductList.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec(function(err, result) {
-        //     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct product id' }); } else {
-        //         res.send({ result: result, responseCode: 200, responseMessage: "Product updated successfully." })
-        //     }
-        // })
     }
 
 }
