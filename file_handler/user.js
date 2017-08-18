@@ -2156,7 +2156,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                  async.forEachOfLimit(sortArray, 1, function(value, key, callback) {
                  //     console.log("value--->>>",value)
                      var id = value.adId._id;
-                      console.log("id--->>>",id)
+                    //  console.log("id--->>>",id)
                      addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type }], status: "ACTIVE" }, function(err, commentResult) {
                  //          console.log("commentResult--->>>",commentResult)
                          length = commentResult.length;

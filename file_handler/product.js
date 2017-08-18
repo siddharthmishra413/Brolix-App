@@ -159,14 +159,16 @@ module.exports = {
     "productReplyOnComment": function(req, res) {
            i18n = new i18n_module(req.body.lang, configs.langFile);
         productComments.findOneAndUpdate({ productId: req.body.productId, 'imageId':req.body.imageId, _id: req.body.commentId }, {
-            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
-        }, { new: true }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: i18n.__("Comments saved successfully")
-                });
+            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } } }, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {                
+          productComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+         res.send({
+            result: results,
+            responseCode: 200,
+            responseMessage: i18n.__("Comments saved successfully")
+        });
+      })    
+                
             }
         })
     },

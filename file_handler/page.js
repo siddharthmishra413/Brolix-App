@@ -2510,7 +2510,7 @@ module.exports = {
             function(blockedArray, callback) {
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
 
-                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city")) {
+                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city" || key =="lang")) {
                         var cond = { $or: [] };
                         var tempCond = {};
 
@@ -2579,7 +2579,7 @@ module.exports = {
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                        if (!(key == "pageName" || key == "category" || key == "subCategory" || key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
+                        if (!(key =="lang" || key == "pageName" || key == "category" || key == "subCategory" || key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
                             var queryOrData = { $or: [] };
                             var temporayCondData = {}
 
@@ -2664,7 +2664,7 @@ module.exports = {
                     }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                        if (!(key == "pageName" || key == "category" || key == "subCategory" || key == 'couponStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
+                        if (!(key =="lang" || key == "pageName" || key == "category" || key == "subCategory" || key == 'couponStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined)) {
                             //   queryOrData = { $or: [] };
                             var temporayCondData = {}
                             if (key == 'cashStatus') {
@@ -2760,7 +2760,7 @@ module.exports = {
     },
 
     "winnerSearchFilter": function(req, res) {
-      //    i18n = new i18n_module(req.body.lang, configs.langFile);
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req body===>" + JSON.stringify(req.body))
         var arrayResults = [];
         var condition = { $and: [] };
@@ -2792,7 +2792,7 @@ module.exports = {
                     var query = { $and: [{ 'coupon.pageId': req.body.pageId, 'coupon.type': 'WINNER' }] };
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                        if (!(key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == 'pageId')) {
+                        if (!(key == 'lang' || key == 'cashStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == 'pageId')) {
                             var queryOrData = { $or: [] };
                             var temporayCondData = {}
 
@@ -2869,7 +2869,7 @@ module.exports = {
                     // }
 
                     Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                        if (!(key == 'couponStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == 'pageId')) {
+                        if (!(key == 'lang' || key == 'couponStatus' || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == 'pageId')) {
                             //   queryOrData = { $or: [] };
                             var temporayCondData = {}
                             if (key == 'cashStatus') {
@@ -3156,14 +3156,17 @@ module.exports = {
     "replyOnReview": function(req, res) {
           i18n = new i18n_module(req.body.lang, configs.langFile);
         addsComments.findOneAndUpdate({ pageId: req.body.pageId, _id: req.body.commentId }, {
-            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
-        }, { new: true }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: i18n.__("Review save successfully")
-                });
+            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } } }, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+            else {                
+              addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+                 res.send({
+                result: results,
+                responseCode: 200,
+                responseMessage: i18n.__("Review save successfully")
+            });
+           })
+                
             }
         })
     },

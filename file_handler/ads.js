@@ -559,6 +559,7 @@ module.exports = {
 
     //API for Show Search
     "searchForCoupons": function(req, res) {
+          console.log("searchForCoupons--->>>",JSON.stringify(req.body))
          i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
             function(callback) {
@@ -612,6 +613,7 @@ module.exports = {
                     'category': req.body.category,
                     'subCategory':  { $regex: re2 }
                 }
+                
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
                         if (data[key] == "" || data[key] == null || data[key] == undefined) {
@@ -619,8 +621,10 @@ module.exports = {
                         }
                     }
                 }
+                
                 var activeStatus = { userId: { $nin: blockedArray }, status: 'ACTIVE' }
                 Object.assign(data, activeStatus)
+                console.log("data--->>>",JSON.stringify(data))
                 createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                         //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
@@ -700,8 +704,7 @@ module.exports = {
                        console.log("in else")  // commentCountOnGifts
                    createNewAds.findByIdAndUpdate({ _id: new mongoose.Types.ObjectId(req.body.addId )},{ $inc: { commentCountOnGifts: 1 } }, { new: true },function(err, result1) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }                       
-                    else {
-                        
+                    else {                        
                         addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
                //      console.log("adsCommentList---->>>",JSON.stringify(finalResult))
                           res.send({
@@ -723,14 +726,17 @@ module.exports = {
     "replyOnComment": function(req, res) {
          i18n = new i18n_module(req.body.lang, configs.langFile);
         addsComments.findOneAndUpdate({ addId: req.body.addId, _id: req.body.commentId }, {
-            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
-        }, { new: true }).exec(function(err, results) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({
-                    result: results,
-                    responseCode: 200,
-                    responseMessage: i18n.__("Comments save successfully")
-                });
+            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } } }, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {                
+                 addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+             //   console.log("adsCommentList---->>>",JSON.stringify(results))
+                      res.send({
+                result: results,
+                responseCode: 200,
+                responseMessage: i18n.__("Comments save successfully")
+            });
+         })
+               
             }
         })
     },
@@ -761,7 +767,7 @@ module.exports = {
                     result.docs[i].reply = data;
                 }
                   addsComments.populate(result.docs, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                  console.log("finalResult---->>>",JSON.stringify(finalResult))
+               //   console.log("finalResult---->>>",JSON.stringify(finalResult))
                   res.send({
                     result: result,
                     responseCode: 200,
@@ -2567,7 +2573,7 @@ module.exports = {
                 var condition = { $and: [] };
                 var obj = req.body;
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-                    if (!(obj[key] == "" || obj[key] == undefined)) {
+                    if (!(obj[key] == "" || obj[key] == undefined ||key == "lang")) {
                         var cond = { $or: [] };
 //                        if (key == "subCategory") {
 //                            for (data in obj[key]) {
@@ -2684,7 +2690,7 @@ module.exports = {
                 var condition = { $and: [] };
                 var obj = req.body;
                 Object.getOwnPropertyNames(obj).forEach(function(key, idx, array) {
-                    if (!(key == 'userId' || obj[key] == "" || obj[key] == undefined)) {
+                    if (!(key == 'lang' || key == 'userId' || obj[key] == "" || obj[key] == undefined)) {
                         var cond = { $or: [] };
 //                        if (key == "subCategory") {
 //                            for (data in obj[key]) {

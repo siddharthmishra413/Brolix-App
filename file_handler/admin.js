@@ -39,6 +39,19 @@ cloudinary.config({
     api_secret: 'BkGm-usnHDPfrun2fEloBtVqBqU'
 });
 
+//<--------------------------------------------I18n------------------------------------------------->
+var configs = {
+    "lang": "ar",
+    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
+}
+i18n_module = require('i18n-nodejs');
+//<------------------------------------------------------------------------------------------------>
+
+
+i18n = new i18n_module(configs.lang, configs.langFile);
+//console.log("===========================================", i18n.__('Welcome'));
+
+
 
 module.exports = {
     "login": function(req, res) {
@@ -1280,6 +1293,7 @@ module.exports = {
     },
 
     "viewCards": function(req, res) {
+        i18n = new i18n_module(req.body.lang, configs.langFile);
         var cardType = req.params.type;
         if (req.params.type == 'upgrade_card') {
             var data = 'viewers'
@@ -1290,8 +1304,8 @@ module.exports = {
         adminCards.find({ type: cardType, status: "ACTIVE" }).sort([
             [data, 'ascending']
         ]).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                res.send({ data: result, responseCode: 200, responseMessage: 'Card shown successfully' });
+            if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
+                res.send({ data: result, responseCode: 200, responseMessage: i18n.__('Card shown successfully') });
             }
         })
     },
