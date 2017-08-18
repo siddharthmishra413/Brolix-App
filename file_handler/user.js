@@ -1782,9 +1782,14 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
 
     "showUpgradeCard": function(req, res) {
         console.log("request--->>>", req.body)
-        User.find({ _id: req.body.userId, 'upgradeCardObject.status': "ACTIVE" }).exec(function(err, result) {
+        User.find({ _id: req.body.userId, 'upgradeCardObject.status': "ACTIVE" }).populate({ path: 'upgradeCardObject.cardId', select: ('photo') }).exec(function(err, result) {
              i18n = new i18n_module(req.body.lang, configs.langFile);
             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No card found") }); } else {
+                console.log("result-->>",JSON.stringify(result))
+                
+//             User.populate(result, { path: 'cardId ', model: 'cardsAdmin', select: 'photo' }, function(err, finalResult) {
+//                console.log("dtata--->>>",JSON.stringify(finalResult))                      
+                
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     for (j = 0; j < result[i].upgradeCardObject.length; j++) {
@@ -1794,19 +1799,21 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     }
                 }
                 var obj = result[0].upgradeCardObject;
-                var data = obj.filter(obj => obj.status == "ACTIVE");
-                res.send({
+                var data = obj.filter(obj => obj.status == "ACTIVE");                
+                   res.send({                         
                     result: data,
                     count: count,
                     responseCode: 200,
                     responseMessage: i18n.__("List of all upgrade Card show successfully")
                 });
+               //})
+               
             }
         })
     },
 
     "showLuckCard": function(req, res) {
-        User.find({ _id: req.body.userId, 'luckCardObject.status': "ACTIVE" }).exec(function(err, result) {
+        User.find({ _id: req.body.userId, 'luckCardObject.status': "ACTIVE" }).populate({ path: 'luckCardObject.cardId', select: ('photo') }).exec(function(err, result) {
              i18n = new i18n_module(req.body.lang, configs.langFile);
             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No card found") }); } else {
                 var count = 0;
@@ -1830,6 +1837,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
     },
 
     "purchaseUpgradeCard": function(req, res) {
+     //    console.log("purchaseUpgradeCard-->>", JSON.stringify(req.body))
         var array = [];
         var array1 = [];
         for (j = 0; j < req.body.upgradeCardArr.length; j++) {
@@ -1837,6 +1845,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 var obj = { cash: 0, viewers: 0, type: 'PURCHASED' }
                 obj.viewers = req.body.upgradeCardArr[j].viewers;
                 obj.cash = req.body.upgradeCardArr[j].cash;
+                obj.cardId = req.body.upgradeCardArr[j].cardId;
                 array.push(obj);
                 array1.push(parseFloat(req.body.upgradeCardArr[j].cash));
             }
@@ -1844,7 +1853,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
         var sum = array1.reduce(function(a, b) {
             return a + b;
         });
-        console.log("sum-->>", sum)
+     //   console.log("sum-->>", sum)
         User.findOne({ _id: req.body.userId, }, function(err, result) {
              i18n = new i18n_module(req.body.lang, configs.langFile);
             if (err) {
@@ -1855,9 +1864,10 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             //  else if (result.cash < sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); }
             else {
                 for (i = 0; i < array.length; i++) {
+               //     console.log("purchaseUpgradeCrad--->>>>",JSON.stringify(array[i]))
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
-                            console.log("sum-->>", sum)
+                     //       console.log("sum-->>", sum)
                         }
                     });
                 }
@@ -1873,6 +1883,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
     },
 
     "purchaseLuckCard": function(req, res) { //request: date
+    //    console.log("purchaseLuckCard-->>", JSON.stringify(req.body))
         var array = [];
         var array1 = [];
         for (j = 0; j < req.body.luckCardArr.length; j++) {
@@ -1880,6 +1891,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 var obj = { brolix: 0, chances: 0, type: 'PURCHASED' }
                 obj.chances = req.body.luckCardArr[j].chances;
                 obj.brolix = req.body.luckCardArr[j].brolix;
+                obj.cardId = req.body.luckCardArr[j].cardId;
                 array.push(obj);
                 array1.push(parseFloat(req.body.luckCardArr[j].brolix));
             }
@@ -1895,6 +1907,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 return res.status(404).send({ responseMessage: i18n.__("please enter userId") })
             } else if (result.brolix < sum) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of brolix in your account") }); } else {
                 for (i = 0; i < array.length; i++) {
+               //      console.log("purchaseLuckCard--->>>>",JSON.stringify(array[i]))
                     User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
                             console.log("sum--->>>", sum)

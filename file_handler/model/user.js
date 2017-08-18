@@ -196,6 +196,7 @@ var userSchema = new Schema({
         exchangeCoupon: { type: String, default: 'on' }
     },
     luckCardObject: [{
+        cardId:{ type: String, ref: 'cardsAdmin' },
         brolix: { type: Number },
         chances: { type: Number },
         status: { type: String, default: 'ACTIVE' },
@@ -206,6 +207,7 @@ var userSchema = new Schema({
         }
     }],
     upgradeCardObject: [{
+        cardId:{ type: String, ref: 'cardsAdmin' },
         cash: { type: Number },
         viewers: { type: Number },
         status: { type: String, default: 'ACTIVE' },

@@ -3325,7 +3325,7 @@ module.exports = {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } else {
-                console.log("user", user)
+             //   console.log("user", user)
                 if (req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet') {
                     waterfall([
                         function(callback) {

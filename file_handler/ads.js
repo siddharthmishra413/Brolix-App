@@ -745,7 +745,7 @@ module.exports = {
          i18n = new i18n_module(req.params.lang, configs.langFile);
         var type = req.params.type;
           var id = req.params.id;
-        var userId = req.params.winnerId;
+        var userId = req.params.userId;
       console.log("adsCommentList-0-0-type--->>>>",type)
        console.log("adsCommentList-0-0-id--->>>>",id)
        console.log("adsCommentList-0-0-userId--->>>>",userId)
