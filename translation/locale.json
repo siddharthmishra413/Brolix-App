@@ -822,5 +822,21 @@
   "All user shown successfully": {
     "en": "All user shown successfully",
     "ar": "تم عرض جميع المستخدمين بنجاح"
+  },
+  "I have sent you a coupon": {
+    "en": "I have sent you a coupon",
+    "ar": "لقد أرسلت لك قسيمة"
+  },
+  "You have one follow request": {
+    "en": "You have one follow request",
+    "ar": "لديك طلب متابعة واحد"
+  },
+  "I have send you brolix": {
+    "en": "I have send you brolix",
+    "ar": "لقد أرسلت لك بروليكس"
+  },
+  "I have send you Cash": {
+    "en": "I have send you Cash",
+    "ar": "لقد أرسل لك نقدا"
   }
 }

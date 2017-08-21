@@ -33,7 +33,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                                                  console.log("in if")
                                                  data = {
                                                      userId: req.body.senderId,
-                                                     type: 'I have one follow request',
+                                                     type: i18n.__('You have one follow request'),
                                                      linkType: 'profile',
                                                      notificationType: 'follow',
                                                      image: image
@@ -42,7 +42,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                                                  console.log("in else")
                                                  data = {
                                                      userId: req.body.senderId,
-                                                     type: 'I have one follow request',
+                                                     type: i18n.__('You have one follow request'),
                                                      linkType: 'profile',
                                                      notificationType: 'follow',
                                                      image: ""
@@ -53,7 +53,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
                                                  //     console.log("receiverResult---/////--*+*+*+*+*+>>>>>", receiverResult);
                                                  if (receiverResult.deviceToken) {
                                                      if (receiverResult.deviceToken && receiverResult.deviceType && receiverResult.notification_status && receiverResult.status) {
-                                                         var message = "You have one follow request";
+                                                         var message = i18n.__("You have one follow request");
                                                          if (receiverResult.deviceType == 'Android' && receiverResult.notification_status == 'on' && receiverResult.status == 'ACTIVE') {
                                                              functions.android_notification(receiverResult.deviceToken, message);
                                                              console.log("Android notification send!!!!")
