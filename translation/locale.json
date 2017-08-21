@@ -363,12 +363,16 @@
     "en": "All luck Cards shown successfully",
     "ar": "تم عرض بطاقات الحظ بنجاح"
   },
+   "All cards have been successfully shown": {
+    "en": "All cards have been successfully shown",
+    "ar": "جميع بطاقات أظهرت بنجاح"
+  },
   "Successfully purchased the upgrade card": {
     "en": "Successfully purchased the upgrade card",
     "ar": "تم شراء بطاقة التمييز بنجاح"
   },
-  "Successfully purchased the upgrade card": {
-    "en": "Successfully purchased the upgrade card",
+  "Successfully purchased the luck card": {
+    "en": "Successfully purchased the luck card",
     "ar": "تم شراء بطاقة التمييز بنجاح"
   },
   "Successfully used the luck card": {
@@ -502,6 +506,10 @@
   "Ad created successfully": {
     "en": "Ad created successfully",
     "ar": "تم انشاء الاعلان بنجاح"
+  },
+  "You have successfully won this Raffle": {
+    "en": "You have successfully won this Raffle",
+    "ar": "لقد فاز بنجاح هذا السحب"
   },
   "Liked": {
     "en": "Liked",
@@ -642,6 +650,10 @@
   "Brolix transferred successfully": {
     "en": "Brolix transferred successfully",
     "ar": "تم تحويل نقود البرولكس بنجاح"
+  },
+   "Cash transferred successfully": {
+    "en": "Cash transferred successfully",
+    "ar": "تم تحويل النقود بنجاح"
   },
   "User Blocked successfully": {
     "en": "User Blocked successfully",
@@ -798,5 +810,17 @@
   "Request cancel successfully": {
     "en": "Request cancel successfully",
     "ar": "تم إلغاء الطلب بنجاح"
+  },
+  "Your payment history was successfully sent to your mail": {
+    "en": "Request cancel successfullyYour payment history was successfully sent to your mail",
+    "ar": "تم إرسال سجل الدفع بنجاح على بريدك"
+  },
+  "Your payment history shown successfully": {
+    "en": "Your payment history shown successfully",
+    "ar": "يظهر سجل الدفع بنجاح"
+  },
+  "All user shown successfully": {
+    "en": "All user shown successfully",
+    "ar": "تم عرض جميع المستخدمين بنجاح"
   }
 }

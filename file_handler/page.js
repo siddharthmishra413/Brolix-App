@@ -717,8 +717,8 @@ module.exports = {
     "showBlockedPage": function(req, res) { // pageId in request
         createNewPage.paginate({ status: "BLOCK" }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
              i18n = new i18n_module(req.params.lang, configs.langFile);
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
-            else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No blocked page found" }) } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) return res.status(404).send({ responseMessage: "please enter correct pageId" })
+            else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No blocked page found") }) } else {
                 res.send({
                     result: result,
                     responseCode: 200,
@@ -3324,7 +3324,7 @@ module.exports = {
     "createAdPayment": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } else {
+            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!user) { res.send({ responseCode: 404, responseMessage: i18n.__("User not found.") }); } else {
              //   console.log("user", user)
                 if (req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet') {
                     waterfall([
@@ -3373,7 +3373,7 @@ module.exports = {
                         }
                     ], function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                            res.send({ responseCode: 200, responseMessage: "Ad created successfully" });
+                            res.send({ responseCode: 200, responseMessage: i18n.__("Ad created successfully") });
                         }
                     })
                 } else {
@@ -3694,7 +3694,7 @@ module.exports = {
 
     "redirectpage": function(req, res) {
           i18n = new i18n_module(req.params.lang, configs.langFile);
-        res.json({ result: i18n.__("Page created successfully" )})
+        res.json({ result: i18n.__("Page created" )})
     },
 
 
@@ -4191,7 +4191,7 @@ module.exports = {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: "Data not found" });
             } else {
-                res.send({ responseCode: 200, responseMessage: i18n.__("Payment history shows successfully"), result: result });
+                res.send({ responseCode: 200, responseMessage: i18n.__("Your payment history shown successfully"), result: result });
             }
         })
     }

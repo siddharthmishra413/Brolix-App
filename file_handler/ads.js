@@ -1301,14 +1301,14 @@ module.exports = {
                                             }
                                             var notificationData = {
                                                 adId: req.body.adId,
-                                                type: 'You have successfully won this raffle',
+                                                type: i18n.__('You have successfully won this raffle'),
                                                 linkType: 'profile',
                                                 notificationType: 'WinnerType'
                                             }
                                             User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, notification: notificationData, gifts: req.body.adId }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
                                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                                     if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                        var message = "You have successfully won this Raffle.";
+                                                        var message = i18n.__("You have successfully won this Raffle.");
                                                         if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                             functions.android_notification(result.deviceToken, message);
                                                             console.log("Android notification send!!!!")
@@ -1372,7 +1372,7 @@ module.exports = {
                                                     }
                                                     var notifyData = {
                                                         adId: req.body.adId,
-                                                        type: 'You have successfully won this raffle',
+                                                        type: i18n.__('You have successfully won this raffle'),
                                                         linkType: 'profile',
                                                         notificationType: 'WinnerType'
                                                     }
@@ -1382,7 +1382,7 @@ module.exports = {
                                                             count += i;
                                                             if ((i * i) == count) {
                                                                 if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                                    var message = "You have successfully won this Raffle.";
+                                                                    var message = i18n.__("You have successfully won this Raffle.");
                                                                     if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                                         functions.android_notification(result.deviceToken, message);
                                                                         console.log("Android notification send!!!!")
@@ -1406,7 +1406,7 @@ module.exports = {
                                                 console.log("else")
                                                 var notifyData = {
                                                     adId: req.body.adId,
-                                                    type: 'You have successfully won this raffle',
+                                                    type: i18n.__('You have successfully won this raffle'),
                                                     linkType: 'profile',
                                                     notificationType: 'WinnerType'
                                                 }
@@ -1414,7 +1414,7 @@ module.exports = {
                                                     console.log("4")
                                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                         if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                            var message = "You have successfully won this Raffle.";
+                                                            var message = i18n.__("You have successfully won this Raffle.");
                                                             if (result.deviceToken && result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                                 functions.android_notification(result.deviceToken, message);
                                                                 console.log("Android notification send!!!!")

@@ -1548,7 +1548,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: i18n.__("You have successfully transferred your brolix")
+                responseMessage: i18n.__("Brolix transferred successfully")
             })
         })
 
@@ -1665,7 +1665,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             res.send({
                 result: result,
                 responseCode: 200,
-                responseMessage: i18n.__("You have successfully transferred your cash")
+                responseMessage: i18n.__("Cash transferred successfully")
             });
         })
     },
@@ -1718,7 +1718,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: result,
                     responseCode: 200,
-                    responseMessage: i18n.__("Privacy details show successfully")
+                    responseMessage: i18n.__("Privacy details shown successfully")
                 })
             }
         })
@@ -1804,7 +1804,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     result: data,
                     count: count,
                     responseCode: 200,
-                    responseMessage: i18n.__("List of all upgrade Card show successfully")
+                    responseMessage: i18n.__("Successfully shown list of upgrade card")
                 });
                //})
                
@@ -2184,7 +2184,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                      res.send({
                          result: sortArray,
                          responseCode: 200,
-                         responseMessage: i18n.__("Coupon gifts show successfully")
+                         responseMessage: i18n.__("Coupon gifts shown successfully")
                      })
                  })
              }
@@ -2262,7 +2262,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
     },
 
     "onlineUserList": function(req, res) {
-        console.log("request----->>>", req.body)
+     //   console.log("request----->>>", JSON.stringify(req.body))
         var condition;
         if (req.body.pageId) {
             console.log("in if")
@@ -2294,7 +2294,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             }]
         ).exec(function(err, result) {
               i18n = new i18n_module(req.body.lang, configs.langFile);
-              console.log("result-0-0-0-0-0-0->>", result)
+         //     console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
             if (err) res.send({ responseCode: 500, responseMessage: err });
             else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
             else {
@@ -2320,19 +2320,25 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     //          console.log("result.length" + result.length);
 
                     while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
-                        //                        console.log("inside whil;e")
-                        //                        console.log("result[i]._id.senderId");
-                        //                        console.log(result[i]._id.senderId);
-                        //                        console.log("result[j]._id.receiverId");
-                        //                        console.log(result[j]._id.receiverId);
-                        //                        console.log("result[j]._id.senderId");
-                        //                        console.log(result[j]._id.senderId);
-                        //                        console.log("result[i]._id.receiverId");
-                        //                        console.log(result[i]._id.receiverId);
-                        if (result[j + 1] != undefined)
-                            j += 1;
-                        else
+//                        console.log("inside whil;e")
+//                        console.log("result[i]._id.senderId");
+//                        console.log(result[i]._id.senderId);
+//                        console.log("result[j]._id.receiverId");
+//                        console.log(result[j]._id.receiverId);
+//                        console.log("result[j]._id.senderId");
+//                        console.log(result[j]._id.senderId);
+//                        console.log("result[i]._id.receiverId");
+//                        console.log(result[i]._id.receiverId);
+                        console.log("value of j>>>",j)
+                        if (result[j + 1] != undefined){
+                        j += 1;
+                        console.log("yyyyy")    
+                        }
+
+                        else{
+                       console.log("ttttttt")
                             break;
+                        }
                         console.log("j");
                         console.log(j);
                     }
@@ -2342,13 +2348,13 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                     }
                     obj.push(result[i]);
                     result.splice(j, 1);
-                    //           console.log("length---->" + result.length);
+                             console.log("length---->"+ i);
                 }
-                //       console.log("jsonqqq0-0-0-0-0-0-0->>",JSON.stringify(obj))
+                  console.log("jsonqqq0-0-0-0-0-0-0->>",JSON.stringify(obj))
                 res.send({
                     result: obj,
                     responseCode: 200,
-                    responseMessage: i18n.__("Record found successfully")
+                    responseMessage: i18n.__("Result shown successfully")
                 });
             }
 
@@ -3381,7 +3387,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                         res.send({
                             result: result,
                             responseCode: 200,
-                            responseMessage: i18n.__("All user shows successfully")
+                            responseMessage: i18n.__("All user shown successfully")
                         });
                     }
                 })
@@ -3581,7 +3587,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
                 res.send({
                     result: sortArray,
                     responseCode: 200,
-                    responseMessage: i18n.__("All details show successfully")
+                    responseMessage: i18n.__("All details shown successfully")
                 });
             }
         })
@@ -3728,7 +3734,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
         for (x in myObj) {
             y += "<tr><td>" + new Date(myObj[x].Date).toISOString().slice(0, 10) + "</td><td>" + myObj[x].Amount + "</td><td>" + myObj[x].Description + "</td></tr>";
         }
-        y += "</table>"
+        y += "</table></br>Total Amount: "+req.body.totalAmount+""
 
         var transporter = nodemailer.createTransport({
             service: 'Gmail',
@@ -3753,7 +3759,7 @@ i18n = new i18n_module(req.body.lang, configs.langFile);
             if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else {
                 res.send({
                     responseCode: 200,
-                    responseMessage: i18n.__('Successfully send payment history on your mail')
+                    responseMessage: i18n.__('Your payment history was successfully sent to your mail')
                 })
             }
         })

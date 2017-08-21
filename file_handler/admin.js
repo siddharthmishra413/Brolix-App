@@ -1305,7 +1305,7 @@ module.exports = {
             [data, 'ascending']
         ]).exec(function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
-                res.send({ data: result, responseCode: 200, responseMessage: i18n.__('Card shown successfully') });
+                res.send({ data: result, responseCode: 200, responseMessage: i18n.__('All cards have been successfully shown') });
             }
         })
     },

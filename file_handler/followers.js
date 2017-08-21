@@ -160,7 +160,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
          console.log("followerRequestSend--->>>",req.body)
          followerList.find({ senderId: req.body.senderId }).sort({ updatedAt: -1 }).exec(function(err, result) {             
           i18n = new i18n_module(req.body.lang, configs.langFile);
-             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
                  var arr = [];
                  var status_obj = {};
 //                 result.forEach(function(result) {
@@ -196,7 +196,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
          var viewerId = req.body.viewerId;
          if (req.body.viewerId == req.body.receiverId) {
              followerList.find({ receiverId: req.body.receiverId, followerStatus: { $ne: 'cancel' } }).sort({ updatedAt: -1 }).exec(function(err, result) {
-                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                 if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
                      //       console.log("followerRequestReceive result--->>>", result)
                      var arr = [];
                      var status_obj = {};
