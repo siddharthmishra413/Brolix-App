@@ -2257,7 +2257,6 @@
         },
 
         "onlineUserList": function(req, res) {
-
             console.log("request----->>>", JSON.stringify(req.body))
             var condition;
             if (req.body.pageId) {
@@ -2267,6 +2266,7 @@
                 console.log("in else")
                 condition = { $and: [{ $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }, { pageId: { $exists: false } }] }
             }
+              console.log("condition----->>>",condition)
             chat.aggregate(
                 [{
                     //$match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
@@ -2290,7 +2290,7 @@
                 }]
             ).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                //     console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
+                   console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
                 if (err) res.send({ responseCode: 500, responseMessage: err });
                 else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
                 else {
@@ -2304,11 +2304,11 @@
                     //                });
                     var obj = [],
                         j;
-                    console.log("result-23232-->" + JSON.stringify(result));
+                  //  console.log("result-23232-->" + JSON.stringify(result));
                     for (var i = 0; i < result.length; i++) {
                         result.length - 1 == i ? j = i : j = i + 1;
-                        console.log("i--->>>", i)
-                        console.log("j--->>>", j)
+                     //   console.log("i--->>>", i)
+                    //console.log("j--->>>", j)
                         //while ((result[j]._id.senderId)) {
                         /*if (j < result.length)
                         {*/
@@ -2325,7 +2325,7 @@
                             //                        console.log(result[j]._id.senderId);
                             //                        console.log("result[i]._id.receiverId");
                             //                        console.log(result[i]._id.receiverId);
-                            console.log('result[j + 1] != undefined', result[j + 1] != undefined)
+                       //     console.log('result[j + 1] != undefined', result[j + 1] != undefined)
                             if (result[j + 1] != undefined) {
                                 j += 1;
                                 console.log("yyyyy")
@@ -2341,11 +2341,11 @@
                             result[i].unread += result[j].unread;
                         }
                         obj.push(result[i]);
-                        console.log("obj---->" + JSON.stringify(obj));
-                        //  result.splice(j, 1);
-                        console.log("result---->" + result);
+                      //  console.log("obj---->" + JSON.stringify(obj));
+                       //   result.slice(j, 1);
+                        //console.log("result---->" + result);
                     }
-                    console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
+                   // console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
                     res.send({
                         result: obj,
                         responseCode: 200,
@@ -2768,6 +2768,7 @@
                     var receiverCouponId = req.body.receiverCouponId;
                     var adId = req.body.receiverAdId;
                     var couponExpirationTime = req.body.couponExpirationTime;
+                    var receiverCouponExpirationTime = req.body.receiverCouponExpirationTime;
                     if (!req.body.receiverCouponCode) { res.send({ responseCode: 400, responseMessage: i18n.__("Receiver coupon code is required") }); } else if (!req.body.receiverId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverId is required") }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponId is required") }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverCouponId is required") }) } else if (receiverId == senderId) { res.send({ responseCode: 400, responseMessage: i18n.__("You can not send the exchange request to yourself") }) } else {
                         User.findOne({ _id: req.body.receiverId }).exec(function(err, userResult) {
                             //     console.log("***********************-->>>", userResult.privacy.exchangeCoupon)
@@ -2811,6 +2812,7 @@
                     var senderCouponId = req.body.senderCouponId;
                     var receiverCouponId = req.body.receiverCouponId;
                     var couponExpirationTime = req.body.couponExpirationTime;
+                    var receiverCouponExpirationTime = req.body.receiverCouponExpirationTime;
                     i18n = new i18n_module(req.body.lang, configs.langFile);
                     if (!req.body.senderId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderId is required.") }) } else if (!req.body.receiverAdId) { res.send({ responseCode: 400, responseMessage: i18n.__("adId is required.") }) } else if (!req.body.senderAdId) { res.send({ responseCode: 400, responseMessage: i18n.__("exchangedWithAdId is required.") }) } else if (!req.body.senderCouponCode) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponCode is required.") }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponId is required.") }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverCouponId is required.") }) } else {
                         User.findOne({ _id: receiverId }, function(err, result2) {
@@ -2820,7 +2822,7 @@
                                     createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime:couponExpirationTime } } }, { new: true }).exec(function(err, result3) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 44') }) } else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
 
-                                            createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime } } }, { new: true }).exec(function(err, result4) {
+                                            createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId } } }, { new: true }).exec(function(err, result4) {
                                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 55') }) } else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("Sender ad not found.") }); } else {
                                                     //  callback(null, result3)
                                                 }
@@ -2845,7 +2847,7 @@
                                 createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime } } }, { new: true }).exec(function(err, result5) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 66') }) } else if (!result5) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
 
-                                        createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime } } }, { new: true }).exec(function(err, result6) {
+                                        createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId} } }, { new: true }).exec(function(err, result6) {
 
                                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 77') }) } else if (!result6) { res.send({ responseCode: 404, responseMessage: i18n.__("Sender ad not found.") }); } else {
                                                 //  callback(null, result3)

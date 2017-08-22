@@ -152,7 +152,7 @@ var createNewAdsSchema = new Schema({
         exchangedDate: { type: Date, default: Date.now },
         senderCouponId: { type: String },
         receiverCouponId: { type: String },
-        couponExpirationTime:{ type: String }
+        receiverCouponExpirationTime:{ type: String }
     }],
     couponSend: [{
         senderId: { type: String },
