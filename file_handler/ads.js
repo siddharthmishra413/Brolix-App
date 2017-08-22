@@ -2417,24 +2417,29 @@ module.exports = {
         var userId = req.body.userId;
         var status = req.body.cashStatus;
         var array = [];
-        createNewAds.find({ adsType: "cash" }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
+        createNewAds.find({ adsType: "cash", "status": "EXPIRED" }).exec(function(err, result) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 22" }); } else {
                 for (i = 0; i < result.length; i++) {
+                     console.log("cash gift result.length--->>>",result.length,i)
                     for (j = 0; j < result[i].winners.length; j++) {
                         if (result[i].winners[j] == userId) {
                             array.push(result[i]._id);
                         }
                     }
                 }
-                createNewAds.find({ _id: { $in: array }, cashStatus: { $in: status } }, { $sort: { createdAt: -1 } }, function(err, result1) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
-
-                        var updatedResult = result1.docs;
+                console.log("array--->>>",array)
+                console.log("status--->>>",status)
+                createNewAds.find({ _id: { $in: array }, cashStatus: { $in: status } }).exec(function(err, result1) {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error 33" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No ad found" }); } else {
+                       var sortArray = result1.sort(function(obj1, obj2) {
+                        return obj2.createdAt - obj1.createdAt
+                    })
+                        var updatedResult = result1;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                             res.send({
-                                result: result1,
+                                result: sortArray,
                                 responseCode: 200,
-                                responseMessage: i18n.__("result show successfully")
+                                responseMessage: i18n.__("Result shown successfully")
                             })
                         })
                     }

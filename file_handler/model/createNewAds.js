@@ -141,7 +141,8 @@ var createNewAdsSchema = new Schema({
         couponExchangeStatus: { type: String, default: 'REQUESTED' },
         exchangedDate: { type: Date, default: Date.now },
         senderCouponId: { type: String },
-        receiverCouponId: { type: String }
+        receiverCouponId: { type: String },
+        couponExpirationTime:{ type: String }
     }],
     couponExchangeSent: [{
         senderId: { type: String, ref: 'brolixUser' },
@@ -150,7 +151,8 @@ var createNewAdsSchema = new Schema({
         couponExchangeStatus: { type: String, default: 'REQUESTED' },
         exchangedDate: { type: Date, default: Date.now },
         senderCouponId: { type: String },
-        receiverCouponId: { type: String }
+        receiverCouponId: { type: String },
+        couponExpirationTime:{ type: String }
     }],
     couponSend: [{
         senderId: { type: String },

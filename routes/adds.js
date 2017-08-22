@@ -48,7 +48,7 @@ app.post('/adsDateFilter/:id/:pageNumber', authUser.authUser, adsHandler.adsDate
 app.post('/particularPageCouponAdsFilter/:pageNumber', adsHandler.particularPageCouponAdsFilter);
 app.post('/couponFilter/:pageNumber', adsHandler.couponFilter);
 app.post('/couponGiftsFilter', authUser.authUser, adsHandler.couponGiftsFilter);
-app.post('/cashGiftsFilter', authUser.authUser, adsHandler.cashGiftsFilter);
+app.post('/cashGiftsFilter',  adsHandler.cashGiftsFilter);
 app.get('/storeCouponList/:id/:pageNumber/:lang', adsHandler.storeCouponList);
 app.post('/viewCoupon',  adsHandler.viewCoupon);
 app.post('/PageCouponFilter/:id/:pageNumber', adsHandler.PageCouponFilter);
