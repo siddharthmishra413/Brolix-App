@@ -77,6 +77,7 @@ app.post('/sendPaymentHistoryOnMailId', userHandler.sendPaymentHistoryOnMailId);
 app.post('/updateLive', userHandler.updateLive);
 app.post('/cancelExchangeCouponRequest', userHandler.cancelExchangeCouponRequest);
 app.post('/sendMessage', userHandler.sendMessage);
+app.post('/onlineUser', userHandler.onlineUser);
 
 
 

@@ -2355,7 +2355,82 @@
 
             })
         },
+    
+         "onlineUser": function(req, res) {
+            console.log("request----->>>", JSON.stringify(req.body))
+            var condition;
+            if (req.body.pageId) {
+                console.log("in if")
+                condition = { $or: [{ senderId: req.body.userId, pageId: req.body.pageId }, { receiverId: req.body.userId, pageId: req.body.pageId }] }
+            } else {
+                console.log("in else")
+                condition = { $and: [{ $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }, { pageId: { $exists: false } }] }
+            }
+              console.log("condition----->>>",condition)
+            chat.aggregate(
+                [{
+                    $match: condition
+                }, {
+                    $group: {
+                        _id: { senderId: "$senderId", receiverId: "$receiverId" },
+                        unread: {
+                            $sum: {
+                                $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
+                            }
+                        },
+                        lastMsg: { $last: "$message" },
+                        timestamp: { $last: "$timestamp" },
+                        senderImage: { $last: "$senderImage" },
+                        receiverImage: { $last: "$receiverImage" },
+                        senderName: { $last: "$senderName" },
+                        receiverName: { $last: "$receiverName" }
+                    }
+                }]
+            ).exec(function(err, result) {
+                i18n = new i18n_module(req.body.lang, configs.langFile);
+                   console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
+                if (err) res.send({ responseCode: 500, responseMessage: err });
+                else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
+                else {
+                    var result = result.sort(function(obj1, obj2) {
+                        return obj2.timestamp - obj1.timestamp
+                    })
+                    var obj = [],
+                        j;
+                  //  console.log("result-23232-->" + JSON.stringify(result));
+                    for (var i = 0; i < result.length; i++) {
+                        result.length - 1 == i ? j = i : j = i + 1;
+                        while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
+                            if (result[j + 1] != undefined) {
+                                j += 1;
+                                console.log("yyyyy")
+                            } else {
+                                console.log("ttttttt")
+                                break;
+                            }
+                            console.log("j");
+                            console.log(j);
+                        }
+                        //}
+                        if (i != j) {
+                            result[i].unread += result[j].unread;
+                        }
+                        obj.push(result[i]);
+                        result.splice(j, 1);
+                      //  console.log("obj---->" + JSON.stringify(obj));
+                       //   result.slice(j, 1);
+                    }
+                   // console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
+                    res.send({
+                        result: obj,
+                        responseCode: 200,
+                        responseMessage: i18n.__("Result shown successfully")
+                    });
+                }
 
+            })
+        }, 
+        
         "winnersFilter": function(req, res) {
             var condition = { $or: [] };
             var obj = req.body;
@@ -2381,7 +2456,6 @@
             }
             User.find(condition).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                // console.log("result--->>",result)
                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No result found.") }) } else {
                     res.send({
                         result: result,
