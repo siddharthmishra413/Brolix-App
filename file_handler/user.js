@@ -2357,7 +2357,7 @@
         },
     
          "onlineUser": function(req, res) {
-            console.log("request----->>>", JSON.stringify(req.body))
+            console.log("onlineUser ----  request----->>>", JSON.stringify(req.body))
             var condition;
             if (req.body.pageId) {
                 console.log("in if")
@@ -2366,27 +2366,20 @@
                 console.log("in else")
                 condition = { $and: [{ $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }, { pageId: { $exists: false } }] }
             }
-              console.log("condition----->>>",condition)
+              // here is { $or:[ {senderId: "$senderId"}, {receiverId: "$receiverId" }]},
+              console.log("condition----->>>",JSON.stringify(condition))
             chat.aggregate(
                 [{
                     $match: condition
-                }, {
-                    $group: {
-                        _id: { senderId: "$senderId", receiverId: "$receiverId" },
-                        unread: {
-                            $sum: {
-                                $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
-                            }
-                        },
+                }, { $group: { _id: { $or: [{senderId: "$senderId"},{ receiverId: "$receiverId" }] }, unread: { $sum: {                  $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
+                   } },
                         lastMsg: { $last: "$message" },
                         timestamp: { $last: "$timestamp" },
                         senderImage: { $last: "$senderImage" },
                         receiverImage: { $last: "$receiverImage" },
                         senderName: { $last: "$senderName" },
                         receiverName: { $last: "$receiverName" }
-                    }
-                }]
-            ).exec(function(err, result) {
+                    }}]).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
                    console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
                 if (err) res.send({ responseCode: 500, responseMessage: err });
@@ -2416,7 +2409,7 @@
                             result[i].unread += result[j].unread;
                         }
                         obj.push(result[i]);
-                        result.splice(j, 1);
+                      //  result.splice(j, 1);
                       //  console.log("obj---->" + JSON.stringify(obj));
                        //   result.slice(j, 1);
                     }
@@ -3820,6 +3813,7 @@
 
 
         "sendPaymentHistoryOnMailId": function(req, res, next) {
+         //   console.log("sendPaymentHistoryOnMailId-->>>>",JSON.stringify(req.body))
             var myObj = req.body.paymentData;
             i18n = new i18n_module(req.body.lang, configs.langFile);
             // var myObj = [

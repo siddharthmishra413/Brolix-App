@@ -21,22 +21,13 @@ var chat = function() {
         });
 
         connection.on('message', function(message) {
-            console.log("*******************************************")
-            console.log("chat chat chat chat chat chat chat chat chat chat chat")
             console.log("message0-0-0-0-0---->>>",message)
             var obj = JSON.parse(message.utf8Data);
             if (obj.msgTyp == "init") {
                 connection.ID = obj.senderId;
             }
+            
             console.log("connectedClients ---connectedClients ---connectedClients ---connectedClients --- ")
-//            console.log("0-0-0-0-0-0-0->>>>",obj)
-//            console.log("*********************",obj.receiverId)
-//            console.log("connectedClients---->>>>",connectedClients)
-//            console.log("*+*+*+*+*+*+*+*+*+*+*+",connection.ID);
-            //console.log("connectedClients --- ", JSON.stringify(connectedClients));
-            /* if(!connectedClients[obj.senderId]){
-                 connection.send('closed');
-             }*/
             switch (obj.msgTyp) {
                 case "init":
                     connectedClients[obj.senderId] = connection;

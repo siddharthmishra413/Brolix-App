@@ -20,8 +20,6 @@ var configs = {
 var i18n_module = require('i18n-nodejs');
 
 var i18n = new i18n_module(configs.lang, configs.langFile);
-//console.log("===========================================", i18n.__('Welcome'));
-//var mongoosePaginate = require('mongoose-paginate');
 console.log("test===>" + new Date(1487589012837).getTimezoneOffset())
 var mongoose = require('mongoose');
 var moment = require('moment')
@@ -62,7 +60,6 @@ module.exports = {
     },
     //API for Show All Pages
     "showAllPages": function(req, res) {
-       // console.log('======>>>>>>>>>>>>>>>>>>>>>>>>>>2222222222222222', app.get('lang'));
         i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewPage.paginate({ status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
@@ -83,7 +80,6 @@ module.exports = {
                 createNewPage.find({"status" : "ACTIVE"}).exec(function(err, pageResult){
                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                     else{
-                      //  console.log("pageResult--->>>",JSON.stringify(pageResult));
                         var pageArray = [];                        
                         for(var i =0 ; i<pageResult.length; i++){
                              for (var j = 0; j < pageResult[i].blockedUser.length; j++) {                                 
@@ -124,31 +120,26 @@ module.exports = {
             function(blockedArray, pageArray, callback) {
                 User.findOne({ _id: req.params.id }).exec(function(err, result) {
                     callback(null, result, blockedArray, pageArray);
-                    //  console.log("resulrt-0-0-0-0-0-0-0-0-0-0----->>>>",result)
                 })
             },
             function(result, blockedArray, pageArray, callback) {
                 createNewPage.paginate({  userId: { $nin: blockedArray }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
                     if (err) { res.semd({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                        // console.log("pageResult-*******33333333333**************----->>>>",pageResult)
                         callback(null, result, pageResult);
                     }
                 })
             },
             function(result, pageResult, callback) {
-                // console.log("result-*********************----->>>>",result)
-                // console.log("pageResult-+++++++++++++++----->>>>",pageResult)
                 var array = [];
                 var data = [];
+                 console.log("result.pageFollowers.length--type->>",typeof(result.pageFollowers))
+                console.log("result.pageFollowers.length--->>",result.pageFollowers.length)
                 if (result.pageFollowers.length != 0) {
                     for (var i = 0; i < result.pageFollowers.length; i++) {
                         array.push(result.pageFollowers[i].pageId)
                     }
-                    //  console.log("followed pages------->>>>>", array);
                     for (var j = 0; j < array.length; j++) {
-                    //    console.log("jjjjj", j);
                         for (k = 0; k < pageResult.docs.length; k++) {
-                     //       console.log("kkkkkk", pageResult.docs[k]._id, k);
                             if (pageResult.docs[k]._id == array[j]) {
                                 pageResult.docs[k].pageFollowersStatus = true
                             }
@@ -501,7 +492,7 @@ module.exports = {
                             if(pageResult[i].blockedUser[j].toString() == userId){
                                  console.log("in if loop") 
                               pageArray.push(pageResult[i]._id) 
-                               console.log("pageArray-----0000-->>>>",pageArray)
+                           //    console.log("pageArray-----0000-->>>>",pageArray)
                             }
                             else{
                               console.log("flag------->>>>")  
@@ -614,12 +605,12 @@ module.exports = {
 
                 createNewPage.paginate({ userId: { $nin: blockedArray }, $and: [data] }, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                         console.log("results--->>>",results)      
+                     //    console.log("results--->>>",results)      
                         
                         User.findOne({_id:req.params.id}).exec(function(err, userResult){
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                             else{
-                         console.log("userResult--->>>",userResult)      
+                //         console.log("userResult--->>>",userResult)      
                         var array = [];
                         var data = [];
                         if (userResult.pageFollowers.length != 0) {
@@ -1077,7 +1068,7 @@ module.exports = {
 
     "adAdmin": function(req, res) {
           i18n = new i18n_module(req.body.lang, configs.langFile);
-        console.log("request---->>>", JSON.stringify(req.body))
+    //    console.log("request---->>>", JSON.stringify(req.body))
         if (req.body.add == "add") {
             createNewPage.findOne({ _id: req.params.id }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (Boolean(result.adAdmin.find(adAdmin => adAdmin.userId == req.body.userId))) { res.send({ responseCode: 400, responseMessage: i18n.__("This user is already added as admin") }); } else {
@@ -1633,7 +1624,7 @@ module.exports = {
                         var winnersLength = 0;
                         callback(null, winnersLength)
                     } else {
-                        console.log("winner=====>", result)
+                    //    console.log("winner=====>", result)
                         var winnersLength = 0;
                         for (var i = 0; i < result.length; i++) {
                             winnersLength += result[i].winners.length;
@@ -2429,7 +2420,7 @@ module.exports = {
         }
         console.log("subCategory--->>", condition)
         createNewPage.find(condition).exec(function(err, result) {
-            console.log("result--->>", result)
+         //   console.log("result--->>", result)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 res.send({
                     result: result,
@@ -2501,7 +2492,7 @@ module.exports = {
                             }
                         }
                         callback(null, blockedArray)
-                        console.log("flag------->>>>", JSON.stringify(blockedArray))
+                        //console.log("flag------->>>>", JSON.stringify(blockedArray))
 
                     }
                 })
@@ -2555,7 +2546,7 @@ module.exports = {
 
                 var activeStatus = { userId: { $nin: blockedArray }, status: 'ACTIVE' }
                 Object.assign(condition, activeStatus)
-                console.log("condition===*******************=>>" + JSON.stringify(condition))
+            //    console.log("condition===*******************=>>" + JSON.stringify(condition))
 
                 createNewPage.find(condition, function(err, result) {
                  //   console.log("page result---->>>",JSON.stringify(result))
@@ -2696,7 +2687,7 @@ module.exports = {
                         delete queryData.$and;
                     }
 
-                    console.log("queryData====>>" + JSON.stringify(queryData))
+                //    console.log("queryData====>>" + JSON.stringify(queryData))
 
                     User.aggregate(
                         [
@@ -2797,7 +2788,7 @@ module.exports = {
                             var temporayCondData = {}
 
                             if (key == 'couponStatus') {
-                                console.log("ddddddddD", req.body[key].length)
+                           //     console.log("ddddddddD", req.body[key].length)
                                 for (var i = 0; i < req.body[key].length; i++) {
 
                                     if (req.body[key].length == 1) {
@@ -2812,7 +2803,7 @@ module.exports = {
                                 }
                                 query.$and.push(queryOrData)
                             } else if (key == "firstName") {
-                                console.log("ssSSSSS", req.body[key])
+                           //     console.log("ssSSSSS", req.body[key])
                                 var re = new RegExp(req.body[key], 'i');
                                 console.log(re)
                                 var data = { firstName: { $regex: re } }
@@ -2830,13 +2821,13 @@ module.exports = {
                     }
                   var activeStatus = { _id: { $nin: blockedArray }, status: 'ACTIVE' }
                   Object.assign(query, activeStatus)
-                    console.log("query-->>>",query)
+                 //   console.log("query-->>>",query)
                     // , _id: { $nin: blockedArray }
               User.aggregate([{ $unwind: '$coupon' },{ $match: query }]).exec(function(err, Couponresults) {
                   console.log("Couponresults-->>>",Couponresults)
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                             var count = Couponresults.length;
-                            console.log("query====>>" + JSON.stringify(query))
+                       //     console.log("query====>>" + JSON.stringify(query))
                             var pageNumber = Number(req.params.pageNumber)
                             var limitData = pageNumber * 10;
                             var skips = limitData - 10;
@@ -2995,8 +2986,13 @@ module.exports = {
 
                 User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon.pageId': pageId, 'coupon.couponStatus': 'USED', _id: { $nin: blockedArray } } }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct page id' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No winner found' }); } else {
+                    //    console.log("CouponInboxWinners--->>>",JSON.stringify(result))
+                         var sortArray = result.sort(function(obj1, obj2) {
+                             return obj2.coupon.updateddAt - obj1.coupon.updateddAt
+                         })
+                        
                         res.send({
-                            result: result,
+                            result: sortArray,
                             responseCode: 200,
                             responseMessage: i18n.__("All request show successfully")
                         })
