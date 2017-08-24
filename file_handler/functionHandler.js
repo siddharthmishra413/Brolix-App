@@ -5,6 +5,8 @@
   console.log("secreteKey-->>>", config.secreteKey)
       var apn = require('apn');
   module.exports = {
+      
+      // send otp function
       "otp": function(mobile, msg_body) {
           var possible = "123456789";
           var otp = "";
@@ -36,6 +38,8 @@
           return otp;
           console.log("-------Your OTP------" + otp)
       },
+      
+      // send emial function
       "mail": function(email, massege, otp) {
           var transporter = nodemailer.createTransport({
               service: 'Gmail',
@@ -61,7 +65,8 @@
               }
           });
       },
-
+      
+      // send android notification function
       "android_notification": function(deviceToken, message1) {
           console.log("message1--22222->>>", message1)
           var serverKey = 'AAAA0wDwq1I:APA91bHUyLivU-szb-z_23Ui532XPOxY0yqB07F27-HMme9Vu1psCS2TZI970av_HS1NswVHyKhX4qKoERYWmCChqY2fOVCVlZwTdudwXAk_rda5Z98z7fxK2r6kaf0o5x4cDSFzQqdc ';
@@ -81,6 +86,7 @@
           });
       },
 
+       // send ios notification function
       "iOS_notification": function(deviceToken, message) {
           console.log("message-11111-->>>", message)
           console.log("deviceToken--->>>", deviceToken)
@@ -95,7 +101,6 @@
               "title": "Brolix",
               "message": "Hello from Brolix. Here is a message for you!!",
           };
-
           var title = "Brolix";
           var message = message;
           var apnConnection = new apn.Connection(options);

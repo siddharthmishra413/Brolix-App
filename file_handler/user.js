@@ -293,7 +293,6 @@
         },
 
         "massPay": function(req, res) {
-
             var mp = new MassPay({
                 pwd: "QN3GR5N6JAV6A22H",
                 user: "robinsuraj-facilitator_api1.gmail.com",
@@ -335,7 +334,6 @@
         },
 
         "massPay": function(req, res) {
-
             var mp = new MassPay({
                 pwd: "QN3GR5N6JAV6A22H",
                 user: "robinsuraj-facilitator_api1.gmail.com",
@@ -363,7 +361,6 @@
             }];
 
             var batch = new MassPay.PaymentBatch(paymentRequests);
-
             mp.pay(batch, function(err, results) {
                 if (err) {
                     console.log("error", err)
@@ -407,7 +404,6 @@
                 //     note: 'request for tim@gc'
                 // }
             ];
-
             var batch = new MassPay.PaymentBatch(paymentRequests);
 
             // mp.pay(batch, function(err, results) {
@@ -420,7 +416,6 @@
             //     console.log("results=>", results)
             //         //assert.equal(results.ACK, 'Success')
             // });
-
             User.findOne({ _id: req.body.userId }).exec(function(err, user) {
                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found" }); } else {
                     console.log("user", user)
@@ -498,7 +493,6 @@
         },
 
         "validatorPaytabs": function(req, res) {
-
             var createPayPage = new Object()
             createPayPage.merchant_email = 'sakshigadia@gmail.com';
             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
@@ -535,7 +529,6 @@
             createPayPage.country_shipping = "SAU";
             createPayPage.msg_lang = "ar";
             createPayPage.cms_with_version = "1.0.0";
-
             paytabs.CreatePayPage(createPayPage, function(response) {
                 console.log("paytabs", response);
             });
@@ -548,8 +541,6 @@
             // });
 
         },
-
-
 
 
         "createToken": function(req, res) {
@@ -805,6 +796,7 @@
 
         // },
 
+         // User Signup api
         "signup": function(req, res) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
             waterfall([
@@ -876,7 +868,8 @@
                 })
             })
         },
-
+  
+         // send otp api
         "sendOtp": function(req, res) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
 
@@ -980,10 +973,9 @@
                 }
             });
         },
+        
 
         //API for user Login
-
-
         "login": function(req, res) {
             User.find({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1020,39 +1012,7 @@
             })
         },
 
-        // "login": function(req, res) {
-        //     //        if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
-        //     //        else {
-        //     User.findOne({ email: req.body.email, password: req.body.password }, avoid).exec(function(err, result) {
-        //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Sorry your id or password is incorrect." }); } else if (result.facebookID !== undefined) res.send({ responseCode: 203, responseMessage: "User registered with facebook." });
-        //         else {
-
-        //             if (result.status != 'ACTIVE') { res.send({ responseCode: 401, responseMessage: 'You are removed by the admin' }); } else if (result.isVerified != 'TRUE') { res.send({ responseCode: 401, responseMessage: 'Please verify your mobile number.' }); } else {
-        //                 var token_data = {
-        //                     _id: result._id,
-        //                     status: result.status
-        //                 }
-        //                 User.findOneAndUpdate({ email: req.body.email }, {
-        //                     $set: {
-        //                         deviceType: req.body.deviceType,
-        //                         deviceToken: req.body.deviceToken
-        //                     }
-        //                 }, { new: true }).exec(function(err, user) {
-        //                     var token = jwt.sign(token_data, config.secreteKey);
-        //                     res.header({
-        //                         "appToken": token
-        //                     }).send({
-        //                         result: user,
-        //                         token: token,
-        //                         responseCode: 200,
-        //                         responseMessage: "Login successfully."
-        //                     });
-        //                 })
-        //             }
-        //         }
-        //     })
-        // },
-
+        // User edit profile Api
         "editProfile": function(req, res) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
             console.log("editProfile---->>>", req.body)
@@ -1443,6 +1403,7 @@
 
         },
 
+        // send brolix to follower api  
         "sendBrolixToFollower": function(req, res) { // userId, receiverId, brolix
             i18n = new i18n_module(req.body.lang, configs.langFile);
             i18n.__("Enter the proper number of brolix")
@@ -1554,6 +1515,7 @@
 
         },
 
+         // send cash to follower api
         "sendCashToFollower": function(req, res) { // userId, receiverId, cash in request
             i18n = new i18n_module(req.body.lang, configs.langFile);
             waterfall([
@@ -1670,6 +1632,7 @@
             })
         },
 
+         // filter user on date basis api
         "filterToDateAndFromDate": function(req, res) {
             User.find({ _id: req.body.userId }).exec(function(err, results) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1698,6 +1661,7 @@
             })
         },
 
+         // update user privacy api
         "updatePrivacy": function(req, res) {
             User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1711,6 +1675,7 @@
             })
         },
 
+         // show all privacy api
         "showPrivacy": function(req, res) {
             User.findOne({ _id: req.body.userId }, 'privacy').exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1724,6 +1689,7 @@
             })
         },
 
+         // api for block user
         "blockUser": function(req, res) {
             console.log("block user exports-->>>" + JSON.stringify(req.body));
             User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
@@ -1731,7 +1697,6 @@
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: i18n.__("please enter correct adId") })
                 else {
                     res.send({
-                        // result: result,
                         responseCode: 200,
                         responseMessage: i18n.__("User blocked successfully")
                     });
@@ -1739,7 +1704,8 @@
 
             });
         },
-
+     
+          // show list of all blocked user
         "showAllBlockUser": function(req, res) {
             User.find({ _id: req.params.id }).exec(function(err, result) {
                 i18n = new i18n_module(req.params.lang, configs.langFile);
@@ -1764,8 +1730,8 @@
             });
         },
 
+         // logout api
         "logout": function(req, res) {
-            //     console.log("logout req----",req.body)
             User.findOneAndUpdate({ _id: req.body.userId }, { $set: { deviceType: '', deviceToken: '' } }, { new: true }).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
@@ -1777,19 +1743,13 @@
                     });
                 }
             });
-
         },
 
+         // show list of upgrade card
         "showUpgradeCard": function(req, res) {
-            console.log("request--->>>", req.body)
             User.find({ _id: req.body.userId, 'upgradeCardObject.status': "ACTIVE" }).populate({ path: 'upgradeCardObject.cardId', select: ('photo') }).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No card found") }); } else {
-                    console.log("result-->>", JSON.stringify(result))
-
-                    //             User.populate(result, { path: 'cardId ', model: 'cardsAdmin', select: 'photo' }, function(err, finalResult) {
-                    //                console.log("dtata--->>>",JSON.stringify(finalResult))                      
-
                     var count = 0;
                     for (i = 0; i < result.length; i++) {
                         for (j = 0; j < result[i].upgradeCardObject.length; j++) {
@@ -1806,12 +1766,11 @@
                         responseCode: 200,
                         responseMessage: i18n.__("Successfully shown list of upgrade card")
                     });
-                    //})
-
                 }
             })
         },
 
+         // show list of luck card
         "showLuckCard": function(req, res) {
             User.find({ _id: req.body.userId, 'luckCardObject.status': "ACTIVE" }).populate({ path: 'luckCardObject.cardId', select: ('photo') }).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1836,8 +1795,8 @@
             })
         },
 
+         // purchase upgrade card from store api
         "purchaseUpgradeCard": function(req, res) {
-            //    console.log("purchaseUpgradeCard-->>", JSON.stringify(req.body))
             var array = [];
             var array1 = [];
             for (j = 0; j < req.body.upgradeCardArr.length; j++) {
@@ -1853,7 +1812,6 @@
             var sum = array1.reduce(function(a, b) {
                 return a + b;
             });
-            //   console.log("sum-->>", sum)
             User.findOne({ _id: req.body.userId, }, function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (err) {
@@ -1861,13 +1819,11 @@
                 } else if (!result) {
                     return res.status(404).send({ responseMessage: i18n.__("please enter userId") })
                 }
-                //  else if (result.cash < sum) { res.send({ responseCode: 400, responseMessage: "Insufficient amount of cash in your account" }); }
                 else {
                     for (i = 0; i < array.length; i++) {
-                        //     console.log("purchaseUpgradeCrad--->>>>",JSON.stringify(array[i]))
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
-                                //       console.log("sum-->>", sum)
+                                    console.log("sum-->>", sum)
                             }
                         });
                     }
@@ -1882,8 +1838,8 @@
             })
         },
 
-        "purchaseLuckCard": function(req, res) { //request: date
-            //    console.log("purchaseLuckCard-->>", JSON.stringify(req.body))
+         /// purchase luck card from store api
+        "purchaseLuckCard": function(req, res) { 
             var array = [];
             var array1 = [];
             for (j = 0; j < req.body.luckCardArr.length; j++) {
@@ -1907,7 +1863,6 @@
                     return res.status(404).send({ responseMessage: i18n.__("please enter userId") })
                 } else if (result.brolix < sum) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of brolix in your account") }); } else {
                     for (i = 0; i < array.length; i++) {
-                        //      console.log("purchaseLuckCard--->>>>",JSON.stringify(array[i]))
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "luckCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
                                 console.log("sum--->>>", sum)
@@ -1924,7 +1879,8 @@
                 }
             })
         },
-
+        
+        // Use luck card api
         "useLuckCard": function(req, res) { // userId, adId, Brolix, luckId in request parameter
             var obj = (req.body.luckId);
             if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 500, responseMessage: 'Please enter luckId' }); } else {
@@ -1957,6 +1913,7 @@
             }
         },
 
+         // use upgrade card api
         "useUpgradeCard": function(req, res) { //upgradeId adId viewers cash in request
             console.log("use upgrade card request--->>>", req.body)
             waterfall([
@@ -2002,6 +1959,7 @@
             })
         },
 
+         // facebook login api
         "facebookLogin": function(req, res) {
             console.log("facebook login req---->>>>", req.body)
             i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -2109,6 +2067,7 @@
             }
         },
 
+         // list of user cash gift api
         "userCashGifts": function(req, res) { // userId in req
             var userId = req.body.userId;
             User.find({ _id: userId, 'cashPrize.status': "ACTIVE" }).populate('cashPrize.adId').populate('cashPrize.pageId', 'pageName adAdmin').exec(function(err, result) {
@@ -2138,17 +2097,12 @@
                             responseMessage: i18n.__("Coupon gifts show successfully")
                         })
                     })
-                    //                res.send({
-                    //                    result: data,
-                    //                    responseCode: 200,
-                    //                    responseMessage: "Cash gifts show successfully."
-                    //                })
                 }
             })
         },
 
-        "userCouponGifts": function(req, res) { // userId in req $or: SEND BY FOLLOWER SENDBYADMIN
-            //   console.log("userCOuponGift-->>>",req.body)
+         // list of user coupon gifts api
+        "userCouponGifts": function(req, res) { 
             var userId = req.body.userId;
             User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -2160,22 +2114,15 @@
                     })
                     var type = 'onGifts';
                     var new_Data = [];
-                    //   console.log("sortarray--->>>",sortArray)
                     async.forEachOfLimit(sortArray, 1, function(value, key, callback) {
-                        //     console.log("value--->>>",value)
                         var id = value.adId._id;
-                        //  console.log("id--->>>",id)
                         addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type }], status: "ACTIVE" }, function(err, commentResult) {
-                            //          console.log("commentResult--->>>",commentResult)
                             length = commentResult.length;
-                            //      console.log("length--->>>",length)
                             value.adId.commentCountOnGifts = length;
-                            //      console.log("value--->>>",value)
                             new_Data.push(value)
                             callback();
                         })
                     }, function(err) {
-                        //    console.log("sortArray-final-->>>",JSON.stringify(sortArray))
                         res.send({
                             result: sortArray,
                             responseCode: 200,
@@ -2186,6 +2133,7 @@
             })
         },
 
+         // show list of all countries
         "countrys": function(req, res) {
             i18n = new i18n_module(req.params.lang, configs.langFile);
             var countrys = country.all();
@@ -2208,6 +2156,7 @@
             });
         },
 
+         // show list of all states
         "getAllStates": function(req, res) {
             i18n = new i18n_module(req.params.lang, configs.langFile);
             var name = req.params.name;
@@ -2228,6 +2177,7 @@
             }
         },
 
+         // show user chat history 
         "chatHistory": function(req, res, next) {
             console.log('everything-----chatHistorychatHistorychatHistorys-------' + JSON.stringify(req.body));
             var condition;
@@ -2239,7 +2189,6 @@
             }
             chat.paginate(condition, { page: req.params.pageNumber, limit: 15, sort: { timestamp: -1 } }, function(err, results) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                //   console.log("results---->>>",JSON.stringify(results))
                 if (!results.docs.length) {
                     res.send({
                         result: results,
@@ -2256,6 +2205,7 @@
             });
         },
 
+         // show list of chat user
         "onlineUserList": function(req, res) {
             console.log("request----->>>", JSON.stringify(req.body))
             var condition;
@@ -2273,8 +2223,8 @@
                     // { $sort: { timestamp: -1 } },
                     $match: condition
                 }, {
-                    $group: {
-                        _id: { senderId: "$senderId", receiverId: "$receiverId" },
+                    //{ $group: { _id: { roomId: "$senderId", receiverId: "$receiverId" }, 
+                    $group: { _id: "$roomId",
                         unread: {
                             $sum: {
                                 $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
@@ -2285,7 +2235,9 @@
                         senderImage: { $last: "$senderImage" },
                         receiverImage: { $last: "$receiverImage" },
                         senderName: { $last: "$senderName" },
-                        receiverName: { $last: "$receiverName" }
+                        receiverName: { $last: "$receiverName" },                        
+                        senderId :{ $last : "$senderId" },
+                        receiverId :{ $last : "$receiverId" }         
                     }
                 }]
             ).exec(function(err, result) {
@@ -2297,35 +2249,11 @@
                     var result = result.sort(function(obj1, obj2) {
                         return obj2.timestamp - obj1.timestamp
                     })
-                    //                result.sort(function(a, b) {
-                    //                    if (a.timestamp < b.timestamp) return -1;
-                    //                    if (a.timestamp > b.timestamp) return 1;
-                    //                    return 0;
-                    //                });
                     var obj = [],
                         j;
-                  //  console.log("result-23232-->" + JSON.stringify(result));
                     for (var i = 0; i < result.length; i++) {
                         result.length - 1 == i ? j = i : j = i + 1;
-                     //   console.log("i--->>>", i)
-                    //console.log("j--->>>", j)
-                        //while ((result[j]._id.senderId)) {
-                        /*if (j < result.length)
-                        {*/
-                        //          console.log("j--->" + j);
-                        //          console.log("result.length" + result.length);
-
                         while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
-                            //                        console.log("inside whil;e")
-                            //                        console.log("result[i]._id.senderId");
-                            //                        console.log(result[i]._id.senderId);
-                            //                        console.log("result[j]._id.receiverId");
-                            //                        console.log(result[j]._id.receiverId);
-                            //                        console.log("result[j]._id.senderId");
-                            //                        console.log(result[j]._id.senderId);
-                            //                        console.log("result[i]._id.receiverId");
-                            //                        console.log(result[i]._id.receiverId);
-                       //     console.log('result[j + 1] != undefined', result[j + 1] != undefined)
                             if (result[j + 1] != undefined) {
                                 j += 1;
                                 console.log("yyyyy")
@@ -2341,11 +2269,8 @@
                             result[i].unread += result[j].unread;
                         }
                         obj.push(result[i]);
-                      //  console.log("obj---->" + JSON.stringify(obj));
                        //   result.slice(j, 1);
-                        //console.log("result---->" + result);
                     }
-                   // console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
                     res.send({
                         result: obj,
                         responseCode: 200,
@@ -2356,6 +2281,7 @@
             })
         },
     
+        // for testing chat user api
          "onlineUser": function(req, res) {
             console.log("onlineUser ----  request----->>>", JSON.stringify(req.body))
             var condition;
@@ -2371,8 +2297,12 @@
             chat.aggregate(
                 [{
                     $match: condition
-                }, { $group: { _id: { $or: [{senderId: "$senderId"},{ receiverId: "$receiverId" }] }, unread: { $sum: {                  $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
-                   } },
+                }, 
+                { $group: { _id: { senderId: "$senderId", receiverId: "$receiverId" }, 
+             //   { $group: { _id: "$roomId",
+                        unread: { $sum: {             
+                             $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
+                     } },
                         lastMsg: { $last: "$message" },
                         timestamp: { $last: "$timestamp" },
                         senderImage: { $last: "$senderImage" },
@@ -2424,6 +2354,7 @@
             })
         }, 
         
+        // api for winners filter
         "winnersFilter": function(req, res) {
             var condition = { $or: [] };
             var obj = req.body;
@@ -2459,6 +2390,7 @@
             })
         },
 
+         // google login api
         "googleLogin": function(req, res) {
             if (!req.body.googleID) { res.send({ responseCode: 403, responseMessage: 'please enter googleID' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
                 User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
@@ -2549,6 +2481,7 @@
             }
         },
 
+         // buy coupon from store api
         "buyCoupon": function(req, res) { // user Id and ad Id and brolix in request
             waterfall([
                 function(callback) {
@@ -2568,9 +2501,7 @@
                                 } else {
                                     var type = "storeCouponPriceForFreeAds";
                                 }
-                                //     console.log("type-->>", type)
                                 Brolixanddollors.find({ type: type }, function(err, result) {
-                                    //    console.log("result---******++++--->>>", result)
                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error 11") }); } else {
                                         var value = result[0].value
                                         callback(null, value)
@@ -2673,7 +2604,7 @@
             })
         },
 
-
+        // show list of user's fav coupon
         "listOfFavouriteCoupon": function(req, res) {
             waterfall([
                 function(callback) {
@@ -2757,6 +2688,7 @@
             ])
         },
 
+         // add and remove coupon in fav list
         "addRemoveCouponFromFavourite": function(req, res) {
             var adId = req.body.adId;
             var userId = req.body.userId;
@@ -2801,6 +2733,7 @@
             }
         },
 
+         // set coupon exchange on off api
         "couponExchangeOnOff": function(req, res) {
             var userId = req.body.userId;
             var status = req.body.status;
@@ -2823,6 +2756,7 @@
             }
         },
 
+         // send coupon exchange req to other user api
         "sendCouponExchangeRequest": function(req, res) { //  couponCode, receiverId, senderId, exchangedWithAdId, senderCouponId
             console.log("sendCouponExchangeRequest request-->>>", JSON.stringify(req.body))
             waterfall([
@@ -2948,7 +2882,7 @@
             })
         },
 
-
+        // see all coupon exchange received request
         "seeExchangeRequest": function(req, res) {
             console.log("seeExchangeRequest--->>", req.body)
             i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -2956,13 +2890,11 @@
                 function(callback) {
                     var receiverId = req.body.userId;
                     var userId = req.body.userId;
-                    //  console.log("seeExchangeRequest-- userId->>",userId)
                     User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                             var blockedArray = [];
                             for (var i = 0; i < userResult1.length; i++) {
                                 for (var j = 0; j < userResult1[i].blockUser.length; j++) {
-                                    console.log("flag------->>>>", userResult1[i].blockUser[j].toString() == userId)
                                     if (userResult1[i].blockUser[j].toString() == userId) {
                                         blockedArray.push(userResult1[i]._id.toString())
                                     } else {
@@ -3055,6 +2987,7 @@
 
         },
 
+        // search for coupon exchange request
         "couponRequestsSearch": function(req, res) {
             var re = new RegExp(req.body.firstName, 'i');
             User.find({ status: 'ACTIVE' }).or([{ 'firstName': { $regex: re } }]).exec(function(err, result) {
@@ -3070,6 +3003,7 @@
 
         },
 
+         // api to send coupon to any user
         "sendCouponToFollower": function(req, res) {
             console.log("send coupon request=----->>>", JSON.stringify(req.body))
             waterfall([
@@ -3235,6 +3169,7 @@
             })
         },
 
+         // api to accept or decline coupon exchange received request
         "acceptDeclineCouponRequest": function(req, res) { //receiverRequestId senderCouponCode senderId receiverId receiverCouponCode status
             console.log("accept Declined req--->>>", JSON.stringify(req.body))
             if (req.body.status == 'accepted') {
@@ -3273,8 +3208,6 @@
                             i18n = new i18n_module(req.body.lang, configs.langFile);
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { callback(null) } else {
                                 var requestId = result[0].couponExchangeSent._id;
-                                //  var receiverAdId = result[0].couponExchangeSent.exchangedWithAdId;
-                                //  var senderCouponId = result[0].couponExchangeSent.senderCouponId;
                                  console.log("accept decline --->>>"+requestId)
                                 createNewAds.update({ 'couponExchangeSent._id': new mongoose.Types.ObjectId(requestId) }, { $set: { 'couponExchangeSent.$.couponExchangeStatus': 'ACCEPTED' } }, { new: true }).exec(function(err, updatedResult) {
                                     console.log("updatedResult--->>>"+JSON.stringify(updatedResult))
@@ -3301,7 +3234,6 @@
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found. 11" }); } else {
 
                                     User.findOne({ 'coupon._id': senderCouponId }).exec(function(err, result2) {
-                                        //     console.log("senderCouponId------->>", result2)
                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found. 22" }); } else {
                                             for (i = 0; i < result2.coupon.length; i++) {
                                                 if (result2.coupon[i]._id == senderCouponId) {
@@ -3455,6 +3387,8 @@
                 }
             }
         },
+        
+        // show list of user who registered with refferal code
         "registerWithRefferalCode": function(req, res) {
             var userId = req.params.id;
             console.log("userid--->>>", userId)
@@ -3489,6 +3423,7 @@
             })
         },
 
+         // api to use coupon
         "useCouponWithoutCode": function(req, res) {
             var couponId = req.body.couponId;
             var adId = req.body.adId;
@@ -3535,6 +3470,7 @@
             }
         },
 
+        // filter winners list on code basis
         "winnersFilterCodeBasis": function(req, res) {
             console.log("request winners filter code basis ---->>>", req.body)
             var pageId = req.body.pageId;
@@ -3577,6 +3513,7 @@
             }
         },
 
+         // use coupon with hidden code
         "useCouponWithCode": function(req, res) {
             var couponId = req.body.couponId;
             User.findOne({ 'hiddenGifts._id': couponId }).exec(function(err, result) {
@@ -3595,6 +3532,7 @@
             })
         },
 
+        // show list of coupon exchange sent req api
         "seeExchangeSentRequest": function(req, res) {
             console.log("requhsuwdhajqwdkaqkaqdqdqw---->>>", req.body)
             var senderId = req.body.userId;
@@ -3631,7 +3569,8 @@
                 }
             })
         },
-
+ 
+         // api for save payment request
         "savePaymentRequest": function(req, res) {
             var payment = paypalPayment(req.body)
             payment.save(function(err, result) {
@@ -3646,6 +3585,7 @@
             })
         },
 
+         // search list of blocked user api
         "blockUserSearch": function(req, res) {
             followerList.find({ userId: req.body.userId, followerStatus: "block" }).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -3670,6 +3610,7 @@
             })
         },
 
+         // show list of user's received notification
         "userNotification": function(req, res) {
             User.find({ _id: req.body.userId }, function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -3687,6 +3628,7 @@
             })
         },
 
+         // turn off coupon exchange from privacy screen
         "couponExchangeOff": function(req, res) {
             if (req.body.status == 'off') {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -3736,7 +3678,7 @@
                                 for (var k = 0; k < array2.length; k++) {
                                     createNewAds.update({ 'couponExchangeReceived._id': array2[k] }, { $set: { 'couponExchangeReceived.$.couponExchangeStatus': "CANCEL" } }, { multi: true }, function(err, user1Result) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                            console.log("in loop g*******")
+                                            console.log("in loop k")
                                         }
                                     })
                                 }
@@ -3768,30 +3710,6 @@
                             }
                         })
                     },
-                    //                  function(callback) {
-                    //                    var receiverId = req.body.userId;
-                    //                    createNewAds.find({ 'couponExchangeSent.receiverId': receiverId }, function(err, user2) {
-                    //                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                    //                            var array3 = [];
-                    //                            for (var i = 0; i < user2.length; i++) {
-                    //                                for (var j = 0; j < user2[i].couponExchangeSent.length; j++) {
-                    //                                    if (user2[i].couponExchangeSent[j].senderId == req.body.userId) {
-                    //                                        array3.push(user2[i].couponExchangeSent[j]._id)
-                    //                                    }
-                    //                                }
-                    //                            }
-                    //                            for (var k = 0; k < array3.length; k++) {
-                    //
-                    //                                createNewAds.update({ 'couponExchangeSent._id': array3[k] }, { $set: { 'couponExchangeSent.$.couponExchangeStatus': "CANCEL" } }, { multi: true }, function(err, user2Result) {
-                    //                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                    //                                        console.log("in loop g*******")
-                    //                                    }
-                    //                                })
-                    //                            }
-                    //                            callback(null)
-                    //                        }
-                    //                    })
-                    //                },
                 ], function(err, result) {
                     res.send({
                         responseCode: 200,
@@ -3811,9 +3729,8 @@
             }
         },
 
-
+        // send payment history on email api
         "sendPaymentHistoryOnMailId": function(req, res, next) {
-         //   console.log("sendPaymentHistoryOnMailId-->>>>",JSON.stringify(req.body))
             var myObj = req.body.paymentData;
             i18n = new i18n_module(req.body.lang, configs.langFile);
             // var myObj = [
@@ -3838,9 +3755,7 @@
                     pass: "Mobiloitte1"
                 }
             });
-
             var to = req.body.email
-
             var mailOption = {
                 from: "test.avi201@gmail.com",
                 to: req.body.email,
@@ -3848,7 +3763,6 @@
                 text: 'Payment details',
                 html: y
             }
-
             console.log("Dta in mailOption : " + JSON.stringify(mailOption));
             transporter.sendMail(mailOption, function(error, info) {
                 if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else {
@@ -3858,9 +3772,9 @@
                     })
                 }
             })
-
         },
 
+        // api to update live users
         "updateLive": function(req, res) {
             if (req.body.isLive == 'true') {
                 User.findOneAndUpdate({ _id: req.body.userId }, { $set: { isLive: 'True' } }).exec(function(err, result) {
@@ -3886,6 +3800,7 @@
             }
         },
 
+         // api to cancel sent coupon exchange req
         "cancelExchangeCouponRequest": function(req, res) {
             var senderId = req.body.userId;
             createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" } }, function(err, result) {
@@ -3918,6 +3833,7 @@
             })
         },
 
+         // api to check user can send message or not
         "sendMessage": function(req, res) {
             User.findOne({ _id: req.body.receiverId }, function(err, result2) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -3955,7 +3871,7 @@
     }
 
 
-
+   // cron to check coupon status
     cron.schedule('*/2 * * * *', function() {
         User.find({ 'coupon.couponStatus': "VALID" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }

@@ -14,11 +14,11 @@ i18n_module = require('i18n-nodejs');
 i18n = new i18n_module(configs.lang, configs.langFile);
 console.log("===========================================", i18n.__('Welcome'));
 
-
-// couponGiftInfo , cashGiftInfo, hiddenGiftInfo, cashAdCondition, cashAdCondition, signUpCondition sellThisCoupon
+// type of terms conditions :-  couponGiftInfo , cashGiftInfo, hiddenGiftInfo, cashAdCondition, cashAdCondition, signUpCondition sellThisCoupon
 
 module.exports = {
 
+    // api to create terms and conditions
     "createTerms": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var obj = {
@@ -38,6 +38,7 @@ module.exports = {
         })
     },
 
+     // api to view terms for app
     "viewTermsCondition": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
         var conditionType = req.params.type;
@@ -48,6 +49,7 @@ module.exports = {
         })
     },
 
+     // api for edit terms condition for admin
     "editTermsCondition": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var conditionType = req.params.type;
@@ -58,6 +60,7 @@ module.exports = {
         })
     },
 
+     // show all terms condition for admin
     "viewAllTerms": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
         TermsCondition.find({}).exec(function(err, result) {

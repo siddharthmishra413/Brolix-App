@@ -14,6 +14,7 @@ console.log("===========================================", i18n.__('Welcome'));
 
 module.exports = {
 
+     // api to ceate event on pages
     "createEvent": function(req, res) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
         if (!req.body.pageId) {
@@ -22,7 +23,6 @@ module.exports = {
                 responseMessage: 'Please enter pageId'
             });
         } else {
-         //   console.log("request-->>>", JSON.stringify(req.body))
             var event = new createEvents(req.body);
             event.save(function(err, result) {
                 if (err) {
@@ -41,7 +41,7 @@ module.exports = {
         }
     },
 
-    //API for create Page
+    //show list of all events on a page
     "showAllEvents": function(req, res) {
             i18n = new i18n_module(req.params.lang, configs.langFile);
         createEvents.find({
@@ -83,7 +83,7 @@ module.exports = {
         })
     },
 
-    //API for Edit Event
+    //API for delete Event
     "deleteEvent": function(req, res) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
         createEvents.findByIdAndUpdate({
@@ -130,15 +130,14 @@ module.exports = {
         })
     },
 
+     // show list of all upcoming events on a page
     "upCommingEvents": function(req, res) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
         var startTime = new Date().toUTCString();
         var h = new Date(new Date(startTime).setHours(00)).toUTCString();
         var m = new Date(new Date(h).setMinutes(00)).toUTCString();
         var s = Date.now(m)
-            // var actualTime = parseInt(s);
         createEvents.find({ pageId: req.body.pageId, "status" : "ACTIVE"}).exec(function(err, result) {
-          //  console.log("result -->>", result)
             if (err) { res.send({ responseCode: 409,responseMessage: 'Internal server error' }); } 
             else {
                 var eventArray = [];

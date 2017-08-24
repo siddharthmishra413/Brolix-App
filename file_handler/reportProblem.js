@@ -15,7 +15,7 @@ console.log("===========================================", i18n.__('Welcome'));
 
 module.exports = {
 
-    //API Report Problem
+    //API Report Problem by user
     "reportProblembyUser": function(req, res) {
          i18n = new i18n_module(req.body.lang, configs.langFile);
         var report = new createNewReport(req.body);
@@ -30,6 +30,7 @@ module.exports = {
         })
     },
 
+     // api to report problem on ads
     "reportProblemOnAds": function(req, res) {
          i18n = new i18n_module(req.body.lang, configs.langFile);
         var report = new createNewReport(req.body);
@@ -47,16 +48,11 @@ module.exports = {
                         });
                     }
                 });
-                // res.send({
-                //     result: result,
-                //     responseCode: 200,
-                //     responseMessage: "Report submitted successfully."
-                // });
             }
         })
     },
 
-
+    // api to show all report
     "showReport": function(req, res) {
          i18n = new i18n_module(req.params.lang, configs.langFile);
         createNewReport.find({}).populate('userId').populate('adId').exec(function(err, result) {

@@ -17,6 +17,7 @@ console.log("===========================================", i18n.__('Welcome'));
 
 module.exports = {
 
+     // api to create brolix and dollors for admin
     "createBrolixAndDollors": function(req, res) {
           i18n = new i18n_module(req.body.lang, configs.langFile);
         var obj = {
@@ -36,6 +37,7 @@ module.exports = {
         })
     },
 
+     // api to view brolix for app
     "viewBrolixAndDollors": function(req, res) {
           i18n = new i18n_module(req.params.lang, configs.langFile);
         var conditionType = req.params.type;
@@ -46,6 +48,7 @@ module.exports = {
         })
     },
 
+     // api for edit brolix and dollors for admin
     "editBrolixAndDollors": function(req, res) {
          i18n = new i18n_module(req.body.lang, configs.langFile);
         var conditionType = req.params.type;
@@ -56,6 +59,7 @@ module.exports = {
         })
     },
 
+    // show list of all brolix and dollors condition for admin
     "viewAllBrolixAndDollors": function(req, res) {
           i18n = new i18n_module(req.params.lang, configs.langFile);
         brolixAndDollors.find({}).exec(function(err, result) {
