@@ -294,6 +294,7 @@ function initDB() {
                     type: 'ADMIN',
                     firstName: 'Deepak',
                     lastName: 'Sharma',
+                    isVerified: 'TRUE',
                     image: 'http://res.cloudinary.com/mobiloitte-in/image/upload/v1482579253/IMG_0768_f9b0nw.jpg',
                     permissions: ["manageUser", "managePages", "manageAds", "manageCards", "manageGifts", "managePayments", "adminTool"]
                 }

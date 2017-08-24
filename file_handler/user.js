@@ -44,7 +44,7 @@
 
 
     i18n = new i18n_module(configs.lang, configs.langFile);
-   console.log("123456","12"+20+30);
+    console.log("123456", "12" + 20 + 30);
 
 
 
@@ -796,7 +796,7 @@
 
         // },
 
-         // User Signup api
+        // User Signup api
         "signup": function(req, res) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
             waterfall([
@@ -868,28 +868,23 @@
                 })
             })
         },
-  
-         // send otp api
+
+        // send otp api
         "sendOtp": function(req, res) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
-
             var otpTy = functions.otp();
-
             waterfall([
                 function(callback) {
                     var twilio = require("twilio");
                     var accountSid = 'AC533eb1474ed6ffa9435ed696bba90640';
                     var authToken = '83635a75374932b24b16db7609825480';
                     var client = new twilio(accountSid, authToken);
-
-
                     client.messages.create({
                         body: otpTy,
                         to: "+918853735932",
                         from: '+18306269536'
                     }).then((message) =>
                         callback(null)
-
                     );
                 },
                 function(callback) {
@@ -973,7 +968,7 @@
                 }
             });
         },
-        
+
 
         //API for user Login
         "login": function(req, res) {
@@ -1515,7 +1510,7 @@
 
         },
 
-         // send cash to follower api
+        // send cash to follower api
         "sendCashToFollower": function(req, res) { // userId, receiverId, cash in request
             i18n = new i18n_module(req.body.lang, configs.langFile);
             waterfall([
@@ -1632,7 +1627,7 @@
             })
         },
 
-         // filter user on date basis api
+        // filter user on date basis api
         "filterToDateAndFromDate": function(req, res) {
             User.find({ _id: req.body.userId }).exec(function(err, results) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1661,7 +1656,7 @@
             })
         },
 
-         // update user privacy api
+        // update user privacy api
         "updatePrivacy": function(req, res) {
             User.findOneAndUpdate({ _id: req.body.userId }, { $set: { privacy: req.body.privacy } }, { new: true }, function(error, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1675,7 +1670,7 @@
             })
         },
 
-         // show all privacy api
+        // show all privacy api
         "showPrivacy": function(req, res) {
             User.findOne({ _id: req.body.userId }, 'privacy').exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1689,7 +1684,7 @@
             })
         },
 
-         // api for block user
+        // api for block user
         "blockUser": function(req, res) {
             console.log("block user exports-->>>" + JSON.stringify(req.body));
             User.findByIdAndUpdate({ _id: req.body.userId }, { $set: { 'status': 'BLOCK' } }, { new: true }, function(err, result) {
@@ -1704,8 +1699,8 @@
 
             });
         },
-     
-          // show list of all blocked user
+
+        // show list of all blocked user
         "showAllBlockUser": function(req, res) {
             User.find({ _id: req.params.id }).exec(function(err, result) {
                 i18n = new i18n_module(req.params.lang, configs.langFile);
@@ -1730,7 +1725,7 @@
             });
         },
 
-         // logout api
+        // logout api
         "logout": function(req, res) {
             User.findOneAndUpdate({ _id: req.body.userId }, { $set: { deviceType: '', deviceToken: '' } }, { new: true }).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1745,7 +1740,7 @@
             });
         },
 
-         // show list of upgrade card
+        // show list of upgrade card
         "showUpgradeCard": function(req, res) {
             User.find({ _id: req.body.userId, 'upgradeCardObject.status': "ACTIVE" }).populate({ path: 'upgradeCardObject.cardId', select: ('photo') }).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1770,7 +1765,7 @@
             })
         },
 
-         // show list of luck card
+        // show list of luck card
         "showLuckCard": function(req, res) {
             User.find({ _id: req.body.userId, 'luckCardObject.status': "ACTIVE" }).populate({ path: 'luckCardObject.cardId', select: ('photo') }).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1795,7 +1790,7 @@
             })
         },
 
-         // purchase upgrade card from store api
+        // purchase upgrade card from store api
         "purchaseUpgradeCard": function(req, res) {
             var array = [];
             var array1 = [];
@@ -1818,12 +1813,11 @@
                     res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') });
                 } else if (!result) {
                     return res.status(404).send({ responseMessage: i18n.__("please enter userId") })
-                }
-                else {
+                } else {
                     for (i = 0; i < array.length; i++) {
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { "upgradeCardObject": array[i] }, $set: { cardPurchaseDate: req.body.date } }, { new: true }).exec(function(err, user) {
                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
-                                    console.log("sum-->>", sum)
+                                console.log("sum-->>", sum)
                             }
                         });
                     }
@@ -1838,8 +1832,8 @@
             })
         },
 
-         /// purchase luck card from store api
-        "purchaseLuckCard": function(req, res) { 
+        /// purchase luck card from store api
+        "purchaseLuckCard": function(req, res) {
             var array = [];
             var array1 = [];
             for (j = 0; j < req.body.luckCardArr.length; j++) {
@@ -1879,7 +1873,7 @@
                 }
             })
         },
-        
+
         // Use luck card api
         "useLuckCard": function(req, res) { // userId, adId, Brolix, luckId in request parameter
             var obj = (req.body.luckId);
@@ -1913,7 +1907,7 @@
             }
         },
 
-         // use upgrade card api
+        // use upgrade card api
         "useUpgradeCard": function(req, res) { //upgradeId adId viewers cash in request
             console.log("use upgrade card request--->>>", req.body)
             waterfall([
@@ -1959,7 +1953,7 @@
             })
         },
 
-         // facebook login api
+        // facebook login api
         "facebookLogin": function(req, res) {
             console.log("facebook login req---->>>>", req.body)
             i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -2067,7 +2061,7 @@
             }
         },
 
-         // list of user cash gift api
+        // list of user cash gift api
         "userCashGifts": function(req, res) { // userId in req
             var userId = req.body.userId;
             User.find({ _id: userId, 'cashPrize.status': "ACTIVE" }).populate('cashPrize.adId').populate('cashPrize.pageId', 'pageName adAdmin').exec(function(err, result) {
@@ -2101,8 +2095,8 @@
             })
         },
 
-         // list of user coupon gifts api
-        "userCouponGifts": function(req, res) { 
+        // list of user coupon gifts api
+        "userCouponGifts": function(req, res) {
             var userId = req.body.userId;
             User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -2133,7 +2127,7 @@
             })
         },
 
-         // show list of all countries
+        // show list of all countries
         "countrys": function(req, res) {
             i18n = new i18n_module(req.params.lang, configs.langFile);
             var countrys = country.all();
@@ -2156,7 +2150,7 @@
             });
         },
 
-         // show list of all states
+        // show list of all states
         "getAllStates": function(req, res) {
             i18n = new i18n_module(req.params.lang, configs.langFile);
             var name = req.params.name;
@@ -2177,7 +2171,7 @@
             }
         },
 
-         // show user chat history 
+        // show user chat history 
         "chatHistory": function(req, res, next) {
             console.log('everything-----chatHistorychatHistorychatHistorys-------' + JSON.stringify(req.body));
             var condition;
@@ -2205,7 +2199,7 @@
             });
         },
 
-         // show list of chat user
+        // show list of chat user
         "onlineUserList": function(req, res) {
             console.log("request----->>>", JSON.stringify(req.body))
             var condition;
@@ -2216,7 +2210,7 @@
                 console.log("in else")
                 condition = { $and: [{ $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }, { pageId: { $exists: false } }] }
             }
-              console.log("condition----->>>",condition)
+            console.log("condition----->>>", condition)
             chat.aggregate(
                 [{
                     //$match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
@@ -2224,7 +2218,8 @@
                     $match: condition
                 }, {
                     //{ $group: { _id: { roomId: "$senderId", receiverId: "$receiverId" }, 
-                    $group: { _id: "$roomId",
+                    $group: {
+                        _id: "$roomId",
                         unread: {
                             $sum: {
                                 $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
@@ -2235,14 +2230,14 @@
                         senderImage: { $last: "$senderImage" },
                         receiverImage: { $last: "$receiverImage" },
                         senderName: { $last: "$senderName" },
-                        receiverName: { $last: "$receiverName" },                        
-                        senderId :{ $last : "$senderId" },
-                        receiverId :{ $last : "$receiverId" }         
+                        receiverName: { $last: "$receiverName" },
+                        senderId: { $last: "$senderId" },
+                        receiverId: { $last: "$receiverId" }
                     }
                 }]
             ).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                   console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
+                console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
                 if (err) res.send({ responseCode: 500, responseMessage: err });
                 else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
                 else {
@@ -2269,7 +2264,7 @@
                             result[i].unread += result[j].unread;
                         }
                         obj.push(result[i]);
-                       //   result.slice(j, 1);
+                        //   result.slice(j, 1);
                     }
                     res.send({
                         result: obj,
@@ -2280,9 +2275,9 @@
 
             })
         },
-    
+
         // for testing chat user api
-         "onlineUser": function(req, res) {
+        "onlineUser": function(req, res) {
             console.log("onlineUser ----  request----->>>", JSON.stringify(req.body))
             var condition;
             if (req.body.pageId) {
@@ -2292,26 +2287,32 @@
                 console.log("in else")
                 condition = { $and: [{ $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }, { pageId: { $exists: false } }] }
             }
-              // here is { $or:[ {senderId: "$senderId"}, {receiverId: "$receiverId" }]},
-              console.log("condition----->>>",JSON.stringify(condition))
+            // here is { $or:[ {senderId: "$senderId"}, {receiverId: "$receiverId" }]},
+            console.log("condition----->>>", JSON.stringify(condition))
             chat.aggregate(
                 [{
-                    $match: condition
-                }, 
-                { $group: { _id: { senderId: "$senderId", receiverId: "$receiverId" }, 
-             //   { $group: { _id: "$roomId",
-                        unread: { $sum: {             
-                             $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
-                     } },
-                        lastMsg: { $last: "$message" },
-                        timestamp: { $last: "$timestamp" },
-                        senderImage: { $last: "$senderImage" },
-                        receiverImage: { $last: "$receiverImage" },
-                        senderName: { $last: "$senderName" },
-                        receiverName: { $last: "$receiverName" }
-                    }}]).exec(function(err, result) {
+                        $match: condition
+                    },
+                    {
+                        $group: {
+                            _id: { senderId: "$senderId", receiverId: "$receiverId" },
+                            //   { $group: { _id: "$roomId",
+                            unread: {
+                                $sum: {
+                                    $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
+                                }
+                            },
+                            lastMsg: { $last: "$message" },
+                            timestamp: { $last: "$timestamp" },
+                            senderImage: { $last: "$senderImage" },
+                            receiverImage: { $last: "$receiverImage" },
+                            senderName: { $last: "$senderName" },
+                            receiverName: { $last: "$receiverName" }
+                        }
+                    }
+                ]).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                   console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
+                console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
                 if (err) res.send({ responseCode: 500, responseMessage: err });
                 else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
                 else {
@@ -2320,7 +2321,7 @@
                     })
                     var obj = [],
                         j;
-                  //  console.log("result-23232-->" + JSON.stringify(result));
+                    //  console.log("result-23232-->" + JSON.stringify(result));
                     for (var i = 0; i < result.length; i++) {
                         result.length - 1 == i ? j = i : j = i + 1;
                         while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
@@ -2339,11 +2340,11 @@
                             result[i].unread += result[j].unread;
                         }
                         obj.push(result[i]);
-                      //  result.splice(j, 1);
-                      //  console.log("obj---->" + JSON.stringify(obj));
-                       //   result.slice(j, 1);
+                        //  result.splice(j, 1);
+                        //  console.log("obj---->" + JSON.stringify(obj));
+                        //   result.slice(j, 1);
                     }
-                   // console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
+                    // console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
                     res.send({
                         result: obj,
                         responseCode: 200,
@@ -2352,8 +2353,8 @@
                 }
 
             })
-        }, 
-        
+        },
+
         // api for winners filter
         "winnersFilter": function(req, res) {
             var condition = { $or: [] };
@@ -2390,7 +2391,7 @@
             })
         },
 
-         // google login api
+        // google login api
         "googleLogin": function(req, res) {
             if (!req.body.googleID) { res.send({ responseCode: 403, responseMessage: 'please enter googleID' }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: 'Dob required' }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: 'country required' }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: 'city required' }); } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: 'MobileNumber required' }); } else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); } else {
                 User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
@@ -2481,7 +2482,7 @@
             }
         },
 
-         // buy coupon from store api
+        // buy coupon from store api
         "buyCoupon": function(req, res) { // user Id and ad Id and brolix in request
             waterfall([
                 function(callback) {
@@ -2688,7 +2689,7 @@
             ])
         },
 
-         // add and remove coupon in fav list
+        // add and remove coupon in fav list
         "addRemoveCouponFromFavourite": function(req, res) {
             var adId = req.body.adId;
             var userId = req.body.userId;
@@ -2733,7 +2734,7 @@
             }
         },
 
-         // set coupon exchange on off api
+        // set coupon exchange on off api
         "couponExchangeOnOff": function(req, res) {
             var userId = req.body.userId;
             var status = req.body.status;
@@ -2756,7 +2757,7 @@
             }
         },
 
-         // send coupon exchange req to other user api
+        // send coupon exchange req to other user api
         "sendCouponExchangeRequest": function(req, res) { //  couponCode, receiverId, senderId, exchangedWithAdId, senderCouponId
             console.log("sendCouponExchangeRequest request-->>>", JSON.stringify(req.body))
             waterfall([
@@ -2820,7 +2821,7 @@
                             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error. 33') }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: i18n.__("you are not allowed to send exchange request") }) } else if (result2.privacy.exchangeCoupon == "followers") {
                                 var flag = result2.userFollowers.find(userFollowers => userFollowers == senderId)
                                 if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon exchange request to this user due to privacy policies" }); } else {
-                                    createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime:couponExpirationTime } } }, { new: true }).exec(function(err, result3) {
+                                    createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime } } }, { new: true }).exec(function(err, result3) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 44') }) } else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
 
                                             createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId } } }, { new: true }).exec(function(err, result4) {
@@ -2848,7 +2849,7 @@
                                 createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime } } }, { new: true }).exec(function(err, result5) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 66') }) } else if (!result5) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
 
-                                        createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId} } }, { new: true }).exec(function(err, result6) {
+                                        createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId } } }, { new: true }).exec(function(err, result6) {
 
                                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 77') }) } else if (!result6) { res.send({ responseCode: 404, responseMessage: i18n.__("Sender ad not found.") }); } else {
                                                 //  callback(null, result3)
@@ -3003,7 +3004,7 @@
 
         },
 
-         // api to send coupon to any user
+        // api to send coupon to any user
         "sendCouponToFollower": function(req, res) {
             console.log("send coupon request=----->>>", JSON.stringify(req.body))
             waterfall([
@@ -3169,7 +3170,7 @@
             })
         },
 
-         // api to accept or decline coupon exchange received request
+        // api to accept or decline coupon exchange received request
         "acceptDeclineCouponRequest": function(req, res) { //receiverRequestId senderCouponCode senderId receiverId receiverCouponCode status
             console.log("accept Declined req--->>>", JSON.stringify(req.body))
             if (req.body.status == 'accepted') {
@@ -3208,9 +3209,9 @@
                             i18n = new i18n_module(req.body.lang, configs.langFile);
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { callback(null) } else {
                                 var requestId = result[0].couponExchangeSent._id;
-                                 console.log("accept decline --->>>"+requestId)
+                                console.log("accept decline --->>>" + requestId)
                                 createNewAds.update({ 'couponExchangeSent._id': new mongoose.Types.ObjectId(requestId) }, { $set: { 'couponExchangeSent.$.couponExchangeStatus': 'ACCEPTED' } }, { new: true }).exec(function(err, updatedResult) {
-                                    console.log("updatedResult--->>>"+JSON.stringify(updatedResult))
+                                    console.log("updatedResult--->>>" + JSON.stringify(updatedResult))
                                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
 
                                         callback(null)
@@ -3387,7 +3388,7 @@
                 }
             }
         },
-        
+
         // show list of user who registered with refferal code
         "registerWithRefferalCode": function(req, res) {
             var userId = req.params.id;
@@ -3423,7 +3424,7 @@
             })
         },
 
-         // api to use coupon
+        // api to use coupon
         "useCouponWithoutCode": function(req, res) {
             var couponId = req.body.couponId;
             var adId = req.body.adId;
@@ -3513,7 +3514,7 @@
             }
         },
 
-         // use coupon with hidden code
+        // use coupon with hidden code
         "useCouponWithCode": function(req, res) {
             var couponId = req.body.couponId;
             User.findOne({ 'hiddenGifts._id': couponId }).exec(function(err, result) {
@@ -3569,8 +3570,8 @@
                 }
             })
         },
- 
-         // api for save payment request
+
+        // api for save payment request
         "savePaymentRequest": function(req, res) {
             var payment = paypalPayment(req.body)
             payment.save(function(err, result) {
@@ -3585,7 +3586,7 @@
             })
         },
 
-         // search list of blocked user api
+        // search list of blocked user api
         "blockUserSearch": function(req, res) {
             followerList.find({ userId: req.body.userId, followerStatus: "block" }).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -3610,7 +3611,7 @@
             })
         },
 
-         // show list of user's received notification
+        // show list of user's received notification
         "userNotification": function(req, res) {
             User.find({ _id: req.body.userId }, function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -3628,7 +3629,7 @@
             })
         },
 
-         // turn off coupon exchange from privacy screen
+        // turn off coupon exchange from privacy screen
         "couponExchangeOff": function(req, res) {
             if (req.body.status == 'off') {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -3800,7 +3801,7 @@
             }
         },
 
-         // api to cancel sent coupon exchange req
+        // api to cancel sent coupon exchange req
         "cancelExchangeCouponRequest": function(req, res) {
             var senderId = req.body.userId;
             createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" } }, function(err, result) {
@@ -3833,7 +3834,7 @@
             })
         },
 
-         // api to check user can send message or not
+        // api to check user can send message or not
         "sendMessage": function(req, res) {
             User.findOne({ _id: req.body.receiverId }, function(err, result2) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -3871,7 +3872,7 @@
     }
 
 
-   // cron to check coupon status
+    // cron to check coupon status
     cron.schedule('*/2 * * * *', function() {
         User.find({ 'coupon.couponStatus': "VALID" }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }

@@ -108,6 +108,8 @@ module.exports = {
             console.log("result");
         })
     },
+    
+    // function to show online user list
     onlineUserList: function(senderConn, connectedClients, data) {
         var j = 0;
         var onlineFriends = [];
@@ -125,6 +127,8 @@ module.exports = {
             senderConn.send(onlineFriends);
         }
     },
+    
+    // function to update read count on chat
     readCount: function(data) {
        console.log("data--->>>>",JSON.stringify(data))
         chat.update({receiverId: data.userID, roomId: data.roomId, timestamp: { $lte: data.timestamp } }, { $set: { is_read: 1 } }, { multi: true }, function(err, readResult) {

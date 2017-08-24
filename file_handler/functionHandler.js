@@ -3,9 +3,9 @@
   var FCM = require('fcm').FCM;
   var config = require("../config.js")
   console.log("secreteKey-->>>", config.secreteKey)
-      var apn = require('apn');
+  var apn = require('apn');
   module.exports = {
-      
+
       // send otp function
       "otp": function(mobile, msg_body) {
           var possible = "123456789";
@@ -15,7 +15,7 @@
               console.log(otp);
           }
           var send_msg_body = msg_body ? msg_body : 'You have been registerd ' + otp + ' OTP'
-              //var otp = Math.floor(Math.random() * 10000)
+          //var otp = Math.floor(Math.random() * 10000)
           var data = JSON.stringify({
               api_key: '0ec05def',
               api_secret: '48fbcc6a6fedbcaa',
@@ -38,7 +38,7 @@
           return otp;
           console.log("-------Your OTP------" + otp)
       },
-      
+
       // send emial function
       "mail": function(email, massege, otp) {
           var transporter = nodemailer.createTransport({
@@ -55,7 +55,7 @@
               subject: 'Brolix',
               text: 'you have a new submission with following details',
               html: massege + "-" + otp
-                  // "Your otp is :"
+              // "Your otp is :"
           }
           console.log("data in req" + email);
           console.log("Dta in mailOption : " + JSON.stringify(mailOption));
@@ -65,7 +65,7 @@
               }
           });
       },
-      
+
       // send android notification function
       "android_notification": function(deviceToken, message1) {
           console.log("message1--22222->>>", message1)
@@ -76,7 +76,7 @@
               'data.message': message1,
               'data.type': 'testing'
           };
-          console.log("message 0-0-0-0-0--->>>",message)
+          console.log("message 0-0-0-0-0--->>>", message)
           fcm.send(message, function(err, response) {
               if (err) {
                   console.log("Android !! Something has gone wrong!", err);
@@ -86,7 +86,7 @@
           });
       },
 
-       // send ios notification function
+      // send ios notification function
       "iOS_notification": function(deviceToken, message) {
           console.log("message-11111-->>>", message)
           console.log("deviceToken--->>>", deviceToken)
@@ -107,7 +107,7 @@
           var myDevice = new apn.Device(deviceToken);
           var note = new apn.Notification();
           console.log("mydevice-1111-->>>", myDevice)
-              //note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+          //note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
           note.badge = 1;
           note.alert = message;
           note.sound = 'default';

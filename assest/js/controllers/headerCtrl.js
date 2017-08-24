@@ -84,10 +84,25 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
     }).error(function(status, data) {
 
 })
+
     
      $scope.logout = function() {
-      localStorage.removeItem('token');
-        $state.go('login')
+      BootstrapDialog.show({
+        title: 'Log out',
+        message: 'Are you sure want to log out',
+        buttons: [{
+            label: 'Yes',
+            action: function(dialog) {
+              dialog.close();
+              localStorage.removeItem('token');
+              $state.go('login')
+            }
+        }, {
+            label: 'No',
+            action: function(dialog) {
+                dialog.close();
+            }
+        }]
+    });
     }
-
 })

@@ -54,6 +54,7 @@ i18n = new i18n_module(configs.lang, configs.langFile);
 
 
 module.exports = {
+    
     "login": function(req, res) {
         // if (!validator.isEmail(req.body.email)) res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' });
         // else {
@@ -76,14 +77,8 @@ module.exports = {
                         responseCode: 200,
                         responseMessage: "Login successfully."
                     });
-
-                    // res.send({
-                    //     responseCode: 200,
-                    //     responseMessage: "Login successfully."
-                    // });
                 }
             })
-       // }
     },
 
     "adminProfile": function(req, res) {
@@ -121,7 +116,7 @@ module.exports = {
             User.findOne({ email: req.body.email }).exec(function(err, result) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result) { res.send({ responseCode: 401, responseMessage: "Email should be unique." }); } else {
                     User.findOne({ mobileNumber: req.body.mobileNumber, countryCode : req.body.countryCode }).exec(function(err, result1) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "MobileNumber should be unique." }); } else {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1) { res.send({ responseCode: 401, responseMessage: "Mobile number should be unique." }); } else {
                             var user = new User(req.body);
                             user.save(function(err, result) {
                                 if (err) {
