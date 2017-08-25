@@ -3,8 +3,8 @@ var app = express();
 var productHandler = require('../file_handler/product.js');
 var authUser = require('../middlewares/authUser');
 
-app.post('/deleteComments', productHandler.deleteComments);
-app.post('/editComments', productHandler.editComments);
+app.post('/deleteComments', authUser.authUser,productHandler.deleteComments);
+app.post('/editComments', authUser.authUser, productHandler.editComments);
 
 app.post('/createProduct', authUser.authUser, productHandler.createProduct);
 app.get('/productList/:id/:lang', authUser.authUser, productHandler.productList);

@@ -591,18 +591,33 @@ module.exports = {
                         callback(null, noDataValue, value, blockedArray)
                     }
                 })
-            },
-            function(noDataValue, dataValue, blockedArray, callback) {
+            }, function(noDataValue, value, blockedArray,callback){
+               var re = new RegExp(req.body.pageName, 'i');
+               createNewPage.find({ 'pageName': { $regex: re }, status: 'ACTIVE' }, function(err, pageResult) {
+                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+                         console.log("array--->>>",JSON.stringify(pageResult))
+                       var array= []
+                       for (var i = 0; i < pageResult.length; i++) {
+                           array.push(pageResult[i]._id)
+                       }
+                       console.log("array--->>>",array)
+                       callback(null, array, noDataValue, value, blockedArray);
+                   }
+               })
+
+           },
+            function(array, noDataValue, dataValue, blockedArray, callback) {
                 var re = new RegExp(req.body.pageName, 'i');
                 var re2 = new RegExp(req.body.subCategory, 'i')
                 var data = {
                     'whoWillSeeYourAdd.country': req.body.country,
                     'whoWillSeeYourAdd.state': req.body.state,
                     'whoWillSeeYourAdd.city': req.body.city,
-                    'pageName': { $regex: re },
+                   // 'pageName': { $regex: re },
                     'adsType': req.body.type,
                     'category': req.body.category,
-                    'subCategory': { $regex: re2 }
+                    'subCategory': { $regex: re2 },
+                     'pageId':{$in: array}
                 }
 
                 for (var key in data) {
@@ -613,10 +628,11 @@ module.exports = {
                     }
                 }
                 var activeStatus = { userId: { $nin: blockedArray }, status: 'ACTIVE' }
-                Object.assign(data, activeStatus)
-                console.log("data--->>>", JSON.stringify(data))
+                Object.assign(data, activeStatus)       
+                console.log("data==========>",data)         
                 createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                        console.log("data--->>>", JSON.stringify(results))
                         //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
                         for (var i = 0; i < results.docs.length; i++) {
                             if (results.docs[i].cash == 0) {
@@ -1912,6 +1928,7 @@ module.exports = {
         })
     },
 
+     // coupon winners date filter api
     "couponWinnersDateFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: 'Please enter atleast start date or end date' }); } else {
@@ -1995,6 +2012,7 @@ module.exports = {
         }
     },
 
+     // cash winners filter api
     "cashWinnersDateFilter": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: i18n.__('Please enter atleast start date or end date') }); } else {
@@ -2077,6 +2095,7 @@ module.exports = {
     },
 
 
+     // list of cash winners api
     "cashWinners": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var pageNumber = Number(req.params.pageNumber)
@@ -2139,6 +2158,7 @@ module.exports = {
         })
     },
 
+     // tag friends on ads api
     "tagOnads": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
@@ -2191,6 +2211,7 @@ module.exports = {
         })
     },
 
+     // edit ad api
     "editAd": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         //console.log("edit ad-----*+*+/*+///+*///--->>>",JSON.stringify(req.body))
@@ -2206,6 +2227,7 @@ module.exports = {
         });
     },
 
+     // ad filter on date basis
     "adsDateFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: "Please enter atleast startDate or endDate" }); } else {
@@ -2252,6 +2274,7 @@ module.exports = {
         }
     },
 
+     // // page's coupon ad filter api
     "particularPageCouponAdsFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var status = req.body.status;
@@ -2275,6 +2298,7 @@ module.exports = {
         })
     },
 
+     // page's cash ad filter api
     "particularPageCashAdsFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var status = req.body.status;
@@ -2297,6 +2321,7 @@ module.exports = {
         })
     },
 
+     // coupon filter in app api
     "couponFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var condition = { $or: [] };
@@ -2334,6 +2359,7 @@ module.exports = {
         })
     },
 
+     // coupon gifts filter api
     "couponGiftsFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var userId = req.body.userId;
@@ -2371,6 +2397,7 @@ module.exports = {
         })
     },
 
+     // cash gifts filter api
     "cashGiftsFilter": function(req, res) { // userId in req 
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var userId = req.body.userId;
@@ -2407,6 +2434,7 @@ module.exports = {
         })
     },
 
+     // show list of coupon in store
     "storeCouponList": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
         waterfall([
@@ -2474,6 +2502,7 @@ module.exports = {
         ])
     },
 
+     // view coupon in app api
     "viewCoupon": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
@@ -2491,6 +2520,7 @@ module.exports = {
         })
     },
 
+     // page coupon filter api
     "PageCouponFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
@@ -2606,7 +2636,7 @@ module.exports = {
         ])
     },
 
-
+    // store user's fav coupon filter api
     "StoreFavCouponFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
@@ -2720,6 +2750,7 @@ module.exports = {
         ])
     },
 
+     // ad view click api
     "adsViewClick": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var startTime = new Date(req.body.date).toUTCString();
@@ -2808,6 +2839,7 @@ module.exports = {
         })
     },
 
+     // ad Statistics api
     "adStatistics": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         // var queryCondition = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { adId: req.body.adId }] } }
@@ -2887,6 +2919,7 @@ module.exports = {
         ])
     },
 
+     // coupon Statistics filter clicks api
     "adStatisticsFilterClick": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         // var details = req.body;
@@ -3068,7 +3101,6 @@ module.exports = {
                 })
             });
     },
-
     "CouponAdStatistics": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var updateData = { $match: { adId: req.body.adId } };
@@ -3197,7 +3229,7 @@ module.exports = {
         ])
     },
 
-
+    // coupon Statistics year clicks api
     "couponStatisticsYearClicks": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var newDate = new Date(req.body.date).getFullYear();
@@ -3281,7 +3313,6 @@ module.exports = {
 
         //  var newDate = new Date(req.body.date).getFullYear();
         //  console.log("groupCond", JSON.stringify(groupCond))
-
         waterfall([
             function(callback) {
                 if (req.body.click == 'expiredCoupon' || req.body.click == 'usedCoupon' || req.body.click == 'validCoupon') {
@@ -3427,6 +3458,7 @@ module.exports = {
         })
     },
 
+     // cash ad Statistics api
     "CashAdStatistics": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
@@ -3485,6 +3517,7 @@ module.exports = {
         ])
     },
 
+     // cash Statistics year clicks api
     "cashStatisticsYearClicks": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var newYear = new Date(req.body.date).getFullYear();
@@ -3597,6 +3630,7 @@ module.exports = {
         })
     },
 
+     // note in use for testing
     "homepageAds": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("home page req-->>", req.body)
@@ -3626,7 +3660,6 @@ module.exports = {
                 callback(null, data)
             },
             function(data, callback) {
-
                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { expiryOfPriority: req.body.expiryOfPriority, priorityNumber: req.body.priorityNumber } }, { new: true }, function(err, result) {
                     if (err) {
                         return res.json({ responseCode: 404, responseMessage: "Internal server error.", err })
@@ -3644,10 +3677,8 @@ module.exports = {
                                 }
                                 // console.log("above data",data)
                                 data.docs.splice(priorityNumber, 0, data.docs.splice(i, 1)[0]);
-
                                 // return data.docs;
                             }
-
                         }
                         callback(null, data.docs)
                     }
@@ -3695,6 +3726,7 @@ module.exports = {
         })
     },
 
+    // update cash in user data api
     "updateCash": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         User.findOneAndUpdate({ _id: req.params.id }, { $inc: { cash: req.body.cash } }, { new: true }).exec(function(err, result) {
@@ -3712,7 +3744,8 @@ module.exports = {
             }
         })
     },
-
+    
+    // create ad payment api
     "createAdPayment": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
@@ -3919,7 +3952,8 @@ module.exports = {
         //   console.log("output",output)
         // });
     },
-
+ 
+     // note in use for testing
     "test": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         uploadData(req, res, function(err, result) {
@@ -3937,6 +3971,7 @@ module.exports = {
 
     },
 
+     // for upload excel file in app
     "uploadXlFile": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req", req)
@@ -3952,7 +3987,6 @@ module.exports = {
             }
         }).single('userFile')
         //var upload = multer({ storage: storage }).array('userFile')
-
         upload(req, res, function(err, result) {
             if (err) {
                 console.log("error", JSON.stringify(err))

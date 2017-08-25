@@ -670,7 +670,7 @@ app.service('userService', function($http) {
         },
 
         viewcard: function(type) {
-            return $http.get(baseurl + '/admin/viewCards/' + type);
+            return $http.get(baseurl + '/admin/viewCards/' + type+'/en');
         },
 
         showCardDetails: function(id) {

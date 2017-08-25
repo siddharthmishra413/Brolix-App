@@ -45,7 +45,7 @@
                                             <datepicker date-format="yyyy-MM-dd" selector="form-control" date-max-limit="{{minDate}}">
                                                 <div class="input-group">
                                                     <input class="form-control" style="cursor:pointer;" placeholder="Choose a date" ng-model="myFrom.dob" max="2017-04-05" />
-                                                    <span class="input-group-addon">
+                                                    <!-- <span class="input-group-addon"> -->
                                                    <!-- <i class="fa fa-lg fa-calendar"></i> -->
                                                    </span>
                                                 </div>
@@ -185,7 +185,7 @@
                                 <!-- Change this to a button or input when using this as a form -->
                                 <div class="btn2 text-center">
 
-                                    <button class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid" ng-click="addUser()">Add</button>
+                                    <button class="btn btn-lg btn-green" ng-disabled="userFrom.$invalid || myFrom.Cpassword!=myFrom.password &&myFrom.Cpassword.length>0" ng-click="addUser()">Add</button>
                                     <a class="btn btn-lg btn-green" ng-click="cancel()">Cancel</a>
                                 </div>
                             </fieldset>
