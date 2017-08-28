@@ -268,28 +268,14 @@ $scope.addNewPage = function(addNewPage){
      }  
  }
 	$scope.changeImage = function(input,key) {
-		spinnerService.show('html5spinner');  
+		// spinnerService.show('html5spinner');  
 		var file = input.files[0];
 		var ext = file.name.split('.').pop();
 		if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
 		$scope.imageName = file.name;
 
 		uploadimgServeice.user(file).then(function(ObjS) {
-		        $timeout(function () {      
-		    spinnerService.hide('html5spinner');     
-		        if(key=='pageImage'){
-                    $scope.myForm.pagephoto = ObjS.data.result.url;
-                    $scope.user.pagephoto = ObjS.data.result.url;
-                    console.log("image1",$scope.myForm.pagephoto)
-                    console.log("image2",$scope.user.pagephoto)
-
-                }else{
-                    $scope.myForm.userphoto = ObjS.data.result.url;
-                    $scope.user.userphoto = ObjS.data.result.url;
-                    console.log("image1",$scope.myForm.userphoto)
-                    console.log("image2",$scope.user.userphoto)
-                }
-		          }, 250);  
+		         
 		        // $scope.user.photo1 = ObjS.data.result.url;
 		        console.log("image1",$scope.myForm.pagephoto)
             console.log("image2",$scope.user.pagephoto)

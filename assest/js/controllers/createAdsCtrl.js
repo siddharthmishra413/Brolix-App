@@ -364,7 +364,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
 
     $scope.changeImage = function(input, type) {
         console.log("type",type)
-        spinnerService.show('html5spinner');
+        // spinnerService.show('html5spinner');
         var file = input.files[0];
         var ext = file.name.split('.').pop();
         if (ext == "mp3" || ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png" || ext == "3gp" || ext == "mp4" || ext == "flv" || ext == "avi" || ext == "wmv") {
@@ -376,161 +376,177 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
 
                     case 'advertismentCover':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.advertismentCover = ObjS.data.result.url;
-                                console.log("createAds.advertismentCover",$scope.createAds.advertismentCover)
-                            }, 250);
+                            $scope.createAds.advertismentCover = ObjS.data.result.url;
+                            console.log("createAds.advertismentCover",$scope.createAds.advertismentCover)
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'appPhoto1':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.appPhoto1 = ObjS.data.result.url;
+                            $scope.createAds.appPhoto1 = ObjS.data.result.url;
                                 $scope.downloadPhotoss($scope.createAds.appPhoto1);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
 
-                            }, 250);
+                            // }, 250);
                         })
                         break;
 
                     case 'appPhoto2':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.appPhoto2 = ObjS.data.result.url;
+                            $scope.createAds.appPhoto2 = ObjS.data.result.url;
                                 $scope.downloadPhotoss($scope.createAds.appPhoto2);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'appPhoto3':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.appPhoto3 = ObjS.data.result.url;
+                            $scope.createAds.appPhoto3 = ObjS.data.result.url;
                                 $scope.downloadPhotoss($scope.createAds.appPhoto3);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'appPhoto4':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.appPhoto4 = ObjS.data.result.url;
+                            $scope.createAds.appPhoto4 = ObjS.data.result.url;
                                 $scope.downloadPhotoss($scope.createAds.appPhoto4);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'appPhoto5':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.appPhoto5 = ObjS.data.result.url;
+                            $scope.createAds.appPhoto5 = ObjS.data.result.url;
                                 $scope.downloadPhotoss($scope.createAds.appPhoto5);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'appPhoto6':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.appPhoto6 = ObjS.data.result.url;
+                            $scope.createAds.appPhoto6 = ObjS.data.result.url;
                                 $scope.downloadPhotoss($scope.createAds.appPhoto6);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'appIcon':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.appIcon = ObjS.data.result.url;
+                            $scope.createAds.appIcon = ObjS.data.result.url;
                                 console.log($scope.createAds.appIcon,$scope.createAds.appIcon)
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'slidePhoto1':
                     console.log("xvxcvxc")
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.slidePhoto1 = ObjS.data.result.url;
+                            $scope.createAds.slidePhoto1 = ObjS.data.result.url;
                                 $scope.slideshowPhotoFun($scope.createAds.slidePhoto1);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'slidePhoto2':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.slidePhoto2 = ObjS.data.result.url;
+                            $scope.createAds.slidePhoto2 = ObjS.data.result.url;
                                 $scope.slideshowPhotoFun($scope.createAds.slidePhoto2);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'slidePhoto3':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.slidePhoto3 = ObjS.data.result.url;
+                            $scope.createAds.slidePhoto3 = ObjS.data.result.url;
                                 $scope.slideshowPhotoFun($scope.createAds.slidePhoto3);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'slidePhoto4':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.slidePhoto4 = ObjS.data.result.url;
+                            $scope.createAds.slidePhoto4 = ObjS.data.result.url;
                                 $scope.slideshowPhotoFun($scope.createAds.slidePhoto4);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'slidePhoto5':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.slidePhoto5 = ObjS.data.result.url;
+                            $scope.createAds.slidePhoto5 = ObjS.data.result.url;
                                 $scope.slideshowPhotoFun($scope.createAds.slidePhoto5);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'slidePhoto6':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.slidePhoto6 = ObjS.data.result.url;
+                            $scope.createAds.slidePhoto6 = ObjS.data.result.url;
                                 $scope.slideshowPhotoFun($scope.createAds.slidePhoto6);
-                            }, 250);
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'giftDesImage':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.gifyDescImage = ObjS.data.result.url;
-                            }, 250);
+                             $scope.createAds.gifyDescImage = ObjS.data.result.url;
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                               
+                            // }, 250);
                         })
                         break;
 
                     case 'adCover':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.adCover = ObjS.data.result.url;
-                            }, 250);
+                            $scope.createAds.adCover = ObjS.data.result.url;
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
@@ -538,45 +554,50 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
 
                     case 'appPhoto1':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.promoteAppGame.appPhoto1 = ObjS.data.result.url;
-                            }, 250);
+                            $scope.promoteAppGame.appPhoto1 = ObjS.data.result.url;
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
                     case 'appPhoto2':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.promoteAppGame.appPhoto2 = ObjS.data.result.url;
-                            }, 250);
+                            $scope.promoteAppGame.appPhoto2 = ObjS.data.result.url;
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'appPhoto3':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.promoteAppGame.appPhoto3 = ObjS.data.result.url;
-                            }, 250);
+                            $scope.promoteAppGame.appPhoto3 = ObjS.data.result.url;
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'appPhoto4':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.promoteAppGame.appPhoto4 = ObjS.data.result.url;
-                            }, 250);
+                            $scope.promoteAppGame.appPhoto4 = ObjS.data.result.url;
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
                     case 'giftImage':
                         uploadimgServeice.user(file).then(function(ObjS) {
-                            $timeout(function() {
-                                spinnerService.hide('html5spinner');
-                                $scope.createAds.giftImage = ObjS.data.result.url;
-                            }, 250);
+                            $scope.createAds.giftImage = ObjS.data.result.url;
+                            // $timeout(function() {
+                            //     spinnerService.hide('html5spinner');
+                                
+                            // }, 250);
                         })
                         break;
 
@@ -589,18 +610,20 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                 if (type == 'mp3') {
 
                     uploadimgServeice.user(file).then(function(ObjS) {
-                        $timeout(function() {
-                            spinnerService.hide('html5spinner');
-                            $scope.createAds.audioUrl = ObjS.data.result.url;
-                        }, 250);
+                        $scope.createAds.audioUrl = ObjS.data.result.url;
+                        // $timeout(function() {
+                        //     spinnerService.hide('html5spinner');
+                            
+                        // }, 250);
                     })
 
                 } else {
                     uploadimgServeice.user(file).then(function(ObjS) {
-                        $timeout(function() {
-                            spinnerService.hide('html5spinner');
-                            $scope.createAds.vedioUrl = ObjS.data.result.url;
-                        }, 250);
+                        $scope.createAds.vedioUrl = ObjS.data.result.url;
+                        // $timeout(function() {
+                        //     spinnerService.hide('html5spinner');
+                            
+                        // }, 250);
                     })
                 }
             }

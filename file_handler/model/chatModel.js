@@ -43,6 +43,9 @@ var chatSchema = new Schema({
     roomId: {
         type: String
     },
+    chatType:{
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now

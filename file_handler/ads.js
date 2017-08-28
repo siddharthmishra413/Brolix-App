@@ -1460,6 +1460,7 @@ module.exports = {
 
     // for all are winners condition 
     "allAreWinners": function(req, res) { //req.body.userId, adId
+        console.log("all are winners--->>>",req.body)
         var userId = req.body.userId;
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
@@ -1598,8 +1599,15 @@ module.exports = {
                                                 adId: req.body.adId,
                                                 pageId: pageId
                                             }
+                                            var notifydata = {
+                                                adId: req.body.adId,
+                                                type: 'You have successfully won this raffle',
+                                                linkType: 'profile',
+                                                notificationType: 'WinnerType'
+                                            }
                                             console.log("cash---data--->>>", data)
-                                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data, gifts: req.body.adId }, "notification": { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
+                                            // { $push: { coupon: data, notification: notifyData, gifts: req.body.adId } }
+                                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data, gifts: req.body.adId, notification: notifydata}, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
                                                 console.log("result-->>", result)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                                     if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
@@ -1666,7 +1674,13 @@ module.exports = {
                                                     pageId: pageId
                                                 }
 
-                                                User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId }, notification: { adId: req.body.adId, type: 'You have successfully won this raffle', linkType: 'profile', notificationType: 'WinnerType' } }, { multi: true }, function(err, result) {
+                                                var notifydata = {
+                                                adId: req.body.adId,
+                                                type: 'You have successfully won this raffle',
+                                                linkType: 'profile',
+                                                notificationType: 'WinnerType'
+                                            }
+                                                User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId, notification: notifydata }}, { multi: true }, function(err, result) {
                                                     console.log("4")
                                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                         if (result.deviceToken && result.deviceType && result.notification_status && result.status) {

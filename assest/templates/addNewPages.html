@@ -40,7 +40,7 @@
                                     <div class="row">
                                         <label class="control-label col-md-3">Sub Categories</label>
                                         <div class="col-md-9">
-                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" ng-value="checkBoxArray">{{checkBoxArray.toString();}}<span class="caret"></span></button>
                                             <ul class="form-control dropdown-menu"  name="subCategory" >
                                            <!--  <li value="">Select Sub Categories</li> -->
                                             <li ng-repeat="subCategoryData in subCategoryData"><input type="checkbox" unchecked ng-click="saveData(subCategoryData);"/>{{subCategoryData}}</a></li>
@@ -147,7 +147,7 @@
             <form class="form-block" role="form" name="myFrom">
                 <div class="panel-body">
                     <div class="cover-image" >
-                        <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1500280405/q66bda3c8a2zfxg6xexo.jpg'}}" id="output" >
+                        <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503656038/m1w8dqdpqnhkduxtaukw.png'}}" id="output" >
                         <label class="fileContainer">
                             Choose File
                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" name="image" accept="image/*" required>
@@ -155,7 +155,7 @@
                         </label>
                     </div>
                     <div class="page-image clearfix">
-                        <img class="profile-user-img img-responsive" src="{{myForm.userphoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1500280515/wro01np9gyuyzgcm2hwj.jpg'}}" id="output">
+                        <img class="profile-user-img img-responsive" src="{{myForm.userphoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503655905/uk0wjh6hi4ihc2wsv4xy.png'}}" id="output">
                         <label class="fileContainer">
                             Choose File
                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'userImage')" accept="image/*" required>

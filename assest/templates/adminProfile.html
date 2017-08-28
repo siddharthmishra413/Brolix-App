@@ -8,7 +8,7 @@
         <div class="panel-body">
             <div class="cus-upload-photos">
                  <div class="page-image clearfix">
-                    <img class="profile-user-img img-responsive" ng-model="createAds.adCover" src="{{myFrom.image || './dist/image/user-image.jpeg'}}" id="output">
+                    <img class="profile-user-img img-responsive" ng-model="createAds.adCover" src="{{'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503658623/tziupdwsii6uzhwzxk2q.png' || myFrom.image}}" id="output">
                     <label class="fileContainer">
                         Choose File
                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this)" accept="image/*">
@@ -119,7 +119,7 @@
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Old Password</label>
                     <div class="col-sm-9">
-                      <input type="password" class="form-control"name="oldpassword"  ng-model="myForm.oldpassword" placeholder="Old Password" ng-maxlength="50" maxlength="51" required> 
+                      <input type="password" class="form-control"name="oldpassword"  ng-model="myForm.oldpassword" placeholder="Old Password" ng-maxlength="6" maxlength="15" required> 
                        <span class="error" ng-if="myForm1.oldpassword.$dirty && myForm1.oldpassword.$invalid">
                         <span class="error" ng-if="myForm1.oldpassword.$error.required">Password is required.</span>
                            <span class="error" ng-if="myForm1.oldpassword.$error.maxlength || myForm1.oldpassword.$error.minlength">Password  must be in between 8-16 characters</span>

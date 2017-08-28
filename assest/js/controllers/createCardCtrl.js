@@ -38,7 +38,7 @@ $scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1500
     }
  
     $scope.changeImage = function(input,type) {
-      spinnerService.show('html5spinner');  
+      // spinnerService.show('html5spinner');  
        var file = input.files[0];
        var ext = file.name.split('.').pop();
        if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
@@ -49,10 +49,11 @@ $scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1500
 
                 uploadimgServeice.user(file).then(function(ObjS) {
                   console.log("image1",ObjS.data.result.url)  
-                    $timeout(function () {      
-                spinnerService.hide('html5spinner');     
-                    $scope.createCard.image = ObjS.data.result.url;
-                      }, 250);  
+                  $scope.createCard.image = ObjS.data.result.url;
+                //     $timeout(function () {      
+                // spinnerService.hide('html5spinner');     
+                    
+                //       }, 250);  
                     // $scope.user.photo1 = ObjS.data.result.url;
                     console.log("image1",$scope.createCard.image)
                 })  
@@ -62,10 +63,11 @@ $scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1500
 
                 uploadimgServeice.user(file).then(function(ObjS) {
                     console.log("image2",ObjS.data.result.url)
-                      $timeout(function () {      
-                spinnerService.hide('html5spinner'); 
                     $scope.createCard.image2 = ObjS.data.result.url;
-                      }, 250); 
+                //       $timeout(function () {      
+                // spinnerService.hide('html5spinner'); 
+                    
+                //       }, 250); 
                     // $scope.user.photo2 = ObjS.data.result.url;
                     console.log("image2",ObjS.data.result.url)
                 })  

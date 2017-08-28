@@ -485,7 +485,7 @@ userService.getPage().then(function(success) {
 $scope.changeImage = function(input,type) {
     console.log("type",type)
 
-     spinnerService.show('html5spinner');  
+     //spinnerService.show('html5spinner');  
        var file = input.files[0];
        //console.log("input type",input.files[0])
        var ext = file.name.split('.').pop();
@@ -501,7 +501,7 @@ $scope.changeImage = function(input,type) {
                 case 'advertismentCover': 
                 uploadimgServeice.user(file).then(function(ObjS) {
                      $timeout(function () {      
-                spinnerService.hide('html5spinner');   
+                //.hide('html5spinner');   
                     $scope.createAds.advertismentCover = ObjS.data.result.url;
                     
                         }, 250);  
@@ -512,12 +512,13 @@ $scope.changeImage = function(input,type) {
 
                 case 'appPhoto1': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                     $timeout(function () {      
-                spinnerService.hide('html5spinner');   
                     $scope.createAds.appPhoto1 = ObjS.data.result.url;
                     $scope.downloadPhotoss($scope.createAds.appPhoto1);
+                //      $timeout(function () {      
+                // spinnerService.hide('html5spinner');   
                     
-                        }, 250);  
+                    
+                //         }, 250);  
                     // $scope.user.photo1 = ObjS.data.result.url;
                     console.log("image",$scope.createAds.photo1)
                 })  
@@ -525,11 +526,12 @@ $scope.changeImage = function(input,type) {
 
                 case 'appPhoto2': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.appPhoto2 = ObjS.data.result.url;
                     $scope.downloadPhotoss($scope.createAds.appPhoto2);
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.photo2 = ObjS.data.result.url;
                     console.log("image",$scope.createAds.photo2)
                 })  
@@ -537,44 +539,48 @@ $scope.changeImage = function(input,type) {
 
                 case 'appPhoto3': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.appPhoto3 = ObjS.data.result.url;
                     $scope.downloadPhotoss($scope.createAds.appPhoto3);
-                    }, 250); 
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250); 
                     // $scope.user.photo3 = ObjS.data.result.url;
                 })  
                 break;
 
                 case 'appPhoto4': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner');
                     $scope.createAds.appPhoto4 = ObjS.data.result.url;
                     $scope.downloadPhotoss($scope.createAds.appPhoto4);
-                        }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner');
+                    
+                    //     }, 250);  
                     // $scope.user.photo4 = ObjS.data.result.url;
                 })  
                 break;
 
                 case 'appPhoto5': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.appPhoto5 = ObjS.data.result.url;
                     $scope.downloadPhotoss($scope.createAds.appPhoto5);
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.photo5 = ObjS.data.result.url;
                 })  
                 break;
 
                 case 'appPhoto6': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.appPhoto6 = ObjS.data.result.url;
                     $scope.downloadPhotoss($scope.createAds.appPhoto6);
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
                 })  
@@ -582,20 +588,22 @@ $scope.changeImage = function(input,type) {
 
                 case 'appIcon': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.appIcon = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.appIcon = ObjS.data.result.url;
                 })  
                 break;
 
                 case 'slidePhoto1': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.slidePhoto1 = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
                 })  
@@ -603,10 +611,11 @@ $scope.changeImage = function(input,type) {
 
                 case 'slidePhoto2': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.slidePhoto2 = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
                 })  
@@ -614,10 +623,11 @@ $scope.changeImage = function(input,type) {
 
                 case 'slidePhoto3': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.slidePhoto3 = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
                 })  
@@ -625,10 +635,11 @@ $scope.changeImage = function(input,type) {
 
                 case 'slidePhoto4': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.slidePhoto4 = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
                 })  
@@ -636,10 +647,11 @@ $scope.changeImage = function(input,type) {
 
                 case 'slidePhoto5': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.slidePhoto5 = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
                 })  
@@ -647,10 +659,11 @@ $scope.changeImage = function(input,type) {
 
                 case 'slidePhoto6': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.slidePhoto6 = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.photo6 = ObjS.data.result.url;
 
                 })  
@@ -658,10 +671,11 @@ $scope.changeImage = function(input,type) {
 
                 case 'adCover': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.adCover = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     console.log('adsType Image in video-->>>'+$scope.createAds.adCover)
                     console.log(JSON.stringify($scope.createAds.adCover))
                 })  
@@ -671,40 +685,44 @@ $scope.changeImage = function(input,type) {
 
                 case 'appPhoto1': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
-                   $scope.promoteAppGame.appPhoto1 = ObjS.data.result.url;
-                    }, 250);  
+                     $scope.promoteAppGame.appPhoto1 = ObjS.data.result.url;
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                  
+                    // }, 250);  
                     // $scope.user.downloadPhoto1 = ObjS.data.result.url;
 
                 })  
                 break;
                 case 'appPhoto2': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.promoteAppGame.appPhoto2 = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     // $scope.user.downloadPhoto2 = ObjS.data.result.url;
                 })  
                 break;
 
                 case 'appPhoto3': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.promoteAppGame.appPhoto3 = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     //$scope.user.downloadPhoto3 = ObjS.data.result.url;
                 })  
                 break;
 
                 case 'appPhoto4': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.promoteAppGame.appPhoto4 = ObjS.data.result.url;
-                    }, 250);  
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250);  
                     //$scope.user.downloadPhoto4 = ObjS.data.result.url;
 
                 })  
@@ -712,10 +730,11 @@ $scope.changeImage = function(input,type) {
 
                 case 'giftImage': 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.giftImage = ObjS.data.result.url;
-                    }, 250); 
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250); 
                     //$scope.user.giftImage = ObjS.data.result.url;
 
                 })  
@@ -732,22 +751,24 @@ $scope.changeImage = function(input,type) {
                 if(type == 'mp3'){
 
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner'); 
                     $scope.createAds.audioUrl = ObjS.data.result.url;
                     console.log("$scope.createAds.audioUrl",$scope.createAds.audioUrl);
-                    }, 250); 
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner'); 
+                    
+                    // }, 250); 
                     //$scope.user.giftImage = ObjS.data.result.url;
 
                 })  
          
                 }else{
                     uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function () {      
-                    spinnerService.hide('html5spinner');   
-                    $scope.createAds.vedioUrl = ObjS.data.result.url;
+                        $scope.createAds.vedioUrl = ObjS.data.result.url;
                     console.log("$scope.createAds.url",$scope.createAds.vedioUrl);
-                        }, 250);
+                    // $timeout(function () {      
+                    // spinnerService.hide('html5spinner');   
+                    
+                    //     }, 250);
                 })
 
                 }

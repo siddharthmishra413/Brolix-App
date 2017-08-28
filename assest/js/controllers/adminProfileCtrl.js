@@ -25,17 +25,18 @@ userService.adminProfile().success(function(res) {
 })
 
 $scope.changeImage = function(input,type) {
-  spinnerService.show('html5spinner');  
+  //spinnerService.show('html5spinner');  
    var file = input.files[0];
    var ext = file.name.split('.').pop();
    if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
        $scope.imageName = file.name;
 
        uploadimgServeice.user(file).then(function(ObjS) {
-                $timeout(function () {      
-            spinnerService.hide('html5spinner');     
-                $scope.myFrom.image = ObjS.data.result.url;
-                  }, 250);  
+        $scope.myFrom.image = ObjS.data.result.url;
+            //     $timeout(function () {      
+            // spinnerService.hide('html5spinner');     
+                
+            //       }, 250);  
                 // $scope.user.photo1 = ObjS.data.result.url;
                 console.log("image1",$scope.myFrom.image)
             })

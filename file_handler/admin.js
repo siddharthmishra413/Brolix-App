@@ -9,12 +9,9 @@ var subCategory = require("./subcategory.json");
 var jwt = require('jsonwebtoken');
 var config = require('../config');
 var cron = require('node-cron');
-
 var countryList = require('countries-cities').getCountries(); // Returns an array of country names. 
 var citiess = require('countries-cities').getCities("India"); // Returns an array of city names of the particualr country. 
 var mongoose = require('mongoose');
-
-
 var country = require('countryjs');
 var countries = require('country-list')();
 var allCountries = require('all-countries');
@@ -3692,12 +3689,12 @@ module.exports = {
         var option = req.body.Cash ? { $inc: { cash: req.body.Cash } } : { $inc: { brolix: req.body.Brolix } }
         console.log(option)
         User.update({ _id: { $in: ids } }, option, { multi: true }, function(err, result) {
-            console.log("result---->>>",JSON.stringify(result))
+          //  console.log("result---->>>",JSON.stringify(result))
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Records not fond" }) }
             else{
                 
                 User.find({ _id: { $in: ids } }, function(err, result2) {
-            console.log("result---->>>",JSON.stringify(result2))
+         //   console.log("result---->>>",JSON.stringify(result2))
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             else{
                 for (var i = 0; i < result2.length; i++) {
@@ -4148,6 +4145,7 @@ module.exports = {
 
     "sendCouponTOUSers": function(req, res) {
         console.log("sendCouponTOUSers----- request--->>>",req.body)
+          i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
                 function(callback) {
                     if (req.body.Id.length == 0) { res.send({ responseCode: 404, responseMessage: 'please enter atleast one user.' }); } else {
@@ -4207,7 +4205,7 @@ module.exports = {
                         }
                     data1 = {
                         adId: req.body.couponId,
-                        type: "I have sent you a coupon",
+                        type: i18n.__("I have sent you a coupon"),
                         linkType: 'profile',
                         notificationType: 'couponReceivedFromAdmin'
                     }

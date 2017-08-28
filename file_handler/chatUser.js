@@ -45,7 +45,8 @@ module.exports = {
                     receiverImage: data.receiverImage,
                     senderName: data.senderName,
                     receiverName: data.receiverName,
-                    pageId:data.pageId
+                    pageId:data.pageId,
+                    chatType:data.chatType
                 })
                 objChat.save(function(err, result) {
                     if (err) console.log(err);

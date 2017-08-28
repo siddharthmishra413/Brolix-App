@@ -133,7 +133,7 @@ module.exports = {
                 var data = [];
                 console.log("result.pageFollowers.length--type->>", typeof(result.pageFollowers))
                 console.log("result.pageFollowers.length--->>", result.pageFollowers.length)
-                if (result.pageFollowers.length != 0) {
+                if (result.pageFollowers.length > 0 && result.pageFollowers.length!= null) {
                     for (var i = 0; i < result.pageFollowers.length; i++) {
                         array.push(result.pageFollowers[i].pageId)
                     }

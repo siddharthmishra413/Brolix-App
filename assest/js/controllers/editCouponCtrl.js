@@ -88,11 +88,12 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
             if (ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png") {
                 $scope.imageName = file.name;
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function() {
-                        spinnerService.hide('html5spinner');
-                        $scope.user.photo = ObjS.data.result.url;
-                        console.log("$scope.user.photo",$scope.user.photo)
-                    }, 250);
+                    // $timeout(function() {
+                    //     spinnerService.hide('html5spinner');
+                        
+                    // }, 250);
+                    $scope.user.photo = ObjS.data.result.url;
+                    console.log("$scope.user.photo",$scope.user.photo)
                 })
             } else {
                 toastr.error("Only image supported.")
@@ -103,11 +104,13 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
             if (ext == "jpg" || ext == "jpeg" || ext == "bmp" || ext == "gif" || ext == "png") {
                 $scope.imageName = file.name;
                 uploadimgServeice.user(file).then(function(ObjS) {
-                    $timeout(function() {
-                        spinnerService.hide('html5spinner');
-                        $scope.user.giftImage = ObjS.data.result.url;
-                        console.log("$scope.user.giftImage",$scope.user.giftImage)
-                    }, 250);
+                    $scope.user.giftImage = ObjS.data.result.url;
+                    console.log("$scope.user.giftImage",$scope.user.giftImage)
+                    // $timeout(function() {
+                    //     spinnerService.hide('html5spinner');
+                    //     $scope.user.giftImage = ObjS.data.result.url;
+                    //     console.log("$scope.user.giftImage",$scope.user.giftImage)
+                    // }, 250);
                 })
             } else {
                 toastr.error("Only image supported.")
