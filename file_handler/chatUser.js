@@ -9,8 +9,7 @@ module.exports = {
     //     return connectedClients;
     // },
     textOneOnOne: function(senderConn, recieverConn, data) {
-        console.log("textOneOnOne-------");
-        console.log("xtOneOnOne-->>>*+*+*+*",JSON.stringify(data));
+        console.log("xtOneOnOne-data->>>*+*+*+*",JSON.stringify(data));
         console.log("recieverConn-------");
         console.log(recieverConn);
         var roomId;
@@ -53,6 +52,7 @@ module.exports = {
                     else {
 
                         user.findOne({ _id: data.receiverId }, function(err1, receiverData) {
+                         //   console.log("reveciver data ------>>>>>",JSON.stringify(receiverData))
                             if (receiverData) {
                                 if (recieverConn != undefined) {
                                     var respObj = JSON.stringify(data);
@@ -60,15 +60,14 @@ module.exports = {
                                     respObj.roomId = roomId;
                                     respObj = JSON.stringify(respObj);
                                     recieverConn.send(respObj);
-                                } else {                                       
+                                } else {   
                                 if (receiverData.deviceToken && receiverData.deviceType && receiverData.notification_status && receiverData.status) {
                                 var message = "You have coupon Exchange request";
                                 if (receiverData.deviceType == 'iOS' && receiverData.notification_status == "on") {
-                                 functions.iOS_notification(receiverData.deviceToken, data.message, data.senderId, data.senderName) 
-                                     
+                                 functions.iOS_notification(receiverData.deviceToken, data.message, data.senderId, data.senderName, data.chatType) 
                                 }
                               else if (receiverData.deviceType == 'Android' && receiverData.notification_status == "on") {
-                                  functions.android_notification(receiverData.deviceToken, data.message,  data.senderId, data.senderName)
+                                  functions.android_notification(receiverData.deviceToken, data.message,  data.senderId, data.senderName, data.chatType)
                                 } else {
                                     console.log("Something wrong!!!!")
                                 }

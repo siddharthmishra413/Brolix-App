@@ -2323,8 +2323,8 @@
         "pageInboxChat": function(req, res) {
             console.log("pageInboxChat ----  request----->>>", JSON.stringify(req.body))
             var condition;
-           
-                condition = { $or: [{ senderId: req.body.userId, chatType: req.body.chatType }] }
+              condition =  { $or: [{ senderId: req.body.userId, chatType: req.body.chatType }, { receiverId: req.body.userId, chatType: req.body.chatType }] }
+              //  condition = { $or: [{ senderId: req.body.userId, chatType: req.body.chatType }] }
            
             // here is { $or:[ {senderId: "$senderId"}, {receiverId: "$receiverId" }]},
             console.log("condition----->>>", JSON.stringify(condition))
@@ -2345,7 +2345,10 @@
                             senderImage: { $last: "$senderImage" },
                             receiverImage: { $last: "$receiverImage" },
                             senderName: { $last: "$senderName" },
-                            receiverName: { $last: "$receiverName" }
+                            receiverName: { $last: "$receiverName" },
+                             senderId: { $last: "$senderId" },
+                             receiverId: { $last: "$receiverId" },
+                           pageId:{ $last: "$pageId" }
                         }
                     }
                 ]).exec(function(err, result) {
@@ -2383,11 +2386,18 @@
                         //   result.slice(j, 1);
                     }
                     // console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
-                    res.send({
-                        result: obj,
-                        responseCode: 200,
-                        responseMessage: i18n.__("Result shown successfully")
-                    });
+                     chat.populate(obj, { path: 'pageId', model: 'createNewPage', select: 'pageName' }, function(err, finalResult) {
+                                        res.send({
+                                        result: obj,
+                                        responseCode: 200,
+                                        responseMessage: i18n.__("Result shown successfully")
+                                    });
+                                    })
+//                    res.send({
+//                        result: obj,
+//                        responseCode: 200,
+//                        responseMessage: i18n.__("Result shown successfully")
+//                    });
                 }
 
             })

@@ -67,16 +67,19 @@
       },
 
       // send android notification function
-      "android_notification": function(deviceToken, message1) {
-          console.log("message1--22222->>>", message1)
+      "android_notification": function(deviceToken, message1, senderId, senderName, chatType) {
+          console.log("android-11111-->>>", message1)
+          console.log("deviceToken--->>>", chatType)
           var serverKey = 'AAAA0wDwq1I:APA91bHUyLivU-szb-z_23Ui532XPOxY0yqB07F27-HMme9Vu1psCS2TZI970av_HS1NswVHyKhX4qKoERYWmCChqY2fOVCVlZwTdudwXAk_rda5Z98z7fxK2r6kaf0o5x4cDSFzQqdc ';
           var fcm = new FCM(serverKey);
           var message = {
               to: deviceToken,
+              'data.sound':"default", 
               'data.message': message1,
-              'data.type': 'testing'
+                "title": "Brolix",
+              'data.type': chatType
           };
-          console.log("message 0-0-0-0-0--->>>", message)
+          console.log("message android--->>>", message)
           fcm.send(message, function(err, response) {
               if (err) {
                   console.log("Android !! Something has gone wrong!", err);
@@ -87,7 +90,7 @@
       },
 
       // send ios notification function
-      "iOS_notification": function(deviceToken, message) {
+      "iOS_notification": function(deviceToken, message, senderId, senderName, chatType) {
           console.log("message-11111-->>>", message)
           console.log("deviceToken--->>>", deviceToken)
           var options = {
@@ -103,6 +106,7 @@
           };
           var title = "Brolix";
           var message = message;
+          var chatType = chatType;
           var apnConnection = new apn.Connection(options);
           var myDevice = new apn.Device(deviceToken);
           var note = new apn.Notification();
@@ -111,7 +115,7 @@
           note.badge = 1;
           note.alert = message;
           note.sound = 'default';
-          note.payload = { title: title, message: message };
+          note.payload = { title: title, message: message, type: chatType };
           try {
               apnConnection.pushNotification(note, myDevice);
               console.log('iOS Push Notification send');

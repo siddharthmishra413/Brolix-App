@@ -31,7 +31,7 @@ var chatSchema = new Schema({
         trim: true
     },
     pageId: {
-        type: String
+        type: String, ref: 'createNewPage' 
     },
     timestamp: {
         type: String
