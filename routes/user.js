@@ -4,16 +4,12 @@ var userHandler = require('../file_handler/user.js');
 var authUser = require('../middlewares/authUser');
 
 app.post('/getCash', authUser.authUser, userHandler.getCash);
-
-
-app.post('/massPay', userHandler.massPay);
-
-app.post('/paynow', userHandler.paynow);
+//app.post('/massPay', userHandler.massPay);
 
 app.get('/validatorPaytabs/:lang', authUser.authUser, userHandler.validatorPaytabs);
 app.post('/sendOtp', userHandler.sendOtp);
-app.post('/createToken', authUser.authUser, userHandler.createToken);
-app.post('/Twocheckout', authUser.authUser, userHandler.Twocheckout);
+//app.post('/createToken', authUser.authUser, userHandler.createToken);
+//app.post('/Twocheckout', authUser.authUser, userHandler.Twocheckout);
 app.post('/signup', userHandler.signup);
 app.post('/login', userHandler.login);
 app.post('/verifyOtp', userHandler.verifyOtp);
@@ -46,8 +42,8 @@ app.get('/countrys/:lang', userHandler.countrys);
 app.get('/getAllStates/:name/:code/:lang', userHandler.getAllStates);
 app.post('/chatHistory/:pageNumber', authUser.authUser, userHandler.chatHistory);
 app.post('/onlineUserList', authUser.authUser, userHandler.onlineUserList);
-app.get('/paymentClientToken/:lang', authUser.authUser, userHandler.paymentClientToken);
-app.post('/paymentIntegration', authUser.authUser, userHandler.paymentIntegration);
+//app.get('/paymentClientToken/:lang', authUser.authUser, userHandler.paymentClientToken);
+//app.post('/paymentIntegration', authUser.authUser, userHandler.paymentIntegration);
 app.post('/userCouponGifts', authUser.authUser, userHandler.userCouponGifts);
 app.post('/winnersFilter', authUser.authUser, userHandler.winnersFilter);
 app.post('/googleLogin', userHandler.googleLogin);
@@ -77,9 +73,7 @@ app.post('/cancelExchangeCouponRequest', authUser.authUser, userHandler.cancelEx
 app.post('/sendMessage', authUser.authUser, userHandler.sendMessage);
 app.post('/pageInboxChat',  userHandler.pageInboxChat);
 
-
-
-app.post('/payU', userHandler.payU)
+//app.post('/payU', userHandler.payU)
 
 
 module.exports = app;
