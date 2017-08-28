@@ -19,7 +19,7 @@ app.put('/applyCoupon/:id', authUser.authUser, adsHandler.applyCoupon);
 app.get('/showAllAdsCouponType/:id/:pageNumber/:lang', authUser.authUser, adsHandler.showAllAdsCouponType);
 app.get('/showAllAdsCashType/:id/:pageNumber/:lang', authUser.authUser, adsHandler.showAllAdsCashType);
 app.post('/couponsSearch', authUser.authUser, adsHandler.couponsSearch); //Not in docs
-app.post('/searchForCoupons/:id/:pageNumber', authUser.authUser, adsHandler.searchForCoupons);
+app.post('/searchForCoupons/:id/:pageNumber',  adsHandler.searchForCoupons);
 app.post('/likeAndUnlike', authUser.authUser, adsHandler.likeAndUnlike);
 app.post('/commentOnAds', authUser.authUser, adsHandler.commentOnAds);
 app.post('/replyOnComment', authUser.authUser, adsHandler.replyOnComment);
@@ -29,7 +29,7 @@ app.post('/acceptExchangeCouponRequest', authUser.authUser, adsHandler.acceptExc
 app.post('/socialShare', authUser.authUser, adsHandler.socialShare);
 app.get('/winners/:lang', authUser.authUser, adsHandler.winners);
 app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
-app.get('/listOfAllAds/:pageId/:type/:pageNumber/:lang', authUser.authUser, adsHandler.listOfAllAds);
+app.get('/listOfAllAds/:pageId/:type/:pageNumber/:lang',  adsHandler.listOfAllAds);
 app.post('/uploads', authUser.authUser, adsHandler.uploads);
 app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
 app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);

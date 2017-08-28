@@ -122,7 +122,7 @@ module.exports = {
                 })
             },
             function(result, blockedArray, pageArray, callback) {
-                createNewPage.paginate({ userId: { $nin: blockedArray }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, pageResult) {
+                createNewPage.paginate({ userId: { $nin: blockedArray }, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8,sort: { createdAt: -1 } }, function(err, pageResult) {
                     if (err) { res.semd({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                         callback(null, result, pageResult);
                     }
@@ -145,6 +145,9 @@ module.exports = {
                         }
                     }
                 }
+//                var sortArray = pageResult.sort(function(obj1, obj2) {
+//                             return obj2.createdAt - obj1.createdAt
+//                         })
                 res.send({
                     result: pageResult,
                     responseCode: 200,
