@@ -162,24 +162,46 @@ module.exports = {
     },
 
     //API for Show Page Details
-    "showPageDetails": function(req, res) {
-        var date = new Date().toUTCString()
-        i18n = new i18n_module(req.body.lang, configs.langFile);
-        createNewPage.findOne({ _id: req.body.pageId, status: "ACTIVE" }).populate({ path: 'pageFollowersUser.userId', select: ('firstName lastName image country state city') }).populate({ path: 'adAdmin.userId', select: ('firstName lastName image country state city') }).exec(function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
-                createEvents.find({ pageId: req.body.pageId, status: "ACTIVE", createdAt: { $gte: date } }).exec(function(err, result1) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No event found" }); } else {
-                        //console.log("show age details--->>>",JSON.stringify(result))
-                        res.send({
-                            result: result,
-                            eventList: result1,
-                            responseCode: 200,
-                            responseMessage: i18n.__("Pages details shown successfully")
-                        })
-                    }
-                })
-            }
-        })
+    "showPageDetails": function(req, res) { // pageId, viewerId
+    console.log("showPageDetails request---->>>", JSON.stringify(req.body))
+    var date = new Date().toUTCString()
+      createNewPage.findOne({ _id: req.body.pageId }).exec(function(err, pageResult) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+          else if (!pageResult) { res.send({ responseCode: 404, responseMessage: "No page found" }); }
+          else {
+                    var userId = pageResult.userId;
+                    console.log("userId-->>", userId)
+                    User.findOne({ _id: userId }).exec(function(err, userResult) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                        else {
+                            var flag = userResult.blockUser.indexOf(req.body.viewerId)
+                            console.log("flage--->>>", flag)
+                            if (flag != -1) { res.send({ responseCode: 401, responseMessage: i18n.__('You have been blocked by this page admin') }) }
+                            else {
+                                i18n = new i18n_module(req.body.lang, configs.langFile);
+                                createNewPage.findOne({ _id: req.body.pageId, status: "ACTIVE" }).populate({ path: 'pageFollowersUser.userId', select: ('firstName lastName image country state city') }).populate({ path: 'adAdmin.userId', select: ('firstName lastName image country state city') }).exec(function(err, result) {
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                                    else if (!result) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+                                        createEvents.find({ pageId: req.body.pageId, status: "ACTIVE", createdAt: { $gte: date } }).exec(function(err, result1) {
+                                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No event found" }); } else {
+                                                //console.log("show age details--->>>",JSON.stringify(result))
+                                                res.send({
+                                                    result: result,
+                                                    eventList: result1,
+                                                    responseCode: 200,
+                                                    responseMessage: i18n.__("Pages details shown successfully")
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+
+                        }
+                    })
+                }
+      })
+
     },
 
     //API to show list of user's pages
@@ -214,7 +236,7 @@ module.exports = {
                 })
             },
             function(pageArray, callback) {
-                createNewPage.paginate({ _id: { $in: pageArray } }, { page: req.params.pageNumber, limit: 8 }, function(err, result2) {
+                createNewPage.paginate({ _id: { $in: pageArray } }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result2) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
                         callback(null, result2)
                     }
@@ -280,7 +302,7 @@ module.exports = {
             },
             function(pageArray, pageArray1, callback) {
                 var re = new RegExp(req.body.search, 'i');
-                createNewPage.paginate({ _id: { $nin: pageArray1 }, $and: [{ _id: { $in: pageArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 },
+                createNewPage.paginate({ _id: { $nin: pageArray1 }, $and: [{ _id: { $in: pageArray } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8 ,sort: { createdAt: -1 } },
                     function(err, result1) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.docs.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found' }); } else {
                             callback(null, result1)
@@ -343,18 +365,30 @@ module.exports = {
 
                         console.log("flag------->>>>", JSON.stringify(blockedArray))
                         User.find({ _id: req.params.id }).exec(function(err, results) {
+                            console.log("results--->>>",JSON.stringify(results))
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                 var arr = [];
                                 results[0].pageFollowers.forEach(function(result) {
                                     arr.push(result.pageId)
                                 })
-                                console.log("showPageFavouriteType--arr-->>>", arr)
-                                createNewPage.paginate({ _id: { $in: arr }, $and: [{ _id: { $nin: pageArray }, userId: { $nin: blockedArray } }] }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, newResult) {
+                                var pageIdArray = arr.reverse();
+                            //    console.log("showPageFavouriteType--arr-->>>", pageIdArray)
+                                createNewPage.paginate({ _id: { $in: arr }, $and: [{ _id: { $nin: pageArray }, userId: { $nin: blockedArray } }] }, { page: req.params.pageNumber, limit: 8}, function(err, newResult1) {
+                                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                                    else if(newResult1.length==0){ res.send({ responseCode:201, responseMessage:'No page found'})}
+                                    else{
+                                        console.log("newResult1--newResult1-->>>", newResult1)
+                                        
+                                        newResult1.docs.sort((a, b) => arr.findIndex(id => a._id.equals(id)) - 
+                                       arr.findIndex(id => b._id.equals(id)));
+                                        
+                                      //  console.log("showPageFavouriteType-result-->>>", JSON.stringify(newResult1))
                                     res.send({
-                                        result: newResult,
+                                        result: newResult1,
                                         responseCode: 200,
                                         responseMessage: i18n.__("List of all pages shown successfully")
                                     });
+                                    }
                                 })
                             }
                         })

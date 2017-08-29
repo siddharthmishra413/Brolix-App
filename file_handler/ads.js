@@ -311,7 +311,7 @@ module.exports = {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
 
-                        createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1 } }, function(err, result) {
+                        createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt:-1 } }, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon ad found") }); } else {
 
                                 for (var i = 0; i < result.docs.length; i++) {
@@ -1008,7 +1008,7 @@ module.exports = {
                     })
                 },
                 function(noDataValue, dataValue, callback) {
-                    createNewAds.paginate({ adsType: { $ne: 'ADMINCOUPON' }, pageId: req.params.pageId, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8 ,sort: { createdAt: -1 } },function(err, result) {
+                    createNewAds.paginate({ adsType: { $ne: 'ADMINCOUPON' }, pageId: req.params.pageId, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8 , sort: { createdAt: -1 } },function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
 
                             var updatedResult = result.docs;
@@ -1023,6 +1023,7 @@ module.exports = {
                                         }
                                     }
                                 }
+                             //   console.log("listOfAllAds---->>>",JSON.stringify(result))
                                 res.send({
                                     result: result,
                                     responseCode: 200,
@@ -1070,6 +1071,7 @@ module.exports = {
                                         }
                                     }
                                 }
+                            //     console.log("listOfAllAds--2-->>>",JSON.stringify(result))
                                 res.send({
                                     result: result,
                                     responseCode: 200,
@@ -1906,7 +1908,7 @@ module.exports = {
                             count++;
                         }
                         var pages = Math.ceil(count / 8);
-                        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', _id: { $nin: blockedArray } } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', _id: { $nin: blockedArray } } },{$sort:{'coupon.createddAt':-1}},{ $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                                 User.populate(result1, {
                                     path: 'coupon.adId',
@@ -1924,7 +1926,7 @@ module.exports = {
 //                                                 return obj2.coupon.createddAt - obj1.coupon.createddAt
 //                                             })
                                                 
-                                           //      console.log("couponWinners------->>>>",JSON.stringify(result2))
+                                          //   console.log("couponWinners------->>>>",JSON.stringify(result2))
                                              //    console.log("couponWinners------->>>>",JSON.stringify(result2))
                                                 res.send({
                                                     docs: result2,
@@ -2497,7 +2499,7 @@ module.exports = {
                 })
             },
             function(noDataValue, dataValue, blockedArray, callback) {
-                createNewAds.paginate({ userId: { $nin: blockedArray }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8 }, function(err, result) {
+                createNewAds.paginate({ userId: { $nin: blockedArray }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8, sort:{viewerLenght:-1} }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -2510,6 +2512,7 @@ module.exports = {
                                     }
                                 }
                             }
+                            console.log("storeCoupon--->>>",JSON.stringify(result))
                             res.send({
                                 result: result,
                                 responseCode: 200,
@@ -2634,7 +2637,7 @@ module.exports = {
             },
             function(noDataValue, dataValue, arrayId, blockedArray, callback) {
                 //      console.log("arrayId=========>...", arrayId)
-                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE' }] }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE' }] }, { page: req.params.pageNumber, limit: 10, sort:{viewerLenght:-1} }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -2750,7 +2753,7 @@ module.exports = {
             },
             function(noDataValue, dataValue, arrayId, blockedArray, callback) {
                 //     console.log("arrayId=========>...", arrayId)
-                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10 }, function(err, result) {
+                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10,  sort:{viewerLenght:-1} }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         createNewAds.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                             for (var i = 0; i < result.docs.length; i++) {

@@ -2,6 +2,7 @@ var PageFollowers = require("./model/pageFollow");
 var User = require("./model/user");
 var createNewPage = require("./model/createNewPage");
 var Views = require("./model/views");
+var async = require('async');
 var configs = {
     "lang": "ar",
     "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
@@ -123,22 +124,42 @@ module.exports = {
 
     // show list of all followers
     "pageFollowerList": function(req, res) {
+         console.log("pageFollowerList-->>", JSON.stringify(req.body))
         i18n = new i18n_module(req.body.lang, configs.langFile);
         PageFollowers.find({ pageId: req.body.pageId }).sort({ updatedAt: -1 }).exec(function(err, result) {
+            console.log("pageFollowerList-->>", JSON.stringify(result))
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__('No follower found') }); } else {
                 var arr = [];
                 var status_obj = {};
-                result.forEach(function(result) {
-                    arr.unshift(result.userId);
-                    status_obj[result.userId] = result.followStatus;
-                })
-                console.log("arr-->>", status_obj)
+                
+                     async.forEachOfLimit(result,1, function(value, key, callback) {
+                       //  console.log("value-->>", value)  
+                                arr.push(value.userId);
+                           console.log("value- arr->>", arr)
+                           status_obj[value.userId] = value.followStatus;
+                            console.log("value- status_obj->>", status_obj)
+                                   callback();                     
+                        },function (err) {                         
+                         console.log("status_obj-->>", status_obj)  
+                            console.log("arr-->>", arr)
+                      });
+//                
+//                result.forEach(function(result) {
+//                    arr.unshift(result.userId);
+//                    status_obj[result.userId] = result.followStatus;
+//                })
+               
+             
+                
                 User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
+                    console.log("user result-->>", JSON.stringify(newResult))
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         for (var i = 0; i < newResult.length; i++) {
                             var user_id = newResult[i]._id;
                             newResult[i].followStatus = status_obj[user_id];
                         }
+                        newResult.sort((a, b) => arr.findIndex(id => a._id.equals(id)) - 
+                        arr.findIndex(id => b._id.equals(id)));
                         //  console.log("newResult-->>", newResult)
                         res.send({
                             result: newResult,

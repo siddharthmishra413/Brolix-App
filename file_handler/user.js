@@ -713,12 +713,19 @@
                                 for(var i =0; i<user1.length;i++){
                                     giftsIds.push(user1[i].coupon.adId)
                                 }
+                                  var actualCount = [];
                                  console.log("giftsIds--->>>",giftsIds)
-                                 for(var j = 0; j<giftsIds.length; j++){
-                                     giftsCount.pop(giftsIds[j])
-                                 }
+                                 
+                                 async.forEachOfLimit(giftsIds, 1, function(value, key, callback) {
+                                   var index = giftsCount.indexOf(value)
+                                      console.log("index--->>>",index)
+                                     giftsCount.splice(index, 1);
+                                      console.log("actualCount--->>>",actualCount)
+                                  callback();
+                             }, function(err) {
+                             });
                                   console.log("giftsCount--->>>",giftsCount)
-                                var actualCount =   _.difference(giftsCount, giftsIds);
+                                    console.log("actualCount--->>>",actualCount)
                                   result.gifts = giftsCount;
                             res.send({
                                 result: result,
@@ -747,12 +754,17 @@
                                for(var i =0; i<user1.length;i++){
                                     giftsIds.push(user1[i].coupon.adId)
                                 }
-                                // console.log("giftsIds--->>>",giftsIds)
-                                 for(var j = 0; j<giftsIds.length; j++){
-                                     giftsCount.pop(giftsIds[j])
-                                 }
-                               //    console.log("giftsCount--->>>",giftsCount)
-                                // var actualCount =   _.difference(giftsCount, giftsIds);
+                                var actualCount = [];
+                                 console.log("giftsIds--->>>",giftsIds)
+                                 
+                                 async.forEachOfLimit(giftsIds, 1, function(value, key, callback) {
+                                   var index = giftsCount.indexOf(value)
+                                      console.log("index--->>>",index)
+                                     giftsCount.splice(index, 1);
+                                      console.log("actualCount--->>>",actualCount)
+                                  callback();
+                             }, function(err) {
+                             });
                                   result1.gifts = giftsCount;
                             res.send({
                                 result: result1,
@@ -2568,7 +2580,7 @@
                                 console.log("2")
                                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 22') }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found 1.") }); } else {
-                                        User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(req.body.senderCouponId) }, { $set: { "coupon.$.status": "SEND" }, $pop: { gifts: -adId } }, { new: true }).exec(function(err, result3) {
+                                        User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(req.body.senderCouponId) }, { $set: { "coupon.$.status": "SEND" }}, { new: true }).exec(function(err, result3) {
                                         //    console.log("sendCoupon to follower--->>>",JSON.stringify(result3))
                                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 33') }); } 
                                             else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found 2.") }); }
@@ -2618,7 +2630,8 @@
                                                             console.log("Something wrong!!!!")
                                                         }
                                                     }
-                                                        callback(null, result4) }
+                                                        callback(null, result4)
+                                                    }
                                                 })
                                             }
                                         })
@@ -2639,7 +2652,7 @@
                             createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 55') }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found 3.") }); } else {
 
-                                    User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(req.body.senderCouponId) }, { $set: { "coupon.$.status": "SEND" }, $pop: { gifts: -adId } }, { new: true }, function(err, result3) {
+                                    User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(req.body.senderCouponId) }, { $set: { "coupon.$.status": "SEND" } }, { new: true }, function(err, result3) {
                                         //      console.log("senderCouponId-111-->>", JSON.stringify(result3))
                                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 66') }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found 4.") }); } else {
                                             for (i = 0; i < result3.coupon.length; i++) {

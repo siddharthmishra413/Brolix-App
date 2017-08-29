@@ -140,7 +140,8 @@ var userSchema = new Schema({
     pageFollowers: [{
         pageId: { type: String },
         pageName: { type: String },
-        pageFollowersStatus: { type: Boolean, default: true }
+        pageFollowersStatus: { type: Boolean, default: true },
+        createdAt: { type: Date, default: Date.now }
     }],
     adFollowers: [{
         adId: { type: String }

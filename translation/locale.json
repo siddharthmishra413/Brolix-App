@@ -7,6 +7,10 @@
     "ar": "تسجيل الدخول بنجاح",
     "en": "Login successfully"
   },
+  "You have been blocked by this page admin": {
+    "ar": "قام مدير الصفحة بحظر دخولك اليها",
+    "en": "You have been blocked by this page admin"
+  },
   "All pages show successfully": {
     "en": "All pages show successfully",
     "ar": "بنجاح الصفحات جميع عرض تم"
