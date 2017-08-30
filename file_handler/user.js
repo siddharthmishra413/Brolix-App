@@ -1813,9 +1813,10 @@
                 [{
                         $match: condition
                     },
+//                   { $sort: { createdAt: 1 } },
                     {
                        $group: {
-                        _id: "$roomId",
+                        _id: "$pageId",
                         unread: {
                             $sum: {
                                 $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
@@ -1828,8 +1829,8 @@
                             senderName: { $last: "$senderName" },
                             receiverName: { $last: "$receiverName" },
                              senderId: { $last: "$senderId" },
-                             receiverId: { $last: "$receiverId" },
-                           pageId:{ $last: "$pageId" }
+                             receiverId: { $last: "$receiverId" }
+                            // pageId:{ $last: "$pageId" }
                         }
                     }
                 ]).exec(function(err, result) {
@@ -1867,7 +1868,7 @@
                         //   result.slice(j, 1);
                     }
                     // console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
-                     chat.populate(obj, { path: 'pageId', model: 'createNewPage', select: 'pageName' }, function(err, finalResult) {
+                     chat.populate(obj, { path: '_id', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
                                         res.send({
                                         result: obj,
                                         responseCode: 200,

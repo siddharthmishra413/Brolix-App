@@ -600,24 +600,41 @@ module.exports = {
                        for (var i = 0; i < pageResult.length; i++) {
                            array.push(pageResult[i]._id)
                        }
-                       console.log("array--->>>",array)
+                     //  console.log("array--->>>",array)
                        callback(null, array, noDataValue, value, blockedArray);
                    }
                })
 
+           },function(array, noDataValue, dataValue, blockedArray, callback){
+              // var re = new RegExp(req.body.pageName, 'i');
+               createNewAds.find({ $and:[{'whoWillSeeYourAdd.country':req.body.country, 'whoWillSeeYourAdd.city':'', status: 'ACTIVE'}] }, function(err, adsResult) {
+                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                     //   console.log("array--->>>",JSON.stringify(pageResult))
+                       var adsArray= []
+                       for (var i = 0; i < adsResult.length; i++) {
+                           adsArray.push(adsResult[i]._id)
+                       }
+                       console.log("adsArray--->>>",adsArray)
+                       callback(null, array, noDataValue, dataValue, blockedArray, adsArray);
+                   }
+               })
+
            },
-            function(array, noDataValue, dataValue, blockedArray, callback) {
+            function(array, noDataValue, dataValue, blockedArray, adsArray, callback) {
                 var re = new RegExp(req.body.pageName, 'i');
                 var re2 = new RegExp(req.body.subCategory, 'i')
                 var data = {
+                    
                     'whoWillSeeYourAdd.country': req.body.country,
                     'whoWillSeeYourAdd.state': req.body.state,
-                    'whoWillSeeYourAdd.city': req.body.city,
+                    $or:[{ 'whoWillSeeYourAdd.city': req.body.city},{'whoWillSeeYourAdd.city':''}],
+                   // 'whoWillSeeYourAdd.city': req.body.city,
                    // 'pageName': { $regex: re },
                     'adsType': req.body.type,
                     'category': req.body.category,
                     'subCategory': { $regex: re2 },
-                     'pageId':{$in: array}
+                     'pageId':{$in: array},
+                    //'_id':{$in:adsArray}
                 }
 
                 for (var key in data) {
@@ -629,10 +646,10 @@ module.exports = {
                 }
                 var activeStatus = { userId: { $nin: blockedArray }, status: 'ACTIVE' }
                 Object.assign(data, activeStatus)       
-            //    console.log("data==========>",data)         
-                createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8 }, function(err, results) {
+              console.log("data==========>",data)         
+                createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt:-1 }}, function(err, results) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                   //     console.log("data--->>>", JSON.stringify(results))
+                   //   console.log("data--->>>", JSON.stringify(results))
                         //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
                         for (var i = 0; i < results.docs.length; i++) {
                             if (results.docs[i].cash == 0) {
