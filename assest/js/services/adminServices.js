@@ -10,6 +10,8 @@ app.service('uploadimgServeice', function($http, $q) {
     this.user = function(file) {
         var fd = new FormData();
         fd.append('file', file);
+        console.log("fd");
+         console.log(fd);
 
         var deferred = $q.defer();
         $http.post('/admin/uploadImage', fd, {
