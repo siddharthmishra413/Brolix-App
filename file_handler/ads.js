@@ -176,6 +176,7 @@ module.exports = {
 
     // for create ads
     "createAds": function(req, res) {
+        console.log("createAds--->>>",JSON.stringify(req.body))
         i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.adsType == "coupon") {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: i18n.__('Please enter coupon expiry date') }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: i18n.__('Number of winners can not be greater than number of viewers') }); } else {
@@ -186,6 +187,7 @@ module.exports = {
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
+                     console.log("createAds--->>>",JSON.stringify(result))
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 66', err }); } else {
                         var pageId = result.pageId;
                         createNewPage.findOneAndUpdate({ _id: pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
@@ -744,21 +746,27 @@ module.exports = {
     },
 
     // show list of comments on ads
-    "adsCommentList": function(req, res) {
+    "adsCommentList": function(req, res) {         
         i18n = new i18n_module(req.params.lang, configs.langFile);
         var type = req.params.type;
         var id = req.params.id;
         var userId = req.params.userId;
+        var couponType = req.params.couponType;
+        console.log("in couponType--->>>",couponType)
         var condition;
         if (type == 'onGifts') {
             console.log("in if")
-            condition = { $and: [{ addId: id }, { winnerId: userId }, { type: type }], status: "ACTIVE" }
+            condition = { $and: [{ addId: id }, { winnerId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }
         } else {
             console.log("in else")
             condition = { addId: id, type: type, status: "ACTIVE" }
         }
+         console.log("in condition--->>>",condition)
         addsComments.paginate(condition, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+            console.log("in result",result)
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else if(result.docs.length==0){res.send({responseCode:400, responseMessage:'No comment found in list'})}
+            else {
                 for (var i = 0; i < result.docs.length; i++) {
                     var reply = result.docs[i].reply;
                     var data = reply.filter(reply => reply.status == 'ACTIVE');
@@ -2515,7 +2523,7 @@ module.exports = {
                                     }
                                 }
                             }
-                            console.log("storeCoupon--->>>",JSON.stringify(result))
+                        //    console.log("storeCoupon--->>>",JSON.stringify(result))
                             res.send({
                                 result: result,
                                 responseCode: 200,

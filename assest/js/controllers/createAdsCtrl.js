@@ -747,7 +747,8 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     dawnloadPagePhoto: $scope.dawnloadPagePhoto,
                     promoteApp: $scope.promoteApp,
                     video: $scope.createAds.vedioUrl,
-                    couponExpiryInString:$scope.couponExpiryInString
+                    couponExpiryInString:$scope.couponExpiryInString,
+                    viewerLenght:$scope.viewerLenght
 
                 }
 
@@ -798,7 +799,8 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     dawnloadPagePhoto: $scope.dawnloadPagePhoto,
                     promoteApp: $scope.promoteApp,
                     musicFileName: $scope.createAds.audioUrl,
-                    couponExpiryInString:$scope.couponExpiryInString
+                    couponExpiryInString:$scope.couponExpiryInString,
+                    viewerLenght:$scope.viewerLenght
                 }
 
                 console.log("modifyData",JSON.stringify(modifyData))
@@ -845,7 +847,8 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     video: $scope.createAds.vedioUrl,
                     brolixFees:$scope.createAds.brolixFees,
                     cashAdPrize: $scope.createAds.viewersOne,
-                    couponExpiryInString:$scope.couponExpiryInString
+                    couponExpiryInString:$scope.couponExpiryInString,
+                    viewerLenght:$scope.viewerLenght
                 }
 
                 console.log("modifyData111",JSON.stringify(modifyData))
@@ -898,7 +901,8 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     musicFileName: $scope.createAds.audioUrl,
                     brolixFees:$scope.createAds.brolixFees,
                     cashAdPrize: $scope.createAds.viewersOne,
-                    couponExpiryInString:$scope.couponExpiryInString
+                    couponExpiryInString:$scope.couponExpiryInString,
+                    viewerLenght:$scope.viewerLenght
                 }
 
                 console.log("modifyData",JSON.stringify(modifyData))

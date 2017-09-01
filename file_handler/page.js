@@ -3248,12 +3248,16 @@ module.exports = {
      //  send coupon to advertiser api
     "sendCouponToAdvertiser": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
-        console.log("sendCouponToAdvertiser--->>>", req.body)
+        console.log("sendCouponToAdvertiser--->>>", JSON.stringify(req.body))
         var couponId = req.body.couponId;
         var adId = req.body.adId;
         if (!couponId) { res.send({ responseCode: 400, responseMessage: "Please enter the couponId" }); } else if (!adId) { res.send({ responseCode: 400, responseMessage: 'Please enter the adId' }); } else {
             User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if ((user[0].coupon.status) != "ACTIVE") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); } else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); } else {
+            //    console.log("sendCouponToAdvertiser--->>>",JSON.stringify(user))
+                console.log("sendCouponToAdvertiser--->>>",(user[0].coupon.status))
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (user.length==0) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
+                else if ((user[0].coupon.status) != "ACTIVE") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); } else if ((user[0].coupon.status) != "ACTIVE") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); }
+                else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); }else {
                     var id = user[0]._id;
                     console.log("id----user---->>", id)
                     User.update({ 'coupon._id': new mongoose.Types.ObjectId(couponId) }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {

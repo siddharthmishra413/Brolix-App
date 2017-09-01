@@ -1825,10 +1825,8 @@
                 [{
                         $match: condition
                     },
-                    //                   { $sort: { createdAt: 1 } },
-                    {
-                        $group: {
-                            _id: "$roomId",
+                    //                   { $sort: { createdAt: 1 } },  $group: { _id: "$pageId",
+                  { $group: { _id: { roomId: "$senderId", pageId: "$pageId" }, 
                             unread: {
                                 $sum: {
                                     $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
@@ -1887,11 +1885,7 @@
                             responseMessage: i18n.__("Result shown successfully")
                         });
                     })
-                    //                    res.send({
-                    //                        result: obj,
-                    //                        responseCode: 200,
-                    //                        responseMessage: i18n.__("Result shown successfully")
-                    //                    });
+                   
                 }
 
             })
@@ -2930,8 +2924,6 @@
                                     })
                                 }
                             })
-
-
                         }
                     })
                 }
@@ -2979,8 +2971,13 @@
             var adId = req.body.adId;
             if (!couponId) { res.send({ responseCode: 400, responseMessage: "Please enter the couponId" }); } else if (!adId) { res.send({ responseCode: 400, responseMessage: 'Please enter the adId' }); } else {
                 User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(couponId) } }, function(err, user) {
+                  //   console.log("useCouponWithoutCode--->>",JSON.stringify(user))
                     i18n = new i18n_module(req.body.lang, configs.langFile);
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
+                    else if (user.length==0) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
+                    else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); }
+                     else if ((user[0].coupon.status) != "ACTIVE") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); }
+                    else {
                         User.update({ 'coupon._id': couponId }, { $set: { 'coupon.$.couponStatus': "USED", 'coupon.$.usedCouponDate': Date.now() } }, { new: true }, function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
 

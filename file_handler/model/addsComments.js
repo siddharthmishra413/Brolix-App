@@ -26,6 +26,7 @@ var addsCommentSchema = new Schema({
     userName: { type: String, trim: true },
     userImage: { type: String, trim: true },
     comment: { type: String, trim: true },
+    couponType: { type: String, trim: true },
     reply: [{
         userId: { type: String, trim: true, ref: 'brolixUser' },
         userName: { type: String, trim: true },
