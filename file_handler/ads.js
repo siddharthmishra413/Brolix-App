@@ -606,21 +606,7 @@ module.exports = {
                })
 
            },function(array, noDataValue, dataValue, blockedArray, callback){
-              // var re = new RegExp(req.body.pageName, 'i');
-               createNewAds.find({ $and:[{'whoWillSeeYourAdd.country':req.body.country, 'whoWillSeeYourAdd.city':'', status: 'ACTIVE'}] }, function(err, adsResult) {
-                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                     //   console.log("array--->>>",JSON.stringify(pageResult))
-                       var adsArray= []
-                       for (var i = 0; i < adsResult.length; i++) {
-                           adsArray.push(adsResult[i]._id)
-                       }
-                       console.log("adsArray--->>>",adsArray)
-                       callback(null, array, noDataValue, dataValue, blockedArray, adsArray);
-                   }
-               })
-
-           },
-            function(array, noDataValue, dataValue, blockedArray, adsArray, callback) {
+           
                 var re = new RegExp(req.body.pageName, 'i');
                 var re2 = new RegExp(req.body.subCategory, 'i')
                 var data = {

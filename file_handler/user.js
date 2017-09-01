@@ -149,12 +149,11 @@
             });
             var unixname = "BROLIX" + Date.now();
             var paymentRequests = [{
-                    email: req.body.paypalEmail,
-                    amount: req.body.amount,
-                    uniqueId: unixname,
-                    note: 'request for matt@gc'
-                }
-            ];
+                email: req.body.paypalEmail,
+                amount: req.body.amount,
+                uniqueId: unixname,
+                note: 'request for matt@gc'
+            }];
             var batch = new MassPay.PaymentBatch(paymentRequests);
             User.findOne({ _id: req.body.userId }).exec(function(err, user) {
                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found" }); } else {
@@ -702,39 +701,37 @@
             i18n = new i18n_module(req.body.lang, configs.langFile);
             if (req.body.viewerId == req.body.userId) {
                 User.findOne({ _id: req.body.userId }, avoid).exec(function(err, result) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__('Please enter correct userId') }); } else {    var giftsIds = [];
+                    if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__('Please enter correct userId') }); } else {
+                        var giftsIds = [];
                         var giftsCount = result.gifts;
-                        console.log("gifts-34343->>>",giftsCount)
-                         User.aggregate({ $unwind: '$coupon' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.userId), 'coupon.status':{ $ne: "ACTIVE" } } }, function(err, user1) {
-                             console.log("user1--->>>",JSON.stringify(user1))
-                             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); }
-                             else if(user1.length==0 && user1.length != null){ res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Profile data shown successfully") }); }
-                             else{
-                                for(var i =0; i<user1.length;i++){
+                        console.log("gifts-34343->>>", giftsCount)
+                        User.aggregate({ $unwind: '$coupon' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.userId), 'coupon.status': { $ne: "ACTIVE" } } }, function(err, user1) {
+                            //     console.log("user1--->>>",JSON.stringify(user1))
+                            if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (user1.length == 0 && user1.length != null) { res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Profile data shown successfully") }); } else {
+                                for (var i = 0; i < user1.length; i++) {
                                     giftsIds.push(user1[i].coupon.adId)
                                 }
-                                  var actualCount = [];
-                                 console.log("giftsIds--->>>",giftsIds)
-                                 
-                                 async.forEachOfLimit(giftsIds, 1, function(value, key, callback) {
-                                   var index = giftsCount.indexOf(value)
-                                      console.log("index--->>>",index)
-                                     giftsCount.splice(index, 1);
-                                      console.log("actualCount--->>>",actualCount)
-                                  callback();
-                             }, function(err) {
-                             });
-                                  console.log("giftsCount--->>>",giftsCount)
-                                    console.log("actualCount--->>>",actualCount)
-                                  result.gifts = giftsCount;
-                            res.send({
-                                result: result,
-                                responseCode: 200,
-                                responseMessage: i18n.__("Profile data shown successfully")
-                            });
-                             }
-                             
-                         })
+                                var actualCount = [];
+                                console.log("giftsIds--->>>", giftsIds)
+
+                                async.forEachOfLimit(giftsIds, 1, function(value, key, callback) {
+                                    var index = giftsCount.indexOf(value)
+                                    console.log("index--->>>", index)
+                                    giftsCount.splice(index, 1);
+                                    console.log("actualCount--->>>", actualCount)
+                                    callback();
+                                }, function(err) {});
+                                console.log("giftsCount--->>>", giftsCount)
+                                console.log("actualCount--->>>", actualCount)
+                                result.gifts = giftsCount;
+                                res.send({
+                                    result: result,
+                                    responseCode: 200,
+                                    responseMessage: i18n.__("Profile data shown successfully")
+                                });
+                            }
+
+                        })
                     }
                 })
             } else {
@@ -742,37 +739,34 @@
                     if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__('Please enter correct userId') }); } else {
                         var flag = result1.blockUser.indexOf(req.body.viewerId)
                         if (flag == -1) {
-                            
+
                             var giftsIds = [];
-                        var giftsCount = result1.gifts;
-                  //      console.log("gifts-34343->>>",giftsCount)
-                         User.aggregate({ $unwind: '$coupon' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.userId), 'coupon.status':{ $ne: "ACTIVE" } } }, function(err, user1) {
-                    //         console.log("user1--->>>",JSON.stringify(user1))
-                             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); }
-                             else if(user1.length==0 && user1.length != null){ res.send({ result: result1, responseCode: 200, responseMessage: i18n.__("Profile data shown successfully") }); }
-                             else{
-                               for(var i =0; i<user1.length;i++){
-                                    giftsIds.push(user1[i].coupon.adId)
+                            var giftsCount = result1.gifts;
+                            //      console.log("gifts-34343->>>",giftsCount)
+                            User.aggregate({ $unwind: '$coupon' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.userId), 'coupon.status': { $ne: "ACTIVE" } } }, function(err, user1) {
+                                //         console.log("user1--->>>",JSON.stringify(user1))
+                                if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (user1.length == 0 && user1.length != null) { res.send({ result: result1, responseCode: 200, responseMessage: i18n.__("Profile data shown successfully") }); } else {
+                                    for (var i = 0; i < user1.length; i++) {
+                                        giftsIds.push(user1[i].coupon.adId)
+                                    }
+                                    var actualCount = [];
+                                    console.log("giftsIds--->>>", giftsIds)
+
+                                    async.forEachOfLimit(giftsIds, 1, function(value, key, callback) {
+                                        var index = giftsCount.indexOf(value)
+                                        console.log("index--->>>", index)
+                                        giftsCount.splice(index, 1);
+                                        console.log("actualCount--->>>", actualCount)
+                                        callback();
+                                    }, function(err) {});
+                                    result1.gifts = giftsCount;
+                                    res.send({
+                                        result: result1,
+                                        responseCode: 200,
+                                        responseMessage: i18n.__("Profile data shown successfully")
+                                    });
                                 }
-                                var actualCount = [];
-                                 console.log("giftsIds--->>>",giftsIds)
-                                 
-                                 async.forEachOfLimit(giftsIds, 1, function(value, key, callback) {
-                                   var index = giftsCount.indexOf(value)
-                                      console.log("index--->>>",index)
-                                     giftsCount.splice(index, 1);
-                                      console.log("actualCount--->>>",actualCount)
-                                  callback();
-                             }, function(err) {
-                             });
-                                  result1.gifts = giftsCount;
-                            res.send({
-                                result: result1,
-                                responseCode: 200,
-                                responseMessage: i18n.__("Profile data shown successfully")
-                            });
-                             }                             
-                         })                            
+                            })
 
                         } else {
                             res.send({
@@ -1481,105 +1475,123 @@
         "facebookLogin": function(req, res) {
             console.log("facebook login req---->>>>", req.body)
             i18n = new i18n_module(req.body.lang, configs.langFile);
-            if (!req.body.facebookID) { res.send({ responseCode: 403, responseMessage: i18n.__('please enter facebookID') }); } else if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: i18n.__('Dob required') }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: i18n.__('country required') }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: i18n.__('city required') }); } else if (!req.body.countryCode) { res.send({ responseCode: 403, responseMessage: i18n.__('Country code required') }) } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: i18n.__('MobileNumber required') }); }
-            //        else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); }
-            else {
-                User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
-                    i18n = new i18n_module(req.body.lang, configs.langFile);
-                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!result) {
-                        if (req.body.haveReferralCode == true) {
-                            console.log("in if")
-                            User.findOne({ referralCode: req.body.referredCode }, function(err, user) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!user) { res.send({ responseCode: 400, responseMessage: i18n.__('Please enter valid referralcode') }); } else {
+            if (!req.body.facebookID) { res.send({ responseCode: 403, responseMessage: i18n.__('please enter facebookID') }); } else {
+                User.find({ facebookID: req.body.facebookID, status: 'ACTIVE' }).exec(function(err, userResult) {
+                    console.log("in userResult -->>>", JSON.stringify(userResult))
+                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (userResult.length==0) {
+                        console.log("*****************************************")
+                        console.log("in else if--->>>", JSON.stringify(userResult))
+                        if (!req.body.dob) { res.send({ responseCode: 403, responseMessage: i18n.__('Dob required') }); } else if (!req.body.country) { res.send({ responseCode: 403, responseMessage: i18n.__('country required') }); } else if (!req.body.city) { res.send({ responseCode: 403, responseMessage: i18n.__('city required') }); } else if (!req.body.countryCode) { res.send({ responseCode: 403, responseMessage: i18n.__('Country code required') }) } else if (!req.body.mobileNumber) { res.send({ responseCode: 403, responseMessage: i18n.__('MobileNumber required') }); }
+                        //        else if (!validator.isEmail(req.body.email)) { res.send({ responseCode: 403, responseMessage: 'Please enter the correct email id.' }); }
+                        else {
+                             console.log("++++++++++++++++++++++++++++++++++++")
+                             console.log("in else -->>>")
+                            User.findOne({ email: req.body.email, status: 'ACTIVE' }, avoid).exec(function(err, result) {
+                                i18n = new i18n_module(req.body.lang, configs.langFile);
+                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!result) {
+                                    if (req.body.haveReferralCode == true) {
+                                        console.log("in if")
+                                        User.findOne({ referralCode: req.body.referredCode }, function(err, user) {
+                                            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (!user) { res.send({ responseCode: 400, responseMessage: i18n.__('Please enter valid referralcode') }); } else {
 
-                                    Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
-                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                                            console.log("data-->>", data)
-                                            var amount = data[0].value;
-                                            console.log("amount-->>", amount)
-                                            User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
-                                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
-                                                    req.body.otp = functions.otp();
-                                                    req.body.referralCode = yeast();
-                                                    req.body.brolix = amount;
-                                                    var user = User(req.body)
-                                                    user.save(function(err, result3) {
-                                                        console.log("result3--->>>", console.log(result3))
-                                                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
-                                                            var token_data = {
-                                                                _id: result3._id,
-                                                                status: result3.status
+                                                Brolixanddollors.find({ "type": "brolixForInvitation" }).exec(function(err, data) {
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                                                        console.log("data-->>", data)
+                                                        var amount = data[0].value;
+                                                        console.log("amount-->>", amount)
+                                                        User.findOneAndUpdate({ referralCode: req.body.referredCode }, { $inc: { brolix: amount } }).exec(function(err, result2) {
+                                                            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
+                                                                req.body.otp = functions.otp();
+                                                                req.body.referralCode = yeast();
+                                                                req.body.brolix = amount;
+                                                                var user = User(req.body)
+                                                                user.save(function(err, result3) {
+                                                                    console.log("result3--->>>", console.log(result3))
+                                                                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else {
+                                                                        var token_data = {
+                                                                            _id: result3._id,
+                                                                            status: result3.status
+                                                                        }
+                                                                        var token = jwt.sign(token_data, config.secreteKey);
+                                                                        res.header({
+                                                                            "appToken": token
+                                                                        }).send({
+                                                                            result: result3,
+                                                                            token: token,
+                                                                            responseCode: 200,
+                                                                            responseMessage: i18n.__("You have been registered successfully")
+                                                                        });
+                                                                    }
+                                                                })
                                                             }
-                                                            var token = jwt.sign(token_data, config.secreteKey);
-                                                            res.header({
-                                                                "appToken": token
-                                                            }).send({
-                                                                result: result3,
-                                                                token: token,
-                                                                responseCode: 200,
-                                                                responseMessage: i18n.__("You have been registered successfully")
-                                                            });
-                                                        }
-                                                    })
-                                                }
-                                            })
-                                        }
-                                    })
-                                }
-                            })
+                                                        })
+                                                    }
+                                                })
+                                            }
+                                        })
 
-                        } else {
-                            console.log("in else")
-                            req.body.referralCode = yeast();
-                            console.log("face user req", JSON.stringify(req.body))
-                            var user = new User(req.body);
-                            user.save(function(err, result1) {
-                                console.log("result1--->>>", JSON.stringify(result1))
-                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
-                                    var token_data = {
-                                        _id: result1._id,
-                                        status: result1.status
+                                    } else {
+                                        console.log("in else")
+                                        req.body.referralCode = yeast();
+                                        console.log("face user req", JSON.stringify(req.body))
+                                        var user = new User(req.body);
+                                        user.save(function(err, result1) {
+                                            console.log("result1--->>>", JSON.stringify(result1))
+                                            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }) } else {
+                                                var token_data = {
+                                                    _id: result1._id,
+                                                    status: result1.status
+                                                }
+                                                console.log("in token_data--->>>>", token_data)
+                                                var token = jwt.sign(token_data, config.secreteKey);
+                                                res.header({
+                                                    "appToken": token
+                                                }).send({
+                                                    result: result1,
+                                                    token: token,
+                                                    responseCode: 200,
+                                                    responseMessage: i18n.__("Signup successfully")
+                                                });
+                                            }
+                                        })
                                     }
-                                    var token = jwt.sign(token_data, config.secreteKey);
-                                    res.header({
-                                        "appToken": token
-                                    }).send({
-                                        result: result1,
-                                        token: token,
-                                        responseCode: 200,
-                                        responseMessage: i18n.__("Signup successfully")
-                                    });
+                                } else {
+                                    if (result.facebookID == undefined) {
+                                        res.send({
+                                            responseCode: 201,
+                                            responseMessage: i18n.__("You are already register with app"),
+                                            user: result
+                                        });
+                                    }
                                 }
                             })
+                        
                         }
                     } else {
-                        if (result.facebookID == undefined) {
-                            res.send({
-                                responseCode: 201,
-                                responseMessage: i18n.__("You are already register with app"),
-                                user: result
+                        console.log("in facebook else--->>>")
+                        User.findOneAndUpdate({ facebookID: req.body.facebookID }, {
+                            $set: {
+                                deviceType: req.body.deviceType,
+                                deviceToken: req.body.deviceToken
+                            }
+                        }, { new: true }).exec(function(err, facebookUser) {
+                            console.log("in facebookUser else--->>>", JSON.stringify(facebookUser))
+                            var token_data = {
+                                _id: facebookUser._id,
+                                status: facebookUser.status
+                            }
+                            var token = jwt.sign(token_data, config.secreteKey);
+                            res.header({
+                                "appToken": token
+                            }).send({
+                                result: facebookUser,
+                                token: token,
+                                responseCode: 200,
+                                responseMessage: i18n.__("Login successfully")
                             });
-                        } else {
+                            //console.log("what is in token-->>>" + token);
+                        })
 
-                            User.findOneAndUpdate({ email: req.body.email }, {
-                                $set: {
-                                    deviceType: req.body.deviceType,
-                                    deviceToken: req.body.deviceToken
-                                }
-                            }, { new: true }).exec(function(err, user) {
-                                var token = jwt.sign(result, config.secreteKey);
-                                res.header({
-                                    "appToken": token
-                                }).send({
-                                    result: user,
-                                    token: token,
-                                    responseCode: 200,
-                                    responseMessage: i18n.__("Login successfully")
-                                });
-                                //console.log("what is in token-->>>" + token);
-                            })
-
-                        }
                     }
                 })
             }
@@ -1804,33 +1816,33 @@
         "pageInboxChat": function(req, res) {
             console.log("pageInboxChat ----  request----->>>", JSON.stringify(req.body))
             var condition;
-              condition =  { $or: [{ senderId: req.body.userId, chatType: req.body.chatType }, { receiverId: req.body.userId, chatType: req.body.chatType }] }
-              //  condition = { $or: [{ senderId: req.body.userId, chatType: req.body.chatType }] }
-           
+            condition = { $or: [{ senderId: req.body.userId, chatType: req.body.chatType }, { receiverId: req.body.userId, chatType: req.body.chatType }] }
+            //  condition = { $or: [{ senderId: req.body.userId, chatType: req.body.chatType }] }
+
             // here is { $or:[ {senderId: "$senderId"}, {receiverId: "$receiverId" }]},
             console.log("condition----->>>", JSON.stringify(condition))
             chat.aggregate(
                 [{
                         $match: condition
                     },
-//                   { $sort: { createdAt: 1 } },
+                    //                   { $sort: { createdAt: 1 } },
                     {
-                       $group: {
-                        _id: "$pageId",
-                        unread: {
-                            $sum: {
-                                $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
-                            }
-                        },
+                        $group: {
+                            _id: "$roomId",
+                            unread: {
+                                $sum: {
+                                    $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
+                                }
+                            },
                             lastMsg: { $last: "$message" },
                             timestamp: { $last: "$timestamp" },
                             senderImage: { $last: "$senderImage" },
                             receiverImage: { $last: "$receiverImage" },
                             senderName: { $last: "$senderName" },
                             receiverName: { $last: "$receiverName" },
-                             senderId: { $last: "$senderId" },
-                             receiverId: { $last: "$receiverId" }
-                            // pageId:{ $last: "$pageId" }
+                            senderId: { $last: "$senderId" },
+                            receiverId: { $last: "$receiverId" },
+                            pageId: { $last: "$pageId" }
                         }
                     }
                 ]).exec(function(err, result) {
@@ -1868,18 +1880,18 @@
                         //   result.slice(j, 1);
                     }
                     // console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
-                     chat.populate(obj, { path: '_id', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
-                                        res.send({
-                                        result: obj,
-                                        responseCode: 200,
-                                        responseMessage: i18n.__("Result shown successfully")
-                                    });
-                                    })
-//                    res.send({
-//                        result: obj,
-//                        responseCode: 200,
-//                        responseMessage: i18n.__("Result shown successfully")
-//                    });
+                    chat.populate(obj, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                        res.send({
+                            result: obj,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Result shown successfully")
+                        });
+                    })
+                    //                    res.send({
+                    //                        result: obj,
+                    //                        responseCode: 200,
+                    //                        responseMessage: i18n.__("Result shown successfully")
+                    //                    });
                 }
 
             })
@@ -2552,11 +2564,8 @@
                         } else {
                             User.findOne({ _id: receiverId }, function(err, result) {
                                 console.log("result.privacy.exchangeCoupon----->>>", result.privacy.exchangeCoupon)
-                                 console.log("result.privacy.sendCoupon----->>>", result.privacy.sendCoupon)
-                                if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error12') }); } 
-                                else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } 
-                                else if (result.privacy.sendCoupon == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send coupon to this user due to privacy policies") }) }
-                                else {
+                                console.log("result.privacy.sendCoupon----->>>", result.privacy.sendCoupon)
+                                if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error12') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else if (result.privacy.sendCoupon == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send coupon to this user due to privacy policies") }) } else {
                                     callback(null)
                                 }
                             })
@@ -2581,11 +2590,9 @@
                                 console.log("2")
                                 createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { "couponSend": { senderId: senderId, receiverId: receiverId, sendDate: currentTime } } }).exec(function(err, result2) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 22') }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found 1.") }); } else {
-                                        User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(req.body.senderCouponId) }, { $set: { "coupon.$.status": "SEND" }}, { new: true }).exec(function(err, result3) {
-                                        //    console.log("sendCoupon to follower--->>>",JSON.stringify(result3))
-                                            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 33') }); } 
-                                            else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found 2.") }); }
-                                            else {
+                                        User.findOneAndUpdate({ 'coupon._id': new mongoose.Types.ObjectId(req.body.senderCouponId) }, { $set: { "coupon.$.status": "SEND" } }, { new: true }).exec(function(err, result3) {
+                                            //    console.log("sendCoupon to follower--->>>",JSON.stringify(result3))
+                                            if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 33') }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found 2.") }); } else {
                                                 for (i = 0; i < result3.coupon.length; i++) {
                                                     if (result3.coupon[i]._id == req.body.senderCouponId) {
                                                         var couponCode = result3.coupon[i].couponCode;
@@ -2612,25 +2619,23 @@
                                                     notificationType: 'couponReceived'
                                                 }
 
-                                                console.log("coupon to follower-- friends-->>>",coupon)
-                                                 console.log("coupon to follower-- couponAdId-->>>",couponAdId)
-                                                  console.log("coupon to follower-- data-->>>",data)
+                                                console.log("coupon to follower-- friends-->>>", coupon)
+                                                console.log("coupon to follower-- couponAdId-->>>", couponAdId)
+                                                console.log("coupon to follower-- data-->>>", data)
                                                 User.findByIdAndUpdate({ _id: req.body.receiverId }, { $push: { 'coupon': coupon, notification: data, gifts: couponAdId } }, { new: true }, function(err, result4) {
                                                     //    console.log("receiverId--->>>", result4)
-                                                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 44') }); } 
-                                                    else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); }
-                                                    else { 
-                                                    if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
-                                                        var message = i18n.__("I have sent you a coupon");
-                                                        if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
-                                                            functions.android_notification(result4.deviceToken, message);
-                                                            console.log("Android notification send!!!!")
-                                                        } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
-                                                            functions.iOS_notification(result4.deviceToken, message);
-                                                        } else {
-                                                            console.log("Something wrong!!!!")
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 44') }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else {
+                                                        if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
+                                                            var message = i18n.__("I have sent you a coupon");
+                                                            if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
+                                                                functions.android_notification(result4.deviceToken, message);
+                                                                console.log("Android notification send!!!!")
+                                                            } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
+                                                                functions.iOS_notification(result4.deviceToken, message);
+                                                            } else {
+                                                                console.log("Something wrong!!!!")
+                                                            }
                                                         }
-                                                    }
                                                         callback(null, result4)
                                                     }
                                                 })
@@ -2683,19 +2688,20 @@
                                             }
                                             console.log("coupon send public--->>>", coupon)
                                             User.findByIdAndUpdate({ _id: req.body.receiverId }, { $push: { 'coupon': coupon, notification: data, gifts: couponAdId, } }, { new: true }, function(err, result4) {
-                                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 77') }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else { 
-                                                if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
-                                                    var message = i18n.__("I have sent you a coupon");
-                                                    if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
-                                                        functions.android_notification(result4.deviceToken, message);
-                                                        console.log("Android notification send!!!!")
-                                                    } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
-                                                        functions.iOS_notification(result4.deviceToken, message);
-                                                    } else {
-                                                        console.log("Something wrong!!!!")
+                                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 77') }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                                                    if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
+                                                        var message = i18n.__("I have sent you a coupon");
+                                                        if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
+                                                            functions.android_notification(result4.deviceToken, message);
+                                                            console.log("Android notification send!!!!")
+                                                        } else if (result4.deviceType == 'iOS' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
+                                                            functions.iOS_notification(result4.deviceToken, message);
+                                                        } else {
+                                                            console.log("Something wrong!!!!")
+                                                        }
                                                     }
+                                                    callback(null, result4)
                                                 }
-                                                    callback(null, result4) }
                                             })
                                         }
                                     })
@@ -2874,7 +2880,7 @@
                                 couponExpire: couponExpire2
                             }
 
-                            User.findOneAndUpdate({ _id: senderId }, { $push: { coupon: data1, gifts:couponAdId2 } }, { new: true }).exec(function(err, result6) {
+                            User.findOneAndUpdate({ _id: senderId }, { $push: { coupon: data1, gifts: couponAdId2 } }, { new: true }).exec(function(err, result6) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 77' }); } else if (!result6) { res.send({ responseCode: 404, responseMessage: "No user found. 66" }); } else {
                                     callback(null, result6)
                                 }
@@ -3379,16 +3385,13 @@
 
         // api to check user can send message or not
         "sendMessage": function(req, res) {
-            console.log("send message--->>>",JSON.stringify(req.body))
+            console.log("send message--->>>", JSON.stringify(req.body))
             User.findOne({ _id: req.body.receiverId }, function(err, result2) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error. 33' }); }
-                else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); }
-                else {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error. 33' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
                     var flag = result2.blockUser.indexOf(req.body.senderId)
-                    console.log("flage--->>>",flag)
-                    if (flag != -1) { res.send({ responseCode: 401, responseMessage: i18n.__('You can not send message to this user') }) }
-                    else {
+                    console.log("flage--->>>", flag)
+                    if (flag != -1) { res.send({ responseCode: 401, responseMessage: i18n.__('You can not send message to this user') }) } else {
                         console.log("result2.privacy.sendMessage", result2.privacy.sendMessage)
                         if (result2.privacy.sendMessage == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send message to this user due to privacy policies") }) } else if (result2.privacy.sendMessage == "onlyFollowers") {
                             var flag1 = result2.userFollowers.indexOf(req.body.senderId)
