@@ -130,16 +130,15 @@ module.exports = {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             pageProductList.findOneAndUpdate({ _id: req.body.productId, 'media._id': req.body.imageId }, { $inc: { "media.$.commentCount": +1 } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-
                     productComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                        res.send({
-                            result: result,
-                            responseCode: 200,
-                            responseMessage: i18n.__("Comments save with concerned User details")
-                        });
+                        productComments.populate(result, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: i18n.__("Comments save with concerned User details")
+                            });
+                        })
                     })
-
-
                 }
             })
         })
@@ -288,11 +287,13 @@ module.exports = {
                 console.log("productCommentList--->>>", result)
 
                 productComments.populate(result.docs, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                    console.log("adsCommentList---->>>", JSON.stringify(finalResult))
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: i18n.__("Comments List")
+                    productComments.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                        console.log("adsCommentList---->>>", JSON.stringify(finalResult))
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Comments List")
+                        })
                     })
                 })
 
@@ -332,21 +333,8 @@ module.exports = {
 
                     }
                 })
-
-
-
             }
         })
-
-        // pageProductList.findOneAndUpdate({ _id: req.params.id }, { $set: { 'status': 'REMOVED' } }, function(err, result) {
-        //     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error." }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No product found." }); } else {
-        //         res.send({
-        //             result: result,
-        //             responseCode: 200,
-        //             responseMessage: "Product removed successfully."
-        //         })
-        //     }
-        // })
     },
 
     // edit products api
@@ -354,7 +342,6 @@ module.exports = {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req. body", JSON.stringify(req.body))
         pageProductList.findOneAndUpdate({ _id: req.params.id, 'media._id': req.params.mediaId }, { $set: { 'media.$.description': req.body.description } }, { new: true }).exec(function(err, result) {
-
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: 'Please enter correct item id' }); } else {
                 productComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
                     res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Item updated successfully") })

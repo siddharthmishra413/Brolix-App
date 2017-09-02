@@ -166,13 +166,14 @@
                  //                 })
 
                  async.forEachOfLimit(result, 1, function(value, key, callback) {
-                     //  console.log("value-->>", value)  
+                     console.log("followerRequestSend-->>", value)  
                      arr.push(value.receiverId);
                      status_obj[value.userId] = value.followerStatus;
                      callback();
                  }, function(err) {
                  });
-
+                 console.log("followerRequest arr->>>", JSON.stringify(arr))
+                   console.log("followerRequest  status_obj--->>>", JSON.stringify(status_obj))
                  User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                      for (var i = 0; i < newResult.length; i++) {
                          var receiverId_Id = newResult[i]._id;

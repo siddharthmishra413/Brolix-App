@@ -1600,7 +1600,7 @@
         // list of user cash gift api
         "userCashGifts": function(req, res) { // userId in req
             var userId = req.body.userId;
-            User.find({ _id: userId, 'cashPrize.status': "ACTIVE" }).populate('cashPrize.adId').populate('cashPrize.pageId', 'pageName adAdmin').exec(function(err, result) {
+            User.find({ _id: userId, 'cashPrize.status': "ACTIVE" }).populate('cashPrize.adId').populate('cashPrize.pageId', 'pageName adAdmin').lean().exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon found") }) } else {
                     var obj = result[0].cashPrize;
@@ -1643,22 +1643,62 @@
                         return obj2.updateddAt - obj1.updateddAt
                     })
                     var type = 'onGifts';
-                    var new_Data = [];
-                    async.forEachOfLimit(sortArray, 1, function(value, key, callback) {
+                    var new_Data1 = [];
+                    var new_count =[];
+                    //var length = 0;
+                  //  console.log("dadaa",JSON.stringify(sortArray))
+                    async.forEachOfLimit(sortArray, 1, function( value, key, callback) { 
+                      //  console.log("valuewwwwwwwwwww======>",value)
                         var id = value.adId._id;
-                        addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type }], status: "ACTIVE" }, function(err, commentResult) {
-                            length = commentResult.length;
-                            value.adId.commentCountOnGifts = length;
-                            new_Data.push(value)
-                            callback();
+                        var couponType = value.type;
+                        addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }, function(err, commentResult) {
+                            console.log('commentResult-------' + JSON.stringify(commentResult.length));
+                            var new_length = 0;
+                              new_length =commentResult.length;
+                             //let obj1 = { a: 0 , b: { c: 0}};
+//                             let obj2 = Object.assign({}, value);
+//                             console.log('commentResult-------commentResult------- commentResult------- ');
+                            
+                             //console.log((obj2));
+                            
+                           // var new_array =[];
+                           // new_array.push(value)
+                            console.log('-------------');
+                            //console.log(value)
+                            //value.adId.commentCountOnGifts = new_length;
+                            new_count.push(new_length);
+                            console.log('==============');
+                            console.log(new_count);
+                           // new_array.push(value);
+                           // console.log('value after insert-------' + JSON.stringify(again_new_Data));
+                            new_Data1.push(value)
+                           // new_Data1 = [...new_Data1,...new_array]
+
+
+                            //  console.log("new data--->>>",JSON.stringify(again_new_Data))
+                              callback();
                         })
+
                     }, function(err) {
+                       //console.log("sortArray--->>>",JSON.stringify(new_Data))
+//                        var newww =[];
+//                        for(var i=0;i<new_count.length;i++){
+//                            console.log("++++++"+new_count[i])
+//                            var temp ="";
+//                            
+//                            temp = new_Data1[i];
+//                            temp.adId.commentCountOnGifts =new_count[i];
+//                            //console.log()
+//                            console.log(JSON.stringify(temp));
+//                            newww.push(temp);
+//                        }
                         res.send({
-                            result: sortArray,
+                            result: new_Data1,
+                            count:new_count,
                             responseCode: 200,
                             responseMessage: i18n.__("Coupon gifts shown successfully")
-                        })
-                    })
+                        })                    
+                     })
                 }
             })
         },
@@ -2360,7 +2400,7 @@
                                     createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime } } }, { new: true }).exec(function(err, result3) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 44') }) } else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
 
-                                            createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId } } }, { new: true }).exec(function(err, result4) {
+                                            createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId,receiverCouponExpirationTime:receiverCouponExpirationTime } } }, { new: true }).exec(function(err, result4) {
                                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 55') }) } else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("Sender ad not found.") }); } else {
                                                     //  callback(null, result3)
                                                 }
@@ -2385,7 +2425,7 @@
                                 createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime } } }, { new: true }).exec(function(err, result5) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 66') }) } else if (!result5) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
 
-                                        createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId } } }, { new: true }).exec(function(err, result6) {
+                                        createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId,receiverCouponExpirationTime:receiverCouponExpirationTime } } }, { new: true }).exec(function(err, result6) {
 
                                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 77') }) } else if (!result6) { res.send({ responseCode: 404, responseMessage: i18n.__("Sender ad not found.") }); } else {
                                                 //  callback(null, result3)

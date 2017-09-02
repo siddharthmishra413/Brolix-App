@@ -176,7 +176,7 @@ module.exports = {
 
     // for create ads
     "createAds": function(req, res) {
-        console.log("createAds--->>>",JSON.stringify(req.body))
+        console.log("createAds--->>>", JSON.stringify(req.body))
         i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.adsType == "coupon") {
             if (!req.body.couponExpiryDate) { res.send({ responseCode: 400, responseMessage: i18n.__('Please enter coupon expiry date') }); } else if (req.body.numberOfWinners > req.body.viewerLenght) { res.send({ responseCode: 400, responseMessage: i18n.__('Number of winners can not be greater than number of viewers') }); } else {
@@ -187,7 +187,7 @@ module.exports = {
                 req.body.couponStatus = 'VALID';
                 var Ads = new createNewAds(req.body);
                 Ads.save(function(err, result) {
-                     console.log("createAds--->>>",JSON.stringify(result))
+                    console.log("createAds--->>>", JSON.stringify(result))
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 66', err }); } else {
                         var pageId = result.pageId;
                         createNewPage.findOneAndUpdate({ _id: pageId }, { $inc: { adsCount: 1 } }, { new: true }).exec(function(err, result1) {
@@ -313,7 +313,7 @@ module.exports = {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
 
-                        createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt:-1 } }, function(err, result) {
+                        createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon ad found") }); } else {
 
                                 for (var i = 0; i < result.docs.length; i++) {
@@ -593,35 +593,37 @@ module.exports = {
                         callback(null, noDataValue, value, blockedArray)
                     }
                 })
-            }, function(noDataValue, value, blockedArray,callback){
-               var re = new RegExp(req.body.pageName, 'i');
-               createNewPage.find({ 'pageName': { $regex: re }, status: 'ACTIVE' }, function(err, pageResult) {
-                   if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
-                    //     console.log("array--->>>",JSON.stringify(pageResult))
-                       var array= []
-                       for (var i = 0; i < pageResult.length; i++) {
-                           array.push(pageResult[i]._id)
-                       }
-                     //  console.log("array--->>>",array)
-                       callback(null, array, noDataValue, value, blockedArray);
-                   }
-               })
+            },
+            function(noDataValue, value, blockedArray, callback) {
+                var re = new RegExp(req.body.pageName, 'i');
+                createNewPage.find({ 'pageName': { $regex: re }, status: 'ACTIVE' }, function(err, pageResult) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+                        //     console.log("array--->>>",JSON.stringify(pageResult))
+                        var array = []
+                        for (var i = 0; i < pageResult.length; i++) {
+                            array.push(pageResult[i]._id)
+                        }
+                        //  console.log("array--->>>",array)
+                        callback(null, array, noDataValue, value, blockedArray);
+                    }
+                })
 
-           },function(array, noDataValue, dataValue, blockedArray, callback){
-           
+            },
+            function(array, noDataValue, dataValue, blockedArray, callback) {
+
                 var re = new RegExp(req.body.pageName, 'i');
                 var re2 = new RegExp(req.body.subCategory, 'i')
                 var data = {
-                    
+
                     'whoWillSeeYourAdd.country': req.body.country,
                     'whoWillSeeYourAdd.state': req.body.state,
-                    $or:[{ 'whoWillSeeYourAdd.city': req.body.city},{'whoWillSeeYourAdd.city':''}],
-                   // 'whoWillSeeYourAdd.city': req.body.city,
-                   // 'pageName': { $regex: re },
+                    $or: [{ 'whoWillSeeYourAdd.city': req.body.city }, { 'whoWillSeeYourAdd.city': '' }],
+                    // 'whoWillSeeYourAdd.city': req.body.city,
+                    // 'pageName': { $regex: re },
                     'adsType': req.body.type,
                     'category': req.body.category,
                     'subCategory': { $regex: re2 },
-                     'pageId':{$in: array},
+                    'pageId': { $in: array },
                     //'_id':{$in:adsArray}
                 }
 
@@ -633,11 +635,11 @@ module.exports = {
                     }
                 }
                 var activeStatus = { userId: { $nin: blockedArray }, status: 'ACTIVE' }
-                Object.assign(data, activeStatus)       
-              console.log("data==========>",data)         
-                createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt:-1 }}, function(err, results) {
+                Object.assign(data, activeStatus)
+                console.log("data==========>", data)
+                createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, results) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
-                   //   console.log("data--->>>", JSON.stringify(results))
+                        //   console.log("data--->>>", JSON.stringify(results))
                         //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
                         for (var i = 0; i < results.docs.length; i++) {
                             if (results.docs[i].cash == 0) {
@@ -698,11 +700,13 @@ module.exports = {
                     createNewAds.findOneAndUpdate({ _id: req.body.addId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
                         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                             addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                                res.send({
-                                    result: result,
-                                    responseCode: 200,
-                                    responseMessage: i18n.__("Comments save with concerned User details")
-                                });
+                                addsComments.populate(result, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                                    res.send({
+                                        result: result,
+                                        responseCode: 200,
+                                        responseMessage: i18n.__("Comments save with concerned User details")
+                                    });
+                                })
                             })
                         }
                     })
@@ -716,8 +720,6 @@ module.exports = {
                                     responseMessage: i18n.__("Comments save with concerned User details")
                                 });
                             })
-
-
                         }
                     })
                 }
@@ -734,11 +736,15 @@ module.exports = {
         }, { new: true }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                    res.send({
-                        result: results,
-                        responseCode: 200,
-                        responseMessage: i18n.__("Comments save successfully")
-                    });
+
+                    addsComments.populate(results, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                        res.send({
+                            result: results,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Comments save successfully")
+                        });
+                    })
+
                 })
 
             }
@@ -746,38 +752,39 @@ module.exports = {
     },
 
     // show list of comments on ads
-    "adsCommentList": function(req, res) {         
+    "adsCommentList": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
         var type = req.params.type;
         var id = req.params.id;
         var userId = req.params.userId;
         var couponType = req.params.couponType;
-        console.log("in couponType--->>>",couponType)
+        console.log("in couponType--->>>", couponType)
         var condition;
         if (type == 'onGifts') {
             console.log("in if")
-            condition = { $and: [{ addId: id }, { winnerId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }
+            condition = { $and: [{ addId: id }, { winnerId: userId }, { type: type }, { couponType: couponType }], status: "ACTIVE" }
         } else {
             console.log("in else")
             condition = { addId: id, type: type, status: "ACTIVE" }
         }
-         console.log("in condition--->>>",condition)
+        console.log("in condition--->>>", condition)
         addsComments.paginate(condition, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
-            console.log("in result",result)
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else if(result.docs.length==0){res.send({responseCode:400, responseMessage:'No comment found in list'})}
-            else {
+            console.log("in result", result)
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No comment found in list' }) } else {
                 for (var i = 0; i < result.docs.length; i++) {
                     var reply = result.docs[i].reply;
                     var data = reply.filter(reply => reply.status == 'ACTIVE');
                     result.docs[i].reply = data;
                 }
                 addsComments.populate(result.docs, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                    res.send({
-                        result: result,
-                        responseCode: 200,
-                        responseMessage: i18n.__("Comments List")
+                    addsComments.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                        res.send({
+                            result: result,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Comments List")
+                        })
                     })
+
                 })
 
             }
@@ -835,11 +842,14 @@ module.exports = {
                 res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
             } else {
                 addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                    res.send({
-                        result: results,
-                        responseCode: 200,
-                        responseMessage: i18n.__("Comment edited successfully")
-                    });
+
+                    addsComments.populate(results, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                        res.send({
+                            result: results,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Comment edited successfully")
+                        });
+                    })
                 })
             }
         })
@@ -861,11 +871,16 @@ module.exports = {
             } else {
                 console.log("adsCommentList---->>>", JSON.stringify(results))
                 addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                    res.send({
-                        result: results,
-                        responseCode: 200,
-                        responseMessage: i18n.__("Comment edited successfully")
-                    });
+
+                    addsComments.populate(results, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                        res.send({
+                            result: results,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Comment edited successfully")
+                        });
+                    })
+
+
                 })
             }
         })
@@ -1019,7 +1034,7 @@ module.exports = {
                     })
                 },
                 function(noDataValue, dataValue, callback) {
-                    createNewAds.paginate({ adsType: { $ne: 'ADMINCOUPON' }, pageId: req.params.pageId, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8 , sort: { createdAt: -1 } },function(err, result) {
+                    createNewAds.paginate({ adsType: { $ne: 'ADMINCOUPON' }, pageId: req.params.pageId, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
 
                             var updatedResult = result.docs;
@@ -1034,7 +1049,7 @@ module.exports = {
                                         }
                                     }
                                 }
-                             //   console.log("listOfAllAds---->>>",JSON.stringify(result))
+                                //   console.log("listOfAllAds---->>>",JSON.stringify(result))
                                 res.send({
                                     result: result,
                                     responseCode: 200,
@@ -1082,7 +1097,7 @@ module.exports = {
                                         }
                                     }
                                 }
-                            //     console.log("listOfAllAds--2-->>>",JSON.stringify(result))
+                                //     console.log("listOfAllAds--2-->>>",JSON.stringify(result))
                                 res.send({
                                     result: result,
                                     responseCode: 200,
@@ -1473,7 +1488,7 @@ module.exports = {
 
     // for all are winners condition 
     "allAreWinners": function(req, res) { //req.body.userId, adId
-        console.log("all are winners--->>>",req.body)
+        console.log("all are winners--->>>", req.body)
         var userId = req.body.userId;
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
@@ -1620,7 +1635,7 @@ module.exports = {
                                             }
                                             console.log("cash---data--->>>", data)
                                             // { $push: { coupon: data, notification: notifyData, gifts: req.body.adId } }
-                                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data, gifts: req.body.adId, notification: notifydata}, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
+                                            User.findOneAndUpdate({ _id: req.body.userId }, { $push: { cashPrize: data, gifts: req.body.adId, notification: notifydata }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
                                                 console.log("result-->>", result)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                                     if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
@@ -1688,12 +1703,12 @@ module.exports = {
                                                 }
 
                                                 var notifydata = {
-                                                adId: req.body.adId,
-                                                type: 'You have successfully won this raffle',
-                                                linkType: 'profile',
-                                                notificationType: 'WinnerType'
-                                            }
-                                                User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId, notification: notifydata }}, { multi: true }, function(err, result) {
+                                                    adId: req.body.adId,
+                                                    type: 'You have successfully won this raffle',
+                                                    linkType: 'profile',
+                                                    notificationType: 'WinnerType'
+                                                }
+                                                User.update({ _id: req.body.userId }, { $push: { coupon: data, hiddenGifts: data1, gifts: req.body.adId, notification: notifydata } }, { multi: true }, function(err, result) {
                                                     console.log("4")
                                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                         if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
@@ -1893,7 +1908,7 @@ module.exports = {
 
     // show all coupon winners list api
     "couponWinners": function(req, res) {
-        console.log("couponWinners--->>>",JSON.stringify(req.body))
+        console.log("couponWinners--->>>", JSON.stringify(req.body))
         i18n = new i18n_module(req.params.lang, configs.langFile);
         var pageNumber = Number(req.params.pageNumber)
         var limitData = pageNumber * 8;
@@ -1919,7 +1934,7 @@ module.exports = {
                             count++;
                         }
                         var pages = Math.ceil(count / 8);
-                        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', _id: { $nin: blockedArray } } },{$sort:{'coupon.createddAt':-1}},{ $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', _id: { $nin: blockedArray } } }, { $sort: { 'coupon.createddAt': -1 } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                                 User.populate(result1, {
                                     path: 'coupon.adId',
@@ -1932,13 +1947,13 @@ module.exports = {
                                             select: 'pageName adAdmin'
                                         }, function(err, result3) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else {
-                                                
-//                                                var sortArray = result2.sort(function(obj1, obj2) {
-//                                                 return obj2.coupon.createddAt - obj1.coupon.createddAt
-//                                             })
-                                                
-                                          //   console.log("couponWinners------->>>>",JSON.stringify(result2))
-                                             //    console.log("couponWinners------->>>>",JSON.stringify(result2))
+
+                                                //                                                var sortArray = result2.sort(function(obj1, obj2) {
+                                                //                                                 return obj2.coupon.createddAt - obj1.coupon.createddAt
+                                                //                                             })
+
+                                                //   console.log("couponWinners------->>>>",JSON.stringify(result2))
+                                                //    console.log("couponWinners------->>>>",JSON.stringify(result2))
                                                 res.send({
                                                     docs: result2,
                                                     count: count,
@@ -1962,7 +1977,7 @@ module.exports = {
         })
     },
 
-     // coupon winners date filter api
+    // coupon winners date filter api
     "couponWinnersDateFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: 'Please enter atleast start date or end date' }); } else {
@@ -2046,7 +2061,7 @@ module.exports = {
         }
     },
 
-     // cash winners filter api
+    // cash winners filter api
     "cashWinnersDateFilter": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: i18n.__('Please enter atleast start date or end date') }); } else {
@@ -2129,7 +2144,7 @@ module.exports = {
     },
 
 
-     // list of cash winners api
+    // list of cash winners api
     "cashWinners": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var pageNumber = Number(req.params.pageNumber)
@@ -2192,7 +2207,7 @@ module.exports = {
         })
     },
 
-     // tag friends on ads api
+    // tag friends on ads api
     "tagOnads": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
@@ -2245,7 +2260,7 @@ module.exports = {
         })
     },
 
-     // edit ad api
+    // edit ad api
     "editAd": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         //console.log("edit ad-----*+*+/*+///+*///--->>>",JSON.stringify(req.body))
@@ -2261,7 +2276,7 @@ module.exports = {
         });
     },
 
-     // ad filter on date basis
+    // ad filter on date basis
     "adsDateFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         if (!req.body.startDate && !req.body.endDate) { res.send({ responseCode: 400, responseMessage: "Please enter atleast startDate or endDate" }); } else {
@@ -2308,7 +2323,7 @@ module.exports = {
         }
     },
 
-     // // page's coupon ad filter api
+    // // page's coupon ad filter api
     "particularPageCouponAdsFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var status = req.body.status;
@@ -2332,7 +2347,7 @@ module.exports = {
         })
     },
 
-     // page's cash ad filter api
+    // page's cash ad filter api
     "particularPageCashAdsFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var status = req.body.status;
@@ -2355,7 +2370,7 @@ module.exports = {
         })
     },
 
-     // coupon filter in app api
+    // coupon filter in app api
     "couponFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var condition = { $or: [] };
@@ -2393,7 +2408,7 @@ module.exports = {
         })
     },
 
-     // coupon gifts filter api
+    // coupon gifts filter api
     "couponGiftsFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var userId = req.body.userId;
@@ -2431,7 +2446,7 @@ module.exports = {
         })
     },
 
-     // cash gifts filter api
+    // cash gifts filter api
     "cashGiftsFilter": function(req, res) { // userId in req 
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var userId = req.body.userId;
@@ -2468,7 +2483,7 @@ module.exports = {
         })
     },
 
-     // show list of coupon in store
+    // show list of coupon in store
     "storeCouponList": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
         waterfall([
@@ -2510,7 +2525,7 @@ module.exports = {
                 })
             },
             function(noDataValue, dataValue, blockedArray, callback) {
-                createNewAds.paginate({ userId: { $nin: blockedArray }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8, sort:{viewerLenght:-1} }, function(err, result) {
+                createNewAds.paginate({ userId: { $nin: blockedArray }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -2523,7 +2538,7 @@ module.exports = {
                                     }
                                 }
                             }
-                        //    console.log("storeCoupon--->>>",JSON.stringify(result))
+                            //    console.log("storeCoupon--->>>",JSON.stringify(result))
                             res.send({
                                 result: result,
                                 responseCode: 200,
@@ -2537,7 +2552,7 @@ module.exports = {
         ])
     },
 
-     // view coupon in app api
+    // view coupon in app api
     "viewCoupon": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewAds.findOne({ _id: req.body.adId }).exec(function(err, result) {
@@ -2555,7 +2570,7 @@ module.exports = {
         })
     },
 
-     // page coupon filter api
+    // page coupon filter api
     "PageCouponFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
@@ -2648,7 +2663,7 @@ module.exports = {
             },
             function(noDataValue, dataValue, arrayId, blockedArray, callback) {
                 //      console.log("arrayId=========>...", arrayId)
-                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE' }] }, { page: req.params.pageNumber, limit: 10, sort:{viewerLenght:-1} }, function(err, result) {
+                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE' }] }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -2764,7 +2779,7 @@ module.exports = {
             },
             function(noDataValue, dataValue, arrayId, blockedArray, callback) {
                 //     console.log("arrayId=========>...", arrayId)
-                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10,  sort:{viewerLenght:-1} }, function(err, result) {
+                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         createNewAds.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                             for (var i = 0; i < result.docs.length; i++) {
@@ -2785,7 +2800,7 @@ module.exports = {
         ])
     },
 
-     // ad view click api
+    // ad view click api
     "adsViewClick": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var startTime = new Date(req.body.date).toUTCString();
@@ -2874,7 +2889,7 @@ module.exports = {
         })
     },
 
-     // ad Statistics api
+    // ad Statistics api
     "adStatistics": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         // var queryCondition = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { adId: req.body.adId }] } }
@@ -2954,7 +2969,7 @@ module.exports = {
         ])
     },
 
-     // coupon Statistics filter clicks api
+    // coupon Statistics filter clicks api
     "adStatisticsFilterClick": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         // var details = req.body;
@@ -3493,7 +3508,7 @@ module.exports = {
         })
     },
 
-     // cash ad Statistics api
+    // cash ad Statistics api
     "CashAdStatistics": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
@@ -3552,7 +3567,7 @@ module.exports = {
         ])
     },
 
-     // cash Statistics year clicks api
+    // cash Statistics year clicks api
     "cashStatisticsYearClicks": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var newYear = new Date(req.body.date).getFullYear();
@@ -3665,7 +3680,7 @@ module.exports = {
         })
     },
 
-     // note in use for testing
+    // note in use for testing
     "homepageAds": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("home page req-->>", req.body)
@@ -3779,7 +3794,7 @@ module.exports = {
             }
         })
     },
-    
+
     // create ad payment api
     "createAdPayment": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -3987,8 +4002,8 @@ module.exports = {
         //   console.log("output",output)
         // });
     },
- 
-     // note in use for testing
+
+    // note in use for testing
     "test": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         uploadData(req, res, function(err, result) {
@@ -4006,7 +4021,7 @@ module.exports = {
 
     },
 
-     // for upload excel file in app
+    // for upload excel file in app
     "uploadXlFile": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log("req", req)

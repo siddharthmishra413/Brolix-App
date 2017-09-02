@@ -12,6 +12,7 @@ var Schema = mongoose.Schema;
 var addsCommentSchema = new Schema({
     pageId: {
         type: String,
+        ref: 'createNewPage',
         trim: true
     },
     addId: {
