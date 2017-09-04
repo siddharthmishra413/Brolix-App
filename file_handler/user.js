@@ -22,6 +22,7 @@
     var addsComments = require("./model/addsComments");
     var mongoose = require('mongoose');
     var Twocheckout = require('2checkout-node');
+    var Q = require("q");
     var async = require('async');
     var _ = require('underscore');
 
@@ -1604,12 +1605,12 @@
                     var sortArray = data.sort(function(obj1, obj2) {
                         return obj2.updateddAt - obj1.updateddAt
                     })
-
-                    var type = 'onGifts';
+                    var type = 'onGifts';                    
+                    var couponType = 'cashGifts'
                     var new_Data = [];
                     async.forEachOfLimit(sortArray, 1, function(value, key, callback) {
                         var id = value.adId._id;
-                        addsComments.find({ $and: [{ addId: id }, { userId: userId }, { type: type }], status: "ACTIVE" }, function(err, commentResult) {
+                        addsComments.find({ $and: [{ addId: id }, { userId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }, function(err, commentResult) {
                             length = commentResult.length;
                             value.adId.commentCountOnGifts = length;
                             new_Data.push(value)
@@ -1629,31 +1630,30 @@
         // list of user coupon gifts api
         "userCouponGifts": function(req, res) {
             var userId = req.body.userId;
-            User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
+            User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').lean().exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon found") }) } else {
                     var obj = result[0].coupon;
-                    var data = obj.filter(obj => obj.status == "ACTIVE");
+                    var data = obj.filter(obj => obj.couponStatus == "VALID");
                     var sortArray = data.sort(function(obj1, obj2) {
                         return obj2.updateddAt - obj1.updateddAt
                     })
                     var type = 'onGifts';
                     var new_Data1 = [];
                     var new_count =[];
-                    var new_length = 0;
                     async.forEachOfLimit(sortArray, 1, function( value, key, callback) { 
                         var id = value.adId._id;
                         var couponType = value.type;
                         addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }, function(err, commentResult) {
                               new_length =commentResult.length;
+                            value.adId.commentCountOnGifts = new_length;
                             new_count.push(new_length);
-                            console.log(new_count);
+                            //console.log(new_length);
                             new_Data1.push(value)
                               callback();
                         })
 
                     }, function(err) {
-                       // new_Data1.push(new_count)
                         res.send({
                             result: new_Data1,
                             count:new_count,
@@ -2309,6 +2309,8 @@
                     var adId = req.body.receiverAdId;
                     var couponExpirationTime = req.body.couponExpirationTime;
                     var receiverCouponExpirationTime = req.body.receiverCouponExpirationTime;
+                    var senderCouponType = req.body.senderCouponType;
+                    var receiverCouponType = req.body.receiverCouponType;
                     if (!req.body.receiverCouponCode) { res.send({ responseCode: 400, responseMessage: i18n.__("Receiver coupon code is required") }); } else if (!req.body.receiverId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverId is required") }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponId is required") }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverCouponId is required") }) } else if (receiverId == senderId) { res.send({ responseCode: 400, responseMessage: i18n.__("You can not send the exchange request to yourself") }) } else {
                         User.findOne({ _id: req.body.receiverId }).exec(function(err, userResult) {
                             //     console.log("***********************-->>>", userResult.privacy.exchangeCoupon)
@@ -2353,16 +2355,18 @@
                     var receiverCouponId = req.body.receiverCouponId;
                     var couponExpirationTime = req.body.couponExpirationTime;
                     var receiverCouponExpirationTime = req.body.receiverCouponExpirationTime;
+                    var senderCouponType = req.body.senderCouponType;
+                    var receiverCouponType = req.body.receiverCouponType;
                     i18n = new i18n_module(req.body.lang, configs.langFile);
                     if (!req.body.senderId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderId is required.") }) } else if (!req.body.receiverAdId) { res.send({ responseCode: 400, responseMessage: i18n.__("adId is required.") }) } else if (!req.body.senderAdId) { res.send({ responseCode: 400, responseMessage: i18n.__("exchangedWithAdId is required.") }) } else if (!req.body.senderCouponCode) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponCode is required.") }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponId is required.") }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverCouponId is required.") }) } else {
                         User.findOne({ _id: receiverId }, function(err, result2) {
                             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error. 33') }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: i18n.__("you are not allowed to send exchange request") }) } else if (result2.privacy.exchangeCoupon == "followers") {
                                 var flag = result2.userFollowers.find(userFollowers => userFollowers == senderId)
                                 if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon exchange request to this user due to privacy policies" }); } else {
-                                    createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime } } }, { new: true }).exec(function(err, result3) {
+                                    createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime, senderCouponType:senderCouponType } } }, { new: true }).exec(function(err, result3) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 44') }) } else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
 
-                                            createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId,receiverCouponExpirationTime:receiverCouponExpirationTime } } }, { new: true }).exec(function(err, result4) {
+                                            createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId,receiverCouponExpirationTime:receiverCouponExpirationTime,receiverCouponType:receiverCouponType } } }, { new: true }).exec(function(err, result4) {
                                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 55') }) } else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("Sender ad not found.") }); } else {
                                                     //  callback(null, result3)
                                                 }
@@ -2384,10 +2388,10 @@
                                     }
                                 }
                             } else {
-                                createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime } } }, { new: true }).exec(function(err, result5) {
+                                createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime,senderCouponType:senderCouponType } } }, { new: true }).exec(function(err, result5) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 66') }) } else if (!result5) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
 
-                                        createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId,receiverCouponExpirationTime:receiverCouponExpirationTime } } }, { new: true }).exec(function(err, result6) {
+                                        createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId,receiverCouponExpirationTime:receiverCouponExpirationTime,receiverCouponType:receiverCouponType } } }, { new: true }).exec(function(err, result6) {
 
                                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 77') }) } else if (!result6) { res.send({ responseCode: 404, responseMessage: i18n.__("Sender ad not found.") }); } else {
                                                 //  callback(null, result3)

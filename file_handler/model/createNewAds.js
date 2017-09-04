@@ -147,7 +147,8 @@ var createNewAdsSchema = new Schema({
         exchangedDate: { type: Date, default: Date.now },
         senderCouponId: { type: String },
         receiverCouponId: { type: String },
-        couponExpirationTime:{ type: String }
+        couponExpirationTime:{ type: String },
+        senderCouponType: { type: String }
     }],
     couponExchangeSent: [{
         senderId: { type: String, ref: 'brolixUser' },
@@ -157,7 +158,8 @@ var createNewAdsSchema = new Schema({
         exchangedDate: { type: Date, default: Date.now },
         senderCouponId: { type: String },
         receiverCouponId: { type: String },
-        receiverCouponExpirationTime:{ type: String }
+        receiverCouponExpirationTime:{ type: String },
+        receiverCouponType: { type: String }
     }],
     couponSend: [{
         senderId: { type: String },
