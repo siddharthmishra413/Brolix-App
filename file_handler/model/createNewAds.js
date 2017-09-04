@@ -120,6 +120,11 @@ var createNewAdsSchema = new Schema({
     raffleCount: [],
     NontargetedCount: [],
     like: [],
+    likeAndUnlike: [{
+        userId:{ type: String },
+        winnerId:{ type: String },
+        type:{ type: String }
+    }],
     winners: [],
     viewerLenght: { type: Number },
     luckCardListObject: [{

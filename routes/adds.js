@@ -22,7 +22,7 @@ app.post('/couponsSearch', authUser.authUser, adsHandler.couponsSearch); //Not i
 app.post('/searchForCoupons/:id/:pageNumber',  adsHandler.searchForCoupons);
 app.post('/likeAndUnlike', authUser.authUser, adsHandler.likeAndUnlike);
 app.post('/commentOnAds', authUser.authUser, adsHandler.commentOnAds);
-app.post('/replyOnComment', authUser.authUser, adsHandler.replyOnComment);
+app.post('/replyOnComment', adsHandler.replyOnComment);
 app.post('/sendCoupon', authUser.authUser, adsHandler.sendCoupon);
 app.post('/exchangeCoupon', authUser.authUser, adsHandler.exchangeCoupon);
 app.post('/acceptExchangeCouponRequest', authUser.authUser, adsHandler.acceptExchangeCouponRequest);

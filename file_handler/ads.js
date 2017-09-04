@@ -36,7 +36,6 @@ i18n_module = require('i18n-nodejs');
 
 
 i18n = new i18n_module(configs.lang, configs.langFile);
-//console.log("===========================================", i18n.__('Welcome'));
 
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
@@ -688,6 +687,33 @@ module.exports = {
             })
         }
     },
+    
+    // new like and unlike
+      "likeAndUnlike":function(req, res) {
+        i18n = new i18n_module(req.body.lang, configs.langFile);
+        console.log("req body of like.....",req.body)
+        if (req.body.flag == "like") {
+            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $push: { likeAndUnlike: { userId:req.body.userId,winnerId:req.body.winnerId ,type:req.body.type }} }, { new: true }).exec(function(err, results) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    res.send({
+                        result: results,
+                        responseCode: 200,
+                        responseMessage: i18n.__("Liked")
+                    });
+                }
+            })
+        } else {
+            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { likeAndUnlike: { userId:req.body.userId ,winnerId:req.body.winnerId ,type:req.body.type }} }, { new: true }).exec(function(err, results) {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                    res.send({
+                        result: results,
+                        responseCode: 200,
+                        responseMessage: i18n.__("Unliked")
+                    });
+                }
+            })
+        }
+    },
 
     // api for comments on ads
     "commentOnAds": function(req, res) {
@@ -734,10 +760,12 @@ module.exports = {
         addsComments.findOneAndUpdate({ addId: req.body.addId, _id: req.body.commentId }, {
             $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
         }, { new: true }).exec(function(err, results) {
+            console.log("first result--->>>",JSON.stringify(results))
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-
+                   console.log("first finalResult--->>>",JSON.stringify(results))
                     addsComments.populate(results, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                         console.log("last result--->>>",JSON.stringify(results))
                         res.send({
                             result: results,
                             responseCode: 200,

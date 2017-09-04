@@ -45,11 +45,6 @@
 
 
     i18n = new i18n_module(configs.lang, configs.langFile);
-    console.log("123456", "12" + 20 + 30);
-
-
-
-
 
     //brintree Integration
     var braintree = require("braintree");
@@ -1645,53 +1640,20 @@
                     var type = 'onGifts';
                     var new_Data1 = [];
                     var new_count =[];
-                    //var length = 0;
-                  //  console.log("dadaa",JSON.stringify(sortArray))
+                    var new_length = 0;
                     async.forEachOfLimit(sortArray, 1, function( value, key, callback) { 
-                      //  console.log("valuewwwwwwwwwww======>",value)
                         var id = value.adId._id;
                         var couponType = value.type;
                         addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }, function(err, commentResult) {
-                            console.log('commentResult-------' + JSON.stringify(commentResult.length));
-                            var new_length = 0;
                               new_length =commentResult.length;
-                             //let obj1 = { a: 0 , b: { c: 0}};
-//                             let obj2 = Object.assign({}, value);
-//                             console.log('commentResult-------commentResult------- commentResult------- ');
-                            
-                             //console.log((obj2));
-                            
-                           // var new_array =[];
-                           // new_array.push(value)
-                            console.log('-------------');
-                            //console.log(value)
-                            //value.adId.commentCountOnGifts = new_length;
                             new_count.push(new_length);
-                            console.log('==============');
                             console.log(new_count);
-                           // new_array.push(value);
-                           // console.log('value after insert-------' + JSON.stringify(again_new_Data));
                             new_Data1.push(value)
-                           // new_Data1 = [...new_Data1,...new_array]
-
-
-                            //  console.log("new data--->>>",JSON.stringify(again_new_Data))
                               callback();
                         })
 
                     }, function(err) {
-                       //console.log("sortArray--->>>",JSON.stringify(new_Data))
-//                        var newww =[];
-//                        for(var i=0;i<new_count.length;i++){
-//                            console.log("++++++"+new_count[i])
-//                            var temp ="";
-//                            
-//                            temp = new_Data1[i];
-//                            temp.adId.commentCountOnGifts =new_count[i];
-//                            //console.log()
-//                            console.log(JSON.stringify(temp));
-//                            newww.push(temp);
-//                        }
+                       // new_Data1.push(new_count)
                         res.send({
                             result: new_Data1,
                             count:new_count,
