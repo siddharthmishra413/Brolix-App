@@ -493,7 +493,7 @@ module.exports = {
                 User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
-                        createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1 } }, function(err, result) {
+                        createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 }}, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
 
                                 var currentTime = (new Date).getTime();
@@ -823,6 +823,8 @@ module.exports = {
         var userId = req.params.userId;
         var couponType = req.params.couponType;
         console.log("in couponType--->>>", couponType)
+        console.log("in type--->>>", type)
+        console.log("in id--->>>", id)
         var condition;
         if (type == 'onGifts') {
             console.log("in if")
@@ -1098,7 +1100,7 @@ module.exports = {
                     })
                 },
                 function(noDataValue, dataValue, callback) {
-                    createNewAds.paginate({ adsType: { $ne: 'ADMINCOUPON' }, pageId: req.params.pageId, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
+                    createNewAds.paginate({ adsType: { $ne: 'ADMINCOUPON' }, pageId: req.params.pageId, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
 
                             var updatedResult = result.docs;
@@ -1147,7 +1149,7 @@ module.exports = {
                 },
                 function(noDataValue, dataValue, callback) {
                     type = req.params.type;
-                    createNewAds.paginate({ pageId: req.params.pageId, adsType: type, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
+                    createNewAds.paginate({ pageId: req.params.pageId, adsType: type, $or: [{ status: 'ACTIVE' }, { status: 'EXPIRED' }] }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct page id' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No ad found' }); } else {
 
                             var updatedResult1 = result.docs;
@@ -2971,12 +2973,13 @@ module.exports = {
     // ad Statistics api
     "adStatistics": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
+         console.log("adStatistics-->>>" + JSON.stringify(req.body))
         // var queryCondition = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { adId: req.body.adId }] } }
         // var queryConditionPage = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { pageId: req.body.pageId }] } }
 
         var queryCondition = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { adId: req.body.adId }] } }
-        var queryConditionPage = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { pageId: req.body.pageId }] } }
-        //    console.log("queryCondition" + JSON.stringify(queryCondition))
+        var queryConditionPage = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { pageId: req.body.pageId },{adId : req.body.adId}] } }
+          console.log("queryCondition" + JSON.stringify(queryCondition))
         waterfall([
             function(callback) {
                 Views.aggregate([queryCondition, {

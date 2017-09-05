@@ -154,7 +154,7 @@
 
      // show list of request send
      "followerRequestSend": function(req, res) {
-         console.log("followerRequestSend--->>>", req.body)
+        // console.log("followerRequestSend--->>>", req.body)
          followerList.find({ senderId: req.body.senderId }).sort({ updatedAt: -1 }).exec(function(err, result) {
              i18n = new i18n_module(req.body.lang, configs.langFile);
              if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
@@ -166,7 +166,7 @@
                  //                 })
 
                  async.forEachOfLimit(result, 1, function(value, key, callback) {
-                     console.log("followerRequestSend-->>", value)  
+                 //    console.log("followerRequestSend-->>", value)  
                      arr.push(value.receiverId);
                      status_obj[value.userId] = value.followerStatus;
                      callback();

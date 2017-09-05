@@ -1128,6 +1128,7 @@ module.exports = {
 
     // update page click view
     "pageViewClick": function(req, res) {
+        console.log("page view", JSON.stringify(req.body))
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var startTime = new Date(req.body.date).toUTCString();
         var endTimeHour = req.body.date + 60000;
