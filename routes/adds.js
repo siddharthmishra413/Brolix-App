@@ -51,7 +51,7 @@ app.post('/StoreFavCouponFilter/:id/:pageNumber', authUser.authUser, adsHandler.
 app.post('/couponWinnersDateFilter/:id/:pageNumber', authUser.authUser, adsHandler.couponWinnersDateFilter);
 app.post('/cashWinnersDateFilter/:id/:pageNumber', authUser.authUser, adsHandler.cashWinnersDateFilter);
 app.post('/adsViewClick', authUser.authUser, adsHandler.adsViewClick);
-app.post('/adStatistics', authUser.authUser, adsHandler.adStatistics);
+app.post('/adStatistics',  adsHandler.adStatistics);
 app.post('/adStatisticsFilterClick', authUser.authUser, adsHandler.adStatisticsFilterClick);
 app.post('/couponStatisticsYearClicks', authUser.authUser, adsHandler.couponStatisticsYearClicks);
 app.post('/CouponAdStatistics', authUser.authUser, adsHandler.CouponAdStatistics);

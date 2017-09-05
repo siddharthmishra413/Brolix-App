@@ -2979,7 +2979,7 @@ module.exports = {
 
         var queryCondition = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { adId: req.body.adId }] } }
         var queryConditionPage = { $match: { $and: [{ date: { "$gte": new Date(req.body.startDate), "$lte": new Date(req.body.endDate) } }, { pageId: req.body.pageId },{adId : req.body.adId}] } }
-          console.log("queryCondition" + JSON.stringify(queryCondition))
+          console.log("queryConditionPage" + JSON.stringify(queryConditionPage))
         waterfall([
             function(callback) {
                 Views.aggregate([queryCondition, {
@@ -2995,13 +2995,8 @@ module.exports = {
                         GameDownloaded: { $sum: "$GameDownloaded" }
                     }
                 }]).exec(function(err, result) {
-                    if (err) {
-                        res.send({
-                            result: err,
-                            responseCode: 404,
-                            responseMessage: "error."
-                        });
-                    } else if (result.length == 0) {
+                    if (err) { res.send({  responseCode: 500, responseMessage: "Internal server error" });} 
+                    else if (result.length == 0) {
                         var data = [{
                             pageView: 0,
                             viewAds: 0,
@@ -3026,17 +3021,19 @@ module.exports = {
 
                     }
                 }]).exec(function(err, result) {
-                    if (err) {
-                        res.send({
-                            result: err,
-                            responseCode: 404,
-                            responseMessage: "error."
-                        });
-                    } else if (result.length == 0) {
+                     if (err) { res.send({  responseCode: 500, responseMessage: "Internal server error" });} 
+                    else if (result.length == 0) {
                         var data = [{
                             pageView: 0
-
                         }]
+                         console.log("data" + JSON.stringify(data))
+                        AdResult[0].pageView = data[0].pageView;
+                          res.send({
+                            result: AdResult,
+                            responseCode: 200,
+                            responseMessage: i18n.__("Success.")
+                        });
+
                     } else {
                         AdResult[0].pageView = result[0].pageView;
                         //   AdResult[0].viewAds = result[0].viewAds;
@@ -3059,7 +3056,7 @@ module.exports = {
 
         switch (data) {
             case 'pageView':
-                var updateData = { $match: { pageId: req.body.pageId } };
+                var updateData = { $match: { pageId: req.body.pageId ,adId: req.body.adId} };
                 var groupCond = {
                     $group: {
                         _id: { year: { $year: "$date" }, month: { $month: "$date" } },
