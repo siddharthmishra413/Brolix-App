@@ -21,7 +21,7 @@ app.get('/showAllAdsCashType/:id/:pageNumber/:lang', authUser.authUser, adsHandl
 app.post('/couponsSearch', authUser.authUser, adsHandler.couponsSearch); //Not in docs
 app.post('/searchForCoupons/:id/:pageNumber',  adsHandler.searchForCoupons);
 app.post('/likeAndUnlike', authUser.authUser, adsHandler.likeAndUnlike);
-app.post('/commentOnAds', authUser.authUser, adsHandler.commentOnAds);
+app.post('/commentOnAds',  adsHandler.commentOnAds);
 app.post('/replyOnComment', adsHandler.replyOnComment);
 app.post('/sendCoupon', authUser.authUser, adsHandler.sendCoupon);
 app.post('/exchangeCoupon', authUser.authUser, adsHandler.exchangeCoupon);

@@ -22,7 +22,6 @@
     var addsComments = require("./model/addsComments");
     var mongoose = require('mongoose');
     var Twocheckout = require('2checkout-node');
-    var Q = require("q");
     var async = require('async');
     var _ = require('underscore');
 
@@ -1627,20 +1626,62 @@
             })
         },
 
+        
+//        "userCouponGifts": function(req, res) {
+//            var userId = req.body.userId;
+//            User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
+//                i18n = new i18n_module(req.body.lang, configs.langFile);
+//                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon found") }) } else {
+//                    var obj = result[0].coupon;
+//                    var data = obj.filter(obj => obj.status == "ACTIVE");
+//                    var sortArray = data.sort(function(obj1, obj2) {
+//                        return obj2.updateddAt - obj1.updateddAt
+//                    })
+//                    var type = 'onGifts';
+//                    var new_Data1 = [];
+//                    var new_count =[];
+//                    var new_length = 0;
+//                    async.forEachOfLimit(sortArray, 1, function( value, key, callback) { 
+//                        var id = value.adId._id;
+//                        var couponType = value.type;
+//                        addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }, function(err, commentResult) {
+//                              new_length =commentResult.length;
+//                            new_count.push(new_length);
+//                            console.log(new_count);
+//                            new_Data1.push(value)
+//                              callback();
+//                        })
+//                    }, function(err) {
+//                       // new_Data1.push(new_count)
+//                        res.send({
+//                            result: new_Data1,
+//                            count:new_count,
+//                            responseCode: 200,
+//                            responseMessage: i18n.__("Coupon gifts shown successfully")
+//                        })                    
+//                     })
+//                }
+//            })
+//        },
+
+
+        
         // list of user coupon gifts api
         "userCouponGifts": function(req, res) {
             var userId = req.body.userId;
-            User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').lean().exec(function(err, result) {
+            User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon found") }) } else {
                     var obj = result[0].coupon;
-                    var data = obj.filter(obj => obj.couponStatus == "VALID");
+                    var data = obj.filter(obj => obj.status == "ACTIVE");
                     var sortArray = data.sort(function(obj1, obj2) {
                         return obj2.updateddAt - obj1.updateddAt
-                    })
+                    })    
                     var type = 'onGifts';
                     var new_Data1 = [];
                     var new_count =[];
+                    var new_length = 0;
+                    
                     async.forEachOfLimit(sortArray, 1, function( value, key, callback) { 
                         var id = value.adId._id;
                         var couponType = value.type;
@@ -1655,7 +1696,7 @@
 
                     }, function(err) {
                         res.send({
-                            result: new_Data1,
+                            result: sortArray,
                             count:new_count,
                             responseCode: 200,
                             responseMessage: i18n.__("Coupon gifts shown successfully")
@@ -1664,7 +1705,8 @@
                 }
             })
         },
-
+        
+        
         // show list of all countries
         "countrys": function(req, res) {
             i18n = new i18n_module(req.params.lang, configs.langFile);

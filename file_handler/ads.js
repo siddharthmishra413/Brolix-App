@@ -723,33 +723,70 @@ module.exports = {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 if (result.type == 'onAds') {
                     createNewAds.findOneAndUpdate({ _id: req.body.addId }, { $inc: { commentCount: +1 } }, { new: true }).exec(function(err, results) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                                addsComments.populate(result, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
-                                    res.send({
-                                        result: result,
-                                        responseCode: 200,
-                                        responseMessage: i18n.__("Comments save with concerned User details")
-                                    });
-                                })
-                            })
-                        }
-                    })
-                } else {
-                    createNewAds.findByIdAndUpdate({ _id: new mongoose.Types.ObjectId(req.body.addId) }, { $inc: { commentCountOnGifts: 1 } }, { new: true }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                            addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                                res.send({
-                                    result: result,
-                                    responseCode: 200,
-                                    responseMessage: i18n.__("Comments save with concerned User details")
-                                });
-                            })
-                        }
-                    })
-                }
+              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+
+                  var taggedUserArray = [];
+                  if (results.tag.length > 0 && results.tag.length != null) {
+                      for (var i = 0; i < results.tag.length; i++) {
+                          for (var j = 0; j < results.tag[i].senderId.length; j++) {
+                              taggedUserArray.push(results.tag[i].senderId[j])
+
+                          }
+                      }
+                  }
+                  addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+                      addsComments.populate(result, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                           console.log("taggedUserArray--->>>", JSON.stringify(taggedUserArray))
+                          if (taggedUserArray.length > 0) {
+                                
+                              User.find({ _id: { $in: taggedUserArray } }, function(err, userResult) {
+                                  if (err) { res.send({ responseCode: 500, responseMess: 'Internal server error' }); } else {
+                                      for (var k = 0; k < userResult.length; k++) {
+                                      //  console.log("taggedUserArray-22-->>>", JSON.stringify(userResult[k]))
+                                         console.log(userResult[k].firstName+userResult[k].lastName)
+                                          if (userResult[k].deviceToken && userResult[k].deviceType && userResult[k].notification_status && userResult[k].status) {
+                                              var message = userResult[k].firstName+" "+userResult[k].lastName+" "+"commented on an ad that you are tagged in";
+                                              var id = userResult[k]._id;
+                                                 console.log(message)
+                                                 console.log(id)
+                                              if (userResult[k].deviceType == 'Android' && userResult[k].notification_status == 'on' && userResult[k].status == 'ACTIVE') {
+                                                  functions.android_notification(userResult[k].deviceToken, message,id);
+                                                  console.log("Android notification send!!!!")
+                                              } else if (userResult[k].deviceType == 'iOS' && userResult[k].notification_status == 'on' && userResult[k].status == 'ACTIVE') {
+                                                  functions.iOS_notification(userResult[k].deviceToken, message, id);
+                                              } else {
+                                                  console.log("Something wrong!!!!")
+                                              }
+                                          }
+                                      }
+
+                                  }
+                              })
+                          }
+                          res.send({
+                              result: result,
+                              responseCode: 200,
+                              responseMessage: i18n.__("Comments save with concerned User details")
+                          });
+                      })
+                  })
+              }
+          })
+         } else {
+                createNewAds.findByIdAndUpdate({ _id: new mongoose.Types.ObjectId(req.body.addId) }, { $inc: { commentCountOnGifts: 1 } }, { new: true }, function(err, result1) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+                            res.send({
+                                result: result,
+                                responseCode: 200,
+                                responseMessage: i18n.__("Comments save with concerned User details")
+                            });
+                        })
+                    }
+                })
             }
-        })
+        }
+    })
     },
 
 
@@ -2524,6 +2561,7 @@ module.exports = {
 
     // show list of coupon in store
     "storeCouponList": function(req, res) {
+        console.log("storeCouponList--->>>",JSON.stringify(req.body))
         i18n = new i18n_module(req.params.lang, configs.langFile);
         waterfall([
             function(callback) {
