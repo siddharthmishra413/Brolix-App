@@ -172,8 +172,6 @@
                      callback();
                  }, function(err) {
                  });
-                 console.log("followerRequest arr->>>", JSON.stringify(arr))
-                   console.log("followerRequest  status_obj--->>>", JSON.stringify(status_obj))
                  User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                      for (var i = 0; i < newResult.length; i++) {
                          var receiverId_Id = newResult[i]._id;

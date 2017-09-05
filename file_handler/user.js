@@ -1686,17 +1686,19 @@
                         var id = value.adId._id;
                         var couponType = value.type;
                         addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }, function(err, commentResult) {
+                            console.log("user coupon gifts--->>>",commentResult.length)
                               new_length =commentResult.length;
                             value.adId.commentCountOnGifts = new_length;
                             new_count.push(new_length);
-                            //console.log(new_length);
+                          //  console.log(new_length);
                             new_Data1.push(value)
+                            console.log("new_Data1--->>>",JSON.stringify(new_Data1));
                               callback();
                         })
 
                     }, function(err) {
                         res.send({
-                            result: sortArray,
+                            result: new_Data1,
                             count:new_count,
                             responseCode: 200,
                             responseMessage: i18n.__("Coupon gifts shown successfully")
@@ -1870,10 +1872,10 @@
                         $match: condition
                     },
                     //                   { $sort: { createdAt: 1 } },  $group: { _id: "$pageId",
-                  { $group: { _id: { roomId: "$senderId", pageId: "$pageId" }, 
+                  { $group: { _id: { roomId: "$roomId", pageId: "$pageId" }, 
                             unread: {
                                 $sum: {
-                                    $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
+                                    $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$senderId", req.body.userId] }] }, then: 1, else: 0 }
                                 }
                             },
                             lastMsg: { $last: "$message" },
@@ -3207,6 +3209,7 @@
 
         // show list of user's received notification
         "userNotification": function(req, res) {
+            console.log("userNotification req-->>>>",JSON.stringify(req.body))
             User.find({ _id: req.body.userId }, function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
@@ -3214,6 +3217,7 @@
                     var sortArray = obj.sort(function(obj1, obj2) {
                         return obj2.CreatedAt - obj1.CreatedAt
                     })
+                      console.log("userNotification sortArray-->>>>",JSON.stringify(sortArray))
                     res.send({
                         result: sortArray,
                         responseCode: 200,
