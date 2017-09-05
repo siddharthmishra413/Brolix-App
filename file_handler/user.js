@@ -1626,46 +1626,6 @@
             })
         },
 
-        
-//        "userCouponGifts": function(req, res) {
-//            var userId = req.body.userId;
-//            User.find({ _id: userId, $or: [{ 'coupon.type': "WINNER" }, { 'coupon.type': "PURCHASED" }, { 'coupon.type': "EXCHANGED" }, { 'coupon.type': "SENDBYFOLLOWER" }, { 'coupon.type': "SENDBYADMIN" }] }).populate('coupon.adId').populate('coupon.pageId', 'pageName adAdmin').exec(function(err, result) {
-//                i18n = new i18n_module(req.body.lang, configs.langFile);
-//                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon found") }) } else {
-//                    var obj = result[0].coupon;
-//                    var data = obj.filter(obj => obj.status == "ACTIVE");
-//                    var sortArray = data.sort(function(obj1, obj2) {
-//                        return obj2.updateddAt - obj1.updateddAt
-//                    })
-//                    var type = 'onGifts';
-//                    var new_Data1 = [];
-//                    var new_count =[];
-//                    var new_length = 0;
-//                    async.forEachOfLimit(sortArray, 1, function( value, key, callback) { 
-//                        var id = value.adId._id;
-//                        var couponType = value.type;
-//                        addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }, function(err, commentResult) {
-//                              new_length =commentResult.length;
-//                            new_count.push(new_length);
-//                            console.log(new_count);
-//                            new_Data1.push(value)
-//                              callback();
-//                        })
-//                    }, function(err) {
-//                       // new_Data1.push(new_count)
-//                        res.send({
-//                            result: new_Data1,
-//                            count:new_count,
-//                            responseCode: 200,
-//                            responseMessage: i18n.__("Coupon gifts shown successfully")
-//                        })                    
-//                     })
-//                }
-//            })
-//        },
-
-
-        
         // list of user coupon gifts api
         "userCouponGifts": function(req, res) {
             var userId = req.body.userId;
@@ -1686,13 +1646,13 @@
                         var id = value.adId._id;
                         var couponType = value.type;
                         addsComments.find({ $and: [{ addId: id }, { winnerId: userId }, { type: type },{couponType:couponType}], status: "ACTIVE" }, function(err, commentResult) {
-                            console.log("user coupon gifts--->>>",commentResult.length)
+                      //      console.log("user coupon gifts--->>>",commentResult.length)
                               new_length =commentResult.length;
                             value.adId.commentCountOnGifts = new_length;
                             new_count.push(new_length);
                           //  console.log(new_length);
                             new_Data1.push(value)
-                            console.log("new_Data1--->>>",JSON.stringify(new_Data1));
+                       //     console.log("new_Data1--->>>",JSON.stringify(new_Data1));
                               callback();
                         })
 
@@ -1875,7 +1835,7 @@
                   { $group: { _id: { roomId: "$roomId", pageId: "$pageId" }, 
                             unread: {
                                 $sum: {
-                                    $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$senderId", req.body.userId] }] }, then: 1, else: 0 }
+                                    $cond: { if: { $and: [{ $eq: ["$is_read", 0] }, { $eq: ["$receiverId", req.body.userId] }] }, then: 1, else: 0 }
                                 }
                             },
                             lastMsg: { $last: "$message" },
@@ -3209,7 +3169,7 @@
 
         // show list of user's received notification
         "userNotification": function(req, res) {
-            console.log("userNotification req-->>>>",JSON.stringify(req.body))
+          //  console.log("userNotification req-->>>>",JSON.stringify(req.body))
             User.find({ _id: req.body.userId }, function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
@@ -3217,7 +3177,7 @@
                     var sortArray = obj.sort(function(obj1, obj2) {
                         return obj2.CreatedAt - obj1.CreatedAt
                     })
-                      console.log("userNotification sortArray-->>>>",JSON.stringify(sortArray))
+              //        console.log("userNotification sortArray-->>>>",JSON.stringify(sortArray))
                     res.send({
                         result: sortArray,
                         responseCode: 200,

@@ -724,7 +724,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     numberOfWinners: $scope.createAds.numberOfWinners,
                     allAreWinners: $scope.createAds.allAreWinners,
                     giftDescription: $scope.createAds.giftDescription,
-                    viewerLength: $scope.createAds.viewers,
+                    viewerLenght: $scope.createAds.viewerLenght,
                     hiddenGifts: $scope.addCode,
                     couponLength: $scope.createAds.numberOfWinners,
                     uploadGiftImage:$scope.createAds.gifyDescImage,
@@ -748,11 +748,11 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     promoteApp: $scope.promoteApp,
                     video: $scope.createAds.vedioUrl,
                     couponExpiryInString:$scope.couponExpiryInString,
-                    viewerLenght:$scope.viewerLenght
+                    viewerLenght:$scope.createAds.viewerLenght
 
                 }
 
-                console.log("modifyData",JSON.stringify(modifyData))
+                console.log("modifyData--->>>>1",JSON.stringify(modifyData))
                 userService.createAds(modifyData).success(function(res) {
                     console.log("ressssssss",JSON.stringify(res))
                     if (res.responseCode == 200) {
@@ -776,7 +776,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     numberOfWinners: $scope.createAds.numberOfWinners,
                     allAreWinners: $scope.createAds.allAreWinners,
                     giftDescription: $scope.createAds.giftDescription,
-                    viewerLength: $scope.createAds.viewers,
+                    viewerLenght: $scope.createAds.viewerLenght,
                     hiddenGifts: $scope.addCode,
                     couponLength: $scope.createAds.numberOfWinners,
                     uploadGiftImage:$scope.createAds.gifyDescImage,
@@ -800,10 +800,10 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     promoteApp: $scope.promoteApp,
                     musicFileName: $scope.createAds.audioUrl,
                     couponExpiryInString:$scope.couponExpiryInString,
-                    viewerLenght:$scope.viewerLenght
+                    viewerLenght:$scope.createAds.viewerLenght
                 }
 
-                console.log("modifyData",JSON.stringify(modifyData))
+                console.log("modifyData---->>>>2",JSON.stringify(modifyData))
                 userService.createAds(modifyData).success(function(res) {
                     console.log("ressssssss",JSON.stringify(res))
                     if (res.responseCode == 200) {
@@ -827,7 +827,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     coverImage: $scope.createAds.advertismentCover,
                     adContentType: $scope.createAds.adContentType,
                     numberOfWinners: $scope.createAds.numberOfWinners,
-                    viewerLength: $scope.createAds.viewers,
+                    viewerLenght: $scope.createAds.viewerLenght,
                     gender: $scope.createAds.gender,
                     ageFrom: $scope.createAds.ageFrom,
                     ageTo: $scope.createAds.ageTo,
@@ -848,10 +848,10 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     brolixFees:$scope.createAds.brolixFees,
                     cashAdPrize: $scope.createAds.viewersOne,
                     couponExpiryInString:$scope.couponExpiryInString,
-                    viewerLenght:$scope.viewerLenght
+                    viewerLenght:$scope.createAds.viewerLenght
                 }
 
-                console.log("modifyData111",JSON.stringify(modifyData))
+                console.log("modifyData111---->>>>3",JSON.stringify(modifyData))
                 userService.createAds(modifyData).success(function(res) {
                     console.log("ressssssss",JSON.stringify(res))
                     if (res.responseCode == 200) {
@@ -876,7 +876,7 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     numberOfWinners: $scope.createAds.numberOfWinners,
                     allAreWinners: $scope.createAds.allAreWinners,
                     giftDescription: $scope.createAds.giftDescription,
-                    viewerLength: $scope.createAds.viewers,
+                    viewerLenght: $scope.createAds.viewerLenght,
                     hiddenGifts: $scope.addCode,
                     couponLength: $scope.createAds.numberOfWinners,
                     uploadGiftImage:$scope.createAds.gifyDescImage,
@@ -902,10 +902,10 @@ console.log("length:    ",$scope.dawnloadPagePhoto.length);
                     brolixFees:$scope.createAds.brolixFees,
                     cashAdPrize: $scope.createAds.viewersOne,
                     couponExpiryInString:$scope.couponExpiryInString,
-                    viewerLenght:$scope.viewerLenght
+                    viewerLenght:$scope.createAds.viewerLenght
                 }
 
-                console.log("modifyData",JSON.stringify(modifyData))
+                console.log("modifyData--->>>>4",JSON.stringify(modifyData))
                 userService.createAds(modifyData).success(function(res) {
                     console.log("ressssssss",JSON.stringify(res))
                     if (res.responseCode == 200) {

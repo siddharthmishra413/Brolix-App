@@ -2503,6 +2503,7 @@ module.exports = {
                                         console.log("new_length--->>>", new_length);
                                         value.coupon.adId.commentCountOnGifts = new_length;
                                         //console.log(new_length);
+                                        new_count.push(new_length)
                                         new_Data1.push(value)
                                         callback();
                                     })
@@ -2510,6 +2511,7 @@ module.exports = {
                                 }, function(err) {
                                     res.send({
                                         result: result3,
+                                        count:new_count,
                                         responseCode: 200,
                                         responseMessage: i18n.__("result show successfully")
                                     })
