@@ -20,7 +20,7 @@ app.get('/showAllAdsCouponType/:id/:pageNumber/:lang', authUser.authUser, adsHan
 app.get('/showAllAdsCashType/:id/:pageNumber/:lang', authUser.authUser, adsHandler.showAllAdsCashType);
 app.post('/couponsSearch', authUser.authUser, adsHandler.couponsSearch); //Not in docs
 app.post('/searchForCoupons/:id/:pageNumber',  adsHandler.searchForCoupons);
-app.post('/likeAndUnlike', authUser.authUser, adsHandler.likeAndUnlike);
+app.post('/likeAndUnlike',  adsHandler.likeAndUnlike);
 app.post('/commentOnAds',  adsHandler.commentOnAds);
 app.post('/replyOnComment', adsHandler.replyOnComment);
 app.post('/sendCoupon', authUser.authUser, adsHandler.sendCoupon);
@@ -54,7 +54,7 @@ app.post('/adsViewClick', authUser.authUser, adsHandler.adsViewClick);
 app.post('/adStatistics',  adsHandler.adStatistics);
 app.post('/adStatisticsFilterClick', authUser.authUser, adsHandler.adStatisticsFilterClick);
 app.post('/couponStatisticsYearClicks', authUser.authUser, adsHandler.couponStatisticsYearClicks);
-app.post('/CouponAdStatistics', authUser.authUser, adsHandler.CouponAdStatistics);
+app.post('/CouponAdStatistics',  adsHandler.CouponAdStatistics);
 app.post('/CashAdStatistics', authUser.authUser, adsHandler.CashAdStatistics);
 app.post('/cashStatisticsYearClicks', adsHandler.cashStatisticsYearClicks);
 app.post('/homepageAds', authUser.authUser, adsHandler.homepageAds);

@@ -26,6 +26,7 @@ var nodemailer = require('nodemailer');
 var session = require('client-sessions');
 var express = require('express'),
     i18n = require("i18n");
+var voucher_codes = require('voucher-code-generator');
 
 
 var port = process.env.PORT || 8082; // used to create, sign, and verify tokens
@@ -49,10 +50,17 @@ app.use(bodyParser.urlencoded({
 
 mongoose.connect('mongodb://localhost/brolix');
 app.use(express.static('assest'));
-
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/');
+//var couponCode = voucher_codes.generate({ length: 15, count: 1, charset: "0123456789" });
+// console.log("couponCode",couponCode)
+app.get('/test', function(req, res) {
+    var couponCode = voucher_codes.generate({ length: 15, count: 1, charset: "0123456789" });
+   console.log("couponCode",couponCode)
+   res.send({
+       result:couponCode
+   })
 });
+
+//var couponCode = voucher_codes.generate({ length: 6, count: 1, charset: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" });
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });

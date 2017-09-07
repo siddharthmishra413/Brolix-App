@@ -2516,7 +2516,7 @@ module.exports = {
 
             function(blockedArray, callback) {
                 Object.getOwnPropertyNames(req.body).forEach(function(key, idx, array) {
-                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city" || key == "lang")) {
+                    if (!(key == "couponStatus" || key == "cashStatus" || key == "firstName" || key == "lastName" || key == "type" || req.body[key] == "" || req.body[key] == undefined || key == "country" || key == "state" || key == "city" || key == "lang")) {
                         var cond = { $or: [] };
                         var tempCond = {};
                         if (key == "pageName") {
@@ -2601,7 +2601,15 @@ module.exports = {
                                 var re = new RegExp(req.body[key], 'i');
                                 var data = { firstName: { $regex: re } }
                                 query.$and.push(data)
-                            } else {
+                            }
+                            else if(key == "lastName")
+                                 {
+
+                                var re = new RegExp(req.body[key], 'i');
+                                var data = { lastName: { $regex: re } }
+                                query.$and.push(data)
+                            }
+                            else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
                                 query.$and.push(temporayCond)
@@ -2676,7 +2684,14 @@ module.exports = {
                                 var re = new RegExp(req.body[key], 'i');
                                 var data = { firstName: { $regex: re } }
                                 queryData.$and.push(data)
-                            } else {
+                            }
+                            else if(key == "lastName")
+                                 {
+
+                                var re = new RegExp(req.body[key], 'i');
+                                var data = { lastName: { $regex: re } }
+                                query.$and.push(data)
+                            }else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
                                 queryData.$and.push(temporayCond)
@@ -2796,7 +2811,14 @@ module.exports = {
                                 console.log(re)
                                 var data = { firstName: { $regex: re } }
                                 query.$and.push(data)
-                            } else {
+                            } 
+                            else if (key == "lastName") {
+                                //     console.log("ssSSSSS", req.body[key])
+                                var re = new RegExp(req.body[key], 'i');
+                                console.log(re)
+                                var data = { lastName: { $regex: re } }
+                                query.$and.push(data)
+                            }else {
                                 var temporayCond = {};
                                 temporayCond[key] = req.body[key];
                                 query.$and.push(temporayCond)

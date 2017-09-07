@@ -702,7 +702,7 @@ module.exports = {
                 }
             })
         } else {
-            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pop: { likeAndUnlike: { userId:req.body.userId ,winnerId:req.body.winnerId ,type:req.body.type }} }, { new: true }).exec(function(err, results) {
+            createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $pull: { likeAndUnlike: {userId:req.body.userId ,winnerId:req.body.winnerId ,type:req.body.type } } }, { new: true }).exec(function(err, results) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     res.send({
                         result: results,
@@ -737,16 +737,21 @@ module.exports = {
                   addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
                       addsComments.populate(result, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
                            console.log("taggedUserArray--->>>", JSON.stringify(taggedUserArray))
-                          if (taggedUserArray.length > 0) {
-                                
+                           User.findOne({_id:req.body.userId},function(err, userResult1){
+                              if (err) { res.send({ responseCode: 500, responseMess: 'Internal server error' }); }
+                               else{
+                                   
+                             console.log(userResult1.firstName+userResult1.lastName)
+                           
+                          if (taggedUserArray.length > 0) {                                
                               User.find({ _id: { $in: taggedUserArray } }, function(err, userResult) {
                                   if (err) { res.send({ responseCode: 500, responseMess: 'Internal server error' }); } else {
                                       for (var k = 0; k < userResult.length; k++) {
                                       //  console.log("taggedUserArray-22-->>>", JSON.stringify(userResult[k]))
-                                         console.log(userResult[k].firstName+userResult[k].lastName)
+                                       //  console.log(userResult[k].firstName+userResult[k].lastName)
                                           if (userResult[k].deviceToken && userResult[k].deviceType && userResult[k].notification_status && userResult[k].status) {
-                                              var message = userResult[k].firstName+" "+userResult[k].lastName+" "+"commented on an ad that you are tagged in";
-                                              var id = userResult[k]._id;
+                                              var message = userResult1.firstName+" "+userResult1.lastName+" "+"commented on an ad that you are tagged in";
+                                              var id = req.body.userId;
                                                  console.log(message)
                                                  console.log(id)
                                               if (userResult[k].deviceType == 'Android' && userResult[k].notification_status == 'on' && userResult[k].status == 'ACTIVE') {
@@ -763,6 +768,8 @@ module.exports = {
                                   }
                               })
                           }
+                                     }
+                           })
                           res.send({
                               result: result,
                               responseCode: 200,
@@ -794,19 +801,70 @@ module.exports = {
     "replyOnComment": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         addsComments.findOneAndUpdate({ addId: req.body.addId, _id: req.body.commentId }, {
-            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } }
-        }, { new: true }).exec(function(err, results) {
-            console.log("first result--->>>",JSON.stringify(results))
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
-                addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
-                   console.log("first finalResult--->>>",JSON.stringify(results))
+            $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } } }, { new: true }).exec(function(err, results) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else {                
+                addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {                    
                     addsComments.populate(results, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
-                         console.log("last result--->>>",JSON.stringify(results))
+                        
+                        createNewAds.findOne({_id:req.body.addId}).exec(function(err, adResult){
+                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                            else{
+                          console.log("in replyOnComment--->>>", JSON.stringify(adResult))
+                                var taggedUserArray = [];
+                              if (adResult.tag.length > 0 && adResult.tag.length != null) {
+                                  for (var i = 0; i < adResult.tag.length; i++) {
+                                      for (var j = 0; j < adResult.tag[i].senderId.length; j++) {
+                                          taggedUserArray.push(adResult.tag[i].senderId[j])
+
+                                      }
+                                  }
+                              }
+                                
+                                User.findOne({_id:req.body.userId},function(err, userResult1){
+                              if (err) { res.send({ responseCode: 500, responseMess: 'Internal server error' }); }
+                               else{
+                                   
+                             console.log(userResult1.firstName+userResult1.lastName)
+                                
+                              if (taggedUserArray.length > 0) {                                
+                              User.find({ _id: { $in: taggedUserArray } }, function(err, userResult) {
+                                  if (err) { res.send({ responseCode: 500, responseMess: 'Internal server error' }); } else {
+                                      for (var k = 0; k < userResult.length; k++) {
+                                      //  console.log("taggedUserArray-22-->>>", JSON.stringify(userResult[k]))
+                                         console.log(userResult[k].firstName+userResult[k].lastName)
+                                          if (userResult[k].deviceToken && userResult[k].deviceType && userResult[k].notification_status && userResult[k].status) {
+                                              var message = userResult[k].firstName+" "+userResult[k].lastName+" "+"commented on an ad that you are tagged in";
+                                              var id =req.body.userId;
+                                                 console.log(message)
+                                                 console.log(id)
+                                              if (userResult[k].deviceType == 'Android' && userResult[k].notification_status == 'on' && userResult[k].status == 'ACTIVE') {
+                                                  functions.android_notification(userResult[k].deviceToken, message,id);
+                                                  console.log("Android notification send!!!!")
+                                              } else if (userResult[k].deviceType == 'iOS' && userResult[k].notification_status == 'on' && userResult[k].status == 'ACTIVE') {
+                                                  functions.iOS_notification(userResult[k].deviceToken, message, id);
+                                              } else {
+                                                  console.log("Something wrong!!!!")
+                                              }
+                                          }
+                                      }
+
+                                  }
+                              })
+                          }
+                               }
+                                })
+                        
                         res.send({
                             result: results,
                             responseCode: 200,
                             responseMessage: i18n.__("Comments save successfully")
                         });
+         
+                                
+                            }
+                        })
+               
                     })
 
                 })
@@ -2606,7 +2664,7 @@ module.exports = {
                 })
             },
             function(noDataValue, dataValue, blockedArray, callback) {
-                createNewAds.paginate({ userId: { $nin: blockedArray }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1 } }, function(err, result) {
+                createNewAds.paginate({ userId: { $nin: blockedArray }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -2744,7 +2802,7 @@ module.exports = {
             },
             function(noDataValue, dataValue, arrayId, blockedArray, callback) {
                 //      console.log("arrayId=========>...", arrayId)
-                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE' }] }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1 } }, function(err, result) {
+                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE' }] }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -2860,7 +2918,7 @@ module.exports = {
             },
             function(noDataValue, dataValue, arrayId, blockedArray, callback) {
                 //     console.log("arrayId=========>...", arrayId)
-                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1 } }, function(err, result) {
+                createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1, createdAt: -1 }}, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         createNewAds.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                             for (var i = 0; i < result.docs.length; i++) {
@@ -3230,6 +3288,7 @@ module.exports = {
                 })
             });
     },
+    // , 'coupon.type':'PURCHASED'
     "CouponAdStatistics": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var updateData = { $match: { adId: req.body.adId } };
@@ -3240,7 +3299,7 @@ module.exports = {
             }
         }
 
-        var updateDataVALID = { $match: { 'coupon.adId': req.body.adId, 'coupon.couponStatus': 'VALID' } };
+        var updateDataVALID = { $match: { 'coupon.adId': req.body.adId, 'coupon.status': 'ACTIVE', 'coupon.couponStatus': 'VALID' } };
         var updateUnwindDataVALID = { $unwind: "$coupon" };
         var groupCondVALID = {
             $group: {
@@ -3249,7 +3308,7 @@ module.exports = {
             }
         }
 
-        var updateDataUSED = { $match: { 'coupon.adId': req.body.adId, 'coupon.couponStatus': 'USED' } };
+        var updateDataUSED = { $match: { 'coupon.adId': req.body.adId, 'coupon.status': 'ACTIVE', 'coupon.couponStatus': 'USED' } };
         var updateUnwindDataUSED = { $unwind: "$coupon" };
         var groupCondUSED = {
             $group: {
@@ -3258,7 +3317,7 @@ module.exports = {
             }
         }
 
-        var updateDataEXPIRED = { $match: { 'coupon.adId': req.body.adId, 'coupon.couponStatus': 'EXPIRED' } };
+        var updateDataEXPIRED = { $match: { 'coupon.adId': req.body.adId, 'coupon.status': 'ACTIVE', 'coupon.couponStatus': 'EXPIRED' } };
         var updateUnwindDataEXPIRED = { $unwind: "$coupon" };
         var groupCondEXPIRED = {
             $group: {

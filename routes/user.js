@@ -55,7 +55,7 @@ app.post('/couponExchangeOnOff', authUser.authUser, userHandler.couponExchangeOn
 app.post('/sendCouponExchangeRequest', authUser.authUser, userHandler.sendCouponExchangeRequest);
 app.post('/sendCouponToFollower', authUser.authUser, userHandler.sendCouponToFollower);
 app.post('/registerWithRefferalCode/:id/:pageNumber', authUser.authUser, userHandler.registerWithRefferalCode);
-app.post('/seeExchangeRequest', authUser.authUser, userHandler.seeExchangeRequest);
+app.post('/seeExchangeRequest',  userHandler.seeExchangeRequest);
 app.post('/couponRequestsSearch', authUser.authUser, userHandler.couponRequestsSearch);
 app.post('/acceptDeclineCouponRequest', authUser.authUser, userHandler.acceptDeclineCouponRequest);
 app.post('/useCouponWithoutCode', authUser.authUser, userHandler.useCouponWithoutCode);

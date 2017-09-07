@@ -244,19 +244,20 @@ module.exports = {
                         var image = user.image;
                         for (var i = 0; i < senderId.length; i++) {
                             User.findOneAndUpdate({ _id: senderId[i] }, {
-                                $push: { "notification": { userId: req.body.senderId, type: "You are tagged in a product", productId: req.body.productId, notificationType: 'tagOnProduct', image: image } }
+                                $push: { "notification": { userId: req.body.userId, type: "You are tagged in a product", productId: req.body.productId, notificationType: 'tagOnProduct', image: image } }
                             }, { new: true }).exec(function(err, result1) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct senderId" }); } else {
-
-                                    if (result1.deviceType == 'Android' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
-                                        var message = "You are taged in a product";
+                                     if(result1.deviceType && result1.deviceToken){  
+                                          var message = "You are taged in a product";
+                                    if (result1.deviceType == 'Android' && result1.deviceToken && result1.notification_status == 'on' && result1.status == 'ACTIVE') {                                       
                                         functions.android_notification(result1.deviceToken, message);
                                         console.log("Android notification send!!!!")
-                                    } else if (result1.deviceType == 'iOS' || result1.notification_status == 'on' || result1.status == 'ACTIVE') {
+                                    } else if (result1.deviceType == 'iOS' &&  result1.deviceToken && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
                                         functions.iOS_notification(result1.deviceToken, message);
                                     } else {
                                         console.log("Something wrong!!!!")
                                     }
+                                     }
                                 }
                             });
                         }
