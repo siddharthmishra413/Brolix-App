@@ -3190,7 +3190,7 @@ module.exports = {
                     //    console.log("data--->>" + data)
                     result.docs[i].reply = data;
                 }
-                  console.log("adsCommentList---->>>",JSON.stringify(result))
+               //   console.log("adsCommentList---->>>",JSON.stringify(result))
                 addsComments.populate(result.docs, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
                     addsComments.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
                         //    console.log("adsCommentList--22-->>>",JSON.stringify(finalResult))

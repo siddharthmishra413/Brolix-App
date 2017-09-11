@@ -22,6 +22,9 @@ var uploadFile = require("./model/savedFiles")
 var PageFollowers = require("./model/pageFollow");
 var _ = require('underscore');
 var async = require('async');
+var multer = require('multer');
+var ffmpeg = require('ffmpeg');
+var videoVariable;
 
 var paytabs = require('paytabs')
 var NodeCache = require("node-cache");
@@ -49,33 +52,41 @@ function onlyUnique(value, index, self) {
 //     api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
 // });
 
+
+/* This credential is munesh's account. */
+
 cloudinary.config({
-    cloud_name: 'dfrspfd4g',
-    api_key: '399442144392731',
-    api_secret: 'BkGm-usnHDPfrun2fEloBtVqBqU'
+    cloud_name: 'brolix1',
+    api_key: '779861163245424',
+    api_secret: 'l_zjtpckfRSlPT9oPHmwshHc6Wc'
 });
+
+/* yazan's account */
+//cloudinary.config({
+//    cloud_name: 'brolix',
+//    api_key: '779861163245424',
+//    api_secret: 'cc6TibFxS8Rh656bTCc2war9YEE'
+//});
+
 var avoid = {
     "password": 0
 }
 
 
-var storage = multer.diskStorage({
-    destination: function(req, file, callback) {
-        console.log("req", file)
-        console.log("des res", file.fieldname + '-' + Date.now())
-        // console.log("file--->>",file);
-        callback(null, './uploads')
-    },
-    filename: function(req, file, callback) {
-        //console.log("file---->>>>",file)
-        //callback(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
-        console.log("dfdf fdf", file.fieldname + '-' + Date.now())
-        callback(null, file.fieldname + '-' + Date.now());
-    }
-})
-
-
-
+//var storage = multer.diskStorage({
+//    destination: function(req, file, callback) {
+//        console.log("req", file)
+//        console.log("des res", file.fieldname + '-' + Date.now())
+//        // console.log("file--->>",file);
+//        callback(null, './uploads')
+//    },
+//    filename: function(req, file, callback) {
+//        //console.log("file---->>>>",file)
+//        //callback(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+//        console.log("dfdf fdf", file.fieldname + '-' + Date.now())
+//        callback(null, file.fieldname + '-' + Date.now());
+//    }
+//})
 
 // var storage = multer.diskStorage({
 //     destination: function(req, file, callback) {
@@ -123,8 +134,103 @@ var storage = multer.diskStorage({
 
 // console.log("buffer", obj)
 
-module.exports = {
+ var storage = multer.diskStorage({
+     destination: function (req, file, cb) {
+         console.log("file--->>>>",file)
+         var newFile  = file.originalname.split('.')
+         var originalname = newFile[0];
+         var updatedName = newFile[0]
+         console.log('updatedName : ',updatedName)
+       cb(null, './videoUploads234/')
+     },
+     filename: function (req, file, cb) {
+      console.log("file--->>>>",file)
+         var newFile  = file.originalname.split('.')
+         var originalname = newFile[0];
+         var updatedName = newFile[0]+'.mp4'
+         videoVariable = updatedName;
+         console.log("updatedName ::: ",updatedName)
 
+       cb(null, updatedName )
+     }
+    })
+
+var upload = multer({ storage: storage }).single('images')
+
+module.exports = {
+ 
+//    "videoUploads": function(req, res) {  
+//        upload(req, res,function(err,result){
+//     console.log("videoVariable--111->>>>",videoVariable)
+//            var dirName = __dirname;
+//          var newpath =  path.normalize(dirName+'/..')
+//         var newpath1 = path.join(newpath,'videoUploads234',videoVariable)
+//            console.log("newpath--34523423->>>",newpath1)
+//        //     console.log("file.updatedName--222->>>",updatedName)
+//            try {
+//	new ffmpeg(newpath1, function (err, video) {
+//		if (!err) {
+//            video.setVideoFormat('mp4')
+//			console.log('The video is ready to be processed',video);
+//                          cloudinary.uploader.upload(video.file_path, function(result) {
+//               console.log("result--->>>>",JSON.stringify(result))
+//                    if (result.url) {
+////                        imageUrl.push(result.url);
+//                       
+////var h = cloudinary.video("http://res.cloudinary.com/brolix1/video/upload/v1505120485/vc4upwspeqs50irrqiy0.mp4", {width: 300, height: 200, crop: "crop"})
+//                             console.log("result--url->>>>",JSON.stringify(result.url))
+//                             var rest = result.url.substring(0,result.url.lastIndexOf("."));
+//                        console.log("rest:::::: ",rest)
+//                             cloudinary.video(rest[0]+'.mp4', {width: 300, height: 200, crop: "crop"})
+//                            res.send({
+//                                result: result.url,
+//                                responseCode: 200,
+//                                responseMessage: i18n.__("File uploaded successfully")
+//                            });
+//                        
+//                    } else {
+//                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+//                    }
+//                }, {
+//                    resource_type: "auto",
+//                    chunk_size: 6000000 
+//                });
+//		} else {
+//			console.log('Error: ' + err);
+//		}
+//	});
+//} catch (e) {
+//	console.log(e.code);
+//	console.log(e.msg);
+//}
+////              cloudinary.uploader.upload(newpath1, function(result) {
+////               console.log("result--->>>>",JSON.stringify(result))
+////                    if (result.url) {
+//////                        imageUrl.push(result.url);
+////                       
+//////var h = cloudinary.video("http://res.cloudinary.com/brolix1/video/upload/v1505120485/vc4upwspeqs50irrqiy0.mp4", {width: 300, height: 200, crop: "crop"})
+////                             console.log("result--url->>>>",JSON.stringify(result.url))
+////                             var rest = result.url.substring(0,result.url.lastIndexOf("."));
+////                        console.log("rest:::::: ",rest)
+////                             cloudinary.video(rest[0]+'.mp4', {width: 300, height: 200, crop: "crop"})
+////                            res.send({
+////                                result: cloudinary.video(rest+'.mp4'),
+////                                responseCode: 200,
+////                                responseMessage: i18n.__("File uploaded successfully")
+////                            });
+////                        
+////                    } else {
+////                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+////                    }
+////                }, {
+////                    resource_type: "auto",
+////                    chunk_size: 6000000 
+////                });
+//          //  err?console.log("result--err->>>>",JSON.stringify(err)): console.log("result--->>>>",JSON.stringify(result))
+//           
+//        })
+//    },
+    
     // upload mp3 file in ad api
     "uploadMp3Files": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -810,7 +916,7 @@ module.exports = {
                         createNewAds.findOne({_id:req.body.addId}).exec(function(err, adResult){
                              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                             else{
-                          console.log("in replyOnComment--->>>", JSON.stringify(adResult))
+                        //  console.log("in replyOnComment--->>>", JSON.stringify(adResult))
                                 var taggedUserArray = [];
                               if (adResult.tag.length > 0 && adResult.tag.length != null) {
                                   for (var i = 0; i < adResult.tag.length; i++) {
@@ -993,7 +1099,7 @@ module.exports = {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (results == null || results == undefined) {
                 res.send({ responseCode: 409, responseMessage: 'Something went wrong' });
             } else {
-                console.log("adsCommentList---->>>", JSON.stringify(results))
+              //  console.log("adsCommentList---->>>", JSON.stringify(results))
                 addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
 
                     addsComments.populate(results, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
@@ -1237,7 +1343,7 @@ module.exports = {
 
 
     // api for image and video upload
-    "uploads": function(req, res) {
+    "uploads": function(req, res) {       
         i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log(req.files);
         var imageUrl = [];
@@ -1269,6 +1375,81 @@ module.exports = {
         })
     },
 
+     "videoUploads": function(req, res) {  
+        i18n = new i18n_module(req.body.lang, configs.langFile);
+        console.log(req.files);
+        var imageUrl = [];
+        var form = new multiparty.Form();
+        form.parse(req, function(err, fields, files) {
+            var a = 0;
+            for (var i = 0; i < files.images.length; i++) {
+                var img = files.images[i];
+                cloudinary.v2.uploader.upload(img.path,{resource_type:"video", format:"mp4"},function(err,result) {
+                 //   console.log("result--->>>>",JSON.stringify(result))
+                    if(err){ res.send({ responseCode:500, responseMessage:'Internal server error'})}
+                    else if (result.url) {
+                        imageUrl.push(result.url);
+                        a += i;
+                        if (a == i * i) {
+                             console.log("result   url--->>>>",JSON.stringify(result.url))
+                            var rest = result.url.substring(0,result.url.lastIndexOf("."));
+                            var newResult = rest+'.mp4'
+                            res.send({
+                                result: result.url,
+                                responseCode: 200,
+                                responseMessage: i18n.__("File uploaded successfully")
+                            });
+                        }
+                    } else {
+                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
+                    }
+                }, {
+                    resource_type: "auto",
+                    chunk_size: 6000000
+                });
+            }
+        })
+    },
+    
+    //<----------------------------------------video upload api ------------------------------------>
+//    "videoUploads": function(req, res) {
+//    console.log("hi")
+//    var img_base64 = req.body.video;
+//    var binaryData = new Buffer(img_base64, 'base64');
+//    fs.writeFile("fileHandler/images/test.mp4", binaryData, "binary", function() {});
+//    cloudinary.v2.uploader.upload_large("fileHandler/images/test.mp4", {
+//        resource_type: "video",
+//        eager: [{
+//            width: 300,
+//            height: 300,
+//            crop: "pad",
+//            audio_codec: "none"
+//        }, {
+//            width: 160,
+//            height: 100,
+//            crop: "crop",
+//            gravity: "south",
+//            audio_codec: "none"
+//        }],
+//        eager_async: true,
+//        eager_notification_url: "http://mysite/notify_endpoint"
+//    }, function(err, result) {
+//        if (err) {
+//            return res.json({
+//                responseCode: 400,
+//                responseMessage: "some thing went wrong."
+//            })
+//        } else {
+//            res.json({
+//                ResponseCode: 200,
+//                url: result.url
+//                })
+//            }
+//        });
+//    },
+
+    
+    
     // api to find user is targeted or not
     "targetedOrNottargeted": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);

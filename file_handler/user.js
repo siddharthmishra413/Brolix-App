@@ -25,11 +25,24 @@
     var async = require('async');
     var _ = require('underscore');
 
-    cloudinary.config({
-        cloud_name: 'mobiloitte-in',
-        api_key: '188884977577618',
-        api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
-    });
+//    cloudinary.config({
+//        cloud_name: 'mobiloitte-in',
+//        api_key: '188884977577618',
+//        api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
+//    });
+
+cloudinary.config({
+    cloud_name: 'brolix1',
+    api_key: '779861163245424',
+    api_secret: 'l_zjtpckfRSlPT9oPHmwshHc6Wc'
+});
+
+/* yazan's account */
+//cloudinary.config({
+//    cloud_name: 'brolix',
+//    api_key: '779861163245424',
+//    api_secret: 'cc6TibFxS8Rh656bTCc2war9YEE'
+//});
 
 
     var avoid = {
@@ -2563,7 +2576,11 @@
                     i18n = new i18n_module(req.body.lang, configs.langFile);
                     User.aggregate({ $unwind: '$coupon' }, { $match: { 'coupon._id': new mongoose.Types.ObjectId(req.body.senderCouponId), _id: new mongoose.Types.ObjectId(req.body.senderId) } }, function(err, user) {
                         console.log("user----->>>", user[0].coupon.couponStatus)
-                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error11") }) } else if (!user) { res.send({ responseCode: 404, responseMessage: i18n.__("Please enter correct coupon Id.") }) } else if ((user[0].coupon.couponStatus) != 'VALID') {
+                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error11") }) } else if (!user) { res.send({ responseCode: 404, responseMessage: i18n.__("Please enter correct coupon Id.") }) } 
+                        else if ((user[0].coupon.status) != 'ACTIVE') {
+                            res.send({ responseCode: 403, responseMessage: i18n.__("Please enter a valid coupon.") });
+                        }
+                        else if ((user[0].coupon.couponStatus) != 'VALID') {
                             res.send({ responseCode: 403, responseMessage: i18n.__("Please enter a valid coupon.") });
                         } else {
                             User.findOne({ _id: receiverId }, function(err, result) {
@@ -3091,7 +3108,6 @@
 
         // show list of coupon exchange sent req api
         "seeExchangeSentRequest": function(req, res) {
-            console.log("requhsuwdhajqwdkaqkaqdqdqw---->>>", req.body)
             var senderId = req.body.userId;
             var userId = req.body.userId;
             User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {

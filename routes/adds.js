@@ -30,7 +30,7 @@ app.post('/socialShare', authUser.authUser, adsHandler.socialShare);
 app.get('/winners/:lang', authUser.authUser, adsHandler.winners);
 app.post('/listOfAds', authUser.authUser, adsHandler.listOfAds);
 app.get('/listOfAllAds/:pageId/:type/:pageNumber/:lang',  adsHandler.listOfAllAds);
-app.post('/uploads', authUser.authUser, adsHandler.uploads);
+app.post('/uploads',  adsHandler.uploads);
 app.post('/viewAd', authUser.authUser, adsHandler.viewAd);
 app.post('/adFollowUnfollow', authUser.authUser, adsHandler.adFollowUnfollow);
 app.get('/couponWinners/:id/:pageNumber/:lang', authUser.authUser, adsHandler.couponWinners);
@@ -63,5 +63,6 @@ app.put('/updateCash/:id', authUser.authUser, adsHandler.updateCash);
 app.post('/allAreWinners', authUser.authUser, adsHandler.allAreWinners);
 app.post('/targetedOrNottargeted', authUser.authUser, adsHandler.targetedOrNottargeted);
 app.get('/testingPriority/:id/:pageNumber/:lang', authUser.authUser, adsHandler.testingPriority);
+app.post('/videoUploads',  adsHandler.videoUploads);
 
 module.exports = app;

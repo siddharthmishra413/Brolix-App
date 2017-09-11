@@ -30,11 +30,24 @@ const cities = require("cities-list");
 console.log(cities["london"]) // 1 
 console.log(cities["something else"]) // undefined 
 
+//cloudinary.config({
+//    cloud_name: 'dfrspfd4g',
+//    api_key: '399442144392731',
+//    api_secret: 'BkGm-usnHDPfrun2fEloBtVqBqU'
+//});
+
 cloudinary.config({
-    cloud_name: 'dfrspfd4g',
-    api_key: '399442144392731',
-    api_secret: 'BkGm-usnHDPfrun2fEloBtVqBqU'
+    cloud_name: 'brolix1',
+    api_key: '779861163245424',
+    api_secret: 'l_zjtpckfRSlPT9oPHmwshHc6Wc'
 });
+
+/* yazan's account */
+//cloudinary.config({
+//    cloud_name: 'brolix',
+//    api_key: '779861163245424',
+//    api_secret: 'cc6TibFxS8Rh656bTCc2war9YEE'
+//});
 
 //<--------------------------------------------I18n------------------------------------------------->
 var configs = {
