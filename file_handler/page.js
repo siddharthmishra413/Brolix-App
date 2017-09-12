@@ -163,7 +163,6 @@ module.exports = {
 
     //API for Show Page Details
     "showPageDetails": function(req, res) { // pageId, viewerId
-        console.log("showPageDetails request---->>>", JSON.stringify(req.body))
         var date = new Date().toUTCString()
         createNewPage.findOne({ _id: req.body.pageId }).exec(function(err, pageResult) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!pageResult) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
@@ -1631,7 +1630,7 @@ module.exports = {
                     updatedAt: { $gte: startTime, $lte: endTime },
                     pageId: req.body.pageId
                 }).exec(function(err, result) {
-                    console.log("result", result)
+               //     console.log("result", result)
                     if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (result.length == 0) {
                         var winnersLength = 0;
                         callback(null, winnersLength)
@@ -1651,7 +1650,7 @@ module.exports = {
                 createNewAds.find({
                     pageId: req.body.pageId
                 }).exec(function(err, result) {
-                    console.log("result", result)
+                //    console.log("result", result)
                     if (err) { res.send({ result: err, responseCode: 404, responseMessage: "error." }); } else if (result.length == 0) {
                         var data = 0;
                         callback(null, winnersLength, data)
@@ -1668,7 +1667,7 @@ module.exports = {
                             }
                         }
                         Views.aggregate(updateData, groupCond, function(err, result) {
-                            console.log("result=========>>>..", result)
+                      //      console.log("result=========>>>..", result)
                             if (err) {
                                 res.send({ result: err, responseCode: 302, responseMessage: "error." });
                             } else if (result.length == 0) {
@@ -1725,7 +1724,7 @@ module.exports = {
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, callback) {
-                var updateDataUSED = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'USED', 'coupon.usedCouponDate': { $gte: startTime, $lte: endTime } } };
+                var updateDataUSED = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.status': 'ACTIVE', 'coupon.couponStatus': 'USED', 'coupon.usedCouponDate': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataUSED = { $unwind: "$coupon" };
                 var groupCondUSED = {
                     $group: {
@@ -1746,7 +1745,7 @@ module.exports = {
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, callback) {
-                var updateDataEXPIRED = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'EXPIRED', 'coupon.expirationTime': { $gte: startTime, $lte: endTime } } };
+                var updateDataEXPIRED = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.status': 'ACTIVE', 'coupon.couponStatus': 'EXPIRED', 'coupon.expirationTime': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataEXPIRED = { $unwind: "$coupon" };
                 var groupCondEXPIRED = {
                     $group: {
@@ -1768,7 +1767,7 @@ module.exports = {
                 })
             },
             function(winnersLength, totalBuyers, cashDeliveredResult, cashPendingResult, couponUsedResult, couponExpResult, callback) {
-                var updateDataVALID = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'VALID', 'coupon.updateddAt': { $gte: startTime, $lte: endTime } } };
+                var updateDataVALID = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.status': 'ACTIVE', 'coupon.couponStatus': 'VALID', 'coupon.updateddAt': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataVALID = { $unwind: "$coupon" };
                 var groupCondVALID = {
                     $group: {
@@ -3045,20 +3044,15 @@ module.exports = {
                 if (!(req.body[key] == "" || req.body[key] == undefined)) {
                     if (key == 'startDate') {
                         tempCond['$gte'] = new Date(req.body[key]);
-                        console.log("startDate--->>>", tempCond)
                     }
                     if (key == 'endDate') {
                         tempEndDate['$lte'] = new Date(req.body[key]);
-                        console.log("gte--->>>", tempEndDate)
                     }
                 }
                 if (tempCond != '' || tempEndDate != '') {
                     data = Object.assign(tempCond, tempEndDate)
                 }
             });
-            console.log("startDate", tempCond)
-            console.log("endDate", tempEndDate)
-            console.log("dta===>>", data)
             var userId = req.params.id;
             User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
@@ -3122,7 +3116,6 @@ module.exports = {
                     console.log("data-->", result[0].pageFollowers.length, i)
                     FavouitePages.push(result[0].pageFollowers[i].pageId)
                 }
-                console.log("FavouitePages-->>", FavouitePages)
                 var re = new RegExp(req.body.search, 'i');
                 createNewPage.paginate({ $and: [{ _id: { $in: FavouitePages } }, { 'pageName': { $regex: re } }] }, { pageNumber: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result1) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: 'No result found' }); } else {
@@ -3179,10 +3172,11 @@ module.exports = {
         })
     },
 
-    // review comments lsit api
+    // review comments lsit api _id: { $ne: req.params.id } , $and:[ {_id: { $in: pageArray }} ,{_id: { $in: pageArray } }]
+    // { addId: { $exists: false } },
     "reviewCommentList": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
-        addsComments.paginate({ pageId: req.params.id, "status": "ACTIVE" }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
+        addsComments.paginate({ pageId: req.params.id, "status": "ACTIVE", $and:[ {type: { $ne: 'onAds' }} ,{type: { $ne: 'onGifts' }}] }, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 for (var i = 0; i < result.docs.length; i++) {
                     var reply = result.docs[i].reply;
@@ -3190,7 +3184,6 @@ module.exports = {
                     //    console.log("data--->>" + data)
                     result.docs[i].reply = data;
                 }
-               //   console.log("adsCommentList---->>>",JSON.stringify(result))
                 addsComments.populate(result.docs, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
                     addsComments.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
                         //    console.log("adsCommentList--22-->>>",JSON.stringify(finalResult))

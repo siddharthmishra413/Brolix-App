@@ -54,7 +54,7 @@ app.post('/blockedPagesSearch/:pageNumber', authUser.authUser, pageHandler.block
 app.post('/searchFavouitePages/:id/:pageNumber', authUser.authUser, pageHandler.searchFavouitePages);
 app.post('/reviewOnPage', authUser.authUser, pageHandler.reviewOnPage);
 app.post('/replyOnReview', authUser.authUser, pageHandler.replyOnReview);
-app.get('/reviewCommentList/:id/:pageNumber/:lang', authUser.authUser, pageHandler.reviewCommentList);
+app.get('/reviewCommentList/:id/:pageNumber/:lang',  pageHandler.reviewCommentList);
 app.post('/winnerSearchFilter/:id/:pageNumber', authUser.authUser, pageHandler.winnerSearchFilter);
 app.post('/sendCouponToAdvertiser', authUser.authUser, pageHandler.sendCouponToAdvertiser);
 

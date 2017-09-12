@@ -712,7 +712,6 @@ cloudinary.config({
                     if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__('Please enter correct userId') }); } else {
                         var giftsIds = [];
                         var giftsCount = result.gifts;
-                        console.log("originsl count--->>>", giftsCount)
                         User.aggregate({ $unwind: '$coupon' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.userId), 'coupon.status': { $ne: "ACTIVE" } } }, function(err, user1) {
                             //     console.log("user1--->>>",JSON.stringify(user1))
                             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (user1.length == 0 && user1.length != null) { res.send({ result: result, responseCode: 200, responseMessage: i18n.__("Profile data shown successfully") }); } else {
@@ -720,17 +719,11 @@ cloudinary.config({
                                     giftsIds.push(user1[i].coupon.adId)
                                 }
                                 var actualCount = [];
-                                console.log("giftsIds--->>>", giftsIds)
-
                                 async.forEachOfLimit(giftsIds, 1, function(value, key, callback) {
                                     var index = giftsCount.indexOf(value)
-                               //     console.log("index--->>>", index)
                                     giftsCount.splice(index, 1);
-                                //    console.log("actualCount--->>>", actualCount)
                                     callback();
                                 }, function(err) {});
-                                console.log("giftsCount--->>>", giftsCount)
-                           //   console.log("user profile--->>>", JSON.stringify(result))
                                 result.gifts = giftsCount;
                                 res.send({
                                     result: result,
@@ -752,19 +745,14 @@ cloudinary.config({
                             var giftsCount = result1.gifts;
                             //      console.log("gifts-34343->>>",giftsCount)
                             User.aggregate({ $unwind: '$coupon' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.userId), 'coupon.status': { $ne: "ACTIVE" } } }, function(err, user1) {
-                                //         console.log("user1--->>>",JSON.stringify(user1))
                                 if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (user1.length == 0 && user1.length != null) { res.send({ result: result1, responseCode: 200, responseMessage: i18n.__("Profile data shown successfully") }); } else {
                                     for (var i = 0; i < user1.length; i++) {
                                         giftsIds.push(user1[i].coupon.adId)
                                     }
                                     var actualCount = [];
-                                    console.log("giftsIds--->>>", giftsIds)
-
                                     async.forEachOfLimit(giftsIds, 1, function(value, key, callback) {
                                         var index = giftsCount.indexOf(value)
-                                        console.log("index--->>>", index)
                                         giftsCount.splice(index, 1);
-                                        console.log("actualCount--->>>", actualCount)
                                         callback();
                                     }, function(err) {});
                                     result1.gifts = giftsCount;
@@ -817,7 +805,6 @@ cloudinary.config({
         //API for Tag Friends
         "tagFriends": function(req, res) {
             i18n = new i18n_module(req.body.lang, configs.langFile);
-
             //console.log("req======>>>" + JSON.stringify(req.body))
             var text = req.body.search;
             var senderName = [];
@@ -831,7 +818,6 @@ cloudinary.config({
                         senderName.push(followers[i].senderName);
                 }
                 matchFollowers(text);
-
                 function matchFollowers(input) {
                     console.log('function call');
                     var reg = new RegExp(input.split('').join('\\w*').replace(/\W/, ""), 'i');
@@ -898,7 +884,6 @@ cloudinary.config({
             var luckcard = req.body.brolix / 50;
             if (luckcard % 5 == 0) {
                 chances = luckcard;
-
                 createNewAds.findOne({ _id: req.body.adId }, function(err, data) {
                     if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!data) return res.status(404).send({ responseMessage: i18n.__("please enter correct adId") })
                     else if (data.winners.length != 0) return res.status(404).send({ responseMessage: "Winner already decided" });
@@ -1756,7 +1741,6 @@ cloudinary.config({
 
         // show list of chat user
         "onlineUserList": function(req, res) {
-            console.log("request----->>>", JSON.stringify(req.body))
             var condition;
             if (req.body.pageId) {
                 console.log("in if")
@@ -1765,7 +1749,6 @@ cloudinary.config({
                 console.log("in else")
                 condition = { $and: [{ $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }, { pageId: { $exists: false } }] }
             }
-            console.log("condition----->>>", condition)
             chat.aggregate(
                 [{
                     //$match: { $or: [{ senderId: req.body.userId }, { receiverId: req.body.userId }] }
@@ -1806,9 +1789,7 @@ cloudinary.config({
                         while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
                             if (result[j + 1] != undefined) {
                                 j += 1;
-                                console.log("yyyyy")
                             } else {
-                                console.log("ttttttt")
                                 break;
                             }
                             console.log("j");
@@ -1833,13 +1814,8 @@ cloudinary.config({
 
         // for testing chat user api
         "pageInboxChat": function(req, res) {
-            console.log("pageInboxChat ----  request----->>>", JSON.stringify(req.body))
             var condition;
             condition = { $or: [{ senderId: req.body.userId, chatType: req.body.chatType }, { receiverId: req.body.userId, chatType: req.body.chatType }] }
-            //  condition = { $or: [{ senderId: req.body.userId, chatType: req.body.chatType }] }
-
-            // here is { $or:[ {senderId: "$senderId"}, {receiverId: "$receiverId" }]},
-            console.log("condition----->>>", JSON.stringify(condition))
             chat.aggregate(
                 [{
                         $match: condition
@@ -1864,7 +1840,6 @@ cloudinary.config({
                     }
                 ]).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                console.log("result-0-0-0-0-0-0->>", JSON.stringify(result))
                 if (err) res.send({ responseCode: 500, responseMessage: err });
                 else if (result.length == 0) res.send({ responseCode: 404, responseMessage: "list empty." });
                 else {
@@ -1873,15 +1848,12 @@ cloudinary.config({
                     })
                     var obj = [],
                         j;
-                    //  console.log("result-23232-->" + JSON.stringify(result));
                     for (var i = 0; i < result.length; i++) {
                         result.length - 1 == i ? j = i : j = i + 1;
                         while ((result[i]._id.senderId != result[j]._id.receiverId) || (result[j]._id.senderId != result[i]._id.receiverId)) {
                             if (result[j + 1] != undefined) {
                                 j += 1;
-                                console.log("yyyyy")
                             } else {
-                                console.log("ttttttt")
                                 break;
                             }
                             console.log("j");
@@ -1896,7 +1868,6 @@ cloudinary.config({
                         //  console.log("obj---->" + JSON.stringify(obj));
                         //   result.slice(j, 1);
                     }
-                    // console.log("jsonqqq0-0-0-0-0-0-0->>", JSON.stringify(obj))
                     chat.populate(obj, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
                         res.send({
                             result: obj,

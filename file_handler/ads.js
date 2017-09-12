@@ -889,11 +889,13 @@ module.exports = {
                 createNewAds.findByIdAndUpdate({ _id: new mongoose.Types.ObjectId(req.body.addId) }, { $inc: { commentCountOnGifts: 1 } }, { new: true }, function(err, result1) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         addsComments.populate(result, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
+                             addsComments.populate(result, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
                             res.send({
                                 result: result,
                                 responseCode: 200,
                                 responseMessage: i18n.__("Comments save with concerned User details")
                             });
+                        })
                         })
                     }
                 })
@@ -1008,13 +1010,14 @@ module.exports = {
                 }
                 addsComments.populate(result.docs, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
                     addsComments.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
+                        addsComments.populate(result.docs, { path: 'addId', model: 'createNewAds', select: 'giftDescription likeAndUnlike ' }, function(err, finalResult) {
                         res.send({
                             result: result,
                             responseCode: 200,
                             responseMessage: i18n.__("Comments List")
                         })
                     })
-
+                    })
                 })
 
             }
