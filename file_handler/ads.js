@@ -24,6 +24,7 @@ var _ = require('underscore');
 var async = require('async');
 var multer = require('multer');
 var ffmpeg = require('ffmpeg');
+var payfort = require("payfort-node");
 var videoVariable;
 
 var paytabs = require('paytabs')
@@ -72,6 +73,23 @@ var avoid = {
     "password": 0
 }
 
+//var client = payfort.create_client("development", {
+//  access_code : "your_access_code",
+//  merchant_identifier : "your_merchant_identifier",
+//  passphrase : "your_passphrase"
+//  purchase_url : "send this only to override default urls"
+//});
+//
+//var purchaseData = {
+//  "amount": data.amount,
+//  "command" : "PURCHASE", // PURCHASE OR AUTHORIZATION 
+//  "currency": data.currency,
+//  "customer_email": data.email,
+//  "customer_name": data.name,
+//  "language": "ar",
+//  "return_url": "https://your_website.com/packages/v1/callback",
+//  "merchant_reference": data.order_id
+//};
 
 //var storage = multer.diskStorage({
 //    destination: function(req, file, callback) {
@@ -4412,9 +4430,166 @@ module.exports = {
                 })
             }
         })
-    }
+    },
 
+  // create ad payment api
+    "testingPayfort": function(req, res) {
+        i18n = new i18n_module(req.body.lang, configs.langFile);
+        User.findOne({ _id: req.body.userId }).exec(function(err, user) {
+            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } else {
+                if (req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet') {
+                    waterfall([
+                        function(callback) {
+                            if (req.body.paymentMode == 'paypal') {
+                                var cashAmount = user.cash - req.body.brolixAmount;
+                            } else if (req.body.paymentMode == 'payWithWallet') {
+                                var cashAmount = user.cash - req.body.amount;
+                            }
 
+                            User.findOneAndUpdate({ _id: req.body.userId }, { $set: { cash: cashAmount } }, { new: true }).exec(function(err, result) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                                    callback(null, "null")
+                                }
+                            })
+
+                        },
+                        function(nullResult, callback) {
+                            if (req.body.paymentMode == 'paypal') {
+                                var details = {
+                                    paymentMode: req.body.paymentMode,
+                                    userId: req.body.userId,
+                                    amount: req.body.amount,
+                                    paymentAmount: req.body.paymentAmount,
+                                    brolixAmount: req.body.brolixAmount,
+                                    transcationId: req.body.transcationId,
+                                    Type: req.body.Type,
+                                    dates: req.body.date
+                                }
+                            } else if (req.body.paymentMode == 'payWithWallet') {
+                                var details = {
+                                    paymentMode: req.body.paymentMode,
+                                    userId: req.body.userId,
+                                    amount: req.body.amount,
+                                    transcationId: "brolixAccount",
+                                    Type: req.body.Type,
+                                    dates: req.body.date
+                                }
+                            }
+
+                            var payment = new Payment(details);
+                            payment.save(function(err, paymentResult) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                                    callback(null, paymentResult)
+                                }
+                            })
+                        }
+                    ], function(err, result) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
+                            res.send({ responseCode: 200, responseMessage: i18n.__("Ad created successfully") });
+                        }
+                    })
+                } else {
+                    waterfall([
+                        function(callback) {
+                            paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response) {
+                                if (response.result == 'valid') {
+                                    callback(null, response)
+                                } else {
+                                    res.send({
+                                        responseCode: 404,
+                                        responseMessage: "Internal server error."
+                                    })
+                                }
+                            });
+                        },
+                        function(result, callback) {
+                            if (user.country == 'United Arab Emirates') {
+                                var state = 'UAE'
+                                var country_shipping = "ARE"
+                            } else if (user.country == 'Jordan') {
+                                var state = 'Jordan'
+                                var country_shipping = "JOR"
+                            } else {
+                                res.send({
+                                    responseCode: 404,
+                                    responseMessage: i18n.__("User can pay only for country UAE and Jordan")
+                                })
+                            }
+
+                            var createPayPage = new Object()
+                            createPayPage.merchant_email = 'sakshigadia@gmail.com';
+                            createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
+                            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+                            createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
+                            createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnPage";
+                            createPayPage.title = "Brolix";
+                            createPayPage.cc_first_name = user.firstName;
+                            createPayPage.cc_last_name = user.lastName;
+                            createPayPage.cc_phone_number = user.mobileNumber;
+                            createPayPage.phone_number = user.mobileNumber;
+                            createPayPage.email = user.email;
+                            createPayPage.products_per_title = "Payment";
+                            createPayPage.unit_price = req.body.paymentAmount;
+                            createPayPage.quantity = "1";
+                            createPayPage.other_charges = 0;
+                            createPayPage.amount = req.body.paymentAmount;
+                            createPayPage.discount = 0;
+                            createPayPage.currency = "USD"; //EUR JOD
+                            createPayPage.reference_no = "21873109128";
+                            createPayPage.ip_customer = "192.168.1.1";
+                            createPayPage.ip_merchant = "192.168.1.1";
+                            createPayPage.billing_address = "ydh";
+                            createPayPage.state = state;
+                            createPayPage.city = user.city;
+                            createPayPage.postal_code = '110020';
+                            createPayPage.country = country_shipping;
+                            createPayPage.shipping_first_name = user.firstName;
+                            createPayPage.shipping_last_name = user.lastName;
+                            createPayPage.address_shipping = "Flat";
+                            createPayPage.city_shipping = user.city;
+                            createPayPage.state_shipping = state;
+                            createPayPage.postal_code_shipping = '110020';
+                            createPayPage.country_shipping = country_shipping; //JOR ARE
+                            createPayPage.msg_lang = "English";
+                            createPayPage.cms_with_version = "1.0.0";
+                            paytabs.CreatePayPage(createPayPage, function(response) {
+                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!(response.response_code == "4012")) {
+                                    res.send({ responseCode: 404, responseMessage: "User details are invalid." });
+                                } else {
+                                    var obj = {
+                                        userId: req.body.userId,
+                                        paymentMode: req.body.paymentMode,
+                                        amount: req.body.amount,
+                                        userCashAmount: user.cash,
+                                        paymentAmount: req.body.paymentAmount,
+                                        brolixAmount: req.body.brolixAmount,
+                                        Type: req.body.Type,
+                                        pid: response.p_id,
+                                        dates: req.body.date
+                                    };
+                                    // myCache.del( "myKey", function( err, count ){
+                                    //   if( !err ){
+                                    //     console.log( count );                              
+                                    //   }
+                                    // })
+
+                                    myCache.set("myKey", obj, 10000);
+                                    var value = myCache.get("myKey");
+                                    console.log("value", value)
+
+                                    res.send({
+                                        responseCode: 200,
+                                        responseMessage: "Payment url.",
+                                        result: response
+                                    })
+                                }
+                            });
+                        }
+                    ])
+                }
+            }
+        })
+    },
 
 
     // "returnAds": function(req, res){

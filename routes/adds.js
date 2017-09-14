@@ -64,5 +64,6 @@ app.post('/allAreWinners', authUser.authUser, adsHandler.allAreWinners);
 app.post('/targetedOrNottargeted', authUser.authUser, adsHandler.targetedOrNottargeted);
 app.get('/testingPriority/:id/:pageNumber/:lang', authUser.authUser, adsHandler.testingPriority);
 app.post('/videoUploads',  adsHandler.videoUploads);
+app.post('/createAdPayment',  adsHandler.createAdPayment);
 
 module.exports = app;

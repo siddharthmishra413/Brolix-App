@@ -131,8 +131,6 @@ module.exports = {
             function(result, pageResult, callback) {
                 var array = [];
                 var data = [];
-                console.log("result.pageFollowers.length--type->>", typeof(result.pageFollowers))
-                console.log("result.pageFollowers.length--->>", result.pageFollowers.length)
                 if (result.pageFollowers.length > 0 && result.pageFollowers.length != null) {
                     for (var i = 0; i < result.pageFollowers.length; i++) {
                         array.push(result.pageFollowers[i].pageId)
@@ -1621,6 +1619,7 @@ module.exports = {
 
     //  // api for gift statisticks click
     "giftStatistics": function(req, res) {
+        console.log("giftStatistics--->>>",JSON.stringify(req.body))
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var startTime = new Date(req.body.startDate);
         var endTime = new Date(req.body.endDate);
@@ -1641,7 +1640,7 @@ module.exports = {
                             winnersLength += result[i].winners.length;
                             console.log(winnersLength);
                         }
-
+                         console.log("winnersLength--->>>>", JSON.stringify(winnersLength))
                         callback(null, winnersLength)
                     }
                 })
@@ -1667,7 +1666,7 @@ module.exports = {
                             }
                         }
                         Views.aggregate(updateData, groupCond, function(err, result) {
-                      //      console.log("result=========>>>..", result)
+                     //     console.log("result=========>>>..", result)
                             if (err) {
                                 res.send({ result: err, responseCode: 302, responseMessage: "error." });
                             } else if (result.length == 0) {
@@ -1681,7 +1680,8 @@ module.exports = {
                     }
                 })
             },
-            function(winnersLength, totalBuyers, callback) {
+            function(winnersLength, totalBuyers, callback) {                
+                    console.log("totalBuyers--->>>>", JSON.stringify(totalBuyers))
                 var updateDataPENDING = { $match: { 'cashPrize.pageId': req.body.pageId, 'cashPrize.cashStatus': 'DELIVERED', 'cashPrize.updateddAt': { $gte: startTime, $lte: endTime } } };
                 var updateUnwindDataPENDING = { $unwind: "$cashPrize" };
                 var groupCondPENDING = {
@@ -1733,6 +1733,7 @@ module.exports = {
                     }
                 }
                 User.aggregate(updateUnwindDataUSED, updateDataUSED, groupCondUSED, function(err, result) {
+                      console.log("result-3232-->>>>", JSON.stringify(result))
                     if (err) {
                         res.send({ result: err, responseCode: 302, responseMessage: "error." });
                     } else if (result.length == 0) {
@@ -1755,6 +1756,7 @@ module.exports = {
                 }
 
                 User.aggregate(updateUnwindDataEXPIRED, updateDataEXPIRED, groupCondEXPIRED, function(err, result) {
+                      console.log("result-->>>>", JSON.stringify(result))
                     if (err) {
                         res.send({ result: err, responseCode: 302, responseMessage: "error." });
                     } else if (result.length == 0) {
@@ -1776,6 +1778,7 @@ module.exports = {
                     }
                 }
                 User.aggregate(updateUnwindDataVALID, updateDataVALID, groupCondVALID, function(err, result) {
+                     console.log("result-3232-->>>>", JSON.stringify(result))
                     if (err) {
                         res.send({ result: err, responseCode: 302, responseMessage: "error." });
                     } else if (result.length == 0) {
@@ -2041,15 +2044,15 @@ module.exports = {
             function(couponPr, callback) {
                 if (req.body.click == 'EXPIRED' || req.body.click == 'VALID' || req.body.click == 'USED') {
                     if (req.body.click == 'EXPIRED') {
-                        var updateDataMatch = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'EXPIRED' } };
+                        var updateDataMatch = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.status': 'ACTIVE', 'coupon.couponStatus': 'EXPIRED' } };
                         var updateDataCoupon = updateDataExpiredd;
                     }
                     if (req.body.click == 'VALID') {
-                        var updateDataMatch = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'VALID' } };
+                        var updateDataMatch = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.status': 'ACTIVE', 'coupon.couponStatus': 'VALID' } };
                         var updateDataCoupon = updateDataValidd;
                     }
                     if (req.body.click == 'USED') {
-                        var updateDataMatch = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.couponStatus': 'USED' } };
+                        var updateDataMatch = { $match: { 'coupon.pageId': req.body.pageId, 'coupon.status': 'ACTIVE', 'coupon.couponStatus': 'USED' } };
                         var updateDataCoupon = updateDataUsedd;
                     }
                     var updateUnwindData = { $unwind: "$coupon" };

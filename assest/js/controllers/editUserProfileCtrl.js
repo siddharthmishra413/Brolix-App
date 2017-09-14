@@ -44,6 +44,7 @@ app.controller('editUserProfileCtrl', function($scope, $window, userService, $st
         userService.viewProfile(id).success(function(res) {
             if (res.responseCode == 200) {
                 $scope.viewUserProfile = res.result;
+                console.log("$scope.viewUserProfile",$scope.viewUserProfile.gender)
                 $scope.viewUserProfile.country = res.result.country;
                 $scope.viewUserProfile.state = res.result.state;
                 var updateDate = new Date($scope.viewUserProfile.dob);

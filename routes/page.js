@@ -36,7 +36,7 @@ app.put('/adAdmin/:id', authUser.authUser, pageHandler.adAdmin);
 app.post('/pageViewClick', authUser.authUser, pageHandler.pageViewClick);
 app.post('/pageStatisticsFilter', authUser.authUser, pageHandler.pageStatisticsFilter);
 app.post('/pageStatisticsFilterClick', authUser.authUser, pageHandler.pageStatisticsFilterClick);
-app.post('/giftStatistics', authUser.authUser, pageHandler.giftStatistics);
+app.post('/giftStatistics',  pageHandler.giftStatistics);
 app.post('/giftStatisticsFilterClick', authUser.authUser, pageHandler.giftStatisticsFilterClick);
 app.post('/pageFilter', authUser.authUser, pageHandler.pageFilter);
 app.post('/userFavouratePages', authUser.authUser, pageHandler.userFavouratePages);
