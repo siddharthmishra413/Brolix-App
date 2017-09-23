@@ -65,5 +65,6 @@ app.post('/targetedOrNottargeted', authUser.authUser, adsHandler.targetedOrNotta
 app.get('/testingPriority/:id/:pageNumber/:lang', authUser.authUser, adsHandler.testingPriority);
 app.post('/videoUploads',  adsHandler.videoUploads);
 app.post('/createAdPayment',  adsHandler.createAdPayment);
+app.post('/testingPayfort',  adsHandler.testingPayfort);
 
 module.exports = app;

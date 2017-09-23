@@ -24,6 +24,7 @@
     var Twocheckout = require('2checkout-node');
     var async = require('async');
     var _ = require('underscore');
+    var createNewPage = require("./model/createNewPage");  
 
 //    cloudinary.config({
 //        cloud_name: 'mobiloitte-in',
@@ -1449,9 +1450,18 @@ cloudinary.config({
                     console.log("viewers-->>", viewers)
                     console.log("adId--->>", adId)
                     createNewAds.findOneAndUpdate({ _id: adId }, { $inc: { cash: +cash, viewers: +viewers } }, { new: true }, function(err, result1) {
-                        //console.log("add--111->>", result1)
-                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 22') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("No adId found") }); } else {
+                       console.log("useUpgradeCard->>", JSON.stringify(result1))
+                       var pageId = result1.pageId;
+                         console.log("pageId->>", JSON.stringify(pageId))
+                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 22') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("No adId found") }); }
+                        else {
+                              console.log("pageId->>", typeof(pageId))
+                       createNewPage.findOneAndUpdate({ _id: pageId }, { $inc: { upgradeCardCash: +cash, upgradeCardViewers: +viewers } }, { new: true }, function(err, result2) {
+                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 33') }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("No page found") }); }
+                        else {
                             callback(null, result1)
+                        }
+                    })
                         }
                     })
                 },
@@ -2176,6 +2186,11 @@ cloudinary.config({
                 },
                 function(noDataValue, dataValue, blockedArray, callback) {
                     var userId = req.body.userId
+                    User.findOne({_id:req.body.userId}).exec(function(err, userResult){
+                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error.') }); }
+                        else{
+                            var userCountry = userResult.country;
+                      
                     createNewAds.find({ userId: { $nin: blockedArray } }).exec(function(err, result) {
                         i18n = new i18n_module(req.params.lang, configs.langFile);
                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error.') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No ad found") }); } else {
@@ -2187,7 +2202,7 @@ cloudinary.config({
                                     }
                                 }
                             }
-                            createNewAds.paginate({ _id: { $in: array } }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
+                            createNewAds.paginate({ _id: { $in: array }, 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8 }, function(err, result1) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (result1.docs.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__("No coupon found in your favourites") }); } else {
                                     for (var i = 0; i < result1.docs.length; i++) {
                                         if (result1.docs[i].adsType == 'coupon') {
@@ -2210,6 +2225,8 @@ cloudinary.config({
                                 }
                             })
                         }
+                    })
+                      }
                     })
                 }
             ])

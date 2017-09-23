@@ -25,8 +25,10 @@ var async = require('async');
 var multer = require('multer');
 var ffmpeg = require('ffmpeg');
 var payfort = require("payfort-node");
+var createNewPage = require("./model/createNewPage");
+var request = require('request');
 var videoVariable;
-
+var createSignature = require('./utility.js')
 var paytabs = require('paytabs')
 var NodeCache = require("node-cache");
 var myCache = new NodeCache();
@@ -73,38 +75,6 @@ var avoid = {
     "password": 0
 }
 
-//var client = payfort.create_client("development", {
-//  access_code : "your_access_code",
-//  merchant_identifier : "your_merchant_identifier",
-//  passphrase : "your_passphrase"
-//  purchase_url : "send this only to override default urls"
-//});
-//
-//var purchaseData = {
-//  "amount": data.amount,
-//  "command" : "PURCHASE", // PURCHASE OR AUTHORIZATION 
-//  "currency": data.currency,
-//  "customer_email": data.email,
-//  "customer_name": data.name,
-//  "language": "ar",
-//  "return_url": "https://your_website.com/packages/v1/callback",
-//  "merchant_reference": data.order_id
-//};
-
-//var storage = multer.diskStorage({
-//    destination: function(req, file, callback) {
-//        console.log("req", file)
-//        console.log("des res", file.fieldname + '-' + Date.now())
-//        // console.log("file--->>",file);
-//        callback(null, './uploads')
-//    },
-//    filename: function(req, file, callback) {
-//        //console.log("file---->>>>",file)
-//        //callback(null, file.fieldname + '-' + Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
-//        console.log("dfdf fdf", file.fieldname + '-' + Date.now())
-//        callback(null, file.fieldname + '-' + Date.now());
-//    }
-//})
 
 // var storage = multer.diskStorage({
 //     destination: function(req, file, callback) {
@@ -152,102 +122,106 @@ var avoid = {
 
 // console.log("buffer", obj)
 
- var storage = multer.diskStorage({
-     destination: function (req, file, cb) {
-         console.log("file--->>>>",file)
-         var newFile  = file.originalname.split('.')
-         var originalname = newFile[0];
-         var updatedName = newFile[0]
-         console.log('updatedName : ',updatedName)
-       cb(null, './videoUploads234/')
-     },
-     filename: function (req, file, cb) {
-      console.log("file--->>>>",file)
-         var newFile  = file.originalname.split('.')
-         var originalname = newFile[0];
-         var updatedName = newFile[0]+'.mp4'
-         videoVariable = updatedName;
-         console.log("updatedName ::: ",updatedName)
 
-       cb(null, updatedName )
-     }
+    var client = payfort.create_client("development", {
+      access_code : "OX7sl2WYAts0VuwNP1XJ",
+      merchant_identifier : "iPyVkhPq",
+      passphrase : "TESTSHAIN",
+      purchase_url : "https://sbcheckout.payfort.com/FortAPI/paymentPage"
+    });
+
+    var purchaseData = {
+      "amount": 100000,
+      "command" : "PURCHASE", // PURCHASE OR AUTHORIZATION 
+      "currency": "JOD",
+      "customer_email": "deepak@mobiloitte.in",
+      "customer_name": "deepak",
+      "language": "ar",
+      "return_url": "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/#/login",
+      "merchant_reference": '24'
+    };
+
+module.exports = {    
+    
+    
+    "testingPayfort": function(req, res) {
+        var passdata={
+            "service_command":"TOKENIZATION",
+            "language": "en",
+            "merchant_identifier" :"iPyVkhPq",
+            "access_code" : "OX7sl2WYAts0VuwNP1XJ",
+            "merchant_reference" : "MyReference0004",
+            "card_security_code" : "123",
+            "card_number" : 4005550000000001,
+            "expiry_date" :2105,
+            "remember_me": "YES",
+            "card_holder_name" :"John Smith"
+        }
+
+        createSignature.create_signature("TESTSHAIN",passdata,function(datas){
+            console.log("datat--->>>>",JSON.stringify(datas))
+//            var testd ={
+//                "service_command":"SDK_TOKEN",
+//                "access_code":"OX7sl2WYAts0VuwNP1XJ",
+//                "merchant_identifier":"iPyVkhPq",
+//                "language":"en",
+//                "device_id":"ef87856055b45dd42511515141181219b20ee755786801c885ae00100389f3d7",
+//                "signature":datas
+//            }
+//            console.log("test data==>",testd)
+           request({
+            method: 'POST',
+            headers: {
+              'Content-Length': 5,
+              'Content-Type': 'application/json'
+            },
+        uri: 'https://sbpaymentservices.payfort.com/FortAPI/paymentApi?JsonData={"service_command":"SDK_TOKEN","access_code":"OX7sl2WYAts0VuwNP1XJ","merchant_identifier":"iPyVkhPq","language":"en","device_id":"ef87856055b45dd42511515141181219b20ee755786801c885ae00100389f3d7","signature":"'+datas+'"}'        
+    }, function (error, response, body)
+        {
+     //   console.log("test gate",response)
+          if (error)
+          {console.log(error)}
+          else if(!error && response.statusCode == 200)
+          { res.send({ responseCode:500, result:response}) }
+          else
+          { res.send({ responseCode:500,result:response }) } 
     })
-
-var upload = multer({ storage: storage }).single('images')
-
-module.exports = {
- 
-//    "videoUploads": function(req, res) {  
-//        upload(req, res,function(err,result){
-//     console.log("videoVariable--111->>>>",videoVariable)
-//            var dirName = __dirname;
-//          var newpath =  path.normalize(dirName+'/..')
-//         var newpath1 = path.join(newpath,'videoUploads234',videoVariable)
-//            console.log("newpath--34523423->>>",newpath1)
-//        //     console.log("file.updatedName--222->>>",updatedName)
-//            try {
-//	new ffmpeg(newpath1, function (err, video) {
-//		if (!err) {
-//            video.setVideoFormat('mp4')
-//			console.log('The video is ready to be processed',video);
-//                          cloudinary.uploader.upload(video.file_path, function(result) {
-//               console.log("result--->>>>",JSON.stringify(result))
-//                    if (result.url) {
-////                        imageUrl.push(result.url);
-//                       
-////var h = cloudinary.video("http://res.cloudinary.com/brolix1/video/upload/v1505120485/vc4upwspeqs50irrqiy0.mp4", {width: 300, height: 200, crop: "crop"})
-//                             console.log("result--url->>>>",JSON.stringify(result.url))
-//                             var rest = result.url.substring(0,result.url.lastIndexOf("."));
-//                        console.log("rest:::::: ",rest)
-//                             cloudinary.video(rest[0]+'.mp4', {width: 300, height: 200, crop: "crop"})
-//                            res.send({
-//                                result: result.url,
-//                                responseCode: 200,
-//                                responseMessage: i18n.__("File uploaded successfully")
-//                            });
-//                        
-//                    } else {
-//                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
-//                    }
-//                }, {
-//                    resource_type: "auto",
-//                    chunk_size: 6000000 
-//                });
-//		} else {
-//			console.log('Error: ' + err);
-//		}
-//	});
-//} catch (e) {
-//	console.log(e.code);
-//	console.log(e.msg);
-//}
-////              cloudinary.uploader.upload(newpath1, function(result) {
-////               console.log("result--->>>>",JSON.stringify(result))
-////                    if (result.url) {
-//////                        imageUrl.push(result.url);
-////                       
-//////var h = cloudinary.video("http://res.cloudinary.com/brolix1/video/upload/v1505120485/vc4upwspeqs50irrqiy0.mp4", {width: 300, height: 200, crop: "crop"})
-////                             console.log("result--url->>>>",JSON.stringify(result.url))
-////                             var rest = result.url.substring(0,result.url.lastIndexOf("."));
-////                        console.log("rest:::::: ",rest)
-////                             cloudinary.video(rest[0]+'.mp4', {width: 300, height: 200, crop: "crop"})
-////                            res.send({
-////                                result: cloudinary.video(rest+'.mp4'),
-////                                responseCode: 200,
-////                                responseMessage: i18n.__("File uploaded successfully")
-////                            });
-////                        
-////                    } else {
-////                        callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
-////                    }
-////                }, {
-////                    resource_type: "auto",
-////                    chunk_size: 6000000 
-////                });
-//          //  err?console.log("result--err->>>>",JSON.stringify(err)): console.log("result--->>>>",JSON.stringify(result))
-//           
-//        })
-//    },
+        })
+},
+        
+    "testingPayrwerfort": function(req, res) {       
+       payfort.send_request(client, purchaseData, function(err, response){
+          if(err){
+              console.log("err---->>>>>",JSON.stringify(err))
+              res.send({
+                  responseCode:500,
+                  result:err
+              })
+            }
+           else{
+               var get_request = {
+                  // decoded query params 
+                };
+               var original_signature = response.create_signature;
+               
+               delete response.create_signature;
+               
+               var new_signature = payfort.create_signature("TESTSHAOUT", get_request);
+               
+               if(original_signature == new_signature){
+                 console.log("valid---->>>>>")
+                }else{
+                  console.log("not   valid---->>>>>")
+                }
+              console.log("response---->>>>>",JSON.stringify(response)) 
+              res.send({
+                  responseCode:200,
+                  result:response
+              })
+           }
+            //handle response 
+        })
+    },
     
     // upload mp3 file in ad api
     "uploadMp3Files": function(req, res) {
@@ -436,10 +410,8 @@ module.exports = {
                 User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
-
-                        createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon ad found") }); } else {
-
+                    createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, adsType: "coupon", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon ad found") }); } else {
                                 for (var i = 0; i < result.docs.length; i++) {
                                     if (result.docs[i].adsType == 'coupon') {
                                         if (result.docs[i].cash == 0) {
@@ -449,7 +421,6 @@ module.exports = {
                                         }
                                     }
                                 }
-
                                 var currentTime = (new Date).getTime();
                                 for (var i = 0; i <= result.docs.length - 1; i++) {
                                     var array = [];
@@ -540,8 +511,6 @@ module.exports = {
                 User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 22' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var userCountry = userResult.country;
-                        console.log("userCountry-0-0-0---->>>", userCountry)
-
                         createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1 } }, function(err, result) {
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon ad found" }); } else {
                                 for (var i = 0; i < result.docs.length; i++) {
@@ -758,7 +727,7 @@ module.exports = {
                 }
                 var activeStatus = { userId: { $nin: blockedArray }, status: 'ACTIVE' }
                 Object.assign(data, activeStatus)
-                console.log("data==========>", data)
+             //   console.log("data==========>", data)
                 createNewAds.paginate(data, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, results) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                         //var Removed = results.docs.filter(function(el) { return el.userId !== req.body.userId; });
@@ -2241,6 +2210,13 @@ module.exports = {
         var skips = limitData - 8;
         var page = String(pageNumber);
         var userId = req.params.id;
+        
+        User.findOne({_id:req.params.id}).exec(function(err, userResultt) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else{
+                
+            var userCountry = userResultt.country;
+        
         User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var blockedArray = [];
@@ -2253,14 +2229,14 @@ module.exports = {
                         }
                     }
                 }
-                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', _id: { $nin: blockedArray } } }).exec(function(err, result) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', _id: { $nin: blockedArray }, country:userCountry } }).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 500, responseMessage: "No coupon winner found" }); } else {
                         var count = 0;
                         for (i = 0; i < result.length; i++) {
                             count++;
                         }
                         var pages = Math.ceil(count / 8);
-                        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', _id: { $nin: blockedArray } } }, { $sort: { 'coupon.createddAt': -1 } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
+                        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', _id: { $nin: blockedArray }, country:userCountry } }, { $sort: { 'coupon.createddAt': -1 } }, { $limit: limitData }, { $skip: skips }).exec(function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                                 User.populate(result1, {
                                     path: 'coupon.adId',
@@ -2301,6 +2277,8 @@ module.exports = {
 
             }
         })
+        }
+        })
     },
 
     // coupon winners date filter api
@@ -2339,6 +2317,13 @@ module.exports = {
             console.log("data===>>", data)
 
             var userId = req.params.id;
+            
+            User.findOne({_id:req.params.id}).exec(function(err, userResultt) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else{
+                
+            var userCountry = userResultt.country;
+            
             User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     var blockedArray = [];
@@ -2351,7 +2336,7 @@ module.exports = {
                             }
                         }
                     }
-                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data, _id: { $nin: blockedArray } } }).exec(function(err, result) {
+                    User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data, _id: { $nin: blockedArray }, country:userCountry  } }).exec(function(err, result) {
                         console.log("1")
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon winner found" }); } else {
                             var count = 0;
@@ -2359,7 +2344,7 @@ module.exports = {
                                 count++;
                             }
                             var pages = Math.ceil(count / 8);
-                            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data, _id: { $nin: blockedArray } } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'coupon.updateddAt': -1 } }).exec(function(err, result1) {
+                            User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': 'WINNER', 'coupon.updateddAt': data, _id: { $nin: blockedArray }, country:userCountry  } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'coupon.updateddAt': -1 } }).exec(function(err, result1) {
                                 console.log("2")
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No coupon winner found" }); } else {
                                     User.populate(result1, {
@@ -2383,6 +2368,8 @@ module.exports = {
                         }
                     })
                 }
+            })
+            }
             })
         }
     },
@@ -2420,6 +2407,12 @@ module.exports = {
             });
 
             var userId = req.params.id;
+            
+                User.findOne({_id:req.params.id}).exec(function(err, userResultt) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else{                
+            var userCountry = userResultt.country;  
+            
             User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     var blockedArray = [];
@@ -2433,7 +2426,7 @@ module.exports = {
                         }
                     }
 
-                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data, _id: { $nin: blockedArray } } }).exec(function(err, result) {
+                    User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data, _id: { $nin: blockedArray }, country:userCountry } }).exec(function(err, result) {
                         console.log("1")
                         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
                             var count = 0;
@@ -2441,7 +2434,7 @@ module.exports = {
                                 count++;
                             }
                             var pages = Math.ceil(count / 8);
-                            User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data, _id: { $nin: blockedArray } } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'cashPrize.updateddAt': -1 } }).exec(function(err, result1) {
+                            User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.updateddAt': data, _id: { $nin: blockedArray }, country:userCountry } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'cashPrize.updateddAt': -1 } }).exec(function(err, result1) {
                                 console.log("2")
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found" }); } else {
                                     User.populate(result1, {
@@ -2466,6 +2459,8 @@ module.exports = {
                     })
                 }
             })
+            }
+                })
         }
     },
 
@@ -2478,6 +2473,11 @@ module.exports = {
         var skips = limitData - 8;
         var page = String(pageNumber);
         var userId = req.params.id;
+        
+        User.findOne({_id:req.params.id}).exec(function(err, userResultt) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else{                
+            var userCountry = userResultt.country;        
         User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var blockedArray = [];
@@ -2490,7 +2490,7 @@ module.exports = {
                         }
                     }
                 }
-                User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status': 'ACTIVE', _id: { $nin: blockedArray } } }).exec(function(err, result) {
+                User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status': 'ACTIVE', _id: { $nin: blockedArray }, country:userCountry } }).exec(function(err, result) {
                     console.log("1")
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }); } else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found." }); } else {
                         var count = 0;
@@ -2498,7 +2498,7 @@ module.exports = {
                             count++;
                         }
                         var pages = Math.ceil(count / 8);
-                        User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status': 'ACTIVE', _id: { $nin: blockedArray } } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'cashPrize.updateddAt': -1 } }).exec(function(err, result1) {
+                        User.aggregate({ $unwind: "$cashPrize" }, { $match: { 'cashPrize.status': 'ACTIVE', _id: { $nin: blockedArray }, country:userCountry } }, { $limit: limitData }, { $skip: skips }, { $sort: { 'cashPrize.updateddAt': -1 } }).exec(function(err, result1) {
                             console.log("2")
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: "No cash winner found." }); } else {
                                 User.populate(result1, {
@@ -2530,6 +2530,8 @@ module.exports = {
                     }
                 })
             }
+        })
+         }
         })
     },
 
@@ -2866,7 +2868,11 @@ module.exports = {
                 })
             },
             function(noDataValue, dataValue, blockedArray, callback) {
-                createNewAds.paginate({ userId: { $nin: blockedArray }, sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
+                User.findOne({_id:req.params.id}).exec(function(err, userResult){
+                   if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+                    else{
+                        var userCountry = userResult.country;                  
+                createNewAds.paginate({ userId: { $nin: blockedArray },'whoWillSeeYourAdd.country': userCountry ,sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -2888,6 +2894,8 @@ module.exports = {
                         })
                     }
 
+                })
+                  }
                 })
             }
         ])
@@ -3120,6 +3128,11 @@ module.exports = {
             },
             function(noDataValue, dataValue, arrayId, blockedArray, callback) {
                 //     console.log("arrayId=========>...", arrayId)
+                User.findOne({_id:req.params.id}).exec(function(err, userResult){
+                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
+                    else{
+                   var userCountry = userResult.country;     
+                   
                 createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1, createdAt: -1 }}, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         createNewAds.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -3135,6 +3148,8 @@ module.exports = {
                             res.send({ responseCode: 200, responseMessage: i18n.__("Success."), result: result })
                         })
 
+                    }
+                })
                     }
                 })
             }
@@ -4430,166 +4445,10 @@ module.exports = {
                 })
             }
         })
-    },
+    }
 
   // create ad payment api
-    "testingPayfort": function(req, res) {
-        i18n = new i18n_module(req.body.lang, configs.langFile);
-        User.findOne({ _id: req.body.userId }).exec(function(err, user) {
-            if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "User not found." }); } else {
-                if (req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet') {
-                    waterfall([
-                        function(callback) {
-                            if (req.body.paymentMode == 'paypal') {
-                                var cashAmount = user.cash - req.body.brolixAmount;
-                            } else if (req.body.paymentMode == 'payWithWallet') {
-                                var cashAmount = user.cash - req.body.amount;
-                            }
-
-                            User.findOneAndUpdate({ _id: req.body.userId }, { $set: { cash: cashAmount } }, { new: true }).exec(function(err, result) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                                    callback(null, "null")
-                                }
-                            })
-
-                        },
-                        function(nullResult, callback) {
-                            if (req.body.paymentMode == 'paypal') {
-                                var details = {
-                                    paymentMode: req.body.paymentMode,
-                                    userId: req.body.userId,
-                                    amount: req.body.amount,
-                                    paymentAmount: req.body.paymentAmount,
-                                    brolixAmount: req.body.brolixAmount,
-                                    transcationId: req.body.transcationId,
-                                    Type: req.body.Type,
-                                    dates: req.body.date
-                                }
-                            } else if (req.body.paymentMode == 'payWithWallet') {
-                                var details = {
-                                    paymentMode: req.body.paymentMode,
-                                    userId: req.body.userId,
-                                    amount: req.body.amount,
-                                    transcationId: "brolixAccount",
-                                    Type: req.body.Type,
-                                    dates: req.body.date
-                                }
-                            }
-
-                            var payment = new Payment(details);
-                            payment.save(function(err, paymentResult) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                                    callback(null, paymentResult)
-                                }
-                            })
-                        }
-                    ], function(err, result) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } else {
-                            res.send({ responseCode: 200, responseMessage: i18n.__("Ad created successfully") });
-                        }
-                    })
-                } else {
-                    waterfall([
-                        function(callback) {
-                            paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response) {
-                                if (response.result == 'valid') {
-                                    callback(null, response)
-                                } else {
-                                    res.send({
-                                        responseCode: 404,
-                                        responseMessage: "Internal server error."
-                                    })
-                                }
-                            });
-                        },
-                        function(result, callback) {
-                            if (user.country == 'United Arab Emirates') {
-                                var state = 'UAE'
-                                var country_shipping = "ARE"
-                            } else if (user.country == 'Jordan') {
-                                var state = 'Jordan'
-                                var country_shipping = "JOR"
-                            } else {
-                                res.send({
-                                    responseCode: 404,
-                                    responseMessage: i18n.__("User can pay only for country UAE and Jordan")
-                                })
-                            }
-
-                            var createPayPage = new Object()
-                            createPayPage.merchant_email = 'sakshigadia@gmail.com';
-                            createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
-                            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-                            createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
-                            createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnPage";
-                            createPayPage.title = "Brolix";
-                            createPayPage.cc_first_name = user.firstName;
-                            createPayPage.cc_last_name = user.lastName;
-                            createPayPage.cc_phone_number = user.mobileNumber;
-                            createPayPage.phone_number = user.mobileNumber;
-                            createPayPage.email = user.email;
-                            createPayPage.products_per_title = "Payment";
-                            createPayPage.unit_price = req.body.paymentAmount;
-                            createPayPage.quantity = "1";
-                            createPayPage.other_charges = 0;
-                            createPayPage.amount = req.body.paymentAmount;
-                            createPayPage.discount = 0;
-                            createPayPage.currency = "USD"; //EUR JOD
-                            createPayPage.reference_no = "21873109128";
-                            createPayPage.ip_customer = "192.168.1.1";
-                            createPayPage.ip_merchant = "192.168.1.1";
-                            createPayPage.billing_address = "ydh";
-                            createPayPage.state = state;
-                            createPayPage.city = user.city;
-                            createPayPage.postal_code = '110020';
-                            createPayPage.country = country_shipping;
-                            createPayPage.shipping_first_name = user.firstName;
-                            createPayPage.shipping_last_name = user.lastName;
-                            createPayPage.address_shipping = "Flat";
-                            createPayPage.city_shipping = user.city;
-                            createPayPage.state_shipping = state;
-                            createPayPage.postal_code_shipping = '110020';
-                            createPayPage.country_shipping = country_shipping; //JOR ARE
-                            createPayPage.msg_lang = "English";
-                            createPayPage.cms_with_version = "1.0.0";
-                            paytabs.CreatePayPage(createPayPage, function(response) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!(response.response_code == "4012")) {
-                                    res.send({ responseCode: 404, responseMessage: "User details are invalid." });
-                                } else {
-                                    var obj = {
-                                        userId: req.body.userId,
-                                        paymentMode: req.body.paymentMode,
-                                        amount: req.body.amount,
-                                        userCashAmount: user.cash,
-                                        paymentAmount: req.body.paymentAmount,
-                                        brolixAmount: req.body.brolixAmount,
-                                        Type: req.body.Type,
-                                        pid: response.p_id,
-                                        dates: req.body.date
-                                    };
-                                    // myCache.del( "myKey", function( err, count ){
-                                    //   if( !err ){
-                                    //     console.log( count );                              
-                                    //   }
-                                    // })
-
-                                    myCache.set("myKey", obj, 10000);
-                                    var value = myCache.get("myKey");
-                                    console.log("value", value)
-
-                                    res.send({
-                                        responseCode: 200,
-                                        responseMessage: "Payment url.",
-                                        result: response
-                                    })
-                                }
-                            });
-                        }
-                    ])
-                }
-            }
-        })
-    },
+    
 
 
     // "returnAds": function(req, res){

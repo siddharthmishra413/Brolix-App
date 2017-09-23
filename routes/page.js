@@ -42,7 +42,7 @@ app.post('/pageFilter', authUser.authUser, pageHandler.pageFilter);
 app.post('/userFavouratePages', authUser.authUser, pageHandler.userFavouratePages);
 app.get('/listOfCategory/:lang', authUser.authUser, pageHandler.listOfCategory);
 app.post('/subCategoryData', authUser.authUser, pageHandler.subCategoryData);
-app.post('/winnerFilter/:id/:pageNumber', authUser.authUser, pageHandler.winnerFilter);
+app.post('/winnerFilter/:id/:pageNumber',  pageHandler.winnerFilter);
 app.post('/myPagesSearch/:id/:pageNumber', authUser.authUser, pageHandler.myPagesSearch);
 app.post('/PageCashWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCashWinnersFilter);
 app.post('/PageCouponWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCouponWinnersFilter);
@@ -55,7 +55,7 @@ app.post('/searchFavouitePages/:id/:pageNumber', authUser.authUser, pageHandler.
 app.post('/reviewOnPage', authUser.authUser, pageHandler.reviewOnPage);
 app.post('/replyOnReview', authUser.authUser, pageHandler.replyOnReview);
 app.get('/reviewCommentList/:id/:pageNumber/:lang',  pageHandler.reviewCommentList);
-app.post('/winnerSearchFilter/:id/:pageNumber', authUser.authUser, pageHandler.winnerSearchFilter);
+app.post('/winnerSearchFilter/:id/:pageNumber',  pageHandler.winnerSearchFilter);
 app.post('/sendCouponToAdvertiser', authUser.authUser, pageHandler.sendCouponToAdvertiser);
 
 

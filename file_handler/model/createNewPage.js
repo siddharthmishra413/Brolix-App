@@ -145,6 +145,14 @@ var createNewPageSchema = new mongoose.Schema({
         type: String,
         default: 'ACTIVE',
         trim: true
+    },
+    upgradeCardCash:{
+        type:Number,
+        default:0
+    },
+    upgradeCardViewers:{
+        type:Number,
+        default:0
     }
 });
 createNewPageSchema.plugin(mongoosePaginate);
