@@ -3044,7 +3044,7 @@ module.exports = {
                         res.send({
                             result: sortArray,
                             responseCode: 200,
-                            responseMessage: i18n.__("All request show successfully")
+                            responseMessage: i18n.__("All request shown successfully")
                         })
                     }
                 })

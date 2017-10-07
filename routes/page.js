@@ -13,7 +13,7 @@ app.post('/returnAdsData', authUser.authUser, pageHandler.returnAdsData);
 app.post('/paymentFilterApi', authUser.authUser, pageHandler.paymentFilterApi);
 app.post('/deleteCommentsOnPage', authUser.authUser, pageHandler.deleteCommentsOnPage);
 app.post('/editCommentsonPage', authUser.authUser, pageHandler.editCommentsonPage);
-app.post('/createPage', authUser.authUser, pageHandler.createPage);
+app.post('/createPage', pageHandler.createPage);
 app.get('/showAllPages/:pageNumber/:lang', authUser.authUser, pageHandler.showAllPages);
 app.get('/showAllOtherUserPages/:id/:pageNumber/:lang',  pageHandler.showAllOtherUserPages);
 app.post('/showPageDetails',  pageHandler.showPageDetails);

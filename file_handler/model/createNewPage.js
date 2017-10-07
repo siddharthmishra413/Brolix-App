@@ -57,6 +57,13 @@ var createNewPageSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    latitude:{
+        type: String
+    },
+    longitude:{
+        type: String
+    },
+
     pageFollowersStatus: { type: Boolean, default: false },
     averageRating: { type: Number, trim: true, default: 0 },
     totalRating: [{

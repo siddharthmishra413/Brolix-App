@@ -66,5 +66,6 @@ app.get('/testingPriority/:id/:pageNumber/:lang', authUser.authUser, adsHandler.
 app.post('/videoUploads',  adsHandler.videoUploads);
 app.post('/createAdPayment',  adsHandler.createAdPayment);
 app.post('/testingPayfort',  adsHandler.testingPayfort);
+app.post('/savePaymentHistory',  adsHandler.savePaymentHistory);
 
 module.exports = app;

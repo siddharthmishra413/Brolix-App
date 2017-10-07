@@ -187,8 +187,8 @@
     "en": "Review list shown successfully",
     "ar": "تم عرض قائمة التقييمات بنجاح"
   },
-  "Coupon successfully sent to advertiser page": {
-    "en": "Coupon successfully sent to advertiser page",
+  "Coupon successfully sent to advertiser page.": {
+    "en": "Coupon successfully sent to advertiser page.",
     "ar": "تم ارسال الكوبون الى صفحة المعلن بنجاح"
   },
   "Please enter a valid coupon to use": {
@@ -298,6 +298,10 @@
    "Data Shown successfully": {
     "en": "Data Shown successfully",
     "ar": "تظهر البيانات بنجاح"
+  },
+  "No results found": {
+    "en": "No results found",
+    "ar": "لم يتم العثور على نتائج"
   },
   "Insufficient amount of brolix in your account": {
     "en": "Insufficient amount of brolix in your account",
@@ -526,6 +530,10 @@
   "Comments save successfully": {
     "en": "Comments save successfully",
     "ar": "تم حفظ التعليق بنجاح"
+  },
+  "No comment found in list": {
+    "en": "No comment found in list",
+    "ar": "لا يوجد تعليقات"
   },
   "Comments List": {
     "en": "Comments List",
@@ -763,12 +771,12 @@
     "en": "Comments List",
     "ar": "قائمة التعليقات"
   },
-  "Product removed successfully": {
-    "en": "Product removed successfully",
+  "Item removed successfully": {
+    "en": "Item removed successfully",
     "ar": "تم الازالة من المعرض بنجاح"
   },
-  "Product updated successfully": {
-    "en": "Product updated successfully",
+  "Item updated successfully": {
+    "en": "Item updated successfully",
     "ar": "تم تحديث المعرض بنجاح"
   },
   "Event created successfully": {

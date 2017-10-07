@@ -3352,7 +3352,7 @@ cloudinary.config({
             } else {
                 User.findOneAndUpdate({ _id: req.body.userId }, { $set: { isLive: 'False' } }).exec(function(err, result) {
                     i18n = new i18n_module(req.body.lang, configs.langFile);
-                    if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                    if (err) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                         res.send({
                             responseCode: 200,
                             responseMessage: i18n.__('Successfully updated')

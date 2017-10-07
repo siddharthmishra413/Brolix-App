@@ -143,6 +143,27 @@ var avoid = {
 
 module.exports = {    
     
+    "savePaymentHistory":function(req, res){
+        var obj = {
+            paymentMode:req.body.paymentMode,
+            userId:req.body.userId,
+            amount:req.body.amount,
+            transcationId:req.body.transcationId,
+            Type:req.body.Type 
+        }
+        var paymentHistory = new Payment(obj);
+        paymentHistory.save(function(err, result){
+         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+            else{
+               res.send({ 
+                   responseCode: 200,
+                   responseMessage: 'History saved successfully',
+                   result:result
+               }); 
+            }
+            
+        })
+    },
     
     "testingPayfort": function(req, res) {
         var passdata={
@@ -3551,7 +3572,7 @@ module.exports = {
                         res.send({ result: err, responseCode: 302, responseMessage: "error." });
 
                     } else if (!result) {
-                        res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+                        res.send({ responseCode: 404, responseMessage: 'No results found' });
                     } else {
                         callback(null, result)
                     }
