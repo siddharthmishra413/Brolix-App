@@ -4,7 +4,7 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
     $scope.$emit('SideMenu', 'Manage User');
     $scope.minDate = new Date().toDateString();
     $scope.myFrom = {};
-
+    $scope.myFrom.gender = "Male";
     userService.countryListData().success(function(res) {
         $scope.countries = res.result;
     })

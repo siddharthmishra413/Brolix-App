@@ -14,7 +14,7 @@ i18n_module = require('i18n-nodejs');
 i18n = new i18n_module(configs.lang, configs.langFile);
 console.log("===========================================", i18n.__('Welcome'));
 
-// type of terms conditions :-  couponGiftInfo , cashGiftInfo, hiddenGiftInfo, cashAdCondition, cashAdCondition, signUpCondition sellThisCoupon
+// type of terms conditions :-  couponGiftInfo , cashGiftInfo, hiddenGiftInfo, cashAdCondition, cashAdCondition, signUpCondition sellThisCoupon createPage
 
 module.exports = {
 

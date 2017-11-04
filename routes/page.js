@@ -21,7 +21,7 @@ app.get('/myPages/:id/:pageNumber/:lang', authUser.authUser, pageHandler.myPages
 app.get('/showPageFavouriteType/:id/:pageNumber/:lang', authUser.authUser, pageHandler.showPageFavouriteType);
 app.put('/editPage/:id', authUser.authUser, pageHandler.editPage);
 app.post('/deletePage', authUser.authUser, pageHandler.deletePage);
-app.post('/allPagesSearch/:id/:pageNumber', authUser.authUser, pageHandler.allPagesSearch); //Not Update in Docs
+app.post('/allPagesSearch/:id/:pageNumber', pageHandler.allPagesSearch); //Not Update in Docs
 app.post('/pageFollowUnfollow', authUser.authUser, pageHandler.pageFollowUnfollow); //Not Update in Docs
 app.post('/searchForPages/:id/:pageNumber', authUser.authUser, pageHandler.searchForPages); //Not Upadte in Docs
 app.post('/pageRating', authUser.authUser, pageHandler.pageRating);
@@ -40,8 +40,8 @@ app.post('/giftStatistics',  pageHandler.giftStatistics);
 app.post('/giftStatisticsFilterClick', authUser.authUser, pageHandler.giftStatisticsFilterClick);
 app.post('/pageFilter', authUser.authUser, pageHandler.pageFilter);
 app.post('/userFavouratePages', authUser.authUser, pageHandler.userFavouratePages);
-app.get('/listOfCategory/:lang', authUser.authUser, pageHandler.listOfCategory);
-app.post('/subCategoryData', authUser.authUser, pageHandler.subCategoryData);
+app.get('/listOfCategory/:lang', pageHandler.listOfCategory);
+app.post('/subCategoryData', pageHandler.subCategoryData);
 app.post('/winnerFilter/:id/:pageNumber',  pageHandler.winnerFilter);
 app.post('/myPagesSearch/:id/:pageNumber', authUser.authUser, pageHandler.myPagesSearch);
 app.post('/PageCashWinnersFilter/:id/:pageNumber', authUser.authUser, pageHandler.PageCashWinnersFilter);

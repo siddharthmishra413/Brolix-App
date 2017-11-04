@@ -931,6 +931,9 @@ app.service('userService', function($http) {
             return $http.get(baseurl + '/tool/viewAllBrolixAndDollors');
         },
         brolixPerFreeCouponAds: function(type, data) {
+            console.log("type",type)
+            console.log("data",data)
+
             return $http.put(baseurl + '/tool/editBrolixAndDollors/' + type, data);
         },
         checkPermission: function(data) {

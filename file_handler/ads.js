@@ -36,7 +36,7 @@ var myCache = new NodeCache();
 //<--------------------------------------------I18n------------------------------------------------->
 var configs = {
     "lang": "ar",
-    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
+    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module
 }
 i18n_module = require('i18n-nodejs');
 //<------------------------------------------------------------------------------------------------>
@@ -132,7 +132,7 @@ var avoid = {
 
     var purchaseData = {
       "amount": 100000,
-      "command" : "PURCHASE", // PURCHASE OR AUTHORIZATION 
+      "command" : "PURCHASE", // PURCHASE OR AUTHORIZATION
       "currency": "JOD",
       "customer_email": "deepak@mobiloitte.in",
       "customer_name": "deepak",
@@ -141,30 +141,30 @@ var avoid = {
       "merchant_reference": '24'
     };
 
-module.exports = {    
-    
+module.exports = {
+
     "savePaymentHistory":function(req, res){
         var obj = {
             paymentMode:req.body.paymentMode,
             userId:req.body.userId,
             amount:req.body.amount,
             transcationId:req.body.transcationId,
-            Type:req.body.Type 
+            Type:req.body.Type
         }
         var paymentHistory = new Payment(obj);
         paymentHistory.save(function(err, result){
          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             else{
-               res.send({ 
+               res.send({
                    responseCode: 200,
                    responseMessage: 'History saved successfully',
                    result:result
-               }); 
+               });
             }
-            
+
         })
     },
-    
+
     "testingPayfort": function(req, res) {
         var passdata={
             "service_command":"TOKENIZATION",
@@ -196,7 +196,7 @@ module.exports = {
               'Content-Length': 5,
               'Content-Type': 'application/json'
             },
-        uri: 'https://sbpaymentservices.payfort.com/FortAPI/paymentApi?JsonData={"service_command":"SDK_TOKEN","access_code":"OX7sl2WYAts0VuwNP1XJ","merchant_identifier":"iPyVkhPq","language":"en","device_id":"ef87856055b45dd42511515141181219b20ee755786801c885ae00100389f3d7","signature":"'+datas+'"}'        
+        uri: 'https://sbpaymentservices.payfort.com/FortAPI/paymentApi?JsonData={"service_command":"SDK_TOKEN","access_code":"OX7sl2WYAts0VuwNP1XJ","merchant_identifier":"iPyVkhPq","language":"en","device_id":"ef87856055b45dd42511515141181219b20ee755786801c885ae00100389f3d7","signature":"'+datas+'"}'
     }, function (error, response, body)
         {
      //   console.log("test gate",response)
@@ -205,12 +205,12 @@ module.exports = {
           else if(!error && response.statusCode == 200)
           { res.send({ responseCode:500, result:response}) }
           else
-          { res.send({ responseCode:500,result:response }) } 
+          { res.send({ responseCode:500,result:response }) }
     })
         })
 },
-        
-    "testingPayrwerfort": function(req, res) {       
+
+    "testingPayrwerfort": function(req, res) {
        payfort.send_request(client, purchaseData, function(err, response){
           if(err){
               console.log("err---->>>>>",JSON.stringify(err))
@@ -221,29 +221,29 @@ module.exports = {
             }
            else{
                var get_request = {
-                  // decoded query params 
+                  // decoded query params
                 };
                var original_signature = response.create_signature;
-               
+
                delete response.create_signature;
-               
+
                var new_signature = payfort.create_signature("TESTSHAOUT", get_request);
-               
+
                if(original_signature == new_signature){
                  console.log("valid---->>>>>")
                 }else{
                   console.log("not   valid---->>>>>")
                 }
-              console.log("response---->>>>>",JSON.stringify(response)) 
+              console.log("response---->>>>>",JSON.stringify(response))
               res.send({
                   responseCode:200,
                   result:response
               })
            }
-            //handle response 
+            //handle response
         })
     },
-    
+
     // upload mp3 file in ad api
     "uploadMp3Files": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -711,7 +711,7 @@ module.exports = {
             function(noDataValue, value, blockedArray, callback) {
                 var re = new RegExp(req.body.pageName, 'i');
                 createNewPage.find({ 'pageName': { $regex: re }, status: 'ACTIVE' }, function(err, pageResult) {
-                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (pageResult.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No page found") }); } else {
                         //     console.log("array--->>>",JSON.stringify(pageResult))
                         var array = []
                         for (var i = 0; i < pageResult.length; i++) {
@@ -723,7 +723,7 @@ module.exports = {
                 })
 
             },
-            function(array, noDataValue, dataValue, blockedArray, callback) {               
+            function(array, noDataValue, dataValue, blockedArray, callback) {
                 var re = new RegExp(req.body.pageName, 'i');
                 var re2 = new RegExp(req.body.subCategory, 'i')
                 var data = {
@@ -800,7 +800,7 @@ module.exports = {
     //         })
     //     }
     // },
-    
+
     // new like and unlike
       "likeAndUnlike":function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -854,10 +854,10 @@ module.exports = {
                            User.findOne({_id:req.body.userId},function(err, userResult1){
                               if (err) { res.send({ responseCode: 500, responseMess: 'Internal server error' }); }
                                else{
-                                   
+
                              console.log(userResult1.firstName+userResult1.lastName)
-                           
-                          if (taggedUserArray.length > 0) {                                
+
+                          if (taggedUserArray.length > 0) {
                               User.find({ _id: { $in: taggedUserArray } }, function(err, userResult) {
                                   if (err) { res.send({ responseCode: 500, responseMess: 'Internal server error' }); } else {
                                       for (var k = 0; k < userResult.length; k++) {
@@ -919,10 +919,10 @@ module.exports = {
         addsComments.findOneAndUpdate({ addId: req.body.addId, _id: req.body.commentId }, {
             $push: { 'reply': { userId: req.body.userId, replyComment: req.body.replyComment, userName: req.body.userName, userImage: req.body.userImage } } }, { new: true }).exec(function(err, results) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else {                
-                addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {                    
+            else {
+                addsComments.populate(results, { path: 'userId reply.userId', model: 'brolixUser', select: 'image firstName lastName' }, function(err, finalResult) {
                     addsComments.populate(results, { path: 'pageId', model: 'createNewPage', select: 'pageName pageImage userId adAdmin' }, function(err, finalResult) {
-                        
+
                         createNewAds.findOne({_id:req.body.addId}).exec(function(err, adResult){
                              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                             else{
@@ -936,14 +936,14 @@ module.exports = {
                                       }
                                   }
                               }
-                                
+
                                 User.findOne({_id:req.body.userId},function(err, userResult1){
                               if (err) { res.send({ responseCode: 500, responseMess: 'Internal server error' }); }
                                else{
-                                   
+
                              console.log(userResult1.firstName+userResult1.lastName)
-                                
-                              if (taggedUserArray.length > 0) {                                
+
+                              if (taggedUserArray.length > 0) {
                               User.find({ _id: { $in: taggedUserArray } }, function(err, userResult) {
                                   if (err) { res.send({ responseCode: 500, responseMess: 'Internal server error' }); } else {
                                       for (var k = 0; k < userResult.length; k++) {
@@ -970,17 +970,17 @@ module.exports = {
                           }
                                }
                                 })
-                        
+
                         res.send({
                             result: results,
                             responseCode: 200,
                             responseMessage: i18n.__("Comments save successfully")
                         });
-         
-                                
+
+
                             }
                         })
-               
+
                     })
 
                 })
@@ -1010,7 +1010,7 @@ module.exports = {
         console.log("in condition--->>>", condition)
         addsComments.paginate(condition, { page: req.params.pageNumber, limit: 10, sort: { createdAt: -1 } }, function(err, result) {
             console.log("in result", result)
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: 'No comment found in list' }) } else {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__('No comment found in list') }) } else {
                 for (var i = 0; i < result.docs.length; i++) {
                     var reply = result.docs[i].reply;
                     var data = reply.filter(reply => reply.status == 'ACTIVE');
@@ -1068,7 +1068,7 @@ module.exports = {
         })
     },
 
-    // edit comments on ads api 
+    // edit comments on ads api
     "editComments": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         if (req.body.type == 'comment') {
@@ -1206,7 +1206,7 @@ module.exports = {
         })
     },
 
-    // show all winners 
+    // show all winners
     "winners": function(req, res) {
         i18n = new i18n_module(req.params.lang, configs.langFile);
         createNewAds.find({ status: "EXPIRED" }).exec(function(err, result) {
@@ -1354,7 +1354,7 @@ module.exports = {
 
 
     // api for image and video upload
-    "uploads": function(req, res) {       
+    "uploads": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log(req.files);
         var imageUrl = [];
@@ -1386,7 +1386,7 @@ module.exports = {
         })
     },
 
-     "videoUploads": function(req, res) {  
+     "videoUploads": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         console.log(req.files);
         var imageUrl = [];
@@ -1421,7 +1421,7 @@ module.exports = {
             }
         })
     },
-    
+
     //<----------------------------------------video upload api ------------------------------------>
 //    "videoUploads": function(req, res) {
 //    console.log("hi")
@@ -1459,8 +1459,8 @@ module.exports = {
 //        });
 //    },
 
-    
-    
+
+
     // api to find user is targeted or not
     "targetedOrNottargeted": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -1624,6 +1624,8 @@ module.exports = {
                         createNewAds.findOneAndUpdate({ _id: req.body.adId }, { $set: { 'status': "EXPIRED", updatedAt: date, adExpired: true } }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
                                 var pageId = result3.pageId;
+                                var pageNm = result3.pageName;
+                                console.log("pagename--->>>>",pageNm)
                                 createNewPage.findByIdAndUpdate({ _id: pageId }, { $push: { winnersCount: { $each: winners } } }, { new: true }).exec(function(err, result2) {
                                     //    console.log("result2-->", result2)
                                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 88' }); } else {
@@ -1635,16 +1637,22 @@ module.exports = {
                                                 adId: req.body.adId,
                                                 pageId: pageId
                                             }
+                                            
+                                            var type = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your balance.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الرصيد الخاص بك.`;
+                                            
                                             var notificationData = {
                                                 adId: req.body.adId,
-                                                type: i18n.__('You have successfully won this raffle'),
+                                                type: type,
                                                 linkType: 'profile',
                                                 notificationType: 'WinnerType'
                                             }
                                             User.update({ _id: { $in: winners } }, { $push: { cashPrize: data, notification: notificationData, gifts: req.body.adId }, $inc: { cash: cashPrize } }, { multi: true }, function(err, result) {
                                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                                     if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                        var message = i18n.__("You have successfully won this Raffle.");
+                                                        
+                                            var message = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your gift.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الرصيد الخاص بك.`;
+                                                        
+//                                            var message = i18n.__("Congratulations, you have successfully won in “Page name” raffle. Click here to check your balance.");
                                                         if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                             functions.android_notification(result.deviceToken, message);
                                                             console.log("Android notification send!!!!")
@@ -1657,7 +1665,7 @@ module.exports = {
                                                     res.send({
                                                         responseCode: 200,
                                                         responseMessage: i18n.__("Raffle is over winner decided")
-                                                        //result: result 
+                                                        //result: result
                                                     })
                                                 }
                                             })
@@ -1706,9 +1714,12 @@ module.exports = {
                                                         adId: req.body.adId,
                                                         pageId: pageId
                                                     }
+                                                    
+                                                   var type = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your gift.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الهدية الخاصة بك.`;
+                                                    
                                                     var notifyData = {
                                                         adId: req.body.adId,
-                                                        type: i18n.__('You have successfully won this raffle'),
+                                                        type: type,
                                                         linkType: 'profile',
                                                         notificationType: 'WinnerType'
                                                     }
@@ -1718,6 +1729,8 @@ module.exports = {
                                                             count += i;
                                                             if ((i * i) == count) {
                                                                 if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
+                                                                     var message = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your gift.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الهدية الخاصة بك.`;
+                                                                    
                                                                     var message = i18n.__("You have successfully won this Raffle.");
                                                                     if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                                         functions.android_notification(result.deviceToken, message);
@@ -1750,7 +1763,7 @@ module.exports = {
                                                     console.log("4")
                                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                         if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                            var message = i18n.__("You have successfully won this Raffle.");
+                                           var message = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your gift.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الهدية الخاصة بك.`;
                                                             if (result.deviceToken && result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                                 functions.android_notification(result.deviceToken, message);
                                                                 console.log("Android notification send!!!!")
@@ -1802,7 +1815,7 @@ module.exports = {
         })
     },
 
-    // for all are winners condition 
+    // for all are winners condition
     "allAreWinners": function(req, res) { //req.body.userId, adId
         console.log("all are winners--->>>", req.body)
         var userId = req.body.userId;
@@ -1930,6 +1943,7 @@ module.exports = {
                         createNewAds.findOne({ _id: req.body.adId }, function(err, result3) {
                             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
                                 var pageId = result3.pageId;
+                                var pageNm = result3.pageName;
                                 console.log("all winners pageId-->>", pageId)
                                 createNewPage.findByIdAndUpdate({ _id: pageId }, { $push: { winnersCount: req.body.userId } }, { new: true }).exec(function(err, result2) {
                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  33." }); } else {
@@ -1943,9 +1957,11 @@ module.exports = {
                                                 adId: req.body.adId,
                                                 pageId: pageId
                                             }
+                                            
+                                            var type = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your balance.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الرصيد الخاص بك.`;
                                             var notifydata = {
                                                 adId: req.body.adId,
-                                                type: 'You have successfully won this raffle',
+                                                type: type,
                                                 linkType: 'profile',
                                                 notificationType: 'WinnerType'
                                             }
@@ -1955,7 +1971,8 @@ module.exports = {
                                                 console.log("result-->>", result)
                                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  44." }); } else {
                                                     if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                        var message = "You have successfully won this Raffle.";
+                                                        var message = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your balance.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الرصيد الخاص بك.`;
+                                                      //  var message = "You have successfully won this Raffle.";
                                                         if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                             functions.android_notification(result.deviceToken, message);
                                                             console.log("Android notification send!!!!")
@@ -1968,7 +1985,7 @@ module.exports = {
                                                     res.send({
                                                         responseCode: 200,
                                                         responseMessage: i18n.__("Raffle is over")
-                                                        //result: result 
+                                                        //result: result
 
                                                     })
                                                 }
@@ -2017,10 +2034,11 @@ module.exports = {
                                                     adId: req.body.adId,
                                                     pageId: pageId
                                                 }
-
+                                              
+                                                var type = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your gift.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الهدية الخاصة بك.`;
                                                 var notifydata = {
                                                     adId: req.body.adId,
-                                                    type: 'You have successfully won this raffle',
+                                                    type: type,
                                                     linkType: 'profile',
                                                     notificationType: 'WinnerType'
                                                 }
@@ -2028,7 +2046,7 @@ module.exports = {
                                                     console.log("4")
                                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                         if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                            var message = "You have successfully won this Raffle.";
+                                              var message = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your gift.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الهدية الخاصة بك.`;
                                                             if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                                 functions.android_notification(result.deviceToken, message);
                                                                 console.log("Android notification send!!!!")
@@ -2047,9 +2065,10 @@ module.exports = {
                                                 })
                                             } else {
                                                 console.log("else")
+                                                var type = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your gift.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الهدية الخاصة بك.`;
                                                 var notifyData = {
                                                     adId: req.body.adId,
-                                                    type: 'You have successfully won this raffle',
+                                                    type: type,
                                                     linkType: 'profile',
                                                     notificationType: 'WinnerType'
                                                 }
@@ -2057,7 +2076,7 @@ module.exports = {
                                                     console.log("4")
                                                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error  55." }); } else {
                                                         if (result.deviceToken && result.deviceType && result.notification_status && result.status) {
-                                                            var message = "You have successfully won this Raffle.";
+                                                           var message = req.body.lang=="en"?`Congratulations, you have successfully won in ${pageNm} raffle. Click here to check your gift.`:`مبروك, لقد ربحت السحب من صفحة )${pageNm}(. اضغط هنا لمشاهدة الهدية الخاصة بك.`;
                                                             if (result.deviceType == 'Android' && result.notification_status == 'on' && result.status == 'ACTIVE') {
                                                                 functions.android_notification(result.deviceToken, message);
                                                                 console.log("Android notification send!!!!")
@@ -2197,7 +2216,7 @@ module.exports = {
                                         User.findOneAndUpdate({ _id: req.body.userId }, { $pull: { pageFollowers: { pageId: pageId } } }, { new: true }).exec(function(err, result1) {
                                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
                                                 createNewPage.findOneAndUpdate({ _id: pageId }, { $pull: { pageFollowersUser: { userId: req.body.userId } } }, { new: true }).exec(function(err, result2) {
-                                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 11' }) } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("No page found") }); } else {
                                                         Views.findOneAndUpdate({ $and: [{ userId: req.body.userId }, { adId: req.body.adId }] }, {
                                                             $set: { userId: '', AdFollowers: 0 }
                                                         }, { new: true }, function(err, ress) {
@@ -2231,13 +2250,13 @@ module.exports = {
         var skips = limitData - 8;
         var page = String(pageNumber);
         var userId = req.params.id;
-        
+
         User.findOne({_id:req.params.id}).exec(function(err, userResultt) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             else{
-                
+
             var userCountry = userResultt.country;
-        
+
         User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var blockedArray = [];
@@ -2338,13 +2357,13 @@ module.exports = {
             console.log("data===>>", data)
 
             var userId = req.params.id;
-            
+
             User.findOne({_id:req.params.id}).exec(function(err, userResultt) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
             else{
-                
+
             var userCountry = userResultt.country;
-            
+
             User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     var blockedArray = [];
@@ -2428,12 +2447,12 @@ module.exports = {
             });
 
             var userId = req.params.id;
-            
+
                 User.findOne({_id:req.params.id}).exec(function(err, userResultt) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else{                
-            var userCountry = userResultt.country;  
-            
+            else{
+            var userCountry = userResultt.country;
+
             User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                     var blockedArray = [];
@@ -2494,11 +2513,11 @@ module.exports = {
         var skips = limitData - 8;
         var page = String(pageNumber);
         var userId = req.params.id;
-        
+
         User.findOne({_id:req.params.id}).exec(function(err, userResultt) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
-            else{                
-            var userCountry = userResultt.country;        
+            else{
+            var userCountry = userResultt.country;
         User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 var blockedArray = [];
@@ -2558,6 +2577,7 @@ module.exports = {
 
     // tag friends on ads api
     "tagOnads": function(req, res) {
+      console.log("req.body====================>>>>>>>>>>>>",req.body)
         i18n = new i18n_module(req.body.lang, configs.langFile);
         waterfall([
             function(callback) {
@@ -2575,14 +2595,22 @@ module.exports = {
                 User.findOne({ _id: req.body.userId }).exec(function(err, user) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var image = user.image;
+                        var first_name_user = user.firstName
+                        var page_name = req.body.pageName
+                        console.log("first name of user "+first_name_user)
+
+                         var type = req.body.lang=="en"?`${first_name_user} has tagged you on ${page_name} Ad.Click here to watch it.`:`${first_name_user} قام باضافة اشعار لك على اعلان ${page_name}. اضغط هنا للمشاهدة.`;
                         for (var i = 0; i < senderId.length; i++) {
                             User.findOneAndUpdate({ _id: senderId[i] }, {
-                                $push: { notification: { userId: req.body.userId, type: "You are tagged on an ad", linkType: 'profile', adId: req.body.adId, notificationType: 'tagOnAd', image: image } }
+                                $push: { notification: { userId: req.body.userId, type: type, linkType: 'profile', adId: req.body.adId, notificationType: 'tagOnAd', image: image } }
                             }, { multi: true }, function(err, result1) {
                                 console.log("result1-->>", result1)
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct senderId" }); } else {
                                     if (result1.deviceToken && result1.deviceType && result1.notification_status && result1.status) {
-                                        var message = "You are taged in a ad";
+                                        var message = req.body.lang=="en"?`${first_name_user} has tagged you on ${page_name} Ad.Click here to watch it.`:`${first_name_user} قام باضافة اشعار لك على اعلان ${page_name}. اضغط هنا للمشاهدة.`;
+
+
+                                       
                                         if (result1.deviceType == 'Android' && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
 
                                             functions.android_notification(result1.deviceToken, message);
@@ -2755,7 +2783,7 @@ module.exports = {
             }
         })
     },
-    
+
      // coupon gifts filter api
     "couponGiftsFilter": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
@@ -2810,7 +2838,7 @@ module.exports = {
     },
 
     // cash gifts filter api
-    "cashGiftsFilter": function(req, res) { // userId in req 
+    "cashGiftsFilter": function(req, res) { // userId in req
         i18n = new i18n_module(req.body.lang, configs.langFile);
         var userId = req.body.userId;
         var status = req.body.cashStatus;
@@ -2892,7 +2920,7 @@ module.exports = {
                 User.findOne({_id:req.params.id}).exec(function(err, userResult){
                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
                     else{
-                        var userCountry = userResult.country;                  
+                        var userCountry = userResult.country;
                 createNewAds.paginate({ userId: { $nin: blockedArray },'whoWillSeeYourAdd.country': userCountry ,sellCoupon: true, status: "ACTIVE" }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No coupon found" }); } else {
                         var updatedResult = result.docs;
@@ -3020,7 +3048,7 @@ module.exports = {
                 console.log("condition==>" + JSON.stringify(condition))
                 createNewPage.find(condition).exec(function(err, result) {
                     // console. 0000000("result--->>",result)
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }) } else {
                         console.log("array result", result)
                         var array = [];
                         for (var i = 0; i < result.length; i++) {
@@ -3034,7 +3062,7 @@ module.exports = {
             function(noDataValue, dataValue, arrayId, blockedArray, callback) {
                 //      console.log("arrayId=========>...", arrayId)
                 createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE' }] }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
-                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }) } else {
                         var updatedResult = result.docs;
                         createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                             for (var i = 0; i < result.docs.length; i++) {
@@ -3110,7 +3138,7 @@ module.exports = {
                         //                                cond.$or.push({ subCategory: obj[key][data] })
                         //                            }
                         //                            condition.$and.push(cond)
-                        //                        } 
+                        //                        }
                         if (key == "subCategory") {
                             console.log("subCategory​-->>", obj[key])
                             var re2 = new RegExp(obj[key], 'i');
@@ -3152,8 +3180,8 @@ module.exports = {
                 User.findOne({_id:req.params.id}).exec(function(err, userResult){
                      if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); }
                     else{
-                   var userCountry = userResult.country;     
-                   
+                   var userCountry = userResult.country;
+
                 createNewAds.paginate({ $and: [{ pageId: { $in: arrayId }, userId: { $nin: blockedArray }, sellCoupon: true, status: 'ACTIVE', favouriteCoupon: req.body.userId }] }, { page: req.params.pageNumber, limit: 10, sort: { viewerLenght: -1, createdAt: -1 }}, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No result found." }) } else {
                         createNewAds.populate(result.docs, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
@@ -3291,7 +3319,7 @@ module.exports = {
                         GameDownloaded: { $sum: "$GameDownloaded" }
                     }
                 }]).exec(function(err, result) {
-                    if (err) { res.send({  responseCode: 500, responseMessage: "Internal server error" });} 
+                    if (err) { res.send({  responseCode: 500, responseMessage: "Internal server error" });}
                     else if (result.length == 0) {
                         var data = [{
                             pageView: 0,
@@ -3317,7 +3345,7 @@ module.exports = {
 
                     }
                 }]).exec(function(err, result) {
-                     if (err) { res.send({  responseCode: 500, responseMessage: "Internal server error" });} 
+                     if (err) { res.send({  responseCode: 500, responseMessage: "Internal server error" });}
                     else if (result.length == 0) {
                         var data = [{
                             pageView: 0
@@ -3873,7 +3901,7 @@ module.exports = {
             }
         ], function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
-                res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+                res.send({ responseCode: 404, responseMessage: i18n.__('Data not found') });
             } else {
                 res.send({
                     result: result,
@@ -4045,7 +4073,7 @@ module.exports = {
             }
         ], function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
-                res.send({ responseCode: 404, responseMessage: 'Data not found.' });
+                res.send({ responseCode: 404, responseMessage: i18n.__('Data not found') });
             } else {
                 res.send({
                     result: result,
@@ -4120,7 +4148,7 @@ module.exports = {
 
     },
 
-    // api for store coupon price 
+    // api for store coupon price
     "storeCouponPrice": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
         createNewAds.findOne({ _id: req.params.id }, function(err, result) {
@@ -4159,7 +4187,7 @@ module.exports = {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) {
                 res.send({
                     responseCode: 404,
-                    responseMessage: 'Data not found.'
+                    responseMessage: i18n.__('Data not found')
                 })
             } else {
                 res.send({
@@ -4308,7 +4336,7 @@ module.exports = {
                                     };
                                     // myCache.del( "myKey", function( err, count ){
                                     //   if( !err ){
-                                    //     console.log( count );                              
+                                    //     console.log( count );
                                     //   }
                                     // })
 
@@ -4337,7 +4365,7 @@ module.exports = {
         var newPath = path.normalize(__dirname + "/testing.xls");
         console.log("New Path is ", newPath);
         var converter = require("xls-to-json");
-        //var res = {};  
+        //var res = {};
         converter({
             input: newPath,
             output: null
@@ -4469,7 +4497,7 @@ module.exports = {
     }
 
   // create ad payment api
-    
+
 
 
     // "returnAds": function(req, res){
@@ -4484,7 +4512,7 @@ module.exports = {
     //             paytabs.VerfiyPayment(verfiyPaymentRequest, function(response){
     //                 console.log("verify response",response)
     //                 callback(null, response)
-    //             }); 
+    //             });
     //         },
     //         function(response, callback){
     //             var details = {
@@ -4498,8 +4526,8 @@ module.exports = {
     //             }
     //             var payment = new Payment(details);
     //             payment.save(function(err, paymentResult){
-    //             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-    //             else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+    //             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+    //             else if (!paymentResult) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); }
     //             else {
     //                 callback(null, paymentResult)
     //             }
@@ -4510,8 +4538,8 @@ module.exports = {
     //             var cashAmount = value.userCashAmount - value.brolixAmount
     //             console.log("cashAmount",cashAmount)
     //             User.findByIdAndUpdate({ _id: value.userId }, $set: {cash: cashAmount}, function(err, userRes) {
-    //                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-    //                 else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+    //                 else if (!userRes) { res.send({ responseCode: 404, responseMessage: "Something went wrong." }); }
     //                 else {
     //                     console.log("userRes========>",userRes)
     //                     callback(null, userRes)
@@ -4519,16 +4547,16 @@ module.exports = {
     //             })
     //         }
     //     ],function(err, result){
-    //         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-    //         else if (!result) { 
+    //         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); }
+    //         else if (!result) {
     //             res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectad/'+404+'/'+"Failure"+'')
     //         }
-    //             //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
+    //             //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); }
     //         else {
     //             res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectad/'+200+'/'+"Success"+'')
     //             //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
     //         }
-    //     })  
+    //     })
     // },
 
     // "redirectad":function(req, res){

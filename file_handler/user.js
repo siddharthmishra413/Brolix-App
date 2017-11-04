@@ -613,7 +613,7 @@ cloudinary.config({
                                         }
                                     }
                                     User.find({ _id: { $in: userArray } }).exec(function(err, result1) {
-                                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: 'No user found' }); } else {
+                                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__("Data not found") }); } else {
                                             res.send({
                                                 responseCode: 200,
                                                 responseMessage: i18n.__("Result shown successfully"),
@@ -919,7 +919,7 @@ cloudinary.config({
                     var receiverId = req.body.receiverId;
                     var userId = req.body.userId;
                     User.findOne({ _id: req.body.receiverId }, function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.sendBrolix == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send brolix to this user due to privacy policies") }) } else {
+                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else if (result.privacy.sendBrolix == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send brolix to this user due to privacy policies") }) } else {
                             callback(null)
                         }
                     })
@@ -930,7 +930,7 @@ cloudinary.config({
                     var receiverId = req.body.receiverId;
                     var userId = req.body.userId;
                     User.findOne({ _id: req.body.receiverId }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 11') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (result1.privacy.sendBrolix == "onlyFollowers") {
+                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 11') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else if (result1.privacy.sendBrolix == "onlyFollowers") {
                             var flag = result1.userFollowers.indexOf(req.body.userId)
                             if (flag == -1) { res.send({ responseCode: 400, responseMessage: i18n.__("You cannot send brolix to this user due to privacy policies") }); } else {
                                 console.log("flag-->>", flag)
@@ -957,7 +957,7 @@ cloudinary.config({
                                                 callback(null, result2)
                                             }
                                             if (result3.deviceToken && result3.deviceType && result3.notification_status && result3.status) {
-                                                var message = i18n.__("I have send you brolix");
+                                                var message = req.body.lang=="en"?""+result2.firstName+" sent you Brolix coins. Click here to check your balance.":""+result2.firstName+"قام بارسال نقود البرولكس اليك. اضغط هنا لمشاهدة الرصيد الخاص بك.";
                                                 if (result3.deviceType == 'Android' && result3.notification_status == 'on' && result3.status == 'ACTIVE') {
                                                     functions.android_notification(result3.deviceToken, message);
                                                     console.log("Android notification send!!!!")
@@ -984,7 +984,7 @@ cloudinary.config({
 
                                     var data = {
                                         userId: req.body.userId,
-                                        type: i18n.__('I have send you Brolix'),
+                                        type:  req.body.lang=="en"?""+result4.firstName+" sent you Brolix coins. Click here to check your balance.":""+result4.firstName+"قام بارسال نقود البرولكس اليك. اضغط هنا لمشاهدة الرصيد الخاص بك.",
                                         linkType: 'profile',
                                         notificationType: 'brolixReceivedType',
                                         image: image
@@ -995,7 +995,7 @@ cloudinary.config({
                                             callback(null, result4)
                                         }
                                         if (result5.deviceToken && result5.deviceType && result5.notification_status && result5.status) {
-                                            var message = i18n.__("I have send you brolix");
+                                             var message = req.body.lang=="en"?""+result4.firstName+" sent you Brolix coins. Click here to check your balance.":""+result4.firstName+"قام بارسال نقود البرولكس اليك. اضغط هنا لمشاهدة الرصيد الخاص بك.";
                                             if (result5.deviceType == 'Android' && result5.notification_status == 'on' && result5.status == 'ACTIVE') {
 
                                                 functions.android_notification(result5.deviceToken, message);
@@ -1031,7 +1031,7 @@ cloudinary.config({
                     var receiverId = req.body.receiverId;
                     var senderId = req.body.userId;
                     User.findOne({ _id: req.body.receiverId }, function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else if (result.privacy.sendCash == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send cash to this user due to privacy policies") }) } else {
+                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else if (result.privacy.sendCash == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send cash to this user due to privacy policies") }) } else {
                             callback(null)
                         }
                     })
@@ -1042,7 +1042,7 @@ cloudinary.config({
                     var senderId = req.body.userId;
                     var receiverId = req.body.receiverId;
                     User.findOne({ _id: req.body.receiverId }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 11') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result1.privacy.sendCash == "onlyFollowers") {
+                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 11') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else if (result1.privacy.sendCash == "onlyFollowers") {
                             var flag = result1.userFollowers.indexOf(req.body.userId)
                             console.log("flag-->>", flag)
                             if (flag === -1) { res.send({ responseCode: 400, responseMessage: i18n.__("You cannot send brolix to this user due to privacy policies") }); } else {
@@ -1057,7 +1057,7 @@ cloudinary.config({
 
                                         var data = {
                                             userId: senderId,
-                                            type: i18n.__('I have send you Cash'),
+                                            type: req.body.lang=="en"?""+result.firstName+" sent you cash. Click here to check your balance.":""+result.firstName+" قام بارسال الكاش اليك. اضغط هنا لمشاهدة الرصيد الخاص بك.",
                                             linkType: 'profile',
                                             notificationType: 'cashReceivedType',
                                             image: image
@@ -1070,7 +1070,7 @@ cloudinary.config({
                                                 //callback(null, user)
                                             }
                                             if (user.deviceToken && user.deviceType && user.notification_status && user.status) {
-                                                var message = i18n.__("I have sent you cash");
+                                                  var message = req.body.lang=="en"?""+result.firstName+" sent you cash. Click here to check your balance.":""+result.firstName+" قام بارسال الكاش اليك. اضغط هنا لمشاهدة الرصيد الخاص بك.";
                                                 if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {
                                                     functions.android_notification(user.deviceToken, message);
                                                     console.log("Android notification send!!!!")
@@ -1097,7 +1097,7 @@ cloudinary.config({
 
                                     var data = {
                                         userId: senderId,
-                                        type: i18n.__('I have send you Cash'),
+                                        type: req.body.lang=="en"?""+result.firstName+" sent you cash. Click here to check your balance.":""+result.firstName+" قام بارسال الكاش اليك. اضغط هنا لمشاهدة الرصيد الخاص بك.",
                                         linkType: 'profile',
                                         notificationType: 'cashReceivedType',
                                         image: image
@@ -1110,7 +1110,7 @@ cloudinary.config({
                                             //callback(null, user)
                                         }
                                         if (user.deviceToken && user.deviceType && user.notification_status && user.status) {
-                                            var message = i18n.__("I have sent you cash");
+                                            var message = req.body.lang=="en"?""+result.firstName+" sent you cash. Click here to check your balance.":""+result.firstName+" قام بارسال الكاش اليك. اضغط هنا لمشاهدة الرصيد الخاص بك.";
                                             if (user.deviceType == 'Android' && user.notification_status == 'on' && user.status == 'ACTIVE') {
 
                                                 functions.android_notification(user.deviceToken, message);
@@ -2059,7 +2059,7 @@ cloudinary.config({
                     console.log("value-->>", value)
                     User.findOne({ _id: req.body.userId }).exec(function(err, userResult) {
                         i18n = new i18n_module(req.body.lang, configs.langFile);
-                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error 22") }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found") }); } else if (userResult.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of brolix in your account") }); } else {
+                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error 22") }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else if (userResult.brolix < req.body.brolix) { res.send({ responseCode: 400, responseMessage: i18n.__("Insufficient amount of brolix in your account") }); } else {
 
                             createNewAds.findOne({ _id: req.body.adId }, function(err, adResult) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error 11") }); } else if (!adResult) { res.send({ responseCode: 404, responseMessage: i18n.__("Please enter correct adId") }); } else {
@@ -2089,7 +2089,7 @@ cloudinary.config({
                     console.log("value-->>", value)
                     User.findOne({ _id: req.body.userId }).exec(function(err, result1) {
                         i18n = new i18n_module(req.body.lang, configs.langFile);
-                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error 22") }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found") }); } else {
+                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error 22") }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
 
                             var startTime = new Date().toUTCString();
                             var h = new Date(new Date(startTime).setHours(00)).toUTCString();
@@ -2285,7 +2285,7 @@ cloudinary.config({
             if (obj == null || obj == '' || obj === undefined) { res.send({ responseCode: 404, responseMessage: 'please enter couponCode' }); } else {
                 User.findOne({ _id: userId }).exec(function(err, result) {
                     i18n = new i18n_module(req.body.lang, configs.langFile);
-                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error.') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error.') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
                         User.update({ 'coupon._id': obj }, { $set: { 'coupon.$.exchangeStatus': status } }, { new: true }, function(err, result1) {
                             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else {
                                 res.send({
@@ -2365,7 +2365,7 @@ cloudinary.config({
                     i18n = new i18n_module(req.body.lang, configs.langFile);
                     if (!req.body.senderId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderId is required.") }) } else if (!req.body.receiverAdId) { res.send({ responseCode: 400, responseMessage: i18n.__("adId is required.") }) } else if (!req.body.senderAdId) { res.send({ responseCode: 400, responseMessage: i18n.__("exchangedWithAdId is required.") }) } else if (!req.body.senderCouponCode) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponCode is required.") }) } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("senderCouponId is required.") }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: i18n.__("receiverCouponId is required.") }) } else {
                         User.findOne({ _id: receiverId }, function(err, result2) {
-                            if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error. 33') }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: i18n.__("you are not allowed to send exchange request") }) } else if (result2.privacy.exchangeCoupon == "followers") {
+                            if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error. 33') }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else if (result2.privacy.exchangeCoupon == "onlyMe") { res.send({ responseCode: 409, responseMessage: i18n.__("you are not allowed to send exchange request") }) } else if (result2.privacy.exchangeCoupon == "followers") {
                                 var flag = result2.userFollowers.find(userFollowers => userFollowers == senderId)
                                 if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon exchange request to this user due to privacy policies" }); } else {
                                     createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime, senderCouponType:senderCouponType, receiverCouponType:req.body.receiverCouponType } } }, { new: true }).exec(function(err, result3) {
@@ -2381,7 +2381,8 @@ cloudinary.config({
                                     })
                                 }
                                 if (result2.deviceToken && result2.deviceType && result2.notification_status && result2.status) {
-                                    var message = "You have coupon Exchange request";
+                                    User.findOne({ _id: req.body.senderId }, function(err, resultUser) {
+                                    var message = req.body.lang=="en"?""+resultUser.firstName+" sent you an exchange coupon request. Click here to check his request.":""+resultUser.firstName+" قام بارسال طلب لمبادلة الكوبون الخاص بك. اضغط هنا لمشاهدة الطلب."
                                     if (result2.deviceType == 'Android' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
 
                                         functions.android_notification(result2.deviceToken, message);
@@ -2391,6 +2392,7 @@ cloudinary.config({
                                     } else {
                                         console.log("Something wrong!!!!")
                                     }
+                                })
                                 }
                             } else {
                                 createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime,senderCouponType:senderCouponType, receiverCouponType:req.body.receiverCouponType } } }, { new: true }).exec(function(err, result5) {
@@ -2405,7 +2407,8 @@ cloudinary.config({
                                     }
                                 })
                                 if (result2.deviceToken && result2.deviceType && result2.notification_status && result2.status) {
-                                    var message = "You have coupon Exchange request";
+                                     User.findOne({ _id: req.body.senderId }, function(err, resultUser) {
+                                    var message =  req.body.lang=="en"?""+resultUser.firstName+" sent you an exchange coupon request. Click here to check his request.":""+resultUser.firstName+" قام بارسال طلب لمبادلة الكوبون الخاص بك. اضغط هنا لمشاهدة الطلب."
                                     if (result2.deviceType == 'Android' && result2.notification_status == 'on' && result2.status == 'ACTIVE') {
 
                                         functions.android_notification(result2.deviceToken, message);
@@ -2415,6 +2418,7 @@ cloudinary.config({
                                     } else {
                                         console.log("Something wrong!!!!")
                                     }
+                                })
                                 }
                             }
                         })
@@ -2458,7 +2462,7 @@ cloudinary.config({
                     var userId = req.body.userId;
                      console.log("req.body.receiverCouponType-111-->>", JSON.stringify(req.body.receiverCouponType))
                     createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeReceived.receiverId': receiverId, 'couponExchangeReceived.couponExchangeStatus': "REQUESTED", 'couponExchangeReceived.receiverCouponType':req.body.receiverCouponType, 'couponExchangeReceived.senderId': { $nin: blockedArray } } }).exec(function(err, user) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (user.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__('No request found1') }); } else {
+                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (user.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__('No requests found.') }); } else {
                             createNewAds.populate(user, {
                                 path: 'couponExchangeReceived.senderId',
                                 model: 'brolixUser',
@@ -2511,7 +2515,7 @@ cloudinary.config({
                     var receiverId = req.body.userId;
                     var userId = req.body.userId;
                     createNewAds.aggregate({ $unwind: '$couponExchangeReceived' }, { $match: { $and: [{ _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeReceived.receiverId': receiverId, 'couponExchangeReceived.couponExchangeStatus': "REQUESTED", 'couponExchangeReceived.receiverCouponType':req.body.receiverCouponType, 'couponExchangeReceived.senderId': { $nin: blockedArray }, 'couponExchangeReceived.senderCouponId': { $nin: couponArray } }] } }).exec(function(err, user2) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (user2.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__('No request found2') }); } else {
+                        if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (user2.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__('No requests found.') }); } else {
                             createNewAds.populate(user2, {
                                 path: 'couponExchangeReceived.senderId',
                                 model: 'brolixUser',
@@ -2540,7 +2544,7 @@ cloudinary.config({
             var re = new RegExp(req.body.firstName, 'i');
             User.find({ status: 'ACTIVE' }).or([{ 'firstName': { $regex: re } }]).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found") }); } else {
+                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error') }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
                     res.send({
                         result: result,
                         responseCode: 200,
@@ -2574,7 +2578,7 @@ cloudinary.config({
                             User.findOne({ _id: receiverId }, function(err, result) {
                                 console.log("result.privacy.exchangeCoupon----->>>", result.privacy.exchangeCoupon)
                                 console.log("result.privacy.sendCoupon----->>>", result.privacy.sendCoupon)
-                                if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error12') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else if (result.privacy.sendCoupon == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send coupon to this user due to privacy policies") }) } else {
+                                if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error12') }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found")}); } else if (result.privacy.sendCoupon == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send coupon to this user due to privacy policies") }) } else {
                                     callback(null)
                                 }
                             })
@@ -2592,8 +2596,9 @@ cloudinary.config({
                     var m = new Date(new Date(h).setMinutes(00)).toUTCString();
                     var currentTime = Date.now(m);
                     i18n = new i18n_module(req.body.lang, configs.langFile);
+                    User.findOne({ _id: senderId }, function(err, senderRes) {
                     User.findOne({ _id: receiverId }, function(err, result1) {
-                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 11') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else if (result1.privacy.sendCoupon == "onlyFollowers") {
+                        if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 11') }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else if (result1.privacy.sendCoupon == "onlyFollowers") {
                             var flag = result1.userFollowers.indexOf(req.body.senderId)
                             if (flag == -1) { res.send({ responseCode: 400, responseMessage: i18n.__("You cannot send coupon to this user due to privacy policies") }); } else {
                                 console.log("2")
@@ -2623,7 +2628,7 @@ cloudinary.config({
 
                                                 var data = {
                                                     userId: req.body.senderId,
-                                                    type: i18n.__("I have sent you a coupon"),
+                                                    type: req.body.lang=="en"?""+senderRes.firstName+" sent a coupon to your gifts . Click here to check your gifts":""+senderRes.firstName+" قام بارسال كوبون الى صفحة الهدايا الخاصة بك. اضغط هنا لمشاهدة الهدايا الخاصة بك.",
                                                     linkType: 'coupon',
                                                     notificationType: 'couponReceived'
                                                 }
@@ -2633,9 +2638,9 @@ cloudinary.config({
                                                 console.log("coupon to follower-- data-->>>", data)
                                                 User.findByIdAndUpdate({ _id: req.body.receiverId }, { $push: { 'coupon': coupon, notification: data, gifts: couponAdId } }, { new: true }, function(err, result4) {
                                                     //    console.log("receiverId--->>>", result4)
-                                                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 44') }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("No user found.") }); } else {
+                                                    if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 44') }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
                                                         if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
-                                                            var message = i18n.__("I have sent you a coupon");
+                                                           var message = req.body.lang=="en"?""+senderRes.firstName+" sent a coupon to your gifts . Click here to check your gifts":""+senderRes.firstName+" قام بارسال كوبون الى صفحة الهدايا الخاصة بك. اضغط هنا لمشاهدة الهدايا الخاصة بك.";
                                                             if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
                                                                 functions.android_notification(result4.deviceToken, message);
                                                                 console.log("Android notification send!!!!")
@@ -2691,15 +2696,15 @@ cloudinary.config({
 
                                             var data = {
                                                 userId: req.body.senderId,
-                                                type: i18n.__("I have sent you a coupon"),
+                                                type: req.body.lang=="en"?""+senderRes.firstName+" sent a coupon to your gifts . Click here to check your gifts":""+senderRes.firstName+" قام بارسال كوبون الى صفحة الهدايا الخاصة بك. اضغط هنا لمشاهدة الهدايا الخاصة بك.",
                                                 linkType: 'coupon',
                                                 notificationType: 'couponReceived'
                                             }
                                             console.log("coupon send public--->>>", coupon)
                                             User.findByIdAndUpdate({ _id: req.body.receiverId }, { $push: { 'coupon': coupon, notification: data, gifts: couponAdId, } }, { new: true }, function(err, result4) {
-                                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 77') }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                                                if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error 77') }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found")}); } else {
                                                     if (result4.deviceToken && result4.deviceType && result4.notification_status && result4.status) {
-                                                        var message = i18n.__("I have sent you a coupon");
+                                                        var message = req.body.lang=="en"?""+senderRes.firstName+" sent a coupon to your gifts . Click here to check your gifts":""+senderRes.firstName+" قام بارسال كوبون الى صفحة الهدايا الخاصة بك. اضغط هنا لمشاهدة الهدايا الخاصة بك.";
                                                         if (result4.deviceType == 'Android' && result4.notification_status == 'on' && result4.status == 'ACTIVE') {
                                                             functions.android_notification(result4.deviceToken, message);
                                                             console.log("Android notification send!!!!")
@@ -2718,6 +2723,7 @@ cloudinary.config({
                             })
                         }
                     })
+})
                 },
             ], function(err, result) {
                 res.send({
@@ -2790,10 +2796,10 @@ cloudinary.config({
                         if (!req.body.senderId) { res.send({ responseCode: 400, responseMessage: "SenderId is required" }); } else if (!req.body.senderCouponCode) { res.send({ responseCode: 400, responseMessage: "SenderCouponCode is required" }); } else if (!req.body.senderCouponId) { res.send({ responseCode: 400, responseMessage: "senderCouponId is required." }) } else if (!req.body.receiverCouponId) { res.send({ responseCode: 400, responseMessage: "receiverCouponId is required." }) } else {
                             User.findOneAndUpdate({ 'coupon._id': senderCouponId }, { $set: { "coupon.$.status": "EXCHANGED" } }, { new: true }).exec(function(err, result1) {
                                 //   console.log("result-->>", result1)
-                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "No user found. 11" }); } else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 22' }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
 
                                     User.findOne({ 'coupon._id': senderCouponId }).exec(function(err, result2) {
-                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found. 22" }); } else {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 33' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found")}); } else {
                                             for (i = 0; i < result2.coupon.length; i++) {
                                                 if (result2.coupon[i]._id == senderCouponId) {
                                                     var couponCode = result2.coupon[i].couponCode;
@@ -2838,13 +2844,13 @@ cloudinary.config({
                             }
 
                             User.findOneAndUpdate({ _id: receiverId }, { $push: { coupon: data, gifts: couponAdId1 } }, { new: true }).exec(function(err, result3) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: "No user found. 33" }); } else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 44' }); } else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found")}); } else {
 
                                     User.findOneAndUpdate({ 'coupon._id': receiverCouponId }, { $set: { "coupon.$.status": "EXCHANGED" } }, { new: true }).exec(function(err, result4) {
-                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 55' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: "No user found. 44" }); } else {
+                                        if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 55' }); } else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
 
                                             User.findOne({ 'coupon._id': receiverCouponId }).exec(function(err, result5) {
-                                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 66' }); } else if (!result5) { res.send({ responseCode: 404, responseMessage: "No user found. 55" }); } else {
+                                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 66' }); } else if (!result5) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
                                                     for (i = 0; i < result5.coupon.length; i++) {
                                                         if (result5.coupon[i]._id == receiverCouponId) {
                                                             var couponCode2 = result5.coupon[i].couponCode;
@@ -2890,7 +2896,7 @@ cloudinary.config({
                             }
 
                             User.findOneAndUpdate({ _id: senderId }, { $push: { coupon: data1, gifts: couponAdId2 } }, { new: true }).exec(function(err, result6) {
-                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 77' }); } else if (!result6) { res.send({ responseCode: 404, responseMessage: "No user found. 66" }); } else {
+                                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error 77' }); } else if (!result6) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
                                     callback(null, result6)
                                 }
                             })
@@ -2964,7 +2970,7 @@ cloudinary.config({
                     }
                     console.log("blockedArray--->>>", blockedArray)
                     User.paginate({ _id: { $nin: blockedArray }, referredCode: req.body.referralCode }, { page: req.params.pageNumber, limit: 8, sort: { createdAt: -1 } }, function(err, result) {
-                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found")}); } else {
                             console.log("resdsfnfjddfsdfs", result)
                             var sortArray = result.docs.sort(function(obj1, obj2) {
                                 return obj2.createdAt - obj1.createdAt
@@ -2989,7 +2995,7 @@ cloudinary.config({
                   //   console.log("useCouponWithoutCode--->>",JSON.stringify(user))
                     i18n = new i18n_module(req.body.lang, configs.langFile);
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } 
-                    else if (user.length==0) { res.send({ responseCode: 404, responseMessage: "No user found" }); }
+                    else if (user.length==0) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); }
                     else if ((user[0].coupon.couponStatus) != "VALID") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); }
                      else if ((user[0].coupon.status) != "ACTIVE") { res.send({ responseCode: 400, responseMessage: i18n.__("Please enter a valid coupon to use.") }); }
                     else {
@@ -3046,7 +3052,7 @@ cloudinary.config({
                 }
                 User.aggregate({ $unwind: "$hiddenGifts" }, { $match: condition }).exec(function(err, result1) {
                     i18n = new i18n_module(req.body.lang, configs.langFile);
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result1.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon found") }); } else {
                         res.send({
                             result: result1,
                             responseCode: 200,
@@ -3064,7 +3070,7 @@ cloudinary.config({
                 }
                 User.aggregate([{ $unwind: "$coupon" }, { $match: condition }]).exec(function(err, result2) {
                     i18n = new i18n_module(req.body.lang, configs.langFile);
-                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                    if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon found") }); } else {
                         res.send({
                             result: result2,
                             responseCode: 200,
@@ -3080,7 +3086,7 @@ cloudinary.config({
             var couponId = req.body.couponId;
             User.findOne({ 'hiddenGifts._id': couponId }).exec(function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else if (Boolean(result.hiddenGifts.find(hiddenGifts => hiddenGifts.status == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } else {
+                if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon found") }); } else if (Boolean(result.hiddenGifts.find(hiddenGifts => hiddenGifts.status == "USED"))) { res.send({ responseCode: 400, responseMessage: "Coupon is already used" }); } else {
                     User.update({ 'hiddenGifts._id': couponId }, { $set: { 'hiddenGifts.$.status': "USED" } }, { new: true }, function(err, result1) {
                         if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else {
                             res.send({
@@ -3176,7 +3182,7 @@ cloudinary.config({
           //  console.log("userNotification req-->>>>",JSON.stringify(req.body))
             User.find({ _id: req.body.userId }, function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
                     var obj = result[0].notification;
                     var sortArray = obj.sort(function(obj1, obj2) {
                         return obj2.CreatedAt - obj1.CreatedAt
@@ -3342,7 +3348,7 @@ cloudinary.config({
             if (req.body.isLive == 'true') {
                 User.findOneAndUpdate({ _id: req.body.userId }, { $set: { isLive: 'True' } }).exec(function(err, result) {
                     i18n = new i18n_module(req.body.lang, configs.langFile);
-                    if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                    if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
                         res.send({
                             responseCode: 200,
                             responseMessage: i18n.__('Successfully updated')
@@ -3352,7 +3358,7 @@ cloudinary.config({
             } else {
                 User.findOneAndUpdate({ _id: req.body.userId }, { $set: { isLive: 'False' } }).exec(function(err, result) {
                     i18n = new i18n_module(req.body.lang, configs.langFile);
-                    if (err) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found" }); } else {
+                    if (err) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
                         res.send({
                             responseCode: 200,
                             responseMessage: i18n.__('Successfully updated')
@@ -3368,7 +3374,7 @@ cloudinary.config({
             var senderId = req.body.userId;
             createNewAds.aggregate({ $unwind: '$couponExchangeSent' }, { $match: { _id: new mongoose.Types.ObjectId(req.body.adId), 'couponExchangeSent.senderId': senderId, 'couponExchangeSent.couponExchangeStatus': "REQUESTED" } }, function(err, result) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ reponseCode: 404, responseMessage: "No request found." }); } else {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ reponseCode: 404, responseMessage: i18n.__('No requests found.')}); } else {
 
                     var requestId = result[0].couponExchangeSent._id;
                     var receiverAdId = result[0].couponExchangeSent.exchangedWithAdId;
@@ -3401,7 +3407,7 @@ cloudinary.config({
             console.log("send message--->>>", JSON.stringify(req.body))
             User.findOne({ _id: req.body.receiverId }, function(err, result2) {
                 i18n = new i18n_module(req.body.lang, configs.langFile);
-                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error. 33' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else {
+                if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error. 33' }); } else if (!result2) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
                     var flag = result2.blockUser.indexOf(req.body.senderId)
                     console.log("flage--->>>", flag)
                     if (flag != -1) { res.send({ responseCode: 401, responseMessage: i18n.__('You can not send message to this user') }) } else {

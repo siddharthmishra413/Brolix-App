@@ -31,7 +31,7 @@ app.post('/updatePrivacy', authUser.authUser, userHandler.updatePrivacy);
 app.post('/showPrivacy', authUser.authUser, userHandler.showPrivacy);
 app.get('/showAllBlockUser/:id/:lang', authUser.authUser, userHandler.showAllBlockUser);
 app.post('/logout', authUser.authUser, userHandler.logout);
-app.post('/purchaseUpgradeCard', authUser.authUser, userHandler.purchaseUpgradeCard);
+app.post('/purchaseUpgradeCard', userHandler.purchaseUpgradeCard);
 app.post('/purchaseLuckCard', authUser.authUser, userHandler.purchaseLuckCard);
 app.post('/showLuckCard', authUser.authUser, userHandler.showLuckCard);
 app.post('/showUpgradeCard', authUser.authUser, userHandler.showUpgradeCard);
@@ -65,7 +65,7 @@ app.post('/seeExchangeSentRequest', authUser.authUser, userHandler.seeExchangeSe
 app.post('/savePaymentRequest', authUser.authUser, userHandler.savePaymentRequest);
 app.post('/userCashGifts', authUser.authUser, userHandler.userCashGifts);
 app.post('/blockUserSearch', authUser.authUser, userHandler.blockUserSearch);
-app.post('/userNotification', authUser.authUser, userHandler.userNotification);
+app.post('/userNotification', userHandler.userNotification);
 app.post('/couponExchangeOff', authUser.authUser, userHandler.couponExchangeOff);
 app.post('/sendPaymentHistoryOnMailId', authUser.authUser, userHandler.sendPaymentHistoryOnMailId);
 app.post('/updateLive', authUser.authUser, userHandler.updateLive);

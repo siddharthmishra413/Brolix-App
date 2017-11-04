@@ -8,7 +8,7 @@ var waterfall = require('async-waterfall');
 //<------------------------------------------------language conversn----------------------->
 var configs = {
     "lang": "ar",
-    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module 
+    "langFile": "./../../translation/locale.json" //relative path to index.js file of i18n-nodejs module
 }
 var i18n_module = require('i18n-nodejs');
 
@@ -226,6 +226,7 @@ module.exports = {
     // tag on products api
     "tagOnProduct": function(req, res) {
         i18n = new i18n_module(req.body.lang, configs.langFile);
+        console.log("in tag on product",req.body)
         waterfall([
             function(callback) {
                 var senderId = req.body.senderId;
@@ -242,14 +243,18 @@ module.exports = {
                 User.findOne({ _id: req.body.userId }).exec(function(err, user) {
                     if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!user) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
                         var image = user.image;
+                        var first_name_user = user.firstName
+                        var page_name = req.body.pageName
+                        var type = req.body.lang=="en"?`${first_name_user } has tagged you on ${page_name} gallery. Click here to watch it.`:` ${first_name_user } قام باضافة اشعار لك على معرض الصور الخاص ب ${page_name}. اضغط هنا للمشاهدة.`;
                         for (var i = 0; i < senderId.length; i++) {
                             User.findOneAndUpdate({ _id: senderId[i] }, {
-                                $push: { "notification": { userId: req.body.userId, type: "You are tagged in a product", productId: req.body.productId, notificationType: 'tagOnProduct', image: image } }
+                                $push: { "notification": { userId: req.body.userId, type:  type, productId: req.body.productId, notificationType: 'tagOnProduct', image: image ,pageName:req.body.pageName, pageId:req.body.pageId} }
                             }, { new: true }).exec(function(err, result1) {
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result1) { res.send({ responseCode: 404, responseMessage: "Please enter correct senderId" }); } else {
-                                     if(result1.deviceType && result1.deviceToken){  
-                                          var message = "You are taged in a product";
-                                    if (result1.deviceType == 'Android' && result1.deviceToken && result1.notification_status == 'on' && result1.status == 'ACTIVE') {                                       
+                                     if(result1.deviceType && result1.deviceToken){
+                                         
+                                          var message = req.body.lang=="en"?`${first_name_user } has tagged you on ${page_name} gallery. Click here to watch it.`:` ${first_name_user } قام باضافة اشعار لك على معرض الصور الخاص ب ${page_name}. اضغط هنا للمشاهدة.`;
+                                    if (result1.deviceType == 'Android' && result1.deviceToken && result1.notification_status == 'on' && result1.status == 'ACTIVE') {
                                         functions.android_notification(result1.deviceToken, message);
                                         console.log("Android notification send!!!!")
                                     } else if (result1.deviceType == 'iOS' &&  result1.deviceToken && result1.notification_status == 'on' && result1.status == 'ACTIVE') {

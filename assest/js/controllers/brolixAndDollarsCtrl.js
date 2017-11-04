@@ -7,6 +7,8 @@ app.controller('brolixAndDollarsCtrl', function($scope, $window, userService, $s
     userService.viewAllBrolixAndDollors().success(function(res) {
     console.log("resssss",res);        
         if (res.responseCode == 200){
+
+        	
             $scope.brolixPerFreeCouponAds = res.result[0].value;
             $scope.brolixPerFreeCashAds = res.result[1].value;
             $scope.brolixPerUpgradedCashAds = res.result[2].value;

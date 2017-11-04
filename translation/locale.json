@@ -850,5 +850,37 @@
   "I have send you Cash": {
     "en": "I have send you Cash",
     "ar": "لقد أرسل لك نقدا"
+  },
+  "Data not found":{
+    "en":"Data not found",
+    "ar":"لم يتم العثور على نتائج"
+  },
+  "Success.":{
+    "en":"Success.",
+    "ar":"نجاح"
+  },
+  "No page found":{
+    "en":"No page found",
+    "ar":"لم يتم العثور على أية صفحة"
+  },
+  "No requests found.":{
+    "en":"No requests found.",
+    "ar":"لا يوجد طلبات للمبادلة."
+  },
+   "No coupon found":{
+    "en":"No Coupon found.",
+    "ar":"لم يتم العثور على نتائج."
+  },
+  "Please enter the couponId":{
+    "en":"Please enter the couponId",
+    "ar":"الرجاء إدخال القسيمة"
+  },
+  "All Details Found":{
+    "en":"All Details Found",
+    "ar":"تم العثور على جميع التفاصيل"
+  },
+  " sent you a follow request, please click here to view it.":{
+    "en":" sent you a follow request, please click here to view it.",
+    "ar":"ارسل لك طلب متابعة يرجى الضغط هنا لمشاهدته."
   }
 }

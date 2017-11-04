@@ -24,6 +24,8 @@
          if (req.body.follow == "follow") {
              User.findOne({ _id: req.body.receiverId }, function(err, result) {
                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "No user found." }); } else if (result.privacy.followMe == "nobody") { res.send({ responseCode: 409, responseMessage: i18n.__("You cannot send follow request to this user due to privacy policies") }) } else {
+                    User.findOne({ _id: req.body.senderId }, function(err, senderResult) {
+                        console.log("senderResult",senderResult)
                      followerList.findOne({ senderId: req.body.senderId, receiverId: req.body.receiverId }).exec(function(err, result1) {
                          if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                              if (!result1) {
@@ -36,7 +38,7 @@
                                                  console.log("in if")
                                                  data = {
                                                      userId: req.body.senderId,
-                                                     type: i18n.__('You have one follow request'),
+                                                     type: req.body.lang=="en"?""+senderResult.firstName+" sent you a follow request, please click here to view it.":""+senderResult.firstName+" ارسل لك طلب متابعة يرجى الضغط هنا لمشاهدته.",
                                                      linkType: 'profile',
                                                      notificationType: 'follow',
                                                      image: image
@@ -45,18 +47,18 @@
                                                  console.log("in else")
                                                  data = {
                                                      userId: req.body.senderId,
-                                                     type: i18n.__('You have one follow request'),
+                                                     type:req.body.lang=="en"?""+senderResult.firstName+" sent you a follow request, please click here to view it.":""+senderResult.firstName+" ارسل لك طلب متابعة يرجى الضغط هنا لمشاهدته.",
                                                      linkType: 'profile',
                                                      notificationType: 'follow',
                                                      image: ""
                                                  }
                                              }
-                                             //     console.log("data---->>>", data)
+                                             console.log("data---->>>", data)
                                              User.findOneAndUpdate({ _id: req.body.receiverId }, { $push: { notification: data } }, { multi: true }).exec(function(err, receiverResult) {
                                                  //     console.log("receiverResult---/////--*+*+*+*+*+>>>>>", receiverResult);
                                                  if (receiverResult.deviceToken) {
                                                      if (receiverResult.deviceToken && receiverResult.deviceType && receiverResult.notification_status && receiverResult.status) {
-                                                         var message = i18n.__("You have one follow request");
+                                                         var message = req.body.lang=="en"?""+senderResult.firstName+" sent you a follow request, please click here to view it.":""+senderResult.firstName+" ارسل لك طلب متابعة يرجى الضغط هنا لمشاهدته.";
                                                          if (receiverResult.deviceType == 'Android' && receiverResult.notification_status == 'on' && receiverResult.status == 'ACTIVE') {
                                                              functions.android_notification(receiverResult.deviceToken, message);
                                                              console.log("Android notification send!!!!")
@@ -70,6 +72,7 @@
                                                      console.log("no deviceToken")
                                                  }
                                                  if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+                                                 console.log("Followed==>")
                                                  res.send({
                                                      result: result,
                                                      responseCode: 200,
@@ -96,6 +99,7 @@
                                          responseMessage: i18n.__("You have already blocked this user")
                                      });
                                  } else {
+                                    console.log("Followed==>")
                                      res.send({
                                          responseCode: 202,
                                          responseMessage: i18n.__("You have already send request")
@@ -104,8 +108,10 @@
                              }
                          }
                      })
+})
                  }
              })
+
          } else if (req.body.follow == "unfollow") {
              var date = new Date();
              followerList.findOne({ $and: [{ senderId: req.body.receiverId }, { receiverId: req.body.senderId }] }).exec(function(err, userResult) {

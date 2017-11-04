@@ -155,6 +155,8 @@ var userSchema = new Schema({
         adId: { type: String, ref: 'createNewAds' },
         linkType: { type: String },
         productId: { type: String },
+        pageName: { type: String },
+        pageId:{type:String},
         CreatedAt: { type: Date, default: Date.now }
     }],
     viewedAd: [],
