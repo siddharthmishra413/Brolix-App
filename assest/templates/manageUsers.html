@@ -311,7 +311,8 @@
                 <div class="row-search">
                     <ul>
                         <li class="active">
-                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
+                            <!-- //#header/viewUserProfile/{{myForm.checkId}} -->
+                            <a data-toggle="tab" style="cursor: pointer;" ng-click="viewUsersProfile(myForm.checkId)">View Profile</a>
                         </li>
                         <li class="active">
                             <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>

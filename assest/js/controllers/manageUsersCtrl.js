@@ -764,6 +764,12 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
                 })
         }
     }
+    $scope.viewUsersProfile = function(id){
+        if (id == '' || id == undefined || id == null) {
+            toastr.error("Please select user.")
+            // $state.go('header.manageUsers')
+        }
+    }
     $scope.Block_User = function(id) {
         $scope.BlockId = id;
         var userId = $scope.BlockId;
