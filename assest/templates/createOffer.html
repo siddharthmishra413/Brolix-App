@@ -137,8 +137,8 @@
                                     <input type="number" name="" ng-model="view"  placeholder="Search by Viewers" >
                                     <div class="remove-card-block" >
                                         <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard | filterOnView:view">
-                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id); showDiv = !showDiv" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
-                                            <span ng-show="showDiv" id="toggle" class="success"><img src="./dist/image/success.png"/> </span>
+                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id); toggleCustom()" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
+                                            <span  ng-show="tick" class="success"><img src="./dist/image/success.png"/> </span>
                                             <div class="viewwe-s">
                                                 <div class="tops-s">
                                                      <div class="amts-top">{{x.viewers}}</div>

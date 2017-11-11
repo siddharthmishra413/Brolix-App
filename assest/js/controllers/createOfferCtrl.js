@@ -11,11 +11,12 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     $scope.cancle = function(){
         $state.go('header.manageCards');
     }
-    $scope.ttogle = function () {
-      console.log("sss")
-      $("#login_Box_Div").toggle();
-      $(this).toggleClass('class1')
-    }
+    
+
+    $scope.tick = true;
+    $scope.toggleCustom = function() {
+        $scope.tick = $scope.tick === false ? true: false;
+    };
 
     // $('#buttonLogin').on('click', function(e){
       
