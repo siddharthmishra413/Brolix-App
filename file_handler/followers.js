@@ -160,7 +160,7 @@
 
      // show list of request send
      "followerRequestSend": function(req, res) {
-        // console.log("followerRequestSend--->>>", req.body)
+          console.log("status_obj--->>>",JSON.stringify(req.body))
          followerList.find({ senderId: req.body.senderId }).sort({ updatedAt: -1 }).exec(function(err, result) {
              i18n = new i18n_module(req.body.lang, configs.langFile);
              if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else {
@@ -170,18 +170,17 @@
                  //                     arr.unshift(result.receiverId);
                  //                     status_obj[result.receiverId] = result.followerStatus;
                  //                 })
-
                  async.forEachOfLimit(result, 1, function(value, key, callback) {
-                 //    console.log("followerRequestSend-->>", value)  
+                     //  console.log("value-->>", value)  
                      arr.push(value.receiverId);
-                     status_obj[value.userId] = value.followerStatus;
+                     status_obj[value.receiverId] = value.followerStatus;
                      callback();
                  }, function(err) {
                  });
                  User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                      for (var i = 0; i < newResult.length; i++) {
                          var receiverId_Id = newResult[i]._id;
-                         newResult[i].followerStatus = status_obj[receiverId_Id];;
+                         newResult[i].followerStatus = status_obj[receiverId_Id];                         
                      }
                      newResult.sort((a, b) => arr.findIndex(id => a._id.equals(id)) -
                          arr.findIndex(id => b._id.equals(id)));
@@ -194,6 +193,47 @@
              }
          })
      },
+     
+     
+//     "followerRequestSend": function(req, res) {
+//      //   console.log("followerRequestSend--->>>", req.body)
+//         followerList.find({ senderId: req.body.senderId }).sort({ updatedAt: -1 }).exec(function(err, result) {
+//          //   console.log("result 1--->>>",JSON.stringify(result))
+//             i18n = new i18n_module(req.body.lang, configs.langFile);
+//             if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); }
+//             else {
+//                 var arr = [];
+//                 var status_obj = {};
+//                 //                 result.forEach(function(result) {
+//                 //                     arr.unshift(result.receiverId);
+//                 //                     status_obj[result.receiverId] = result.followerStatus;
+//                 //                 })
+//
+//                 async.forEachOfLimit(result, 1, function(value, key, callback) {
+//                   //  console.log("followerRequestSend-->>", value)  
+//                     arr.push(value.receiverId);
+//                     status_obj[value.userId] = value.followerStatus;
+//                     callback();
+//                 }, function(err) {
+//                 });
+//                 User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
+//                     for (var i = 0; i < newResult.length; i++) {
+//                         var receiverId_Id = newResult[i]._id;
+//                         newResult[i].followerStatus = status_obj[receiverId_Id];;
+//                     }
+//                    console.log("new result---->>>>",JSON.stringify(newResult))
+//                     newResult.sort((a, b) => arr.findIndex(id => a._id.equals(id)) -
+//                         arr.findIndex(id => b._id.equals(id)));
+//                     console.log("followerRequestSend---->>>>",JSON.stringify(newResult))
+//                     res.send({
+//                         result: newResult,
+//                         responseCode: 200,
+//                         responseMessage: i18n.__("Shown list all followers")
+//                     });
+//                 })
+//             }
+//         })
+//     },
 
      // show list of req receive
      "followerRequestReceive": function(req, res) {
@@ -219,7 +259,7 @@
                      User.find({ _id: { $in: arr } }).lean().exec(function(err, newResult) {
                          for (var i = 0; i < newResult.length; i++) {
                              var sender_Id = newResult[i]._id;
-                             newResult[i].followerStatus = status_obj[sender_Id];;
+                             newResult[i].followerStatus = status_obj[sender_Id];
                          }
                          newResult.sort((a, b) => arr.findIndex(id => a._id.equals(id)) -
                              arr.findIndex(id => b._id.equals(id)));

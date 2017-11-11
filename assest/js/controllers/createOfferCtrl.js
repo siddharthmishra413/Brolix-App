@@ -6,10 +6,20 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     $scope.first = true;
     $scope.second = false;
     $scope.third = false;
+    $scope.createOfferArray = [];
 
     $scope.cancle = function(){
         $state.go('header.manageCards');
     }
+    $scope.ttogle = function () {
+      console.log("sss")
+      $("#login_Box_Div").toggle();
+      $(this).toggleClass('class1')
+    }
+
+    // $('#buttonLogin').on('click', function(e){
+      
+    // });
 
     $scope.checkVal = function(){
         if($scope.myForm.cardType == null){
@@ -86,11 +96,15 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
 
     $scope.showCardDetails = function(id){
       // $scope.user.photo = '';
-      //console.log("iddddddddd",id)
-      userService.showCardDetails(id).success(function(res){
-        $scope.cardDetails = res.data;
-        //console.log("$scope.cardDetails",$scope.cardDetails)
-      })
+      console.log("iddddddddd",id)
+      
+      $scope.createOfferArray.push(id);
+
+      // userService.showCardDetails(id).success(function(res){
+      //   $scope.cardDetails = res.data;
+      // })
+
+      console.log($scope.createOfferArray);
 
     }
 })

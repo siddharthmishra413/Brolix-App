@@ -258,6 +258,9 @@
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
+                    <tr ng-if="(totalAds | manageAdsFilter:testOne).length == 0 || totalAds == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -323,6 +326,9 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                     <tr ng-if="(totalActiveAds | manageAdsFilter:testTwo).length == 0 || totalActiveAds == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                     </tr>
                 </tbody>
             </table>
@@ -390,6 +396,9 @@
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
+                    <tr ng-if="(totalExpiredAds | manageAdsFilter:testThree).length == 0 || totalExpiredAds == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -455,6 +464,9 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                    <tr ng-if="(videoAds | manageAdsFilter:testFour).length == 0 || videoAds == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                     </tr>
                 </tbody>
             </table>
@@ -522,6 +534,9 @@
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
+                    <tr ng-if="(slideshowAds | manageAdsFilter:testFive).length == 0 || slideshowAds == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -587,6 +602,9 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                    <tr ng-if="(adUpgradedByBrolix | manageAdsFilter:testSix).length == 0 || adUpgradedByBrolix == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                     </tr>
                 </tbody>
             </table>
@@ -654,6 +672,9 @@
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
+                    <tr ng-if="(adUpgradedByDollor | manageAdsFilter:testSeven).length == 0 || adUpgradedByDollor == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -716,6 +737,9 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
+                    </tr>
+                    <tr ng-if="(showReportedAd | manageAdsFilter:testEight).length == 0 || showReportedAd == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                     </tr>
                 </tbody>
             </table>
@@ -783,6 +807,9 @@
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
+                    <tr ng-if="(adsWithLinks | manageAdsFilter:testNine).length == 0 || adsWithLinks == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -849,6 +876,9 @@
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
+                     <tr ng-if="(topFiftyAds | manageAdsFilter:testTen).length == 0 || topFiftyAds == undefined">
+                            <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -869,7 +899,7 @@
                    <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                    </div>
-                   <button type="submit" class="btn btn-danger" ng-click="send_messageOwners(x._id)">Send message</button>
+                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.massage == undefined || sendMessage.massage == ''" ng-click="send_messageOwners(x._id)">Send message</button>
                </form>
            </div>
        </div>
@@ -889,7 +919,7 @@
                    <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
                        <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                    </div>
-                   <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send message</button>
+                   <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.massage == undefined || sendMessage.massage == ''" ng-click="send_massage()">Send message</button>
                </form>
            </div>
        </div>
@@ -1050,6 +1080,32 @@
                                         <td class="skyblue-text">{{userDetail.reportOnAd}}</td>
                                     </tr>
                             </table>
+
+                          <!--    <form name="userFrom1">
+                                            <div class="table-responsive cus-table">
+                                                <div class="gift-images">
+                                                    <img src="{{userDetail.coverImage}} " style="height:300px;" class="img-responsive">
+                                                    <div class="gift-images-data">
+                                                        <div class="top-row-c1">
+                                                            <div class="top-row-c1-left">
+                                                                <h4>{{userDetail.pageName}}</h4>
+                                                                <div class="cus-date-c1"><label>Valid Thru : </label><span>{{userDetail.couponExpiryDate}}</span></div>
+                                                            </div>
+                                                            
+                                                            <div class="valid-block" >
+                                                                <span class="valid-txt">{{userDetail.couponStatus}}</span>
+                                                                <span class="valid-box"><i class="fa fa-circle"></i></span>
+                                                            </div>
+                                                            <div class="middle-row-c1">
+                                                                <h3>Gift Description</h3>
+                                                                <p>{{userDetail.giftDescription}}</p>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form> -->
                         </div>
                     </div>
                 </div>

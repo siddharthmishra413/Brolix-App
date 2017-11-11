@@ -68,9 +68,6 @@
 
       // send android notification function
       "android_notification": function(deviceToken, message1, senderId, senderName, chatType) {
-          console.log("android_notification-->>>", message1)
-           console.log("senderId-->>>", senderId)
-           console.log("senderName-->>>", senderName)
           var serverKey = 'AAAA0wDwq1I:APA91bHUyLivU-szb-z_23Ui532XPOxY0yqB07F27-HMme9Vu1psCS2TZI970av_HS1NswVHyKhX4qKoERYWmCChqY2fOVCVlZwTdudwXAk_rda5Z98z7fxK2r6kaf0o5x4cDSFzQqdc ';
           var fcm = new FCM(serverKey);
           var message = {
@@ -92,9 +89,6 @@
 
       // send ios notification function
       "iOS_notification": function(deviceToken, message, senderId, senderName, chatType) {
-          console.log("iOS_notification-->>>", message)
-          console.log("senderId-->>>", senderId)
-           console.log("senderName-->>>", senderName)
           var options = {
               "cert": config.iOSPemFile,
               "key": config.iOSPemFile,

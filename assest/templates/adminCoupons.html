@@ -24,6 +24,9 @@
                         <a class="table-a" style="cursor:pointer;" ng-click="removeCoupon(details._id)">Remove</a>
                     </td>
                 </tr>
+                <tr ng-if="(Detail).length == 0 || Detail == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                </tr>
             </table>
             <div class="col-sm-12 text-center">
                 <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>

@@ -3,7 +3,7 @@ app.service('adminServices', function() {
     this.eventDetail = "null";
 
 });
-var baseurl = 'http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082';
+var baseurl = 'http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082';
 var locaurl = 'http://172.16.16.159:8082';
 
 app.service('uploadimgServeice', function($http, $q) {

@@ -614,6 +614,7 @@ cloudinary.config({
                                     }
                                     User.find({ _id: { $in: userArray } }).exec(function(err, result1) {
                                         if (err) { res.send({ responseCode: 409, responseMessage: i18n.__('Internal server error') }); } else if (result1.length == 0) { res.send({ responseCode: 400, responseMessage: i18n.__("Data not found") }); } else {
+                                      //      console.log("allUserDetails--->>>",JSON.stringify(result1))
                                             res.send({
                                                 responseCode: 200,
                                                 responseMessage: i18n.__("Result shown successfully"),

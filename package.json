@@ -12,6 +12,7 @@
     "async-waterfall": "^0.1.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.1",
+    "braintree": "^2.3.0",
     "cities": "^1.1.2",
     "cities-list": "^1.0.3",
     "client-sessions": "^0.7.0",

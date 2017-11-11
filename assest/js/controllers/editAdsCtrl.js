@@ -53,40 +53,40 @@ else
         $scope.createAds.country = res.result.whoWillSeeYourAdd.country;
         $scope.createAds.city = res.result.whoWillSeeYourAdd.city;
         console.log("slidesahow",res.result.slideShow)
-        console.log("res.result.dawnloadPagePhoto.length",res.result.dawnloadPagePhoto.length)
-        console.log("res.result.dawnloadPagePhoto.length",res.result.dawnloadPagePhoto)
+        console.log("res.result.dawnloadPagePhoto.length",res.result.slideShow.length)
+        console.log("res.result.dawnloadPagePhoto.length",res.result.slideShow)
 
-        if(res.result.dawnloadPagePhoto.length == 0){
+        if(res.result.slideShow.length == 0){
          console.log("ooo")
-        }else if(res.result.dawnloadPagePhoto.length == 1){
-            $scope.createAds.slidePhoto1 = res.result.dawnloadPagePhoto[0];
-        }else if(res.result.dawnloadPagePhoto.length == 2){
-            $scope.createAds.slidePhoto1 = res.result.dawnloadPagePhoto[0];
-            $scope.createAds.slidePhoto2 = res.result.dawnloadPagePhoto[1];
-        }else if(res.result.dawnloadPagePhoto.length == 3){
-            $scope.createAds.slidePhoto1 = res.result.dawnloadPagePhoto[0];
-            $scope.createAds.slidePhoto2 = res.result.dawnloadPagePhoto[1];
-            $scope.createAds.slidePhoto3 = res.result.dawnloadPagePhoto[2];
-        }else if(res.result.dawnloadPagePhoto.length == 4){
-            $scope.createAds.slidePhoto1 = res.result.dawnloadPagePhoto[0];
-            $scope.createAds.slidePhoto2 = res.result.dawnloadPagePhoto[1];
-            $scope.createAds.slidePhoto3 = res.result.dawnloadPagePhoto[2];
-            $scope.createAds.slidePhoto4 = res.result.dawnloadPagePhoto[3];
-        }else if(res.result.dawnloadPagePhoto.length == 5){
-            $scope.createAds.slidePhoto1 = res.result.dawnloadPagePhoto[0];
-            $scope.createAds.slidePhoto2 = res.result.dawnloadPagePhoto[1];
-            $scope.createAds.slidePhoto3 = res.result.dawnloadPagePhoto[2];
-            $scope.createAds.slidePhoto4 = res.result.dawnloadPagePhoto[3];
-            $scope.createAds.slidePhoto5 = res.result.dawnloadPagePhoto[4];
-        }else if(res.result.dawnloadPagePhoto.length == 6){
+        }else if(res.result.slideShow.length == 1){
+            $scope.createAds.slidePhoto1 = res.result.slideShow[0];
+        }else if(res.result.slideShow.length == 2){
+            $scope.createAds.slidePhoto1 = res.result.slideShow[0];
+            $scope.createAds.slidePhoto2 = res.result.slideShow[1];
+        }else if(res.result.slideShow.length == 3){
+            $scope.createAds.slidePhoto1 = res.result.slideShow[0];
+            $scope.createAds.slidePhoto2 = res.result.slideShow[1];
+            $scope.createAds.slidePhoto3 = res.result.slideShow[2];
+        }else if(res.result.slideShow.length == 4){
+            $scope.createAds.slidePhoto1 = res.result.slideShow[0];
+            $scope.createAds.slidePhoto2 = res.result.slideShow[1];
+            $scope.createAds.slidePhoto3 = res.result.slideShow[2];
+            $scope.createAds.slidePhoto4 = res.result.slideShow[3];
+        }else if(res.result.slideShow.length == 5){
+            $scope.createAds.slidePhoto1 = res.result.slideShow[0];
+            $scope.createAds.slidePhoto2 = res.result.slideShow[1];
+            $scope.createAds.slidePhoto3 = res.result.slideShow[2];
+            $scope.createAds.slidePhoto4 = res.result.slideShow[3];
+            $scope.createAds.slidePhoto5 = res.result.slideShow[4];
+        }else if(res.result.slideShow.length == 6){
             console.log("l")
             $scope.createAds.slidePhoto1 = res.result.slideShow[0];
             console.log("$scope.createAds.slidePhoto1",$scope.createAds.slidePhoto1);
-            $scope.createAds.slidePhoto2 = res.result.dawnloadPagePhoto[1];
-            $scope.createAds.slidePhoto3 = res.result.dawnloadPagePhoto[2];
-            $scope.createAds.slidePhoto4 = res.result.dawnloadPagePhoto[3];
-            $scope.createAds.slidePhoto5 = res.result.dawnloadPagePhoto[4];
-            $scope.createAds.slidePhoto6 = res.result.dawnloadPagePhoto[5];
+            $scope.createAds.slidePhoto2 = res.result.slideShow[1];
+            $scope.createAds.slidePhoto3 = res.result.slideShow[2];
+            $scope.createAds.slidePhoto4 = res.result.slideShow[3];
+            $scope.createAds.slidePhoto5 = res.result.slideShow[4];
+            $scope.createAds.slidePhoto6 = res.result.slideShow[5];
         }
         
 

@@ -25,6 +25,9 @@
                             <td >{{x.lastName}}</td>
                             <td >{{x.createdAt | date:'MMMM dd, yyyy'}}</td>
                         </tr>
+                        <tr ng-if="(userResult | customFilterUser:search).length == 0 || userResult == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                        </tr>
                     </tbody>
                 </table>
                  <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -53,6 +56,9 @@
                             <td >{{x.adsType}}</td>
                             <td >{{x.createdAt | date:'MMMM dd, yyyy'}}</td>
                         </tr>
+                        <tr ng-if="(adsResult | pagesFilter:search).length == 0 || adsResult == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                        </tr>
                     </tbody>
                 </table>
                  <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -79,6 +85,9 @@
                         <tr dir-paginate="x in pageResult | pagesFilter:search | itemsPerPage:10">
                             <td >{{x.pageName}}</td>
                             <td >{{x.createdAt | date:'MMMM dd, yyyy'}}</td>
+                        </tr>
+                        <tr ng-if="(pageResult | pagesFilter:search).length == 0 || pageResult == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                         </tr>
                     </tbody>
                 </table>

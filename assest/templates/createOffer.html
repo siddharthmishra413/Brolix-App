@@ -133,11 +133,12 @@
                     <div class="tab-content add-card">
                         <div id="home" class="tab-pane fade in active" >
                             <div class="row">
-                                <div class="col-md-6">
-                                <input type="number" name="" ng-model="view"  placeholder="Search by Viewers" >
+                                <div class="col-md-12">
+                                    <input type="number" name="" ng-model="view"  placeholder="Search by Viewers" >
                                     <div class="remove-card-block" >
                                         <div class="cover-image newcover-img" ng-repeat="x in UpgradeCard | filterOnView:view">
-                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id)" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
+                                            <img style="cursor:pointer;" ng-click="showCardDetails(x._id); showDiv = !showDiv" class="profile-user-img img-responsive" ng-src={{x.photo}} id="output">
+                                            <span ng-show="showDiv" id="toggle" class="success"><img src="./dist/image/success.png"/> </span>
                                             <div class="viewwe-s">
                                                 <div class="tops-s">
                                                      <div class="amts-top">{{x.viewers}}</div>
@@ -148,7 +149,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="btn2 text-center">
+                                        <a class="btn btn-lg btn-green" ng-click="createOfferNext(cardDetails._id)">Apply Offer</a>
+                                        <a class="btn btn-lg btn-green" ng-click="cancle();">Cancel</a>
+                                    </div>
+                                <!-- <div class="col-md-6">
                                     <div class="cover-image newcover-img" >
                                     <img class="profile-user-img img-responsive" src="{{user.photo || cardDetails.photo || '../dist/image/cover.jpg'}}" id="output">
                                     <div class="viewwe-s">
@@ -159,11 +164,8 @@
                                          <div class="bottom-dol">${{cardDetails.price}}</div>
                                     </div>
                                     </div>
-                                    <div class="btn2 text-center">
-                                        <a class="btn btn-lg btn-green" ng-click="createOfferNext(cardDetails._id)">Apply Offer</a>
-                                        <a class="btn btn-lg btn-green" ng-click="cancle();">Cancel</a>
-                                    </div>
-                                </div>
+                                    
+                                </div> -->
                             </div>
                         </div>
                     </div>

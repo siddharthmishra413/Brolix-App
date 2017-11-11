@@ -158,7 +158,7 @@ $scope.export = function(){
                        width: 500,
                    }]
                };
-               pdfMake.createPdf(docDefinition).download("test.pdf");
+               pdfMake.createPdf(docDefinition).download("Report.pdf");
            }
        });
    }

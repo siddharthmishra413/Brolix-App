@@ -352,8 +352,8 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
 
     }
 
-
     $scope.export = function() {
+        console.log("clicked")
         html2canvas(document.getElementById('managePageTable'), {
             onrendered: function(canvas) {
                 var data = canvas.toDataURL();

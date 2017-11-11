@@ -768,7 +768,7 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                         width: 500,
                     }]
                 };
-                pdfMake.createPdf(docDefinition).download("test.pdf");
+                pdfMake.createPdf(docDefinition).download("Report.pdf");
             }
         });
     }
@@ -1221,8 +1221,6 @@ app.filter("cardsFilter", function() {
                 retArray.push(items[i])
             }
         }
-        console.log("return =>"+retArray)
-
         return retArray;
 
     }

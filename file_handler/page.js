@@ -3479,8 +3479,8 @@ module.exports = {
                             createPayPage.merchant_email = 'sakshigadia@gmail.com';
                             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
                             createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-                            createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
-                            createPayPage.return_url = 'http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '';
+                            createPayPage.site_url = "http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082";
+                            createPayPage.return_url = 'http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '';
                             createPayPage.title = "Brolix";
                             createPayPage.cc_first_name = user.firstName;
                             createPayPage.cc_last_name = user.lastName;
@@ -3678,8 +3678,8 @@ module.exports = {
                             createPayPage.merchant_email = 'sakshigadia@gmail.com';
                             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
                             createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-                            createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
-                            createPayPage.return_url = 'http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '';
+                            createPayPage.site_url = "http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082";
+                            createPayPage.return_url = 'http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '';
                             createPayPage.title = "Brolix";
                             createPayPage.cc_first_name = user.firstName;
                             createPayPage.cc_last_name = user.lastName;
@@ -3844,13 +3844,13 @@ module.exports = {
             }
         ], function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) {
-                res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+                res.redirect('http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082/page/redirectpage/' + 404 + '/' + "Failure" + '')
             }
             //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
             else {
                 // var values = myCache.del("myKey");
                 // console.log("values",values)
-                //res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
+                //res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '')
                 res.send({ responseCode: 200, responseMessage: i18n.__("Payment done successfully") });
             }
         })
@@ -3863,7 +3863,7 @@ module.exports = {
         //myCache.del( "myKey" );
         var value = myCache.get("myKeys");
         if (value == undefined || value == null || value == '') {
-            res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+            res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/redirectpage/' + 404 + '/' + "Failure" + '')
         } else {
             console.log("value", value)
             waterfall([
@@ -3877,7 +3877,7 @@ module.exports = {
                             console.log("verify response", response)
                             callback(null, response)
                         } else {
-                            res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+                            res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/redirectpage/' + 404 + '/' + "Failure" + '')
                         }
                     });
                 },
@@ -3943,13 +3943,13 @@ module.exports = {
                 }
             ], function(err, result) {
                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) {
-                    res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 404 + '/' + "Failure" + '')
+                    res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/redirectpage/' + 404 + '/' + "Failure" + '')
                 }
                 //res.send({ responseCode: 404, responseMessage: "Something went wrong." }); } 
                 else {
                     //var values = myCache.del("myKey");
                     //console.log("values",values)
-                    res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:1426/page/redirectpage/' + 200 + '/' + "Success" + '')
+                    res.redirect('http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '')
                     //res.send({ responseCode: 200, responseMessage: "Cards updated successfully." });
                 }
             })

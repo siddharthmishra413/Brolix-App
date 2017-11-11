@@ -1,5 +1,11 @@
 html {overflow-x: hidden;}
 body {overflow-x: hidden;}
+
+
+.cover-image.newcover-img .success img{width: 100px;height: 100px;border: 0;}
+.success{display:block;position: absolute;top: 30%; left: 40%;}
+.success.success-display{display:block;}
+
 .panel-login {
 	border-color: #ccc;
 	-webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
