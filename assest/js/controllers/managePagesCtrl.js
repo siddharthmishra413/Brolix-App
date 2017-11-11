@@ -515,7 +515,7 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                         userService.unblockPage(userId).success(function(res) {
                             if (res.responseCode == 200) {
                                 dialog.close();
-                                toastr.success("Page Blocked");
+                                toastr.success(res.responseMessage);
                                 $state.reload();
                             } else {
                                 toastr.error(res.responseMessage);

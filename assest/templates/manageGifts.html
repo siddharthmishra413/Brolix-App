@@ -224,7 +224,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in totalCouponsGiftShow | totalCouponGiftFilter:search | itemsPerPage:10">
+                    <tr dir-paginate="x in totalCouponsGiftShow | totalCouponGiftFilter:search | itemsPerPage:10" pagination-id="tablee">
                         <td>{{x.coupon.pageId.pageName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
                         <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x.coupon.adId,'first')">View</td>
@@ -232,10 +232,10 @@
                         <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
                         <td>{{x.createdAt | date:"HH:mm"}}</td>
                     </tr>
-                    <tr ng-if="(totalCouponsGiftShow | totalCouponGiftFilter:search).length == 0"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
+                    <tr ng-if="(totalCouponsGiftShow | totalCouponGiftFilter:search).length == 0 || totalCouponsGiftShow == undefined"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
                 </tbody>
             </table>
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls pagination-id="tablee" max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -280,7 +280,7 @@
                          <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
                         <td>{{x.createdAt | date:"HH:mm"}}</td>
                      </tr>
-                     <tr ng-if="(totalCashGiftShow |totalCashGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
+                     <tr ng-if="(totalCashGiftShow |totalCashGiftFilter:searchOne).length == 0 || totalCashGiftShow == undefined"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr> 
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -335,7 +335,7 @@
                         <td>{{x.createdAt | date:'MM/dd/yyyy'}}</td>
                         <td>{{x.createdAt | date:"HH:mm"}}</td>
                      </tr>
-                    <tr ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:search).length == 0"><td colspan="4" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                    <tr ng-if="(totalHiddenGiftShow | totalHiddenGiftFilter:searchTwo).length == 0 || totalHiddenGiftShow == undefined"><td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -377,7 +377,7 @@
                         <td>{{x.exchToFirstName}} {{x.exchToLastName}}</td>
                         <td>{{x.exchFromFirstName}} {{x.exchFromLastName}}</td>
                     </tr> 
-                     <tr ng-if="(totalExchangedCouponShow1 | totalExchangedFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
+                     <tr ng-if="(totalExchangedCouponShowOne | totalExchangedFilter:searchThree).length == 0 || totalExchangedCouponShowOne == undefined"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>
                         
                 </tbody>
             </table>
@@ -420,7 +420,7 @@
                         <td>{{x.sentFromFirstName}} {{x.sentFromLastName}}</td>
                         <td >{{x.sentToFirstName}} {{x.sentToLastName}}</td>
                      </tr>
-                     <tr ng-if="(totalSentCouponShow1 | totalSentCouponFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
+                     <tr ng-if="(totalSentCouponShowTwo | totalSentCouponFilter:searchFour).length == 0 || totalSentCouponShowTwo == undefined"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -462,11 +462,11 @@
                 <tbody>
                     <tr dir-paginate="x in totalSentCashShow | totalSentCashFilter:searchFive | itemsPerPage:10">
                        <!--  <td class="skyblue-text" style="cursor: pointer;" ng-click="showCouponGift(x._id,'second')">View</td> -->
-                        <td>{{totalCash}}</td>
+                        <td>{{x.sendCashListObject.cash}}</td>
                         <td>{{x.sendCashListObject.senderId.firstName}} {{x.sendCashListObject.senderId.lastName}}</td>
                         <td>{{x.firstName}} {{x.lastName}}</td>
                     </tr>
-                     <tr ng-if="(totalSentCashShow | totalSentCashFilter:search).length == 0"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
+                     <tr ng-if="(totalSentCashShow | totalSentCashFilter:searchFive).length == 0 || totalSentCashShow == undefined"><td colspan="3" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td></tr>     
                 </tbody>
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
@@ -777,7 +777,7 @@
       <div class="modal-content">
           <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h4 class="modal-title">Send message to All User</h4>
+              <h4 class="modal-title">Send message to All Winners</h4>
           </div>
           <div class="modal-body">
               <form name="sendMessage">

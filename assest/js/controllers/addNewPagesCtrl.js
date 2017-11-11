@@ -268,15 +268,21 @@ $scope.addNewPage = function(addNewPage){
      }  
  }
 	$scope.changeImage = function(input,key) {
-		// spinnerService.show('html5spinner');  
+		// spinnerService.show('html5spinner'); 
+    console.log("input =>"+input +"key =>"+key) 
 		var file = input.files[0];
 		var ext = file.name.split('.').pop();
 		if(ext=="jpg" || ext=="jpeg" || ext=="bmp" || ext=="gif" || ext=="png"){
 		$scope.imageName = file.name;
 
 		uploadimgServeice.user(file).then(function(ObjS) {
-		         
-		        // $scope.user.photo1 = ObjS.data.result.url;
+            console.log("Res=>"+ObjS);
+            if(key == 'userImage'){
+              $scope.myForm.userphoto = ObjS.data.result.url;
+            }
+            else{
+              $scope.myForm.pagephoto = ObjS.data.result.url;
+            }
 		        console.log("image1",$scope.myForm.pagephoto)
             console.log("image2",$scope.user.pagephoto)
 		    })
@@ -374,8 +380,8 @@ $scope.submitt = function(){
 	           "country":$scope.myForm.country,
 	           "state":$scope.myForm.state,
 	           "city":$scope.myForm.city, 
-	           "pageImage":$scope.myForm.pagephoto,
-	           "coverImage":$scope.myForm.userphoto,
+	           "pageImage":$scope.myForm.userphoto,
+	           "coverImage":$scope.myForm.pagephoto,
 	           "socialMedia":$scope.arrayLink, 
 	           "adAdmin":cond   
 	    }

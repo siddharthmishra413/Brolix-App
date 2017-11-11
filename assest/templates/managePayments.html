@@ -138,7 +138,7 @@
                                                                         <th>Buyer PayPal</th>
                                                                         <th>Used Ad</th>
                                                                         <th>Pages</th>
-                                                                        <th>Payment History</th>
+                                                                        <!-- <th>Payment History</th> -->
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -151,11 +151,11 @@
                                                                         <td ng-if="dollars.upgradeCardObject.status == 'ACTIVE' ">Not Used Yet</td>
                                                                         <td ng-if="dollars.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(dollars.upgradeCardObject._id)">View</td>
                                                                         <td class="skyblue-text" ng-click="pageCount(dollars._id)" style="cursor: pointer">{{dollars.pageCount}}</td>
-                                                                        <td ng-if="dollars.upgradeCardObject.status == 'ACTIVE' ">Not Used Yet</td>
-                                                                        <td ng-if="dollars.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" ng-click="upgradePayment(dollars._id)" style="cursor: pointer">View</td>
+                                                                       <!--  <td ng-if="dollars.upgradeCardObject.status == 'ACTIVE' ">Not Used Yet</td>
+                                                                        <td ng-if="dollars.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" ng-click="upgradePayment(dollars._id)" style="cursor: pointer">View</td> -->
 
                                                                     </tr>
-                                                                    <tr ng-if="(dollars |manageFilter:search).length == 0">
+                                                                    <tr ng-if="(dollars |manageFilter:searchdata).length == 0 || dollars == undefined">
                                                                         <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                                                                     </tr>
                                                                 </tbody>
@@ -178,7 +178,7 @@
                                     <div class="box-block blnk-bg wd100 ipad-50">
                                         <div class="widget widget-stats divi-blk offerbtn-s">
                                             <div class="top-box">
-                                                <div class="green-box">Top 50 Buyers</div>
+                                                <div class="green-box full-cls">Top 50 Buyers</div>
                                             </div>
                                             <div class="bottom-box">
                                                 <div class="btn-manage show-btn w-100">
@@ -190,7 +190,7 @@
                                     <div class="box-block blnk-bg wd100 ipad-50">
                                         <div class="widget widget-stats divi-blk offerbtn-s">
                                             <div class="top-box">
-                                                <div class="green-box" >$ {{totalDollarsPrice}} Total Income</div>
+                                                <div class="green-box full-cls">$ {{totalDollarsPrice}} Total Income</div>
                                                 
                                             </div>
                                         </div>
@@ -329,8 +329,8 @@
                                                                         <td>{{dollarsCash.email}}</td>
                                                                         <td>{{dollarsCash.cashPrize.cashStatus}}</td>
                                                                     </tr>
-                                                                    <tr ng-if="(dollarsCashGift |managePaymentFilter:searchdata).length == 0">
-                                                                        <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                                                                    <tr ng-if="(dollarsCashGift | managePaymentFilter:searchdataCash).length == 0 || dollarsCashGift == undefined">
+                                                                        <td colspan="5" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -466,7 +466,7 @@
                                                                         <th>Buyer Mobile</th>
                                                                         <th>Used Ad</th>
                                                                         <th>Pages</th>
-                                                                        <th>Payment History</th>
+                                                                        <!-- <th>Payment History</th> -->
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -479,10 +479,10 @@
                                                                         <td ng-if="brolix.luckCardObject.status == 'ACTIVE' ">Not Used Yet</td>
                                                                         <td ng-if="brolix.luckCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(brolix.luckCardObject._id)">View</td>
                                                                         <td class="skyblue-text" ng-click="pageCount(dollars._id)" style="cursor: pointer">{{brolix.pageCount}}</td>
-                                                                        <td ng-if="brolix.luckCardObject.status == 'ACTIVE' ">Not Used Yet</td>
-                                                                        <td ng-if="brolix.luckCardObject.status == 'INACTIVE' " class="skyblue-text" ng-click="luckPayment(brolix._id)" style="cursor: pointer">View</td>
+                                                                        <!-- <td ng-if="brolix.luckCardObject.status == 'ACTIVE' ">Not Used Yet</td>
+                                                                        <td ng-if="brolix.luckCardObject.status == 'INACTIVE' " class="skyblue-text" ng-click="luckPayment(brolix._id)" style="cursor: pointer">View</td> -->
                                                                     </tr>
-                                                                    <tr ng-if="(brolix |manageFilter:search).length == 0">
+                                                                    <tr ng-if="(brolix |manageFilter:searchdataBrolix).length == 0 || brolix == undefined">
                                                                         <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                                                                     </tr>
                                                                 </tbody>
@@ -503,7 +503,7 @@
                                     <div class="box-block blnk-bg wd100 ipad-50">
                                         <div class="widget widget-stats divi-blk offerbtn-s">
                                             <div class="top-box">
-                                                <div class="green-box">Top 50 Buyers</div>
+                                                <div class="green-box full-cls">Top 50 Buyers</div>
                                             </div>
                                             <div class="bottom-box">
                                                 <div class="btn-manage show-btn w-100">
@@ -515,7 +515,7 @@
                                     <div class="box-block blnk-bg wd100 ipad-50">
                                         <div class="widget widget-stats divi-blk offerbtn-s">
                                             <div class="top-box">
-                                                <div class="green-box">B {{totalBrolixPrice}} Total Income</div>
+                                                <div class="green-box full-cls">B {{totalBrolixPrice}} Total Income</div>
                                             </div>
                                         </div>
                                     </div>
@@ -671,7 +671,7 @@
                                                                     <tr>
                                                                         <th>Page Name</th>
                                                                         <!-- <th>Page Owner</th> -->
-                                                                        <th>Page Admins</th>
+                                                                        <!-- <th>Page Admins</th> -->
                                                                         <th>Buyer Name</th>
                                                                         <th>Sold Coupon</th>
                                                                         <th>Coupon Price</th>
@@ -683,14 +683,14 @@
                                                                     <!-- <tr ng-repeat="Coupon in brolixCoupon |managePaymentSoldCouponFilter:searchdata"> -->
                                                                         <!-- <td class="skyblue-text" ng-click="pageInfo(Coupon.coupon.pageId._id)" style="cursor: pointer"> --><td>{{Coupon.coupon.pageId.pageName}}</td>
                                                                         <!-- <td class="skyblue-text" ng-click="userInfo(Coupon.coupon.pageId.userId._id)" style="cursor: pointer">{{Coupon.coupon.pageId.userId.firstName+" "+Coupon.coupon.pageId.userId.lastName}}</td> -->
-                                                                        <td class="skyblue-text" ng-click="pageCount(Coupon._id)" style="cursor: pointer">{{Coupon.coupon.pageId.adAdminCount}}</td>
+                                                                        <!-- <td class="skyblue-text" ng-click="pageCount(Coupon._id)" style="cursor: pointer">{{Coupon.coupon.pageId.adAdminCount}}</td> -->
                                                                         <td class="skyblue-text" style="cursor: pointer" ng-click="userInfo(Coupon._id)">{{Coupon.firstName+" "+Coupon.lastName}}</td>
                                                                         <td class="skyblue-text" ng-click="adInfo(Coupon.coupon.adId._id)" style="cursor: pointer">View</td>
                                                                         <td>{{Coupon.coupon.adId.couponSellPrice}}B</td>
                                                                         <td class="skyblue-text" ng-click="adInfo(Coupon.coupon.adId._id)" style="cursor: pointer">View</td>
                                                                         <td>{{Coupon.coupon.adId.couponStatus}}</td>
                                                                     </tr>
-                                                                    <tr ng-if="(brolixCoupon | managePaymentSoldCouponFilter:searchdata).length == 0">
+                                                                    <tr ng-if="(brolixCoupon | managePaymentSoldCouponFilter:searchdataBrolixCash).length == 0 || brolixCoupon == undefined">
                                                                         <td colspan="7" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                                                                     </tr>
                                                                 </tbody>
@@ -715,10 +715,7 @@
     </div>
 </div>
 
-
-
-
-<div id="top_50_buyers" class="modal fade">
+<div id="top_50_dollars_buyers" class="modal fade">
     <div class="modal-dialog cls_pop">
         <div class="modal-content">
             <div class="modal-header">
@@ -734,7 +731,7 @@
                                 <th>Mobile Number</th>
                                 <th>Sold Cards</th>
                             </tr>
-                            <tr ng-repeat="buyer in userDetail">
+                            <tr ng-repeat="buyer in userDetail | orderBy:'-(upgradeCardObject.length)'">
                                 <td>{{buyer.firstName+" "+buyer.lastName}}</td>
                                 <td>{{buyer.mobileNumber}}</td>
                                 <td>{{buyer.upgradeCardObject.length}}</td>
@@ -749,6 +746,36 @@
     </div>
 </div>
 
+<div id="top_50_brolix_buyers" class="modal fade">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Top 50 Buyers</h4>
+            </div>
+            <div class="modal-body">
+                <form name="userFrom1">
+                    <div class="table-responsive cus-table" infinite-scroll='loadMore()' infinite-scroll-distance='2'>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>Buyer Name</th>
+                                <th>Mobile Number</th>
+                                <th>Sold Cards</th>
+                            </tr>
+                            <tr ng-repeat="buyer in userDetail | orderBy:'-(upgradeCardObject.length)'">
+                                <td>{{buyer.firstName+" "+buyer.lastName}}</td>
+                                <td>{{buyer.mobileNumber}}</td>
+                                <td>{{buyer.luckCardObject.length}}</td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="Pages" class="modal fade">
     <div class="modal-dialog cls_pop">
         <div class="modal-content">
@@ -846,6 +873,133 @@
     </div>
 </div>
 
+<div id="pageInfo" class="modal fade">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Page Information</h4>
+            </div>
+            <div class="modal-body">
+                <form name="userFrom1">
+                    <div class="table-responsive cus-table">
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>Page Name</th>
+                                <td ng-repeat="detail in pageDetail">{{detail.pageName}}</td>
+                            </tr>
+                            <tr>
+                                <th>category</th>
+                                <td ng-repeat="detail in pageDetail">{{detail.pageType}}</td>
+                            </tr>
+                            <tr>
+                                <th>subCategory</th>
+                                <td ng-repeat="detail in pageDetail">{{detail.category}}</td>
+                            </tr>
+                            <tr>
+                                <th>adsType</th>
+                                <td ng-repeat="detail in pageDetail">{{detail.subCategory}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cashGiftDetail" class="modal fade">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Cash Gift</h4>
+            </div>
+            <div style="height:400px;">
+                <div class="col-sm-12">
+                    <div class="gift-images">
+                        <img src="{{userDetail.coverImage}}" style="height:300px;" class="img-responsive">
+                        <div class="gift-images-data">
+                            <div class="top-row-c1">
+                                <!-- <div class="left-img-txt">
+                                    <div>{{userDetail.pageName}}</div>
+                                    <div class="type-s">{{userDetail.createdAt | date:dd-MM-yyyy}}</div>
+                                </div> -->
+                                <div class="top-row-c1-left">
+                                    <h4>{{userDetail.pageName}}</h4>
+                                    <div class="cus-date-c1">{{userDetail.createdAt | date:dd-MM-yyyy}}</div>
+                                </div>
+                                <!-- <div class="top-row-c1-right">
+                                    <div class="c1-used">Cash Status: {{userDetail.cashStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+                                  
+                                </div> -->
+                                <div class="valid-block" style="width: 96px;">
+                                    <span class="valid-txt">{{userDetail.cashStatus}}</span>
+                                    <span class="valid-box"><i class="fa fa-circle"></i></span>
+                                </div>
+                                <!-- <div class="middle-row-c1 middle-price-text">
+                                    <h3>Gift Description</h3>
+                                    <p>{{userDetail.giftDescription}}</p>
+                                </div> -->
+                                <div class="middle-row-c1">
+                                    <div style="font-size: 31px">Value</div>  
+                                    <div style="color:#00B288;font-weight: bold;font-size: 31px">${{userDetail.cashAdPrize}}</div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="adInfoDetail" class="modal fade">
+    <div class="modal-dialog cls_pop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Ad Information</h4>
+            </div>
+            <div style="height:400px;">
+                <div class="col-sm-12">
+                    <div class="gift-images">
+                        <img src="{{userDetail.coverImage}}" style="height:300px;" class="img-responsive">
+                        <div class="gift-images-data">
+                            <div class="top-row-c1">
+                                <div class="top-row-c1-left">
+                                    <h4>{{userDetail.pageName}}</h4>
+                                    <div class="cus-date-c1"><label>Valid Thru : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div>
+                                </div>
+                                <!-- <div class="top-row-c1-right">
+                                    <div class="c1-used">{{userDetail.couponStatus}}
+                                        <span class="c1-dot">
+                                        <i class="fa fa-circle" aria-hidden="true"></i></span>
+                                    </div> -->
+                                <div class="valid-block" style="width: 96px;">
+                                    <span class="valid-txt">{{userDetail.couponStatus}}</span>
+                                    <span class="valid-box"><i class="fa fa-circle"></i></span>
+                                </div>
+                                    
+                                <!-- </div> -->
+                                <div class="middle-row-c1">
+                                    <h3>Gift Description</h3>
+                                    <p>{{userDetail.giftDescription}}</p>
+                                </div>
+                                <!-- <div class="middle-row-c1">
+                                    <h3>Price</h3>
+                                    <p>{{userDetail.couponSellPrice}}</p>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="luckCardUsedAd" class="modal fade">
     <div class="modal-dialog cls_pop">
         <div class="modal-content">
@@ -857,142 +1011,41 @@
                 <div class="modal-outer-block">
                     <div class="add-user panel panel-default cust-panel" style="margin:0;">
                         <div class="table-responsive cus-table">
-                            <!-- <table id="manageUserTable" class="table table-bordered table-striped">
-                                    <tr>                                      
-                                        <th>CreatedAt</th>
-                                        <td class="skyblue-text">{{usedAd.createdAt | date:'MM-dd-yyyy'}}</td>
-                                     </tr>   
-                                     <tr>
-                                        <th>Updated At</th>
-                                        <td class="skyblue-text">{{usedAd.updatedAt | date:'MM-dd-yyyy'}}</td>
-                                     </tr>
-                                    <tr>
-                                        <th>Page Name</th>
-                                        <td class="skyblue-text">{{usedAd.pageName}}</td>
-                                    </tr>
-                                     <tr>
-                                         <th>Category</th>
-                                        <td class="skyblue-text">{{usedAd.category}}</td>
-                                     </tr>
-                                     <tr>
-                                        <th>Sub Category</th>
-                                        <td class="skyblue-text">{{usedAd.subCategory}}</td>
-                                     </tr>
-                                     <tr>
-                                        <th>Ad Type</th>
-                                        <td class="skyblue-text">{{usedAd.adsType}}</td>
-                                     </tr>  
-                                     <tr>
-                                        <th>Number of Images</th>
-                                        <td class="skyblue-text">{{usedAd.dawnloadPagePhoto.length}}</td>
-                                     </tr>
-                                     <tr>
-                                        <th>Video Length</th>
-                                        <td class="skyblue-text">1:30/3Mb</td>
-                                     </tr>
-                                     <tr>   
-                                        <th>Cover Image</th>                               
-                                        <td class="skyblue-text"><img ng-src="{{usedAd.coverImage}}"height="50px" ></td>
-                                     </tr>
-                                     <tr>   
-                                        <th>Download Links</th>                               
-                                        <td class="skyblue-text">{{usedAd.linkCount}}</td>
-                                     </tr>
-                                     <tr>   
-                                        <th>Gift Description</th>                               
-                                        <td class="skyblue-text">{{usedAd.giftDescription}}</td>
-                                     </tr>
-                                     <tr>   
-                                        <th>Gift Image</th>                               
-                                         <td class="skyblue-text">{{usedAd.giftDescription == "" ? "No" : "Yes"}}</td>
-                                     </tr>
-                                     <tr>                                       
-                                        <th>Hidden Gift</th> 
-                                        <td class="skyblue-text">{{usedAd.hiddenGifts.length > 0 ? "Yes" : "No"}}</td>
-                                     </tr>
-                                     <tr>                                       
-                                        <th>No. of Codes</th> 
-                                        <td class="skyblue-text">{{usedAd.hiddenGifts.length}}</td>
-                                     </tr>
-                                     <tr>                                       
-                                        <th>Upgraded</th> 
-                                        <td class="skyblue-text">{{usedAd.luckCardListObject == "" ? "No" : "Yes"}}</td>
-                                     </tr>
-                                     <tr>                                       
-                                        <th>Card Price</th> 
-                                        <td class="skyblue-text">{{usedAd.cash}}</td>
-                                     </tr>
-                                     <tr>                                       
-                                        <th>No. of Viewers</th> 
-                                        <td class="skyblue-text">{{usedAd.viewers}}</td>
-                                     </tr>
-                                     <tr>                                       
-                                        <th>No. of Winners</th> 
-                                        <td class="skyblue-text">{{usedAd.numberOfWinners}}</td>
-                                     </tr>
-                                     <tr>                                       
-                                        <th>Post on Store</th> 
-                                        <td class="skyblue-text">{{usedAd.postonStore == "" ? "No" : "Yes"}}</td>
-                                     </tr>
-                                     <tr>                                       
-                                        <th>Targeted Location</th> 
-                                        <td class="skyblue-text">Country - {{usedAd.whoWillSeeYourAdd.country}} , city - {{usedAd.whoWillSeeYourAdd.city}}</td>
-                                       
-                                     </tr>
-                                     <tr>                                       
-                                        <th>Targeted Gender</th> 
-                                        <td class="skyblue-text">{{usedAd.gender}}</td>
-                                     </tr>
-                                     <tr>                                       
-                                        <th>Targeted Age</th> 
-                                        <td class="skyblue-text">{{usedAd.ageFrom}}-{{usedAd.ageTo}}</td>
-                                     </tr> 
-                                      
-                                     <tr>                                       
-                                        <th>Status</th>
-                                        <td class="skyblue-text">{{usedAd.status}}</td>
-                                     </tr>
-                                        
-                                     <tr>
-                                        <th>Reports on Ad</th>
-                                        <td class="skyblue-text">{{usedAd.reportOnAd}}</td>
-                                    </tr>
-                            </table>
+                        <div class="modal-body">
+                            <form name="userFrom1">
+                                <div class="table-responsive cus-table">
+                                    <div class="gift-images" ng-repeat="usedAd in usedAd">
+                                        <img src="{{usedAd.coverImage}} " style="height:300px;" class="img-responsive">
+                                        <div class="gift-images-data">
+                                            <div class="top-row-c1">
+                                                <div class="top-row-c1-left">
+                                                    <h4>{{usedAd.pageName}}</h4>
+                                                    <div class="cus-date-c1"><label>Valid Thru : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div>
+                                                </div>
+                                                <!-- <div class="top-row-c1-right">
+                                                    <div class="c1-used">{{usedAd.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+                                                </div> -->
+                                                <div class="valid-block" >
+                                                    <span class="valid-txt">{{usedAd.couponStatus}}</span>
+                                                    <span class="valid-box"><i class="fa fa-circle"></i></span>
+                                                </div>
+                                                <div class="middle-row-c1">
+                                                    <h3>Gift Description</h3>
+                                                    <p>{{usedAd.giftDescription}}</p>
+                                                </div>
+                                                <!-- <div class="middle-row-c1">
+                                                    <h3>Price</h3>
+                                                    <p>{{usedAd.couponSellPrice}}</p>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-           </div> -->
-            <div class="modal-body">
-                <form name="userFrom1">
-                    <div class="table-responsive cus-table">
-                        <div class="gift-images" ng-repeat="usedAd in usedAd">
-                            <img src="{{usedAd.coverImage}} " style="height:300px;" class="img-responsive">
-                            <div class="gift-images-data">
-                                <div class="top-row-c1">
-                                    <div class="top-row-c1-left">
-                                        <h4>{{usedAd.pageName}}</h4>
-                                        <div class="cus-date-c1"><label>Valid Till : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div>
-                                    </div>
-                                    <div class="top-row-c1-right">
-                                        <div class="c1-used">{{usedAd.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
-                                    </div>
-                                    <div class="middle-row-c1">
-                                        <h3>Gift Description</h3>
-                                        <p>{{usedAd.giftDescription}}</p>
-                                    </div>
-                                    <div class="middle-row-c1">
-                                        <h3>Price</h3>
-                                        <p>{{usedAd.couponSellPrice}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
-        </div>
-    </div>
-</div>
 
 
 <div id="upgradePayment" class="modal fade">
@@ -1055,131 +1108,6 @@
     </div>
 </div>
 
-<div id="pageInfo" class="modal fade">
-    <div class="modal-dialog cls_pop">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Page Information</h4>
-            </div>
-            <div class="modal-body">
-                <form name="userFrom1">
-                    <div class="table-responsive cus-table">
-                        <table class="table table-bordered table-striped">
-                            <tr>
-                                <th>Page Name</th>
-                                <td ng-repeat="detail in pageDetail">{{detail.pageName}}</td>
-                            </tr>
-                            <tr>
-                                <th>category</th>
-                                <td ng-repeat="detail in pageDetail">{{detail.pageType}}</td>
-                            </tr>
-                            <tr>
-                                <th>subCategory</th>
-                                <td ng-repeat="detail in pageDetail">{{detail.category}}</td>
-                            </tr>
-                            <tr>
-                                <th>adsType</th>
-                                <td ng-repeat="detail in pageDetail">{{detail.subCategory}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="adInfo" class="modal fade">
-    <div class="modal-dialog cls_pop">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Ad Information</h4>
-            </div>
-            <div style="height:400px;">
-                <div class="col-sm-12">
-                    <div class="gift-images">
-                        <img src="{{userDetail.coverImage}}" style="height:300px;" class="img-responsive">
-                        <div class="gift-images-data">
-                            <div class="top-row-c1">
-                                <div class="top-row-c1-left">
-                                    <h4>{{userDetail.adsType}}</h4>
-                                    <div class="cus-date-c1"><label>Valid Till : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div>
-                                </div>
-                                <div class="top-row-c1-right">
-                                    <div class="c1-used">{{userDetail.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
-                                    <!-- <div class="c1-share"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</div> -->
-                                </div>
-                                <div class="middle-row-c1">
-                                    <h3>Gift Description</h3>
-                                    <p>{{userDetail.giftDescription}}</p>
-                                </div>
-                                <div class="middle-row-c1">
-                                    <h3>Price</h3>
-                                    <p>{{userDetail.couponSellPrice}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="cashGift" class="modal fade">
-    <div class="modal-dialog cls_pop">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Cash Gift</h4>
-            </div>
-            <div style="height:400px;">
-                <div class="col-sm-12">
-                    <div class="gift-images">
-                        <img src="{{userDetail.coverImage}}" style="height:300px;" class="img-responsive">
-                        <div class="gift-images-data">
-                            <div class="top-row-c1">
-                                <div class="left-img-txt">
-                                    <div class="type-s">gfhh</div>
-                                    <div class="g-layer-txt text-center">fgdfgdf</div>
-                                    <div class="type-s">Type: {{userDetail.adsType}}</div>
-                                </div>
-                                <div class="top-row-c1-left">
-                                   <!--  <h4>{{userDetail.pageName}}</h4> -->
-                                    <!-- <h4>Type: {{userDetail.adsType}}</h4> -->
-                                    <!-- <div class="cus-date-c1"><label>Valid Till : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div> -->
-                                </div>
-                                <!-- <div class="top-row-c1-right">
-                                    <div class="c1-used">Cash Status: {{userDetail.cashStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
-                                  
-                                </div> -->
-                                <div class="valid-block">
-                                    <span class="valid-txt">{{data.status}}</span>
-                                    <span class="valid-box"><i class="fa fa-circle"></i></span>
-                                </div>
-                                <div class="middle-row-c1 middle-price-text">
-                                    <h3>Gift Description</h3>
-                                    <p>{{userDetail.giftDescription}}</p>
-                                </div>
-                                <div class="middle-row-c1 middle-price-text">
-                                    <h3>Price :  <span>{{userDetail.cashAdPrize}}</span></h3>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
 
 <div id="top_50_Ads" class="modal fade">
     <div class="modal-dialog cls_pop">
@@ -1198,7 +1126,7 @@
                                     <div class="top-row-c1-left">
                                         <h4>{{ads.pageName}}</h4>
                                         <h4>Type: {{ads.adsType}}</h4>
-                                        <div class="cus-date-c1"><label>Valid Till : </label><span>{{ads.couponExpiryDate | date:dd-MM-yyyy}}</span></div>
+                                        <div class="cus-date-c1"><label>Valid Thru : </label><span>{{ads.couponExpiryDate | date:dd-MM-yyyy}}</span></div>
                                     </div>
                                     <div class="top-row-c1-right">
                                         <div class="c1-used">Status: {{ads.couponStatus}}

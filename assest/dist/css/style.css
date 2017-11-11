@@ -12,6 +12,10 @@ body {overflow-x: hidden;}
 	border-color: #fff;
 	text-align:center;
 }
+.full-cls{
+  padding-top: 49px!important;
+  line-height: 25px!important;
+}
 .panel-login>.panel-heading a{
 	text-decoration: none;
 	color: #666;
@@ -24,6 +28,9 @@ body {overflow-x: hidden;}
 .panel-login>.panel-heading a.active{
 	color: #029f5b;
 	font-size: 18px;
+}
+.bootstrap-dialog.type-primary .modal-header {
+    background-color: #00B288!important;
 }
 .panel-login>.panel-heading hr{
 	margin-top: 10px;

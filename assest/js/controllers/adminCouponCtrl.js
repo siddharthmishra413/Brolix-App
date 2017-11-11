@@ -7,8 +7,8 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
     $scope.user = {};
     $scope.mydata = {};
     $scope.minDate = new Date().toDateString();
-
-
+    $scope.user.photo = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503655905/uk0wjh6hi4ihc2wsv4xy.png';
+    $scope.user.giftImage = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503656038/m1w8dqdpqnhkduxtaukw.png';
     userService.adminProfile().success(function(res) {
         if (res.responseCode == 200) {
             console.log("sss",JSON.stringify(res))
@@ -46,7 +46,6 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
    //     }
         
    //  }
-    
     $scope.addCouponFun = function() {
         $scope.couponDeatil = false;
         $scope.addNewCoupon = true;
@@ -63,6 +62,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
 
     userService.getPage().success(function(res) {
         if (res.responseCode == 200) {
+            console.log("pages =>"+JSON.stringify(res.result));
             $scope.pageDetail = res.result;
         } else {
             //toastr.error(res.responseMessage);
@@ -186,7 +186,7 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
             "couponExpiryInString":$scope.couponExpiryInString
 
         }
-        console.log("data",data)
+        console.log("Add coupon data =>",data)
         userService.addCoupon(data).then(function(success) {
             if (success.data.responseCode == 200) {
                 toastr.success(success.data.responseMessage);

@@ -253,7 +253,7 @@
                         <form class="form-inline ">
                             <div class="form-group ">
                                 <div class="input-group ">
-                                    <input type="text " class="form-control " ng-model="test " maxlength="15 " ng-maxlength="15 " placeholder="Search By Owner Name " required>
+                                    <input type="text " class="form-control " ng-model="test " maxlength="15 " ng-maxlength="15 " placeholder="Search By Buyer Name " required>
                                     <div class="input-group-addon ">Search</div>
                                 </div>
                             </div>
@@ -270,7 +270,7 @@
                                 <tr>
                                     <th>Cards Type</th>
                                     <th>Price</th>
-                                    <th>Owner Name</th>
+                                    <th>Buyer Name</th>
                                     <th>Buyer PayPal</th>
                                     <th>Used Ad</th>
                                     <th>Pages</th>
@@ -286,7 +286,7 @@
                                     <td ng-if="x.upgradeCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="upgradeCardUsedAd(x.upgradeCardObject._id) ">View</td>
                                     <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
                                 </tr>
-                                <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0 ">
+                                <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0  || totalSoldUpgradeCard == undefined">
                                     <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
                             </tbody>
@@ -311,7 +311,7 @@
                                     <td>{{x.upgradeCardObject.viewers}} Viewers</td>
                                     <td>{{x.upgradeCardObject.cash}}$</td>
                                 </tr>
-                                <tr ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length==0 ">
+                                <tr ng-if="(totalIncomeInCashFromUpgradeCard | cardsFilter:test).length==0  || totalIncomeInCashFromUpgradeCard == undefined">
                                     <td colspan="2 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
 
@@ -330,7 +330,7 @@
                                 <tr>
                                     <th>Cards Type</th>
                                     <th>Price</th>
-                                    <th>Owner Name</th>
+                                    <th>Buyer Name</th>
                                     <th>Buyer PayPal</th>
                                     <th>Used Ad</th>
                                     <th>Pages</th>
@@ -346,7 +346,7 @@
                                     <td ng-if="x.upgradeCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="upgradeCardUsedAd(x.upgradeCardObject._id) ">View</td>
                                     <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
                                 </tr>
-                                <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0 ">
+                                <tr ng-if="(usedUpgradeCard | cardsFilter:test).length==0 || usedUpgradeCard == undefined">
                                     <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
                             </tbody>
@@ -401,7 +401,7 @@
                                 <tr>
                                     <th>Cards Type</th>
                                     <th>Price</th>
-                                    <th>Owner Name</th>
+                                    <th>Buyer Name</th>
                                     <th>Buyer PayPal</th>
                                     <th>Used Ad</th>
                                     <th>Pages</th>
@@ -417,7 +417,7 @@
                                     <td ng-if="x.upgradeCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="upgradeCardUsedAd(x.upgradeCardObject._id) ">View</td>
                                     <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
                                 </tr>
-                                <tr ng-if="(totalSoldUpgradeCard | cardsFilter:test).length==0 ">
+                                <tr ng-if="(unUsedUpgradeCard | cardsFilter:test).length==0 || unUsedUpgradeCard == undefined">
                                     <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
                             </tbody>
@@ -478,7 +478,7 @@
                                 <tr>
                                     <th>Chances</th>
                                     <th>Brolix</th>
-                                    <th>Owner Name</th>
+                                    <th>Buyer Name</th>
                                     <th>Mobile Number</th>
                                     <th>Used Ad</th>
                                     <th>Pages</th>
@@ -494,7 +494,7 @@
                                     <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
                                     <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
                                 </tr>
-                                <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 ">
+                                <tr ng-if="(totalSoldLuckCard | cardsFilter:test).length==0 || totalSoldLuckCard == undefined">
                                     <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
 
@@ -520,7 +520,7 @@
                                     <td>{{x.luckCardObject.chances}} Chances</td>
                                     <td>{{x.luckCardObject.brolix}} B</td>
                                 </tr>
-                                <tr ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length==0 ">
+                                <tr ng-if="(totalIncomeInBrolixFromLuckCard | cardsFilter:test).length == 0 || totalIncomeInBrolixFromLuckCard == undefined">
                                     <td colspan="2 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
                             </tbody>
@@ -538,14 +538,14 @@
                                 <tr>
                                     <th>Chances</th>
                                     <th>Brolix</th>
-                                    <th>Owner Name</th>
+                                    <th>Buyer Name</th>
                                     <th>Mobile Number</th>
                                     <th>Used Ad</th>
                                     <th>Pages</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr dir-paginate="x in usedLuckCard | cardsFilter:test | itemsPerPage:10 ">
+                                <tr dir-paginate="x in usedLuckCard | cardsFilter:test | itemsPerPage:10 " pagination-id="tableLuck">
                                     <td>{{x.luckCardObject.chances}}</td>
                                     <td>{{x.luckCardObject.brolix}}</td>
                                     <td class="skyblue-text " style="cursor: pointer; " ng-click="userInfo(x._id) ">{{x.firstName}} {{x.lastName}}</td>
@@ -554,14 +554,14 @@
                                     <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
                                     <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
                                 </tr>
-                                <tr ng-if="(usedLuckCard | cardsFilter:test).length==0 ">
-                                    <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                <tr ng-if="(usedLuckCard | cardsFilter:test).length == 0 || usedLuckCard == undefined">
+                                    <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
 
                             </tbody>
                         </table>
                         <div class="col-sm-12 text-center ">
-                            <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
+                            <dir-pagination-controls max-size="10 " pagination-id="tableLuck" direction-links="true " boundary-links="true "></dir-pagination-controls>
                         </div>
                     </div>
                 </div>
@@ -572,7 +572,7 @@
                                 <tr>
                                     <th>Chances</th>
                                     <th>Brolix</th>
-                                    <th>Owner Name</th>
+                                    <th>Buyer Name</th>
                                     <th>Mobile Number</th>
                                     <th>Used Ad</th>
                                     <th>Pages</th>
@@ -588,7 +588,7 @@
                                     <td ng-if="x.luckCardObject.status=='INACTIVE' " class="skyblue-text " style="cursor: pointer; " ng-click="luckCardUsedAd(x.luckCardObject._id) ">View</td>
                                     <td class="skyblue-text " style="cursor: pointer; " ng-click="pageCount(x._id) ">{{x.pageCount}}</td>
                                 </tr>
-                                <tr ng-if="(unUsedLuckCard | cardsFilter:test).length==0 ">
+                                <tr ng-if="(unUsedLuckCard | cardsFilter:test).length==0 || unUsedLuckCard == undefined">
                                     <td colspan="6 " style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                 </tr>
 
@@ -694,7 +694,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <table id="manageCardTable " class="table table-bordered table-striped ">
+                            <table id="manageCardTable " class="table table-bordered table-striped " >
                                 <thead>
                                     <tr>
                                         <th>Select</th>
@@ -704,6 +704,7 @@
                                         <th>Offer Expire Time</th>
                                         <th>Status</th>
                                         <th>Cards</th>
+                                        <th>Remaining Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -717,8 +718,11 @@
                                         <td>{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>
                                         <td>{{x.status}}</td>
                                         <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferUpgradeDis(x._id.buyCard,x.offerType) ">{{x.count}}</td>
+                                        <td>{{x.hrs}}</td>
                                     </tr>
-
+                                    <tr ng-if="(totalSoldUpgradeCardDiscount | cardsFilter:test).length==0 || totalSoldUpgradeCardDiscount == undefined">
+                                        <td colspan="8" style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <div class="col-sm-12 text-center ">
@@ -750,6 +754,7 @@
                                         <th>Offer Expire Time</th>
                                         <th>Status</th>
                                         <th>Cards</th>
+                                        <th>Remaining Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -764,6 +769,10 @@
                                         <td>{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>
                                         <td>{{x.status}}</td>
                                         <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferUpgradeBuy(x._id.buyCard,x._id.freeCard,x.offerType) ">{{x.count}}</td>
+                                        <td>{{x.hrs}}</td>
+                                    </tr>
+                                    <tr ng-if="(totalSoldUpgradeCardDiscountBuyGet | cardsFilter:test).length==0 || totalSoldUpgradeCardDiscountBuyGet == undefined">
+                                        <td colspan="8" style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -808,6 +817,7 @@
                                         <th>Offer Expire Time</th>
                                         <th>Status</th>
                                         <th>Cards</th>
+                                        <th>Remaining Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -821,8 +831,11 @@
                                         <td>{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>
                                         <td>{{x.status}}</td>
                                         <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferLuckDis(x._id.buyCard,x.offerType) ">{{x.count}}</td>
+                                        <td>{{x.hrs}}</td>
                                     </tr>
-
+                                    <tr ng-if="(totalSoldLuckCardDiscount | cardsFilter:test).length==0 || totalSoldLuckCardDiscount == undefined">
+                                        <td colspan="8" style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <div class="col-sm-12 text-center ">
@@ -852,6 +865,7 @@
                                         <th>Offer Expire Time</th>
                                         <th>Status</th>
                                         <th>Cards</th>
+                                        <th>Remaining Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -866,6 +880,10 @@
                                         <td>{{x.offerTime | date:'dd-M-yyyy H:mm'}}</td>
                                         <td>{{x.status}}</td>
                                         <td class="skyblue-text " style="cursor: pointer; " ng-click="cardOnOfferLuckBuy(x._id.buyCard,x._id.freeCard,x.offerType) ">{{x.count}}</td>
+                                        <td>{{x.hrs}}</td>
+                                    </tr>
+                                    <tr ng-if="(totalSoldLuckCardDiscountBuyGet | cardsFilter:test).length==0 || totalSoldLuckCardDiscountBuyGet == undefined">
+                                        <td colspan="9" style="text-align: center;font-weight: bold;color:#FF5063 "> No Records Found</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1045,130 +1063,14 @@
                     </div>
                 </div>
 
-                <div id="luckCardUsedAdd" class="modal fade ">
+              
+
+                <div id="sendMessageModelAllUser" class="modal fade ">
                     <div class="modal-dialog cls_pop ">
                         <div class="modal-content ">
                             <div class="modal-header ">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title ">Used Ad Information</h4>
-                            </div>
-                            <div class="modal-body ">
-                                <form name="userFrom1 ">
-                                    <div class="table-responsive cus-table ">
-                                        <table id="manageUserTable" class="table table-bordered table-striped">
-                                        <tr>                                      
-                                        <th>CreatedAt</th>
-                                        <td class="skyblue-text">{{usedAd[0].createdAt | date:'MM-dd-yyyy'}}</td>
-                                        </tr>   
-                                        <tr>
-                                        <th>Updated At</th>
-                                        <td class="skyblue-text">{{usedAd[0].updatedAt | date:'MM-dd-yyyy'}}</td>
-                                        </tr>
-                                        <tr>
-                                        <th>Page Name</th>
-                                        <td class="skyblue-text">{{usedAd[0].pageName}}</td>
-                                        </tr>
-                                        <tr>
-                                         <th>Category</th>
-                                        <td class="skyblue-text">{{usedAd[0].category}}</td>
-                                        </tr>
-                                        <tr>
-                                        <th>Sub Category</th>
-                                        <td class="skyblue-text">{{usedAd[0].subCategory}}</td>
-                                        </tr>
-                                        <tr>
-                                        <th>Ad Type</th>
-                                        <td class="skyblue-text">{{usedAd[0].adsType}}</td>
-                                        </tr>  
-                                        <tr>
-                                        <th>Number of Images</th>
-                                        <td class="skyblue-text">{{usedAd[0].dawnloadPagePhoto.length}}</td>
-                                        </tr>
-                                        <tr>
-                                        <th>Video Length</th>
-                                        <td class="skyblue-text">1:30/3Mb</td>
-                                        </tr>
-                                        <tr>   
-                                        <th>Cover Image</th>                               
-                                        <td class="skyblue-text"><img ng-src="{{usedAd[0].coverImage}}"height="50px" ></td>
-                                        </tr>
-                                        <tr>   
-                                        <th>Download Links</th>                               
-                                        <td class="skyblue-text">{{usedAd[0].linkCount}}</td>
-                                        </tr>
-                                        <tr>   
-                                        <th>Gift Description</th>                               
-                                        <td class="skyblue-text">{{usedAd[0].giftDescription}}</td>
-                                        </tr>
-                                        <tr>   
-                                        <th>Gift Image</th>                               
-                                         <td class="skyblue-text">{{usedAd[0].giftDescription == "" ? "No" : "Yes"}}</td>
-                                        </tr>
-                                        <tr>                                       
-                                        <th>Hidden Gift</th> 
-                                        <td class="skyblue-text">{{usedAd[0].hiddenGifts.length > 0 ? "Yes" : "No"}}</td>
-                                        </tr>
-                                        <tr>                                       
-                                        <th>No. of Codes</th> 
-                                        <td class="skyblue-text">{{usedAd[0].hiddenGifts.length}}</td>
-                                        </tr>
-                                        <tr>                                       
-                                        <th>Upgraded</th> 
-                                        <td class="skyblue-text">{{usedAd[0].luckCardListObject == "" ? "No" : "Yes"}}</td>
-                                        </tr>
-                                        <tr>                                       
-                                        <th>Card Price</th> 
-                                        <td class="skyblue-text">{{usedAd[0].cash}}</td>
-                                        </tr>
-                                        <tr>                                       
-                                        <th>No. of Viewers</th> 
-                                        <td class="skyblue-text">{{usedAd[0].viewers}}</td>
-                                        </tr>
-                                        <tr>                                       
-                                        <th>No. of Winners</th> 
-                                        <td class="skyblue-text">{{usedAd[0].numberOfWinners}}</td>
-                                        </tr>
-                                        <tr>                                       
-                                        <th>Post on Store</th> 
-                                        <td class="skyblue-text">{{usedAd[0].postonStore == "" ? "No" : "Yes"}}</td>
-                                        </tr>
-                                        <tr>                                       
-                                        <th>Targeted Location</th> 
-                                        <td class="skyblue-text">Country - {{usedAd[0].whoWillSeeYourAdd.country}} , city - {{usedAd[0].whoWillSeeYourAdd.city}}</td>
-
-                                        </tr>
-                                        <tr>                                       
-                                        <th>Targeted Gender</th> 
-                                        <td class="skyblue-text">{{usedAd[0].gender}}</td>
-                                        </tr>
-                                        <tr>                                       
-                                        <th>Targeted Age</th> 
-                                        <td class="skyblue-text">{{usedAd[0].ageFrom}}-{{usedAd[0].ageTo}}</td>
-                                        </tr> 
-
-                                        <tr>                                       
-                                        <th>Status</th>
-                                        <td class="skyblue-text">{{usedAd[0].status}}</td>
-                                        </tr>
-
-                                        <tr>
-                                        <th>Reports on Ad</th>
-                                        <td class="skyblue-text">{{usedAd[0].reportOnAd}}</td>
-                                        </tr>
-                                        </table>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sendMessageModelAllUser " class="modal fade ">
-                    <div class="modal-dialog cls_pop ">
-                        <div class="modal-content ">
-                            <div class="modal-header ">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title ">Send message Buyer</h4>
+                                <h4 class="modal-title ">Send message to Buyers</h4>
                             </div>
                             <div class="modal-body ">
                                 <form name="sendMessage ">
@@ -1424,3 +1326,50 @@
                         </div>
                     </div>
                 </div>
+
+          <div id="luckCardUsedAdd" class="modal fade">
+                <div class="modal-dialog cls_pop">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Used Ad Information</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-outer-block">
+                                <div class="add-user panel panel-default cust-panel" style="margin:0;">
+                                    <div class="table-responsive cus-table">
+                                    <div class="modal-body">
+                                        <form name="userFrom1">
+                                            <div class="table-responsive cus-table">
+                                                <div class="gift-images" ng-repeat="usedAd in usedAd">
+                                                    <img src="{{usedAd.coverImage}} " style="height:300px;" class="img-responsive">
+                                                    <div class="gift-images-data">
+                                                        <div class="top-row-c1">
+                                                            <div class="top-row-c1-left">
+                                                                <h4>{{usedAd.pageName}}</h4>
+                                                                <div class="cus-date-c1"><label>Valid Thru : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div>
+                                                            </div>
+                                                            <!-- <div class="top-row-c1-right">
+                                                                <div class="c1-used">{{usedAd.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+                                                            </div> -->
+                                                            <div class="valid-block" >
+                                                                <span class="valid-txt">{{usedAd.couponStatus}}</span>
+                                                                <span class="valid-box"><i class="fa fa-circle"></i></span>
+                                                            </div>
+                                                            <div class="middle-row-c1">
+                                                                <h3>Gift Description</h3>
+                                                                <p>{{usedAd.giftDescription}}</p>
+                                                            </div>
+                                                            <!-- <div class="middle-row-c1">
+                                                                <h3>Price</h3>
+                                                                <p>{{usedAd.couponSellPrice}}</p>
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>

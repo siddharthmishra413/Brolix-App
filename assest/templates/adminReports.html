@@ -9,20 +9,26 @@
             <h3 class="text-center">User Type Report Information</h3>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
-                    <tr>
-                        <th>User Name</th>
-                        <th>ReportType</th>
-                        <th>Subject</th>
-                        <th>Reported Time</th>
-                        <th>Message</th>
-                    </tr>
-                    <tr dir-paginate="x in allReportsuserType | itemsPerPage:10">
-                        <td class="skyblue-text" style="cursor:pointer;">{{x.userId.firstName}} {{x.userId.lastName}}</td>
-                        <td>{{x.reportType}}</td>
-                        <td>{{x.subject}}</td>
-                        <td>{{x.createdAt | date:'MMMM dd, yyyy' }}</td>
-                        <td class="skyblue-text" style="cursor:pointer;" ng-click="openMessage(x.reportDiscription);">View</td>
-                    </tr>
+                    <thead>
+                        <input type="text" class="form-control" ng-model="search" style="width:180px;margin:10px;" placeholder="search by name">
+                        <tr>
+                            <th>User Name</th>
+                            <th>ReportType</th>
+                            <th>Subject</th>
+                            <th>Reported Time</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        <tr dir-paginate="x in allReportsuserType | customUserReports:search | itemsPerPage:10">
+                            <td class="skyblue-text" style="cursor:pointer;">{{x.userId.firstName}} {{x.userId.lastName}}</td>
+                            <td>{{x.reportType}}</td>
+                            <td>{{x.subject}}</td>
+                            <td>{{x.createdAt | date:'MMMM dd, yyyy' }}</td>
+                            <td class="skyblue-text" style="cursor:pointer;" ng-click="openMessage(x.reportDiscription);">View</td>
+                        </tr>
+                    </tbody>
                 </table>
                 <div class="col-sm-12 text-center ">
                     <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>
@@ -39,16 +45,21 @@
             <h3 class="text-center">Ads Type Report Information</h3>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
-                    <tr>
-                        <th>User Name</th>
-                        <th>ReportType</th>
-                        <th>Reported Time</th>
-                    </tr>
-                    <tr dir-paginate="x in allReportsAdsType | itemsPerPage:10">
-                        <td class="skyblue-text" style="cursor:pointer;">{{x.userId.firstName}} {{x.userId.lastName}}</td>
-                        <td>{{x.reportType}}</td>
-                        <td>{{x.createdAt | date:'MMMM dd, yyyy' }}</td>
-                    </tr>
+                     <thead>
+                        <input type="text" class="form-control" ng-model="search" style="width:180px;margin:10px;" placeholder="search by page name">
+                        <tr>
+                            <th>User Name</th>
+                            <th>ReportType</th>
+                            <th>Reported Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="x in allReportsAdsType | customAd:search  | itemsPerPage:10">
+                            <td class="skyblue-text" style="cursor:pointer;">{{x.userId.firstName}} {{x.userId.lastName}}</td>
+                            <td>{{x.reportType}}</td>
+                            <td>{{x.createdAt | date:'MMMM dd, yyyy' }}</td>
+                        </tr>
+                    </tbody>
                 </table>
                 <div class="col-sm-12 text-center ">
                     <dir-pagination-controls max-size="10 " direction-links="true " boundary-links="true "></dir-pagination-controls>

@@ -23,7 +23,7 @@ app.controller('addSystemUserCtrl', function($scope, $window, userService, $stat
     }
 
     $scope.addSystemUser = function() {
-        console.log("alll data ",$scope.myFrom)
+        console.log("alll data ",JSON.stringify($scope.myFrom))
         var data=[];
        angular.forEach($scope.myFrom.permissions,function(value,key){
           data.push(key);

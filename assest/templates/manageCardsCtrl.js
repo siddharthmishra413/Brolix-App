@@ -1221,7 +1221,6 @@ app.filter("cardsFilter", function() {
                 retArray.push(items[i])
             }
         }
-        console.log("return =>"+retArray)
 
         return retArray;
 

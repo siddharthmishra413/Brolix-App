@@ -9,16 +9,16 @@ app.controller('brolixAndDollarsCtrl', function($scope, $window, userService, $s
         if (res.responseCode == 200){
 
         	
-            $scope.brolixPerFreeCouponAds = res.result[1].value;
-            $scope.brolixPerFreeCashAds = res.result[2].value;
-            $scope.brolixPerUpgradedCashAds = res.result[3].value;
-            $scope.brolixForInvitation = res.result[4].value;
-            $scope.viewerPriceForCashAds = res.result[5].value;
-            $scope.brolixFeeForCashAds = res.result[6].value;
-            $scope.storeCouponPriceForFreeAds = res.result[7].value;
-            $scope.storeCouponPriceForUpgradedAds = res.result[8].value;
-            $scope.freeViewersPerCouponAds = res.result[9].value;
-            $scope.freeViewersPerCashAds = res.result[10].value;
+            $scope.brolixPerFreeCouponAds = res.result[0].value;
+            $scope.brolixPerFreeCashAds = res.result[1].value;
+            $scope.brolixPerUpgradedCashAds = res.result[2].value;
+            $scope.brolixForInvitation = res.result[3].value;
+            $scope.viewerPriceForCashAds = res.result[4].value;
+            $scope.brolixFeeForCashAds = res.result[5].value;
+            $scope.storeCouponPriceForFreeAds = res.result[6].value;
+            $scope.storeCouponPriceForUpgradedAds = res.result[7].value;
+            $scope.freeViewersPerCouponAds = res.result[8].value;
+            $scope.freeViewersPerCashAds = res.result[9].value;
             console.log("res",JSON.stringify(res.result));
         } else {
             toastr.error(res.responseMessage);

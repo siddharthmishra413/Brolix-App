@@ -7,8 +7,8 @@ app.controller('createCardCtrl', function($scope, $state, $window, userService, 
     $scope.myForm = {};
     $scope.active_upgrade_card=true;
 
-$scope.createCard.image='http://res.cloudinary.com/dfrspfd4g/image/upload/v1500640275/t2lzgz0tmoriwjd5ymcv.png';
-$scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1500640526/wnsk2mrt3kwitnzgaqiw.png';
+$scope.createCard.image='http://res.cloudinary.com/dfrspfd4g/image/upload/v1503656038/m1w8dqdpqnhkduxtaukw.png';
+$scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1503655905/uk0wjh6hi4ihc2wsv4xy.png';
 
     $scope.active_tab=function(active_card){
         if(active_card=='upgrade_card'){
@@ -24,12 +24,12 @@ $scope.createCard.image2='http://res.cloudinary.com/dfrspfd4g/image/upload/v1500
         if(type=='upgrade'){
             $scope.createCard.viewers = "";
             $scope.createCard.price = "";
-            $scope.createCard.image = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1500640275/t2lzgz0tmoriwjd5ymcv.png';
+            $scope.createCard.image = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503656038/m1w8dqdpqnhkduxtaukw.png';
         }
         else{
             $scope.createCard.chance = "";
             $scope.createCard.brolix = "";
-            $scope.createCard.image2 = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1500640526/wnsk2mrt3kwitnzgaqiw.png';
+            $scope.createCard.image2 = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503655905/uk0wjh6hi4ihc2wsv4xy.png';
 
         }
 

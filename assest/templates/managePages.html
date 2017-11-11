@@ -257,6 +257,9 @@
                         <td >{{x.winnersCount.length}}</td>
                         <td class="skyblue-text " style="cursor:pointer; " ng-click="showAdminPages(x._id) ">{{x.adAdminCount}}</td>
                     </tr>
+                    <tr ng-if="(totalPages | pagesFilter:test).length == 0 || totalPages == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
@@ -328,6 +331,9 @@
                         <td>{{x.winnersCount.length}}</td>
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
                     </tr>
+                    <tr ng-if="(unPublishedPage | pagesFilter:test).length == 0 || unPublishedPage == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center">
@@ -391,6 +397,9 @@
                         <td class="skyblue-text " style="cursor:pointer; " ng-click="showAdds(x._id) ">{{x.adsCount}}</td>
                         <td>{{x.winnersCount.length}}</td>
                         <td class="skyblue-text " style="cursor:pointer; " ng-click="showAdminPages(x._id) ">{{x.adAdminCount}}</td>
+                    </tr>
+                    <tr ng-if="(showAllRemovedPage | pagesFilter:test).length == 0 || showAllRemovedPage == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                     </tr>
                 </tbody>
             </table>
@@ -457,6 +466,9 @@
                         <td>{{x.winnersCount.length}}</td>
                         <td class="skyblue-text" style="cursor:pointer;" ng-click="showAdminPages(x._id)">{{x.adAdminCount}}</td>
                     </tr>
+                    <tr ng-if="(showAllBlockedPage | pagesFilter:test).length == 0 || showAllBlockedPage == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center">
@@ -501,6 +513,9 @@
                         <td><a class="skyblue-text" style="cursor:pointer;" ng-click="pageRequest(x._id,'REJECTED')">Reject</a></td>
                         
                     </tr>
+                    <tr ng-if="(removePageRequest | pagesFilter:test).length == 0 || removePageRequest == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="col-sm-12 text-center">
@@ -514,15 +529,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Send message to All User</h4>
+                    <h4 class="modal-title">Send message</h4>
                 </div>
                 <div class="modal-body">
                     <form name="sendMessage">
                         <div class="form-group">
-                            <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
+                            <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" required></textarea>
                             <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                         </div>
-                        <button type="submit" class="btn btn-danger" ng-click="send_massage()">Send message</button>
+                        <button type="submit" ng-disabled="sendMessage.massage == undefined || sendMessage.massage == ''" class="btn btn-danger" ng-click="send_massage()">Send message</button>
                     </form>
                 </div>
             </div>

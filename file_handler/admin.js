@@ -72,12 +72,15 @@ module.exports = {
                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "The email and password that you've entered doesn't match any account." }); } else if (result.password != req.body.password) { res.send({ responseCode: 404, responseMessage: "The password that you've entered is incorrect." }); } else if (result.email != req.body.email) {
                     res.send({ responseCode: 404, responseMessage: "The email address that you've entered doesn't match any account." });
                 } else {
+                    req.session.reset();
+
                     var token_data = {
                             _id: result._id,
                             status: result.status
                         }
                         // sets a cookie with the user's info
                     req.session.user = result;
+                    console.log("req.session.user",req.session.user)
                     var token = jwt.sign(token_data, config.secreteKey);
                     res.header({
                         "appToken": token
@@ -92,33 +95,44 @@ module.exports = {
     },
 
     "adminProfile": function(req, res) {
-        if (req.session && req.session.user) {
-            User.findOne({
-                email: req.session.user.email
+        User.findOne({
+                email: "deepakmobiloitte@gmail.com"
             }).exec(function(err, result) {
-                if (err) {
-                    res.send({
-                        responseCode: 500,
-                        responseMessage: 'Internal server error'
-                    });
-                } else if (!result) {
-                    req.session.reset();
-                } else {
-                    res.locals.user = result;
-                    res.send({
+                res.send({
                         result: result,
                         responseCode: 200,
                         responseMessage: "Login successfully."
                     });
-                }
             })
-        } else {
-            res.send({
-                responseCode: 404,
-                responseMessage: "Session has been expired."
-            });
-            //res.redirect('/login');
-        }
+            
+        // console.log("req.session.user=========",req.session.user)
+        // if (req.session && req.session.user) {
+        //     User.findOne({
+        //         email: req.session.user.email
+        //     }).exec(function(err, result) {
+        //         if (err) {
+        //             res.send({
+        //                 responseCode: 500,
+        //                 responseMessage: 'Internal server error'
+        //             });
+        //         } else if (!result) {
+        //             req.session.reset();
+        //         } else {
+        //             res.locals.user = result;
+        //             res.send({
+        //                 result: result,
+        //                 responseCode: 200,
+        //                 responseMessage: "Login successfully."
+        //             });
+        //         }
+        //     })
+        // } else {
+        //     res.send({
+        //         responseCode: 404,
+        //         responseMessage: "Session has been expired."
+        //     });
+        //     //res.redirect('/login');
+        // }
     },
 
     "addNewUser": function(req, res) {
@@ -198,11 +212,93 @@ module.exports = {
         })
     },
 
+    // "winners": function(req, res) {
+    //     waterfall([
+    //         function(callback) { // User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: updateData }).exec(function(err, result) {
+    //             User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }).exec(function(err, result) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+    //                     console.log("===================ccccccccccoooooooooouuuuuuuuuppppppa",result);
+    //                     var count1 = 0;
+    //                     for (i = 0; i < result.length; i++) {
+    //                         count1++;
+    //                     }
+    //                     console.log("coupon count--->>", count1)
+    //                     callback(null, count1)
+    //                 }
+    //             })
+    //         },
+    //         function(count1, callback) {
+    //             var totalCount;
+    //             User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+    //                     console.log("===================ccccccccccoooooooooouuuuuuuuuppppppa",result);
+    //                     var count2 = 0;
+    //                     for (i = 0; i < result.length; i++) {
+    //                         count2++;
+    //                     }
+    //                     console.log("cash Prizecount--->>", count2)
+    //                     totalCount = count1 + count2;
+
+    //                     callback(null, totalCount)
+    //                 }
+    //             })
+    //         },
+    //     ], function(err, result) {
+    //         res.send({
+    //             result: result,
+    //             responseCode: 200,
+    //             responseMessage: "Winners details show successfully."
+    //         })
+    //     })
+    // },
+
+
+    // "winners": function(req, res) {
+    //     waterfall([
+    //         function(callback) { // User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: updateData }).exec(function(err, result) {
+    //             User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }).exec(function(err, result) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+    //                     console.log("===================ccccccccccoooooooooouuuuuuuuuppppppa",result);
+    //                     var count1 = 0;
+    //                     for (i = 0; i < result.length; i++) {
+    //                         count1++;
+    //                     }
+    //                     console.log("coupon count--->>", count1)
+    //                     callback(null, count1)
+    //                 }
+    //             })
+    //         },
+    //         function(count1, callback) {
+    //             var totalCount;
+    //             User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+    //                     console.log("===================ccccccccccoooooooooouuuuuuuuuppppppa",result);
+    //                     var count2 = 0;
+    //                     for (i = 0; i < result.length; i++) {
+    //                         count2++;
+    //                     }
+    //                     console.log("cash Prizecount--->>", count2)
+    //                     totalCount = count1 + count2;
+
+    //                     callback(null, totalCount)
+    //                 }
+    //             })
+    //         },
+    //     ], function(err, result) {
+    //         res.send({
+    //             result: result,
+    //             responseCode: 200,
+    //             responseMessage: "Winners details show successfully."
+    //         })
+    //     })
+    // },
+
     "winners": function(req, res) {
         waterfall([
             function(callback) { // User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: updateData }).exec(function(err, result) {
-                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }).exec(function(err, result) {
+                User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER"}}).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                        console.log("===================ccccccccccoooooooooouuuuuuuuuppppppa",result);
                         var count1 = 0;
                         for (i = 0; i < result.length; i++) {
                             count1++;
@@ -216,6 +312,7 @@ module.exports = {
                 var totalCount;
                 User.aggregate({ $unwind: "$cashPrize" }).exec(function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                        console.log("===================ccccccccccoooooooooouuuuuuuuuppppppa",result);
                         var count2 = 0;
                         for (i = 0; i < result.length; i++) {
                             count2++;
@@ -235,7 +332,7 @@ module.exports = {
             })
         })
     },
-
+    
     "sendBrolix": function(req, res) {
         User.findOne({_id: req.body.userId}, function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } 
@@ -475,6 +572,33 @@ module.exports = {
     //     })
     // },
 
+    // "totalSoldUpgradeCard": function(req, res, query) {
+    //     console.log(query.length)
+    //     if (!(query.length == 1)) {
+    //         console.log("query")
+    //         var updateData = query;
+    //     } else {
+    //         console.log("rather than query")
+    //         var updateData = { 'upgradeCardObject.type': 'PURCHASED' }
+    //     }
+    //     User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: updateData }, { $sort : { 'upgradeCardObject.createdAt' : -1 } }).exec(function(err, result) {
+    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+    //             var count = 0;
+    //             for (i = 0; i < result.length; i++) {
+    //                 count++;
+    //             }
+    //             res.send({
+    //                 result: result,
+    //                 count: count,
+    //                 responseCode: 200,
+    //                 responseMessage: "Successfully shown list of upgrade card"
+    //             });
+    //         }
+    //     })
+    // },
+
+
+
     "totalSoldUpgradeCard": function(req, res, query) {
         console.log(query.length)
         if (!(query.length == 1)) {
@@ -484,7 +608,7 @@ module.exports = {
             console.log("rather than query")
             var updateData = { 'upgradeCardObject.type': 'PURCHASED' }
         }
-        User.aggregate({ $unwind: "$upgradeCardObject" }, { $match: updateData }, { $sort : { 'upgradeCardObject.createdAt' : -1 } }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$upgradeCardObject" },{ $sort : { 'upgradeCardObject.createdAt' : -1 } }).exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
@@ -499,6 +623,7 @@ module.exports = {
             }
         })
     },
+
 
 
     // "totalSoldLuckCard": function(req, res, query) {
@@ -986,14 +1111,44 @@ module.exports = {
         })
     },
 
+    // "couponWinners": function(req, res) {
+    //     User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }).exec(function(err, result) {
+    //         console.log("============yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy========",result,result.length)
+    //         if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
+    //             var count = 0;
+    //             for (i = 0; i < result.length; i++) {
+    //                 count++;
+    //             }
+    //             var pages = Math.ceil(count / 10);
+    //             console.log("555555555555555555555555555",pages);
+    //             User.populate(result, 'coupon.pageId', function(err, result2) {
+    //                 User.populate(result2, {
+    //                     path: 'coupon.pageId.userId',
+    //                     model: 'brolixUser',
+    //                     select: 'firstName lastName email'
+    //                 }, function(err, result3) {
+    //                     res.send({
+    //                         result: result3,
+    //                         total: count,
+    //                         responseCode: 200,
+    //                         responseMessage: "all coupon winner"
+    //                     });
+    //                 })
+    //             })
+    //         }
+    //     })
+    // },
+
     "couponWinners": function(req, res) {
-        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER", 'coupon.status': 'ACTIVE' } }).exec(function(err, result) {
+        User.aggregate({ $unwind: "$coupon" }, { $match: { 'coupon.type': "WINNER"} }).exec(function(err, result) {
+            console.log("============yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy========",result,result.length)
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No coupon found' }); } else {
                 var count = 0;
                 for (i = 0; i < result.length; i++) {
                     count++;
                 }
                 var pages = Math.ceil(count / 10);
+                console.log("555555555555555555555555555",pages);
                 User.populate(result, 'coupon.pageId', function(err, result2) {
                     User.populate(result2, {
                         path: 'coupon.pageId.userId',
@@ -1124,11 +1279,12 @@ module.exports = {
     "removePage": function(req, res) { // pageId in request
         waterfall([
         function(callback){  
-                createNewPage.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'status': 'REMOVED' } }).exec(function(err, result) {
+                createNewPage.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'status': 'REMOVED' } },{new:true}).exec(function(err, result) {
+                    console.log("========4444444444==========",result);
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 400, responseMessage: 'Please enter correct pageId.' }); } else {
                         var userId = result.userId;
                         User.findByIdAndUpdate({ _id: userId }, { $inc: { pageCount: -1 } }, { new: true }).exec(function(err, result1) {
-                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
+                            if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' });} else {
 
                                 callback(null, result)
                             }
@@ -1149,8 +1305,9 @@ module.exports = {
                                 pageArray1.push(result3.adAdmin[i].userId)
 
                             }
-                            console.log("admin array---->>",pageArray1)
-                            User.update({ _id: { $in: pageArray1 } }, { $inc: { pageCount: -1 } }, { new: true }).exec(function(err, result2) {
+                            console.log("admin array---->>",pageArray1);
+                            for(var k=0;k<pageArray1.length;k++){
+                            User.findOneAndUpdate({ _id: pageArray1[k]}, { $inc: { pageCount: -1 } }, { new: true,multi:true}).exec(function(err, result2) {
                                 console.log("user update--->>>>",result2)
                                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
                                     console.log("done")
@@ -1158,6 +1315,7 @@ module.exports = {
                                 }
                             })
                         } callback(null, pageResult)
+                    }
 
                     }
                 })
@@ -1165,6 +1323,7 @@ module.exports = {
             },
             function(pageresult2, callback) {
                 createNewAds.find({ pageId: req.params.id}, function(err, adResult) {
+                    console.log("=1111111111111111",adResult);
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (adResult.length == 0) { res.send({
                             result: pageresult2,
                             responseCode: 200,
@@ -1177,6 +1336,7 @@ module.exports = {
                                 pageArray.push(adResult[i]._id)
                             }
                         }
+                        console.log("=22222222222222222",pageArray);
                         for(var j=0; j<pageArray.length; j++){
                         createNewAds.update({ _id: pageArray[j] }, { $set: { status: "REMOVED" } }, { new: true }).exec(function(err, result2) {
                             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else {
@@ -1326,14 +1486,25 @@ module.exports = {
         })
     },
 
-    "showCardDetails": function(req, res) {
-        var cardId = req.params.id;
-        adminCards.findOne({ _id: cardId }, function(err, result) {
+//    "showCardDetails": function(req, res) {
+//        var cardId = req.params.id;
+//        adminCards.findOne({ _id: cardId }, function(err, result) {
+//            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+//                res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
+//            }
+//        })
+//    },
+    
+     "showCardDetails": function(req, res) {
+     var cardId = req.params.id;
+         console
+     adminCards.findOne({ _id: cardId }, function(err, result) {
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                 res.send({ responseCode: 200, responseMessage: 'Card find successfully', data: result });
             }
         })
     },
+
 
     "editCards": function(req, res) {
         var cardId = req.body.cardId;
@@ -1354,25 +1525,72 @@ module.exports = {
         })
     },
 
+    // "createOfferOnCard": function(req, res) {
+    //     console.log("req body create offer==>>",JSON.stringify(req.body))
+    //     var cardId = req.body.id;
+    //     adminCards.find({
+    //         _id: cardId,
+    //         'offer.offerTime': { $gte : req.body.offerTime },
+    //         'offer.status': 'ACTIVE'
+    //     },function(err, cardResult){
+    //         console.log("========44445445=========",cardResult);
+    //         if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
+    //           else if(cardResult && cardResult.offer.length>1){
+    //             res.send({ responseCode: 200, responseMessage: 'Only one offer can be apply at a time', data: result });
+    //           }
+    //         else if(cardResult.length == 0){
+    //             adminCards.findByIdAndUpdate(cardId, { $push: { offer: req.body } }, { new: true }, function(err, result) {
+    //                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+    //                     res.send({ responseCode: 200, responseMessage: 'Offer created on card successfully', data: result });
+    //                 }
+    //             })
+    //         }
+    //         else {
+
+                  
+    //             res.send({ responseCode: 404, responseMessage: 'You cannot create this offer.', ree: cardResult});
+
+    //         }
+    //     })
+      
+    // },
+
     "createOfferOnCard": function(req, res) {
         console.log("req body create offer==>>",JSON.stringify(req.body))
         var cardId = req.body.id;
+        var array = [];
+        array.push(req.body);
+        console.log("the body timestamp is+++++++++++", new Date(req.body.offerTime))
         adminCards.find({
-            _id: cardId,
-            'offer.offerTime': { $gte : req.body.offerTime },
-            'offer.status': 'ACTIVE'
+            _id: cardId
+            // 'offer[0].offerTime': { $lte : new Date(req.body.offerTime) },
+            // 'offer[0].status': 'ACTIVE'
         },function(err, cardResult){
+            console.log("========44445445=========",err,cardResult,cardResult[0].offer.length);
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } 
-            else if(cardResult.length == 0){
+              else if(cardResult && (cardResult[0].offer.length)>0){
+                  var myDate = new Date(cardResult[0].offer[0].offerTime);
+                  var result = myDate.getTime();
+                  var timestamp = Math.floor(Date.now() / 1000);
+                  if(result > timestamp && cardResult[0].offer[0].status !== 'REMOVED'){
+                res.send({ responseCode: 201, responseMessage: 'Only one offer can be applied at a time', data: result });
+                  }
+                  else{
+                    adminCards.findByIdAndUpdate(cardId, { $push: { offer: {$each:array,$position:0} } }, { new: true }, function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                            res.send({ responseCode: 200, responseMessage: 'Offer created on card successfully', data: result });
+                        }
+                    })
+                  }
+              }
+            else if(cardResult.length == 0 || cardResult[0].offer.length == 0){
                 adminCards.findByIdAndUpdate(cardId, { $push: { offer: req.body } }, { new: true }, function(err, result) {
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         res.send({ responseCode: 200, responseMessage: 'Offer created on card successfully', data: result });
                     }
                 })
             }
-            else {
-
-                  
+            else {  
                 res.send({ responseCode: 404, responseMessage: 'You cannot create this offer.', ree: cardResult});
 
             }
@@ -1498,6 +1716,7 @@ module.exports = {
             { $unwind: '$offer' },
             { $match: { type: req.body.cardType, "offer.status": 'ACTIVE' } }
         ]).exec(function(err, result) {
+            console.log("============",result);
             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.length == 0) {
                 res.send({ responseCode: 404, responseMessage: 'Data not found.' });
             } else {
@@ -1586,7 +1805,9 @@ module.exports = {
                 page.save(function(err, result) {
                   //  console.log("create page admin--->>>",result)
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                        console.log("111111111111111111111");
                         User.findByIdAndUpdate({ _id: req.body.userId }, { $inc: { pageCount: 1 } }).exec(function(err, result1) {
+                            console.log("2222222222222222222222",result1);
                             if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                                 var adminlength = result.adAdmin.length;
                                 var pageId = result._id;
@@ -1599,7 +1820,7 @@ module.exports = {
                                         console.log("admin Ayya---->>",adminArray)
                                         for(var j =0; j<adminArray.length; j++){
                                         User.update({ _id:adminArray[j]}, { $inc: { pageCount: 1 }, $set: { type: "Advertiser" } }).exec(function(err, result3) {
-                                            console.log("result---->>>",result3)
+                                            console.log("result----QQQQQQQQQQ>>>",result3)
                                              if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                                             else{
                                                 console.log("done")
@@ -2158,7 +2379,9 @@ module.exports = {
 
 
     "showUserPage": function(req, res) {
+        
         createNewPage.find({ userId: req.params.id, $or:[{status: "ACTIVE"},{status: "BLOCK"}] }, 'pageName').exec(function(err, result) {
+            console.log("response data============>",result);
             if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct user id." }); } else {
                 res.send({
                     result: result,
@@ -2169,11 +2392,51 @@ module.exports = {
         })
     },
 
+    // "showUserPage": function(req, res) {
+    //     waterfall([
+    //         function(callback) {
+    //             var userId = req.params.id;
+    //             createNewPage.find({ $or:[{status: "ACTIVE"},{status: "BLOCK"}] }).exec(function(err, result) {
+    //                 console.log("====================",result);
+    //                 if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); }
+    //                 else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No page found' }); } else {
+    //                     var pageArray = [];
+    //                     for (var i = 0; i < result.length; i++) {
+    //                         for (var j = 0; j < result[i].adAdmin.length; j++) {
+    //                             if (result[i].adAdmin[j].userId == userId) {
+    //                                 pageArray.push(result[i]._id)
+    //                             }
+    //                         }
+    //                     }
+    //                     callback(null, pageArray)
+    //                 }
+    //             })
+    //         },
+    //         function(pageArray, callback) {
+    //             createNewPage.find({ _id: { $in: pageArray } }).exec(function(err, result2) {
+    //                 console.log("786587468375",result2);
+    //                 if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
+    //                 else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
+    //                     callback(null, result2)
+    //                 }
+    //             })
+    //         },
+    //     ], function(err, result2) {
+    //         res.send({
+    //             result: result2,
+    //             responseCode: 200,
+    //             responseMessage: "All pages show successfully."
+    //         })
+    //     })
+        
+    // },
+
     "showUserAllPages": function(req, res) {
            waterfall([
             function(callback) {
                 var userId = req.params.id;
                 createNewPage.find({ $or:[{status: "ACTIVE"},{status: "BLOCK"}] }).exec(function(err, result) {
+                    console.log("====================",result);
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (!result) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); }
                     else if (result.length == 0) { res.send({ responseCode: 400, responseMessage: 'No page found' }); } else {
                         var pageArray = [];
@@ -2191,6 +2454,7 @@ module.exports = {
             function(pageArray, callback) {
                 var userId = req.params.id;
                 createNewPage.find({ userId: req.params.id, $or:[{status: "ACTIVE"},{status: "BLOCK"}]}, function(err, result1) {
+                    console.log("5555555555555",result1);
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
                         for (var k = 0; k < result1.length; k++) {
                             pageArray.push(result1[k]._id)
@@ -2201,6 +2465,7 @@ module.exports = {
             },
             function(pageArray, callback) {
                 createNewPage.find({ _id: { $in: pageArray } }).exec(function(err, result2) {
+                    console.log("786587468375",result2);
                     if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); }
                     else if (result2.length == 0) { res.send({ responseCode: 404, responseMessage: "No page found" }); } else {
                         callback(null, result2)
@@ -3531,6 +3796,7 @@ module.exports = {
     },
 
     "createSystemUser": function(req, res) {
+        console.log("reqqqqqqqqqqq",req.body.permissions);
         waterfall([
             function(callback) {
                 if (!req.body.permissions) { res.send({ responseCode: 403, responseMessage: 'Please enter permission to system admin' }); } else if (req.body.permissions.length == 0) { res.send({ responseCode: 403, responseMessage: 'Please give atleast one permission to system admin' }); } else {
@@ -3740,28 +4006,60 @@ module.exports = {
         var message = req.body.Message;
         var IosDevice = [];
         var androidDevice = [];
-        User.find({}, function(err, result) {
-            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Records not found" })
-            else {
-                // result[i].deviceType == 'Android' ? androidDevice.push(result[i].deviceToken) : IosDevice.push(result[i].deviceToken)
-                for (var i = 0; i < result.length; i++) {
-                    if (result[i].deviceToken && result[i].deviceType && result[i].notification_status && result[i].status) {
-                        console.log("enter in if")
-                        if (result[i].deviceType == 'Android' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
-                            functions.android_notification(result[i].deviceToken, message);
-                            console.log("Android notification send!!!!")
-                        } else if (result[i].deviceType == 'iOS' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
-                            functions.iOS_notification(result[i].deviceToken, message);
-                        } else {
-                            console.log("Something wrong!!!!")
-                        }
+
+        var data = {
+           // userId: req.body.userId,
+            type: i18n.__(message),
+          //  linkType: 'profile',
+            notificationType: 'adminPush',
+          //  image: image
+        }
+        waterfall([
+            function(cb) {
+                User.update({},{$push:{notification:data}},{multi:true},(update_err,update_success)=> {
+                    if(update_err) {
+                        cb(update_err,null)
+                          
                     }
-                }
-                //            functionHandler.android_notification(androidDevice, message);
-                //            functionHandler.iOS_notification(IosDevice,message);
-                res.send({ responseCode: 200, responseMessage: 'Message brodcast successfully' })
+                    else {
+                        cb(null,update_success)
+                    }
+                })
+
             }
+        ],function(update_err,result) {
+            if(update_err) {
+
+                res.send({ responseCode: 500, responseMessage: 'Internal server error' })
+            }
+            else {
+                User.find({}, function(err, result) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!result) return res.status(404).send({ responseMessage: "Records not found" })
+                    else {
+                        // result[i].deviceType == 'Android' ? androidDevice.push(result[i].deviceToken) : IosDevice.push(result[i].deviceToken)
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i].deviceToken && result[i].deviceType && result[i].notification_status && result[i].status) {
+                                console.log("enter in if")
+                                if (result[i].deviceType == 'Android' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
+                                    functions.android_notification(result[i].deviceToken, message);
+                                    console.log("Android notification send!!!!")
+                                } else if (result[i].deviceType == 'iOS' && result[i].notification_status == 'on' && result[i].status == 'ACTIVE') {
+                                    functions.iOS_notification(result[i].deviceToken, message);
+                                } else {
+                                    console.log("Something wrong!!!!")
+                                }
+                            }
+                        }
+                        //            functionHandler.android_notification(androidDevice, message);
+                        //            functionHandler.iOS_notification(IosDevice,message);
+                        res.send({ responseCode: 200, responseMessage: 'Message brodcast successfully' })
+                    }
+                })
+            }
+
         })
+       
+       
     },
 
     "uploadImage": function(req, res) {
@@ -4218,7 +4516,7 @@ module.exports = {
                         }
                     data1 = {
                         adId: req.body.couponId,
-                        type: i18n.__("I have sent you a coupon"),
+                        type: i18n.__("Congratulations, you have got a coupon from admin."),
                         linkType: 'profile',
                         notificationType: 'couponReceivedFromAdmin'
                     }

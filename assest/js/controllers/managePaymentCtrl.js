@@ -183,20 +183,17 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
     //********************* CashGift, Sold Coupon and Ad ****************
 
     $scope.adInfo = function(id) {
-        //console.log("adInfoId>>>"+JSON.stringify(id))
         userService.adInfo(id).then(function(success) {
-            //console.log("adInfoId>>>"+JSON.stringify(success))
             if (success.data.responseCode == 200) {
-                $scope.userDetail = success.data.result;
-                $("#adInfo").modal('show');
-                $scope.newDate = success.data.result.couponExpiryDate;
-                //console.log("adInfo>>>>>>>>>>>>>"+JSON.stringify(success.data.result))
+                console.log("success =>"+JSON.stringify(success.data))
+                  $scope.userDetail = success.data.result;
+                 $("#adInfoDetail").modal('show');
+                 $scope.newDate = success.data.result.couponExpiryDate;
             } else {
                 toastr.error(success.data.responseMessage)
             }
 
         }, function(err) {
-            //console.log(err);
             toastr.error('Connection error.');
         })
     }
@@ -205,7 +202,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
         userService.adInfo(id).then(function(success) {
             if (success.data.responseCode == 200) {
                 $scope.userDetail = success.data.result;
-                $("#cashGift").modal('show');
+                $("#cashGiftDetail").modal('show');
             } else {
                 toastr.error(success.data.responseMessage)
             }
@@ -251,10 +248,10 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
 
     $scope.top_50_dollarsBuyers = function() {
         userService.top_50_dollarsBuyers().then(function(success) {
-            console.log("success", success)
+            console.log("success dollars")
             if (success.data.responseCode == 200) {
                 $scope.userDetail = success.data.result;
-                $("#top_50_buyers").modal('show');
+                $("#top_50_dollars_buyers").modal('show');
                 // console.log(JSON.stringify(success.data.result))
             } else {
                 toastr.error(success.data.responseMessage);
@@ -267,11 +264,11 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
     }
     $scope.top_50_brolixBuyers = function() {
         userService.top_50_brolixBuyers(1).then(function(success) {
-            // console.log("ressss",JSON.stringify(success))
+             console.log(" Brolix")
             if (success.data.responseCode == 200) {
 
                 $scope.userDetail = success.data.result;
-                $("#top_50_buyers").modal('show');
+                $("#top_50_brolix_buyers").modal('show');
                 // console.log(JSON.stringify(success.data.result))
             } else {
                 toastr.error(success.data.responseCode);
@@ -750,7 +747,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
             console.log("1", JSON.stringify(data))
 
             userService.filterDollars(data).success(function(res) {
-                // console.log("ressss111",JSON.stringify(res))
+                 console.log("ressss111",JSON.stringify(res))
                 if (res.responseCode == 400) {
                     $scope.dollars = [];
                 } else if (res.responseCode == 200) {
@@ -781,6 +778,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
                 } else if (res.responseCode == 200) {
                     $scope.count = res.count;
                     $scope.dollarsCashGift = res.result;
+                    console.log("result =>"+$scope.dollarsCashGift)
                 }
             })
 
@@ -912,7 +910,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
                     city: $scope.myForm.city,
                     cashStatus: $scope.myForm.cashStatus
                 }
-                //console.log("dollarsCashGift"+JSON.stringify(data))
+                console.log("dollarsCashGift"+JSON.stringify(data))
                 userService.filterDollars(data).success(function(res) {
                     //console.log("hello"+JSON.stringify(res))
                     if (res.responseCode == 400) {
@@ -982,12 +980,15 @@ app.filter("manageFilter", function() {
             return retArray = items;
         }
         var retArray = [];
+
         for (var i = 0; i < items.length; i++) {
-            if (items[i].firstName || items[i].lastName) {
-                if (items[i].firstName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
+            var namm = items[i].firstName +" "+ items[i].lastName;
+             if (items[i].firstName || items[i].lastName) {
+                console.log("namm =>"+namm)
+                if (namm.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
                     retArray.push(items[i]);
                 }
-            }
+             }
         }
         return retArray
     }
@@ -1002,9 +1003,10 @@ app.filter("managePaymentFilter", function() {
         }
         var retArray = [];
         for (var i = 0; i < items.length; i++) { //items[i].cashPrize.pageId.firstName ||
+            var namm = items[i].firstName +" "+ items[i].lastName;
             if (items[i].firstName || items[i].lastName || items[i].cashPrize.pageId.pageName) {
                 // items[i].cashPrize.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() ||
-                if (items[i].firstName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase() || items[i].cashPrize.pageId.pageName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
+                if (namm.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase() || items[i].cashPrize.pageId.pageName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
                     retArray.push(items[i]);
                 }
             }
@@ -1021,10 +1023,10 @@ app.filter("managePaymentSoldCouponFilter", function() {
         }
         var retArray = [];
         for (var i = 0; i < items.length; i++) { //||  items[i].coupon.pageId.pageName || items[i].coupon.pageId.userId.firstName || items[i].coupon.pageId.userId.lastName
-            //console.log(JSON.stringify(items[i].coupon));
+           var namm = items[i].firstName +" "+ items[i].lastName;
             if (items[i].firstName || items[i].lastName) {
                 //||items[i].coupon.pageId.userId.firstName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].coupon.pageId.userId.lastName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase() || items[i].coupon.pageId.pageName.toLowerCase().substr(0,nameValue.length) == nameValue.toLowerCase()
-                if (items[i].firstName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase() || items[i].lastName.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
+                if (namm.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
                     retArray.push(items[i]);
                 }
             }

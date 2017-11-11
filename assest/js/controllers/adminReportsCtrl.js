@@ -29,3 +29,42 @@ app.controller('adminReportsCtrl', function($scope, $window, userService, $state
     })
 
 })
+app.filter("customUserReports", function() {
+  return function(items, nameValue) {
+    console.log("name =>"+nameValue+","+"items"+JSON.stringify(items))
+    if (!nameValue) {
+      return retArray = items;
+    }
+    //console.log("no search: "+JSON.stringify(items));
+    var retArray = [];
+    for (var i = 0; i < items.length; i++) {
+        var userNameFilter = items[i].userId.firstName +" "+ items[i].userId.lastName;
+        console.log("user name =>"+userNameFilter)
+      if (userNameFilter.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
+        retArray.push(items[i]);
+      }
+    }
+    return retArray;
+  }
+});
+
+
+
+app.filter("customAd", function() {
+  return function(items, nameValue) {
+    console.log("name =>"+nameValue+","+"items"+JSON.stringify(items))
+    if (!nameValue) {
+      return retArray = items;
+    }
+    //console.log("no search: "+JSON.stringify(items));
+    var retArray = [];
+    for (var i = 0; i < items.length; i++) {
+        var userNameFilter = items[i].userId.firstName +" "+ items[i].userId.lastName;
+        console.log("user name =>"+userNameFilter)
+      if (userNameFilter.toLowerCase().substr(0, nameValue.length) == nameValue.toLowerCase()) {
+        retArray.push(items[i]);
+      }
+    }
+    return retArray;
+  }
+});

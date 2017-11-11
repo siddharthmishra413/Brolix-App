@@ -379,6 +379,9 @@
                             <td>{{x.email}}</td>
                             <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
                         </tr>
+                        <tr ng-if="(totalUser | customFilterUserss:test).length == 0 || totalUser == 'undefined'">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -460,6 +463,9 @@
                             <td>{{x.mobileNumber}}</td>
                             <td>{{x.email}}</td>
                             <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                        <tr ng-if="(personalUser | customFilterUserss:test1).length == 0 || personalUser == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                         </tr>
                     </tbody>
                 </table>
@@ -547,6 +553,9 @@
                             <td>{{x.email}}</td>
                             <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
                         </tr>
+                        <tr ng-if="(businessUser | customFilterUserss:test2).length == 0 || businessUser == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -633,6 +642,9 @@
                             <td>{{x.email}}</td>
                             <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
                         </tr>
+                        <tr ng-if="(liveUser | customFilterUserss:test3).length == 0 || liveUser == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -718,6 +730,9 @@
                             <td>{{x.mobileNumber}}</td>
                             <td>{{x.email}}</td>
                             <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
+                        </tr>
+                        <tr ng-if="(totalWinners | customFilterUserssest4).length == 0 || totalWinners == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                         </tr>
                     </tbody>
                 </table>
@@ -806,6 +821,9 @@
                             <td>{{x.email}}</td>
                             <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
                         </tr>
+                        <tr ng-if="(cashWinners | customFilterUserssest5).length == 0 || cashWinners == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -892,6 +910,9 @@
                             <td>{{x.email}}</td>
                             <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
                         </tr>
+                        <tr ng-if="(couponWinners | customFilterUserssest6).length == 0 || couponWinners == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -956,6 +977,9 @@
                             <td>{{x.email}}</td>
                             <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
                         </tr>
+                        <tr ng-if="(allblockUser | customFilterUserss:test7).length == 0 || allblockUser == undefined">
+                            <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -979,15 +1003,15 @@
         <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Send message to All User</h4>
+                <h4 class="modal-title">Send message</h4>
             </div>
             <div class="modal-body">
                 <form name="sendMessage">
                     <div class="form-group">
-                        <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" /></textarea>
+                        <textarea type="text" id="messageInput" class="form-control" ng-model="sendMessage.massage" placeholder="Enter Your message" required></textarea>
                         <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                     </div>
-                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
+                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.massage == undefined || sendMessage.massage == ''" ng-click="send_massage()">Send message</button>
                 </form>
             </div>
         </div>
@@ -1064,10 +1088,10 @@
             <div class="modal-body">
                 <form name="sendMessage">
                     <div class="form-group">
-                        <textarea type="text" id="messageInput" class="form-control" ng-model="send.massage" placeholder="Enter Your message" /></textarea>
+                        <textarea type="text" id="messageInput" class="form-control" ng-model="send.massage" placeholder="Enter Your message" required></textarea>
                         <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                     </div>
-                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage()">Send message</button>
+                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.massage == undefined || sendMessage.massage == ''" ng-click="send_massage()">Send message</button>
                 </form>
             </div>
         </div>
@@ -1084,10 +1108,10 @@
             <div class="modal-body">
                 <form name="sendMessage">
                     <div class="form-group">
-                        <textarea type="text" id="messageInput" class="form-control" ng-model="send.massageUser" placeholder="Enter Your message" /></textarea>
+                        <textarea type="text" id="messageInput" class="form-control" ng-model="send.massageUser" placeholder="Enter Your message" required></textarea>
                         <!-- <input type="textarea" class="form-control" ng-model="category" placeholder="Enter Your massage"> -->
                     </div>
-                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.$invalid" ng-click="send_massage('singleuser')">Send message</button>
+                    <button type="submit" class="btn btn-danger" ng-disabled="sendMessage.massage == undefined || sendMessage.massage == ''" ng-click="send_massage('singleuser')">Send message</button>
                 </form>
             </div>
         </div>

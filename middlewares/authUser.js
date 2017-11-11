@@ -12,6 +12,7 @@ module.exports.authUser = function(req, res, next) {
                 });
             } else {
                 req.decoded = decoded;
+                console.log("===============",req.decoded);
                 User.findOne({ _id: req.decoded._id, status: 'ACTIVE'}, function(err, result) {
                     if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error.' })}
                     else if (!result) {

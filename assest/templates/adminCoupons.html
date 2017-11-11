@@ -53,7 +53,7 @@
 
                         <div class="form-group clearfix">
                             <div class="cover-image">
-                                <img class="profile-user-img img-responsive" src="{{user.photo || ' http://res.cloudinary.com/dfrspfd4g/image/upload/v1503655905/uk0wjh6hi4ihc2wsv4xy.png'}}" id="output">
+                                <img class="profile-user-img img-responsive" src="{{user.photo}}" id="output">
                                 <label class="fileContainer">
                             Choose File
                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" name="image" accept="image/*" required>
@@ -145,7 +145,7 @@
                             <label class="col-sm-3 control-label">Gift Image</label>
                             <div class="col-sm-9 text-left">
                             <div class="cover-image">
-                                <img class="profile-user-img img-responsive" src="{{user.giftImage || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503656038/m1w8dqdpqnhkduxtaukw.png'}}" id="output">
+                                <img class="profile-user-img img-responsive" src="{{user.giftImage}}" id="output">
                             </div>
                             <label class="fileContainer">
                                 Choose File
@@ -197,7 +197,7 @@
                             </table>
                         </div>
                         <div class="text-center">
-                            <button ng-disabled="myForm.$invalid" class="table-a" type="submit" ng-click="submit()" name="Post"></button>
+                            <button ng-disabled="myForm.$invalid" class="table-a" type="submit" ng-click="submit()" name="Post">Submit</button>
                         </div>
                     </form>
                 </div>

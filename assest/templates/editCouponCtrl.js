@@ -53,18 +53,16 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
     }
 
     $scope.cancel = function() {
-        $state.go('header.adminCoupons')
-         $scope.user = {};
+        $state.go('header.addSystemUser')
+        $scope.user = {};
     }
     userService.viewCoupon($scope.coupon_id).then(function(success) {
         console.log("Coupon>>>>>>>>",success)
         $scope.couponData = success.data.result;
-        console.log("Coupon =>"+JSON.stringify($scope.couponData));
         console.log("pageName",$scope.couponData.pageName)
-        // $scope.pageInfo = $scope.couponData.pageName;
+        $scope.pageInfo = $scope.couponData.pageName;
         // $scope.user.pageName = $scope.couponData.pageName;
-         $scope.user.photo = $scope.couponData.coverImage;
-         $scope.user.giftImage = $scope.couponData.uploadGiftImage;
+        // $scope.user.photo = $scope.couponData.coverImage;
         // var updateDate = new Date($scope.couponData.couponExpiryDate);
         // $scope.user.expDate = moment(updateDate).format('MM/DD/YYYY');
         // //console.log($scope.user.expDate)
@@ -76,14 +74,7 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
     //   $scope.myForm={};
     $scope.pageDetail = [];
     userService.getPage().then(function(success) {
-        console.log("page Info =>"+JSON.stringify(success.data.result));
         $scope.pageDetail = success.data.result;
-        for(i=0;i<$scope.pageDetail.length;i++){
-            if($scope.pageDetail[i].pageName == $scope.couponData.pageName){
-               $scope.pageInfo = $scope.pageDetail[i]; 
-            }
-        }
-        
         //console.log("Page>>>>>>>>>>"+JSON.stringify($scope.pageDetail))
     }, function(err) {
         console.log(err);
@@ -146,16 +137,10 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
     //         toastr.error("Only image supported.")
     //     }
     // }
-    $scope.pageSelectVal = {};
-    $scope.pageSelect = function(vv){
-        console.log("val =>"+JSON.stringify(vv))
-        $scope.pageSelectVal = vv;
-
-    }
     $scope.upadteCoupon = function(info) {
-        console.log("$scope.pageInfo",$scope.pageSelectVal)
+        console.log("$scope.pageInfo",$scope.pageInfo)
         var id = localStorage.couponId;
-        var couponData = $scope.pageSelectVal;
+        var couponData = JSON.parse($scope.pageInfo);
         console.log("data =>",JSON.stringify(couponData))
         
         var data = {

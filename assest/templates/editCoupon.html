@@ -9,7 +9,7 @@
                 <fieldset>
                     <div class="form-group">
                         <div class="cover-image">
-                        <img class="profile-user-img img-responsive" src="{{user.photo || couponData.coverImage  || '../dist/image/cover.jpg'}}" id="output">
+                        <img class="profile-user-img img-responsive" src="{{user.photo}}" id="output">
 
                         <label class="fileContainer">
                             Choose File
@@ -27,10 +27,14 @@
                     <div class="form-group clearfix" style="margin-top:55px;">
                         <label class="col-sm-4 control-label">Page Name</label>
                         <div class="col-sm-8">
-                          <select name="pageName" ng-model="pageInfo" class="form-control">
+                        <!--   <select name="pageName" ng-model="pageInfo" ng-change="pageSelect(pageInfo)" class="form-control">
                           <option selected="">{{couponData.pageName}}</option>
                           <option ng-repeat="page in pageDetail" value="{{page}}">{{page.pageName}}</option>
+                          </select> -->
+
+                          <select class="form-control" ng-model="pageInfo" ng-options="page as page.pageName for page in pageDetail" ng-change="pageSelect(pageInfo)">
                           </select>
+                         
                         </div>
                       </div>
 
@@ -99,7 +103,7 @@
                             <label class="col-sm-4 control-label">Gift Image</label>
                             <div class="col-sm-8 text-left">
                             <div class="cover-image">
-                                <img class="profile-user-img img-responsive" src="{{user.giftImage || couponData.uploadGiftImage  || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1495862745/f9xiu2xrlsktd5kakq5p.jpg'}}" id="output">
+                                <img class="profile-user-img img-responsive" src="{{user.giftImage}}" id="output">
                             </div>
                             <label class="fileContainer">
                                 Choose File

@@ -19,8 +19,8 @@ app.controller('deafultBrolixAndDollarsCtrl', function($scope, $window, userServ
     userService.viewAllBrolixAndDollors().success(function(res) {
     console.log("resssss",res);        
         if (res.responseCode == 200){
-            $scope.freeViewersPerCouponAds = res.result[8].value;
-            $scope.freeViewersPerCashAds = res.result[9].value;
+            $scope.freeViewersPerCouponAds = res.result[9].value;
+            $scope.freeViewersPerCashAds = res.result[0].value;
             console.log("freeViewersPerCouponAds",JSON.stringify($scope.freeViewersPerCouponAds));
             console.log("freeViewersPerCashAds",JSON.stringify($scope.freeViewersPerCashAds));
             console.log("res",JSON.stringify(res.result));

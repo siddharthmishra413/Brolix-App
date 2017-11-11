@@ -20,7 +20,7 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
         localStorage.loginData=res.result._id;
         $scope.userId = res.result._id; 
         localStorage.setItem('userId',$scope.userId);
-        $scope.image1 = $scope.user.image;
+        $scope.image = $scope.user.image;
         console.log("$scope.image",$scope.image)
         $scope.type = res.result.type;
         $scope.userPermissions = res.result.permissions;

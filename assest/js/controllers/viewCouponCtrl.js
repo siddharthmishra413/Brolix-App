@@ -6,7 +6,8 @@ app.controller('viewCouponCtrl', function($scope,userService,uploadimgServeice, 
     userService.viewCoupon($scope.coupon_id).then(function(success) { 
         console.log("success",success)
                  $scope.couponData=success.data.result;
-                 // $scope.user.photo=success.data.result.coverImage;
+                 $scope.user.photo=success.data.result.coverImage;
+                 $scope.couponData.uploadGiftImage = $scope.couponData.uploadGiftImage;
                  // $scope.expDate = new Date($scope.couponData.couponExpiryDate);
              },function(err){
                  toastr.error('Connection error.');
