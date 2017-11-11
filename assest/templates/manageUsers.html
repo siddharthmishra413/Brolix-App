@@ -311,8 +311,7 @@
                 <div class="row-search">
                     <ul>
                         <li class="active">
-                            <!-- //#header/viewUserProfile/{{myForm.checkId}} -->
-                            <a data-toggle="tab" style="cursor: pointer;" ng-click="viewUsersProfile(myForm.checkId)">View Profile</a>
+                            <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/viewUserProfile/{{myForm.checkId}}">View Profile</a>
                         </li>
                         <li class="active">
                             <a data-toggle="tab" style="cursor: pointer;" ng-href="#header/editUserProfile/{{myForm.checkId}}">Edit Profile</a>
@@ -380,7 +379,7 @@
                             <td>{{x.email}}</td>
                             <td class="skyblue-text" style="cursor:pointer;" ng-click="showPageDetails(x._id)">{{x.pageCount}}</td>
                         </tr>
-                        <tr ng-if="(totalUser | customFilterUserss:test).length == 0 || totalUser == 'undefined'">
+                        <tr ng-if="(totalUser | customFilterUserss:test).length == 0 || totalUser == undefined">
                             <td colspan="6" style="text-align: center;font-weight: bold;color:#FF5063"> No Records Found</td>
                         </tr>
                     </tbody>

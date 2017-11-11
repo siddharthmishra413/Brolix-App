@@ -98,7 +98,7 @@
           var options = {
               "cert": config.iOSPemFile,
               "key": config.iOSPemFile,
-              "passphrase": "Mobiloitte1",
+              "passphrase": "brolix",
               "gateway": "gateway.push.apple.com",
               "port": 2195,
               "enhanced": true,
