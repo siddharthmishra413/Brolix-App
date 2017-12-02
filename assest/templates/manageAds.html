@@ -130,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="box-block blk-drkyello">
+                <!-- <div class="box-block blk-drkyello">
                     <div class="widget widget-stats divi-blk">
                         <div class="top-box">
                             <div class="total-add">Upgraded Ads By B</div>
@@ -145,7 +145,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                  <div class="box-block blnk-bg">
                         <div class="widget widget-stats divi-blk offerbtn-s">
                             <div class="top-box">
@@ -241,20 +241,20 @@
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
                         <th>DOWNLOAD LINKS</th>
-                        <th>SOLD COUPON</th>
+                        <!-- <th>SOLD COUPON</th> -->
                         <th>DOLLARS PAID</th>
                         <th>CARD</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in totalAds | manageAdsFilter:testOne | itemsPerPage:10">
+                    <tr dir-paginate="x in totalAds | manageAdsFilter:testOne | itemsPerPage:10" pagination-id="ttlAds">
                         <td>
                            <input ng-model="myForm.checkId" name="name" value="{{x._id}}" type="radio">
                         </td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId)" >{{x.pageName}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" >{{x.linkCount}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
+                        <!-- <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td> -->
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -263,7 +263,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center"> <dir-pagination-controls pagination-id="ttlAds"  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -310,7 +310,7 @@
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
                         <th>DOWNLOAD LINKS</th>
-                        <th>SOLD COUPON</th>
+                        <!-- <th>SOLD COUPON</th> -->
                         <th>DOLLARS PAID</th>
                         <th>CARD</th>
                     </tr>
@@ -323,7 +323,7 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" >{{x.linkCount}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
+                        <!-- <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td> -->
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -379,7 +379,7 @@
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
                         <th>DOWNLOAD LINKS</th>
-                        <th>SOLD COUPON</th>
+                        <!-- <th>SOLD COUPON</th> -->
                         <th>DOLLARS PAID</th>
                         <th>CARD</th>
                     </tr>
@@ -392,7 +392,7 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" >{{x.linkCount}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
+                        <!-- <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td> -->
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -448,7 +448,7 @@
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
                         <th>DOWNLOAD LINKS</th>
-                        <th>SOLD COUPON</th>
+                        <!-- <th>SOLD COUPON</th> -->
                         <th>DOLLARS PAID</th>
                         <th>CARD</th>
                     </tr>
@@ -461,7 +461,7 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" >{{x.linkCount}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
+                        <!-- <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td> -->
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -517,7 +517,7 @@
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
                         <th>DOWNLOAD LINKS</th>
-                        <th>SOLD COUPON</th>
+                        <!-- <th>SOLD COUPON</th> -->
                         <th>DOLLARS PAID</th>
                         <th>CARD</th>
                     </tr>
@@ -530,7 +530,7 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" >{{x.linkCount}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
+                        <!-- <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td> -->
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -543,7 +543,7 @@
         </div>
     </div>
 
-    <div class="col-sm-12" ng-switch="tab">
+    <!-- <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="adUpgradedByBrolix">
             <div class="grp-search">
                 <div class="row-search">
@@ -610,7 +610,7 @@
             </table>
             <div class="col-sm-12 text-center"> <dir-pagination-controls  max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls></div>
         </div>
-    </div>
+    </div> -->
 
     <div class="col-sm-12" ng-switch="tab">
         <div class="row table-responsive cus-table" ng-switch-when="adUpgradedByDollor">
@@ -655,7 +655,7 @@
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
                         <th>DOWNLOAD LINKS</th>
-                        <th>SOLD COUPON</th>
+                        <!-- <th>SOLD COUPON</th> -->
                         <th>DOLLARS PAID</th>
                         <th>CARD</th>
                     </tr>
@@ -668,7 +668,7 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" >{{x.linkCount}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
+                        <!-- <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td> -->
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -722,7 +722,7 @@
                         <th>Select</th>
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
-                        <th>SOLD COUPON</th>
+                        <!-- <th>SOLD COUPON</th> -->
                         <th>DOLLARS PAID</th>
                         <th>CARD</th>
                     </tr>
@@ -734,7 +734,7 @@
                         </td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td >{{x.reportOnAd}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
+                        <!-- <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td> -->
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -790,7 +790,7 @@
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
                         <th>DOWNLOAD LINKS</th>
-                        <th>SOLD COUPON</th>
+                        <!-- <th>SOLD COUPON</th> -->
                         <th>DOLLARS PAID</th>
                         <th>CARD</th>
                     </tr>
@@ -803,7 +803,7 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId._id)" >{{x.pageName}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" >{{3}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
+                        <!-- <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td> -->
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -859,7 +859,7 @@
                         <th>PAGE NAME</th>
                         <th>AD REPORTS</th>
                         <th>DOWNLOAD LINKS</th>
-                        <th>SOLD COUPON</th>
+                        <!-- <th>SOLD COUPON</th> -->
                         <th>DOLLARS PAID</th>
                         <th>CARD</th>
                     </tr>
@@ -872,7 +872,7 @@
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="showPageDetails(x.pageId)" >{{x.pageName}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" ng-click="reportOnAd(x._id)" >{{x.reportOnAd}}</td>
                         <td class="skyblue-text"  style="cursor:pointer;" >{{x.linkCount}}</td>
-                        <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td>
+                        <!-- <td class="skyblue-text"  style="cursor:pointer;" ng-click="adInfoSoldCoupon(x._id)" >VIEW</td> -->
                         <td>{{x.cash}} $</td>
                         <td>{{x.viewers}} Viewers</td>
                     </tr>
@@ -944,7 +944,7 @@
                                         <th>Page Name</th>
                                         <th>Category</th>
                                         <th>Sub Category</th>
-                                        <th>Page Discription</th>
+                                        <th>Page Description</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>

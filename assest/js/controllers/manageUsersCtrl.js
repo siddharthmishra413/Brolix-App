@@ -211,7 +211,13 @@ app.controller('manageUsersCtrl', function($scope, $window, userService, $state,
 
     }
 
-    userService.adminProfile().success(function(res) {
+    var a = localStorage.getItem('em');;
+    console.log("Em =>"+a)
+    var req = {
+      email : a
+    }
+
+    userService.adminProfile(req).success(function(res) {
         if (res.responseCode == 404) {
             toastr.error(res.responseMessage);
             $state.go('login')

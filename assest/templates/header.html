@@ -18,7 +18,7 @@
                 </div>               
             </div> -->
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->            
-            <div ng-if="menu=='Manage User'" ng-hide="manageUser == false">
+            <div ng-if="menu=='Manage User'">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="prodata">
@@ -35,10 +35,10 @@
                             </div>
                         </div>
                     </li>
-                     <li>
+                     <li ng-hide="manageUser == false">
                         <a style="cursor:pointer;" ui-sref="header.adminProfile" >ADMIN PROFILE</a>
                     </li>
-                    <li>
+                    <li ng-hide="manageUser == false"> 
                         <a style="cursor:pointer;" ui-sref="header.addUser">ADD USER</a>
                     </li>
                    <!--  <li>
@@ -143,9 +143,9 @@
                     <li>
                         <a style="cursor:pointer;" ui-sref="header.removeCard">REMOVE CARD</a>
                     </li>
-                    <li>
+                   <!--  <li>
                         <a style="cursor:pointer;" ui-sref="header.createOffer">CREATE OFFERS</a>
-                    </li>                    
+                    </li>  -->                   
                 </ul>
             </div>
             </div>

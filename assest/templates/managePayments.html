@@ -53,9 +53,9 @@
                                                     <div class="btn-manage">
                                                         <a ng-click="dashBordFilter('soldUpgradeCards')" style="cursor: pointer">Show</a>
                                                     </div>
-                                                    <div class="btn-manage">
+                                                    <!-- <div class="btn-manage">
                                                         <a ng-click="total_user_message('dollars')" style="cursor: pointer">Contact Buyers</a>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="btn-manage">
                                                         <div class="dropdown">
                                                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -137,7 +137,7 @@
                                                                         <th>Buyer Name</th>
                                                                         <th>Buyer PayPal</th>
                                                                         <th>Used Ad</th>
-                                                                        <th>Pages</th>
+                                                                        <!-- <th>Pages</th> -->
                                                                         <!-- <th>Payment History</th> -->
                                                                     </tr>
                                                                 </thead>
@@ -150,7 +150,7 @@
 
                                                                         <td ng-if="dollars.upgradeCardObject.status == 'ACTIVE' ">Not Used Yet</td>
                                                                         <td ng-if="dollars.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="upgradeCardUsedAd(dollars.upgradeCardObject._id)">View</td>
-                                                                        <td class="skyblue-text" ng-click="pageCount(dollars._id)" style="cursor: pointer">{{dollars.pageCount}}</td>
+                                                                        <!-- <td class="skyblue-text" ng-click="pageCount(dollars._id)" style="cursor: pointer">{{dollars.pageCount}}</td> -->
                                                                        <!--  <td ng-if="dollars.upgradeCardObject.status == 'ACTIVE' ">Not Used Yet</td>
                                                                         <td ng-if="dollars.upgradeCardObject.status == 'INACTIVE' " class="skyblue-text" ng-click="upgradePayment(dollars._id)" style="cursor: pointer">View</td> -->
 
@@ -385,9 +385,9 @@
                                     <div class="btn-manage">
                                         <a ng-click="dashBordFilter('soldLuckCard')" style="cursor: pointer">Show</a>
                                     </div>
-                                    <div class="btn-manage">
+                                    <!-- <div class="btn-manage">
                                         <a ng-click="total_user_message('brolix')" style="cursor: pointer">Contact Buyers</a>
-                                    </div>
+                                    </div> -->
                                     <div class="btn-manage">
                                         <div class="dropdown">
                                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -465,7 +465,7 @@
                                                                         <th>Buyer Name</th>
                                                                         <th>Buyer Mobile</th>
                                                                         <th>Used Ad</th>
-                                                                        <th>Pages</th>
+                                                                        <!-- <th>Pages</th> -->
                                                                         <!-- <th>Payment History</th> -->
                                                                     </tr>
                                                                 </thead>
@@ -478,7 +478,7 @@
                                                                         <td>{{brolix.mobileNumber}}</td>
                                                                         <td ng-if="brolix.luckCardObject.status == 'ACTIVE' ">Not Used Yet</td>
                                                                         <td ng-if="brolix.luckCardObject.status == 'INACTIVE' " class="skyblue-text" style="cursor: pointer;" ng-click="luckCardUsedAd(brolix.luckCardObject._id)">View</td>
-                                                                        <td class="skyblue-text" ng-click="pageCount(dollars._id)" style="cursor: pointer">{{brolix.pageCount}}</td>
+                                                                        <!-- <td class="skyblue-text" ng-click="pageCount(dollars._id)" style="cursor: pointer">{{brolix.pageCount}}</td> -->
                                                                         <!-- <td ng-if="brolix.luckCardObject.status == 'ACTIVE' ">Not Used Yet</td>
                                                                         <td ng-if="brolix.luckCardObject.status == 'INACTIVE' " class="skyblue-text" ng-click="luckPayment(brolix._id)" style="cursor: pointer">View</td> -->
                                                                     </tr>
@@ -596,9 +596,9 @@
                                                         <div class="btn-manage">
                                                             <a ng-click="dashBordFilter('soldCoupon')" style="cursor: pointer">Show</a>
                                                         </div>
-                                                        <div class="btn-manage">
+                                                        <!-- <div class="btn-manage">
                                                             <a ng-click="total_user_message('brolixCoupon')" style="cursor: pointer">Contact Buyers</a>
-                                                        </div>
+                                                        </div> -->
                                                         <div class="btn-manage">
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -762,7 +762,7 @@
                                 <th>Mobile Number</th>
                                 <th>Sold Cards</th>
                             </tr>
-                            <tr ng-repeat="buyer in userDetail | orderBy:'-(upgradeCardObject.length)'">
+                            <tr ng-repeat="buyer in userDetail | orderBy:'-(luckCardObject.length)'">
                                 <td>{{buyer.firstName+" "+buyer.lastName}}</td>
                                 <td>{{buyer.mobileNumber}}</td>
                                 <td>{{buyer.luckCardObject.length}}</td>
@@ -896,10 +896,10 @@
                                 <th>subCategory</th>
                                 <td ng-repeat="detail in pageDetail">{{detail.category}}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <th>adsType</th>
                                 <td ng-repeat="detail in pageDetail">{{detail.subCategory}}</td>
-                            </tr>
+                            </tr> -->
                         </table>
                     </div>
                 </form>
@@ -927,7 +927,7 @@
                                 </div> -->
                                 <div class="top-row-c1-left">
                                     <h4>{{userDetail.pageName}}</h4>
-                                    <div class="cus-date-c1">{{userDetail.createdAt | date:dd-MM-yyyy}}</div>
+                                    <div class="cus-date-c1">Valid Thru: {{userDetail.createdAt | date:dd-MM-yyyy}}</div>
                                 </div>
                                 <!-- <div class="top-row-c1-right">
                                     <div class="c1-used">Cash Status: {{userDetail.cashStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
@@ -970,7 +970,7 @@
                             <div class="top-row-c1">
                                 <div class="top-row-c1-left">
                                     <h4>{{userDetail.pageName}}</h4>
-                                    <div class="cus-date-c1"><label>Valid Thru : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div>
+                                    <div class="cus-date-c1">Valid Thru : {{userDetail.couponExpiryDate}}</div>
                                 </div>
                                 <!-- <div class="top-row-c1-right">
                                     <div class="c1-used">{{userDetail.couponStatus}}
@@ -1020,7 +1020,7 @@
                                             <div class="top-row-c1">
                                                 <div class="top-row-c1-left">
                                                     <h4>{{usedAd.pageName}}</h4>
-                                                    <div class="cus-date-c1"><label>Valid Thru : </label><span>{{newDate | date:dd-MM-yyyy}}</span></div>
+                                                    <div class="cus-date-c1">Valid Thru : {{usedAd.couponExpiryDate}}</div>
                                                 </div>
                                                 <!-- <div class="top-row-c1-right">
                                                     <div class="c1-used">{{usedAd.couponStatus}}<span class="c1-dot"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
@@ -1053,7 +1053,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Payment Historyaaa</h4>
+                <h4 class="modal-title">Payment History</h4>
             </div>
             <div class="modal-body">
                 <form name="userFrom1">
@@ -1083,7 +1083,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Payment Historyfff</h4>
+                <h4 class="modal-title">Payment History</h4>
             </div>
             <div class="modal-body">
                 <form name="userFrom1">

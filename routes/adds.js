@@ -3,14 +3,14 @@ var app = express();
 var adsHandler = require('../file_handler/ads.js');
 var authUser = require('../middlewares/authUser');
 
-
+app.get('/uploadFileSavedJson', adsHandler.uploadFileSavedJson);
 app.post('/deleteComments', authUser.authUser, adsHandler.deleteComments);
 app.post('/editComments', authUser.authUser, adsHandler.editComments);
 app.post('/editCommentsOnPage', authUser.authUser, adsHandler.editCommentsOnPage);
 app.post('/removeAds', authUser.authUser, adsHandler.removeAds);
 app.post('/continueAd', authUser.authUser, adsHandler.continueAd);
 app.get('/getMp3Files/:lang', authUser.authUser, adsHandler.getMp3Files);
-app.post('/uploadMp3Files', authUser.authUser, adsHandler.uploadMp3Files);
+app.post('/uploadMp3Files', adsHandler.uploadMp3Files);
 app.post('/createAdPayment', authUser.authUser, adsHandler.createAdPayment);
 app.post('/readFile', authUser.authUser, adsHandler.readFile);
 app.post('/uploadXlFile', authUser.authUser, adsHandler.uploadXlFile);

@@ -219,18 +219,18 @@
                 </div>
                 <div class="panel-body">
                     <div class="cover-image" >
-                        <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1500280405/q66bda3c8a2zfxg6xexo.jpg'}}" id="output">
+                        <img class="profile-user-img img-responsive" src="{{myForm.pagephoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503656038/m1w8dqdpqnhkduxtaukw.png'}}" id="output">
                         <label class="fileContainer">
                             Choose File
-                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'userImage')" accept="image/*">
+                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'pageImage')" accept="image/*">
                         </label>
                     </div>
 
                     <div class="page-image clearfix">
-                        <img class="profile-user-img img-responsive" src="{{myForm.userphoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1500280515/wro01np9gyuyzgcm2hwj.jpg'}}" id="output">
+                        <img class="profile-user-img img-responsive" src="{{myForm.userphoto || 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503655905/uk0wjh6hi4ihc2wsv4xy.png'}}" id="output">
                         <label class="fileContainer">
                             Choose File
-                        <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'pageImage')" accept="image/*">
+                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'userImage')" accept="image/*">
                         </label>
                     </div>
 
@@ -333,13 +333,13 @@
                                             <div class="col-sm-8">
                                                 <div class="row-table">
                                                     <div class="col-cell">
-                                                        <select class="form-control" ng-model="myForm.pageAdmin" name="pages" required>
+                                                        <select class="form-control" ng-model="myForm.pageAdmin" name="pages" >
                                                             <option value="">Select Page Admin</option>
                                                             <option ng-repeat="page in pagesAdmin" value="{{page}} ">{{page.firstName}} {{page.lastName}}</option>
                                                         </select>
-                                                        <span style="color:red;" class="error" ng-show="pageAdmin.pages.$dirty && pageAdmin.pages.$invalid">
+                                                        <!-- <span style="color:red;" class="error" ng-show="pageAdmin.pages.$dirty && pageAdmin.pages.$invalid">
                                                              <span style="color:red;" class="error" ng-show="pageAdmin.pages.$error.required">Please Select a Page</span>
-                                                        </span> 
+                                                        </span>  -->
                                                     </div>
                                                     <div class="col-cell add-remove">
                                                         <span class="fa fa-plus-circle" ng-click="addNewPage(myForm.pageAdmin)"></span>

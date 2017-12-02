@@ -6,21 +6,10 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
     $scope.first = true;
     $scope.second = false;
     $scope.third = false;
-    $scope.createOfferArray = [];
 
     $scope.cancle = function(){
         $state.go('header.manageCards');
     }
-    
-
-    $scope.tick = true;
-    $scope.toggleCustom = function() {
-        $scope.tick = $scope.tick === false ? true: false;
-    };
-
-    // $('#buttonLogin').on('click', function(e){
-      
-    // });
 
     $scope.checkVal = function(){
         if($scope.myForm.cardType == null){
@@ -63,6 +52,7 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
         date = date + $scope.myForm.offerTime*60*60*1000;
         // var utcDate = new Date(date).toUTCString();
         $scope.myForm.offerTime = date;
+        console.log("Data =>"+ $scope.myForm.offerTime)
         console.log("$scope.myForm",$scope.myForm);
         BootstrapDialog.show({
         title: 'Apply Offer',
@@ -73,15 +63,18 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
                 userService.createOffer($scope.myForm).success(function(res){
                   //console.log("dataaaaaaaaaa",res.data)
                   if (res.responseCode == 200){
+                    $scope.myForm.offerTime = '';
                       dialog.close();
                       $state.go('header.manageCards')
                       toastr.success(res.responseMessage);
                   } else if(res.responseCode == 400) {
                       toastr.error(res.responseMessage);
+                      $scope.myForm.offerTime = '';
                       $state.go('login')
                   }
                   else {
                       toastr.error(res.responseMessage);
+                      $scope.myForm.offerTime = '';
                   }
 
               })    
@@ -97,15 +90,11 @@ app.controller('createOfferCtrl', function($scope, $state, $window, userService,
 
     $scope.showCardDetails = function(id){
       // $scope.user.photo = '';
-      console.log("iddddddddd",id)
-      
-      $scope.createOfferArray.push(id);
-
-      // userService.showCardDetails(id).success(function(res){
-      //   $scope.cardDetails = res.data;
-      // })
-
-      console.log($scope.createOfferArray);
+      //console.log("iddddddddd",id)
+      userService.showCardDetails(id).success(function(res){
+        $scope.cardDetails = res.data;
+        //console.log("$scope.cardDetails",$scope.cardDetails)
+      })
 
     }
 })

@@ -47,7 +47,7 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
                 break;
 
             default:
-                toastr.error("Something Wents to wrong")
+                toastr.error("Something Wents wrong")
 
         }
     }
@@ -61,7 +61,7 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
         $scope.couponData = success.data.result;
         console.log("Coupon =>"+JSON.stringify($scope.couponData));
         console.log("pageName",$scope.couponData.pageName)
-        // $scope.pageInfo = $scope.couponData.pageName;
+         // $scope.pageInfo = $scope.couponData.pageName;
         // $scope.user.pageName = $scope.couponData.pageName;
          $scope.user.photo = $scope.couponData.coverImage;
          $scope.user.giftImage = $scope.couponData.uploadGiftImage;
@@ -75,7 +75,8 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
     })
     //   $scope.myForm={};
     $scope.pageDetail = [];
-    userService.getPage().then(function(success) {
+    $timeout(function() {
+        userService.getPage().then(function(success) {
         console.log("page Info =>"+JSON.stringify(success.data.result));
         $scope.pageDetail = success.data.result;
         for(i=0;i<$scope.pageDetail.length;i++){
@@ -83,6 +84,8 @@ app.controller('editCouponCtrl', function($scope,  $timeout, uploadimgServeice, 
                $scope.pageInfo = $scope.pageDetail[i]; 
             }
         }
+    }, 4000);
+    
         
         //console.log("Page>>>>>>>>>>"+JSON.stringify($scope.pageDetail))
     }, function(err) {

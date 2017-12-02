@@ -55,6 +55,7 @@
     "paytabs": "^1.1.0",
     "push-notification": "^0.1.8",
     "rekuire": "^0.1.9",
+    "twilio": "^3.9.2",
     "underscore": "^1.8.3",
     "underscore-node": "^0.1.2",
     "validator": "^6.1.0",

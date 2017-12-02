@@ -10,6 +10,8 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
     $scope.cardType = 'upgrade_card';
     localStorage.setItem('pageTypeName','totalPages');
     
+    
+    
 
     $scope.dateValidation = function(dtaa) {
         var dta = dtaa;
@@ -532,9 +534,9 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
         }
     }
 
-
-    $scope.Remove_User = function(id) {
+     $scope.Remove_User = function(id) {
         $scope.RemoveId = id;
+        console.log('$scope.RemoveId'+ $scope.RemoveId)
         var userId = $scope.RemoveId;
         if ($scope.RemoveId == '' || $scope.RemoveId == undefined || $scope.RemoveId == null) {
             toastr.error("Please select user.")
@@ -546,12 +548,19 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
                 buttons: [{
                     label: 'Yes',
                     action: function(dialog) {
-                        userService.removePage(userId).success(function(res) {
+                        console.log("action =>")
+                    userService.removePage(userId).success(function(res) {
+                            console.log("response =>"+JSON.stringify(res))
                             if (res.responseCode == 200) {
+                                // alert(1)
+                                console.log("response 200=>"+JSON.stringify(res))
                                 dialog.close();
-                                toastr.success("Page removed Successfully");
                                 $state.reload();
-                            } else if (res.responseCode == 404) {
+                                toastr.success("Page removed Successfully");
+                                console.log("dialog close=>"+JSON.stringify(res))
+                                 
+                            } else {
+                                // alert(2)
                                 toastr.error(res.responseMessage);
                             }
                         })
@@ -565,6 +574,30 @@ app.controller('managePagesCtrl', function($scope, $window, $state, userService,
             });
         }
     }
+
+   // $scope.Remove_User = function(id) {
+   //           $scope.RemoveId = id;
+   //        var userId = $scope.RemoveId;
+   //        console.log('$scope.RemoveId--->'+ userId)
+   //     userService.removePage(userId).success(function(res) {
+   //                          console.log("response =>"+JSON.stringify(res))
+   //                          if (res.responseCode == 200) {
+   //                              // alert(1)
+   //                              console.log("response 200=>"+JSON.stringify(res))
+   //                              dialog.close();
+   //                              $state.reload();
+   //                              toastr.success("Page removed Successfully");
+   //                              console.log("dialog close=>"+JSON.stringify(res))
+                                 
+   //                          } else {
+   //                              alert(2)
+   //                              toastr.error(res.responseMessage);
+   //                          }
+   //                      }).error(function(res) {
+   //                          console.log('error')
+   //                      })
+   // }
+   
     /*show Adds*/
 
     $scope.showAdds = function(id) {

@@ -12,6 +12,34 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
     $scope.firstss = true;
     $scope.secondss = false;
 
+    function getExpiryDateValue(e) {
+        if (e == (1000 * 60 * 60 * 24 * 1 * 7)) {
+            expiryVal = "1Week";
+        } else if (e == (1000 * 60 * 60 * 24 * 2 * 7)) {
+            expiryVal = "2Week";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 3 * 7)) {
+            expiryVal = "3Week";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 1 * 30)) {
+            expiryVal = "1Month";
+        }
+         else if (e == (1000 * 60 * 60 * 24 * 2 * 30)) {
+            expiryVal = "1Month";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 2 * 30)) {
+            expiryVal = "2Month";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 3 * 30)) {
+            expiryVal = "3Month";
+        }
+        else if (e == "NEVER"){
+            expiryVal = "Lifetime";
+        }
+        return expiryVal;
+    }
+
+
     $scope.winnerInfo = function(id) {
         console.log("id", id)
 
@@ -185,7 +213,9 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
     $scope.adInfo = function(id) {
         userService.adInfo(id).then(function(success) {
             if (success.data.responseCode == 200) {
-                console.log("success =>"+JSON.stringify(success.data))
+                console.log("success =>"+JSON.stringify(success.data.result.couponExpiryDate))
+                    var dd = getExpiryDateValue(success.data.result.couponExpiryDate);
+                    success.data.result.couponExpiryDate = dd;
                   $scope.userDetail = success.data.result;
                  $("#adInfoDetail").modal('show');
                  $scope.newDate = success.data.result.couponExpiryDate;
@@ -201,6 +231,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
         //console.log("cashGiftId>>>"+JSON.stringify(id))
         userService.adInfo(id).then(function(success) {
             if (success.data.responseCode == 200) {
+
                 $scope.userDetail = success.data.result;
                 $("#cashGiftDetail").modal('show');
             } else {
@@ -271,7 +302,7 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
                 $("#top_50_brolix_buyers").modal('show');
                 // console.log(JSON.stringify(success.data.result))
             } else {
-                toastr.error(success.data.responseCode);
+                toastr.error(success.data.responseMessage);
             }
 
         }, function(err) {
@@ -348,6 +379,8 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
 
 
     //*********************** Used Ad **************************
+    
+
 
     $scope.upgradeCardUsedAd = function(id) {
         $scope.usedAd = [];
@@ -359,6 +392,8 @@ app.controller('managePaymentCtrl', function($scope, $window, userService, $time
         userService.upgradeCardUsedAd(data).then(function(success) {
             if (success.data.responseCode == 200) {
                 for (i = 0; i < success.data.result.length; i++) {
+                    var dd = getExpiryDateValue(success.data.result[i].couponExpiryDate);
+                    success.data.result[i].couponExpiryDate = dd;
                     $scope.usedAd.push(success.data.result[i]);
                     $("#luckCardUsedAd").modal('show');
                     //console.log(JSON.stringify($scope.usedAd))

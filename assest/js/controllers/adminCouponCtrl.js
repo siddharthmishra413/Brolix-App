@@ -9,7 +9,13 @@ app.controller('adminCouponCtrl', function($scope, spinnerService, $timeout, upl
     $scope.minDate = new Date().toDateString();
     $scope.user.photo = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503655905/uk0wjh6hi4ihc2wsv4xy.png';
     $scope.user.giftImage = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503656038/m1w8dqdpqnhkduxtaukw.png';
-    userService.adminProfile().success(function(res) {
+
+    var a = localStorage.getItem('em');;
+    console.log("Em =>"+a)
+    var req = {
+      email : a
+    }
+    userService.adminProfile(req).success(function(res) {
         if (res.responseCode == 200) {
             console.log("sss",JSON.stringify(res))
             localStorage.setItem('userId', res.result._id);

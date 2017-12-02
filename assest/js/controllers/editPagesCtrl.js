@@ -14,7 +14,7 @@ app.controller('editPagesCtrl', function($scope, $window, userService, $state, t
   $scope.Step4 = false;
   $scope.array = [];
   $scope.arrayPage = [];
-  $scope.SocialMedia = ['Gmail','Facebook','Twitter'];
+  $scope.SocialMedia = ['Facebook','Twitter','Instagram','Linkedin'];
   var cond = [];
 
 userService.pageAdmin().success(function(res) {
@@ -25,8 +25,13 @@ userService.pageAdmin().success(function(res) {
     toastr.error("Something went wrong")
   } 
 })
+var a = localStorage.getItem('em');;
+    console.log("Em =>"+a)
+    var req = {
+      email : a
+    }
 
-userService.adminProfile().success(function(res) {
+userService.adminProfile(req).success(function(res) {
   if (res.responseCode == 200) {
     $scope.userId = res.result._id; 
     localStorage.setItem('userIdEdit',$scope.userId);
@@ -271,12 +276,14 @@ $scope.removeSocialMedia = function(removeSocialMedia){
             $scope.imageName = file.name;
             uploadimgServeice.user(file).then(function(ObjS) {
                 if(key=='pageImage'){
-                    $scope.myForm.userphoto = ObjS.data.result.url;
-                    $scope.user.userphoto = ObjS.data.result.url;
-                }else{
+                    
                     $scope.myForm.pagephoto = ObjS.data.result.url;
-                    $scope.user.pagephoto = ObjS.data.result.url;
-                }  
+                    // $scope.user.pagephoto = ObjS.data.result.url;
+                }else{
+                    $scope.myForm.userphoto = ObjS.data.result.url;
+                    // $scope.user.userphoto = ObjS.data.result.url;
+                } 
+
         })
         }else{
             toastr.error("Only image supported.")
@@ -332,8 +339,8 @@ $scope.subCaty = false;
                 $scope.viewPageDetails = res.result;
                 console.log("admin array",JSON.stringify($scope.viewPageDetails))
                 console.log("all the data",JSON.stringify(res.result));
-                $scope.myForm.pagephoto = $scope.viewPageDetails.pageImage;
-                $scope.myForm.userphoto=$scope.viewPageDetails.coverImage;
+                $scope.myForm.pagephoto = $scope.viewPageDetails.coverImage;
+                $scope.myForm.userphoto=$scope.viewPageDetails.pageImage;
                 for(i=0;i<$scope.viewPageDetails.socialMedia.length;i++){
                   $scope.myForm.socialMedia=$scope.viewPageDetails.socialMedia[i];
                 }
@@ -434,8 +441,8 @@ $scope.subCategoryFinal = $scope.checkBoxArray;
              "country":$scope.myForm.country,
              "state":$scope.myForm.state,
              "city":$scope.myForm.city, 
-             "pageImage":$scope.myForm.pagephoto,
-             "coverImage": $scope.myForm.userphoto,
+             "pageImage":$scope.myForm.userphoto,
+             "coverImage": $scope.myForm.pagephoto,
              "socialMedia":$scope.viewPageDetails.socialMedia, 
              "adAdmin":cond   
       }

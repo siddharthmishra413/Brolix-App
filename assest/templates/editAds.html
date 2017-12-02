@@ -3,7 +3,7 @@
         <div class="col-md-10 col-md-offset-1">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add New Page Step4</h3>
+                    <h3 class="panel-title">Add New Page</h3>
                 </div>
                 <form class="form-block" role="form" name="vedioStep">
                     <div class="panel-body">
@@ -61,18 +61,31 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add New Page Step5</h3>
+                    <h3 class="panel-title">Add New Page</h3>
                 </div>
                 <form class="form-block" role="form" name="vedioStep">
                 <div class="panel-body">
                     <div class="login-block">
                         <div class="terms-Condition cus-step-6">
                             <div class="form-horizontal clearfix">
+                                <label class="control-label col-sm-4">Gift Description Image</label>
+                                <div class="col-sm-8">
+                                    <label class="fileContainer" ng-if="!showCam" style="float:left;background-color: #35B387">
+                                        Upload Gift Image
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'giftDesImage')" name="image" accept="image/*">
+                                    </label>
+                                    <label ng-if="showCam == true" class="fileContainer" ng-click="rmGiftImg()" style="float:left;background-color: #35B387" >
+                                        Remove Image
+                                    </label>
+                                <img src="../dist/image/cam_g@3x.png" ng-if="showCam == true" style="height: 55px;width: 58px;" class="img-responsive cus-img1">
+                                </div>
+                            </div>
+                            <div class="form-horizontal clearfix">
                                 <label class="control-label col-sm-4">Gift Description</label>
                                 <div class="col-sm-8">
                                     <textarea ng-model="createAds.giftDescription" name="Description" class="form-control c-new-textarea" maxlength="200" rows="5" placeholder="Description..." required></textarea>
                                         <span style="color:red" ng-show="vedioStep.Description.$dirty && vedioStep.Description.$invalid">
-                                        <span ng-show="vedioStep.Description.$error.required">*UserName is required.</span>
+                                        <span ng-show="vedioStep.Description.$error.required">*Description is required.</span>
                                         <span ng-show="vedioStep.Description.$error.pattern">*Please enter only characters!</span></span>
                                 </div>
                             </div>
@@ -88,9 +101,9 @@
                                     <div class="text-center">
                                         <label class="coupon-date col-sm-12">Coupon Expiry Date</label>
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <select ng-model="createAds.couponExpiryInString" class="form-control" ng-change="expDate(createAds.couponExpiryDate)">
-                                                <option selected="">{{createAds.couponExpiryInString}}</option>
-                                                <option value="Never">Never</option>
+                                            <select ng-model="createAds.couponExpiryDate" class="form-control" ng-change="expDate(createAds.couponExpiryDate)">
+                                                <!-- <option selected="">{{createAds.couponExpiryInString}}</option> -->
+                                                <option value="NEVER">Never</option>
                                                 <option value="1 Week">1 Week </option>
                                                 <option value="2 Weeks">2 Weeks</option>
                                                 <option value="3 Weeks">3 Weeks</option>
@@ -105,59 +118,60 @@
                                     <div class="text-center">
                                         <label class="coupon-date col-sm-12">Number of Viewers</label>
                                         <div class="col-sm-6 col-sm-offset-3">
-                                            <input ng-model="createAds.viewers" type="text" class="form-control text-center"/>
+                                            <input ng-model="createAds.viewers" type="text" name="viewers" class="form-control text-center"/>
+                                            <span style="color:red" ng-show="vedioStep.viewers.$dirty && vedioStep.viewers.$invalid">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 cus-para-text m-t-30">
-                                <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
+                                <!-- <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
                                 <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
                                 <p>Get more benefits by increasing the number of vieweers for your Ad will be listed on the top of home page and while searching.</p>
-                                <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p>
+                                <p>Your Ad will be watched for 30 seconds without skip and you will have the ability to upload a cover photo for your coupon gift.</p> -->
                             </div>
-                            <div class="col-sm-12">
+                           <div class="col-sm-12">
                                 <div class="new_banner-img">
                                     <img src="../dist/image/cover.jpg" class="img-responsive cus-img1">
-                                    <!-- <div class="new-banner_btm-btn">
+                                    <div class="new-banner_btm-btn">
                                         <button class="btn btn-green">My Upgrade Card</button>
-                                        <button class="btn btn-green">Go to Cards Store</button>
-                                    </div> -->
+                                        <!-- <button class="btn btn-green">Go to Cards Store</button> -->
+                                    </div>
                                 </div>
-                            </div>  
+                            </div> 
                             <div class="col-sm-12 sell-coupon new_coupon">
-                                <div class="text-center"><i class="fa fa-lightbulb-o font-s" aria-hidden="true" ng-click="openTerms('cellThisCouponTerms')"></i></div>
+                                <!-- <div class="text-center"><i class="fa fa-lightbulb-o font-s" aria-hidden="true" ng-click="openTerms('cellThisCouponTerms')"></i></div> -->
                                 <h3>Sell this coupon </h3>
                                 <div class="radio-tab">
                                     <div class="radio-btn text-left">
                                         <label>
-                                            <input type="radio" ng-model="createAds.cellThisCoupon" name="radio4 value="false" checked>&nbsp; Disable (Don't post my coupon in the store)
+                                            <input type="radio" ng-model="createAds.cellThisCoupon" name="radio4" value="false" checked  ng-disabled="createAds.hiddenCode == '' ">&nbsp; Disable (Don't post my coupon in the store)
                                         </label>
                                     </div>
                                 </div>
                                 <div class="radio-tab">
                                     <div class="radio-btn text-left">
                                         <label>
-                                            <input type="radio" ng-model="createAds.cellThisCoupon" name="radio4" value="true" checked>&nbsp; Enable (Post my coupon on the store)
+                                            <input type="radio" ng-model="createAds.cellThisCoupon" name="radio4" value="true" checked  ng-disabled="createAds.hiddenCode == '' ">&nbsp; Enable (Post my coupon on the store)
                                         </label>
                                     </div>
                                 </div>
-                                <div class="qty-value">Qty <span>100</span> Coupon or End of ad validity</div>
+                                <div class="qty-value">Qty <span>{{createAds.viewers}}</span> Coupon or End of ad validity</div>
                             </div>
                             <div class="col-sm-12 sell-coupon new_sell">
                                 <h3>Winner</h3>
                                 <div class="radio-tab cus-inline-fld">
                                     <div class="radio-btn text-left gbl-table">
                                         <div class="global-tble-cell">
-                                            <label class="gbl-label">
-                                                <input type="radio" value="Winer" name="radio5" ng-model="createAds.numberOfWinners" checked>&nbsp;
+                                             <label class="gbl-label">
+                                                <input type="radio" name="radio5" ng-model="createAds.allAreWinners" value="false" ng-disabled="createAds.hiddenCode == '' " checked>&nbsp;
                                             </label>
                                         </div>
                                         <div class="global-tble-cell">
                                             <input type="text" ng-model="createAds.winner" value="" class="form-control gbl-input">
                                         </div>
                                         <div class="global-tble-cell">
-                                            <span type="text" ng-model="createAds.winner" value=""  class="form-control gbl-input"></span>
+                                            <input type="text" ng-model="createAds.winner" value="" class="form-control gbl-input">
                                         </div>
                                         <div class="global-tble-cell">
                                             <label>Coupon</label>
@@ -166,9 +180,13 @@
                                 </div>
                                 <div class="radio-tab">
                                     <div class="radio-btn text-left">
-                                        <label>
-                                            <input type="radio" ng-model="createAds.winner"  value="All are Winer"  name="radio5" ng-model="createAds.numberOfWinners" checked>&nbsp; All are Winers
-                                        </label>
+                                         <label class="gbl-label">
+                                            <input type="radio" name="radio5" ng-model="createAds.allAreWinners" value="true" ng-disabled="createAds.hiddenCode == '' " checked>&nbsp; All are Winners
+
+                                        </label> 
+                                        <!-- <label>
+                                            <input type="radio" ng-model="createAds.allAreWinners"  value="true"  name="radio5"  checked>&nbsp; All are Winers
+                                        </label> -->
                                     </div>
                                 </div>
                             </div>
@@ -188,7 +206,7 @@
                                 </div>
                                 <div class="col-sm-4" ng-if="citySecond">
                                     <select  class="form-control" id="city" ng-model="createAds.city" required>
-                                        
+                                        <option selected="">{{createAds.city}}</option>
                                       <option ng-repeat="city in cityList">{{city}}</option>
                                     </select> 
                                 </div>
@@ -268,6 +286,10 @@
                                 <label for="exampleInputName2">Brolix Fees :</label>
                                 <input type="text" ng-model="createAds.brolixFees" class="form-control" placeholder="">
                               </div>
+                              <div class="form-group">
+                                <label for="exampleInputName3">Winner Price :</label>
+                                <input type="text" ng-model="createAds.winnerPrice" class="form-control" placeholder="">
+                              </div>
                             </div>
                             <div class="col-sm-12 sell-coupon">
                                 <h3>Who will see your add?</h3>
@@ -318,8 +340,9 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 btn2 text-center">
+                                <a class="btn btn-lg btn-green" g-disabled="!createAds.viewers || !createAds.viewersOne || !createAds.brolixFees || !createAds.country || !createAds.gender || !createAds.ageFrom || !createAds.ageTo || !createAds.winnerPrice" ng-click="click('Step6')">Next</a>
                                 <a  class="btn btn-lg btn-green" ng-click="click('Back5')">Back</a>
-                                <a class="btn btn-lg btn-green" ng-click="click('Step6')">Next</a>
+                                
                             </div>
                         </div>
                     </div>
@@ -329,32 +352,82 @@
     </div>
 </div>
 
-
 <div class="container" ng-if="Step6">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add New Page Step6</h3>
+                    <h3 class="panel-title">Add New Page</h3>
                 </div>
                 <div class="panel-body">
                     <div class="login-block">
                         <div class="terms-Condition">
-                            <div class="text-center"><i class="fa fa-paperclip cus-paperclip" aria-hidden="true"></i>
+                            <!-- <div class="text-center"><i class="fa fa-paperclip cus-paperclip" aria-hidden="true"></i>
+                            </div> -->
+                            <div class="top-content-head text-center">
+                                <h4>You can change the background image for your coupon:</h4>
                             </div>
-                            <h3 class="text-center">Terms and Conditions</h3>
-                            <h4>Please read the following carefully:</h4>
-                            <div class="terms-cond-list">
-                                <ul>
-                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                    <li><i class="fa fa-circle" aria-hidden="true"></i> <span>Please make sure that you have the ability to provide the gifts attached to your Ad to the winners elected by Brofix App through the raffle.</span></li>
-                                </ul>
-                            </div>
+                            <div style="text-align: center">
+
+                                       <!--  <img class="profile-user-img newBrdr img-responsive" ng-model="createAds.slidePhoto1"  ng-src="{{createAds.slidePhoto1}}" id="output"> -->
+                                        <img ng-src="{{coverImg}}" ng-model="coverImg" style="width: 100%;height: 301px;">
+                                        <label class="fileContainer">
+                                            Choose File
+                                        <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'coverImg')" accept="image/*">
+                                        </label>
+                                        
+                                    </div>
                             <div class="btn2 text-center">
-                                <a  class="btn btn-lg btn-green" ng-click="updateAdd()" >Agree & Update</a>
-                                <a  class="btn btn-lg btn-green" ng-click="click('Back6')">Back</a>
+                                <button  class="btn btn-lg btn-green" ng-click="click('Step7')" >Next</button>
+                                <button  class="btn btn-lg btn-green" ng-click="click('Back6')">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" ng-if="Step7">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="add-user panel panel-default cust-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add New Page</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="login-block">
+                        <div class="terms-Condition">
+                            <div class="top-content-head text-center">
+                                <h4>Ad & Coupon Final View</h4>
+                            </div>
+                             <div class="gift-images" >
+                                        <img src="{{coverImg}}" style="width: 700px;height: 301px;">
+                                        <div class="gift-images-data">
+                                            <div class="top-row-c1">
+                                                <div class="top-row-c1-left">
+                                                    <h4>{{pageDetails.pageName}}</h4>
+                                                    <div class="cus-date-c1">Valid Thru : {{couponExp}}</div>
+                                                </div>
+                                                <!-- <div class="valid-block" >
+                                                    <span class="valid-txt">{{usedAd.couponStatus}}</span>
+                                                    <span class="valid-box"><i class="fa fa-circle"></i></span>
+                                                </div> -->
+                                                <div class="middle-row-c1" ng-if="createAds.giftDescription">
+                                                    <h3>Gift Description</h3>
+                                                    <p>{{createAds.giftDescription}}</p>
+                                                </div>
+                                                <div class="middle-row-c1" ng-if="createAds.brolixFees">
+                                                    <h3>Gift</h3>
+                                                    <p>${{createAds.brolixFees}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            <div class="btn2 text-center">
+                                <button  class="btn btn-lg btn-green" ng-click="updateAdd(createAds)" >Publish</button>
+                                <button  class="btn btn-lg btn-green" ng-click="click('Back7')">Back</button>
                             </div>
                         </div>
                     </div>
@@ -476,7 +549,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="add-user panel panel-default cust-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add New Page slideStep4</h3>
+                    <h3 class="panel-title">Add New Page </h3>
                 </div>
                 <div class="panel-body">
                     <div class="login-block">
@@ -487,42 +560,49 @@
                             <div class="btn2 text-center">
                                 <div class="cus-upload-photos">
                                    <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"   ng-model="createAds.slidePhoto1"  ng-src="{{createAds.slidePhoto1}}" id="output">
+                                        <img class="profile-user-img newBrdr img-responsive"   ng-model="createAds.slidePhoto1"  ng-src="{{createAds.slidePhoto1}}" id="output">
+                                        <input type="radio" name="card_img" ng-model="card_img" value="1" ng-click="cardImSel(card_img)" style="height:47px;width:14px" >
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto1')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slidePhoto2"  ng-src="{{createAds.slidePhoto2}}" id="output">
+                                        <img class="profile-user-img newBrdr img-responsive"  ng-model="createAds.slidePhoto2"  ng-src="{{createAds.slidePhoto2}}" id="output">
+                                        <input type="radio" name="card_img" value="2" ng-model="card_img" ng-click="cardImSel(card_img)" style="height:47px;width:14px">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slidePhoto2')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto3"  ng-src="{{createAds.slidePhoto3}}" id="output">
+                                        <img class="profile-user-img newBrdr img-responsive" ng-model="createAds.slidePhoto3"  ng-src="{{createAds.slidePhoto3}}" id="output">
+                                        <input type="radio" name="card_img" value="3" ng-model="card_img" ng-click="cardImSel(card_img)" style="height:47px;width:14px">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slidePhoto3')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto4"  ng-src="{{createAds.slidePhoto4}}" id="output">
+                                        <img class="profile-user-img newBrdr img-responsive" ng-model="createAds.slidePhoto4"  ng-src="{{createAds.slidePhoto4}}" id="output">
+                                        <input type="radio" name="card_img" value="4" ng-model="card_img" ng-click="cardImSel(card_img)" style="height:47px;width:14px">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file"onchange="angular.element(this).scope().changeImage(this,'slidePhoto4')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive"  ng-model="createAds.slidePhoto5"  ng-src="{{createAds.slidePhoto5}}" id="output">
+                                        <img class="profile-user-img newBrdr img-responsive"  ng-model="createAds.slidePhoto5"  ng-src="{{createAds.slidePhoto5}}" id="output">
+                                        <input type="radio" name="card_img" value="5" ng-model="card_img" ng-click="cardImSel(card_img)" style="height:47px;width:14px">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto5')" accept="image/*">
                                         </label>
                                     </div>
                                     <div class="page-image clearfix">
-                                        <img class="profile-user-img img-responsive" ng-model="createAds.slidePhoto6"  ng-src="{{createAds.slidePhoto6}}" id="output">
+                                        <!-- <img class="profile-user-img newBrdr img-responsive"  ng-model="createAds.slidePhoto5"  ng-src="{{createAds.slidePhoto5}}" id="output"> -->
+                                        <img class="profile-user-img newBrdr  img-responsive" ng-model="createAds.slidePhoto6"  ng-src="{{createAds.slidePhoto6}}" id="output">
+                                        <input type="radio" name="card_img" value="6" ng-model="card_img" ng-click="cardImSel(card_img)" style="height:47px;width:14px">
                                         <label class="fileContainer">
                                             Choose File
                                         <input type="file" class="img-pro-file" onchange="angular.element(this).scope().changeImage(this,'slidePhoto6')" accept="image/*">
@@ -531,9 +611,9 @@
                                 </div>
                                 <div class="col-sm-12">
                                             <div class="text-center new-upload-btns">
-                                                <label class="fileContainer">
-                                                Select Music
-                                                <input type="file" onchange="angular.element(this).scope().changeImage(this,'mp3')" id="Name" class="form-control" placeholder="Name" accept="video/*,image/*,mp3/*">
+                                                <label class="fileContainer" ng-click="chooseMusic()">
+                                                    <span ng-if="selectedMusic == ''">Select Music</span>
+                                                    <span ng-if="selectedMusic !=''">{{musicSelected}}</span>
                                                 </label>
                                             </div>
                                         </div>
@@ -825,3 +905,31 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="musicList" role="dialog">
+        <div class="modal-dialog">
+        <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Select Music</h4>
+            </div>
+            <div class="modal-body" style="overflow:scroll; height:323px;">
+                <form name="frm">
+                  <div  ng-repeat="music in music" style="margin:10px">
+                            <input type="radio" name="musicc"  ng-model="selectedMusic" value="{{music.fileUrl}}" ng-click="submitMusic(selectedMusic)" style="height: 32px;width: 20px;" required> <span>{{music.fileName}}</span>
+                            <audio controls style="margin-left:126px">
+                              <source src="{{music.fileUrl}}" type="audio/mpeg">
+                            </audio>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" class="btn btn-default pull-left"  type="button">Cancel</button>
+              <button style="background-color: #00b288;color:#FFFFFF;height: 34px;width: 85px;" type="button" ng-click="subMusic()"  id="DeleteTutor">Select</button>
+              <!-- ng-disabled="sendMessage.$invalid" -->
+              <!-- data-ng-click="accept(request.booking_id,1)" -->
+            </div>
+          </div>  
+        </div>
+    </div>

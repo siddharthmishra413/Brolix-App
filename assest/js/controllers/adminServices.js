@@ -146,12 +146,6 @@ app.service('signUpCondition', function() {
         });
     }
 });
-// $timeout(function() {
-//             CKEDITOR.replace( 'editor1', {
-//                 language: 'ar'
-//             } );
-//         }, 100);
-
 
 app.service('cashAdCondition', function() {
     var self = this;
@@ -231,121 +225,6 @@ app.service('sellThisCouponInfo', function() {
         CKEDITOR.replace('sellThisCouponEditor', {
             width: '100%',
             height: 270,
-            toolbarGroups: flag == false ? [] : enable_tools,
-            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
-        });
-    }
-});
-
-
-app.service('signUpConditionArabic', function() {
-    var self = this;
-    this.cEditor = function(flag) {
-        console.log(flag);
-
-        CKEDITOR.replace('singUpArabicEditor', {
-            width: '100%',
-            height: 270,
-            language: 'ar',
-            toolbarGroups: flag == false ? [] : enable_tools,
-            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
-        });
-    }
-});
-
-app.service('cashAdConditionArabic', function() {
-    var self = this;
-    this.cEditor = function(flag) {
-        console.log(flag);
-
-        CKEDITOR.replace('cashArabicEditor', {
-            width: '100%',
-            height: 270,
-            language: 'ar',
-            toolbarGroups: flag == false ? [] : enable_tools,
-            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
-        });
-    }
-});
-app.service('couponAdConditionArabic', function() {
-    var self = this;
-    this.cEditor = function(flag) {
-        console.log(flag);
-
-        CKEDITOR.replace('couponArabicEditor', {
-            width: '100%',
-            height: 270,
-            language: 'ar',
-            toolbarGroups: flag == false ? [] : enable_tools,
-            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
-        });
-    }
-});
-app.service('couponGiftInfoArabic', function() {
-    var self = this;
-    this.cEditor = function(flag) {
-        console.log(flag);
-
-        CKEDITOR.replace('couponGiftArabicEditor', {
-            width: '100%',
-            height: 270,
-            language: 'ar',
-            toolbarGroups: flag == false ? [] : enable_tools,
-            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
-        });
-    }
-});
-app.service('cashGiftInfoArabic', function() {
-    var self = this;
-    this.cEditor = function(flag) {
-        console.log(flag);
-
-        CKEDITOR.replace('cashGiftArabicEditor', {
-            width: '100%',
-            height: 270,
-            language: 'ar',
-            toolbarGroups: flag == false ? [] : enable_tools,
-            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
-        });
-    }
-});
-app.service('hiddenGiftInfoArabic', function() {
-    var self = this;
-    this.cEditor = function(flag) {
-        console.log(flag);
-
-        CKEDITOR.replace('hiddeenGiftArabicEditor', {
-            width: '100%',
-            height: 270,
-            language: 'ar',
-            toolbarGroups: flag == false ? [] : enable_tools,
-            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
-        });
-    }
-});
-app.service('sellThisCouponArabic', function() {
-    var self = this;
-    this.cEditor = function(flag) {
-        console.log(flag);
-
-        CKEDITOR.replace('sellThisCouponArabicEditor', {
-            width: '100%',
-            height: 270,
-            language: 'ar',
-            toolbarGroups: flag == false ? [] : enable_tools,
-            removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
-        });
-    }
-});
-app.service('createPageArabic', function() {
-    var self = this;
-    this.cEditor = function(flag) {
-        console.log(flag);
-
-        CKEDITOR.replace('createPageArabicEditor', {
-            width: '100%',
-            height: 270,
-            language: 'ar',
             toolbarGroups: flag == false ? [] : enable_tools,
             removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
         });
@@ -572,9 +451,6 @@ app.service('userService', function($http) {
           // console.log("data",JSON.stringify(data))
             return $http.post(baseurl + '/ads/createAds', data);
         },
-        musicList: function() {
-            return $http.get(baseurl + '/ads/getMp3Files/en');
-        },
 
         totalAds: function() {
             return $http.get(baseurl + '/admin/totalAds');
@@ -622,7 +498,6 @@ app.service('userService', function($http) {
         soldCoupon: function(id) {
             return $http.get(baseurl + '/admin/soldCoupon' + id);
         },
-
 
         showReportOnAd: function(id) {
             return $http.get(baseurl + '/admin/showReportOnAd/' + id);
@@ -772,6 +647,7 @@ app.service('userService', function($http) {
 
         removePage: function(pageId) {
             return $http.get(baseurl + '/admin/removePage/' + pageId);
+            console.log('return'+ return)
         },
 
         blockPage: function(pageId) {

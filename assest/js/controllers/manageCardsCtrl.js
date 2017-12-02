@@ -873,6 +873,34 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
         //     }) 
     }
 
+
+    function getExpiryDateValue(e) {
+        if (e == (1000 * 60 * 60 * 24 * 1 * 7)) {
+            expiryVal = "1Week";
+        } else if (e == (1000 * 60 * 60 * 24 * 2 * 7)) {
+            expiryVal = "2Week";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 3 * 7)) {
+            expiryVal = "3Week";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 1 * 30)) {
+            expiryVal = "1Month";
+        }
+         else if (e == (1000 * 60 * 60 * 24 * 2 * 30)) {
+            expiryVal = "1Month";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 2 * 30)) {
+            expiryVal = "2Month";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 3 * 30)) {
+            expiryVal = "3Month";
+        }
+        else if (e == "NEVER"){
+            expiryVal = "Lifetime";
+        }
+        return expiryVal;
+    }
+
     $scope.upgradeCardUsedAd = function(id) {
         console.log(JSON.stringify(id))
         var data = {
@@ -885,7 +913,9 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
                 $scope.usedAd = success.data.result;
                 for (i = 0; i < success.data.result.length; i++) {
                     $("#luckCardUsedAdd").modal('show');
-                    $scope.newDate = new Date((success.data.result[i].couponExpiryDate) * 1000);
+                    var dd = getExpiryDateValue(success.data.result[i].couponExpiryDate)
+                    console.log("val =>"+dd)
+                    success.data.result[i].couponExpiryDate = dd;
                 }
             } else {
                 toastr.error(success.data.responseMessage)
@@ -905,12 +935,14 @@ app.controller('manageCardsCtrl', function($scope, $window, userService, $state,
         userService.luckCardUsedAd(data).then(function(success) {
             //console.log("second", JSON.stringify(success))
             if (success.data.responseCode == 200) {
-                $scope.usedAd = success.data.result;
-                $scope.img = $scope.usedAd[0].coverImage;
                 for (i = 0; i < success.data.result.length; i++) {
                     $("#luckCardUsedAdd").modal('show');
-                    $scope.newDate = new Date((success.data.result[i].couponExpiryDate) * 1000);
+                   var dd = getExpiryDateValue(success.data.result[i].couponExpiryDate)
+                    console.log("val =>"+dd)
+                    success.data.result[i].couponExpiryDate = dd;
                 }
+                $scope.usedAd = success.data.result;
+                $scope.img = $scope.usedAd[0].coverImage;
             } else {
                 toastr.error(success.data.responseMessage)
             }

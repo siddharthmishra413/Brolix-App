@@ -3392,10 +3392,11 @@ module.exports = {
 
   // api for create ad payment
     "createAdPayment": function(req, res) {
+        console.log("req.body===>", JSON.stringify(req.body))
         i18n = new i18n_module(req.body.lang, configs.langFile);
         User.findOne({ _id: req.body.userId }).exec(function(err, user) {
             if (err) { res.send({ responseCode: 500, responseMessage: i18n.__("Internal server error") }); } else if (!user) { res.send({ responseCode: 404, responseMessage: i18n.__("User not found.") }); } else {
-                //   console.log("user", user)
+                   console.log("user details==>>", user)
                 if (req.body.paymentMode == 'paypal' || req.body.paymentMode == 'payWithWallet') {
                     waterfall([
                         function(callback) {
@@ -3449,7 +3450,7 @@ module.exports = {
                 } else {
                     waterfall([
                         function(callback) {
-                            paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response) {
+                            paytabs.ValidateSecretKey("yazan@brolix.com", "crzvAlMh1PL125QF0qQJy7kE32ZNz9OMAohaJ4rLTdNWiDBi4s1CAlgDogqYpfK0D2an6C80QVX8zzrD2tgCPxfdNGbcWWdzZoW6", function(response) {
                                 console.log(response);
                                 if (response.result == 'valid') {
                                     callback(null, response)
@@ -3476,10 +3477,13 @@ module.exports = {
                             }
 
                             var createPayPage = new Object()
-                            createPayPage.merchant_email = 'sakshigadia@gmail.com';
+                            
+                        //  createPayPage.merchant_email = 'sakshigadia@gmail.com';
+                            createPayPage.merchant_email = 'yazan@brolix.com';
                             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
-                            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-                            createPayPage.site_url = "http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082";
+//                          createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+                            createPayPage.secret_key = "crzvAlMh1PL125QF0qQJy7kE32ZNz9OMAohaJ4rLTdNWiDBi4s1CAlgDogqYpfK0D2an6C80QVX8zzrD2tgCPxfdNGbcWWdzZoW6";
+                            createPayPage.site_url = "https://brolix.com";
                             createPayPage.return_url = 'http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '';
                             createPayPage.title = "Brolix";
                             createPayPage.cc_first_name = user.firstName;
@@ -3494,9 +3498,9 @@ module.exports = {
                             createPayPage.amount = req.body.amount;
                             createPayPage.discount = 0;
                             createPayPage.currency = "USD"; //EUR JOD
-                            createPayPage.reference_no = "21873109128";
-                            createPayPage.ip_customer = "192.168.1.1";
-                            createPayPage.ip_merchant = "192.168.1.1";
+                            createPayPage.reference_no = "2187091728";
+                            createPayPage.ip_customer = "34-214-69-184";
+                            createPayPage.ip_merchant = "34-214-69-184";
                             createPayPage.billing_address = "ydh";
                             createPayPage.state = state;
                             createPayPage.city = user.city;
@@ -3514,6 +3518,7 @@ module.exports = {
                             paytabs.CreatePayPage(createPayPage, function(response) {
                                 console.log(response)
                                 if (err) { res.send({ responseCode: 500, responseMessage: "Internal server error" }); } else if (!(response.response_code == "4012")) {
+                                    console.log("response code error",response )
                                     res.send({ responseCode: 404, responseMessage: "User details are invalid" });
                                 } else {
                                     var obj = {
@@ -3648,7 +3653,7 @@ module.exports = {
                 } else {
                     waterfall([
                         function(callback) {
-                            paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response) {
+                            paytabs.ValidateSecretKey("yazan@brolix.com", "crzvAlMh1PL125QF0qQJy7kE32ZNz9OMAohaJ4rLTdNWiDBi4s1CAlgDogqYpfK0D2an6C80QVX8zzrD2tgCPxfdNGbcWWdzZoW6", function(response) {
                                 console.log(response);
                                 if (response.result == 'valid') {
                                     callback(null, response)
@@ -3675,10 +3680,10 @@ module.exports = {
                             }
 
                             var createPayPage = new Object()
-                            createPayPage.merchant_email = 'sakshigadia@gmail.com';
+                            createPayPage.merchant_email = 'yazan@brolix.com';
                             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
-                            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
-                            createPayPage.site_url = "http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082";
+                            createPayPage.secret_key = "crzvAlMh1PL125QF0qQJy7kE32ZNz9OMAohaJ4rLTdNWiDBi4s1CAlgDogqYpfK0D2an6C80QVX8zzrD2tgCPxfdNGbcWWdzZoW6";
+                            createPayPage.site_url = "https://brolix.com";
                             createPayPage.return_url = 'http://ec2-34-214-69-184.us-west-2.compute.amazonaws.com:8082/page/redirectpage/' + 200 + '/' + "Success" + '';
                             createPayPage.title = "Brolix";
                             createPayPage.cc_first_name = user.firstName;
@@ -3694,8 +3699,8 @@ module.exports = {
                             createPayPage.discount = 0;
                             createPayPage.currency = "USD"; //EUR JOD
                             createPayPage.reference_no = "21873109128";
-                            createPayPage.ip_customer = "192.168.1.1";
-                            createPayPage.ip_merchant = "192.168.1.1";
+                            createPayPage.ip_customer = "34-214-69-184";
+                            createPayPage.ip_merchant = "34-214-69-184";
                             createPayPage.billing_address = "ydh";
                             createPayPage.state = state;
                             createPayPage.city = user.city;

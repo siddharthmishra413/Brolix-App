@@ -157,6 +157,7 @@ var userSchema = new Schema({
         productId: { type: String },
         pageName: { type: String },
         pageId:{type:String},
+        isRead:{type:Boolean, default: false},
         CreatedAt: { type: Date, default: Date.now }
     }],
     viewedAd: [],

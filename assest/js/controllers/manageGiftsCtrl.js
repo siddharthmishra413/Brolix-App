@@ -82,6 +82,11 @@ userService.totalCashGifts().success(function(res) {
 
 userService.totalHiddenGifts().success(function(res) { 
   if (res.responseCode == 200){
+    for(i=0;i<res.result.length;i++){
+      if(res.result[i].hiddenGifts.status == 'ACTIVE'){
+        res.result[i].hiddenGifts.status = 'VALID'
+      }
+    }
     $scope.totalHiddenGiftShow= res.result;
     $scope.totalHiddenGift = res.result.length;
   } 
@@ -196,19 +201,59 @@ $scope.top_50_balance= function() {
 //             toastr.error('Connection error.');
 //    }) 
 // }
+function getExpiryDateValue(e) {
+        if (e == (1000 * 60 * 60 * 24 * 1 * 7)) {
+            expiryVal = "1Week";
+        } else if (e == (1000 * 60 * 60 * 24 * 2 * 7)) {
+            expiryVal = "2Week";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 3 * 7)) {
+            expiryVal = "3Week";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 1 * 30)) {
+            expiryVal = "1Month";
+        }
+         else if (e == (1000 * 60 * 60 * 24 * 2 * 30)) {
+            expiryVal = "1Month";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 2 * 30)) {
+            expiryVal = "2Month";
+        }
+        else if (e == (1000 * 60 * 60 * 24 * 3 * 30)) {
+            expiryVal = "3Month";
+        }
+        else if (e == "NEVER"){
+            expiryVal = "NEVER";
+        }
+        return expiryVal;
+    }
 
 $scope.showCouponGift= function(id,key) {
   console.log("key",id,key)
   if(key == 'first'){
     $("#showCouponGift").modal('show');
-  }else if(key == 'second'){
-    $("#showCouponGiftsecond").modal('show');
   }else if(key == 'third'){
     $("#showCouponGiftthird").modal('show');
   }else if(key == 'fourth'){
     $("#showCouponGiftfourth").modal('show');
   }else{
     toastr.error("Something wents to wrong");
+  }
+  console.log(id)
+  userService.couponGiftAd(id).success(function(res) {        
+    if (res.responseCode == 200){
+      var dd = getExpiryDateValue(res.result.couponExpiryDate);
+      res.result.couponExpiryDate = dd;
+      $scope.couponGiftAd=res.result;
+      console.log("dddddd",JSON.stringify($scope.couponGiftAd))
+    } else {
+        toastr.error(res.responseMessage);
+    }
+  }) 
+}
+$scope.showCashhGift= function(id,key) {
+  if(key == 'second'){
+    $("#showCouponGiftsecond").modal('show');
   }
   console.log(id)
   userService.couponGiftAd(id).success(function(res) {        
@@ -417,11 +462,16 @@ $scope.giftTypeName = function(val) {
       case 'totalHiddenGifts': 
       //console.log("3");
           userService.totalHiddenGifts().success(function(res){
-           // console.log("3:   ",JSON.stringify(res));
+           console.log("datatata",JSON.stringify(res.result))
             if (res.responseCode == 200){
+              for(i=0;i<res.result.length;i++){
+                if(res.result[i].hiddenGifts.status == 'ACTIVE'){
+                  res.result[i].hiddenGifts.status = 'VALID'
+                }
+              }
               $scope.totalHiddenGiftShow= res.result;
               $scope.totalHiddenGift = res.result.length;
-              console.log("datatata",res.result.length)
+              
             } 
             else {
               $scope.totalHiddenGift=0

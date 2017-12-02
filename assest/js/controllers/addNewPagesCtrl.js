@@ -32,9 +32,13 @@ $scope.$emit('headerStatus', 'Manage Pages');
         } 
 
     })
+var a = localStorage.getItem('em');;
+    console.log("Em =>"+a)
+    var req = {
+      email : a
+    }
 
-
- userService.adminProfile().success(function(res) {
+ userService.adminProfile(req).success(function(res) {
         if (res.responseCode == 200) {
             $scope.userId = res.result._id; 
             localStorage.setItem('userId',$scope.userId);
@@ -394,7 +398,7 @@ $scope.submitt = function(){
 	              toastr.success("successfully Created");
 	              $state.go('header.managePages');
 	           }else{
-	           	toastr.error(success.responseMessage);
+	           	toastr.error(success.data.responseMessage);
 	           } 
 	   })
 	}

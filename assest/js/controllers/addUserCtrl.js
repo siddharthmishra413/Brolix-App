@@ -9,11 +9,6 @@ app.controller('addUserCtrl', function($scope, $state, $window, userService, $ht
         $scope.countries = res.result;
     })
 
-    $('#output').on('click', function(e){
-        $("#toggle").toggle();
-        $(this).toggleClass('success')
-    });
-
     $scope.changeCountry = function() {
         var obj = {};
         obj = {

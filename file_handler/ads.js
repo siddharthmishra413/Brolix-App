@@ -32,7 +32,7 @@ var createSignature = require('./utility.js')
 var paytabs = require('paytabs')
 var NodeCache = require("node-cache");
 var myCache = new NodeCache();
-
+var savedFileJSON = require("../savedfiles.json")
 //<--------------------------------------------I18n------------------------------------------------->
 var configs = {
     "lang": "ar",
@@ -57,11 +57,17 @@ function onlyUnique(value, index, self) {
 
 
 /* This credential is munesh's account. */
-
+// live old
+//cloudinary.config({
+//    cloud_name: 'brolix1',
+//    api_key: '779861163245424',
+//    api_secret: 'l_zjtpckfRSlPT9oPHmwshHc6Wc'
+//});
+/* yazan's account */
 cloudinary.config({
-    cloud_name: 'brolix1',
-    api_key: '779861163245424',
-    api_secret: 'l_zjtpckfRSlPT9oPHmwshHc6Wc'
+    cloud_name: 'brolix',
+    api_key: '456836683129927',
+    api_secret: 'cc6TibFxS8Rh656bTCc2war9YEE'
 });
 
 /* yazan's account */
@@ -256,22 +262,16 @@ module.exports = {
                 var fileName = files.mp3files[i].originalFilename;
                 cloudinary.uploader.upload(img.path, function(result) {
                     if (result.url) {
-                        var data = {
-                            fileUrl: result.url,
-                            fileName: result.public_id
+                        imageUrl.push(result.url);
+                        a += i;
+                        if (a == i * i) {
+                            res.send({
+                                result: imageUrl,
+                                responseCode: 200,
+                                responseMessage: i18n.__("File uploaded successfully")
+                            });
                         }
-                        //  console.log(data)
-                        var fileData = new uploadFile(data);
-                        fileData.save(function(err, ress) {
-                            a += i;
-                            if (a == i * i) {
-                                res.send({
-                                    responseCode: 200,
-                                    responseMessage: i18n.__("File uploaded successfully")
-                                });
-                            }
-                        })
-                    } else {
+                    }else {
                         callback(null, 'http://res.cloudinary.com/ducixxxyx/image/upload/v1480150776/u4wwoexwhm0shiz8zlsv.png')
                     }
 
@@ -468,6 +468,7 @@ module.exports = {
                                     }
                                 }
                                 var updatedResult = result.docs;
+                                console.log("1111111===>>",updatedResult)
                                 createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
                                     res.send({
                                         responseCode: 200,
@@ -1355,8 +1356,9 @@ module.exports = {
 
     // api for image and video upload
     "uploads": function(req, res) {
+         console.log("Image Upload ",req.body);
         i18n = new i18n_module(req.body.lang, configs.langFile);
-        console.log(req.files);
+        console.log("File Recived.:",req.files);
         var imageUrl = [];
         var form = new multiparty.Form();
         form.parse(req, function(err, fields, files) {
@@ -4258,7 +4260,7 @@ module.exports = {
                 } else {
                     waterfall([
                         function(callback) {
-                            paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response) {
+                            paytabs.ValidateSecretKey("yazan@brolix.com", "crzvAlMh1PL125QF0qQJy7kE32ZNz9OMAohaJ4rLTdNWiDBi4s1CAlgDogqYpfK0D2an6C80QVX8zzrD2tgCPxfdNGbcWWdzZoW6", function(response) {
                                 if (response.result == 'valid') {
                                     callback(null, response)
                                 } else {
@@ -4284,9 +4286,11 @@ module.exports = {
                             }
 
                             var createPayPage = new Object()
-                            createPayPage.merchant_email = 'sakshigadia@gmail.com';
-                            createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
-                            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+//                            createPayPage.merchant_email = 'sakshigadia@gmail.com';
+                              createPayPage.merchant_email = 'yazan@brolix.com';
+                              createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
+                              createPayPage.secret_key = "crzvAlMh1PL125QF0qQJy7kE32ZNz9OMAohaJ4rLTdNWiDBi4s1CAlgDogqYpfK0D2an6C80QVX8zzrD2tgCPxfdNGbcWWdzZoW6";
+//                            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
                             createPayPage.site_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082";
                             createPayPage.return_url = "http://ec2-52-76-162-65.ap-southeast-1.compute.amazonaws.com:8082/page/returnPage";
                             createPayPage.title = "Brolix";
@@ -4493,6 +4497,13 @@ module.exports = {
                     }
                 })
             }
+        })
+    },
+    
+    "uploadFileSavedJson": function(req, res){
+        
+        uploadFile.insertMany(savedFileJSON,function(err, results){
+            res.send({result:results})
         })
     }
 

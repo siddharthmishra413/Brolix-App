@@ -1,11 +1,12 @@
-app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window, signUpCondition, cashAdCondition, couponAdCondition,
-couponGiftInfo, cashGiftInfo, hiddenGiftInfo, sellThisCouponInfo, createPage, userService, $rootScope, $state, toastr, $http, $timeout) {
+app.controller('termsAndConditionCtrl', function ($scope, $stateParams, $window, signUpCondition,signUpConditionArabic,cashAdConditionArabic,couponAdConditionArabic,couponGiftInfoArabic,cashGiftInfoArabic,hiddenGiftInfoArabic,sellThisCouponArabic, cashAdCondition,createPageArabic, couponAdCondition,couponGiftInfo, cashGiftInfo, hiddenGiftInfo, sellThisCouponInfo, createPage, userService, $rootScope, $state, toastr, $http, $timeout) {
     $(window).scrollTop(0, 0);
     $scope.$emit('headerStatus', 'Admin Tools');
     $scope.$emit('SideMenu', 'Admin Tools');
     $scope.myFrom = {};
     $scope.show = 1;
-
+    $scope.showarab = false;
+    $scope.selectedLang = "eng";
+    
 
 
 	// adminService.terms_and_policy('terms').then(function(success){ 
@@ -162,12 +163,8 @@ couponGiftInfo, cashGiftInfo, hiddenGiftInfo, sellThisCouponInfo, createPage, us
             }
         })
 
-
-
-
-
-
     $scope.getdata = function (type) {
+        console.log("type =>"+type)
         userService.viewAllTerms().success(function (res) {
         console.log("reee",JSON.stringify(res))
 
@@ -255,6 +252,85 @@ couponGiftInfo, cashGiftInfo, hiddenGiftInfo, sellThisCouponInfo, createPage, us
                     
                 break;
 
+                case 'signUpConditionArabic': 
+                    $scope.signUpTermsArabic = res.result.filter(function (obj) {
+                        return obj.type == 'signUpConditionArabic';
+                    });
+                    console.log("$scope.signUpTermsArabic =>"+JSON.stringify($scope.signUpTermsArabic))
+                     $scope.myFrom.termssignUpConditionArabic = $scope.signUpTermsArabic[0].termsConditionContent;
+                    signUpConditionArabic.cEditor(true);
+
+                break;
+
+                case 'cashAdConditionArabic': 
+                    $scope.cashAdCon = res.result.filter(function (obj) {
+                        return obj.type == 'cashAdConditionArabic';
+                    });
+                    console.log("$scope.cashAdCon =>"+JSON.stringify($scope.cashAdCon))
+                     $scope.myFrom.termscashAdConditionArabic = $scope.cashAdCon[0].termsConditionContent;
+                    cashAdConditionArabic.cEditor(true);
+
+                break;
+
+                case 'couponAdConditionArabic': 
+                    $scope.couponAdCon = res.result.filter(function (obj) {
+                        return obj.type == 'couponAdConditionArabic';
+                    });
+                    console.log("$scope.couponAdCon =>"+JSON.stringify($scope.couponAdCon))
+                     $scope.myFrom.termscouponAdConditionArabic = $scope.couponAdCon[0].termsConditionContent;
+                    couponAdConditionArabic.cEditor(true);
+
+                break;
+
+                 case 'couponGiftInfoArabic': 
+                    $scope.couponGiftArabic = res.result.filter(function (obj) {
+                        return obj.type == 'couponGiftInfoArabic';
+                    });
+                    console.log("$scope.couponGiftArabic =>"+JSON.stringify($scope.couponGiftArabic))
+                     $scope.myFrom.termscouponGiftConditionArabic = $scope.couponGiftArabic[0].termsConditionContent;
+                    couponGiftInfoArabic.cEditor(true);
+
+                break;
+
+                case 'cashGiftInfoArabic': 
+                    $scope.cashGiftArabic = res.result.filter(function (obj) {
+                        return obj.type == 'cashGiftInfoArabic';
+                    });
+                    console.log("$scope.cashGiftArabic =>"+JSON.stringify($scope.cashGiftArabic))
+                     $scope.myFrom.termscashGiftConditionArabic = $scope.cashGiftArabic[0].termsConditionContent;
+                    cashGiftInfoArabic.cEditor(true);
+
+                break;
+                case 'hiddenGiftInfoArabic': 
+                    $scope.hiddenGiftArabic = res.result.filter(function (obj) {
+                        return obj.type == 'hiddenGiftInfoArabic';
+                    });
+                    console.log("$scope.hiddenGiftArabic =>"+JSON.stringify($scope.hiddenGiftArabic))
+                     $scope.myFrom.termshiddenGiftConditionArabic = $scope.hiddenGiftArabic[0].termsConditionContent;
+                    hiddenGiftInfoArabic.cEditor(true);
+
+                break;
+
+                case 'sellThisCouponArabic': 
+                    $scope.sellThisArabic = res.result.filter(function (obj) {
+                        return obj.type == 'sellThisCouponArabic';
+                    });
+                    console.log("$scope.sellThisArabic =>"+JSON.stringify($scope.sellThisArabic))
+                     $scope.myFrom.termssellThisCouponConditionArabic = $scope.sellThisArabic[0].termsConditionContent;
+                    sellThisCouponArabic.cEditor(true);
+
+                break;
+
+                case 'createPageArabic': 
+                    $scope.createArabic = res.result.filter(function (obj) {
+                        return obj.type == 'createPageArabic';
+                    });
+                    console.log("$scope.createArabic =>"+JSON.stringify($scope.createArabic))
+                     $scope.myFrom.termscreatePageConditionArabic = $scope.createArabic[0].termsConditionContent;
+                    createPageArabic.cEditor(true);
+
+                break;
+
                 default: 
                 
             }
@@ -264,7 +340,19 @@ couponGiftInfo, cashGiftInfo, hiddenGiftInfo, sellThisCouponInfo, createPage, us
         })
     }
 
-           
+     $scope.selectLang =function(val){
+        console.log("selectedLang =>"+val)
+       if(val == 'arab'){
+         $scope.showarab = true; 
+         $scope.show = 11;
+            $scope.getdata('signUpConditionArabic'); 
+       } 
+       else{
+        $scope.show = 1;
+        $scope.getdata('signUpCondition');
+        $scope.showarab = false;
+       }
+    }      
 
     $scope.click = function (type) {
         $scope.type = type;
@@ -389,6 +477,127 @@ couponGiftInfo, cashGiftInfo, hiddenGiftInfo, sellThisCouponInfo, createPage, us
                     }
                 })
                 break;
+
+            case 'signUpConditionArabic':
+                $scope.myFrom.termssignUpConditionArabic = CKEDITOR.instances.singUpArabicEditor.getData();
+                data = {
+                        termsConditionContent: $scope.myFrom.termssignUpConditionArabic,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
+            case 'cashAdConditionArabic':
+                $scope.myFrom.termscashAdConditionArabic = CKEDITOR.instances.cashArabicEditor.getData();
+                data = {
+                        termsConditionContent: $scope.myFrom.termscashAdConditionArabic,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
+                case 'couponAdConditionArabic':
+                $scope.myFrom.termscouponAdConditionArabic = CKEDITOR.instances.couponArabicEditor.getData();
+                data = {
+                        termsConditionContent: $scope.myFrom.termscouponAdConditionArabic,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
+                case 'couponGiftInfoArabic':
+                $scope.myFrom.termscouponGiftConditionArabic = CKEDITOR.instances.couponGiftArabicEditor.getData();
+                data = {
+                        termsConditionContent: $scope.myFrom.termscouponGiftConditionArabic,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
+                case 'cashGiftInfoArabic':
+                $scope.myFrom.termscashGiftConditionArabic = CKEDITOR.instances.cashGiftArabicEditor.getData();
+                data = {
+                        termsConditionContent: $scope.myFrom.termscashGiftConditionArabic,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
+                case 'hiddenGiftInfoArabic':
+                $scope.myFrom.termshiddenGiftConditionArabic = CKEDITOR.instances.hiddeenGiftArabicEditor.getData();
+                data = {
+                        termsConditionContent: $scope.myFrom.termshiddenGiftConditionArabic,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
+                case 'sellThisCouponArabic':
+                $scope.myFrom.termssellThisCouponConditionArabic = CKEDITOR.instances.sellThisCouponArabicEditor.getData();
+                data = {
+                        termsConditionContent: $scope.myFrom.termssellThisCouponConditionArabic,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+
+                case 'createPageArabic':
+                $scope.myFrom.termscreatePageConditionArabic = CKEDITOR.instances.createPageArabicEditor.getData();
+                data = {
+                        termsConditionContent: $scope.myFrom.termscreatePageConditionArabic,
+                    }
+                userService.editTermsCondition(type, data).success(function (res) {
+                    if (res.responseCode == 200) {
+                        toastr.success(res.responseMessage);
+                      //  $state.reload();
+                    } else {
+                        toastr.error(res.responseMessage);
+                    }
+                })
+                break;
+                
             default:
                 toastr.error("Something Wents to wroung");
         }

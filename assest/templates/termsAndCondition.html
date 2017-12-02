@@ -1,91 +1,192 @@
 <div class="col-sm-12">
-<div class="row">
-   <ul class="nav nav-pills card-tabs">
-      <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('signUpCondition'); show = 1">Sign up</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('cashAdCondition'); show = 2">Cash Add</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('couponAdCondition'); show = 3">Coupon Add</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('couponGiftInfo'); show = 4">Coupon Gift</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('cashGiftInfo'); show = 5">Cash Gift</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('hiddenGiftInfo'); show = 6">Hidden Gift</a></li>
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('sellThisCoupon'); show = 7">Sell Coupon</a></li> 
-      <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('createPage'); show = 8">Create Page Terms</a></li>
-   </ul>
-   <div class="col-sm-12" ng-show="show==1">
-      <div class="form-group">
-       <textarea name="singUpEditor" class="form-control pos_ckeditor" ng-model="myFrom.termssignUpCondition"></textarea>
-         <!-- <textarea data-ck-editor class="form-control pos_ckeditor" data-ng-model="myFrom.termssignUpCondition" ></textarea> -->
-      </div>
-      <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="click('signUpCondition')">Update</a>
-      </div>
+   <div class="row">
+      <select ng-model="selectedLang" ng-change="selectLang(selectedLang)">
+         <option value="eng">English</option>
+         <option value="arab">Arabic</option>
+      </select>
+     <!--  <textarea  cols="80" id="editor1" name="editor1" ng-if="showarab == true" rows="10" >&lt;p&gt;This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href="http://ckeditor.com/"&gt;CKEditor&lt;/a&gt;.&lt;/p&gt;
+      </textarea> -->
    </div>
-   <div class="col-sm-12" ng-show="show==2">
-      <div class="form-group">
-       <textarea name="cashEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscashAdCondition"></textarea>
-         <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscashAdCondition" ></textarea> -->
+   <div class="row" ng-if="showarab == true">
+      <ul class="nav nav-pills card-tabs">
+         <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('signUpConditionArabic'); show = 11">Sign up</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('cashAdConditionArabic'); show = 22">Cash Add</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('couponAdConditionArabic'); show = 33">Coupon Add</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('couponGiftInfoArabic'); show = 44">Coupon Gift</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('cashGiftInfoArabic'); show = 55">Cash Gift</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('hiddenGiftInfoArabic'); show = 66">Hidden Gift</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('sellThisCouponArabic'); show = 77">Sell Coupon</a></li> 
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('createPageArabic'); show = 88">Create Page Terms</a></li>
+      </ul>
+   <div class="col-sm-12" ng-show="show==11">
+            <div class="form-group">
+               <textarea name="singUpArabicEditor" class="form-control pos_ckeditor" ng-model="myFrom.termssignUpConditionArabic"></textarea>
+               <!-- <textarea data-ck-editor class="form-control pos_ckeditor" data-ng-model="myFrom.termssignUpCondition" ></textarea> -->
+            </div>
+            <div class="btn2 text-center">
+               <a class="btn btn-lg btn-green" ng-click="click('signUpConditionArabic')">Update</a>
+             </div>
+         </div>
+         <div class="col-sm-12" ng-show="show==22">
+            <div class="form-group">
+               <textarea name="cashArabicEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscashAdConditionArabic"></textarea>
+               <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscashAdCondition" ></textarea> -->
+            </div>
+            <div class="btn2 text-center">
+               <a class="btn btn-lg btn-green" ng-click="click('cashAdConditionArabic')">Update</a>
+            </div>
+         </div>
+         <div class="col-sm-12" ng-show="show==33">
+            <div class="form-group">
+               <textarea name="couponArabicEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscouponAdConditionArabic"></textarea>
+               <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscouponAdCondition" ></textarea> -->
+            </div>
+            <div class="btn2 text-center">
+               <a class="btn btn-lg btn-green" ng-click="click('couponAdConditionArabic')">Update</a>
+            </div>
+         </div>
+         <div class="col-sm-12" ng-show="show==44">
+            <div class="form-group">
+               <textarea name="couponGiftArabicEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscouponGiftConditionArabic"></textarea>
+               <!-- textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscouponGiftCondition" ></textarea> -->
+            </div>
+            <div class="btn2 text-center">
+                <a class="btn btn-lg btn-green" ng-click="click('couponGiftInfoArabic')">Update</a>
+            </div>
+         </div>
+         <div class="col-sm-12" ng-show="show==55">
+            <div class="form-group">
+               <textarea name="cashGiftArabicEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscashGiftConditionArabic"></textarea>
+                <!--  <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscashGiftCondition" ></textarea> -->
+            </div>
+            <div class="btn2 text-center">
+               <a class="btn btn-lg btn-green" ng-click="click('cashGiftInfoArabic')">Update</a>
+             </div>
+         </div>
+         <div class="col-sm-12" ng-show="show==66">
+            <div class="form-group">
+               <textarea name="hiddeenGiftArabicEditor" class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftConditionArabic"></textarea>
+               <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition" ></textarea> -->
+            </div>
+            <div class="btn2 text-center">
+               <a class="btn btn-lg btn-green" ng-click="click('hiddenGiftInfoArabic')">Update</a>
+            </div>
+         </div>
+         <div class="col-sm-12" ng-show="show==77">
+            <div class="form-group">
+               <textarea name="sellThisCouponArabicEditor" class="form-control pos_ckeditor" ng-model="myFrom.termssellThisCouponConditionArabic"></textarea>
+               <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition" ></textarea> -->
+            </div>
+            <div class="btn2 text-center">
+               <a class="btn btn-lg btn-green" ng-click="click('sellThisCouponArabic')">Update</a>
+            </div>
+         </div>
+         <div class="col-sm-12" ng-show="show==88">
+            <div class="form-group">
+             <textarea name="createPageArabicEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageConditionArabic"></textarea>
+              <!--  <textarea id="editorPage" data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition" ></textarea> -->
+            </div>
+            <div class="btn2 text-center">
+               <a class="btn btn-lg btn-green" ng-click="click('createPageArabic')">Update</a>
+            </div>
+            <!-- <div class="form-group cus-select">
+               <select class="form-control" ng-model="dashBordFilter.upgradeCard">
+                   <option value="">Upgrade Card Type</option>
+                   <option ng-repeat="viewer in dashBordFilterViewer">{{viewer}}</option>
+               </select>
+            </div> -->
+         </div>
+
       </div>
-      <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="click('cashAdCondition')">Update</a>
+   <div class="row" ng-if="!showarab">
+      <ul class="nav nav-pills card-tabs">
+         <li class="active"><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('signUpCondition'); show = 1">Sign up</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('cashAdCondition'); show = 2">Cash Add</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('couponAdCondition'); show = 3">Coupon Add</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('couponGiftInfo'); show = 4">Coupon Gift</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('cashGiftInfo'); show = 5">Cash Gift</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('hiddenGiftInfo'); show = 6">Hidden Gift</a></li>
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('sellThisCoupon'); show = 7">Sell Coupon</a></li> 
+         <li><a data-toggle="pill" style="cursor: pointer;" ng-click="getdata('createPage'); show = 8">Create Page Terms</a></li>
+      </ul>
+
+      <div class="col-sm-12" ng-show="show==1">
+         <div class="form-group">
+            <textarea name="singUpEditor" class="form-control pos_ckeditor" ng-model="myFrom.termssignUpCondition"></textarea>
+            <!-- <textarea data-ck-editor class="form-control pos_ckeditor" data-ng-model="myFrom.termssignUpCondition" ></textarea> -->
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('signUpCondition')">Update</a>
+          </div>
       </div>
-   </div>
-   <div class="col-sm-12" ng-show="show==3">
-      <div class="form-group">
-         <textarea name="couponEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscouponAdCondition"></textarea>
-         <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscouponAdCondition" ></textarea> -->
+      <div class="col-sm-12" ng-show="show==2">
+         <div class="form-group">
+            <textarea name="cashEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscashAdCondition"></textarea>
+            <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscashAdCondition" ></textarea> -->
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('cashAdCondition')">Update</a>
+         </div>
       </div>
-      <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="click('couponAdCondition')">Update</a>
+      <div class="col-sm-12" ng-show="show==3">
+         <div class="form-group">
+            <textarea name="couponEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscouponAdCondition"></textarea>
+            <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscouponAdCondition" ></textarea> -->
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('couponAdCondition')">Update</a>
+         </div>
       </div>
-   </div>
-   <div class="col-sm-12" ng-show="show==4">
-      <div class="form-group">
-         <textarea name="couponGiftEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscouponGiftCondition"></textarea>
-         <<!-- textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscouponGiftCondition" ></textarea> -->
+      <div class="col-sm-12" ng-show="show==4">
+         <div class="form-group">
+            <textarea name="couponGiftEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscouponGiftCondition"></textarea>
+            <!-- textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscouponGiftCondition" ></textarea> -->
+         </div>
+         <div class="btn2 text-center">
+             <a class="btn btn-lg btn-green" ng-click="click('couponGiftInfo')">Update</a>
+         </div>
       </div>
-      <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="click('couponGiftInfo')">Update</a>
+      <div class="col-sm-12" ng-show="show==5">
+         <div class="form-group">
+            <textarea name="cashGiftEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscashGiftCondition"></textarea>
+             <!--  <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscashGiftCondition" ></textarea> -->
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('cashGiftInfo')">Update</a>
+          </div>
       </div>
-   </div>
-   <div class="col-sm-12" ng-show="show==5">
-      <div class="form-group">
-      <textarea name="cashGiftEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscashGiftCondition"></textarea>
-        <!--  <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscashGiftCondition" ></textarea> -->
+      <div class="col-sm-12" ng-show="show==6">
+         <div class="form-group">
+            <textarea name="hiddeenGiftEditor" class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition"></textarea>
+            <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition" ></textarea> -->
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('hiddenGiftInfo')">Update</a>
+         </div>
       </div>
-      <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="click('cashGiftInfo')">Update</a>
+      <div class="col-sm-12" ng-show="show==7">
+         <div class="form-group">
+            <textarea name="sellThisCouponEditor" class="form-control pos_ckeditor" ng-model="myFrom.termssellThisCouponCondition"></textarea>
+            <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition" ></textarea> -->
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('sellThisCoupon')">Update</a>
+         </div>
       </div>
-   </div>
-   <div class="col-sm-12" ng-show="show==6">
-      <div class="form-group">
-         <textarea name="hiddeenGiftEditor" class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition"></textarea>
-         <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition" ></textarea> -->
+      <div class="col-sm-12" ng-show="show==8">
+         <div class="form-group">
+          <textarea name="createPageEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition"></textarea>
+           <!--  <textarea id="editorPage" data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition" ></textarea> -->
+         </div>
+         <div class="btn2 text-center">
+            <a class="btn btn-lg btn-green" ng-click="click('createPage')">Update</a>
+         </div>
+         <!-- <div class="form-group cus-select">
+            <select class="form-control" ng-model="dashBordFilter.upgradeCard">
+                <option value="">Upgrade Card Type</option>
+                <option ng-repeat="viewer in dashBordFilterViewer">{{viewer}}</option>
+            </select>
+         </div> -->
       </div>
-      <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="click('hiddenGiftInfo')">Update</a>
-      </div>
-   </div>
-   <div class="col-sm-12" ng-show="show==7">
-      <div class="form-group">
-         <textarea name="sellThisCouponEditor" class="form-control pos_ckeditor" ng-model="myFrom.termssellThisCouponCondition"></textarea>
-         <!-- <textarea data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termshiddenGiftCondition" ></textarea> -->
-      </div>
-      <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="click('sellThisCoupon')">Update</a>
-      </div>
-   </div>
-   <div class="col-sm-12" ng-show="show==8">
-      <div class="form-group">
-       <textarea name="createPageEditor" class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition"></textarea>
-        <!--  <textarea id="editorPage" data-ck-editor class="form-control pos_ckeditor" ng-model="myFrom.termscreatePageCondition" ></textarea> -->
-      </div>
-      <div class="btn2 text-center">
-         <a class="btn btn-lg btn-green" ng-click="click('createPage')">Update</a>
-      </div>
-      <!-- <div class="form-group cus-select">
-         <select class="form-control" ng-model="dashBordFilter.upgradeCard">
-             <option value="">Upgrade Card Type</option>
-             <option ng-repeat="viewer in dashBordFilterViewer">{{viewer}}</option>
-         </select>
-      </div> -->
    </div>
 </div>

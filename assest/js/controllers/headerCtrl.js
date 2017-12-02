@@ -1,4 +1,5 @@
-app.controller('headerCtrl', function($scope, $window, $state, userService) {
+app.controller('headerCtrl', function($scope, $window, $state, userService,$cookieStore) {
+
     $(window).scrollTop(0, 0);
     //console.log("headerCtrl");
     $scope.image = "http://res.cloudinary.com/dfrspfd4g/image/upload/v1503549944/jfkrhpoqqaqkrbvw27st.png"
@@ -9,13 +10,19 @@ app.controller('headerCtrl', function($scope, $window, $state, userService) {
         $scope.menu = data;
     });
 
-    userService.adminProfile().success(function(res) {
+    var a = localStorage.getItem('em');;
+    console.log("Em =>"+a)
+    var req = {
+      email : a
+    }
+
+    userService.adminProfile(req).success(function(res) {
     	if(res.responseCode == 404){
     		$state.go('login')
     	}else if(res.responseCode == 200){
 
     		$scope.user = res.result;
-        //console.log("userDetails--->",JSON.stringify($scope.user))
+        console.log("userDetails--->",JSON.stringify($scope.user))
 
         localStorage.loginData=res.result._id;
         $scope.userId = res.result._id; 

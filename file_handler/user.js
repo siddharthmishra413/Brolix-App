@@ -32,10 +32,18 @@
 //        api_secret: 'MKOCQ4Dl6uqWNwUjizZLzsxCumE'
 //    });
 
+// old live
+//cloudinary.config({
+//    cloud_name: 'brolix1',
+//    api_key: '779861163245424',
+//    api_secret: 'l_zjtpckfRSlPT9oPHmwshHc6Wc'
+//});
+
+// new live (Nikhil)
 cloudinary.config({
-    cloud_name: 'brolix1',
-    api_key: '779861163245424',
-    api_secret: 'l_zjtpckfRSlPT9oPHmwshHc6Wc'
+    cloud_name: 'brolix',
+    api_key: '456836683129927',
+    api_secret: 'cc6TibFxS8Rh656bTCc2war9YEE'
 });
 
 /* yazan's account */
@@ -226,9 +234,11 @@ cloudinary.config({
 
         "validatorPaytabs": function(req, res) {
             var createPayPage = new Object()
-            createPayPage.merchant_email = 'sakshigadia@gmail.com';
+//            createPayPage.merchant_email = 'sakshigadia@gmail.com';
+            createPayPage.merchant_email = 'yazan@brolix.com';
             createPayPage.paytabs_url = 'https://www.paytabs.com/apiv2/';
-            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+//            createPayPage.secret_key = "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42";
+             createPayPage.secret_key = "crzvAlMh1PL125QF0qQJy7kE32ZNz9OMAohaJ4rLTdNWiDBi4s1CAlgDogqYpfK0D2an6C80QVX8zzrD2tgCPxfdNGbcWWdzZoW6";
             createPayPage.site_url = "http://localhost:8082";
             createPayPage.return_url = "http://localhost:8082";
             createPayPage.title = "some title";
@@ -268,9 +278,9 @@ cloudinary.config({
             //   console.log(response);
             // });
 
-            // paytabs.ValidateSecretKey("sakshigadia@gmail.com", "jwjn4lgU2sZqPqsB2Da3zNJIJwaUX8mgFGDJ2UE5nEvc4XO7BYaaMTSwq3qncNDRthAvbeAyT6LX3z4EyfPk8HQzLhWX4AOyRp42", function(response){
-            //   console.log(response);
-            // });
+             paytabs.ValidateSecretKey("yazan@brolix.com", "crzvAlMh1PL125QF0qQJy7kE32ZNz9OMAohaJ4rLTdNWiDBi4s1CAlgDogqYpfK0D2an6C80QVX8zzrD2tgCPxfdNGbcWWdzZoW6", function(response){
+               console.log(response);
+             });
 
         },
 
@@ -3346,13 +3356,17 @@ cloudinary.config({
 
         // api to update live users
         "updateLive": function(req, res) {
-            if (req.body.isLive == 'true') {
+            console.log("updateLive============>",JSON.stringify(req.body));
+            if (req.body.isLive == true) {
+                console.log("isLive============>");
                 User.findOneAndUpdate({ _id: req.body.userId }, { $set: { isLive: 'True' } }).exec(function(err, result) {
                     i18n = new i18n_module(req.body.lang, configs.langFile);
-                    if (error) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
+                    if (err) { res.send({ responseCode: 400, responseMessage: 'Internal server error.' }) } else if (!result) { res.send({ responseCode: 404, responseMessage: i18n.__("Data not found") }); } else {
+                        console.log("updateresult======>",result)
                         res.send({
                             responseCode: 200,
-                            responseMessage: i18n.__('Successfully updated')
+                            responseMessage: i18n.__('Successfully updated'),
+                            result: result
                         })
                     }
                 })
@@ -3432,14 +3446,40 @@ cloudinary.config({
 
                 }
             })
+        },
+
+        readNotification: function(req,res) {
+            console.log("------------------------------",req.body)
+            let criteria=req.body.notificationId;
+            let userId = req.body.userId;
+            User.findOneAndUpdate({"_id": userId,"notification._id": criteria},{$set:{"notification.$.isRead": true}},{new:true},(err, succees) => {
+                if (err) {
+                    console.log(err);
+                    res.status(400).send({
+                        "responseCode": 400,
+                        "responseMessage": "Unsuccessful",
+                        "response": err.message
+                    });
+    
+                }
+                if(succees == null){
+                    res.status(404).send({                   
+                    "responseCode": 404,
+                    "responseMessage": "No data found"
+                    })
+                }
+                else {
+                    console.log("**************", succees);
+                    res.status(200).send({
+                        "responseCode": 200,
+                        "responseMessage": "Successful",
+                        "response": succees
+                    });
+                }
+            })
+
+
         }
-
-
-
-
-
-
-
     }
 
 

@@ -14,7 +14,7 @@ app.post('/signup', userHandler.signup);
 app.post('/login', userHandler.login);
 app.post('/verifyOtp', userHandler.verifyOtp);
 app.get('/allUserDetails/:id/:lang', authUser.authUser, userHandler.allUserDetails);
-app.put('/editProfile/:id', authUser.authUser, authUser.authUser, userHandler.editProfile);
+app.put('/editProfile/:id', userHandler.editProfile);
 app.post('/changePassword', authUser.authUser, userHandler.changePassword);
 app.post('/forgotPassword', userHandler.forgotPassword);
 app.post('/userProfile', authUser.authUser, userHandler.userProfile);
@@ -68,11 +68,11 @@ app.post('/blockUserSearch', authUser.authUser, userHandler.blockUserSearch);
 app.post('/userNotification', userHandler.userNotification);
 app.post('/couponExchangeOff', authUser.authUser, userHandler.couponExchangeOff);
 app.post('/sendPaymentHistoryOnMailId', authUser.authUser, userHandler.sendPaymentHistoryOnMailId);
-app.post('/updateLive', authUser.authUser, userHandler.updateLive);
+app.post('/updateLive', userHandler.updateLive);
 app.post('/cancelExchangeCouponRequest', authUser.authUser, userHandler.cancelExchangeCouponRequest);
 app.post('/sendMessage', authUser.authUser, userHandler.sendMessage);
 app.post('/pageInboxChat',  userHandler.pageInboxChat);
-
+app.post('/readNotification',  userHandler.readNotification);
 //app.post('/payU', userHandler.payU)
 
 

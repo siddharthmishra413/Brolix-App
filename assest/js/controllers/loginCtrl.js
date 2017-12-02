@@ -22,10 +22,13 @@ app.controller('loginCtrl', function($scope, $window, $state, userService, $cook
 
     $scope.login = function() {
         userService.login($scope.myFrom).success(function(res) {
-            console.log("ggjhgjhg",res)
+            console.log("ggjhgjhg",JSON.stringify(res))
             if (res.responseCode == 200) {
                 console.log("==============");
                 //console.log("Login successfully" + JSON.stringify(res.token));
+                
+                localStorage.setItem('em',res.result.email);
+                console.log("SetEmail =>"+localStorage.getItem('em'))
                 localStorage.setItem('token',res.token);
                 //toastr.success(res.responseMessage);
                 $state.go('header.manageUsers')

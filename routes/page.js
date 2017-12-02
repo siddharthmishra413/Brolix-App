@@ -8,7 +8,7 @@ app.post('/returnPage', pageHandler.returnPage);
 app.post('/deleteSocialMediaLink', authUser.authUser, pageHandler.deleteSocialMediaLink);
 app.post('/editSocialMediaLink', authUser.authUser, pageHandler.editSocialMediaLink);
 app.get('/redirectpage/:id/:status/:lang', authUser.authUser, pageHandler.redirectpage);
-app.post('/createAdPayment', authUser.authUser, pageHandler.createAdPayment);
+app.post('/createAdPayment', pageHandler.createAdPayment);
 app.post('/returnAdsData', authUser.authUser, pageHandler.returnAdsData);
 app.post('/paymentFilterApi', authUser.authUser, pageHandler.paymentFilterApi);
 app.post('/deleteCommentsOnPage', authUser.authUser, pageHandler.deleteCommentsOnPage);

@@ -243,7 +243,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in totalPages | pagesFilter:test | itemsPerPage:10 ">
+                    <tr dir-paginate="x in totalPages | pagesFilter:test | itemsPerPage:10 " pagination-id="tabletotal">
                         <td>
                            
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
@@ -262,7 +262,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center "> <dir-pagination-controls pagination-id="tabletotal"  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -318,7 +318,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in unPublishedPage | pagesFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in unPublishedPage | pagesFilter:test | itemsPerPage:10" pagination-id="tableUnpublished">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -337,7 +337,7 @@
                 </tbody>
             </table>
             <div class="col-sm-12 text-center">
-                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                <dir-pagination-controls pagination-id="tableUnpublished" max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
             </div>
         </div>
     </div>
@@ -384,7 +384,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in showAllRemovedPage | pagesFilter:test | itemsPerPage:10 ">
+                    <tr dir-paginate="x in showAllRemovedPage | pagesFilter:test | itemsPerPage:10 " pagination-id="tableRemoved">
                         <td>
                         <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                             <!-- <input ng-model="myForm.pageId" name="name " value="{{x._id}} " type="radio"> -->
@@ -403,7 +403,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="col-sm-12 text-center "> <dir-pagination-controls  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
+            <div class="col-sm-12 text-center "> <dir-pagination-controls pagination-id="tableRemoved"  max-size="10 " direction-links="true " boundary-links="true " ></dir-pagination-controls></div>
         </div>
     </div>
 
@@ -453,7 +453,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in showAllBlockedPage | pagesFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in showAllBlockedPage | pagesFilter:test | itemsPerPage:10" pagination-id="sBlockedPage">
                         <td>
                             <input ng-model="myForm.pageId" name="name" value="{{x._id}}" type="radio">
                         </td>
@@ -472,7 +472,7 @@
                 </tbody>
             </table>
             <div class="col-sm-12 text-center">
-                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                <dir-pagination-controls pagination-id="sBlockedPage" max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
             </div>
         </div>
     </div>
@@ -505,7 +505,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="x in removePageRequest | pagesFilter:test | itemsPerPage:10">
+                    <tr dir-paginate="x in removePageRequest | pagesFilter:test | itemsPerPage:10" pagination-id="rmPageRequest">
                         <td>{{x.pageName}}</td>
                         <td>{{x.category}}</td>
                         <td>{{x.category}}</td>
@@ -519,7 +519,7 @@
                 </tbody>
             </table>
             <div class="col-sm-12 text-center">
-                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                <dir-pagination-controls pagination-id="rmPageRequest" max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls>
             </div>
         </div>
     </div>

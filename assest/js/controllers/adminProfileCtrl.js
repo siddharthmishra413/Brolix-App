@@ -11,7 +11,13 @@ $scope.$emit('SideMenu', 'Manage User');
  $scope.Step2 = false;
  $scope.myFrom.image = 'http://res.cloudinary.com/dfrspfd4g/image/upload/v1503658623/tziupdwsii6uzhwzxk2q.png';
 
-userService.adminProfile().success(function(res) {
+var a = localStorage.getItem('em');;
+    console.log("Em =>"+a)
+    var req = {
+      email : a
+    }
+
+userService.adminProfile(req).success(function(res) {
   console.log(res);
     	if(res.responseCode == 404){
     		//bootbox.alert(res.responseMessage);
