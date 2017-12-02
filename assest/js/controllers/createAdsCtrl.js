@@ -913,7 +913,8 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
         if($scope.createAds.giftType == 'coupon'){
             if($scope.createAds.adContentType == 'video'){
                 modifyData = {
-                    userId: adminIdss,
+                    adOwnerId:adminIdss,
+                    userId: pageDetails.userId,
                     pageId: pageDetails._id,
                     pageName: pageDetails.pageName,
                     category: pageDetails.category,
@@ -965,7 +966,8 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
 
             }else if($scope.createAds.adContentType == 'slideshow'){
                 modifyData = {
-                    userId: adminIdss,
+                    adOwnerId:adminIdss,
+                    userId: pageDetails.userId,
                     pageId: pageDetails._id,
                     pageName: pageDetails.pageName,
                     category: pageDetails.category,
@@ -1019,7 +1021,8 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
         }else if($scope.createAds.giftType == 'cash'){
              if($scope.createAds.adContentType == 'video'){
                 modifyData = {
-                    userId: adminIdss,
+                    adOwnerId:adminIdss,
+                    userId: pageDetails.userId,
                     pageId: pageDetails._id,
                     pageName: pageDetails.pageName,
                     category: pageDetails.category,
@@ -1067,7 +1070,8 @@ app.controller('createAdsCtrl', function($scope, $state, $window, userService, u
 
             }else if($scope.createAds.adContentType == 'slideshow'){
                 modifyData = {
-                    userId: adminIdss,
+                    adOwnerId:adminIdss,
+                    userId: pageDetails.userId,
                     pageId: pageDetails._id,
                     pageName: pageDetails.pageName,
                     category: pageDetails.category,

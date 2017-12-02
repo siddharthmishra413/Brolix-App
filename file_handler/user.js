@@ -2381,8 +2381,17 @@ cloudinary.config({
                                 if (flag === undefined) { res.send({ responseCode: 400, responseMessage: "You cannot send coupon exchange request to this user due to privacy policies" }); } else {
                                     createNewAds.findByIdAndUpdate({ _id: adId }, { $push: { "couponExchangeReceived": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: senderAdId, senderCouponCode: senderCouponCode, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId, couponExpirationTime: couponExpirationTime, senderCouponType:senderCouponType, receiverCouponType:req.body.receiverCouponType } } }, { new: true }).exec(function(err, result3) {
                                         if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 44') }) } else if (!result3) { res.send({ responseCode: 404, responseMessage: i18n.__("Receiver ad not found.") }); } else {
+                                            
+                                            //  
+//                                            var data = {
+//                                        userId: senderId,
+//                                        type: req.body.lang=="en"?""+result.firstName+" sent you cash. Click here to check your balance.":""+result.firstName+" قام بارسال الكاش اليك. اضغط هنا لمشاهدة الرصيد الخاص بك.",
+//                                        linkType: 'profile',
+//                                        notificationType: 'cashReceivedType',
+//                                        image: image
+//                                    }
 
-                                            createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId,receiverCouponExpirationTime:receiverCouponExpirationTime,receiverCouponType:receiverCouponType, senderCouponType:req.body.senderCouponType } } }, { new: true }).exec(function(err, result4) {
+                                            createNewAds.findByIdAndUpdate({ _id: senderAdId }, { $push: { "couponExchangeSent": { senderId: req.body.senderId, receiverId: req.body.receiverId, exchangedWithAdId: adId, senderCouponId: senderCouponId, receiverCouponId: receiverCouponId,receiverCouponExpirationTime:receiverCouponExpirationTime,receiverCouponType:receiverCouponType, senderCouponType:req.body.senderCouponType } /* , notification :data*/ } }, { new: true }).exec(function(err, result4) {
                                                 if (err) { res.send({ responseCode: 500, responseMessage: i18n.__('Internal server error. 55') }) } else if (!result4) { res.send({ responseCode: 404, responseMessage: i18n.__("Sender ad not found.") }); } else {
                                                     //  callback(null, result3)
                                                 }

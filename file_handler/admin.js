@@ -3811,7 +3811,7 @@ module.exports = {
     },
 
     "showPageName": function(req, res) {
-        createNewPage.find({ status: 'ACTIVE' }, 'pageName category subCategory').exec(function(err, result) {
+        createNewPage.find({ status: 'ACTIVE' }, 'pageName userId category subCategory').exec(function(err, result) {
             if (err) { res.send({ responseCode: 500, responseMessage: 'Internal server error' }); } else if (result.length == 0) { res.send({ responseCode: 404, responseMessage: 'No page found' }); } else {
                 result.sort(function(a, b) {
                     //compare two values
@@ -5246,6 +5246,112 @@ module.exports = {
          })
      },
 
+    
+     // show all ads coupon type api
+    "homePageAdsCouponType": function(req, res) {
+        i18n = new i18n_module(req.params.lang, configs.langFile);
+     
+                  createNewAds.paginate({  adsType: "coupon", status: "ACTIVE"}, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 } }, function(err, result) {
+                        if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (result.docs.length == 0) { res.send({ responseCode: 404, responseMessage: i18n.__("No coupon ad found") }); } else {
+                               
+                                var currentTime = (new Date).getTime();
+                                for (var i = 0; i <= result.docs.length - 1; i++) {
+                                    var array = [];
+                                    var array2 = [];
+                                    console.log("haanananna", i)
+                                    if (result.docs[i].expiryOfPriority != null && result.docs[i].expiryOfPriority - currentTime > 0) {
+                                        console.log(" +*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+* ")
+                                        //   console.log("with priority ", result.docs[i]._id)
+                                        //     console.log("and prority", result.docs[i].priorityNumber)
+                                        var sigma = function() {
+                                            var array = result.docs;
+                                            if (array[i].priorityNumber >= array.length) {
+                                                var k = array[i].priorityNumber - result.length;
+                                                while ((k--) + 1) {
+                                                    array.push(undefined);
+                                                }
+                                            }
+                                            array.splice(array[i].priorityNumber, 0, array.splice(i, 1)[0]);
+                                            return array;
+                                        }();
+                                    } else {
+                                        console.log("sayng something ", i)
+                                        array2.push(result.docs[i]);
+                                        res.send({
+                                        responseCode:200,
+                                        result:result
+                                    })
+                                    }
+                                }
+                               
+                            }
+                        })
+         
+    },
+
+    // show all ads cash type api
+    "showAllAdsCashType": function(req, res) {
+        i18n = new i18n_module(req.params.lang, configs.langFile);
+        var userId = req.params.id;
+        User.find({ $or: [{ 'type': 'USER' }, { 'type': 'Advertiser' }], status: 'ACTIVE', isVerified: "TRUE" }).lean().exec(function(err, userResult1) {
+            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+                var blockedArray = [];
+                for (var i = 0; i < userResult1.length; i++) {
+                    for (var j = 0; j < userResult1[i].blockUser.length; j++) {
+                        if (userResult1[i].blockUser[j].toString() == userId) {
+                            blockedArray.push(userResult1[i]._id)
+                        } else {
+                            console.log("flag------->>>>")
+                        }
+                    }
+                }
+                console.log("flag------->>>>", JSON.stringify(blockedArray))
+                User.findOne({ _id: req.params.id }).exec(function(err, userResult) {
+                    if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else if (!userResult) { res.send({ responseCode: 404, responseMessage: "Please enter correct userId" }); } else {
+                        var userCountry = userResult.country;
+                        createNewAds.paginate({ userId: { $nin: blockedArray }, removedUser: { $ne: req.params.id }, adsType: "cash", status: "ACTIVE", 'whoWillSeeYourAdd.country': userCountry }, { page: req.params.pageNumber, limit: 8, sort: { viewerLenght: -1, createdAt: -1 }}, function(err, result) {
+                            if (err) { res.send({ responseCode: 409, responseMessage: 'Internal server error' }); } else {
+
+                                var currentTime = (new Date).getTime();
+                                for (var i = 0; i <= result.docs.length - 1; i++) {
+                                    var array = [];
+                                    var array2 = [];
+                                    console.log("haanananna", i)
+                                    if (result.docs[i].expiryOfPriority != null && result.docs[i].expiryOfPriority - currentTime > 0) {
+                                        var sigma = function() {
+                                            var array = result.docs;
+                                            if (array[i].priorityNumber >= array.length) {
+                                                var k = array[i].priorityNumber - result.length;
+                                                while ((k--) + 1) {
+                                                    array.push(undefined);
+                                                }
+                                            }
+                                            array.splice(array[i].priorityNumber, 0, array.splice(i, 1)[0]);
+                                            return array;
+                                        }();
+                                    } else {
+                                        console.log("sayng something ", i)
+                                        array2.push(result.docs[i]);
+                                    }
+                                }
+
+                                var updatedResult = result.docs;
+                                createNewAds.populate(updatedResult, { path: 'pageId', model: 'createNewPage', select: 'pageName adAdmin' }, function(err, finalResult) {
+                                    res.send({
+                                        result: result,
+                                        responseCode: 200,
+                                        responseMessage: i18n.__("Data Shown successfully")
+                                    })
+                                })
+
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    },
+    
 
 }
 

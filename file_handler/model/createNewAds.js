@@ -14,6 +14,7 @@ var Schema = mongoose.Schema,
 var createNewAdsSchema = new Schema({
     userId: { type: String, trim: true, ref: 'brolixUser' },
     pageId: { type: String, trim: true, ref: 'createNewPage' },
+    adOwnerId : { type:String, trim: true },
     pageName: {
         type: String,
         trim: true

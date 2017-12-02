@@ -166,6 +166,7 @@ app.get('/userCashStatus', authUser.authUser, adminHandler.userCashStatus);
 app.get('/upgradeCardPriceList', authUser.authUser, adminHandler.upgradeCardPriceList);
 app.get('/showAllAdsCouponType/:pageNumber', adminHandler.showAllAdsCouponType);
 app.get('/showAllAdsCashType/:pageNumber', adminHandler.showAllAdsCashType);
+app.get('/homePageAdsCouponType/:pageNumber', adminHandler.homePageAdsCouponType);
 
 
 module.exports = app;

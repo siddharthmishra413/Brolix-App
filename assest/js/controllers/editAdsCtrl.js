@@ -1347,8 +1347,10 @@ userService.getPage().then(function(success) {
         if($scope.createAds.giftType == 'coupon'){
             if($scope.createAds.adContentType == 'video'){
                 modifyData = {
-                    userId: adminIdss,
-                    pageId: $scope.createAds._id,
+                    
+                    adOwnerId:$scope.createAds.adOwnerId,
+                    userId: $scope.createAds.userId,
+                    pageId: $scope.createAds.pageId,
                     pageName: $scope.createAds.pageName,
                     category: $scope.createAds.category,
                     subCategory: $scope.createAds.subCategory,
@@ -1397,8 +1399,11 @@ userService.getPage().then(function(success) {
 
             }else if($scope.createAds.adContentType == 'slideshow'){
                 modifyData = {
-                    userId: adminIdss,
-                    pageId: $scope.createAds._id,
+                    
+                    
+                    adOwnerId:$scope.createAds.adOwnerId,
+                    userId: $scope.createAds.userId,
+                    pageId: $scope.createAds.pageId,
                     pageName: $scope.createAds.pageName,
                     category: $scope.createAds.category,
                     subCategory: $scope.createAds.subCategory,
@@ -1453,12 +1458,11 @@ userService.getPage().then(function(success) {
         }else if($scope.createAds.giftType == 'cash'){
              if($scope.createAds.adContentType == 'video'){
                 modifyData = {
-                    userId: adminIdss,
-                    // pageId: pageDetails._id,
-                    // pageName: pageDetails.pageName,
-                    // category: pageDetails.category,
-                    // subCategory: pageDetails.subCategory,
-                    pageId: $scope.createAds._id,
+                    
+                    
+                    adOwnerId:$scope.createAds.adOwnerId,
+                    userId: $scope.createAds.userId,
+                    pageId: $scope.createAds.pageId,
                     pageName: $scope.createAds.pageName,
                     category: $scope.createAds.category,
                     subCategory: $scope.createAds.subCategory,
@@ -1504,13 +1508,11 @@ userService.getPage().then(function(success) {
 
 
             }else if($scope.createAds.adContentType == 'slideshow'){
-                modifyData = {
-                    userId: adminIdss,
-                    // pageId: pageDetails._id,
-                    // pageName: pageDetails.pageName,
-                    // category: pageDetails.category,
-                    // subCategory: pageDetails.subCategory,
-                    pageId: $scope.createAds._id,
+                modifyData = {                  
+                    
+                    adOwnerId:$scope.createAds.adOwnerId,
+                    userId: $scope.createAds.userId,
+                    pageId: $scope.createAds.pageId,
                     pageName: $scope.createAds.pageName,
                     category: $scope.createAds.category,
                     subCategory: $scope.createAds.subCategory,
